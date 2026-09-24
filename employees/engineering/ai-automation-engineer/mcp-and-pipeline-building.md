@@ -2,18 +2,18 @@
 
 > Load this when you are SHIPPING one of three sellable capabilities: an MCP server for a client, a recommendation/ranking/feed/RAG-rerank pipeline, or a scheduled data-scraper stack. This is build craft, not workflow-wiring. The n8n-via-MCP construction layer is `n8n-mcp.md`; durable-execution / RPA / template-library orchestration is `orchestration-patterns.md`. This file does not repeat either.
 
-**Source canon:** [affaan-m/ECC](https://github.com/affaan-m/ECC) (Everything Claude Code), MIT. Methodology lifted from `mcp-server-patterns` (ECC), `recsys-pipeline-architect` (community, MIT; pattern popularized by xAI's open-sourced For You algorithm, Apache 2.0), and `data-scraper-agent` (community). Methodology only; no source code copied verbatim. Where ECC examples pin GitHub Actions to mutable tags, this file applies Solaris fleet doctrine and SHA-pins instead.
+**Source canon:** [affaan-m/ECC](https://github.com/affaan-m/ECC) (Everything a coding agent), MIT. Methodology lifted from `mcp-server-patterns` (ECC), `recsys-pipeline-architect` (community, MIT; pattern popularized by xAI's open-sourced For You algorithm, Apache 2.0), and `data-scraper-agent` (community). Methodology only; no source code copied verbatim. Where ECC examples pin GitHub Actions to mutable tags, this file applies Solaris fleet doctrine and SHA-pins instead.
 
 ---
 
 ## 1. Building MCP servers (Node / TypeScript SDK)
 
-Use when shipping an MCP server for a client so their tools/resources are callable from Claude Desktop, Cursor, or a cloud client. (For *consuming* n8n through MCP, see `n8n-mcp.md`; that is a different altitude.)
+Use when shipping an MCP server for a client so their tools/resources are callable from a desktop agent app, Cursor, or a cloud client. (For *consuming* n8n through MCP, see `n8n-mcp.md`; that is a different altitude.)
 
 ### The three primitives
 - **Tools** - actions the model can invoke (search, run a command, mutate state). Use for side effects.
 - **Resources** - read-only data the model can fetch (file contents, API responses). Handlers receive a `uri`. Use for context.
-- **Prompts** - reusable parameterized templates the client can surface (e.g. in Claude Desktop). Optional.
+- **Prompts** - reusable parameterized templates the client can surface (e.g. in a desktop agent app). Optional.
 
 ### SDK and validation
 - Install `@modelcontextprotocol/sdk` and `zod`. Create the server with a name + version.
@@ -21,7 +21,7 @@ Use when shipping an MCP server for a client so their tools/resources are callab
 - Use **Zod** (or the SDK's preferred schema format) for input validation on every tool.
 
 ### Transport choice
-- **stdio** for local clients (Claude Desktop). Server reads/writes over stdin/stdout.
+- **stdio** for local clients (a desktop agent app). Server reads/writes over stdin/stdout.
 - **Streamable HTTP** for remote clients (Cursor, cloud). Single MCP HTTP endpoint per current spec; preferred for remote.
 - **Legacy HTTP/SSE** only when backward compatibility is required.
 - Keep server logic (tools + resources) independent of transport so the entrypoint can plug in stdio or HTTP without touching tool code.

@@ -18,8 +18,8 @@ Self-updating log of Unity mistakes, design failures, and repeat patterns across
 
 ## Seed entries (kickstart rules before real lessons accumulate)
 
-- **Any project / 2026-04-23 - Claude kept asking "what platform are you targeting?" every session.**
-  *Rule: Target platform, input model, orientation, and minimum device are standing decisions. They live in the project's CLAUDE.md. Never ask questions that CLAUDE.md can answer.*
+- **Any project / 2026-04-23 - the coding agent kept asking "what platform are you targeting?" every session.**
+  *Rule: Target platform, input model, orientation, and minimum device are standing decisions. They live in the project's AGENTS.md. Never ask questions that AGENTS.md can answer.*
 
 - **Any project / 2026-04-23 - A screen was built before its place in the state machine was defined.**
   *Rule: Every new screen must be placed on the screen flow map BEFORE any GameObject is created. Screens without defined entry/exit states get tossed in rework.*
@@ -42,7 +42,7 @@ When a lesson has been observed 2+ times across different projects, it gets prom
 - **Root cause of v1 miss**: Talent Scout v1 only grepped 9 cloned source repos. Unity-MCP wasn't in any of them. v2's 7-tier source registry (GitHub trending, MCP registries, per-domain queries, community signals) caught it on the first run.
 - **Highest-leverage Unity-MCP capability**: `script-execute` (Roslyn) + `reflection-method-call`. Together they remove the save-reload-test cycle AND give visibility into compiled DLLs. This is the biggest workflow change.
 - **Unique vs. early competitors**: Runtime (in-game) MCP. IvanMurzak/Unity-MCP enables AI-driven NPCs, dynamic content, and in-game debugging at runtime, not just Editor automation. (Note 2026-06: CoplayDev/unity-mcp is now the PRIMARY bridge for breadth; IvanMurzak is kept for the runtime layer + the Tier-0 autonomous verify loop.)
-- **Anti-amnesia signal**: The phrase "ALWAYS load `unity-mcp-operator.md` FIRST" was added to the SKILL.md description because Claude historically forgets MCP tools exist mid-session and falls back to telling Shai to click manually.
+- **Anti-amnesia signal**: The phrase "ALWAYS load `unity-mcp-operator.md` FIRST" was added to the SKILL.md description because the coding agent historically forgets MCP tools exist mid-session and falls back to telling Shai to click manually.
 - **Add-on packs to absorb later if Shai's projects need them**: AI Animation, AI ParticleSystem, AI ProBuilder.
 - **Quarterly re-scan target**: MiAO-AI-Lab/MiAO-MCP-for-Unity (alternate Unity MCP) - compare and decide if dual-install is worth it.
 

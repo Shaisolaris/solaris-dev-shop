@@ -4,7 +4,7 @@ A complete, layered animation system for React / Next.js using `motion/react` (t
 
 Methodology only - distilled, no code vendored. The code snippets are illustrative shape, not files to copy verbatim; verify the live `motion/react` API per project version (Context7).
 
-Absorbed from (methodology, not code), all github.com/affaan-m/everything-claude-code (MIT), verified 2026-06-14:
+Absorbed from (methodology, not code), all github.com/affaan-m/everything-the coding agent-code (MIT), verified 2026-06-14:
 - skills/motion-foundations - tokens, spring presets, the `shouldAnimate()` gate, reduced-motion + SSR rules.
 - skills/motion-patterns - button/modal/toast/stagger/page-transition/scroll/layout patterns.
 - skills/motion-advanced - drag, gestures, text, SVG, custom hooks, imperative `useAnimate` sequences, loaders.

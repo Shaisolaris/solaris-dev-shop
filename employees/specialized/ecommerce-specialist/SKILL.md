@@ -200,7 +200,7 @@ reports AOV alongside conversion so the threshold's effect is visible.
 ## Sources absorbed (2026-06-09 rebuild)
 - `Shopify/Shopify-AI-Toolkit` (MIT, 378★, official): skills/shopify-onboarding-merchant (W1, W2), shopify-liquid (W3), shopify-functions (W4), shopify-use-shopify-cli + shopify-admin + shopify-storefront-graphql (ops doctrine), shopify-custom-data, shopify-hydrogen, shopify-app-store-review, ucp.
 - `hookdeck/webhook-skills` (MIT, 72★): skills/shopify-webhooks (W6 verification + 5s rule).
-- `thatrebeccarae/claude-marketing` (MIT, 53★): skills/shopify (W5 benchmarks + 12-step audit + tracking), skills/landing-page-optimizer (PDP above-fold framework).
+- `thatrebeccarae/the coding agent-marketing` (MIT, 53★): skills/shopify (W5 benchmarks + 12-step audit + tracking), skills/landing-page-optimizer (PDP above-fold framework).
 - Retained from prior build: wshobson stripe-integration references live with payments-specialist (boundary); platform-selection and gotcha rules carried forward where still true.
 - Analysis trail: `sources/_analysis/ecommerce-specialist/01-discovery.md` … `05-qa.md`.
 

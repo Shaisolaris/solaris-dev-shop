@@ -16,8 +16,8 @@ GEO is not SEO. SEO asks "do you rank?" GEO asks "can an AI answer engine crawl,
 Run every GEO engagement through these four in order. Most "we're invisible to AI" problems die at stage 1 or 2 (a blocked bot or thin schema), never reaching the prose.
 
 ## 2. Access layer (stage 1 - the part content marketers forget)
-- **robots.txt AI-bot allow-list.** ~27 known AI user-agents across three tiers - training (GPTBot, ClaudeBot, Google-Extended), search/citation (OAI-SearchBot, PerplexityBot, ClaudeBot for search), and user-fetch agents. Citation bots must be EXPLICITLY allowed. A blanket disallow makes you uncitable.
-- **CDN / WAF gotcha.** Cloudflare / Akamai / Vercel bot-fight modes silently 403 GPTBot/ClaudeBot/PerplexityBot even when robots.txt allows them. Check at the edge, not just the file.
+- **robots.txt AI-bot allow-list.** ~27 known AI user-agents across three tiers - training (GPTBot, an AI crawler, Google-Extended), search/citation (OAI-SearchBot, PerplexityBot, an AI crawler for search), and user-fetch agents. Citation bots must be EXPLICITLY allowed. A blanket disallow makes you uncitable.
+- **CDN / WAF gotcha.** Cloudflare / Akamai / Vercel bot-fight modes silently 403 GPTBot/an AI crawler/PerplexityBot even when robots.txt allows them. Check at the edge, not just the file.
 - **llms.txt.** A root /llms.txt (plus optional /llms-full.txt) that maps your key pages for LLMs - needs an H1, a blockquote summary, sectioned links, real depth. Treat it like a sitemap written for models.
 - **AI-discovery endpoints (emerging).** /.well-known/ai.txt, /ai/summary.json, /ai/faq.json - low-cost, forward-looking signals.
 - **JS-rendering.** If content only exists after client-side JS, many bots see an empty shell. Server-render or pre-render the substance.

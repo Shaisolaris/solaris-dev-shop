@@ -101,10 +101,10 @@ names why accuracy would be a misleading metric here.
 | Recommender system for a marketplace | AI/ML Engineer |
 | Sales forecasting | AI/ML Engineer |
 | Image classifier (non-LLM) | AI/ML Engineer |
-| Fine-tune a Claude / Llama model | AI/ML Engineer |
+| Fine-tune a the coding agent / Llama model | AI/ML Engineer |
 | Prompt engineering for GPT-4 | LLM Agent Designer |
 | RAG over a doc corpus | LLM Agent Designer |
-| Build a Claude agent | LLM Agent Designer |
+| Build a the coding agent agent | LLM Agent Designer |
 | Design MCP server | LLM Agent Designer |
 
 **Rule of thumb:** if the answer involves *training* a model, it's this employee. If the answer involves *prompting* a pre-trained LLM, it's LLM Agent Designer.
@@ -215,7 +215,7 @@ Graduate to the full pipeline (below) only once the prototype shows signal and s
 ### LLM fine-tune decision
 Before fine-tuning, answer:
 1. Can prompting + few-shot + RAG solve this? (usually yes)
-2. Is the task narrow enough that a small fine-tuned model beats prompting Claude? (rare)
+2. Is the task narrow enough that a small fine-tuned model beats prompting the coding agent? (rare)
 3. Is inference volume high enough that fine-tune $ savings justify training $ cost?
 4. Do we have > 500 high-quality training examples?
 
@@ -316,7 +316,7 @@ After every ML session:
 | `jupyter-notebook-workflow.md` | Any iterative notebook / prototype work |
 | `rag-architecture.md` | RAG context only; RAG *builds* route to LLM Agent Designer |
 
-Canonical alirezarezvani: `/Solaris/sources/alirezarezvani-claude-skills/engineering-team/senior-ml-engineer/`
+Canonical alirezarezvani: `/Solaris/sources/alirezarezvani-the coding agent-skills/engineering-team/senior-ml-engineer/`
 
 
 ## QA LOOP (GOSPEL  -  meta/QA-LOOP-GOSPEL.md, non-negotiable)

@@ -1,6 +1,6 @@
 # Compliance Auditor - Rules
 
-Last revised: 2026-06-10 (rebuild from real sources - VoltAgent compliance-auditor (MIT, 21.5k★) + strongdm/comply TSC catalog (Apache-2.0) + JupiterOne policy-architecture concepts (CC-BY-SA, concepts only) + oscal-compass/trestle (Apache-2.0); msitarzewski + anthropics/claude-for-legal credits retained)
+Last revised: 2026-06-10 (rebuild from real sources - VoltAgent compliance-auditor (MIT, 21.5k★) + strongdm/comply TSC catalog (Apache-2.0) + JupiterOne policy-architecture concepts (CC-BY-SA, concepts only) + oscal-compass/trestle (Apache-2.0); msitarzewski + anthropics/the coding agent-for-legal credits retained)
 
 ## Hard rules
 - **Shai personal-skill absorption ALLOWED where additive** ('never fold' retired 2026-06-04, Shai-authorized).
@@ -32,7 +32,7 @@ Last revised: 2026-06-10 (rebuild from real sources - VoltAgent compliance-audit
 - **Auditor mindset:** what would they test, what evidence would they pull, how would they sample?
 - **Honesty about gaps.** Hiding from auditors creates bigger problems.
 
-## Intake - before any assessment (cold-start interview; claude-for-legal + VoltAgent context query)
+## Intake - before any assessment (cold-start interview; the coding agent-for-legal + VoltAgent context query)
 Write into the client compliance profile:
 - Sectors + jurisdictions; data types processed (PII / PHI / cardholder / none)
 - Geographic scope incl. EU/UK exposure; cross-border transfer mechanisms in use
@@ -131,7 +131,7 @@ threat identification → vulnerability analysis → impact assessment → likel
 
 ## Continuous compliance (post-engagement posture)
 - Real-time monitoring + drift detection with alerting; remediation tracking; metric dashboards; trend analysis (VoltAgent).
-- Scheduled managed-agent jobs, not ad-hoc (claude-for-legal cookbook): regulatory-feed monitor (rule changes), renewal watcher (cert renewals + audit cycles), launch radar (new-product compliance scan pre-GA), diligence grid (vendor compliance review).
+- Scheduled managed-agent jobs, not ad-hoc (the coding agent-for-legal cookbook): regulatory-feed monitor (rule changes), renewal watcher (cert renewals + audit cycles), launch radar (new-product compliance scan pre-GA), diligence grid (vendor compliance review).
 - Recertification planned at issuance, not at expiry panic (VoltAgent certification prep).
 
 ## Compliance-as-code (trestle concepts - NIST/FedRAMP-grade or multi-accreditation clients)
@@ -175,8 +175,8 @@ threat identification → vulnerability analysis → impact assessment → likel
 - Marketing-claims compliance → CMO + legal-advisor
 - Tax compliance → CFO + accountant
 
-## Absorption note - anthropics/claude-for-legal (2026-05-18; slice retained through 2026-06-10 rebuild)
-- Cold-start interview before any compliance review (regulatory perimeter → client CLAUDE.md compliance profile) - merged into Intake above.
+## Absorption note - anthropics/the coding agent-for-legal (2026-05-18; slice retained through 2026-06-10 rebuild)
+- Cold-start interview before any compliance review (regulatory perimeter → client AGENTS.md compliance profile) - merged into Intake above.
 - Managed-agent cookbook for eyes-on-the-feed compliance work - merged into Continuous compliance above.
 - MCP connector awareness for compliance evidence: Ironclad (contract obligations), DocuSign (executed agreements as evidence), iManage (document custody), Everlaw (litigation hold + e-discovery).
 

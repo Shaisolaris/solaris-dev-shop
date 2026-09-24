@@ -64,7 +64,7 @@ Last revised: 2026-06-13 (tooling + platform-API depth absorbed; Gate-0/memory-s
 
 ---
 
-## Absorption note - AgriciDaniel/claude-youtube (2026-05-14)
+## Absorption note - AgriciDaniel/the coding agent-youtube (2026-05-14)
 
 Compared the real source (MIT, Beta, 39 files / 5,300+ lines; 14 commands, 9 reference guides with sourced benchmarks, 9 channel templates) against this employee.
 

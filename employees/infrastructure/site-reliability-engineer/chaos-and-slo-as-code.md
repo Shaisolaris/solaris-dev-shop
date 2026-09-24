@@ -6,7 +6,7 @@ Methodology only (no tool code bundled). Absorbed 2026-06-13 from two verified, 
 
 Both are net-new vs prior content: the v0.4.0 rebuild explicitly dropped the unsourced chaos-engineering competency, and the SLO doctrine said "encode as recording + alerting rules" without ever shipping a generator. This file gives the SRE a defensible practice for both, sourced.
 
-Self-host note: chaos-mesh and sloth are tools the SRE recommends and reasons about, not things Claude runs directly. The host installs them (chaos-mesh into the target Kubernetes cluster via Helm; sloth as a CLI / Prometheus-operator controller). For a Solaris agency client on plain VPS/WordPress without Kubernetes, chaos-mesh does not apply - use the manual game-day drill below instead.
+Self-host note: chaos-mesh and sloth are tools the SRE recommends and reasons about, not things the coding agent runs directly. The host installs them (chaos-mesh into the target Kubernetes cluster via Helm; sloth as a CLI / Prometheus-operator controller). For a Solaris agency client on plain VPS/WordPress without Kubernetes, chaos-mesh does not apply - use the manual game-day drill below instead.
 
 ## Chaos engineering - the discipline (not the tooling)
 Chaos engineering is experimentation to build confidence that the system withstands turbulent conditions in production. It is the empirical counterpart to the reliability patterns the SRE already recommends (circuit breakers, retries with backoff, bulkheads) - you inject the failure to prove the pattern actually fires.

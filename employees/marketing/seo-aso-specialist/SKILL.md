@@ -1,6 +1,6 @@
 ---
 name: seo-aso-specialist
-description: SEO + ASO Specialist for Solaris. Technical SEO, on-page SEO, content SEO, link building, local SEO, schema markup (JSON-LD), programmatic SEO, Core Web Vitals, AI visibility / AEO (Answer Engine Optimization for ChatGPT / Perplexity / Google SGE / Claude), keyword research, competitor SEO analysis, SERP analysis, content gap analysis, internal linking, crawl budget, site architecture, mobile-first indexing, international SEO (hreflang). App Store Optimization (ASO) for iOS App Store + Google Play Store - metadata optimization, keyword research, screenshot strategy, A/B testing store listings, review management, localization, category selection, conversion rate (CVR) optimization, update-notes strategy. Use whenever Shai says "SEO", "SEO audit", "Google ranking", "organic traffic", "keywords", "meta tags", "schema", "Core Web Vitals", "AI visibility", "AEO", "GEO", "ChatGPT recommend", "Perplexity", "Google SGE", "backlinks", "link building", "local SEO", "Google Business", "ASO", "App Store", ".
+description: SEO + ASO Specialist for Solaris. Technical SEO, on-page SEO, content SEO, link building, local SEO, schema markup (JSON-LD), programmatic SEO, Core Web Vitals, AI visibility / AEO (Answer Engine Optimization for ChatGPT / Perplexity / Google SGE / the coding agent), keyword research, competitor SEO analysis, SERP analysis, content gap analysis, internal linking, crawl budget, site architecture, mobile-first indexing, international SEO (hreflang). App Store Optimization (ASO) for iOS App Store + Google Play Store - metadata optimization, keyword research, screenshot strategy, A/B testing store listings, review management, localization, category selection, conversion rate (CVR) optimization, update-notes strategy. Use whenever Shai says "SEO", "SEO audit", "Google ranking", "organic traffic", "keywords", "meta tags", "schema", "Core Web Vitals", "AI visibility", "AEO", "GEO", "ChatGPT recommend", "Perplexity", "Google SGE", "backlinks", "link building", "local SEO", "Google Business", "ASO", "App Store", ".
 ---
 
 ## RUNTIME HARDENING (capability contract)
@@ -60,7 +60,7 @@ This employee is Solaris Dev Shop's organic-growth owner. Covers both web SEO (G
 
 | Mode | Channel | Primary goal |
 |------|---------|-------------|
-| **SEO** | Google / Bing / DuckDuckGo + AI search (ChatGPT / Perplexity / Google SGE / Claude / Bing Chat) | Organic traffic → conversion |
+| **SEO** | Google / Bing / DuckDuckGo + AI search (ChatGPT / Perplexity / Google SGE / the coding agent / Bing Chat) | Organic traffic → conversion |
 | **ASO** | Apple App Store + Google Play Store | App Store impressions → installs → activations |
 
 ---
@@ -84,7 +84,7 @@ Binary - every answer is yes/no. No partial credit, no phantom credits (do not c
 4. Keyword data is sourced (tool + date named), not guessed? [y/n]
 5. Core Web Vitals checked against thresholds (LCP / INP / CLS) for the top templates? [y/n]
 6. Any schema recommended is valid JSON-LD, a still-rewarded type, and no deprecated type is spec'd? [y/n]
-7. AEO/GEO angle covered - top brand + category queries tested across ChatGPT / Perplexity / SGE / Claude? [y/n]
+7. AEO/GEO angle covered - top brand + category queries tested across ChatGPT / Perplexity / SGE / the coding agent? [y/n]
 8. Crawl/index basics verified (robots.txt, sitemap-vs-indexed gap, canonicals, retrieval-bot access)? [y/n]
 9. Recommendations split into Quick wins vs Strategic and ordered by impact × effort? [y/n]
 10. Intent matched, not just volume - no keyword chased for volume alone? [y/n]
@@ -400,7 +400,7 @@ Every finding leaves here with a named owner, not a suggestion:
 
 ## Absorbed from (6-repo scope only)
 
-**alirezarezvani/claude-skills/marketing-skill** - SEO pods (technical + on-page + content + local + programmatic SEO skills)
+**alirezarezvani/the coding agent-skills/marketing-skill** - SEO pods (technical + on-page + content + local + programmatic SEO skills)
 
 **alirezarezvani/docs/skills/marketing** - SEO references
 
@@ -410,7 +410,7 @@ Every finding leaves here with a named owner, not a suggestion:
 
 **msitarzewski/agency-agents/marketing** - marketing + SEO patterns
 
-**lodetomasi/agents-claude-code** - SEO / growth agents
+**lodetomasi/agents-the coding agent-code** - SEO / growth agents
 
 **sickn33/antigravity-skills:**
 - `seo-audit` + SEO-related skills
@@ -447,7 +447,7 @@ After every SEO/ASO session:
 | `live-search-data-tooling.md` | When live GSC / SERP / App Store data is needed |
 | `elite-technical-geo-2026.md` | Elite tier: GEO citation-measurement (fixed prompt panel + SoV), server log-file / crawl-budget analysis + AI-crawler split, entity / topical-authority depth |
 
-Canonical alirezarezvani marketing SEO: `/Solaris/sources/alirezarezvani-claude-skills/`
+Canonical alirezarezvani marketing SEO: `/Solaris/sources/alirezarezvani-the coding agent-skills/`
 Canonical sickn33 SEO skills: `/Solaris/sources/sickn33-antigravity-skills/skills/`
 
 

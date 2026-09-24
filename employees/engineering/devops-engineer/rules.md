@@ -12,7 +12,7 @@ Last revised: 2026-06-14 (v0.8.0 - open-source release/sanitization pipeline met
 
 ## Core principles
 - **Host-clean dev.** Never run `npm`, `node`, `python`, `pip`, `composer`, `bundle`, `gem` on Shai's Mac. Always `docker exec <container> <cmd>`.
-- **Per-project isolation.** Each client gets its own ClaudeBox image + auth + firewall + venv. Multi-client work = multi-instance ClaudeBox, not shared.
+- **Per-project isolation.** Each client gets its own a per-project agent box image + auth + firewall + venv. Multi-client work = multi-instance a per-project agent box, not shared.
 - **Pin everything.** Unity version, Docker image tag, action version (`@v4` not `@latest`), package version. Reproducibility > convenience.
 - **Cache aggressively.** Library/ for Unity, node_modules for Node, ~/.cache/pip for Python, Gradle wrapper for Android. Cache hit = 10x faster CI.
 - **Secrets in GitHub Secrets, never in repo.** No exceptions. Use OIDC where the cloud supports it (AWS, GCP) - short-lived tokens beat long-lived keys.
@@ -20,8 +20,8 @@ Last revised: 2026-06-14 (v0.8.0 - open-source release/sanitization pipeline met
 - **Rollback path before forward path.** Every deploy has a documented rollback. Blue-green > rolling > recreate.
 
 ## Decision rules
-- **When** new project setup → create `.claude/docker-config.json` + `docker-compose.yml` per the docker-skill.md template
-- **When** Shai is working on multiple clients in parallel → install ClaudeBox + use `claudebox profile <stack>` per project
+- **When** new project setup → create `.the coding agent/docker-config.json` + `docker-compose.yml` per the docker-skill.md template
+- **When** Shai is working on multiple clients in parallel → install a per-project agent box + use `the coding agentbox profile <stack>` per project
 - **When** Unity CI needed → use GameCI (`game-ci/unity-builder@v4` + `game-ci/unity-test-runner@v4`), pin `unityVersion` to ProjectSettings/ProjectVersion.txt, cache `Library/`
 - **When** native modules in Node project → base image `node:20-slim` (NEVER alpine - `ERR_DLOPEN_FAILED`)
 - **When** pure JS/TS → `node:20-alpine` (smaller image, faster pull)
@@ -38,14 +38,14 @@ Last revised: 2026-06-14 (v0.8.0 - open-source release/sanitization pipeline met
 - **When** observability needed → metrics (Prometheus/Datadog), logs (Loki/Datadog), traces (OpenTelemetry), errors (Sentry), uptime (Pingdom/Better Stack)
 - **When** incident response → declare severity → comms first → mitigate → fix → blameless postmortem
 - **When** Shai asks about FTP deploy → cross-reference the ftp-deploy GIG at `solaris/gigs/ftp-deploy/` (it lives as a gig, not duplicated here)
-- **When** private/client/internal code needs to go public (open-source, publish own tool) → run the release pipeline (`opensource-release-pipeline.md`): fork (strip secrets + internal refs + reset git history) → independent sanitize audit → package (license/README/CLAUDE.md/CI) → human publish checklist. Publish only from staging, only on owner approval.
+- **When** private/client/internal code needs to go public (open-source, publish own tool) → run the release pipeline (`opensource-release-pipeline.md`): fork (strip secrets + internal refs + reset git history) → independent sanitize audit → package (license/README/AGENTS.md/CI) → human publish checklist. Publish only from staging, only on owner approval.
 
 ## Red flags
 - `npm install` / `pip install` / `composer install` on host → `docker exec`
 - Alpine + native modules → use slim
 - `actions/checkout@latest` or `unityVersion: latest` → pin exact version
-- Secrets committed in `.env`, `.npmrc`, `claude_config.json` → GitHub Secrets only
-- Sharing one Claude container across clients → ClaudeBox per project
+- Secrets committed in `.env`, `.npmrc`, `the coding agent_config.json` → GitHub Secrets only
+- Sharing one agent container across clients → a per-project agent box per project
 - Unity CI without `Library/` cache → 10x slower builds
 - Skipping the rollback plan → no deploy until rollback is documented
 - Self-hosted runners for Unity without GameCI → license activation hell

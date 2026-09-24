@@ -203,7 +203,7 @@ arithmetic behind the new values, and bounds the long-term economy impact.
 
 ---
 
-## Design depth - motivation, flow, audience (v0.4.0, from Donchitos/Claude-Code-Game-Studios, MIT)
+## Design depth - motivation, flow, audience (v0.4.0, from Donchitos/the coding agent-Code-Game-Studios, MIT)
 
 MDA (above) is the spine; these are the other professional frameworks. Full treatment in `design-frameworks.md` - load it for any new system.
 - **Self-Determination Theory (SDT)** - players are motivated by **Autonomy** (choices are theirs), **Competence** (feeling capable + improving), **Relatedness** (connection to players/characters/world). For any new system, name which of A/C/R it serves and which it might starve.

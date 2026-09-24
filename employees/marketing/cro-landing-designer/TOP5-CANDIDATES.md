@@ -61,7 +61,7 @@ Established + safe; 100+ stars (or 50+ from a notable maintainer); permissive li
 
 ## Also evaluated (not in top 5)
 - Flagsmith - github.com/flagsmith/flagsmith - 6,408 stars - BSD-3-Clause (clean) - pushed 2026-06-12. Permissive alternative to Unleash for rollout flags; held as fallback.
-- alirezarezvani/claude-skills sample-size-guide.md - the existing table's cited source; re-verified 2026-06-13. Employee table faithfully matches the upstream "20% lift" column (1%->97k, 3%->31k, 5%->18k, 10%->8.7k, 20%->4k) and the "1% baseline / 5% lift = 1.5M" claim. No correction needed; methodology-basis note added instead.
+- alirezarezvani/the coding agent-skills sample-size-guide.md - the existing table's cited source; re-verified 2026-06-13. Employee table faithfully matches the upstream "20% lift" column (1%->97k, 3%->31k, 5%->18k, 10%->8.7k, 20%->4k) and the "1% baseline / 5% lift = 1.5M" claim. No correction needed; methodology-basis note added instead.
 
 ## License flags summary
 | Source | License | Action |

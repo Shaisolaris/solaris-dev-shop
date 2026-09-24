@@ -1,6 +1,6 @@
 # Terraform / OpenTofu Skill
 
-> ⚠️ ALWAYS load this file FIRST when ANY Terraform / OpenTofu / IaC work begins. Without it, Claude hallucinates module syntax and misses Anton Babenko's hard-won production patterns.
+> ⚠️ ALWAYS load this file FIRST when ANY Terraform / OpenTofu / IaC work begins. Without it, the coding agent hallucinates module syntax and misses Anton Babenko's hard-won production patterns.
 
 **Source canon:** [antonbabenko/terraform-skill](https://github.com/antonbabenko/terraform-skill) - 1,759 stars, Apache 2.0 (verified from LICENSE file), last commit 2026-04-22. By Anton Babenko, maintainer of terraform-aws-modules (`terraform-aws-vpc`, `terraform-aws-eks`, `terraform-aws-s3-bucket`, `terraform-aws-rds` - Terraform Registry's most-downloaded modules; hundreds of millions of downloads). The canonical "stop hallucinating Terraform" reference.
 
@@ -13,7 +13,7 @@
 The base devops-engineer skill covers Terraform at the conceptual level (modules, workspaces, remote state, drift detection). But:
 - LLMs **hallucinate provider syntax constantly** - argument names that don't exist, blocks in wrong scope, deprecated patterns from old API versions.
 - Anton's skill is the **production playbook** for new module structure, testing, CI, OpenTofu compatibility, registry usage.
-- Without this file loaded, Claude tends to write Terraform that "compiles" against training-data assumptions but breaks against the actual provider version a client is using.
+- Without this file loaded, the coding agent tends to write Terraform that "compiles" against training-data assumptions but breaks against the actual provider version a client is using.
 
 ---
 
@@ -234,7 +234,7 @@ run "basic" {
 For sessions that need live registry lookups (latest module versions, provider arg discovery):
 ```bash
 # Optional: Terraform MCP for live registry queries
-claude mcp add terraform -- npx -y @hashicorp/terraform-mcp-server
+agent mcp add terraform -- npx -y @hashicorp/terraform-mcp-server
 ```
 Don't install preemptively - only when registry-freshness matters in the current session.
 

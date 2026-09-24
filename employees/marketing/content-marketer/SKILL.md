@@ -54,7 +54,7 @@ If a control fails, do not emit `Gate: passed` for the affected path.
 
 This employee is Solaris Dev Shop's content marketing strategist. **Distinct from Copywriter** (UX microcopy), **SEO+ASO Specialist** (technical SEO), **Social Media Manager** (organic social ops), **Email Specialist** (lifecycle email infra). Owns content strategy + creation + omnichannel distribution.
 
-**Source-grounded:** wshobson-agents (content-marketing/content-marketer agent - comprehensive AI-era content marketing playbook), alirezarezvani-claude-skills (marketing-skill SEO + social pods + email-sequence + cold-email).
+**Source-grounded:** wshobson-agents (content-marketing/content-marketer agent - comprehensive AI-era content marketing playbook), alirezarezvani-the coding agent-skills (marketing-skill SEO + social pods + email-sequence + cold-email).
 
 ---
 
@@ -157,7 +157,7 @@ Gate: passed
 - Core Web Vitals integration with content
 - Local SEO + voice search optimization
 - Featured snippet + position-zero techniques
-- **GEO / AI-search (operational):** make content machine-citable for ChatGPT / Perplexity / Gemini, not just rankable. Audit spine `crawled -> understood -> cited -> monitored`; allow citation bots (GPTBot / ClaudeBot / PerplexityBot), ship `/llms.txt`, front-load answers, use the proven citability levers (cite sources +115%, quotation +41%, statistics +40% per KDD 2024). Full operational playbook + scoring rubric: `geo-operational-2026.md`. Schema implementation tool: spatie/schema-org (MIT).
+- **GEO / AI-search (operational):** make content machine-citable for ChatGPT / Perplexity / Gemini, not just rankable. Audit spine `crawled -> understood -> cited -> monitored`; allow citation bots (GPTBot / an AI crawler / PerplexityBot), ship `/llms.txt`, front-load answers, use the proven citability levers (cite sources +115%, quotation +41%, statistics +40% per KDD 2024). Full operational playbook + scoring rubric: `geo-operational-2026.md`. Schema implementation tool: spatie/schema-org (MIT).
 
 (Hand off deep technical SEO to SEO+ASO Specialist.)
 
@@ -284,8 +284,8 @@ Step 0b - Prerequisites, checked before a single headline is drafted: (a) ICP/pe
 | Source | What was used |
 |------|---------------|
 | `solaris/sources/wshobson-agents/plugins/content-marketing/agents/content-marketer.md` | AI-powered content creation, SEO/search optimization, social content, email marketing, distribution + amplification, performance analytics, e-commerce content, video + multimedia, emerging tech, 10-step response approach |
-| `solaris/sources/alirezarezvani-claude-skills/marketing-skill/social-media-manager/SKILL.md` | 5-pillar content framework (40/20/15/15/10), weekly batch template |
-| `solaris/sources/alirezarezvani-claude-skills/docs/skills/marketing-skill/email-sequence.md` + `cold-email.md` | Email nurture + cold email patterns |
+| `solaris/sources/alirezarezvani-the coding agent-skills/marketing-skill/social-media-manager/SKILL.md` | 5-pillar content framework (40/20/15/15/10), weekly batch template |
+| `solaris/sources/alirezarezvani-the coding agent-skills/docs/skills/marketing-skill/email-sequence.md` + `cold-email.md` | Email nurture + cold email patterns |
 | METHODOLOGY 2026-06-13 (web): Auriti-Labs/geo-optimizer-skill (MIT), mascanho/RustySEO (GPL, self-host), amplifying-ai/awesome-generative-engine-optimization (NOASSERTION, cite-only), spatie/schema-org (MIT); research arXiv:2311.09735 / 2510.11438 / 2506.11097 | GEO operational layer: crawled/understood/cited/monitored audit spine, citability scoring rubric + KDD-2024 levers, AI-bot access (robots/llms.txt/CDN), RAG-chunk structure, citation monitoring loop -> `geo-operational-2026.md` |
 
 Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).

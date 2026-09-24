@@ -34,8 +34,8 @@ Format: - **<YYYY-MM-DD> - <anonymized context>**: <what happened> *Proposed rul
 ### Team management
 - **A client project - task-by-task reviews burned hourly TL**: multiple review rounds on a fixed-price dev. *Proposed rule: full-milestone reviews, two rounds max.* Tags: [#team]
 - **A client project - first TL dropped on first task**: over-quoted a simple transfer task and pushed comms off-platform. *Proposed rule: two red flags on the first task = drop immediately.* Tags: [#team]
-- **A client project - second TL padding patterns; but found real bugs**: padded retests and billed unrelated browsing; yet found 2 real browser-only bugs. Resolution: adopt the three-layer review (Claude code review free + QA browser + conditional TL). *Proposed rule: code review catches code bugs (free, Claude); QA catches browser bugs; reserve TL for architecture/security/deployment.* Tags: [#team] [#promoted-to-rules]
-- **A client project - ClickUp setup mis-priced as PM work**: it's data entry. *Proposed rule: Claude writes the ClickUp doc; a VA copies it at fixed price ($30-50).* Tags: [#team] [#clickup]
+- **A client project - second TL padding patterns; but found real bugs**: padded retests and billed unrelated browsing; yet found 2 real browser-only bugs. Resolution: adopt the three-layer review (the coding agent code review free + QA browser + conditional TL). *Proposed rule: code review catches code bugs (free, the coding agent); QA catches browser bugs; reserve TL for architecture/security/deployment.* Tags: [#team] [#promoted-to-rules]
+- **A client project - ClickUp setup mis-priced as PM work**: it's data entry. *Proposed rule: the coding agent writes the ClickUp doc; a VA copies it at fixed price ($30-50).* Tags: [#team] [#clickup]
 
 ### Client comms
 - **A client project - re-asked an already-answered question**: drafted a clarification already documented across prior sessions. *Proposed rule: cross-reference existing docs before drafting client questions.* Tags: [#clientcomms]

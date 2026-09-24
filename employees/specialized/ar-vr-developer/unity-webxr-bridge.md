@@ -2,7 +2,7 @@
 
 Methodology reference adapted from De-Panther/unity-webxr-export (Apache-2.0, ~1.2k
 stars; itself based on Mozilla's Unity WebXR/WebVR Exporter, Apache-2.0). Patterns only;
-no package or C#/JS code is bundled and Claude does not run Unity. This goes DEEPER than
+no package or C#/JS code is bundled and This employee does not run Unity. This goes DEEPER than
 the 9-step "Unity -> WebXR export SOP" in rules.md, which covers Editor setup/build. The
 net-new layer here is the BRIDGE ARCHITECTURE (how a Unity C#/XR project actually drives,
 and is driven by, the browser's WebXR session through Unity WebGL) plus the WebXR Input

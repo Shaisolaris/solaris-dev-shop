@@ -6,7 +6,7 @@ Inherits: full-stack-developer's stack-defaults, api-design (consumption side), 
 **Framework + motion references** (new at v0.7.0): `vue-angular-and-nuxt.md` carries Vue 3 (incl Laravel+Vue/Inertia), Angular, and Nuxt 4 as additional supported frameworks - each maps the gates below (§1/§2/§4/§6/§7/§8) onto its own idioms. `motion-system.md` carries the full motion.dev/Framer-Motion system (tokens, springs, gestures, SSR-safe a11y) behind the "Framer Motion for complex animation" stack default. The React/Next methodology in this file is the canonical source; those two files translate and extend it, they do not duplicate it.
 
 ## 1. Before any build or recommendation - four assumptions, on paper
-*Source: alirezarezvani/claude-skills senior-frontend (SKILL.md + references/forcing_questions.md)*
+*Source: alirezarezvani/the coding agent-skills senior-frontend (SKILL.md + references/forcing_questions.md)*
 
 Do not pick a framework, rendering model, or perf strategy until these four are answered and written down:
 1. **Primary device + network** - mobile-4G / desktop-fiber / low-end-Android / corporate. Kill criterion: "all users equally" → STOP, pull analytics. Every frontend optimizes for one floor and tolerates the rest.

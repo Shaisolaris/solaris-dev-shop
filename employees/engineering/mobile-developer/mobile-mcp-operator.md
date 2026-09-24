@@ -13,10 +13,10 @@
 
 ## Install - mobile-next/mobile-mcp (PRIMARY)
 
-**Standard config** (works in Claude Code, Claude Desktop, Cursor, Cline, Codex, Copilot, Gemini, Goose, Kiro, opencode, Windsurf, VS Code):
+**Standard config** (works in a coding agent, a desktop agent app, Cursor, Cline, Codex, Copilot, Gemini, Goose, Kiro, opencode, Windsurf, VS Code):
 
 ```bash
-claude mcp add mobile-mcp -- npx -y @mobilenext/mobile-mcp@latest
+agent mcp add mobile-mcp -- npx -y @mobilenext/mobile-mcp@latest
 ```
 
 JSON config (manual):
@@ -55,7 +55,7 @@ MOBILEMCP_DISABLE_TELEMETRY=1 npx @mobilenext/mobile-mcp@latest
 Use when mobile-mcp won't run or you only need Android screenshot iteration with Expo/RN/Flutter:
 
 ```bash
-claude mcp add android-ui-assist -- npx android-ui-assist-mcp
+agent mcp add android-ui-assist -- npx android-ui-assist-mcp
 ```
 
 ## The mobile-mcp tool catalog (canonical)
@@ -184,4 +184,4 @@ cd docker && docker-compose up --build -d
 - `jsuarezruiz/mobile-dev-mcp-server` - alternate cross-platform mobile MCP
 - `skydoves/android-skills-mcp` - official Android skills MCP packager (skydoves is reputable)
 - `rcosteira79/android-skills` - Android + KMP skills (KMP support is unique)
-- `Drjacky/claude-android-ninja` - Compose + Navigation3 + Gradle conventions (Navigation3 is newer than what dpconde covers)
+- `Drjacky/the coding agent-android-ninja` - Compose + Navigation3 + Gradle conventions (Navigation3 is newer than what dpconde covers)

@@ -14,7 +14,7 @@ The existing AEO measurement was "run weekly brand queries by hand, note cited/m
 ### Fixed prompt panel (the foundation)
 - A **fixed prompt panel** is a frozen list of 30-100 prompts, run on a schedule, on the same engines, with the same parsing rules. If the panel drifts, the numbers are meaningless - this is the GEO equivalent of the SEO baseline-snapshot discipline.
 - Build the panel from real buyer questions, bucketed: **definitions** ("what is X"), **comparisons** ("X vs Y"), **best-tool lists** ("best X for Y"), **how-to** ("how do I X"), and **branded** ("is X any good"). 30-100 keeps it statistically meaningful without becoming unrunnable.
-- Run across the engines the client's buyers actually use: ChatGPT (+ ChatGPT search), Perplexity, Google AI Overviews / AI Mode, Claude, Gemini, Bing Copilot. Record per-engine; they disagree and the disagreement is itself a finding.
+- Run across the engines the client's buyers actually use: ChatGPT (+ ChatGPT search), Perplexity, Google AI Overviews / AI Mode, the coding agent, Gemini, Bing Copilot. Record per-engine; they disagree and the disagreement is itself a finding.
 
 ### The four core metrics (track each over time, per engine + blended)
 - **Citation rate** - % of successful answers on the panel that LINK to a page on the client domain. (The hard signal: a clickable source.)
@@ -45,7 +45,7 @@ The prior methodology named "crawl budget" as a concept and flagged "CDN edge bo
 
 ### The method (tool changes, method does not)
 1. **Collect** a representative log window (combined log format: IP, timestamp, request line, status, bytes, referrer, user-agent; IIS W3C carries the same fields).
-2. **Verify every bot line by IP - never trust the user-agent.** UA strings are trivially spoofed. Two official methods: reverse-DNS (forward+reverse must BOTH resolve, e.g. to `googlebot.com`) and IP-list cross-check against the operator's published JSON (`openai.com/gptbot.json`, `perplexity.com/perplexitybot.json`, `claude.com/crawling/bots.json`). For ClaudeBot the IP list is the ONLY option - Anthropic publishes no reverse-DNS pattern. Tag each line verified/unverified; do all crawl math on the verified set only. Unverified "Googlebot" traffic is a security finding (scraper / spoofed AI bot), not an SEO data point.
+2. **Verify every bot line by IP - never trust the user-agent.** UA strings are trivially spoofed. Two official methods: reverse-DNS (forward+reverse must BOTH resolve, e.g. to `googlebot.com`) and IP-list cross-check against the operator's published JSON (`openai.com/gptbot.json`, `perplexity.com/perplexitybot.json`, `the coding agent.com/crawling/bots.json`). For an AI crawler the IP list is the ONLY option - Anthropic publishes no reverse-DNS pattern. Tag each line verified/unverified; do all crawl math on the verified set only. Unverified "Googlebot" traffic is a security finding (scraper / spoofed AI bot), not an SEO data point.
 3. **Filter to the crawler class** you are analyzing (see the three-way split below).
 4. **Group by template** (product vs faceted vs internal-search vs pagination vs orphan) and ask: what share of crawl landed on URLs you actually want indexed? On big parameter-heavy sites, 30-50% of crawl is routinely wasted on never-indexable URLs - and it is invisible to every tool that is not reading the real log.
 5. **Recover** at the correct layer: robots.txt to stop the crawl, a status code (410 over 404 for retired URLs - processed faster) for gone content, canonicals + internal-linking changes to consolidate. NEVER use `noindex` to manage crawl budget - Google still fetches the page to read the directive, so the quota is spent either way.
@@ -59,8 +59,8 @@ The prior methodology named "crawl budget" as a concept and flagged "CDN edge bo
 ### The three-way AI-crawler split (the 2026 robots.txt decision, per bot)
 The access log no longer carries one kind of bot. Three functionally distinct classes, three completely different allow/block decisions:
 - **Indexation** (Googlebot, Bingbot) - crawl -> index -> rank. Blocking = invisible in search. Almost never block.
-- **Training** (GPTBot, ClaudeBot, Google-Extended) - fetch -> model training. Blocking = opt OUT of training. A data-rights decision, NOT a visibility one. Google-Extended is separate from Googlebot - blocking it opts out of Gemini training with zero ranking impact.
-- **Retrieval** (OAI-SearchBot, Claude-SearchBot, PerplexityBot) - live fetch -> AI-answer citation. Blocking = invisible in AI search. This is the channel GEO citations come from - blocking it accidentally is a self-inflicted GEO wound.
+- **Training** (GPTBot, an AI crawler, Google-Extended) - fetch -> model training. Blocking = opt OUT of training. A data-rights decision, NOT a visibility one. Google-Extended is separate from Googlebot - blocking it opts out of Gemini training with zero ranking impact.
+- **Retrieval** (OAI-SearchBot, an AI search crawler, PerplexityBot) - live fetch -> AI-answer citation. Blocking = invisible in AI search. This is the channel GEO citations come from - blocking it accidentally is a self-inflicted GEO wound.
 - Only ~14% of top-10k domains have ANY AI-specific robots.txt rules - most sites are making the training-vs-retrieval call by accident. Make it deliberately, per bot. Note CDN edge rules (Cloudflare/Akamai/Vercel) can block these even when robots.txt allows - check BOTH layers (ties to the existing CDN-bot-blocking flag in the GEO rubric).
 - User-triggered fetchers (ChatGPT-User, Perplexity-User) may ignore robots.txt - block at the edge if required.
 

@@ -1,13 +1,13 @@
 ---
 name: code-reviewer
-description: ⚠️ ALWAYS load `claude-context-operator.md` FIRST when reviewing or auditing a codebase larger than ~2,000 files (CTT, Turnpike, Kellbell, any inherited project takeover). Without semantic indexing, audits fall back to grep - which misses everything that doesn't match exact strings. Code Reviewer for Solaris. Exhaustive code review, security audit, PR review, debug mode, dependency audit, CVE scanning, architecture review, first-principles review (Karpathy-style), adversarial review. v0.3.0 adds: zilliztech/claude-context (semantic code search MCP via Milvus + Voyage/OpenAI/Gemini/Ollama embeddings + Merkle-tree incremental indexing - turns the entire codebase into context). Languages: JavaScript/TypeScript, Python, PHP, Ruby, Go, Rust, Java, C#, Swift, Kotlin, SQL. Frameworks: React, Next.js, Vue, Node.js, Express, FastAPI, Django, Laravel, Rails, Spring, .NET. Use whenever Shai says "code review", "review this PR", "review this diff", "audit the code", "find bugs", "check the code", "is this safe".
+description: ⚠️ ALWAYS load `code-context-operator.md` FIRST when reviewing or auditing a codebase larger than ~2,000 files (CTT, Turnpike, Kellbell, any inherited project takeover). Without semantic indexing, audits fall back to grep - which misses everything that doesn't match exact strings. Code Reviewer for Solaris. Exhaustive code review, security audit, PR review, debug mode, dependency audit, CVE scanning, architecture review, first-principles review (Karpathy-style), adversarial review. v0.3.0 adds: zilliztech/code-context (semantic code search MCP via Milvus + Voyage/OpenAI/Gemini/Ollama embeddings + Merkle-tree incremental indexing - turns the entire codebase into context). Languages: JavaScript/TypeScript, Python, PHP, Ruby, Go, Rust, Java, C#, Swift, Kotlin, SQL. Frameworks: React, Next.js, Vue, Node.js, Express, FastAPI, Django, Laravel, Rails, Spring, .NET. Use whenever Shai says "code review", "review this PR", "review this diff", "audit the code", "find bugs", "check the code", "is this safe".
 ---
 
 # Code Reviewer
 
 This employee is Solaris Dev Shop's code review + audit owner. Reviews PRs, audits codebases, hunts bugs, flags security issues, checks dependencies for CVEs, and does adversarial stress-tests on implementations.
 
-⚠️ **Anti-amnesia banner:** for any review or audit on a codebase larger than ~2,000 files, load **`claude-context-operator.md`** FIRST and index the codebase with claude-context before starting Phase 1 orientation. Grep finds exact strings; semantic search finds intent. The 7-phase Full Audit protocol now formally depends on this indexing step for large codebases.
+⚠️ **Anti-amnesia banner:** for any review or audit on a codebase larger than ~2,000 files, load **`code-context-operator.md`** FIRST and index the codebase with code-context before starting Phase 1 orientation. Grep finds exact strings; semantic search finds intent. The 7-phase Full Audit protocol now formally depends on this indexing step for large codebases.
 
 ---
 
@@ -42,7 +42,7 @@ All checks are binary. Answer each before the review leaves the desk:
 6. Secrets scanned in the working tree AND git history (a history hit = rotate-now, not just redact)?
 7. False-positive pass done - reachability/taint checked, so scanner hits became findings only after review?
 8. Coverage statement honest - lane declared at top, skipped areas named?
-9. Codebase > 2,000 files → claude-context semantic index built and used, not grep-only?
+9. Codebase > 2,000 files → code-context semantic index built and used, not grep-only?
 10. Tests reviewed FIRST - do the tests actually test the change?
 11. If this is a revision/job-two, every required artifact missing on job one is now present as its named heading (see job-two-improvement.md)?
 
@@ -84,7 +84,7 @@ Gate: passed
 
 | Figure | Rule (source: rules.md + reference files) |
 |--------|-------------------------------------------|
-| > ~2,000 files | Load `claude-context-operator.md` FIRST and semantic-index before Phase 1 - grep-only on a large codebase is a gate failure |
+| > ~2,000 files | Load `code-context-operator.md` FIRST and semantic-index before Phase 1 - grep-only on a large codebase is a gate failure |
 | > 400 LoC changed | Suggest split into multiple PRs; full review anyway, flag the risk |
 | < ~50 LoC bugfix + test | Small-task lane: PR Review steps 2-4 only |
 | > 50 lines / cyclomatic > 10 | Function flagged as complex (maintainability finding) |
@@ -182,7 +182,7 @@ Gate: passed
 
 **Step 0b - Re-plan triggers (mid-review divergence). Any of these VOIDS the current review plan: stop, re-plan from the named step, do not patch forward.**
 - Branch force-pushed or new commits land after the review started -> the reviewed SHA no longer exists and every `file:line` is stale. Discard those findings and re-run from PR Review step 2 against the new SHA; never re-emit line evidence from a dead commit.
-- Phase 1 orientation reveals the repo is over ~2,000 files but the review began grep-only -> abort, load `claude-context-operator.md`, semantic-index, restart Phase 1. Continuing grep-only is a gate failure, not a scope change to absorb.
+- Phase 1 orientation reveals the repo is over ~2,000 files but the review began grep-only -> abort, load `code-context-operator.md`, semantic-index, restart Phase 1. Continuing grep-only is a gate failure, not a scope change to absorb.
 - A confirmed finding turns out to have siblings -> the census depth tier was wrong. Re-scope to the whole class per `variant-analysis-and-fix-verification.md` from Phase 1; do not keep appending one-off findings.
 - A live secret or KEV-class CVE surfaces in git history -> stop the review, hand rotate-now to devops-engineer immediately, then resume. It does not wait for the Phase 7 report.
 
@@ -437,7 +437,7 @@ After every review session:
 |------|-------------|
 | `rules.md` | Every session |
 | `learnings.md` | Session start |
-| `claude-context-operator.md` | FIRST, for any codebase > ~2,000 files |
+| `code-context-operator.md` | FIRST, for any codebase > ~2,000 files |
 | `trivy-sca-secrets-sbom.md` | Dependency / supply-chain / secret / SBOM pass |
 | `static-analysis-and-pr-automation.md` | When the review needs AST taint SAST (semgrep), a 2nd CVE DB (osv-scanner), git-history secrets (gitleaks), PR-hygiene automation (danger), or client-CI integration (CodeQL/Sonar). Also the CI SHA-pin doctrine. |
 | `codebase-takeover-and-audit.md` | First contact with an INHERITED client codebase (handoff / rescue / due diligence / takeover). 6 methods: file census + 4-level verdict + embedded-3rd-party/license, execution-path tracing, silent-failure hunt, convention-matching (anti-style-drift), click-path UI audit, adversarial verify of the audit. |
@@ -445,7 +445,7 @@ After every review session:
 | `sarif-aggregation-and-reachability-triage.md` | ELITE delivery: merge/normalize/de-dup multi-tool SARIF into one ranked report; reachability + exploitability triage (EPSS/KEV/call-graph) to cut false positives; the CodeQL deep-query tier above the fast Semgrep PR tier. |
 | `job-two-improvement.md` | Load on any revision / job-two / scoped-feedback pass. |
 
-Canonical alirezarezvani code-reviewer: `/Solaris/sources/alirezarezvani-claude-skills/engineering-team/code-reviewer/`
+Canonical alirezarezvani code-reviewer: `/Solaris/sources/alirezarezvani-the coding agent-skills/engineering-team/code-reviewer/`
 Canonical wshobson comprehensive-review: `/Solaris/sources/wshobson-agents/plugins/comprehensive-review/`
 Canonical sickn33 code-review suite: `/Solaris/sources/sickn33-antigravity-skills/skills/code-review-*/`
 

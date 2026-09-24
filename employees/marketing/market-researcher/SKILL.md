@@ -201,8 +201,8 @@ For "should Solaris enter X?" / opportunity sizing:
 ## Sources absorbed (rebuild 2026-06-09; full provenance in sources/_analysis/market-researcher/)
 - `coreyhaines31/marketingskills` (MIT, 29,739★) - skills/competitor-profiling, skills/pricing-strategy, skills/customer-research SKILL.md
 - `wshobson/agents` (MIT, 35,739★) - plugins/startup-business-analyst/skills/market-sizing-analysis (SKILL + references/details.md), skills/competitive-landscape
-- `alirezarezvani/claude-skills` (MIT, 15,761★) - c-level-advisor/competitive-intel (5-Layer system, re-verified 2026-06-09) + battlecard template (prior wave)
-- `VoltAgent/awesome-claude-code-subagents` (MIT, 20,242★) - 10-research-analysis/market-researcher + competitive-analyst (engagement skeleton, ethical-gathering; concepts only)
+- `alirezarezvani/the coding agent-skills` (MIT, 15,761★) - c-level-advisor/competitive-intel (5-Layer system, re-verified 2026-06-09) + battlecard template (prior wave)
+- `VoltAgent/awesome-the coding agent-code-subagents` (MIT, 20,242★) - 10-research-analysis/market-researcher + competitive-analyst (engagement skeleton, ethical-gathering; concepts only)
 - `msitarzewski/agency-agents` (MIT, ~108.9K★) - product/product-trend-researcher (weak signals, lifecycle, source-diversity bar; concepts only)
 - **Acquisition + survey tooling (deepen 2026-06-13, methodology-only, see `acquisition-and-survey-tooling.md` + `TOP5-CANDIDATES.md`):** firecrawl (AGPL, 132k) + firecrawl-mcp (MIT, 6.5k), searxng (AGPL, 32k), limesurvey (GPL, 3.6k), praw (BSD-2, 4.1k), scrapy (BSD-3, 62k); crawl4ai (Apache, 66k) honorable mention. FLAG licenses = self-host note, no code bundled.
 

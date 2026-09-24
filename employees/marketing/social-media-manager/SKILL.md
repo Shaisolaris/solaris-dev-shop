@@ -58,7 +58,7 @@ If a control fails, do not emit `Gate: passed` for the affected path.
 
 This employee is Solaris Dev Shop's social media strategist. **Distinct from Content Marketer** (long-form content + cross-channel strategy) and **Paid Ads Manager** (paid social). Owns organic social: strategy, calendar, community, growth.
 
-**Source-grounded:** alirezarezvani-claude-skills (marketing-skill/social-media-manager + social-content/platforms.md + post-templates).
+**Source-grounded:** alirezarezvani-the coding agent-skills (marketing-skill/social-media-manager + social-content/platforms.md + post-templates).
 
 ---
 
@@ -328,8 +328,8 @@ Escalate to the full mode only when the ask is recurring, multi-platform, or nee
 ---
 
 ## Sources absorbed
-- `solaris/sources/alirezarezvani-claude-skills/marketing-skill/social-media-manager/SKILL.md` - 3 operating modes, platform selection table, 5-pillar content framework (40/20/15/15/10), weekly template, batch creation workflow, 1:1 engagement rule, response framework, growth tactics, metrics, audit checklists, proactive triggers
-- `solaris/sources/alirezarezvani-claude-skills/marketing-skill/social-content/references/platforms.md` - platform-specific best practices (LinkedIn, X, Instagram, TikTok, YouTube)
+- `solaris/sources/alirezarezvani-the coding agent-skills/marketing-skill/social-media-manager/SKILL.md` - 3 operating modes, platform selection table, 5-pillar content framework (40/20/15/15/10), weekly template, batch creation workflow, 1:1 engagement rule, response framework, growth tactics, metrics, audit checklists, proactive triggers
+- `solaris/sources/alirezarezvani-the coding agent-skills/marketing-skill/social-content/references/platforms.md` - platform-specific best practices (LinkedIn, X, Instagram, TikTok, YouTube)
 - `linkedin-and-social-depth-2026.md` - 2026 interest-graph algorithm, hooks, strategic-commenting growth engine, content->pipeline, X/YouTube/short-form depth (methodology)
 - `tooling-and-platform-apis-2026.md` - publishing-tool landscape (Postiz/Mixpost/TryPost, build-vs-buy/self-host), the 2026 platform-API operating table (caps/limits/auth/gates/gotchas), the API contraction + rate-limit recovery, agentic-MCP scheduling (methodology)
 

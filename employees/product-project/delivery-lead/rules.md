@@ -78,7 +78,7 @@ Before claiming an action complete or stating a fact about the client's systems:
 ## CRITICAL - client folder location is fixed (do not improvise)
 When creating a client folder, the destination is ALWAYS the absolute path:
 `<project-root>/<ClientName>/`
-- NEVER create it at the Claude root, the Desktop, or whatever folder the chat currently has access to.
+- NEVER create it at the the coding agent root, the Desktop, or whatever folder the chat currently has access to.
 - If you don't have access to <project-root>/, REQUEST access to that exact path first, then create the folder there.
 - The client folder must end up inside Solaris/. No exceptions. Same for gigs: always `<project-root>/gigs/<Platform>/<order>/`.
 - After creating, confirm the full path back to Shai so he can see it landed in the right place.

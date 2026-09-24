@@ -36,8 +36,8 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 - **dpconde NowInAndroid patterns.** Offline-first + UDF + reactive Flow + multi-module + convention plugins. This is the Google official guidance, not opinion. Default for all new Kotlin work.
 - **Convention plugins are non-obvious but huge.** Extracting Gradle setup into `build-logic/convention/` saves hours per project. Default for every Android project.
 - **Fakes > Mocks.** dpconde's testing strategy avoids Mockito/MockK. Write `FakeXRepository : XRepository` instead. Faster tests, no reflection, easier to debug.
-- **Anti-amnesia signal.** Banner added to SKILL.md description because Claude historically forgets these references mid-session. Reinforced in rules.md.
-- **Quarterly re-scan targets:** CursorTouch/Android-MCP, minhalvp/android-mcp-server, jsuarezruiz/mobile-dev-mcp-server, skydoves/android-skills-mcp, rcosteira79/android-skills (KMP support is unique), Drjacky/claude-android-ninja (Navigation3 is newer than dpconde).
+- **Anti-amnesia signal.** Banner added to SKILL.md description because the coding agent historically forgets these references mid-session. Reinforced in rules.md.
+- **Quarterly re-scan targets:** CursorTouch/Android-MCP, minhalvp/android-mcp-server, jsuarezruiz/mobile-dev-mcp-server, skydoves/android-skills-mcp, rcosteira79/android-skills (KMP support is unique), Drjacky/the coding agent-android-ninja (Navigation3 is newer than dpconde).
 
 ## 2026-05-01 - M4 absorption: MetaGPT Engineer spec→code handoff (v0.4.0)
 - Pattern: 8-step sequence; schema discipline (verbatim signatures); no scope creep; imports from Shared Knowledge

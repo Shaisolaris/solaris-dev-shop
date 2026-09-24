@@ -299,8 +299,8 @@ For sub-hour asks, skip the full motion: (1) "demo outline" -> the 4-beat impact
 - `msitarzewski/agency-agents/specialized/government-digital-presales-consultant.md` - demo environment rules, POC scope control, presales→delivery transfer + <10% deviation (ToG specifics not lifted)
 - `coreyhaines31/marketingskills/skills/sales-enablement/references/demo-scripts.md` - call-type scripts + timings, interaction points, "show me X" triage, 2h recap
 - `coreyhaines31/marketingskills/skills/sales-enablement/references/objection-library.md` - never-bluff integration/security plays, proof-point pairing
-- `VoltAgent/awesome-claude-code-subagents/categories/08-business-product/sales-engineer.md` - POC execution checklist, integration planning w/ support handoff, benchmarks
-- `alirezarezvani-claude-skills` (retained v0.2.0/v0.3.0) - rfp-response-guide (qualification, comply/limit/custom/decline), competitive-positioning-framework, cro sales_playbook (SPIN, 40-min demo, POC 6 requirements, proposal structure)
+- `VoltAgent/awesome-the coding agent-code-subagents/categories/08-business-product/sales-engineer.md` - POC execution checklist, integration planning w/ support handoff, benchmarks
+- `alirezarezvani-the coding agent-skills` (retained v0.2.0/v0.3.0) - rfp-response-guide (qualification, comply/limit/custom/decline), competitive-positioning-framework, cro sales_playbook (SPIN, 40-min demo, POC 6 requirements, proposal structure)
 
 
 ## QA LOOP (GOSPEL - meta/QA-LOOP-GOSPEL.md, non-negotiable)

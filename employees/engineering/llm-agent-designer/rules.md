@@ -7,7 +7,7 @@ Absorbed from:
 - alirezarezvani senior-prompt-engineer + senior-ml-engineer
 - wshobson ai-engineer
 - mcp-builder + skill-creator (Shai's installed)
-- Solaris's own Claude Agent SDK experience
+- Solaris's own an agent SDK experience
 
 ---
 
@@ -27,15 +27,15 @@ Absorbed from:
 
 - **When** user describes a problem → single prompt first; only escalate to RAG when retrieval from external corpus is actually required
 - **When** single agent possible → single agent; never start multi-agent
-- **When** model choice asked → default Claude Sonnet unless (a) simple classification → Haiku, (b) hardest reasoning → Opus, (c) strict cost → routing
+- **When** model choice asked → default the coding agent Sonnet unless (a) simple classification → Haiku, (b) hardest reasoning → Opus, (c) strict cost → routing
 - **When** designing a prompt → ALWAYS include output format spec + 1-3 examples
 - **When** designing a prompt → version it; use eval set before shipping
 - **When** RAG proposed → audit: is there actually a corpus? Would a static few-shot solve it?
 - **When** designing RAG → start with k=5, cosine, no reranker; add complexity only if eval requires
 - **When** designing agent → tool inventory first; define tools before the prompt
-- **When** agent has > 7 tools → consider multi-agent or tool hierarchy (Claude gets confused with too many tools at once)
+- **When** agent has > 7 tools → consider multi-agent or tool hierarchy (the coding agent gets confused with too many tools at once)
 - **When** building MCP → use FastMCP (Python) unless streaming-heavy (Node)
-- **When** building Claude skill → aggressive trigger keywords; conservative is a fail
+- **When** building a skill file → aggressive trigger keywords; conservative is a fail
 - **When** designing guardrails → minimum: input length limit + output schema + injection detection
 - **When** cost is high → check prompt caching first (90% savings on cached content)
 - **When** latency is high → streaming + smaller model + parallel tool calls
@@ -81,7 +81,7 @@ Absorbed from:
 - No prompt caching for repeated-context workflows
 - Multi-agent system where single agent would suffice
 - No observability - can't answer "why did it say that?"
-- Claude skill without learnings.md (no self-learning loop)
+- a skill file without learnings.md (no self-learning loop)
 - MCP server without error handling for tool failures
 
 ---
@@ -89,13 +89,13 @@ Absorbed from:
 ## Standing gotchas
 
 - **Prompt injection** is pervasive. User-supplied text goes in USER role, NEVER in SYSTEM. Delimit with XML tags.
-- **Structured output** - Claude prefers XML; OpenAI prefers JSON mode. Match the model's training.
+- **Structured output** - the coding agent prefers XML; OpenAI prefers JSON mode. Match the model's training.
 - **Few-shot examples** should match the output distribution (if you want 3-item lists, show 3-item lists).
 - **Retrieval quality drives downstream quality.** Garbage chunks in = garbage answer out. Fix retrieval before tweaking prompts.
 - **Embedding drift** - if embeddings trained before a domain shift, quality suffers. Re-embed when corpus character changes.
 - **Context rot** in long agent loops - old turns pollute; consider summarization or fresh context.
 - **Token math:** 1 token ≈ 4 chars ≈ 0.75 words English. Roughly. Count before assuming.
-- **Claude ephemeral cache** has a 5-min / 1-hr window - design for cache hits, not one-off requests.
+- **prompt cache** has a 5-min / 1-hr window - design for cache hits, not one-off requests.
 - **Tool use JSON schemas** must match model expectations exactly; mismatches cause silent failures.
 - **Rate limits** differ per model + tier. Production apps always need retry-with-backoff.
 - **Hallucinated tool calls** happen - always validate tool parameters before executing.
@@ -127,7 +127,7 @@ Absorbed from:
 | `agent-engineering-craft.md` | agent-BUILD craft (ECC, MIT): harness construction (action-space + observation envelope + recovery contract + context budgeting), 12-layer architecture audit, 4-phase introspection debugging, cost-aware pipeline build patterns, regex-vs-LLM decision framework, comparison-harness mechanics | BUILDING or DEBUGGING an agent harness; auditing an agent's architecture; a run is looping/burning tokens; choosing regex vs LLM for parsing. Points to eval-methodology.md for all scoring - this file never duplicates eval metrics |
 | `agentic-build-patterns.md` | named build techniques from production coding agents (all OSI-permissive, >1k stars, active): Aider repo-map + small-diff edit discipline; OpenHands autonomous-run guardrails (sandbox + confirmation modes + per-run budget + stuck detection); Goose recipe pattern; AutoGen critic-actor/reviewer loop (orthogonal to MetaGPT role-decomposition SOP above); DSPy programmatic prompt optimization; Instructor + Outlines two-tier structured/constrained output | CHOOSING a concrete agent-build technique: feeding a repo to the model, edit format, guardrailing an autonomous run, packaging a reusable agent task, adding a critic, optimizing a prompt programmatically, or guaranteeing structured output. Sits below agent-engineering-craft.md; points to eval-methodology.md for all scoring |
 
-The prompt-patterns / rag-architecture / agent-patterns / mcp-server-guide / claude-skill-guide / safety-guardrails / cost-optimization topics are NOT separate files. They live inline in the SKILL.md "Core competencies" plus "Standard procedures" sections. Do not link them as references/ files; they do not exist as files.
+The prompt-patterns / rag-architecture / agent-patterns / mcp-server-guide / the coding agent-skill-guide / safety-guardrails / cost-optimization topics are NOT separate files. They live inline in the SKILL.md "Core competencies" plus "Standard procedures" sections. Do not link them as references/ files; they do not exist as files.
 
 Canonical VoltAgent: `/Solaris/sources/voltagent-subagents/categories/05-data-ai/llm-architect.md`
 
@@ -166,7 +166,7 @@ When implementing from a Project Manager task, ALWAYS follow this sequence. Sour
 
 ## Absorption note - obra/superpowers (2026-05-18)
 
-Source: obra/superpowers (MIT, ~174K stars, Jesse Vincent / Prime Radiant, ~7 months old, shipped as an Anthropic marketplace plugin early 2026). Verified beyond README: real `skills/` directory with 14 SKILL.md files, real session-hook config, real spec-first methodology documented in the using-superpowers and writing-skills SKILL.md files. Multi-host: works across Claude Code, Cursor, OpenAI Codex, GitHub Copilot CLI, Gemini CLI, OpenCode.
+Source: obra/superpowers (MIT, ~174K stars, Jesse Vincent / Prime Radiant, ~7 months old, shipped as an Anthropic marketplace plugin early 2026). Verified beyond README: real `skills/` directory with 14 SKILL.md files, real session-hook config, real spec-first methodology documented in the using-superpowers and writing-skills SKILL.md files. Multi-host: works across a coding agent, Cursor, OpenAI Codex, GitHub Copilot CLI, Gemini CLI, OpenCode.
 
 **Consolidated in (patterns lifted):**
 - **Spec-first interview before any code.** When an agent is asked to build something, don't jump to writing - interview the user to tease out an actual spec, then show the spec back in digestible chunks before any subagent starts work. This is the canonical anti-pattern fix for "agent writes 800 lines of the wrong thing."
@@ -176,7 +176,7 @@ Source: obra/superpowers (MIT, ~174K stars, Jesse Vincent / Prime Radiant, ~7 mo
 
 **Rejected (not absorbed):**
 - Installing the obra/superpowers plugin wholesale. Per absorb-don't-replace doctrine, the patterns layer into llm-agent-designer's methodology. The repo stays as a watchlist source - when Jesse ships new skills (the lab repo at obra/superpowers-lab is the experimental edge), Talent Scout re-evaluates.
-- The Anthropic marketplace install path. Solaris employees live in ai-org/, not as installed Claude Code plugins - installing superpowers as a plugin alongside would create two competing skill-loading mechanisms.
+- The Anthropic marketplace install path. Solaris employees live in ai-org/, not as installed a coding agent plugins - installing superpowers as a plugin alongside would create two competing skill-loading mechanisms.
 
 ---
 

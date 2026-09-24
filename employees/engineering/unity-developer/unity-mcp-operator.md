@@ -10,7 +10,7 @@ Load this file when Shai is doing **anything Unity-Editor-driven** - not just "M
 
 - v1 of this file referenced AnkleBreaker / Coplay / Glade as the recommended bridges. (Update 2026-06: CoplayDev/unity-mcp has since matured into the strongest bridge and is now PRIMARY - see `coplaydev-unity-mcp.md`. The points below remain the reason IvanMurzak is kept as the fallback.)
 - IvanMurzak/Unity-MCP supports **both Editor and Runtime (in-game)** - meaning AI can debug compiled builds, drive NPC behavior at runtime, and self-correct by reading live game state. No other Unity MCP does this.
-- Roslyn-powered `script-execute` lets Claude compile + run arbitrary C# inside the live Editor process - no save-reload-test cycle.
+- Roslyn-powered `script-execute` lets the coding agent compile + run arbitrary C# inside the live Editor process - no save-reload-test cycle.
 - Reflection-powered `reflection-method-find` + `reflection-method-call` make every method in every loaded assembly callable, including private methods inside compiled DLLs. This is a superpower for debugging closed-source packages.
 
 ---
@@ -28,9 +28,9 @@ unity-mcp-cli wait-for-ready /absolute/path/to/UnityProject
 
 > Project path **must contain no spaces** (Unity-MCP requirement). Move project under `~/UnityProjects/` if it lives in `~/Documents/` or anywhere with spaces.
 
-**Step 2 - install the AI-agent connector** (Claude Code is the recommended client):
+**Step 2 - install the AI-agent connector** (a coding agent is the recommended client):
 ```bash
-claude mcp add ai-game-developer "/path/to/UnityProject/Library/mcp-server/osx-arm64/unity-mcp-server" --port=8080 --client-transport=stdio
+agent mcp add ai-game-developer "/path/to/UnityProject/Library/mcp-server/osx-arm64/unity-mcp-server" --port=8080 --client-transport=stdio
 ```
 
 Platform binary paths:
@@ -41,9 +41,9 @@ Platform binary paths:
 
 **Step 3 - auto-generate Skills** in Unity:
 - `Window → AI Game Developer → Auto-generate Skills` (recommended)
-- OR via CLI: `npx unity-mcp-cli setup-skills claude-code /path/to/UnityProject`
+- OR via CLI: `npx unity-mcp-cli setup-skills the coding agent-code /path/to/UnityProject`
 
-This generates Claude Code skills tailored to the project's installed packages, Unity version, OS - so the AI agent knows what's actually available, not just generic Unity.
+This generates a coding agent skills tailored to the project's installed packages, Unity version, OS - so the AI agent knows what's actually available, not just generic Unity.
 
 **Docker alternative** (for cloud / CI):
 ```bash
@@ -200,7 +200,7 @@ public static class Prompt_ProjectConventions
 }
 ```
 
-This is the cure for "Claude forgets the project's coding standards every session" - bake it into a Prompt the MCP delivers automatically.
+This is the cure for "the coding agent forgets the project's coding standards every session" - bake it into a Prompt the MCP delivers automatically.
 
 ---
 
@@ -258,7 +258,7 @@ Unity.exe -batchmode -nographics \
 
 - **Substantial C# logic.** Use the IDE (Cursor / Rider / VS Code) for writing real systems. The MCP shines at *driving* the Editor + *running* code, not at typing 500 lines of C#.
 - **Game design decisions.** Run the Design Review Protocol from `game-design-mentor.md` first. The MCP is a faster hand, not a smarter brain.
-- **First-run on an unfamiliar project.** Read `CLAUDE.md` + `learnings.md` + run the Absorption Protocol from the parent SKILL.md before driving the Editor.
+- **First-run on an unfamiliar project.** Read `AGENTS.md` + `learnings.md` + run the Absorption Protocol from the parent SKILL.md before driving the Editor.
 
 ---
 

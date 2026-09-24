@@ -4,7 +4,7 @@
 - **2026-04-25 - Clean rebuild from wshobson docs-architect**: 3-phase Discovery + Structuring + Writing process + 10-section structure is the most actionable long-form doc framework.
 - **2026-04-25 - Diátaxis 4-quadrant separation** (Tutorial vs How-to vs Reference vs Explanation) is the framework that fixes most messy docs sites.
 
-- **2026-06-13 (depth) - llms.txt operationalized as a deliverable** - now the de-facto Business-to-Agent docs standard (Cursor/Claude Code/Copilot/Cline/Aider fetch /llms.txt + /llms-full.txt). Was only a one-line maintenance note; now a first-class deliverable for any docs site.
+- **2026-06-13 (depth) - llms.txt operationalized as a deliverable** - now the de-facto Business-to-Agent docs standard (Cursor/a coding agent/Copilot/Cline/Aider fetch /llms.txt + /llms-full.txt). Was only a one-line maintenance note; now a first-class deliverable for any docs site.
 - **2026-06-13 (depth) - Core frameworks confirmed current** - Diataxis, OpenAPI 3.1, Keep a Changelog all still 2026 standards; no replacement needed. Pass was additive.
 
 ## Promotion log

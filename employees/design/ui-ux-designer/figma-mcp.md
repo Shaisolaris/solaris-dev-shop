@@ -1,6 +1,6 @@
 # Figma MCP bridge - live canvas read/analyze/modify (absorbed tool surface + connect)
 
-Source: arinspunk/claude-talk-to-figma-mcp (https://github.com/arinspunk/claude-talk-to-figma-mcp). MIT, ~595 stars, v1.0.0 2026-04-18, ~250 commits, active. ABSORB (MIT) the tool surface + connect method; the live bridge is operator-installed.
+Source: arinspunk/the coding agent-talk-to-figma-mcp (https://github.com/arinspunk/the coding agent-talk-to-figma-mcp). MIT, ~595 stars, v1.0.0 2026-04-18, ~250 commits, active. ABSORB (MIT) the tool surface + connect method; the live bridge is operator-installed.
 
 ## Gate 0 (why this is net-new)
 This employee already has Figma CRAFT (Dev Mode inspect, Tokens Studio export, Style Dictionary pipeline, variables-vs-styles). It had NO live Figma MCP. This adds a new tool category: agentic READ / ANALYZE / MODIFY of the live Figma canvas.

@@ -20,7 +20,7 @@ NONE carried: (1) the multi-tool SARIF normalize+dedup+rank report build, (2) th
 
 ## 1. SARIF aggregation - one normalized, de-duplicated finding set
 
-The elite-delivery problem: a real review runs five-plus tools (claude-context, Trivy, Semgrep, osv-scanner, gitleaks, plus the client's own CodeQL/Sonar). Each emits its own SARIF with its own rule ids, severity scale, and location format. Handing the client five raw reports is amateur-hour: the same vulnerability appears under three different names and three different severities, producing "remediation paralysis" - the team cannot tell what to fix first or how many real problems exist. The elite move is to merge into ONE report.
+The elite-delivery problem: a real review runs five-plus tools (code-context, Trivy, Semgrep, osv-scanner, gitleaks, plus the client's own CodeQL/Sonar). Each emits its own SARIF with its own rule ids, severity scale, and location format. Handing the client five raw reports is amateur-hour: the same vulnerability appears under three different names and three different severities, producing "remediation paralysis" - the team cannot tell what to fix first or how many real problems exist. The elite move is to merge into ONE report.
 
 ### The aggregation pipeline (methodology, run in the client's CI or locally)
 1. **Emit SARIF from every tool.** Each scanner in static-analysis-and-pr-automation.md already supports `--sarif`/`-f sarif`. Standardize on SARIF 2.1.0 so every result is a comparable object (rule id, level, location, message, optional codeFlows).
@@ -83,7 +83,7 @@ CodeQL is free for OSS and research ONLY. Private/commercial client repos requir
 - references/static-analysis-and-pr-automation.md - the scanning STACK that emits the SARIF this file merges, and the Semgrep fast tier that this file's CodeQL deep tier sits above. The SHA-pin CI doctrine there also pins the CodeQL/scanner action refs. NO tool list duplicated here.
 - references/variant-analysis-and-fix-verification.md - the per-finding class-closure and fix-proof discipline; this file's custom-QL authoring is that same rule-authoring discipline raised to the deep semantic tier, and the triage verdict feeds the write-up there.
 - references/trivy-sca-secrets-sbom.md - Trivy SARIF and CVE ids are inputs to the dedup (section 1 step 4) and the SBOM is the source for fix-availability in the triage matrix.
-- claude-context-operator.md - index >2,000-file repos first so reachability tracing and the deep-tier query targeting run by intent across the whole tree.
+- code-context-operator.md - index >2,000-file repos first so reachability tracing and the deep-tier query targeting run by intent across the whole tree.
 - rules.md - the P0..P3 severity taxonomy this file normalizes onto, plus the accepted-risk baseline doctrine.
 - security-auditor references/elite-audit-delivery.md - the AUDIT-scale mirror: the same aggregated SARIF report + EPSS/KEV/reachability triage matrix + CodeQL tier, run at full-engagement scale with a client-facing risk register rather than a PR gate. Hand cross-scope findings across the line.
 

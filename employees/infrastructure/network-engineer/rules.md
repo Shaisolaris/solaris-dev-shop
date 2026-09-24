@@ -1,6 +1,6 @@
 # Network Engineer - Rules
 
-Last revised: 2026-06-14 v1.0.0 (clean build; methodology absorbed from ECC affaan-m/everything-claude-code, MIT - see plugin.json absorbed_from + build_notes).
+Last revised: 2026-06-14 v1.0.0 (clean build; methodology absorbed from ECC affaan-m/everything-the coding agent-code, MIT - see plugin.json absorbed_from + build_notes).
 
 ## Core principles (the spine)
 - **Read-only first, change in a window.** The default first answer is always: inventory -> risks -> staged plan -> validation evidence -> rollback. Implementation steps come after the platform, topology, console access, and maintenance window are confirmed. [ECC homelab-network-readiness, cisco-ios-patterns, netmiko-ssh-automation]

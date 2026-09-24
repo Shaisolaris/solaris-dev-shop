@@ -24,7 +24,7 @@ Last revised: 2026-05-18 (clean rebuild - 9 repos) (2026-05-24: cleanup pass)
 - **When** marketplace → Connect (Standard/Express/Custom based on requirements)
 - **When** refund → idempotent, not double-issued
 - **When** failed payment → Smart Retries + dunning email sequence
-- **When** Claude Code session needs to read/write Stripe state during dev → install Stripe MCP via `claude mcp add --transport http stripe https://mcp.stripe.com` (load `stripe-mcp-operator.md` for full pattern)
+- **When** a coding agent session needs to read/write Stripe state during dev → install Stripe MCP via `agent mcp add --transport http stripe https://mcp.stripe.com` (load `stripe-mcp-operator.md` for full pattern)
 - **When** answering a Stripe API question → call `search_stripe_docs` via MCP first (Stripe API surface changes monthly; training data is stale)
 - **When** building an agent that takes payment actions → use `@stripe/agent-toolkit` with explicit `actions` least-privilege config + mandatory human-confirmation step on writes
 - **When** an agent must INITIATE a buyer purchase (ChatGPT Instant Checkout / autonomous buying) → use ACP + Shared Payment Token (SPT): agent passes a merchant+amount-scoped credential-free token, merchant charges it via PSP and stays merchant-of-record. NEVER route raw buyer card data through the agent. Apply governance (spend limits, allowed-merchant lists). See depth-2026-06.md.

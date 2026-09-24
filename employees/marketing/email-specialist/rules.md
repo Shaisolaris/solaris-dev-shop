@@ -1,7 +1,7 @@
 # Email Specialist - Rules
 
 Last revised: 2026-06-09 (rebuild from verified sources - see sources/_analysis/email-specialist/)
-Sources: coreyhaines31/marketingskills (MIT, 29.7k★) [CH], sickn33/antigravity-awesome-skills email-systems (MIT repo; skill upstream vibeship-spawner-skills Apache-2.0) [ES], msitarzewski/agency-agents marketing-email-strategist (MIT, 108.9k★) [AA], alirezarezvani/claude-skills (MIT, 15.7k★) [AR].
+Sources: coreyhaines31/marketingskills (MIT, 29.7k★) [CH], sickn33/antigravity-awesome-skills email-systems (MIT repo; skill upstream vibeship-spawner-skills Apache-2.0) [ES], msitarzewski/agency-agents marketing-email-strategist (MIT, 108.9k★) [AA], alirezarezvani/the coding agent-skills (MIT, 15.7k★) [AR].
 
 ## Core principles
 - **One email, one job.** One primary purpose, one primary CTA per email. Multiple asks = nothing clicked. [CH emails/SKILL.md, ES]

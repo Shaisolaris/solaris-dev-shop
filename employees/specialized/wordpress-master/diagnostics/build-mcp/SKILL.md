@@ -112,12 +112,12 @@ cat > "$BUILD_DIR/README.md" << 'README_EOF'
 4. Follow the import wizard (accept defaults for site name and environment)
 5. Click **Import site** and wait for the import to complete
 
-## Connect Claude (MCP Adapter)
+## Connect the coding agent (MCP Adapter)
 
 This build includes the WordPress MCP adapter, pre-installed and activated.
-After importing into Local WP, connect Claude with this configuration:
+After importing into Local WP, connect the coding agent with this configuration:
 
-**Save as `.mcp.json` in your project directory or Claude's config location:**
+**Save as `.mcp.json` in your project directory or the coding agent's config location:**
 
 ```json
 {
@@ -226,9 +226,9 @@ echo ""
 
 ## Implementation Notes
 
-**Docker container lifetime:** This skill must run while the Docker MySQL container from `build-scaffold` Section 3 is still alive. The `wp plugin activate mcp-adapter` command writes to the WordPress database, which requires MySQL. The EXIT trap registered in `build-scaffold` fires when the entire command session ends - not between individual skill invocations - because Claude executes all skill steps in one continuous session. If you see "Error establishing a database connection" during activation, the container has stopped prematurely.
+**Docker container lifetime:** This skill must run while the Docker MySQL container from `build-scaffold` Section 3 is still alive. The `wp plugin activate mcp-adapter` command writes to the WordPress database, which requires MySQL. The EXIT trap registered in `build-scaffold` fires when the entire command session ends - not between individual skill invocations - because the coding agent executes all skill steps in one continuous session. If you see "Error establishing a database connection" during activation, the container has stopped prematurely.
 
-**PLUGIN_DIR resolution:** The calling COMMAND.md must set `PLUGIN_DIR` to the absolute path of the CoWork plugin directory before invoking this skill. This is the directory containing `CLAUDE.md`, `skills/`, `commands/`, and `vendor/`. Claude can resolve this from the known location of the COMMAND.md file it is executing.
+**PLUGIN_DIR resolution:** The calling COMMAND.md must set `PLUGIN_DIR` to the absolute path of the CoWork plugin directory before invoking this skill. This is the directory containing `AGENTS.md`, `skills/`, `commands/`, and `vendor/`. the coding agent can resolve this from the known location of the COMMAND.md file it is executing.
 
 **Warn-and-continue pattern:** No `exit 1` is used for MCP adapter failures. Build completion is more important than adapter installation. Failures produce warnings that explain the situation and point the user to README.md for manual setup. Only hard build failures (Docker, WP core download, WP install) should abort the build.
 

@@ -1,8 +1,8 @@
 # Design Frameworks - motivation, flow, audience, studio structure
 
-> Deepened 2026-06-13 from **Donchitos/Claude-Code-Game-Studios** (~18.6k★, MIT) - "Design Philosophy" + studio hierarchy + verification-driven development. MDA is covered in SKILL.md + rules.md already (Gate 0: not duplicated here). This file adds the net-new theory and the studio operating model.
+> Deepened 2026-06-13 from **Donchitos/the coding agent-Code-Game-Studios** (~18.6k★, MIT) - "Design Philosophy" + studio hierarchy + verification-driven development. MDA is covered in SKILL.md + rules.md already (Gate 0: not duplicated here). This file adds the net-new theory and the studio operating model.
 
-## The four philosophies Claude Code Game Studios grounds every design in
+## The four philosophies a coding agent Game Studios grounds every design in
 Donchitos builds its 49-agent studio on five professional pillars. MDA we already have; the net-new four:
 
 ### 1. Self-Determination Theory (SDT) - why players keep playing
@@ -51,4 +51,4 @@ Donchitos models a real studio as a 3-tier hierarchy. We don't adopt its 49 agen
 **Path-scoped standards (the idea):** coding/design standards enforced by *where a file lives* - gameplay code is data-driven + uses delta time + holds no UI refs; GDDs require their standard sections; prototypes get relaxed standards + a documented hypothesis. Translate to Solaris by keeping these as review checklists per area.
 
 ## Sources
-- Donchitos/Claude-Code-Game-Studios (MIT) - README "Design Philosophy" (SDT, Flow, Bartle, verification-driven dev), "Studio Hierarchy", "How It Works" (coordination model, collaborative stance, review modes, path-scoped rules). Concepts distilled, not copied.
+- Donchitos/the coding agent-Code-Game-Studios (MIT) - README "Design Philosophy" (SDT, Flow, Bartle, verification-driven dev), "Studio Hierarchy", "How It Works" (coordination model, collaborative stance, review modes, path-scoped rules). Concepts distilled, not copied.

@@ -111,14 +111,14 @@ Outputs to Mac:
 - **Auditing on Day 1 while scope is still fluid.** Audit output becomes stale by the time client scope is locked in. Onboard first, let scope settle, then audit.
 - **Conflating bug fixes with major upgrades.** A PHP 7 → 8 migration isn't a "bug fix" - planning it in the same sprint as security fixes produces rollback hell.
 - **Skipping the dep audit inside code-review.** CVEs are usually the highest-ROI finding in a takeover; don't treat them as an afterthought.
-- **Doing all three stages in one Claude session.** Each stage is enough work for its own session with fresh context. Chain the handoff via Mac files.
+- **Doing all three stages in one the coding agent session.** Each stage is enough work for its own session with fresh context. Chain the handoff via Mac files.
 - **Letting stage-1 drag.** Onboarding has a clear "done" signal (see above). If it runs past the time box without that signal, the codebase is bigger than expected - replan scope, don't just keep grinding.
 
 ---
 
 ## Session hand-off pattern
 
-Each stage writes to Mac files that the next stage reads. Don't rely on Claude's context window to carry stage-1 output into stage-3.
+Each stage writes to Mac files that the next stage reads. Don't rely on the coding agent's context window to carry stage-1 output into stage-3.
 
 ```
 Stage 1 session ends →

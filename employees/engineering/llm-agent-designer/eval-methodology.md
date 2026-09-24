@@ -75,7 +75,7 @@ The SKILL.md agent eval protocol ("trajectory scoring (LLM-as-judge), success ra
 - **Argument Correctness** - were tool arguments valid against the schema.
 - **Step Efficiency** - did the agent take unnecessary steps (cost + latency signal; pairs with the "agent loops runaway" gotcha).
 - **Plan Adherence / Plan Quality** - for Plan-Execute agents, did it follow a sound plan.
-- **MCP Task Completion / MCP Use** - for MCP servers: can an agent actually accomplish tasks with your tools, and does it use the right servers. Run this BEFORE shipping an MCP server; it is the concrete form of the rules.md gate "test with Claude / MCP Inspector: verify the LLM can use the tools without guidance."
+- **MCP Task Completion / MCP Use** - for MCP servers: can an agent actually accomplish tasks with your tools, and does it use the right servers. Run this BEFORE shipping an MCP server; it is the concrete form of the rules.md gate "test with the coding agent / MCP Inspector: verify the LLM can use the tools without guidance."
 
 Scoring an MCP server you built is now a checklist item, not a hope: feed a held-out set of tasks, measure MCP Task Completion, fix the lowest-scoring tools' schemas and error messages, repeat.
 

@@ -219,8 +219,8 @@ Handoff, named per artifact:
 
 ## Sources absorbed (2026-06-09 rebuild; full citations in sources/_analysis/cro-landing-designer/02-extraction.md)
 - sickn33/antigravity-awesome-skills (MIT, 39k★): skills/{ab-test-setup, page-cro, form-cro, popup-cro, signup-flow-cro, headline-psychologist, landing-page-generator + references}/SKILL.md
-- alirezarezvani/claude-skills (MIT, 15.7k★, upstream author): marketing-skill/skills/ab-test-setup/references/sample-size-guide.md (table transcribed) + scripts/sample_size_calculator.py and page-cro/scripts/conversion_audit.py (referenced as upstream tools, not bundled here)
-- VoltAgent/awesome-claude-code-subagents (MIT, 20k★): categories/10-research-analysis/ab-test-analysis.md
+- alirezarezvani/the coding agent-skills (MIT, 15.7k★, upstream author): marketing-skill/skills/ab-test-setup/references/sample-size-guide.md (table transcribed) + scripts/sample_size_calculator.py and page-cro/scripts/conversion_audit.py (referenced as upstream tools, not bundled here)
+- VoltAgent/awesome-the coding agent-code-subagents (MIT, 20k★): categories/10-research-analysis/ab-test-analysis.md
 - Retained from prior builds: alirezarezvani cro-advisor sales_playbook (8-stage funnel); wshobson/agents interaction-design (microinteractions, scroll animations)
 - Cross-referenced (not duplicated): ui-ux-designer design-intelligence/data/landing.csv (34 patterns, nextlevelbuilder/ui-ux-pro-max-skill, MIT)
 

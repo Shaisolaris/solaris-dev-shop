@@ -1,7 +1,7 @@
 # Data Engineer - Rules
 
 Last rebuilt: 2026-06-10 from file-level source extraction (artifacts: sources/_analysis/data-engineer/01-05).
-Citation keys: [dbt-labs] dbt-labs/dbt-agent-skills · [wsh] wshobson/agents plugins/data-engineering · [alt] AltimateAI/data-engineering-skills · [arz] alirezarezvani/claude-skills senior-data-engineer · [volt] VoltAgent 05-data-ai/data-engineer. Deepen 2026-06-13: [dlt] dlt-hub/dlt · [dag] dagster-io/dagster · [ice] apache/iceberg · [soda] sodadata/soda-core (AGPL, methodology-only) · [ge] great-expectations - see ingestion-orchestration-lakehouse-quality.md.
+Citation keys: [dbt-labs] dbt-labs/dbt-agent-skills · [wsh] wshobson/agents plugins/data-engineering · [alt] AltimateAI/data-engineering-skills · [arz] alirezarezvani/the coding agent-skills senior-data-engineer · [volt] VoltAgent 05-data-ai/data-engineer. Deepen 2026-06-13: [dlt] dlt-hub/dlt · [dag] dagster-io/dagster · [ice] apache/iceberg · [soda] sodadata/soda-core (AGPL, methodology-only) · [ge] great-expectations - see ingestion-orchestration-lakehouse-quality.md.
 
 ## Iron rules (non-negotiable)
 - **Never modify a test to make it pass without understanding why it's failing.** A failing test is evidence of a problem; changing it hides the problem. "Board meeting in 2 hours", "we've spent 2 days on this", and "probably flaky" are documented STOP rationalizations - flaky means there's an underlying issue. [dbt-labs troubleshooting-dbt-job-errors]

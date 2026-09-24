@@ -407,14 +407,14 @@ echo ""
 
 ## Section 2: NL Request Decomposition (NL mode only)
 
-Claude reads the NL_REQUEST and decomposes it into a sequence of atomic steps. Each step has a type from the modification taxonomy. Compound requests (e.g. "change the color and add a blog page") are split into separate steps, each getting its own git commit and build.json entry.
+the coding agent reads the NL_REQUEST and decomposes it into a sequence of atomic steps. Each step has a type from the modification taxonomy. Compound requests (e.g. "change the color and add a blog page") are split into separate steps, each getting its own git commit and build.json entry.
 
 **Skip this section entirely for visual mode** - visual modifications are handled as a single atomic step in Section 5.
 
 ```
-Decomposition is a Claude in-context reasoning step, not automated parsing.
+Decomposition is a the coding agent in-context reasoning step, not automated parsing.
 
-Claude reads the NL_REQUEST and the current build state (theme slug, installed plugins,
+the coding agent reads the NL_REQUEST and the current build state (theme slug, installed plugins,
 existing content from build.json) to produce an ordered list of atomic steps.
 
 Step Type Taxonomy:
@@ -557,13 +557,13 @@ fi
 
 ### Section 3b: template-edit Steps
 
-Read the target `.html` template file, apply the Claude-interpreted change to the specific block comment section, and write back. Preserve all other blocks verbatim - surgical edit, not full rewrite. No Docker required.
+Read the target `.html` template file, apply the the coding agent-interpreted change to the specific block comment section, and write back. Preserve all other blocks verbatim - surgical edit, not full rewrite. No Docker required.
 
 ```
-Template editing is a Claude in-context judgment step.
+Template editing is a the coding agent in-context judgment step.
 
-Claude reads the current content of the target template file (from templates/ or parts/)
-and the user's modification request. Claude then:
+the coding agent reads the current content of the target template file (from templates/ or parts/)
+and the user's modification request. the coding agent then:
 
 1. Identifies which block comment section(s) need to change
 2. Rewrites only the affected block(s) using WordPress block comment syntax (<!-- wp:* -->)
@@ -606,7 +606,7 @@ if [ "${STEP_SKIPPED:-false}" != "true" ]; then
   # For content-edit steps:
   # $WP post update {POST_ID} --post_content="updated content"
   #
-  # Claude runs the appropriate WP-CLI commands based on the step description.
+  # the coding agent runs the appropriate WP-CLI commands based on the step description.
 
   echo "[Modify] Running WP-CLI content operations..."
 
@@ -783,19 +783,19 @@ Visual re-export modification is a multi-step process:
    - Validate JSON after each edit
 
 5. TEMPLATE DIFF
-   - Claude compares new HTML structure from VISUAL_PATH against current template files
-   - For each template with structural changes, Claude rewrites that template's block markup
+   - the coding agent compares new HTML structure from VISUAL_PATH against current template files
+   - For each template with structural changes, the coding agent rewrites that template's block markup
    - Templates with no structural changes are left untouched
-   - This is an AI judgment step - Claude interprets design intent
+   - This is an AI judgment step - the coding agent interprets design intent
 
 6. CONTENT PRESERVATION
    - Existing database.sql is untouched during visual-only modifications
    - No MySQL container needed unless plugin re-evaluation triggers install/uninstall
    - pages_created, posts_created, menu_assigned from build.json remain unchanged
 
-7. SMART PLUGIN RE-EVALUATION (optional - Claude judgment)
+7. SMART PLUGIN RE-EVALUATION (optional - the coding agent judgment)
    - If visual re-export changes theme structure significantly (e.g. added gallery section)
-   - Claude suggests plugin additions/removals based on new layout
+   - the coding agent suggests plugin additions/removals based on new layout
    - If plugin changes are needed, call ensure_docker_mysql() and follow Section 3d pattern
 
 8. FINALIZATION
@@ -854,7 +854,7 @@ if nl_modified_tokens:
     print(f"[Modify] WARNING: Prior NL modifications found for tokens: {nl_modified_tokens}")
     print(f"[Modify] Visual re-export will overwrite NL-modified values (visual wins).")
 
-# Claude evaluates which tokens need updating based on this delta
+# the coding agent evaluates which tokens need updating based on this delta
 ```
 
 ## Section 7: Session Completion
@@ -866,12 +866,12 @@ Invoked by COMMAND.md when the user signals "done". Handles SETUP.md regeneratio
 
 # Full regeneration (not incremental) reflecting final state.
 # Read current build.json for theme, plugins, content, modification history.
-# Claude generates the complete SETUP.md with all sections:
+# the coding agent generates the complete SETUP.md with all sections:
 #
 # 1. Setup Guide header
 # 2. What's Installed (theme, plugins, pages/posts)
 # 3. Critical / Important / Optional priority tiers
-# 4. Plugin configuration instructions (Claude-authored from AI knowledge)
+# 4. Plugin configuration instructions (the coding agent-authored from AI knowledge)
 # 5. Content replacement guidance
 # 6. Modification History section - list all versions and what changed
 #
@@ -880,8 +880,8 @@ Invoked by COMMAND.md when the user signals "done". Handles SETUP.md regeneratio
 
 echo "[Modify] Regenerating SETUP.md..."
 
-# Claude writes the full SETUP.md using current state context.
-# This is a Claude in-context task - not a template.
+# the coding agent writes the full SETUP.md using current state context.
+# This is a the coding agent in-context task - not a template.
 
 echo "[Modify] SETUP.md regenerated."
 
@@ -1011,7 +1011,7 @@ echo ""
 ## Implementation Notes
 
 - **COMMAND.md owns the session loop, SKILL.md owns per-step execution** - the conversation lives in the command, execution logic lives in the skill.
-- **NL modifications are surgical** - Claude reads specific files and writes minimal changes. No full theme regeneration.
+- **NL modifications are surgical** - the coding agent reads specific files and writes minimal changes. No full theme regeneration.
 - **Visual re-exports are diff-aware** - only changed tokens/templates are updated, preserving prior NL modifications unless explicitly overridden.
 - **Docker/MySQL uses lazy startup** - `ensure_docker_mysql()` is called only when a content or plugin step is detected. Theme-only sessions (theme-token, template-edit) work without Docker entirely.
 - **MySQL container lifecycle** - for compound requests with multiple content steps, keep the container running across all content steps. Single EXIT trap covers the full session. Spin down on exit.

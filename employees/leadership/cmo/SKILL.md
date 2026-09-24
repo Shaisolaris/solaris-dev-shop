@@ -54,7 +54,7 @@ If a control fails, do not emit `Gate: passed` for the affected path.
 
 This employee is Solaris Dev Shop's marketing strategy lead. **Distinct from execution employees** in the marketing department (Content Marketer, CRO Designer, Paid Ads Manager, SEO+ASO, Email Specialist, Social Media Manager, Market Researcher). Owns positioning, category, messaging architecture, GTM motion, demand strategy, marketing org + budget, attribution philosophy, brand defense.
 
-Source-grounded: alirezarezvani-claude-skills/c-level-advisor/cmo-advisor + marketing-skill/marketing-strategy-pmm + msitarzewski-agency-agents/marketing/marketing-growth-hacker.md.
+Source-grounded: alirezarezvani-the coding agent-skills/c-level-advisor/cmo-advisor + marketing-skill/marketing-strategy-pmm + msitarzewski-agency-agents/marketing/marketing-growth-hacker.md.
 
 ---
 
@@ -419,12 +419,12 @@ alternative from the product page or reconstruct funnel rates from a single quar
 ---
 
 ## Absorbed from (9-repo scope, real reads)
-- **alirezarezvani-claude-skills/c-level-advisor/cmo-advisor/references/brand_positioning.md** - Category Design Three-Act + Lightning Strike, Messaging Hierarchy 5 levels, 3-VP Architecture, Proof Point Hierarchy, Two-axis competitive map, Battlecard format, win/loss as primary CI source
-- **alirezarezvani-claude-skills/marketing-skill/marketing-strategy-pmm/references/positioning-frameworks.md** - April Dunford 5-step, Attribute Audit, Value Statement Formula, Geoffrey Moore template, Crossing the Chasm, Whole Product Concept, market category decision matrix
+- **alirezarezvani-the coding agent-skills/c-level-advisor/cmo-advisor/references/brand_positioning.md** - Category Design Three-Act + Lightning Strike, Messaging Hierarchy 5 levels, 3-VP Architecture, Proof Point Hierarchy, Two-axis competitive map, Battlecard format, win/loss as primary CI source
+- **alirezarezvani-the coding agent-skills/marketing-skill/marketing-strategy-pmm/references/positioning-frameworks.md** - April Dunford 5-step, Attribute Audit, Value Statement Formula, Geoffrey Moore template, Crossing the Chasm, Whole Product Concept, market category decision matrix
 - **msitarzewski-agency-agents/marketing/marketing-growth-hacker.md** - North Star metric, K-factor + viral mechanics, AARRR funnel, success benchmarks (20%+ MoM, K>1, CAC payback <6mo, LTV:CAC 3:1+, activation 60%+, D7/D30/D90 = 40/20/10, 10+ experiments/mo, 30% winner rate)
-- alirezarezvani-claude-skills/business-growth/sales-engineer/references/competitive-positioning-framework.md (CMO↔Sales alignment)
-- alirezarezvani-claude-skills/docs/skills/c-level-advisor/cmo-advisor.md (advisor structure reference)
-- lodetomasi-agents-claude-code/growth-hacker.md (cross-source K-factor patterns)
+- alirezarezvani-the coding agent-skills/business-growth/sales-engineer/references/competitive-positioning-framework.md (CMO↔Sales alignment)
+- alirezarezvani-the coding agent-skills/docs/skills/c-level-advisor/cmo-advisor.md (advisor structure reference)
+- lodetomasi-agents-the coding agent-code/growth-hacker.md (cross-source K-factor patterns)
 
 Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).
 

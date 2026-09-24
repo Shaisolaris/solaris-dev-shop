@@ -165,7 +165,7 @@ The mode methodologies live INLINE in this file and in SKILL.md (PR Review / Ful
 
 - `rules.md` (this file) - active methodology, severity taxonomy, red flags, decision + small-task lanes
 - `learnings.md` - self-learning log
-- `claude-context-operator.md` - semantic code search (load FIRST for >2,000-file codebases)
+- `code-context-operator.md` - semantic code search (load FIRST for >2,000-file codebases)
 - `trivy-sca-secrets-sbom.md` - unified SCA / secrets / SBOM
 - `static-analysis-and-pr-automation.md` - AST SAST (semgrep), independent CVE DB (osv-scanner), git-history secrets (gitleaks), PR-hygiene automation (danger), client-CI integration (CodeQL/Sonar), CI SHA-pin doctrine, memory scope keys
 - `codebase-takeover-and-audit.md` - INHERITED client codebase first-contact protocol (ECC methodology, MIT). File census + 4-level verdict + embedded-3rd-party/license; execution-path tracing; silent-failure hunt; convention-matching (anti-style-drift); click-path UI audit; santa-method adversarial verify of the audit

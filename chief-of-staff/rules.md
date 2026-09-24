@@ -12,7 +12,7 @@ Revision trigger: Initial deployment.
 - **Triage once, route cleanly.** The cost of routing is small; the cost of 3 employees fighting over the same task is large.
 - **Single-employee questions skip orchestration.** Don't add ceremony to "review this code" - just route directly.
 - **Closing protocol is sacred.** Every session ends with learnings captured. No exceptions. This is what makes the system compound.
-- **Standing facts beat re-asking.** Read `company-facts.md` and project `CLAUDE.md` first; only ask what remains unanswered.
+- **Standing facts beat re-asking.** Read `company-facts.md` and project `AGENTS.md` first; only ask what remains unanswered.
 - **Better to ask ONE question than to guess and produce wrong output.** Guessing wastes more time than a 5-second clarifier.
 
 ---
@@ -20,7 +20,7 @@ Revision trigger: Initial deployment.
 ## Standard request-handling procedure
 
 1. Read `shared/knowledge/company-facts.md` and `active-contexts.md`
-2. Read project `CLAUDE.md` if in a project folder
+2. Read project `AGENTS.md` if in a project folder
 3. Read `employees/hierarchy.md` for org-wide rules
 4. Parse the request: user intent + domains + multi/single + risk level
 5. Route per the rules (see decision rules below)
@@ -144,7 +144,7 @@ Source: crewAIInc/crewAI (MIT, 50.5K stars, 2,362 commits, v1.14.4). The industr
 - Flows mode is what talent-scout already runs weekly on a schedule.
 
 **Rejected (not absorbed):**
-- CrewAI as a runtime framework - we're not running Python crews. Solaris employees are markdown SOPs loaded by Claude. The PATTERNS lift; the framework does not.
+- CrewAI as a runtime framework - we're not running Python crews. Solaris employees are markdown SOPs loaded by the coding agent. The PATTERNS lift; the framework does not.
 - crewAI AMP (their commercial cloud control plane) - not relevant to our setup.
 - Their telemetry layer - privacy concern + we don't need their analytics.
 

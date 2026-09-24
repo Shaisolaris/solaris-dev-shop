@@ -15,7 +15,7 @@ The voltagent wordpress-master.md is solid on the classic stack (PHP 8 + WP_Quer
 1. **Full Site Editing (FSE) maturity** - block themes now production-default for most new builds.
 2. **Interactivity API** - WordPress's own client-side framework for blocks (NOT React-everywhere).
 3. **Block Bindings API** - bind block attributes to dynamic data sources (post meta, options, custom sources).
-4. **WP Abilities API + MCP Adapter** - WordPress core's MCP bridge so AI tools (Claude Code / Cursor) can discover and call WordPress capabilities natively.
+4. **WP Abilities API + MCP Adapter** - WordPress core's MCP bridge so AI tools (a coding agent / Cursor) can discover and call WordPress capabilities natively.
 5. **Block API v3 patterns** - `block.json` is the canonical metadata; the older PHP-only `register_block_type` is legacy.
 6. **HPOS (High-Performance Order Storage)** for WooCommerce - required-by-default in new stores.
 
@@ -101,16 +101,16 @@ Pre-Bindings, displaying a custom field value required a custom block + ServerSi
 
 ## WP Abilities API + MCP Adapter - the AI surface
 
-WordPress shipped a first-class **Abilities API** (post-6.6) that exposes WP capabilities as discoverable, schema'd "abilities." The MCP Adapter then exposes those abilities to AI tools (Claude Code / Cursor / Claude Desktop) via the standard Model Context Protocol.
+WordPress shipped a first-class **Abilities API** (post-6.6) that exposes WP capabilities as discoverable, schema'd "abilities." The MCP Adapter then exposes those abilities to AI tools (a coding agent / Cursor / a desktop agent app) via the standard Model Context Protocol.
 
 ### What this gives Solaris
-- New client WP project → install MCP Adapter plugin → Claude Code can natively create posts, install plugins, manage taxonomies, audit security through chat. Same pattern as Stripe MCP, Notion MCP - but for WP.
-- Existing client WP audits → run the audit through Claude Code with the MCP adapter, instead of grepping wp-config and manually inspecting plugins.
+- New client WP project → install MCP Adapter plugin → a coding agent can natively create posts, install plugins, manage taxonomies, audit security through chat. Same pattern as Stripe MCP, Notion MCP - but for WP.
+- Existing client WP audits → run the audit through a coding agent with the MCP adapter, instead of grepping wp-config and manually inspecting plugins.
 
 ### Decision rules
-- **When** building a new WordPress site for a client → install the WordPress MCP adapter as part of standard setup. Claude Code becomes a first-class admin tool for the dev work.
-- **When** doing a security audit → MCP adapter + Claude Code for inventory; Wordfence / Sucuri for the actual security scan (the MCP isn't a security scanner, it's a control surface).
-- **When** the client wants their own team to use AI for content ops → train them on the WordPress.com Claude Connector (live since Feb 2026 per WordPress.com blog) or self-host the MCP adapter.
+- **When** building a new WordPress site for a client → install the WordPress MCP adapter as part of standard setup. a coding agent becomes a first-class admin tool for the dev work.
+- **When** doing a security audit → MCP adapter + a coding agent for inventory; Wordfence / Sucuri for the actual security scan (the MCP isn't a security scanner, it's a control surface).
+- **When** the client wants their own team to use AI for content ops → train them on the WordPress.com a hosted AI connector (live since Feb 2026 per WordPress.com blog) or self-host the MCP adapter.
 
 ---
 

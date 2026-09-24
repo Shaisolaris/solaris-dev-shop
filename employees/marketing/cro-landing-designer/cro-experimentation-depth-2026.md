@@ -84,7 +84,7 @@ Workflow 3 ends with "winner becomes the new control" but specifies no safe-depl
 
 ## Source basis note - the sample-size anchor table
 
-The anchor table in SKILL.md/rules.md is transcribed from alirezarezvani/claude-skills `sample-size-guide.md` (re-verified 2026-06-13). Those figures are deliberately conservative and run ~2x a textbook pooled two-proportion calculation (e.g. the guide lists 1% baseline / 20% lift = 97k per variant; a pooled normal-approximation gives ~43k). Treat the table as a safe upper-bound planning anchor. For an exact number, run a calculator (Evan Miller / abtestguide / VWO) on the **page-specific** baseline and your chosen MDE - never the site-wide average. The anchors exist to answer "is this even feasible?" fast, not to replace a per-test calculation.
+The anchor table in SKILL.md/rules.md is transcribed from alirezarezvani/the coding agent-skills `sample-size-guide.md` (re-verified 2026-06-13). Those figures are deliberately conservative and run ~2x a textbook pooled two-proportion calculation (e.g. the guide lists 1% baseline / 20% lift = 97k per variant; a pooled normal-approximation gives ~43k). Treat the table as a safe upper-bound planning anchor. For an exact number, run a calculator (Evan Miller / abtestguide / VWO) on the **page-specific** baseline and your chosen MDE - never the site-wide average. The anchors exist to answer "is this even feasible?" fast, not to replace a per-test calculation.
 
 ## Inline sample-size method (when no calculator is at hand)
 

@@ -1,26 +1,26 @@
-# Claude Context - Semantic Code Search Operator
+# code context - Semantic Code Search Operator
 
 > ⚠️ ALWAYS load this file FIRST when reviewing or auditing a codebase larger than ~2,000 files (CTT, Turnpike, Kellbell, any inherited project takeover). Without semantic indexing, audits fall back to grep - which misses everything that doesn't match exact strings.
 
-**Source canon:** [zilliztech/claude-context](https://github.com/zilliztech/claude-context) - 9,797 stars, MIT, last commit 2026-04-27. Code-search MCP for Claude Code that turns the entire codebase into the agent's context via vector embeddings + Merkle-tree incremental indexing + Milvus / Voyage / OpenAI / Gemini embeddings.
+**Source canon:** [zilliztech/code-context](https://github.com/zilliztech/code-context) - 9,797 stars, MIT, last commit 2026-04-27. Code-search MCP for the coding agent Code that turns the entire codebase into the agent's context via vector embeddings + Merkle-tree incremental indexing + Milvus / Voyage / OpenAI / Gemini embeddings.
 
-This is the missing capability for Code Reviewer. The base 6-mode review skill (PR Review / Full Audit / Security Audit / Dependency Audit / First-Principles / Adversarial / Debug) has always assumed Claude can navigate a codebase. On large client codebases, that assumption breaks - grep finds exact strings; semantic search finds intent.
+This is the missing capability for Code Reviewer. The base 6-mode review skill (PR Review / Full Audit / Security Audit / Dependency Audit / First-Principles / Adversarial / Debug) has always assumed the coding agent can navigate a codebase. On large client codebases, that assumption breaks - grep finds exact strings; semantic search finds intent.
 
 ---
 
-## When to use claude-context vs raw grep
+## When to use code-context vs raw grep
 
 | Scenario | Use |
 |----------|-----|
 | File is open / known location | Read tool directly - don't index for trivial work |
 | Project < 500 files | Grep is fine; indexing overhead exceeds benefit |
-| Project 500-2,000 files, exact symbol search | Grep first, claude-context if grep misses |
-| Project > 2,000 files OR semantic queries | claude-context **mandatory** - index on session start |
-| "Find all functions that look like X" (intent) | claude-context - grep can't do semantic |
-| "Find every input that flows to a SQL query" (taint analysis lite) | claude-context + grep combined |
-| Inherited codebase audit (Phase 1 of Full Audit mode) | claude-context **mandatory** - orientation step |
-| Security audit on legacy codebase | claude-context for surface enumeration + grep for exact pattern verification |
-| Performance audit (find all DB query call sites) | claude-context for "any code that does database access" |
+| Project 500-2,000 files, exact symbol search | Grep first, code-context if grep misses |
+| Project > 2,000 files OR semantic queries | code-context **mandatory** - index on session start |
+| "Find all functions that look like X" (intent) | code-context - grep can't do semantic |
+| "Find every input that flows to a SQL query" (taint analysis lite) | code-context + grep combined |
+| Inherited codebase audit (Phase 1 of Full Audit mode) | code-context **mandatory** - orientation step |
+| Security audit on legacy codebase | code-context for surface enumeration + grep for exact pattern verification |
+| Performance audit (find all DB query call sites) | code-context for "any code that does database access" |
 
 ---
 
@@ -28,7 +28,7 @@ This is the missing capability for Code Reviewer. The base 6-mode review skill (
 
 ```bash
 # MCP install - preferred
-claude mcp add claude-context -- npx -y @zilliz/claude-context-mcp
+the coding agent mcp add code-context -- npx -y @zilliz/code-context-mcp
 
 # Provide embedding provider key (one of)
 export VOYAGE_API_KEY=...      # Anthropic-recommended for accuracy
@@ -54,7 +54,7 @@ For client work with sensitive code: Ollama + local Milvus or local Qdrant. Peri
 
 ## Standard workflow - first index of a new codebase
 
-1. **Open the project in Claude Code.**
+1. **Open the project in the coding agent Code.**
 2. **Index it once at session start:**
    ```
    /index_codebase
@@ -65,20 +65,20 @@ For client work with sensitive code: Ollama + local Milvus or local Qdrant. Peri
    /search_code "authentication middleware"
    ```
    Should return relevant files with relevance scores. If results look wrong, the index didn't take - re-run.
-4. **Now run the audit / PR review / debug session.** Claude can call `search_code` autonomously when it needs to find code by intent rather than by string.
+4. **Now run the audit / PR review / debug session.** the coding agent can call `search_code` autonomously when it needs to find code by intent rather than by string.
 
 ---
 
 ## Workflow patterns by mode
 
 ### Mode: Full Audit (codebase handoff)
-The 7-phase / 20-angle protocol assumes orientation. Claude-context is the orientation tool:
+The 7-phase / 20-angle protocol assumes orientation. code-context is the orientation tool:
 - **Phase 1 - Orientation:** semantic queries to map architecture. "Where is the data layer?" "Where is the auth boundary?" "What integrations exist?" "Where are the third-party API call sites?"
 - **Phase 3 - Security:** "Find every input that flows from request to query." "Find every place secrets are read." "Find every place auth is checked OR skipped."
 - **Phase 5 - Performance:** "Find every database query." "Find every loop that calls a function - N+1 candidate." "Find every cache invalidation site."
 
 ### Mode: PR Review
-- For diffs touching unfamiliar areas: query "what other code uses this function" - grep can do this for exact names; claude-context catches semantic call-sites (e.g. adapters, facades, dynamic dispatch)
+- For diffs touching unfamiliar areas: query "what other code uses this function" - grep can do this for exact names; code-context catches semantic call-sites (e.g. adapters, facades, dynamic dispatch)
 - For new feature PRs: query "where does this category of behavior already exist" - find duplications before they're committed
 
 ### Mode: Debug
@@ -91,7 +91,7 @@ The 7-phase / 20-angle protocol assumes orientation. Claude-context is the orien
 - Auth flow trace: "Find every function that issues a session token OR validates one" → verify single source of truth
 
 ### Mode: Dependency Audit
-- claude-context isn't the right tool here - `npm audit` / `composer audit` / `pip-audit` etc. are. Use base 6-mode protocol.
+- code-context isn't the right tool here - `npm audit` / `composer audit` / `pip-audit` etc. are. Use base 6-mode protocol.
 
 ---
 
@@ -102,7 +102,7 @@ The 7-phase / 20-angle protocol assumes orientation. Claude-context is the orien
 - **Don't trust the index blindly** - verify a sample query returns sensible results before relying on it
 - **Combine semantic + grep** - semantic finds candidates; grep verifies exact occurrences
 - **For NDA / sensitive code** - Ollama + local Milvus only; never send embeddings to a cloud API the client hasn't approved
-- **Cache embeddings per-project** - claude-context handles this; don't wipe the project DB unless the codebase fundamentally changed
+- **Cache embeddings per-project** - code-context handles this; don't wipe the project DB unless the codebase fundamentally changed
 - **Document the index location** in the per-project `RUNBOOK.md` so future sessions don't re-discover
 
 ---
@@ -120,11 +120,11 @@ The 7-phase / 20-angle protocol assumes orientation. Claude-context is the orien
 
 ## Cross-references inside Solaris
 
-- **CTO** - Phase 1 of the project takeover protocol gains a concrete first step: "index the inherited codebase with claude-context before doing anything else"
+- **CTO** - Phase 1 of the project takeover protocol gains a concrete first step: "index the inherited codebase with code-context before doing anything else"
 - **Full-Stack Developer** - same install pattern works for navigation during dev work, not just review
 - **Security Auditor** - surface enumeration is the dominant first step of any audit; this is the tool
 - **Performance Engineer** - N+1 queries and unindexed-DB-call enumeration become tractable on large codebases
-- **DevOps Engineer** - for ClaudeBox per-project containers, install claude-context inside the container so embeddings never leak across clients
+- **DevOps Engineer** - for the coding agentBox per-project containers, install code-context inside the container so embeddings never leak across clients
 
 ---
 
@@ -139,6 +139,6 @@ The 7-phase / 20-angle protocol assumes orientation. Claude-context is the orien
 
 ## Optional: pairing with other tools
 
-- **Pair with `tree-sitter` based AST search** when needed (claude-context is embedding-based; semgrep is AST-based - they catch different things)
+- **Pair with `tree-sitter` based AST search** when needed (code-context is embedding-based; semgrep is AST-based - they catch different things)
 - **Pair with GitHub MCP server** - repo-level metadata (PR history, author blame, issue links) augments semantic findings
 - **Pair with Sentry MCP** - connect production error fingerprints to semantic-relevant code paths

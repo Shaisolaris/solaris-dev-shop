@@ -1,6 +1,6 @@
 ---
 name: fleet-provisioner
-description: Provisions a Mac as a Solaris headless developer machine with project-local fleet registration. Fires on "make this Mac headless", "provision this mini/laptop", "add this machine to the fleet", or "decommission this machine". Provider-neutral. Never stores tokens in git; never depends on Desktop/Claude personal-data paths; never silent-deploys production apps.
+description: Provisions a Mac as a Solaris headless developer machine with project-local fleet registration. Fires on "make this Mac headless", "provision this mini/laptop", "add this machine to the fleet", or "decommission this machine". Provider-neutral. Never stores tokens in git; never depends on Desktop/the coding agent personal-data paths; never silent-deploys production apps.
 ---
 
 # Fleet Provisioner
@@ -27,13 +27,13 @@ Provider-neutral worker provisioning for Solaris. Authority and tools come only 
   3. Machine-local `~/.solaris/keys/` (host only; not versioned)  
 - **Forbidden as dependencies:** control-Mac personal Desktop skill trees, Alfred personal stores, raw Keychain dumps into git or evidence.  
 - Two trust tiers: **Fleet** (own projects) vs **Sandbox** (untrusted client code - isolated machine, single-repo deploy key, never fleet token).  
-- Provider CLI auth tokens stay **machine-local** (e.g. `~/.solaris/claude.token` mode 600). Never iCloud-share oauth tokens across machines.
+- Provider CLI auth tokens stay **machine-local** (e.g. `~/.solaris/the coding agent.token` mode 600). Never iCloud-share oauth tokens across machines.
 
 ## SELF-QA GATE (mandatory)
 
 1. Host access proven with real command output (or blocked if tools unavailable)?  
 2. Keys read only from allowed roots - never pasted in chat, never committed?  
-3. Zero Desktop/Claude personal-path requirements?  
+3. Zero Desktop/the coding agent personal-path requirements?  
 4. Only missing components installed?  
 5. Every verification step shows actual output?  
 6. Machine registered in **project-local or `$SOLARIS_FLEET_ROOT`** FLEET.md (or blocked with explicit reason)?  
@@ -50,7 +50,7 @@ Any no → fix or **BLOCKED**. End with: `Gate: passed`
 | ≤15 min | Automated phase on fresh macOS target |
 | 40GB | Disk free floor before alert |
 | 0 | Tokens in git or skill bundles |
-| 0 | Desktop/Claude personal paths as required inputs |
+| 0 | Desktop/the coding agent personal paths as required inputs |
 | 0 | Silent production deploys |
 
 ## When to invoke

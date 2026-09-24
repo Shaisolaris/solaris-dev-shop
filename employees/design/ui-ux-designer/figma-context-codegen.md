@@ -17,6 +17,6 @@ Figma-Context-MCP is a **different capability**: it pulls **live Figma file/fram
 
 ## Update 2026-06-13 - official Figma Dev Mode MCP is now the PRIMARY path
 Figma ships a first-party Dev Mode MCP server (since mid-2025): it exposes the selected layer, node tree, variant info, layout constraints, DESIGN TOKENS/variables, components, and assets to the agent, and since March 2026 is BIDIRECTIONAL (push a VS Code-rendered UI back into Figma as editable frames). Because it is variables/tokens-aware it integrates better with our token pipeline than the community server.
-- PRIMARY: official Figma Dev Mode MCP - enable in Figma desktop (Preferences -> Enable local MCP Server, Dev Mode); point Claude Code/Cursor/VS Code at it. CONNECT (Figma ToS; host enables; no code bundled).
+- PRIMARY: official Figma Dev Mode MCP - enable in Figma desktop (Preferences -> Enable local MCP Server, Dev Mode); point a coding agent/Cursor/VS Code at it. CONNECT (Figma ToS; host enables; no code bundled).
 - FALLBACK/OSS: GLips figma-developer-mcp (MIT, ~14.3k stars) - when an MIT/self-hosted server or PAT-only access is required.
 Both remain design-to-code accelerators only; Tokens Studio -> Style Dictionary stays the token source of truth, and generated code still passes token-hierarchy + WCAG QA.

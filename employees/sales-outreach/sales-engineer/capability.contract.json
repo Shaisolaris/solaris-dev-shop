@@ -395,7 +395,7 @@
   },
   "compatibility": {
     "providers": [
-      "claude",
+      "the coding agent",
       "codex",
       "grok",
       "kimi"

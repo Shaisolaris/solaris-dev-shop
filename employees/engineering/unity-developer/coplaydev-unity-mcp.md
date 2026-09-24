@@ -4,7 +4,7 @@ Source: https://github.com/CoplayDev/unity-mcp · MIT · v9.7.1 (2026-05-24) · 
 Status: this is now the PRIMARY Unity MCP for this employee. IvanMurzak/Unity-MCP (prior absorption, ~2.6k stars) is kept as a secondary/alternative reference; CoplayDev has overtaken it in stars, release cadence (61 releases), and feature surface.
 
 ## What it is
-Bridges AI assistants (Claude, Codex, VS Code, local LLMs) with the Unity Editor via MCP. Tools to manage assets, control scenes, edit scripts, run tests, and automate Editor workflows.
+Bridges AI assistants (the coding agent, Codex, VS Code, local LLMs) with the Unity Editor via MCP. Tools to manage assets, control scenes, edit scripts, run tests, and automate Editor workflows.
 
 ## Install (UPM)
 Unity → Window → Package Manager → + → Add package from git URL:

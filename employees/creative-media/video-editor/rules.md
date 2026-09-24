@@ -75,10 +75,10 @@ Last revised: 2026-05-18 (clean rebuild - 9 repos) (2026-05-24: cleanup pass)
 Hunted high-star video-editing AI agent skills. Honest finding: **none exist yet at quality + star threshold.**
 
 **Top open-source options surveyed:**
-- **lordhoell/davinci-resolve-mcp** - 3 stars, MIT, but MOST COMPLETE (440+ tools, complete Resolve scripting API, Claude Code skill bundled, object registry pattern, Python package on PyPI). Quality genuine; adoption tiny. Watchlist.
+- **lordhoell/davinci-resolve-mcp** - 3 stars, MIT, but MOST COMPLETE (440+ tools, complete Resolve scripting API, a coding agent skill bundled, object registry pattern, Python package on PyPI). Quality genuine; adoption tiny. Watchlist.
 - **samuelgursky/davinci-resolve-mcp** - low stars, comparable scope but less polished
 - **apvlv/davinci-resolve-mcp** - low stars, MCP focus
-- **barckley75/resolve-claude-mcp** - low stars, similar
+- **barckley75/resolve-the coding agent-mcp** - low stars, similar
 - **hiteshk03/video-production-skill** (Cursor) - production knowledge skill, low stars
 
 **Where the high-star action is (commercial, not open-source):**

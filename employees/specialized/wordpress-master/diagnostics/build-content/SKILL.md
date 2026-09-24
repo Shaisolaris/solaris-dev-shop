@@ -26,7 +26,7 @@ This skill expects the following variables to already be set by the calling comm
 
 ## Section 1: Plugin Selection and Installation
 
-Claude analyses `NL_PROMPT` to determine which free WP.org plugins are relevant for the site type. A curated category baseline provides starting candidates; Claude adds or removes entries based on the specific NL description. Up to 10 plugins maximum - if more are selected, trim to the highest-relevance set before installing.
+the coding agent analyses `NL_PROMPT` to determine which free WP.org plugins are relevant for the site type. A curated category baseline provides starting candidates; the coding agent adds or removes entries based on the specific NL description. Up to 10 plugins maximum - if more are selected, trim to the highest-relevance set before installing.
 
 **Curated category baseline (starting candidates by site type):**
 
@@ -40,7 +40,7 @@ events / booking                   → wpforms-lite, the-events-calendar
 membership / community             → wpforms-lite
 ```
 
-Claude evaluates the `NL_PROMPT` and may add, remove, or substitute slugs from this list based on the specific site requirements. `wpforms-lite` is near-universal - add it unless the site explicitly has no contact page.
+the coding agent evaluates the `NL_PROMPT` and may add, remove, or substitute slugs from this list based on the specific site requirements. `wpforms-lite` is near-universal - add it unless the site explicitly has no contact page.
 
 **Plugin verification via WP.org API:**
 
@@ -60,17 +60,17 @@ check_plugin_viable() {
     return 0
   fi
 
-  # Claude evaluates these fields from the API response:
+  # the coding agent evaluates these fields from the API response:
   # - tested: must be >= current WP version
   # - requires: must be <= current WP version
   # - active_installs: prefer >= 1000 (established plugin)
   # - rating: prefer >= 60 (out of 100)
-  # Claude sets PLUGIN_VIABLE=true or PLUGIN_VIABLE=false after evaluation
+  # the coding agent sets PLUGIN_VIABLE=true or PLUGIN_VIABLE=false after evaluation
   return 0
 }
 ```
 
-For broader plugin discovery (when Claude wants to find alternatives for a category), use the search API:
+For broader plugin discovery (when the coding agent wants to find alternatives for a category), use the search API:
 
 ```bash
 # Search WP.org Plugins API for a category keyword
@@ -281,7 +281,7 @@ Always create: Home, About, Contact. Add 1-2 site-specific pages based on `NL_PR
 - Any site with a team → add "Team" page
 
 **Content quality rules:**
-- Contextual English prose written by Claude - realistic, fictional, specific
+- Contextual English prose written by the coding agent - realistic, fictional, specific
 - Made-up business names, addresses, phone numbers, team member names
 - No Lorem Ipsum - ever
 - No `[REPLACE THIS]` markers - ever
@@ -404,14 +404,14 @@ rm -f /tmp/wp-page-contact-$$
 echo "[Build] Created page: Contact (ID: $CONTACT_ID)"
 ```
 
-Claude generates the actual content for all pages based on `NL_PROMPT`. The example patterns above show structure - replace "Harlow & Co." and all specific details with content appropriate for the NL_PROMPT site type. Use `$IMAGE_BASE_URL/placeholder-{name}.png` for all image references.
+the coding agent generates the actual content for all pages based on `NL_PROMPT`. The example patterns above show structure - replace "Harlow & Co." and all specific details with content appropriate for the NL_PROMPT site type. Use `$IMAGE_BASE_URL/placeholder-{name}.png` for all image references.
 
 Track all page IDs in an array for menu creation:
 
 ```bash
 PAGE_IDS=("$HOME_ID" "$ABOUT_ID" "$CONTACT_ID")
 PAGE_TITLES=("Home" "About" "Contact")
-# Add site-specific pages as determined by Claude from NL_PROMPT
+# Add site-specific pages as determined by the coding agent from NL_PROMPT
 # e.g. PAGE_IDS+=("$PORTFOLIO_ID"); PAGE_TITLES+=("Portfolio")
 PAGES_CREATED=${#PAGE_IDS[@]}
 ```
@@ -461,7 +461,7 @@ rm -f /tmp/wp-post-1-$$
 echo "[Build] Created post: (ID: $POST_1_ID)"
 ```
 
-Claude generates 3-5 blog post titles and content specific to the `NL_PROMPT` site type. Each post should feel like real published content for that site's niche - not generic filler.
+the coding agent generates 3-5 blog post titles and content specific to the `NL_PROMPT` site type. Each post should feel like real published content for that site's niche - not generic filler.
 
 ```bash
 POSTS_CREATED=<count of posts actually created>
@@ -563,12 +563,12 @@ Example manifest update for build.json (handled by build-setup):
 
 **Images before content:** Section 2 must complete before Section 3 begins. If image generation fails, content still runs - it will reference URLs that return 404 until images are generated manually. Log a warning if image generation failed so build-setup can note it in SETUP.md.
 
-**10-plugin cap enforcement:** If Claude selects more than 10 plugins, trim the list before running any `install_plugin` calls. Log: `[Build] Plugin list trimmed to 10 (removed: slug1, slug2)`.
+**10-plugin cap enforcement:** If the coding agent selects more than 10 plugins, trim the list before running any `install_plugin` calls. Log: `[Build] Plugin list trimmed to 10 (removed: slug1, slug2)`.
 
 **Warn-and-continue everywhere:** No `exit 1` in Sections 1 through 5. Plugin failures, image failures, individual page/post failures, menu assignment failures - all are logged as warnings and the build continues. Only the upstream `build-scaffold` (Docker, WP core download, WP install) should abort a build with `exit 1`.
 
 **Content quality standards (locked decisions):**
-- All content is contextual English prose written by Claude
+- All content is contextual English prose written by the coding agent
 - Business names, people's names, addresses, and phone numbers are fictional but realistic
 - No Lorem Ipsum in any form
 - No placeholder markers like `[YOUR BUSINESS NAME]` or `[REPLACE THIS]`

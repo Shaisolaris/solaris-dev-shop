@@ -18,7 +18,7 @@ Architecture: Alfred/Solaris capability and quality architecture
 
 | Defect | Correction |
 |--------|------------|
-| Provider lock-in ("Claude is…") | Provider-neutral runtime block + `compatibility.providers` four defaults |
+| Provider lock-in ("the coding agent is…") | Provider-neutral runtime block + `compatibility.providers` four defaults |
 | Missing operational contracts | Added `capability.contract.json` per active employee (20) |
 | Tools/authority only in prose | Explicit tools[], permissions.default_deny, approval_points |
 | External send/spend/publish risk | message_send / spend / mutate_external → require_human; deploy/move_funds → deny |

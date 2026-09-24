@@ -33,7 +33,7 @@ Provider-neutral DevOps capability for Solaris. Authority and tool grants live i
 > 5. **No silent production apply** - plan/show first; `deploy` is `require_human`. Never force-push; never commit secrets.
 > If you skip these, you'll fall back to host pollution, Unity license hell, shared auth conflicts, or Terraform that matches training data but breaks on the actual provider version.
 
-> v0.3.0 (2026-04-25): Talent Scout v2 absorbed docker-claude-skill + claudebox + GameCI after v1 missed all three.
+> v0.3.0 (2026-04-25): Talent Scout v2 absorbed docker-the coding agent-skill + the coding agentbox + GameCI after v1 missed all three.
 > v0.4.0 (2026-04-27): Talent Scout v2 absorbed antonbabenko/terraform-skill after Shai greenlit "improve the dev op engineer skill" on the weekly report.
 > v1.0.0-contract (2026-07-23): Provider-neutral operational contract + technical hardening (skill-solaris-engineering-hardening).
 
@@ -399,7 +399,7 @@ jobs:
 
 **msitarzewski/agency-agents/engineering/engineering-devops-automator.md**
 
-**lodetomasi/agents-claude-code/devops-maestro.md**
+**lodetomasi/agents-the coding agent-code/devops-maestro.md**
 
 **sickn33/antigravity-skills/skills:**
 - `cloud-devops`
@@ -438,9 +438,9 @@ After every DevOps session:
 | `gitops-skill.md` | ANY GitOps (ArgoCD/Flux), SOPS secrets, OTel Collector, or Trivy gating work |
 | `opensource-release-pipeline.md` | ANY work turning private/client code into a PUBLIC repo (open-source release: fork/sanitize/package/publish) |
 | `dagger-mise-toolchain.md` | Programmable/containerized CI as code with local+CI parity (Dagger); tool-version + env + task management (mise) |
-| `headless-fleet-runbook.md` | Load when running multi-machine Claude Code builds (headless Mac mini fleet, work-stream dispatch from HQ) |
+| `headless-fleet-runbook.md` | Load when running multi-machine a coding agent builds (headless Mac mini fleet, work-stream dispatch from HQ) |
 
-Canonical alirezarezvani senior-devops: `/Solaris/sources/alirezarezvani-claude-skills/engineering-team/senior-devops/`
+Canonical alirezarezvani senior-devops: `/Solaris/sources/alirezarezvani-the coding agent-skills/engineering-team/senior-devops/`
 Canonical wshobson cloud-infrastructure + kubernetes-operations: `/Solaris/sources/wshobson-agents/plugins/`
 Canonical sickn33 deployment suite: `/Solaris/sources/sickn33-antigravity-skills/skills/`
 

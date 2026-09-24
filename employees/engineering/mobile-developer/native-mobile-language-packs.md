@@ -1,9 +1,9 @@
 # Native Mobile Language Packs
 
-> **Absorbed 2026-06-14** from `affaan-m/everything-claude-code` (ECC, MIT) - methodology only, no code bundled.
+> **Absorbed 2026-06-14** from `affaan-m/everything-the coding agent-code` (ECC, MIT) - methodology only, no code bundled.
 > Source skills lifted: kotlin-patterns, kotlin-coroutines-flows, kotlin-testing, kotlin-ktor-patterns, kotlin-exposed-patterns, android-clean-architecture, compose-multiplatform-patterns, dart-flutter-patterns, flutter-dart-code-review, swiftui-patterns, swift-concurrency-6-2, swift-actor-persistence, swift-protocol-di-testing, liquid-glass-design, foundation-models-on-device.
 >
-> **What this adds.** This employee already carried the RN/Expo cross-platform stack, the test/release pillar (`mobile-test-and-release.md`), and the dpconde NowInAndroid skeleton (`android-architecture.md`). This pack adds **language-level depth** for the three native ecosystems - idiomatic Kotlin, modern Swift 6.2 / SwiftUI / iOS 26, and Dart/Flutter - so Claude writes native code the way a senior platform engineer would, not transliterated JS. It does not replace any existing file; load it alongside `android-architecture.md` for Kotlin work, and as the primary depth reference for Swift/iOS and Flutter.
+> **What this adds.** This employee already carried the RN/Expo cross-platform stack, the test/release pillar (`mobile-test-and-release.md`), and the dpconde NowInAndroid skeleton (`android-architecture.md`). This pack adds **language-level depth** for the three native ecosystems - idiomatic Kotlin, modern Swift 6.2 / SwiftUI / iOS 26, and Dart/Flutter - so the coding agent writes native code the way a senior platform engineer would, not transliterated JS. It does not replace any existing file; load it alongside `android-architecture.md` for Kotlin work, and as the primary depth reference for Swift/iOS and Flutter.
 >
 > **Supported platforms / languages after this pack:** Kotlin (Android + KMP + Ktor/Exposed server), Jetpack Compose + Compose Multiplatform, Dart + Flutter (BLoC / Riverpod / Provider / GetX / MobX / Signals), Swift 6.2 + SwiftUI + UIKit + WidgetKit (iOS 26 Liquid Glass), Apple on-device LLM (FoundationModels). React Native + Expo + Flutter cross-platform coverage remains the default per SKILL.md stack-priority order; native depth is for when platform features or performance demand native.
 
@@ -13,7 +13,7 @@
 
 ### A1. Idiomatic Kotlin (source: kotlin-patterns)
 
-The seven pillars Claude should enforce in any new or reviewed Kotlin:
+The seven pillars the coding agent should enforce in any new or reviewed Kotlin:
 
 1. **Null safety via the type system.** Non-nullable by default. Safe-call `?.` + Elvis `?:` for fallbacks. Force-unwrap `!!` is a red flag - replace with a checked throw (`?: throw ...`) or a nullable return.
 2. **Immutability by default.** `val` over `var`, immutable `List`/`Map` over mutable, `data class` + `copy()` for updates. Mutable global state and mutable data classes are anti-patterns.

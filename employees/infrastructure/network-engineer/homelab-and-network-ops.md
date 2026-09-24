@@ -1,6 +1,6 @@
 # Homelab and Network Ops Reference
 
-Methodology lifted from ECC (affaan-m/everything-claude-code, MIT) skills: homelab-network-setup, homelab-vlan-segmentation, homelab-wireguard-vpn, homelab-pihole-dns, homelab-network-readiness, uncloud. All command snippets are illustrative patterns - confirm the platform, current topology, console access, and rollback before applying anything. Read-only first, change in a window.
+Methodology lifted from ECC (affaan-m/everything-the coding agent-code, MIT) skills: homelab-network-setup, homelab-vlan-segmentation, homelab-wireguard-vpn, homelab-pihole-dns, homelab-network-readiness, uncloud. All command snippets are illustrative patterns - confirm the platform, current topology, console access, and rollback before applying anything. Read-only first, change in a window.
 
 ---
 

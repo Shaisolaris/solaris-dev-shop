@@ -4,10 +4,10 @@ Domain: strategy / vision / fundraising / OKRs. (Advisory role - strong dedicate
 
 | # | Source | Stars | License | Last commit | Maintainer | What it adds | Gate-0 | Tag |
 |---|--------|-------|---------|-------------|------------|--------------|--------|-----|
-| 1 | github.com/alirezarezvani/claude-skills (ceo-advisor + founder-coach pod) | 17,992 | MIT | 2026-06-12 | alirezarezvani | executive_decision_framework (DECIDE, SWOT-TOWS, BCG, Porter, Blue Ocean, Balanced Scorecard), founder-toolkit | CONTENT-DUPLICATE (already absorbed - the CEO's primary source) | (absorbed) |
-| 2 | github.com/aapersh/strategy-skills-for-claude | 0 | none | 2026 | aapersh | 21 McKinsey-style strategy skills (diagnose/map/choose/execute/govern/communicate, MECE, pyramid, decision memo) | BELOW BAR (0 stars, no license) - methodology is good but unproven/unsafe; revisit if it gains traction | REJECT (below bar) |
+| 1 | github.com/alirezarezvani/the coding agent-skills (ceo-advisor + founder-coach pod) | 17,992 | MIT | 2026-06-12 | alirezarezvani | executive_decision_framework (DECIDE, SWOT-TOWS, BCG, Porter, Blue Ocean, Balanced Scorecard), founder-toolkit | CONTENT-DUPLICATE (already absorbed - the CEO's primary source) | (absorbed) |
+| 2 | github.com/aapersh/strategy-skills-for-the coding agent | 0 | none | 2026 | aapersh | 21 McKinsey-style strategy skills (diagnose/map/choose/execute/govern/communicate, MECE, pyramid, decision memo) | BELOW BAR (0 stars, no license) - methodology is good but unproven/unsafe; revisit if it gains traction | REJECT (below bar) |
 | 3 | github.com/joelparkerhenderson/objectives-and-key-results | (large, well-known) | (CC/permissive) | recent | joelparkerhenderson | OKR examples + patterns | OVERLAP - OKR cascade already covered by CEO + project-manager:plan-okrs; reference-quality, not new methodology | (overlap) |
-| 4 | mohitagw15856/pm-claude-skills (167 skills/17 professions) | (unverified) | (unverified) | 2026 | mohitagw15856 | broad professional skills incl. strategy/OKRs | UNVERIFIED + broad-not-deep; strategy slices overlap alirezarezvani | REJECT (unverified/overlap) |
+| 4 | mohitagw15856/pm-the coding agent-skills (167 skills/17 professions) | (unverified) | (unverified) | 2026 | mohitagw15856 | broad professional skills incl. strategy/OKRs | UNVERIFIED + broad-not-deep; strategy slices overlap alirezarezvani | REJECT (unverified/overlap) |
 | 5 | commercial CEO-advisor skills (mcpmarket listings) | n/a | proprietary | n/a | various | strategic-leadership playbooks | NOT OSS - proprietary | REJECT |
 
 ## Verdict

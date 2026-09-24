@@ -1,7 +1,7 @@
 # Verified-restore discipline + longitudinal baselining
 
 Methodology adapted from two verified sources (patterns only; no third-party code is
-bundled and Claude does not run these tools):
+bundled and This employee does not run these tools):
 - **Databasus** (Apache-2.0, ~7.4k stars) - restore-VERIFICATION discipline:
   test-restore into a throwaway container with a per-table row-count correctness report,
   GFS retention, PITR orchestration. README/docs read 2026-06-15.

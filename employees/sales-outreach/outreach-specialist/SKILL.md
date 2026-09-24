@@ -222,7 +222,7 @@ For sub-hour asks, skip the full 7-step motion: (1) one cold email -> write to t
 ## Sources absorbed
 - coreyhaines31/marketingskills `skills/cold-email/` (SKILL + 5 references) + `skills/prospecting/` (SKILL + 5 references) - snapshot /tmp/src-outreach/marketingskills/
 - msitarzewski/agency-agents `sales/sales-outbound-strategist.md`, `specialized/sales-outreach.md`, `sales/sales-offer-lead-gen-strategist.md` (light) - snapshot /tmp/src-outreach/agency-agents/
-- alirezarezvani-claude-skills `marketing-skill/cold-email/references/frameworks.md` (retained from v0.2.0)
+- alirezarezvani-the coding agent-skills `marketing-skill/cold-email/references/frameworks.md` (retained from v0.2.0)
 - MEDDIC/BANT depth deliberately NOT duplicated here (absorption-ledger REVERSAL 2026-06-08; lives with Sales Engineer)
 
 Shai's personal/work skills MAY be absorbed where additive ('never fold' retired 2026-06-04).

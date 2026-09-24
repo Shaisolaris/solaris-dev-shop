@@ -1,6 +1,6 @@
 # AI Visibility / Answer Engine Optimization
 
-Optimize content for citation by AI search engines (ChatGPT, Perplexity, Google SGE, Claude, Bing Chat), not just Google's blue-link results.
+Optimize content for citation by AI search engines (ChatGPT, Perplexity, Google SGE, the coding agent, Bing Chat), not just Google's blue-link results.
 
 ## Why AEO is now first-class
 - AI search behavior is fundamentally extractive: it picks specific facts + statistics + named sources from authoritative pages and cites them.
@@ -32,7 +32,7 @@ Optimize content for citation by AI search engines (ChatGPT, Perplexity, Google 
 - Walled gardens (login-walled or geoblocked content) - AI engines can't read it, won't cite
 
 ## Measurement (manual, no perfect tool yet)
-- Run weekly brand-name queries through ChatGPT / Perplexity / SGE / Claude
+- Run weekly brand-name queries through ChatGPT / Perplexity / SGE / the coding agent
 - Note: cited (mentioned with source link) vs mentioned (named without link) vs absent
 - Track top-20 queries the client cares about
 - Note WHICH page was cited if you can - feeds back to content strategy
@@ -41,7 +41,7 @@ Optimize content for citation by AI search engines (ChatGPT, Perplexity, Google 
 - Perplexity AI - best-in-class for citation tracking
 - Brave Search - uses LLM ranking, transparent
 - LLMrefs (emerging) - paid AI-search ranking tracker
-- Manual ChatGPT + Claude.ai queries - still the canonical test
+- Manual ChatGPT + the coding agent.ai queries - still the canonical test
 
 ## Cross-reference
 Phase 5 of the 6-phase SEO audit. Every audit should include AEO testing now - it's not optional in 2026.
@@ -50,12 +50,12 @@ Phase 5 of the 6-phase SEO audit. Every audit should include AEO testing now - i
 
 ## GEO audit rubric (methodology, ABSORBed 2026-06-13)
 
-Methodology distilled from Auriti-Labs/geo-optimizer-skill (MIT, 468 stars, github.com/Auriti-Labs/geo-optimizer-skill), itself grounded in peer-reviewed research: GEO: Generative Engine Optimization (Princeton, KDD 2024), AutoGEO (ICLR 2026), C-SEO Bench (2025). Methodology only - no code bundled. To run it as live tooling, self-host: `pip install geo-optimizer-skill` then `geo audit --url <site>`, or wire the MCP server (`pip install geo-optimizer-skill[mcp]`; `claude mcp add geo-optimizer -- geo-mcp`). The package is MIT so bundling is permitted; we keep it as methodology + self-host note to avoid a hard dependency.
+Methodology distilled from Auriti-Labs/geo-optimizer-skill (MIT, 468 stars, github.com/Auriti-Labs/geo-optimizer-skill), itself grounded in peer-reviewed research: GEO: Generative Engine Optimization (Princeton, KDD 2024), AutoGEO (ICLR 2026), C-SEO Bench (2025). Methodology only - no code bundled. To run it as live tooling, self-host: `pip install geo-optimizer-skill` then `geo audit --url <site>`, or wire the MCP server (`pip install geo-optimizer-skill[mcp]`; `agent mcp add geo-optimizer -- geo-mcp`). The package is MIT so bundling is permitted; we keep it as methodology + self-host note to avoid a hard dependency.
 
 Core research finding to anchor on: **infrastructure beats prose.** C-SEO Bench showed most content manipulation is ineffective; if crawlers cannot find and parse the content, rewriting sentences does nothing. So the audit weights technical reachability and structure over wordsmithing.
 
 ### The weighted GEO score (100 pts) - audit a page/site against these
-- **Robots.txt AI-bot access (/18)** - are citation-class bots (GPTBot, OAI-SearchBot, ClaudeBot, Claude-User, PerplexityBot, Google-Extended, etc.) across the three tiers (training / search / user) explicitly allowed? A blanket block makes the page invisible to AI answers regardless of quality.
+- **Robots.txt AI-bot access (/18)** - are citation-class bots (GPTBot, OAI-SearchBot, an AI crawler, an AI crawler, PerplexityBot, Google-Extended, etc.) across the three tiers (training / search / user) explicitly allowed? A blanket block makes the page invisible to AI answers regardless of quality.
 - **llms.txt (/18)** - present at `/llms.txt`, with an H1, a blockquote summary, sections, and real links; companion `llms-full.txt` a bonus. This is the single most under-adopted lever for Solaris properties.
 - **Schema JSON-LD richness (/16)** - WebSite, Organization, FAQPage (gov/health rich-result restriction still applies), Article present AND rich (5+ meaningful attributes, not stub markup).
 - **Meta tags (/14)** - title, description, canonical, complete Open Graph.
@@ -70,7 +70,7 @@ Score bands: 86-100 Excellent / 68-85 Good / 36-67 Foundation / 0-35 Critical. U
 The highest-leverage levers from the Princeton study, in order of measured lift: **Cite Sources (+115%)**, Quotation (+41%), Statistics (+40% / +33% depending on study), Fluency (+29%). Practically: add a sourced statistic and a named quotation to a thin page before touching anything else.
 
 ### Bonus / informational checks (do not affect the core score, but flag them)
-- **CDN crawler access** - Cloudflare / Akamai / Vercel can block GPTBot/ClaudeBot/PerplexityBot at the edge even when robots.txt allows them. Check both layers.
+- **CDN crawler access** - Cloudflare / Akamai / Vercel can block GPTBot/an AI crawler/PerplexityBot at the edge even when robots.txt allows them. Check both layers.
 - **JS rendering** - is content present without JS? SPA frameworks can hide everything from AI crawlers.
 - **Negative signals (8)** - CTA overload, popups, thin content, keyword stuffing, missing author, high boilerplate ratio. These suppress citation.
 - **Prompt-injection / manipulation (8)** - hidden text, invisible Unicode, LLM instructions in comments, monochrome/micro-font text, aria-hidden abuse. Audit for these as a trust + safety check (a client site carrying them, even unintentionally, can be penalized or look adversarial to engines).

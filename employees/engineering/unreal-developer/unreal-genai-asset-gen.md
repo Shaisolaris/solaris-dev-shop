@@ -12,22 +12,22 @@ A UE5.4-5.7+ C++ plugin that removes the "LLM/GenAI integration layer" so you fo
 
 ### 1. LLM APIs (C++ AND Blueprint, edit-time AND packaged runtime)
 - **OpenAI** - chat (`gpt-4.1`, `gpt-4.1-mini/nano`, `o4-mini`, `o3`, `o3-pro`, `o3-mini`) + **Structured Outputs** (pass a JSON schema inline or from a file, get schema-conformant JSON back).
-- **Anthropic Claude** - chat (`claude-4-latest`, `claude-3-7-sonnet`, `claude-3-5-sonnet`, `claude-3-5-haiku`).
+- **Anthropic the coding agent** - chat (`the coding agent-4-latest`, `the coding agent-3-7-sonnet`, `the coding agent-3-5-sonnet`, `the coding agent-3-5-haiku`).
 - **XAI Grok** - chat (`grok-3-latest`, `grok-3-mini-beta`).
 - **DeepSeek** - chat (`deepseek-chat` V3.1) + reasoning (`deepseek-reasoner`). Note: system message is mandatory for the reasoner; never feed `reasoning_content` back in (400 error); raise UE HTTP timeouts in `DefaultEngine.ini` (`HttpConnectionTimeout=180`, `HttpReceiveTimeout=180`) because R1 calls exceed the 30s default.
 - All calls are async with a completion delegate. Example (Anthropic):
 ```cpp
-FGenClaudeChatSettings ChatSettings;
-ChatSettings.Model = EClaudeModels::Claude_3_7_Sonnet;
+FGenthe coding agentChatSettings ChatSettings;
+ChatSettings.Model = Ethe coding agentModels::the coding agent_3_7_Sonnet;
 ChatSettings.MaxTokens = 4096;
 ChatSettings.Messages.Add(FGenChatMessage{TEXT("system"), TEXT("You are a helpful assistant.")});
 ChatSettings.Messages.Add(FGenChatMessage{TEXT("user"), TEXT("Describe a forest level.")});
-UGenClaudeChat::SendChatRequest(ChatSettings, FOnClaudeChatCompletionResponse::CreateLambda(
+UGenthe coding agentChat::SendChatRequest(ChatSettings, FOnthe coding agentChatCompletionResponse::CreateLambda(
     [this](const FString& Response, const FString& Error, bool bSuccess){ /* use Response */ }));
 ```
 - **Use case (runtime):** "Become Human"-style NPCs as agentic LLM instances inside a shipped build - the engine-parity of Unity-MCP's in-game runtime layer.
 
-### 2. MCP handshake (edit-time editor control via Claude Desktop / Claude Code / Cursor)
+### 2. MCP handshake (edit-time editor control via a desktop agent app / a coding agent / Cursor)
 A **FastMCP**-based Python MCP server (`Content/Python/mcp_server.py`) that lets an AI client drive the editor: spawn objects + transform/scale/rotate, change materials/color, generate blueprints (+ functions/variables/components), **run Python scripts**, **run console commands**, create/edit project files. This overlaps the ChiR24 bridge - **prefer ChiR24 for structured engine control; use UnrealGenAISupport's MCP mainly for its Python-script-execute escape hatch and its asset-gen tools.**
 
 > ⚠️ **Upstream honesty (carried, do not hide from Shai):** UnrealGenAISupport's MCP is **"not actively developed"** per its maintainer, and Epic is building an official UE 5.8+ MCP. Known MCP issues: nodes fail to connect properly; no undo/redo over MCP; no streaming for DeepSeek reasoning; create-material tool can't do complex materials; some valid LLM-generated Python fails; Blueprint compile errors aren't surfaced cleanly; getter/setter node spawning is flaky; editor windows don't always dock/focus right. Treat MCP-driven Blueprint graph work as best-effort + verify.

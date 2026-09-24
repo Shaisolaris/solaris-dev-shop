@@ -36,7 +36,7 @@ Run on every new SEO engagement before any recommendations. Output: the SaaS Hea
 - Disavow file status
 
 ## Phase 5 - AI visibility (AEO/GEO)
-- Test top 20 brand + category queries on ChatGPT / Perplexity / Google SGE / Claude (cited vs mentioned vs absent)
+- Test top 20 brand + category queries on ChatGPT / Perplexity / Google SGE / the coding agent (cited vs mentioned vs absent)
 - GEO citation MEASUREMENT (the tracked-numbers layer): run a fixed prompt panel (30-100 bucketed buyer queries) and report citation rate + mention rate + citation share + share-of-voice per engine + blended, with answer-vs-citation sentiment and the cited source URL (see `elite-technical-geo-2026.md`). The rubric below scores the page (cause); the panel measures citations (effect)
 - Score the property against the **GEO audit rubric** in `aeo-ai-visibility.md` (100-pt weighted: robots.txt AI-bot access, llms.txt depth, JSON-LD richness, brand/entity coherence, content structure, freshness, AI-discovery endpoints) - this replaces the old "no perfect tool yet" hand-wave with a scored, repeatable number
 - Citability score (the 47-method content-quality lever; prioritize Cite-Sources / Quotation / Statistics / Fluency)

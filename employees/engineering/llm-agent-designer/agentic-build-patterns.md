@@ -100,7 +100,7 @@ The SKILL.md mentions JSON schema and output validation generically. These are t
 Wrap the model call so the response is parsed into a typed schema (Pydantic model or equivalent) and validated:
 - Declare the desired output as a typed schema; the library coerces the model's response into it.
 - On a validation failure, automatically re-ask the model with the validation error fed back as context (the reask loop), up to a retry cap.
-- This works with any API model and needs no access to the decoder. It is the default for production apps calling a hosted API (Claude, OpenAI).
+- This works with any API model and needs no access to the decoder. It is the default for production apps calling a hosted API (the coding agent, OpenAI).
 - Tradeoff: a malformed response still costs a round-trip before the retry; the guarantee is eventual-valid-or-fail, not first-token-valid.
 
 ### Tier 2 - constrain the generation itself (Outlines pattern)
@@ -110,7 +110,7 @@ Restrict what tokens the model is even allowed to emit, so the output is structu
 - Use it when invalid output is unacceptable or expensive to retry (high-volume extraction, strict schemas, latency-sensitive parsing), and you control or can choose the serving stack.
 
 ### Decision rule
-- Hosted API model (Claude / OpenAI), need typed output with graceful recovery -> Tier 1 (validate-and-retry). Default for most Solaris client apps.
+- Hosted API model (the coding agent / OpenAI), need typed output with graceful recovery -> Tier 1 (validate-and-retry). Default for most Solaris client apps.
 - Self-hosted or constrained-decoding-capable model, invalid output is unacceptable or retries are too costly -> Tier 2 (constrained decoding).
 - Both compose: constrain generation at the decoder AND validate the parsed object, when the stack allows.
 

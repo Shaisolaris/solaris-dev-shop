@@ -18,7 +18,7 @@ Natural-language entry point: "Are there any vulnerabilities or misconfiguration
 - Trivy generates an SBOM (CycloneDX or SPDX) from the project/image. Use it to (a) attach a supply-chain bill-of-materials to a release, (b) re-scan the SBOM later when new CVEs land WITHOUT rebuilding, and (c) answer "are we affected by CVE-XXXX" against a known component inventory.
 
 ## Review-tier doctrine
-- Run Trivy as the dependency/supply-chain pass; it does NOT replace AST-based SAST (semgrep/CodeQL/Snyk Code still own data-flow/taint) or human logic review - same boundary the existing claude-context note draws. Layered, not either/or.
+- Run Trivy as the dependency/supply-chain pass; it does NOT replace AST-based SAST (semgrep/CodeQL/Snyk Code still own data-flow/taint) or human logic review - same boundary the existing code-context note draws. Layered, not either/or.
 - Severity gating: P0/P1 SCA findings + any detected secret block the PR; P2 + license issues are flagged with an owner. Triage with `--ignore-unfixed` awareness - distinguish "fix available" from "no patch yet" so you don't block on un-actionable noise, but still record it.
 - Findings are evidence for the reviewer's judgment, not an auto-verdict (the scanner can't see business-logic abuse or intent).
 

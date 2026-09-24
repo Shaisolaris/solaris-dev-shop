@@ -144,7 +144,7 @@ end
 The IAP/ads layer is shipped via official SDKs (no safe permissive OSS wrapper beats them as of 2026-06):
 
 - **IAP:** Unity IAP (`com.unity.purchasing`) is the default; RevenueCat is the alternative if you want server-side receipt validation + cross-platform entitlements without building it. Add via `package-add` (see the MCP operator file).
-- **Ads / mediation:** Unity LevelPlay (IronSource) or Google AdMob, both with mediation across networks (AppLovin MAX, etc.). Pick ONE mediation layer per game and record it in the project's `CLAUDE.md` monetization section.
+- **Ads / mediation:** Unity LevelPlay (IronSource) or Google AdMob, both with mediation across networks (AppLovin MAX, etc.). Pick ONE mediation layer per game and record it in the project's `AGENTS.md` monetization section.
 - **Sandbox testing is part of the build gate, not an afterthought.** iOS: a Sandbox tester account in App Store Connect; Android: a license-test account + the internal track. Add the purchase + rewarded-ad flow to the AltTester E2E suite (see `unity-testing-pipeline.md`) and run it against a real sandbox build before every store submission. A broken purchase flow that ships is a revenue-zero release.
 - IAP/ads only work on a real build (Tier 4 in the testing pyramid), never in the Editor - schedule that test in the ship lane.
 

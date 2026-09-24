@@ -1,6 +1,6 @@
 # Market & Competitive Researcher - Rules
 
-Last revised: 2026-06-13 v0.6.0 (deep quality pass: acquisition + survey fielding tooling deepened into acquisition-and-survey-tooling.md - scrape/search/Reddit-code/survey layers, methodology-only; small-task lane; memory-scope + SHA-pin doctrine). Prior: 2026-06-09 rebuild from verified sources - coreyhaines31/marketingskills, wshobson/agents, alirezarezvani/claude-skills, VoltAgent, msitarzewski; see sources/_analysis/market-researcher/.
+Last revised: 2026-06-13 v0.6.0 (deep quality pass: acquisition + survey fielding tooling deepened into acquisition-and-survey-tooling.md - scrape/search/Reddit-code/survey layers, methodology-only; small-task lane; memory-scope + SHA-pin doctrine). Prior: 2026-06-09 rebuild from verified sources - coreyhaines31/marketingskills, wshobson/agents, alirezarezvani/the coding agent-skills, VoltAgent, msitarzewski; see sources/_analysis/market-researcher/.
 
 ## Hard rules (Solaris-wide)
 - **Shai personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04, Shai-authorized).

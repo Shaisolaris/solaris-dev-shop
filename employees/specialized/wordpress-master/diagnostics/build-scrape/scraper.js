@@ -197,7 +197,7 @@ async function gotoWithFallback(page, url) {
           return found;
         });
 
-        // Write raw HTML to output directory (Claude sanitises in SKILL.md Section 3)
+        // Write raw HTML to output directory (the coding agent sanitises in SKILL.md Section 3)
         fs.writeFileSync(path.join(outputDir, filename), html, 'utf8');
 
         pagesVisited.push({ url, filename, features });

@@ -3,7 +3,7 @@
 Source: neka-nat/freecad-mcp (verified live 2026-06-13: MIT, 1,113★, last push 2026-06-11). CONNECT - the host runs FreeCAD with the MCP addon; this file is how the employee drives it.
 
 ## What it is
-A FreeCAD addon + MCP server that lets Claude control FreeCAD: create/edit objects, run arbitrary FreeCAD Python, pull standard parts from the FreeCAD parts library, screenshot the view, and run a CalculiX FEM analysis. It turns FreeCAD into a parametric-CAD execution backend.
+A FreeCAD addon + MCP server that lets the coding agent control FreeCAD: create/edit objects, run arbitrary FreeCAD Python, pull standard parts from the FreeCAD parts library, screenshot the view, and run a CalculiX FEM analysis. It turns FreeCAD into a parametric-CAD execution backend.
 
 ## Host install (what the host does)
 1. Clone the repo and copy the addon into FreeCAD's Mod directory:

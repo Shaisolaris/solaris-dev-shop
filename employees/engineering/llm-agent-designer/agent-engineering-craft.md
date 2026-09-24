@@ -2,7 +2,7 @@
 
 > Load this when you are BUILDING or DEBUGGING an agent harness, not when you are scoring one. Scoring, eval metrics, per-metric thresholds, LLM-as-judge rubrics, and memory-scope keys live in `eval-methodology.md`. This file is the build craft: how to construct the harness, audit its architecture, debug it when it loops, and keep its token bill honest. No eval-metric tables are repeated here.
 
-**Source canon:** [affaan-m/ECC](https://github.com/affaan-m/ECC) (Everything Claude Code), MIT. Methodology lifted from its `skills/` tree: `agent-harness-construction`, `agent-architecture-audit` (origin oh-my-agent-check), `agent-introspection-debugging`, `cost-aware-llm-pipeline`, `regex-vs-llm-structured-text`, plus the comparison mechanics from `agent-eval`. Methodology only; no source code copied verbatim, patterns restated in Solaris terms.
+**Source canon:** [affaan-m/ECC](https://github.com/affaan-m/ECC) (Everything a coding agent), MIT. Methodology lifted from its `skills/` tree: `agent-harness-construction`, `agent-architecture-audit` (origin oh-my-agent-check), `agent-introspection-debugging`, `cost-aware-llm-pipeline`, `regex-vs-llm-structured-text`, plus the comparison mechanics from `agent-eval`. Methodology only; no source code copied verbatim, patterns restated in Solaris terms.
 
 The owner flagged Solaris agent-building as weak. This file is the fix: the craft of making the harness itself good, separate from the eval gate that proves it.
 

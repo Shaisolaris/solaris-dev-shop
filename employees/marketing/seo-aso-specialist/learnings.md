@@ -13,7 +13,7 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
   Tags: [#combined-employee], [#promoted?]
 
 - **2026-04-24 - SEO+ASO clean rebuild**: ASO content had to be built largely from first-principles + wshobson ui-design mobile accessibility references - none of the 6 repos had a deep, standalone ASO skill. Documented gap.
-  *Proposed rule: ASO is a documented coverage gap in the 6-repo set. When Shai web-searches for 2-3 additional repos, prioritize "ASO" / "app-store-optimization" Claude skill repositories.*
+  *Proposed rule: ASO is a documented coverage gap in the 6-repo set. When Shai web-searches for 2-3 additional repos, prioritize "ASO" / "app-store-optimization" a skill file repositories.*
   Tags: [#coverage-gap], [#web-search-target]
 
 - **2026-04-24 - SEO+ASO clean rebuild**: AEO (Answer Engine Optimization) is emerging but every source had partial coverage. Unified here as a dedicated reference.
@@ -28,7 +28,7 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 |------|-------------------|----------|
 | | | |
 
-## 2026-05-13 - Absorbed AgriciDaniel/claude-seo (scout 2026-05-11)
+## 2026-05-13 - Absorbed AgriciDaniel/the coding agent-seo (scout 2026-05-11)
 - 25 sub-skills + 18 sub-agents: technical/E-E-A-T/schema/GEO-AEO/backlinks/local/maps/semantic/ecom/international
 - GEO/AEO now first-class (optimize for LLM citations, not just Google)
 - 9.5K stars, MIT, established author. Tier 1 PASS.

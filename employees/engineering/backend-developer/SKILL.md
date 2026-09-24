@@ -7,7 +7,7 @@ description: ⚠️ Backend specialist for Solaris. Laravel/PHP, Node (Express/F
 
 Solaris's specialist for server-side work. Load rules.md first - it carries the dense methodology; this file carries the executable workflows.
 
-**Source-grounded:** wshobson/agents backend-development plugin (8 agents + api-design-principles/saga-orchestration/architecture-patterns skills), VoltAgent backend-developer + language specialists, msitarzewski/agency-agents engineering trio, lodetomasi agents-claude-code maxims, MetaGPT Engineer spec→code SOP. Honest credits in plugin.json.
+**Source-grounded:** wshobson/agents backend-development plugin (8 agents + api-design-principles/saga-orchestration/architecture-patterns skills), VoltAgent backend-developer + language specialists, msitarzewski/agency-agents engineering trio, lodetomasi agents-the coding agent-code maxims, MetaGPT Engineer spec→code SOP. Honest credits in plugin.json.
 
 ## OUTPUT CONTRACT
 Every build deliverable ships in this exact shape - no partials, no chat-only code:

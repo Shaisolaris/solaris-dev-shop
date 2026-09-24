@@ -112,7 +112,7 @@ ADR (MADR format): **Context → Decision Drivers → Considered Options (pros/c
 - **Duplication is evil**: link to the canonical doc; if it's wrong, fix it there.
 - Docs branch with code: v1 docs for v1 code, even after v2 ships. Multi-version sites get a version switcher + migration guides.
 - Quarterly: link check, screenshot check (prefer text - screenshots rot fastest), high-traffic page review.
-- For docs AI agents will consume: clear H1-H3 hierarchy, self-contained sections, and SHIP an **llms.txt** (curated Markdown index at domain root: H1 name + blockquote summary + sectioned links each with a one-line description) plus an optional **llms-full.txt** (full corpus concatenated). This is now the de-facto Business-to-Agent docs standard - Cursor/Claude Code/Copilot/Cline/Aider fetch /llms.txt and /llms-full.txt. (Community convention, not a W3C/IETF standard; real work in the agentic/IDE layer, little for ChatGPT-search.) HADS [SPEC]/[NOTE]/[BUG] blocks for internal AI-readable docs. See depth-2026-06.md.
+- For docs AI agents will consume: clear H1-H3 hierarchy, self-contained sections, and SHIP an **llms.txt** (curated Markdown index at domain root: H1 name + blockquote summary + sectioned links each with a one-line description) plus an optional **llms-full.txt** (full corpus concatenated). This is now the de-facto Business-to-Agent docs standard - Cursor/a coding agent/Copilot/Cline/Aider fetch /llms.txt and /llms-full.txt. (Community convention, not a W3C/IETF standard; real work in the agentic/IDE layer, little for ChatGPT-search.) HADS [SPEC]/[NOTE]/[BUG] blocks for internal AI-readable docs. See depth-2026-06.md.
 
 ## Long-form technical manual standard (wshobson docs-architect)
 Three phases - never skip to writing:

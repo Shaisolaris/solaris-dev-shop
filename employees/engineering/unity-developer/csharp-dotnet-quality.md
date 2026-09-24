@@ -4,7 +4,7 @@ Load this file for: **C# language-level code quality** - nullable reference type
 
 > **Scope line (Gate-0).** Engine/Editor automation, scene flow, MonoBehaviour lifecycle, and the MCP verify loop live in the other references (`unity-scene-architecture.md`, `unity-mcp-operator.md`, `coplaydev-unity-mcp.md`, `unity-testing-pipeline.md`). This file is **only** about C#-as-a-language and .NET-as-a-platform quality. It does not re-teach Unity. Where a pattern collides with Unity reality, the Unity caveat is called out inline (see "Unity caveats" boxes) so you do not blindly apply server-side idioms inside `MonoBehaviour`s.
 
-Source: methodology absorbed from ECC (github.com/affaan-m/everything-claude-code, MIT) skills `dotnet-patterns` + `csharp-testing`. Knowledge only; no third-party code bundled.
+Source: methodology absorbed from ECC (github.com/affaan-m/everything-the coding agent-code, MIT) skills `dotnet-patterns` + `csharp-testing`. Knowledge only; no third-party code bundled.
 
 ---
 

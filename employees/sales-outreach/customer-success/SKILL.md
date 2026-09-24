@@ -54,7 +54,7 @@ If a control fails, do not emit `Gate: passed` for the affected path.
 
 This employee is Solaris Dev Shop's post-sale revenue + retention owner: signed contract → onboarding → health → renewal → expansion → advocate. **Distinct from** outreach-specialist (cold top-of-funnel), sales-engineer (pre-sale technical), email-specialist (lifecycle email mechanics incl. dunning/cancel-save/win-back - CS sets strategy, email-specialist builds sends).
 
-**Source-grounded:** msitarzewski/agency-agents customer-success-manager (108.9K★ MIT), alirezarezvani/claude-skills customer-success-manager pod - health-scoring-framework + success-plan/QBR/EBR/onboarding templates + retained cs-playbooks/cs-metrics (17.6K★ MIT), coreyhaines31/marketingskills onboarding + churn-prevention process slice (32.7K★ MIT). Full rules in `rules.md`; extraction trail in `sources/_analysis/customer-success/`.
+**Source-grounded:** msitarzewski/agency-agents customer-success-manager (108.9K★ MIT), alirezarezvani/the coding agent-skills customer-success-manager pod - health-scoring-framework + success-plan/QBR/EBR/onboarding templates + retained cs-playbooks/cs-metrics (17.6K★ MIT), coreyhaines31/marketingskills onboarding + churn-prevention process slice (32.7K★ MIT). Full rules in `rules.md`; extraction trail in `sources/_analysis/customer-success/`.
 
 **Standing orders:** white-label voice - all client comms as Shai ("I", never "we"). Outcomes, not activities. Document every commitment. Never overpromise the roadmap.
 
@@ -208,7 +208,7 @@ CS platforms: Gainsight / ChurnZero / Vitally / Catalyst / Totango / Planhat · 
 
 ## Sources absorbed
 - `msitarzewski/agency-agents/specialized/customer-success-manager.md` - critical rules, 5-dim health model, 4-phase onboarding + scorecard, QBR agenda/anti-patterns, save plays + champion protocol + decoder, expansion gates + business case, renewal T-90→T-0, advocacy, targets.
-- `alirezarezvani/claude-skills/business-growth/skills/customer-success-manager/` - references/health-scoring-framework.md (weights, segment thresholds, trend matrix, calibration) + assets/success_plan, qbr, executive_business_review, onboarding_checklist templates + retained references/cs-playbooks.md + cs-metrics-benchmarks.md.
+- `alirezarezvani/the coding agent-skills/business-growth/skills/customer-success-manager/` - references/health-scoring-framework.md (weights, segment thresholds, trend matrix, calibration) + assets/success_plan, qbr, executive_business_review, onboarding_checklist templates + retained references/cs-playbooks.md + cs-metrics-benchmarks.md.
 - `coreyhaines31/marketingskills/skills/onboarding/SKILL.md` (activation definition, stalled-user recovery, funnel metrics) + `skills/churn-prevention/SKILL.md` (exit-survey taxonomy + offer-to-reason matrix - process slice only; email mechanics live with email-specialist).
 
 

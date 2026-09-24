@@ -8,7 +8,7 @@ runs-before: [build-content]
 
 # Build Theme Skill
 
-Selects, installs, and activates a Full Site Editing (FSE) block theme from WP.org based on the user's natural language site description. This skill queries the WP.org Themes API v1.2 for FSE themes, evaluates results against the NL prompt using Claude's in-context judgment, and installs the best match. A curated fallback list provides guaranteed theme selection when the API returns poor results or is unavailable.
+Selects, installs, and activates a Full Site Editing (FSE) block theme from WP.org based on the user's natural language site description. This skill queries the WP.org Themes API v1.2 for FSE themes, evaluates results against the NL prompt using the coding agent's in-context judgment, and installs the best match. A curated fallback list provides guaranteed theme selection when the API returns poor results or is unavailable.
 
 **Critical sequencing:** This skill runs AFTER `build-mcp` Section 2 (MCP adapter activated, DB re-exported) and BEFORE `build-content` (content seeding requires the theme to be active for menu location discovery).
 
@@ -21,13 +21,13 @@ This skill expects the following variables to already be set by the calling comm
 
 ## Section 1: WP.org Themes API Query
 
-Query the WP.org Themes API v1.2 for the FSE block theme pool. Use the `full-site-editing` tag to filter - this is the canonical public signal for FSE/block themes. Do NOT combine `search` and `tag` parameters: the API ignores tags when `search` is present. Claude evaluates theme relevance in-context after fetching the pool.
+Query the WP.org Themes API v1.2 for the FSE block theme pool. Use the `full-site-editing` tag to filter - this is the canonical public signal for FSE/block themes. Do NOT combine `search` and `tag` parameters: the API ignores tags when `search` is present. the coding agent evaluates theme relevance in-context after fetching the pool.
 
 ```bash
 echo "[Build] Querying WP.org Themes API for FSE theme pool..."
 
 # CRITICAL anti-pattern: Do NOT use ?action=query_themes&request[search]=...&request[tag][]=full-site-editing
-# The API ignores tag[] when search is present. Use tag-only query; Claude evaluates relevance in-context.
+# The API ignores tag[] when search is present. Use tag-only query; the coding agent evaluates relevance in-context.
 
 FSE_THEMES_FILE="/tmp/fse_themes_$$.json"
 
@@ -39,7 +39,7 @@ CURL_EXIT=$?
 # Validate response - check exit code, non-empty file, and JSON structure
 API_AVAILABLE=false
 if [ $CURL_EXIT -eq 0 ] && [ -s "$FSE_THEMES_FILE" ]; then
-  # Count themes in response - need at least 3 for Claude to evaluate properly
+  # Count themes in response - need at least 3 for the coding agent to evaluate properly
   THEME_COUNT=$(python3 -c "import json,sys; d=json.load(open(sys.argv[1])); print(len(d.get('themes', [])))" "$FSE_THEMES_FILE" 2>/dev/null || echo "0")
   if [ "$THEME_COUNT" -ge 3 ]; then
     API_AVAILABLE=true
@@ -54,7 +54,7 @@ fi
 
 ## Section 2: Theme Evaluation and Selection
 
-Claude reads the API JSON response and evaluates each theme against the `NL_PROMPT`. If the API returned a viable pool, Claude selects the best match using relevance, popularity, and rating. If the API failed or returned too few results, Claude selects from the curated fallback list based on the site category in `NL_PROMPT`.
+the coding agent reads the API JSON response and evaluates each theme against the `NL_PROMPT`. If the API returned a viable pool, the coding agent selects the best match using relevance, popularity, and rating. If the API failed or returned too few results, the coding agent selects from the curated fallback list based on the site category in `NL_PROMPT`.
 
 **Scoring criteria (in priority order):**
 1. Name, description, and tag relevance to the site type described in `NL_PROMPT`
@@ -68,7 +68,7 @@ if [ "$API_AVAILABLE" = "true" ]; then
   echo "[Build] Evaluating FSE themes against NL prompt: \"$NL_PROMPT\""
   echo "[Build] Reading themes from: $FSE_THEMES_FILE"
 
-  # Claude reads the FSE themes JSON and evaluates each theme:
+  # the coding agent reads the FSE themes JSON and evaluates each theme:
   # - themes[].name: display name
   # - themes[].slug: WP.org install slug
   # - themes[].description: theme description
@@ -76,25 +76,25 @@ if [ "$API_AVAILABLE" = "true" ]; then
   # - themes[].active_installs: popularity (number of active installations)
   # - themes[].rating: quality rating (0-100 scale)
   #
-  # Claude selects the theme with the best combination of:
+  # the coding agent selects the theme with the best combination of:
   # (1) relevance to NL_PROMPT site type
   # (2) high active_installs
   # (3) high rating
   #
   # No-match behavior: If no theme scores well against the NL_PROMPT site type,
-  # Claude presents the top 3 candidates to the user and asks them to choose.
+  # the coding agent presents the top 3 candidates to the user and asks them to choose.
   # This breaks autonomous flow intentionally - satisfaction > automation.
   #
-  # After selection, Claude sets:
-  THEME_SLUG="<slug selected by Claude from API results>"
-  THEME_NAME="<display name selected by Claude from API results>"
+  # After selection, the coding agent sets:
+  THEME_SLUG="<slug selected by the coding agent from API results>"
+  THEME_NAME="<display name selected by the coding agent from API results>"
 
 else
   # Curated fallback list - maps site categories to known FSE-compatible theme slugs
   # These themes are verified FSE block themes maintained on WP.org.
   # Update this list if a theme is removed from WP.org.
   #
-  # Category → Slug mappings (Claude extracts site category from NL_PROMPT):
+  # Category → Slug mappings (the coding agent extracts site category from NL_PROMPT):
   #
   # portfolio / photography / creative → flavor
   # business / corporate / agency      → flavor
@@ -105,8 +105,8 @@ else
   #
   # twentytwentyfour is the guaranteed last-resort fallback (maintained by WordPress.org core team).
   #
-  # Claude reads NL_PROMPT, determines the site category, and sets:
-  THEME_SLUG="<slug selected by Claude from curated fallback list>"
+  # the coding agent reads NL_PROMPT, determines the site category, and sets:
+  THEME_SLUG="<slug selected by the coding agent from curated fallback list>"
   THEME_NAME="<display name for the selected curated theme>"
 fi
 
@@ -126,13 +126,13 @@ install_theme() {
     echo "[Build] Theme installed and activated: $slug"
 
     # FSE validation - check for theme.json presence
-    # Claude selected from the FSE pool, so this is a secondary confirmation.
+    # the coding agent selected from the FSE pool, so this is a secondary confirmation.
     # false negative possible if theme.json is in a subdirectory or named differently.
     if [ -f "$BUILD_DIR/wp-content/themes/$slug/theme.json" ]; then
       echo "[Build] FSE validated: theme.json found."
     else
       echo "[Build] WARNING: theme.json not found - theme may not be FSE-compatible."
-      echo "[Build] Proceeding - Claude selected this theme from the full-site-editing tag pool."
+      echo "[Build] Proceeding - the coding agent selected this theme from the full-site-editing tag pool."
     fi
 
     # Get theme version
@@ -156,9 +156,9 @@ if ! install_theme "$THEME_SLUG"; then
   # Attempt 2: If API-selected theme failed, try curated fallback
   if [ "$API_AVAILABLE" = "true" ]; then
     echo "[Build] Trying curated fallback theme for site category..."
-    # Claude determines the curated fallback slug from NL_PROMPT site category
+    # the coding agent determines the curated fallback slug from NL_PROMPT site category
     # (see Section 2 curated list) and retries
-    FALLBACK_SLUG="twentytwentyfour"  # Claude replaces this with category-specific slug if applicable
+    FALLBACK_SLUG="twentytwentyfour"  # the coding agent replaces this with category-specific slug if applicable
     if ! install_theme "$FALLBACK_SLUG"; then
       # Attempt 3: Last resort - twentytwentyfour (maintained by WordPress.org)
       if [ "$FALLBACK_SLUG" != "twentytwentyfour" ]; then
@@ -219,7 +219,7 @@ echo "[Build] Setting site title and tagline..."
 # Update site title (may already match from build-scaffold --title, but update to confirm)
 $WP option update blogname "$SITE_TITLE" 2>&1
 
-# Claude generates a brief tagline (one line, no quotes) from NL_PROMPT
+# the coding agent generates a brief tagline (one line, no quotes) from NL_PROMPT
 # Examples:
 #   NL_PROMPT: "a portfolio site for a freelance photographer"
 #   → Tagline: "Capturing moments that matter"
@@ -227,8 +227,8 @@ $WP option update blogname "$SITE_TITLE" 2>&1
 #   NL_PROMPT: "a restaurant website for an Italian bistro in Sydney"
 #   → Tagline: "Authentic Italian flavours in the heart of Sydney"
 #
-# Claude sets SITE_TAGLINE to the generated tagline, then:
-SITE_TAGLINE="<Claude-generated tagline from NL_PROMPT>"
+# the coding agent sets SITE_TAGLINE to the generated tagline, then:
+SITE_TAGLINE="<the coding agent-generated tagline from NL_PROMPT>"
 $WP option update blogdescription "$SITE_TAGLINE" 2>&1
 
 echo "[Build] Site title set: $SITE_TITLE"
@@ -251,7 +251,7 @@ echo "[Build] Site tagline set: $SITE_TAGLINE"
 
 **No post-install customization (locked decision):** Per user decision captured in CONTEXT.md, no theme.json overrides, child themes, or Global Styles modifications are applied after installation. The theme is installed and activated as-is from WP.org. Its built-in design stands as delivered.
 
-**FSE validation reliability:** The `theme.json` check is a secondary confirmation - Claude already filtered themes by the `full-site-editing` tag in the API query. A "WARNING: theme.json not found" message does not indicate an error: the theme may store `theme.json` at a non-standard location, or the WP.org tag may have been set correctly but the file path check failed. Build continues regardless.
+**FSE validation reliability:** The `theme.json` check is a secondary confirmation - the coding agent already filtered themes by the `full-site-editing` tag in the API query. A "WARNING: theme.json not found" message does not indicate an error: the theme may store `theme.json` at a non-standard location, or the WP.org tag may have been set correctly but the file path check failed. Build continues regardless.
 
 **References:**
 - @references/wp-block-themes/SKILL.md - FSE theme structure, theme.json schema, block template patterns

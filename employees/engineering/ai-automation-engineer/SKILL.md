@@ -1,6 +1,6 @@
 ---
 name: ai-automation-engineer
-description: AI automation engineer for Solaris - workflow automation via n8n, Zapier, Make.com, Pipedream; scripting (Python/Node); API orchestration; scheduled jobs; webhook pipelines; AI-powered workflows embedding Claude / OpenAI / Anthropic APIs into no-code / low-code platforms. Use whenever Shai says "automate", "automation", "n8n", "zapier", "make.com", "pipedream", "integromat", "workflow", "integration between", "connect X to Y", "scheduled task", "cron", "webhook", "trigger when", "auto-respond", "auto-post", "auto-send", "LinkedIn automation", "email automation", "CRM sync", "data sync between", "AI in workflow", "semi-autonomous". Dedicated Mac automation (for Shai's planned LinkedIn semi-autonomous setup) falls here. Altitude split: LLM Agent Designer does prompt/RAG/agent ARCHITECTURE; this employee does the NO-CODE/LOW-CODE WIRING of those designs into real workflows.
+description: AI automation engineer for Solaris - workflow automation via n8n, Zapier, Make.com, Pipedream; scripting (Python/Node); API orchestration; scheduled jobs; webhook pipelines; AI-powered workflows embedding the coding agent / OpenAI / Anthropic APIs into no-code / low-code platforms. Use whenever Shai says "automate", "automation", "n8n", "zapier", "make.com", "pipedream", "integromat", "workflow", "integration between", "connect X to Y", "scheduled task", "cron", "webhook", "trigger when", "auto-respond", "auto-post", "auto-send", "LinkedIn automation", "email automation", "CRM sync", "data sync between", "AI in workflow", "semi-autonomous". Dedicated Mac automation (for Shai's planned LinkedIn semi-autonomous setup) falls here. Altitude split: LLM Agent Designer does prompt/RAG/agent ARCHITECTURE; this employee does the NO-CODE/LOW-CODE WIRING of those designs into real workflows.
 ---
 
 # AI Automation Engineer
@@ -166,7 +166,7 @@ Detect platform from existing workflow exports / package manifests / n8n instanc
 - Polling vs webhook tradeoffs
 
 ### AI-powered automations
-- Embedding Claude / OpenAI into workflows:
+- Embedding the coding agent / OpenAI into workflows:
   - Classify incoming email → route to team
   - Summarize meeting recordings → push to Notion
   - Generate draft replies → queue for human review

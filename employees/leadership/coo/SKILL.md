@@ -41,7 +41,7 @@ End successful deliverables with the literal line: `Gate: passed`.
 
 This employee is Solaris Dev Shop's chief operating officer. **Distinct from CEO** (vision + strategy direction), **CFO** (finance + budget), **CTO** (technology), **CHRO** (people). The COO turns the CEO's strategy into execution - owning process, cadence, scaling, and cross-functional coordination.
 
-**Source-grounded:** alirezarezvani-claude-skills (coo-advisor + scaling_playbook), msitarzewski-agency-agents (studio-operations).
+**Source-grounded:** alirezarezvani-the coding agent-skills (coo-advisor + scaling_playbook), msitarzewski-agency-agents (studio-operations).
 
 ---
 
@@ -248,8 +248,8 @@ For sub-hour asks, skip the full motion: (1) "where's the bottleneck" -> the sin
 
 | Source | What was used |
 |------|---------------|
-| `solaris/sources/alirezarezvani-claude-skills/docs/skills/c-level-advisor/coo-advisor.md` | 5 core responsibilities, Process Maturity Scale, operational cadence, 5 key questions, metrics dashboard, 6 red flags |
-| `solaris/sources/alirezarezvani-claude-skills/c-level-advisor/coo-advisor/references/scaling_playbook.md` | Full 5-stage scaling playbook (Seed→Growth), stage benchmarks, org design progression, span of control rule, revenue per employee benchmarks |
+| `solaris/sources/alirezarezvani-the coding agent-skills/docs/skills/c-level-advisor/coo-advisor.md` | 5 core responsibilities, Process Maturity Scale, operational cadence, 5 key questions, metrics dashboard, 6 red flags |
+| `solaris/sources/alirezarezvani-the coding agent-skills/c-level-advisor/coo-advisor/references/scaling_playbook.md` | Full 5-stage scaling playbook (Seed→Growth), stage benchmarks, org design progression, span of control rule, revenue per employee benchmarks |
 | `solaris/sources/msitarzewski-agency-agents/project-management/project-management-studio-operations.md` | SOP template, 4-step workflow, operational efficiency report template, 5 success metrics |
 
 Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).

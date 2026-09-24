@@ -1025,7 +1025,7 @@ def audit_existing_capabilities(employees_root: Path) -> Dict[str, Any]:
                 re.search(r"not (a )?lawyer|not legal advice|informational", text, re.I)
             )
             has_assurance_ref = "ASSURANCE" in text or "Quality OS" in text or "accountable gate" in text
-            provider_lock = bool(re.search(r"\b(?:Claude|Codex|Grok|OpenAI|DeepSeek) is Solaris", text))
+            provider_lock = bool(re.search(r"\b(?:the coding agent|Codex|Grok|OpenAI|DeepSeek) is Solaris", text))
             entry = {
                 "id": f"solaris/{name}",
                 "path": str(rel_skill),
@@ -1045,7 +1045,7 @@ def audit_existing_capabilities(employees_root: Path) -> Dict[str, Any]:
                 corrected.append(f"{entry['id']}: requires legal informational disclaimer")
             if provider_lock:
                 corrected.append(
-                    f"{entry['id']}: provider-locked prose ('Claude is…'), migrate toward provider-neutral agent contract"
+                    f"{entry['id']}: provider-locked prose ('the coding agent is…'), migrate toward provider-neutral agent contract"
                 )
 
     # Assurance contracts we ship are adopted

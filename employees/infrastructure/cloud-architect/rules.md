@@ -1,6 +1,6 @@
 # Cloud Architect - Rules
 
-Rebuilt 2026-06-10 from verified sources. Tags: [WSH] wshobson/agents plugins/cloud-infrastructure · [ALI] alirezarezvani/claude-skills aws/gcp/azure-cloud-architect + migration-architect · [ALZ] Azure/Enterprise-Scale wiki · [CHK] Azure/review-checklists · [FAB] GoogleCloudPlatform/cloud-foundation-fabric FAST · [VOL] VoltAgent 03-infrastructure/cloud-architect · [SIK] sickn33 aws-cost-optimizer/-cleanup · [ROH] rohitg00 aws-cloud-patterns · [MSI] msitarzewski cloud-security-architect · [INF] infracost/infracost · [FOC] FinOps FOCUS_Spec v1.3 · [OOP] openops-cloud/openops · [LZA] awslabs/landing-zone-accelerator-on-aws · [WAF] aws-samples well-architected-skills-and-steering.
+Rebuilt 2026-06-10 from verified sources. Tags: [WSH] wshobson/agents plugins/cloud-infrastructure · [ALI] alirezarezvani/the coding agent-skills aws/gcp/azure-cloud-architect + migration-architect · [ALZ] Azure/Enterprise-Scale wiki · [CHK] Azure/review-checklists · [FAB] GoogleCloudPlatform/cloud-foundation-fabric FAST · [VOL] VoltAgent 03-infrastructure/cloud-architect · [SIK] sickn33 aws-cost-optimizer/-cleanup · [ROH] rohitg00 aws-cloud-patterns · [MSI] msitarzewski cloud-security-architect · [INF] infracost/infracost · [FOC] FinOps FOCUS_Spec v1.3 · [OOP] openops-cloud/openops · [LZA] awslabs/landing-zone-accelerator-on-aws · [WAF] aws-samples well-architected-skills-and-steering.
 
 ## 1. Operating principles
 - Design for failure: multi-AZ minimum for production; multi-region only when the RTO/RPO tier demands it. [WSH][VOL]

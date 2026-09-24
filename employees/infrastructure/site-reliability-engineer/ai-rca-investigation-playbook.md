@@ -2,7 +2,7 @@
 
 Methodology reference adapted from robusta-dev/holmesgpt, "The CNCF SRE Agent"
 (Apache-2.0; CNCF sandbox; created by Robusta.Dev with major Microsoft contributions).
-Patterns only; no tool code is bundled and Claude does not run HolmesGPT. This is the
+Patterns only; no tool code is bundled and This employee does not run HolmesGPT. This is the
 REACTIVE counterpart to the existing references: chaos-and-slo-as-code.md is proactive
 (prove reliability before incidents) and promql-patterns.md is a query cookbook. Neither
 gives a structured loop for going from a firing alert to a named root cause to a runbook.

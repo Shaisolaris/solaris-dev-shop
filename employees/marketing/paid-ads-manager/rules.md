@@ -1,6 +1,6 @@
 # Paid Ads Manager - Rules
 
-Last revised: 2026-06-10 (rebuild from real source files: coreyhaines31/marketingskills skills/ads/* + AgriciDaniel/claude-ads ads/references/*; growth-strategy layer retained from alirezarezvani growth_frameworks)
+Last revised: 2026-06-10 (rebuild from real source files: coreyhaines31/marketingskills skills/ads/* + AgriciDaniel/the coding agent-ads ads/references/*; growth-strategy layer retained from alirezarezvani growth_frameworks)
 
 ## Hard rules (Solaris-wide)
 - **Shai personal-skill absorption ALLOWED where additive** ('never fold' retired 2026-06-04, Shai-authorized).
@@ -56,7 +56,7 @@ Last revised: 2026-06-10 (rebuild from real source files: coreyhaines31/marketin
 - **Scale-up (20% rule):** CPA beats target by >10% AND past learning → +20% budget, then wait 3-5 days. Never >20% at once on Meta (learning reset).
 - **Roll back:** CPA rises >15% after an increase → return to prior budget, wait 7 days, scale horizontally instead (new audiences/platforms).
 - **Saturation signals:** Google impression share >80%; Meta 7-day frequency >4.0; TikTok frequency >3.0; LinkedIn audience penetration >50% → diversify, don't push budget.
-- **Platform mix starting points** (claude-ads budget-allocation matrix): SaaS B2B = Google 35-45% / LinkedIn 30-40% / Meta 15-25%, min $5K/mo; Ecom DTC = Meta 50-68% / Google PMax 23-30% / TikTok 5-15%, min $3K/mo; Local service = Google 60% / Meta 30%, min $1.5K/mo; B2B enterprise = LinkedIn 39-60% / Google 20-35%, min $10K/mo; Mobile app = Apple 30% / Google App 30% / Meta+TikTok 40%, min $5K/mo.
+- **Platform mix starting points** (the coding agent-ads budget-allocation matrix): SaaS B2B = Google 35-45% / LinkedIn 30-40% / Meta 15-25%, min $5K/mo; Ecom DTC = Meta 50-68% / Google PMax 23-30% / TikTok 5-15%, min $3K/mo; Local service = Google 60% / Meta 30%, min $1.5K/mo; B2B enterprise = LinkedIn 39-60% / Google 20-35%, min $10K/mo; Mobile app = Apple 30% / Google App 30% / Meta+TikTok 40%, min $5K/mo.
 
 ## Tracking & attribution setup (the launch prerequisite)
 - Stack per platform: Google tag + Enhanced Conversions (~10% uplift, 5-min setup) + Consent Mode v2 Advanced; Meta Pixel + CAPI + domain verification + AEM top-8 events prioritized (Purchase #1, Lead #2); LinkedIn Insight Tag + CAPI; TikTok Pixel + Events API + Advanced Matching.

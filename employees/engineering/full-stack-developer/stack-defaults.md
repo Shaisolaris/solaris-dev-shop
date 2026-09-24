@@ -38,5 +38,5 @@ The Solaris bread-and-butter stack. Deviation requires CTO sign-off (ADR).
 
 ## When deviating
 - Open an ADR (cross-reference engineering/architecture skill)
-- Document the why in the project's CLAUDE.md
+- Document the why in the project's AGENTS.md
 - Get CTO sign-off before bringing the new tool into the stack catalog

@@ -12,7 +12,7 @@ This is engine-knowledge, not tool-knowledge. Apply it through the bridge: autho
 GAS is powerful and heavy. Use it when the game has many interacting abilities, stats, buffs/debuffs, and especially multiplayer with prediction. For a small single-player prototype with two or three abilities, a lighter component-based "Action" pattern (the ActionRoguelike approach: an ActionComponent holding UAction objects gated by GameplayTags) is faster to stand up and easier to reason about. **Rule:** don't reach for full GAS on a prototype; reach for it when the ability/stat matrix is genuinely combinatorial or when networked prediction is required.
 
 ### The five GAS pieces (the mental model)
-1. **AbilitySystemComponent (ASC).** The brain. Lives on the Pawn (for respawn-resetting state) or the PlayerState (for state that must survive respawn, e.g. MOBA/MP). **Rule:** decide ASC ownership at project start and record it in `CLAUDE.md` - moving it later is painful.
+1. **AbilitySystemComponent (ASC).** The brain. Lives on the Pawn (for respawn-resetting state) or the PlayerState (for state that must survive respawn, e.g. MOBA/MP). **Rule:** decide ASC ownership at project start and record it in `AGENTS.md` - moving it later is painful.
 2. **AttributeSet.** The stats (Health, Mana, Stamina, AttackPower). Each attribute has a BaseValue and a CurrentValue. Clamp and react to changes in `PreAttributeChange` / `PostGameplayEffectExecute`, not in ad-hoc Blueprint.
 3. **GameplayAbility (GA_).** A self-contained activatable action (Dash, Fireball, Reload). Has cost, cooldown, and tags that gate activation. Abilities are granted to the ASC, then activated by tag or input.
 4. **GameplayEffect (GE_).** How attributes change. Three durations: **Instant** (one-shot, modifies BaseValue - e.g. damage), **Duration** (timed buff, modifies CurrentValue - e.g. 10s speed boost), **Infinite** (until removed - e.g. equipped-item bonus). **Periodic** effects tick (e.g. damage-over-time). Use **modifiers** for simple math and **Execution Calculations** (C++) for complex formulas (armor mitigation, crit).
@@ -53,7 +53,7 @@ The number-one Unreal performance mistake is optimizing by vibes. Measure first.
 
 ## Part 3 - Networking methodology (correctness from day one)
 
-Multiplayer cannot be bolted on. Decide the model at project start and record it in `CLAUDE.md`. Concepts here are general UE net methodology (informed by the GASDocumentation MP sample and standard net-mode references; no text lifted).
+Multiplayer cannot be bolted on. Decide the model at project start and record it in `AGENTS.md`. Concepts here are general UE net methodology (informed by the GASDocumentation MP sample and standard net-mode references; no text lifted).
 
 ### Net modes and the authority model
 - **Net modes:** Standalone (no net), Dedicated Server (authoritative server, no local player - the production MP target), Listen Server (one player IS the host - convenient but the host has unfair zero-latency).

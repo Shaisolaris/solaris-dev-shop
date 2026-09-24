@@ -1,6 +1,6 @@
-# CLAUDE.md - Project Memory for [GAME NAME]
+# AGENTS.md - Project Memory for [GAME NAME]
 
-This file lives at the root of the Unreal project. Claude reads it at the start of every session so no question gets asked twice. Fill in what you know; leave blanks - Claude will help close them.
+This file lives at the root of the Unreal project. the coding agent reads it at the start of every session so no question gets asked twice. Fill in what you know; leave blanks - the coding agent will help close them.
 
 Last updated: [DATE]
 
@@ -57,4 +57,4 @@ Last updated: [DATE]
 - [e.g. "raise MCP request timeout before any cook/package"]
 
 ---
-*Claude: update sections 4-9 whenever a new standing decision is made this session.*
+*the coding agent: update sections 4-9 whenever a new standing decision is made this session.*

@@ -115,7 +115,7 @@
       "tokens",
       "production credentials",
       "invented CVE/CVSS/tool output",
-      "Desktop/Claude personal paths as required inputs",
+      "Desktop/the coding agent personal paths as required inputs",
       "live production scan results without human approval"
     ]
   },
@@ -224,7 +224,7 @@
       "production credentials in git",
       "raw customer PII in fixtures",
       "Alfred personal health/finance content",
-      "control Mac Desktop/Claude personal paths",
+      "control Mac Desktop/the coding agent personal paths",
       "force-push as recovery default",
       "silent production deploy or apply without human confirmation",
       "live production scans without human approval",
@@ -445,7 +445,7 @@
   },
   "compatibility": {
     "providers": [
-      "claude",
+      "the coding agent",
       "codex",
       "grok",
       "kimi"

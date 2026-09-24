@@ -43,10 +43,10 @@
   ],
   "department": "leadership",
   "absorbed_from": [
-    "alirezarezvani-claude-skills/c-level-advisor/cfo-advisor/references/financial_planning.md (bottoms-up modeling, ARR Bridge, NDR, headcount ratios, GM/COGS/opex benchmarks, three-statement model, modeling do's/don'ts)",
-    "alirezarezvani-claude-skills/docs/skills/finance/saas-metrics-coach.md (5-step process, Quick Ratio, Health Report output template, segment benchmarking)",
+    "alirezarezvani-the coding agent-skills/c-level-advisor/cfo-advisor/references/financial_planning.md (bottoms-up modeling, ARR Bridge, NDR, headcount ratios, GM/COGS/opex benchmarks, three-statement model, modeling do's/don'ts)",
+    "alirezarezvani-the coding agent-skills/docs/skills/finance/saas-metrics-coach.md (5-step process, Quick Ratio, Health Report output template, segment benchmarking)",
     "msitarzewski-agency-agents/finance/finance-fpa-analyst.md (Riley) (AOP 10-week cycle, MBR variance-w-forward-impact, driver-based forecasting, planning tooling)",
-    "alirezarezvani-claude-skills/c-level-advisor/cfo-advisor/scripts/burn_rate_calculator.py (runway calc reference)",
+    "alirezarezvani-the coding agent-skills/c-level-advisor/cfo-advisor/scripts/burn_rate_calculator.py (runway calc reference)",
     "msitarzewski-agency-agents/finance/finance-investment-researcher.md (investment research adjacency)",
     "anthropics/financial-services-plugins (official Anthropic, Apache-2.0, 6.7K stars) - financial-analysis core plugin only: model color convention, 3-statement-from-source, valuation triangulation, live-Excel comps/DCF/LBO, IC-memo structure. Consolidated into methodology 2026-05-14. IB/equity-research/PE/wealth-management plugins + 11 enterprise data connectors rejected as out-of-scope for an internal CFO.",
     "stefanoamorelli/sec-edgar-mcp (AGPL-3.0, v1.0.6, ABSORB 2026-06-13): exact-precision filings analysis - XBRL-parsed 10-K/10-Q/8-K section extraction, 3-statement pull for comparables, insider Form 3/4/5 signal, SEC filing URL on every response for verification. Enforces CFO 'build from source filings, not memory'. Patterns in references/filings-and-market-data-tooling.md; CONNECT via docker (SEC_EDGAR_USER_AGENT required), self-host (AGPL).",

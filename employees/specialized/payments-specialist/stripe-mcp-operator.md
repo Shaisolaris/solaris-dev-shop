@@ -17,7 +17,7 @@ This is **the** source for any Stripe + AI work going forward. It supersedes the
 
 | Scenario | Use |
 |----------|-----|
-| Claude Code session needs to read/write Stripe state during dev work | Stripe MCP server (`claude mcp add --transport http stripe https://mcp.stripe.com`) |
+| a coding agent session needs to read/write Stripe state during dev work | Stripe MCP server (`agent mcp add --transport http stripe https://mcp.stripe.com`) |
 | Building an end-user agent that creates customers, manages subscriptions, issues refunds, generates invoices | `@stripe/agent-toolkit` adapters for the framework being used |
 | Billing AI products by usage (per-token, per-call) | `@stripe/token-meter` |
 | Static REST integration in a long-lived codebase (no agent involvement) | wshobson stripe-integration patterns (Checkout Sessions / Payment Intents / Setup Intents) - still canonical |
@@ -30,12 +30,12 @@ This is **the** source for any Stripe + AI work going forward. It supersedes the
 ## Install commands
 
 ```bash
-# Stripe MCP server - for Claude Code dev sessions
-claude mcp add --transport http stripe https://mcp.stripe.com
+# Stripe MCP server - for a coding agent dev sessions
+agent mcp add --transport http stripe https://mcp.stripe.com
 
 # Authenticate (OAuth flow opens in browser)
 # Or use a restricted API key for read-only access:
-claude mcp add --transport http stripe https://mcp.stripe.com -e STRIPE_API_KEY=rk_test_xxx
+agent mcp add --transport http stripe https://mcp.stripe.com -e STRIPE_API_KEY=rk_test_xxx
 
 # Agent toolkit (npm) - for building production agents
 npm install @stripe/agent-toolkit
@@ -152,7 +152,7 @@ const anthropic = meter.wrap(new Anthropic());
 
 // Now every call is metered to Stripe under customer_id from headers
 await anthropic.messages.create({
-  model: "claude-sonnet-4-6",
+  model: "the coding agent-sonnet-4-6",
   // ...
 }, {
   headers: { "X-Stripe-Customer": customerId },
@@ -181,7 +181,7 @@ This is the same pattern as Context7 for general libraries, but Stripe-specific.
 
 - ❌ Using Stripe MCP to bypass webhook idempotency - webhooks still need signature verification + idempotency keys, MCP doesn't change that.
 - ❌ Granting `*` actions to an agent toolkit - least-privilege only.
-- ❌ Storing Stripe secret keys in client-side code via the MCP - the MCP is server-side / Claude Code session only.
+- ❌ Storing Stripe secret keys in client-side code via the MCP - the MCP is server-side / a coding agent session only.
 - ❌ Using token-meter for non-AI charges - it's a metering middleware, not a generic billing layer.
 - ❌ Replacing Stripe.js / Elements / Checkout for end-user payments with MCP - MCP is dev-side. End-user payments still need PCI-compliant frontend.
 

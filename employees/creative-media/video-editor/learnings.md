@@ -1,7 +1,7 @@
 # Video Editor - Learnings (Pending)
 
 ## Pending observations
-- **2026-04-25 - Clean rebuild from opheliabm/claude-videoedit gap-fill repo**: Pre-flight checks + lossless-first + GPU encoding for batch are the consistent FFmpeg professional practices.
+- **2026-04-25 - Clean rebuild from opheliabm/the coding agent-videoedit gap-fill repo**: Pre-flight checks + lossless-first + GPU encoding for batch are the consistent FFmpeg professional practices.
 - **2026-04-25 - Lossless trim with `-ss` before `-i`** is the FFmpeg shortcut that saves the most time + quality.
 
 - **2026-06-13 (depth) - DR MCP reconciled** - samuelgursky/davinci-resolve-mcp ~485 stars (corrected from ~1.1k); it supersedes the old 3-star lordhoell recommendation that lingered in the source-audit.

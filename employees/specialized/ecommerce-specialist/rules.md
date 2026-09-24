@@ -1,6 +1,6 @@
 # E-commerce Specialist - Rules
 
-Last revised: 2026-06-09 (rebuild from Shopify/Shopify-AI-Toolkit official skills + hookdeck + claude-marketing; was 202 lines/1 credit)
+Last revised: 2026-06-09 (rebuild from Shopify/Shopify-AI-Toolkit official skills + hookdeck + the coding agent-marketing; was 202 lines/1 credit)
 
 ## Hard rules (Solaris-wide)
 - **Shai personal-skill absorption ALLOWED where additive** ('never fold' retired 2026-06-04, Shai-authorized).
@@ -76,7 +76,7 @@ Last revised: 2026-06-09 (rebuild from Shopify/Shopify-AI-Toolkit official skill
 - Always end migration with a manual-actions checklist: prices, inventory, images, taxes, activate drafts.
 - **>3 option types in source data** → ask the merchant which 3 matter; never silently drop.
 
-## Conversion + analytics rules (per claude-marketing shopify + landing-page-optimizer)
+## Conversion + analytics rules (per the coding agent-marketing shopify + landing-page-optimizer)
 - Benchmarks (DTC): CVR 2-3% good / 4%+ great / <1.5% alarm; add-to-cart 8-10%; cart→checkout 50-60%; checkout completion 45-55%; mobile CVR 1.5-2.5%; returning customers 25-30%; email 25-35% of revenue; LTV:CAC ≥3:1; LCP <2.5s.
 - Store audit order (12 steps): tracking health → funnel drop-off → site speed/app bloat → product pages → collections → cart/checkout → email/SMS flows → paid-media integration (pixel/feed) → SEO → retention → app-stack redundancy → recommendations ranked by revenue impact ÷ effort.
 - Tracking: Meta via **Customer Events (Pixel API) + CAPI** (not theme-injected pixel), Event Match Quality target 8+; GA4 via GTM custom pixel or Google & YouTube channel; standard events PageView/ViewContent/AddToCart/InitiateCheckout/Purchase end-to-end.
@@ -84,7 +84,7 @@ Last revised: 2026-06-09 (rebuild from Shopify/Shopify-AI-Toolkit official skill
 - Checkout UX: Apple Pay + Google Pay + Shop Pay enabled (mobile is 60%+ of traffic); guest checkout always; trust signals near payment step.
 - Abandoned cart: 3-touch sequence (1h / 24h / 72h) in Klaviyo - content by email-specialist, triggers/integration here.
 
-## App stack guidance (tiers, per claude-marketing)
+## App stack guidance (tiers, per the coding agent-marketing)
 - Tier 1 (every store): Klaviyo, Meta Pixel+CAPI, Google & YouTube channel, Judge.me or Yotpo reviews, GA4.
 - Tier 2 (growth): Triple Whale/Polar attribution, Smile.io loyalty, ReConvert/AfterSell post-purchase, Recharge subscriptions, Privy capture.
 - Tier 3 (scale): Northbeam, Gorgias support, TikTok pixel, Loop Returns, Rebuy personalization.

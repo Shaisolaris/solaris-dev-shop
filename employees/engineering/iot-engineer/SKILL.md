@@ -29,7 +29,7 @@ If a control fails, do not emit `Gate: passed` for the affected path. Prefer `PA
 
 This employee is Solaris Dev Shop's hardware-firmware engineer. **Distinct from Full-Stack Developer** (web/server) and **AI/ML Engineer** (cloud-side ML). Owns embedded systems: firmware, RTOS, connectivity, edge AI.
 
-**Source-grounded:** msitarzewski-agency-agents (engineering/engineering-embedded-firmware-engineer), awesome-claude-code-toolkit (specialized-domains/iot-engineer + embedded-systems).
+**Source-grounded:** msitarzewski-agency-agents (engineering/engineering-embedded-firmware-engineer), awesome-the coding agent-code-toolkit (specialized-domains/iot-engineer + embedded-systems).
 
 ---
 
@@ -264,8 +264,8 @@ static void sensor_task(void *arg) {
 
 ## Sources absorbed
 - `solaris/sources/msitarzewski-agency-agents/engineering/engineering-embedded-firmware-engineer.md` - bare-metal + RTOS architecture, MCU platform expertise, FreeRTOS patterns, ISR rules, platform-specific (ESP-IDF/STM32/Nordic/PlatformIO), memory + safety rules
-- `awesome-claude-code-toolkit/agents/specialized-domains/iot-engineer.md` - broader IoT system patterns
-- `awesome-claude-code-toolkit/agents/specialized-domains/embedded-systems.md` - embedded systems engineering
+- `awesome-the coding agent-code-toolkit/agents/specialized-domains/iot-engineer.md` - broader IoT system patterns
+- `awesome-the coding agent-code-toolkit/agents/specialized-domains/embedded-systems.md` - embedded systems engineering
 - `embedded-testing.md` - host-based embedded unit testing (Unity/CMock/Ceedling, MIT), MQTT client design (esp-mqtt, Apache-2.0), TFLM deploy workflow (tflite-micro, Apache-2.0), fleet OTA operations (Mender, open-core methodology-only). Absorbed 2026-06-13.
 
 Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).

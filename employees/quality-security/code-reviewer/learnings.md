@@ -22,7 +22,7 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 
 ---
 
-- **2026-06-13 - v0.5.0 deep quality pass**: Both reference tables (SKILL.md + rules.md) listed 8 phantom checklist files (`code-review-checklist.md`, `full-audit-20-angles.md`, etc.) that were never created - the mode methodologies actually live inline. SKILL's References table also omitted the two refs that DO exist (claude-context-operator.md, trivy). Net-new layered scanning stack added: semgrep (AST taint), osv-scanner (2nd CVE DB + reachability), gitleaks (history secrets), danger-js (PR automation). CI SHA-pin doctrine added - this employee gates main so it must enforce it.
+- **2026-06-13 - v0.5.0 deep quality pass**: Both reference tables (SKILL.md + rules.md) listed 8 phantom checklist files (`code-review-checklist.md`, `full-audit-20-angles.md`, etc.) that were never created - the mode methodologies actually live inline. SKILL's References table also omitted the two refs that DO exist (code-context-operator.md, trivy). Net-new layered scanning stack added: semgrep (AST taint), osv-scanner (2nd CVE DB + reachability), gitleaks (history secrets), danger-js (PR automation). CI SHA-pin doctrine added - this employee gates main so it must enforce it.
   *Proposed rule: when an employee references checklist files, verify they exist before shipping - a reference table pointing at non-existent files is itself a P2 documentation-drift finding (the employee should catch this in its own reviews). Also: scanners are layered, not redundant - Trivy (tree SCA/secrets) + semgrep (taint) + osv (2nd DB) + gitleaks (history) each catch what the others miss.*
   Tags: [#audit], [#deps], [#security], [#self-application]
 

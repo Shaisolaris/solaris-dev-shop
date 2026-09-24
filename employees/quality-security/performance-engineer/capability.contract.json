@@ -111,7 +111,7 @@
       "secrets",
       "tokens",
       "production credentials",
-      "Desktop/Claude personal paths as required inputs",
+      "Desktop/the coding agent personal paths as required inputs",
       "invented cost or SLO metrics without provenance",
       "silent production apply without dry-run evidence",
       "real cloud credentials in receipts"
@@ -128,7 +128,7 @@
       "production deploy without explicit human confirmation",
       "commit credentials, tokens, or private personal data",
       "force-push or rewrite shared repository history",
-      "read Desktop/Claude or Alfred personal-data directories",
+      "read Desktop/the coding agent or Alfred personal-data directories",
       "silent credential rotation or secret file edits",
       "production load generation without human approval",
       "production deploy or apply without human confirmation and dry-run evidence",
@@ -221,7 +221,7 @@
       "production credentials in git",
       "raw customer PII in fixtures",
       "Alfred personal health/finance content",
-      "control Mac Desktop/Claude personal paths",
+      "control Mac Desktop/the coding agent personal paths",
       "force-push as recovery default",
       "silent production deploy or apply without human confirmation",
       "real cloud credentials or production cluster access in fixtures",
@@ -431,7 +431,7 @@
   },
   "compatibility": {
     "providers": [
-      "claude",
+      "the coding agent",
       "codex",
       "grok",
       "kimi"

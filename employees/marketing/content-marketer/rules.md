@@ -115,7 +115,7 @@ Rule of thumb: reach for the lightest lane that fits. The 10-step is for strateg
 
 ## GEO operational layer 2026 depth (see geo-operational-2026.md)
 - GEO is not SEO. Audit spine: **crawled -> understood -> cited -> monitored**. Most "AI can't find us" problems die at stage 1 (blocked AI bot / CDN 403) or stage 2 (thin schema), never the prose.
-- Access first: robots.txt must EXPLICITLY allow citation bots (GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot); check CDN/WAF doesn't 403 them; ship a real /llms.txt; server-render the substance.
+- Access first: robots.txt must EXPLICITLY allow citation bots (GPTBot, an AI crawler, PerplexityBot, OAI-SearchBot); check CDN/WAF doesn't 403 them; ship a real /llms.txt; server-render the substance.
 - Citability levers that measurably move citation (KDD 2024): cite sources (+115%), quotation (+41%), statistics (+40%), fluency (+29%) - same "specificity = quality" discipline, now proven for AI answers.
 - Structure for RAG: one idea per section, definition-style openings, front-loaded takeaways - engines retrieve chunks, not pages.
 - Monitor as a loop, not a one-shot: snapshot citations over time, regression-gate the GEO score in CI (pin any GitHub Action to a commit SHA). Crawler-log evidence proves FETCHED, not CITED - keep the metrics separate.

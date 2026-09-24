@@ -36,7 +36,7 @@ A cleanup should leave caching correct, not just "a cache plugin installed". Dec
 A signed before/after table the client keeps. Rows: WP/PHP version, plugin count + abandoned count, autoload size, DB query count, page-load, CWV (LCP/CLS/INP), PageSpeed score, security-header grade, TLS grade, vuln count, malware status, backup confirmed. Each row: BEFORE / AFTER / action taken / residual risk + recommendation. This is what makes the engagement "pro" - the client sees exactly what changed and what is left.
 
 ## 5. Execution path (wired vs plan-only)
-- WIRED: WP-CLI (host SSH) is the primary surface for the cleanup; the WordPress MCP Adapter (host installs v0.5.0 plugin) lets Claude drive plugin/option/user ops natively; wordpress-expert connect flow if available.
+- WIRED: WP-CLI (host SSH) is the primary surface for the cleanup; the WordPress MCP Adapter (host installs v0.5.0 plugin) lets the coding agent drive plugin/option/user ops natively; wordpress-expert connect flow if available.
 - DELEGATED: testssl/header raw scan + edge TLS/header config -> network-engineer. CI/secret/supply-chain gates -> devops-engineer.
 - PLAN-ONLY otherwise: with no SSH/MCP/site access, produce the runbook + scorecard template and hand the host the connect steps; never claim a change not made.
 - License posture: WP + LiteSpeed Cache are GPL; testssl is GPLv2; WPScan data is non-OSI (token-gated). Methodology here is Solaris voice, no copy-paste.

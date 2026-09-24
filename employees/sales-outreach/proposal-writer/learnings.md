@@ -17,7 +17,7 @@ Format: - **<YYYY-MM-DD> - <context>**: <what> *Proposed rule: <takeaway>* Tags:
   Tags: [#3-act-universal]
 
 - **2026-04-24 - Proposal Writer clean rebuild**: Flag analysis (green/yellow/red qualification) is the highest-leverage activity - rejecting bad-fit jobs saves more time than writing better proposals.
-  *Proposed rule: Qualification gate must come BEFORE writing. Code this as a hard rule so Claude doesn't draft proposals for red-flag jobs even if asked.*
+  *Proposed rule: Qualification gate must come BEFORE writing. Code this as a hard rule so This employee doesn't draft proposals for red-flag jobs even if asked.*
   Tags: [#qualification-gate], [#promoted?]
 
 ---

@@ -3,7 +3,7 @@
 Absorbed from googleapis/mcp-toolbox (formerly genai-toolbox; Apache-2.0, ~15.6k stars, commit main @ 2026-06-13). Net-new for data-engineer: a vendor-neutral framework for exposing MANY databases to agents through governed, structured tools - the layer between "agent wants data" and "agent runs raw SQL on prod". Complements the existing dbt MCP (which is transformation-tier); this is the data-access-tier tool factory.
 
 ## Two modes
-1. **Prebuilt tools (build-time, fast path):** `toolbox --prebuilt=<db>` instantly exposes generic tools like `list_tables` / `execute_sql` for exploration from any MCP client (Claude Code, Gemini CLI, Codex). Use for ad-hoc data exploration, not for production agents.
+1. **Prebuilt tools (build-time, fast path):** `toolbox --prebuilt=<db>` instantly exposes generic tools like `list_tables` / `execute_sql` for exploration from any MCP client (a coding agent, Gemini CLI, Codex). Use for ad-hoc data exploration, not for production agents.
 2. **Custom tools framework (run-time, the production pattern):** define purpose-built, parameterized, least-privilege tools in `tools.yaml`. This is what you ship for a real agent - never hand a production agent generic `execute_sql`.
 
 ## Supported sources (one config surface, many engines)

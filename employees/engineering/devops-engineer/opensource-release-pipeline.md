@@ -34,7 +34,7 @@ same pass both transform and bless its own output.
 |---|---|---|---|
 | 1. Fork | transform | Copy to staging, strip secrets, parameterize internal refs, fresh git history | `FORK_REPORT.md` |
 | 2. Sanitize | verify | Independent read-only audit; PASS / FAIL / PASS-WITH-WARNINGS | `SANITIZATION_REPORT.md` |
-| 3. Package | dress | License, README, CONTRIBUTING, setup script, CLAUDE.md, issue templates | the public-facing files |
+| 3. Package | dress | License, README, CONTRIBUTING, setup script, AGENTS.md, issue templates | the public-facing files |
 
 Staging layout (never publish from the original working tree):
 
@@ -42,7 +42,7 @@ Staging layout (never publish from the original working tree):
 $STAGING/<project>/
   FORK_REPORT.md
   SANITIZATION_REPORT.md
-  CLAUDE.md
+  AGENTS.md
   setup.sh
   README.md  LICENSE  CONTRIBUTING.md
   .env.example
@@ -59,11 +59,11 @@ delete: every value pulled out gets a corresponding line in `.env.example` so th
 still runs.
 
 Exclude on copy: `.git`, `node_modules`, `__pycache__`, `.venv`/`venv`, `.env*`,
-`*.pyc`, `.claude/`, `.secrets/`, `secrets/`, `sessions/`, `dist/`, build output.
+`*.pyc`, `.the coding agent/`, `.secrets/`, `secrets/`, `sessions/`, `dist/`, build output.
 
 **Always remove (never publish):** `.env` and every variant, `*.pem` `*.key` `*.p12`
 `*.pfx` `*.jks`, `credentials.json` / `service-account*.json`, `.secrets/`,
-`.claude/settings.json`, `sessions/`, and `*.map` source maps (they leak original file
+`.the coding agent/settings.json`, `sessions/`, and `*.map` source maps (they leak original file
 paths and structure).
 
 **Strip content from, do not remove:** `docker-compose.yml`, `config/`, `nginx.conf` -
@@ -130,7 +130,7 @@ Six scan categories:
 3. **Internal references** (CRITICAL) - leftover home paths, `.secrets/` refs, client
    names, internal hostnames.
 4. **Dangerous files** (CRITICAL - existence alone fails) - any `.env*`, `*.pem/key/
-   p12/pfx/jks`, `credentials.json`, `.secrets/`, `.claude/settings.json`, `sessions/`,
+   p12/pfx/jks`, `credentials.json`, `.secrets/`, `.the coding agent/settings.json`, `sessions/`,
    `*.map`, vendored `node_modules/`.
 5. **Config completeness** (WARNING) - `.env.example` exists and covers every env var
    referenced in code; `docker-compose.yml` uses `${VAR}` not literals.
@@ -151,19 +151,19 @@ Output is `SANITIZATION_REPORT.md` with the per-category table and verdict.
 ## Stage 3: Package (make it usable)
 
 Only runs after PASS or PASS-WITH-WARNINGS. Goal: a stranger can clone, run one script,
-and be productive - including with Claude Code.
+and be productive - including with a coding agent.
 
 Generate (verify every command against the actual project - wrong commands are worse
 than none):
 
-- **CLAUDE.md** - the most important file. Under 100 lines: what it does, copy-pasteable
+- **AGENTS.md** - the most important file. Under 100 lines: what it does, copy-pasteable
   quick-start + command list, an architecture tree that fits a terminal, the real key
   files, the env-var table from `.env.example`. List files that exist, not hypothetical
   ones.
 - **setup.sh** - one-command bootstrap, `set -euo pipefail`, prereq checks with clear
   errors, copies `.env.example` -> `.env`, installs deps. `chmod +x` it.
 - **README.md** - enhance if a good one exists, do not clobber. Add a "Using with
-  Claude Code" section. Link to CLAUDE.md rather than duplicating it.
+  a coding agent" section. Link to AGENTS.md rather than duplicating it.
 - **LICENSE** - standard SPDX text for the chosen license; copyright = current year.
   Confirm the license is compatible with every dependency before publishing (see flag).
 - **CONTRIBUTING.md** - setup, branch/PR flow, code style, issue guidelines.
@@ -182,7 +182,7 @@ Never auto-publish. Walk this before `gh repo create --public`:
 - [ ] `git log --oneline | wc -l` matches the intended history (1 for fresh).
 - [ ] `.env.example` present and complete; no real `.env` anywhere in the tree.
 - [ ] LICENSE present and license-compatible with all dependencies.
-- [ ] CLAUDE.md / README commands actually run on a fresh clone.
+- [ ] AGENTS.md / README commands actually run on a fresh clone.
 - [ ] A CI workflow exists and pins every third-party action to a full commit SHA, not
       a floating tag (see SKILL.md CI template + `gitops-skill.md` section 6 on the 2026
       action-compromise pattern). A public repo's CI is itself a supply-chain surface.

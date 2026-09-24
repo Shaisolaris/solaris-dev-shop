@@ -99,11 +99,11 @@ if [ "$VISUAL_MODE" = "html-css" ]; then
 fi
 ```
 
-### 1c: Screenshot Path - Claude Multimodal Vision Analysis
+### 1c: Screenshot Path - the coding agent Multimodal Vision Analysis
 
-When `VISUAL_MODE="screenshot"`, Claude reads the image file using multimodal vision capability and performs design interpretation. This is an in-context Claude judgment step - no external tool needed.
+When `VISUAL_MODE="screenshot"`, the coding agent reads the image file using multimodal vision capability and performs design interpretation. This is an in-context the coding agent judgment step - no external tool needed.
 
-Claude reads `$VISUAL_PATH` as an image and identifies:
+the coding agent reads `$VISUAL_PATH` as an image and identifies:
 
 1. **3-6 dominant/brand colors** - output as hex values (e.g. `#2D3748`)
 2. **Heading font name + body font name** - or the closest Google Font matches if proprietary
@@ -111,7 +111,7 @@ Claude reads `$VISUAL_PATH` as an image and identifies:
 4. **Image placeholder areas** - with approximate aspect ratios (e.g. hero 16:9, portrait 1:1, landscape 4:3)
 5. **Navigation labels** - any visible menu text (Home, About, Services, Contact, etc.)
 
-Claude outputs a structured JSON block:
+the coding agent outputs a structured JSON block:
 
 ```json
 {
@@ -194,21 +194,21 @@ print(f"[Build] Tokens extracted: {len(result['colors'])} colors, {len(result['f
 PYEOF
 ```
 
-### 2b: Screenshot Path - Use Claude's Multimodal Output
+### 2b: Screenshot Path - Use the coding agent's Multimodal Output
 
-When `VISUAL_MODE="screenshot"`, the token JSON was already produced in Section 1c. Write it to `$TOKENS_FILE` from Claude's structured output.
+When `VISUAL_MODE="screenshot"`, the token JSON was already produced in Section 1c. Write it to `$TOKENS_FILE` from the coding agent's structured output.
 
 ### 2c: Font Mapping and Google Font Resolution
 
-Claude reads the extracted `fonts` array from `$TOKENS_FILE` and determines:
+the coding agent reads the extracted `fonts` array from `$TOKENS_FILE` and determines:
 
 - **Google Font match**: If the font name is a known Google Font (e.g. `Playfair Display`, `DM Sans`, `Inter`, `Roboto`), use directly.
 - **Proprietary substitution**: If the font is proprietary (Adobe Fonts, paid typefaces) or unrecognisable, find the closest Google Font match by visual characteristics (serif/sans-serif, weight, x-height, personality).
 
-Claude sets `FONT_MAP` as a JSON mapping of original → Google Font slug:
+the coding agent sets `FONT_MAP` as a JSON mapping of original → Google Font slug:
 
 ```bash
-# Example FONT_MAP (Claude sets based on extraction)
+# Example FONT_MAP (the coding agent sets based on extraction)
 FONT_MAP='{
   "Playfair Display": "playfair-display",
   "DM Sans": "dm-sans"
@@ -217,13 +217,13 @@ FONT_MAP='{
 # Track substitutions for SETUP.md
 # Format: "Original Name → Google Font Substitute"
 FONT_SUBSTITUTIONS=()
-# Claude appends entries if a proprietary font was substituted:
+# the coding agent appends entries if a proprietary font was substituted:
 # FONT_SUBSTITUTIONS+=("Aktiv Grotesk → Inter")
 ```
 
 ### 2d: Color Palette Construction
 
-Claude reads the extracted colors and assigns semantic slugs:
+the coding agent reads the extracted colors and assigns semantic slugs:
 
 ```
 primary   → dominant brand color (most prominent, used for CTA/headings)
@@ -451,7 +451,7 @@ Write `$THEME_DIR/theme.json` using the v3 schema. Populate `settings.color.pale
 }
 ```
 
-Claude replaces the example color and font values above with the actual `EXTRACTED_COLORS` and `EXTRACTED_FONTS` values from Section 2. Spacing values from the design CSS are converted from px to rem (divide by 16) before encoding.
+the coding agent replaces the example color and font values above with the actual `EXTRACTED_COLORS` and `EXTRACTED_FONTS` values from Section 2. Spacing values from the design CSS are converted from px to rem (divide by 16) before encoding.
 
 **CRITICAL: Validate JSON immediately after writing:**
 
@@ -491,7 +491,7 @@ Replace `{slug}` and `{Slug}` with the actual slug values throughout (e.g. `cust
 
 ### 3d-ii: patterns/ - Front-Page Starter Pattern
 
-Write `$THEME_DIR/patterns/front-page.php`. This is the primary design translation as a reusable block pattern. Claude interprets the full design and outputs the complete front-page layout using WordPress block comment syntax.
+Write `$THEME_DIR/patterns/front-page.php`. This is the primary design translation as a reusable block pattern. the coding agent interprets the full design and outputs the complete front-page layout using WordPress block comment syntax.
 
 ```php
 <?php
@@ -531,11 +531,11 @@ Write `$THEME_DIR/patterns/front-page.php`. This is the primary design translati
 <!-- /wp:group -->
 ```
 
-Claude replaces the hero placeholder with the actual design interpretation. Additional pattern sections (services, about, testimonials, CTA) are added based on what Claude identifies in the design.
+the coding agent replaces the hero placeholder with the actual design interpretation. Additional pattern sections (services, about, testimonials, CTA) are added based on what the coding agent identifies in the design.
 
 ### 3e: templates/ - 7 WordPress Block Templates
 
-Claude interprets the design and generates 7 HTML template files using WordPress block comment syntax. All templates reference the shared header and footer template parts.
+the coding agent interprets the design and generates 7 HTML template files using WordPress block comment syntax. All templates reference the shared header and footer template parts.
 
 **HTML-to-Block Mapping Table** (block-native first, Custom HTML fallback):
 
@@ -566,7 +566,7 @@ Claude interprets the design and generates 7 HTML template files using WordPress
 - No decorative HTML comments - only block comments.
 - `wp:navigation` block uses actual nav labels detected from the design (or default: Home, About, Services, Contact).
 
-**templates/front-page.html** - Primary design translation. Claude interprets the full design and generates the complete layout. This is the home page template.
+**templates/front-page.html** - Primary design translation. the coding agent interprets the full design and generates the complete layout. This is the home page template.
 
 ```html
 <!-- wp:template-part {"slug":"header","tagName":"header"} /-->
@@ -598,7 +598,7 @@ Claude interprets the design and generates 7 HTML template files using WordPress
 <!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
 ```
 
-Claude replaces this skeleton with the actual design content.
+the coding agent replaces this skeleton with the actual design content.
 
 **templates/index.html** - Fallback/archive template. Uses design language (colors, fonts) but shows a post loop.
 
@@ -756,9 +756,9 @@ Claude replaces this skeleton with the actual design content.
 
 ### 3f: parts/ - Header and Footer Template Parts
 
-Claude interprets the design's header and footer regions (AI judgment on boundaries) and generates `header.html` and `footer.html`. Parts must be in the flat `parts/` directory - no subdirectories.
+the coding agent interprets the design's header and footer regions (AI judgment on boundaries) and generates `header.html` and `footer.html`. Parts must be in the flat `parts/` directory - no subdirectories.
 
-**parts/header.html** - Claude extracts the site header area from the design. Must include the site logo/title and navigation:
+**parts/header.html** - the coding agent extracts the site header area from the design. Must include the site logo/title and navigation:
 
 ```html
 <!-- wp:group {"tagName":"header","style":{"spacing":{"padding":{"top":"1rem","bottom":"1rem"}}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
@@ -774,9 +774,9 @@ Claude interprets the design's header and footer regions (AI judgment on boundar
 <!-- /wp:group -->
 ```
 
-Claude replaces the navigation labels with the actual labels detected from the design (Section 1c for screenshot, or HTML `<nav>` text for HTML/CSS path).
+the coding agent replaces the navigation labels with the actual labels detected from the design (Section 1c for screenshot, or HTML `<nav>` text for HTML/CSS path).
 
-**parts/footer.html** - Claude extracts the site footer area from the design:
+**parts/footer.html** - the coding agent extracts the site footer area from the design:
 
 ```html
 <!-- wp:group {"tagName":"footer","style":{"color":{"background":"var(--wp--preset--color--dark)","text":"var(--wp--preset--color--light)"},"spacing":{"padding":{"top":"3rem","bottom":"3rem"}}},"layout":{"type":"constrained"}} -->
@@ -812,7 +812,7 @@ Claude replaces the navigation labels with the actual labels detected from the d
 <!-- /wp:group -->
 ```
 
-Claude replaces footer content with the actual design's footer layout.
+the coding agent replaces footer content with the actual design's footer layout.
 
 ### 3g: assets/images/ - Design Images or Placeholders
 
@@ -827,7 +827,7 @@ if [ "$VISUAL_MODE" = "html-css" ] && [ -n "$IMAGES_STAGE" ] && [ -d "$IMAGES_ST
 fi
 ```
 
-**Screenshot path:** Generate placeholder images using the Python image generator. Claude detects image areas and aspect ratios from the multimodal vision analysis in Section 1c.
+**Screenshot path:** Generate placeholder images using the Python image generator. the coding agent detects image areas and aspect ratios from the multimodal vision analysis in Section 1c.
 
 ```python
 #!/usr/bin/env python3
@@ -847,7 +847,7 @@ def hex_to_rgb(hex_color):
     hex_color = hex_color.lstrip('#')
     return tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
 
-# Claude sets IMAGES based on detected image areas from Section 1c vision analysis
+# the coding agent sets IMAGES based on detected image areas from Section 1c vision analysis
 # Default set (overridden by actual detection):
 IMAGES = [
     ('hero',    1200, 630),   # Default 16:9 hero (or detected ratio)
@@ -939,7 +939,7 @@ For each font in `FONT_MAP`:
 3. If italic was detected in the design, add `"italic"` to variants: `"regular,italic,700,700italic"`
 
 ```bash
-# Claude iterates over each entry in FONT_MAP and calls download_google_font
+# the coding agent iterates over each entry in FONT_MAP and calls download_google_font
 # Example for two fonts:
 
 FONT_DOWNLOAD_FAILED=()
@@ -1080,9 +1080,9 @@ fi
 # Update site title
 $WP option update blogname "$SITE_TITLE" 2>&1
 
-# Claude generates a brief tagline from the design context (one line, no quotes)
+# the coding agent generates a brief tagline from the design context (one line, no quotes)
 # Based on the detected design personality, color palette, and content areas
-SITE_TAGLINE="<Claude-generated tagline based on design context>"
+SITE_TAGLINE="<the coding agent-generated tagline based on design context>"
 $WP option update blogdescription "$SITE_TAGLINE" 2>&1
 
 echo "[Build] Site title: $SITE_TITLE"
@@ -1200,7 +1200,7 @@ The front-page pattern can be duplicated and adapted for other pages.
 *Reference: skills/build-visual/SKILL.md*
 ```
 
-Claude populates all `{...}` placeholders with actual values from the build:
+the coding agent populates all `{...}` placeholders with actual values from the build:
 - `{Site Title}` → `$SITE_TITLE`
 - `{slug}` → `$SLUG`
 - `{Slug}` → title-cased slug

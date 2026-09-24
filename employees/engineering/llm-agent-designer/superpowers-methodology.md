@@ -1,8 +1,8 @@
 # Superpowers Methodology - Design Before Build
 
-> ⚠️ ALWAYS load this file FIRST when designing a new agent / LLM application / Claude skill / multi-step workflow. Without it, Claude jumps to code and ships the wrong thing fast.
+> ⚠️ ALWAYS load this file FIRST when designing a new agent / LLM application / a skill file / multi-step workflow. Without it, the coding agent jumps to code and ships the wrong thing fast.
 
-**Source canon:** [obra/superpowers](https://github.com/obra/superpowers) - 169,582 stars (most-starred Claude Code project on GitHub), MIT, last commit 2026-04-24. By Jesse Vincent + Prime Radiant team. Companion repos: `obra/superpowers-skills` (community skills), `obra/superpowers-marketplace` (curated plugin marketplace), `obra/superpowers-lab` (experimental).
+**Source canon:** [obra/superpowers](https://github.com/obra/superpowers) - 169,582 stars (most-starred a coding agent project on GitHub), MIT, last commit 2026-04-24. By Jesse Vincent + Prime Radiant team. Companion repos: `obra/superpowers-skills` (community skills), `obra/superpowers-marketplace` (curated plugin marketplace), `obra/superpowers-lab` (experimental).
 
 **What it is:** a complete software-development *methodology* for coding agents - a set of composable skills + initial instructions that ensure the agent uses them. Built around three command-driven phases: `/brainstorm` → `/write-plan` → `/execute-plan`. TDD-first. With a `skills-search` tool for skill discovery.
 
@@ -59,7 +59,7 @@ For Solaris specifically:
 ### Always use the 3-step
 - Building a new agent / LLM app / multi-step workflow
 - Designing a new Solaris employee
-- Designing a Claude skill or MCP server
+- Designing a a skill file or MCP server
 - Inheriting a client codebase + planning the next change
 - Any change that touches >3 files or >50 lines
 
@@ -160,8 +160,8 @@ For everything else: brainstorm → plan → execute. The discipline is the valu
 ## Companion install (optional)
 
 ```bash
-# The superpowers framework as a Claude Code plugin
-claude /plugin install obra/superpowers
+# The superpowers framework as a a coding agent plugin
+the coding agent /plugin install obra/superpowers
 
 # Brings: /brainstorm, /write-plan, /execute-plan slash commands
 # Plus: skills-search tool, TDD scaffolding, composable-skills protocol

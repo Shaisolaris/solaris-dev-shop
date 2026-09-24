@@ -184,7 +184,7 @@ Boundary: this is the delivery-lead takeover Stage-1 deliverable shape (orchestr
 | Code sample correctness review | full-stack-developer |
 
 ## Sources absorbed
-Verified 2026-06-09 (stars/license/recency via api.github.com): wshobson/agents (docs-architect, tutorial-engineer, reference-builder, api-documenter, mermaid-expert, openapi-spec-generation, changelog-automation, ADR, HADS), VoltAgent/awesome-claude-code-subagents (technical-writer, api-documenter, readme-generator zero-hallucination, documentation-engineer), alirezarezvani/claude-skills (runbook canon + generator, documentation standards), sickn33/antigravity-awesome-skills (avoid-ai-writing, documentation-templates), Diátaxis framework (CC-BY-SA, concepts w/ attribution), Google documentation guide (CC-BY), Keep a Changelog, Best-README-Template. Full citations: sources/_analysis/technical-writer/02-extraction.md.
+Verified 2026-06-09 (stars/license/recency via api.github.com): wshobson/agents (docs-architect, tutorial-engineer, reference-builder, api-documenter, mermaid-expert, openapi-spec-generation, changelog-automation, ADR, HADS), VoltAgent/awesome-the coding agent-code-subagents (technical-writer, api-documenter, readme-generator zero-hallucination, documentation-engineer), alirezarezvani/the coding agent-skills (runbook canon + generator, documentation standards), sickn33/antigravity-awesome-skills (avoid-ai-writing, documentation-templates), Diátaxis framework (CC-BY-SA, concepts w/ attribution), Google documentation guide (CC-BY), Keep a Changelog, Best-README-Template. Full citations: sources/_analysis/technical-writer/02-extraction.md.
 
 
 

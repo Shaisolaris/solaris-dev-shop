@@ -1,6 +1,6 @@
 # Healthcare Software-Development Compliance (dev-shop delivery layer)
 
-Absorbed 2026-06-14 (methodology only, no code bundled) from ECC (affaan-m/ECC, formerly affaan-m/everything-claude-code, MIT) skills: healthcare-emr-patterns, healthcare-cdss-patterns, healthcare-phi-compliance, hipaa-compliance, healthcare-eval-harness (patient-safety CI gate), and the healthcare-reviewer agent. Original clinical methodology contributed by Dr. Keyur Patel, Health1 Super Speciality Hospitals.
+Absorbed 2026-06-14 (methodology only, no code bundled) from ECC (affaan-m/ECC, formerly affaan-m/everything-the coding agent-code, MIT) skills: healthcare-emr-patterns, healthcare-cdss-patterns, healthcare-phi-compliance, hipaa-compliance, healthcare-eval-harness (patient-safety CI gate), and the healthcare-reviewer agent. Original clinical methodology contributed by Dr. Keyur Patel, Health1 Super Speciality Hospitals.
 
 **Why this lane exists:** Solaris is a dev shop that may BUILD healthcare software for clients. The existing GRC catalog (SOC 2 / ISO 27001 / EU AI Act / GDPR / PCI) tells us how to pass a paper audit. This layer is the engineering-delivery overlay: how to actually ship HIPAA-compliant, EMR/EHR-integrated, PHI-safe software and survive a healthcare audit on the built artifact, not just the policy binder. It does NOT duplicate the generic GRC machinery in rules.md - it sits on top of it.
 

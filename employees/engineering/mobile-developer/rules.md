@@ -10,7 +10,7 @@ Last revised: 2026-06-13 (depth pass: mobile-test-and-release.md added with Maes
 - **Load `native-mobile-language-packs.md`** for ANY native Kotlin/Android, Swift/iOS, or Dart/Flutter language work. It holds idiomatic-language depth grouped by platform: Pack A (Kotlin idioms + coroutines/Flow + Kotest + Ktor/Exposed + Compose/CMP), Pack B (Dart/Flutter patterns + the 15-section review checklist), Pack C (SwiftUI @Observable, Swift 6.2 Approachable Concurrency, actor persistence, protocol DI + Swift Testing, iOS 26 Liquid Glass, on-device FoundationModels). Load it alongside `android-architecture.md` for Kotlin (the architecture file is the module skeleton; this is the language depth).
 
 ## Core principles
-- **Use mobile-mcp, don't tell Shai to click.** mobile-next/mobile-mcp gives Claude real-device automation across iOS + Android. Use `mobile_list_available_devices` → `mobile_launch_app` → `mobile_list_elements_on_screen` → interact. Never instruct Shai to manually click in Android Studio / Xcode.
+- **Use mobile-mcp, don't tell Shai to click.** mobile-next/mobile-mcp gives the coding agent real-device automation across iOS + Android. Use `mobile_list_available_devices` → `mobile_launch_app` → `mobile_list_elements_on_screen` → interact. Never instruct Shai to manually click in Android Studio / Xcode.
 - **Accessibility-first interaction.** Always try `mobile_list_elements_on_screen` BEFORE coordinate clicks. Use a11y labels, not pixels.
 - **Offline-first for new Android work.** Local DB (Room) is source of truth. UI never depends on network state directly.
 - **Unidirectional data flow.** Events down, data up. No two-way binding shortcuts.
@@ -130,7 +130,7 @@ Source: callstackincubator/agent-device (MIT, Callstack official - Callstack is 
 
 ## Absorption note - expo/skills (2026-05-18)
 
-Source: expo/skills (Expo official - the React Native + EAS company). Skills authored by the Expo team specifically for Claude Code, Cursor, Codex. Fine-tuned for Opus models.
+Source: expo/skills (Expo official - the React Native + EAS company). Skills authored by the Expo team specifically for a coding agent, Cursor, Codex. Fine-tuned for Opus models.
 
 **Consolidated in (patterns lifted; layered on top of existing VoltAgent expo-react-native-expert coverage):**
 - **For Expo + EAS workflows, prefer the official Expo skill patterns over generic React Native patterns.** Things like config-plugin idioms, EAS Build/Submit/Update flow, OTA update strategy, dev-client vs Expo Go choice - the official version is more current than what VoltAgent or generic RN sources document.
@@ -142,7 +142,7 @@ Source: expo/skills (Expo official - the React Native + EAS company). Skills aut
 
 ## Absorption note - ECC native-mobile language packs (2026-06-14)
 
-Source: `affaan-m/everything-claude-code` (ECC, MIT). 15 native-mobile skills lifted into `native-mobile-language-packs.md` (methodology only, NO code bundled).
+Source: `affaan-m/everything-the coding agent-code` (ECC, MIT). 15 native-mobile skills lifted into `native-mobile-language-packs.md` (methodology only, NO code bundled).
 
 **Consolidated in (layered on top of the existing RN/Expo default + `android-architecture.md` skeleton + `mobile-test-and-release.md`):**
 - **Kotlin/Android/Compose** (kotlin-patterns, kotlin-coroutines-flows, kotlin-testing, kotlin-ktor-patterns, kotlin-exposed-patterns, android-clean-architecture, compose-multiplatform-patterns) - language idioms, structured-concurrency + Flow, Kotest+MockK+Turbine+Kover, layered module rules, Compose state/nav/perf, plus Ktor/Exposed for a KMP shared backend.

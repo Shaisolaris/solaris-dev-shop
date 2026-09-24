@@ -156,7 +156,7 @@ Missing any -> BLOCKED: put the missing input in the clarification draft for Sha
 - **PM (hourly):** Monday check-in, Friday summary, ClickUp kept current, blockers flagged same day. Output is self-evidencing via timestamps. No ClickUp state change + no messages = nothing to bill. PM makes no scope/technical decisions.
 
 ### 4. Three-layer milestone review
-1. **PO code review (Claude, free, every milestone):** pull the feature branch, read PHP/JSX/SQL, check API-contract compliance, SQL safety, transactions, React state, edge cases, security. Catches ~80% of bugs. Post findings on the `X.CR` task.
+1. **PO code review (the coding agent, free, every milestone):** pull the feature branch, read PHP/JSX/SQL, check API-contract compliance, SQL safety, transactions, React state, edge cases, security. Catches ~80% of bugs. Post findings on the `X.CR` task.
 2. **QA verification (hire, fixed price, every milestone):** open the app in Chrome + Firefox, run the gate checklist, verify DB state via SQL, post pass/fail with screenshots. $15-25/milestone. Catches what code review can't (visual, cross-browser, UX).
 3. **TL review (hourly, conditional):** architecture / security / production only.
 - Full-milestone reviews, two rounds max - never task-by-task (burns hourly TL on a fixed-price dev).

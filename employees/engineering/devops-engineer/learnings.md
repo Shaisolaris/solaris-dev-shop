@@ -29,15 +29,15 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 | | | |
 
 ## 2026-04-25 - v0.3.0 absorption (Talent Scout v2 catches)
-- **wrsmith108/docker-claude-skill** turned a vague "use containers" guideline into a single enforceable rule: never run language tools on the host. Reduces the "works on my machine" failure mode to near-zero.
+- **wrsmith108/docker-the coding agent-skill** turned a vague "use containers" guideline into a single enforceable rule: never run language tools on the host. Reduces the "works on my machine" failure mode to near-zero.
 - **Alpine vs slim decision** is non-obvious and burns hours when wrong. Native modules (sqlite, sharp, bcrypt, node-canvas) need glibc → use slim. Pure JS/TS → alpine for size. Default to slim when unsure.
-- **RchGrav/claudebox** solves the multi-client parallel-work problem cleanly. Each client = own image + auth + firewall + venv. Three Cursor/Claude tabs running on Kellbell + CTT + Turnpike simultaneously without conflict.
-- **15+ ClaudeBox profiles** mean Shai never has to remember stack setup. `claudebox profile python ml database` and the container has Python + Jupyter + uv + DB clients. Saves hours per project bootstrap.
+- **RchGrav/the coding agentbox** solves the multi-client parallel-work problem cleanly. Each client = own image + auth + firewall + venv. Three Cursor/the coding agent tabs running on Kellbell + CTT + Turnpike simultaneously without conflict.
+- **15+ a per-project agent box profiles** mean Shai never has to remember stack setup. `the coding agentbox profile python ml database` and the container has Python + Jupyter + uv + DB clients. Saves hours per project bootstrap.
 - **GameCI is the only sane way to do Unity CI.** Without it: license activation hell, manual editor installs in CI, 10x slower builds without Library/ cache. With it: declarative GitHub Action handles all three.
 - **Library/ cache restore-key hierarchy** is the difference between 2-min and 20-min Unity builds. Key on hash of Assets/Packages/ProjectSettings, fall back to platform-specific, fall back to any.
 - **iOS Unity builds need macos-latest runner.** Other platforms (WebGL, Android, Standalone Win/Linux/Mac) build on ubuntu-latest. Split into separate jobs to avoid wasting macOS minutes.
-- **Anti-amnesia signal.** Banner added to SKILL.md description because Claude historically tells Shai to "just install Node on your Mac" instead of using docker exec. Reinforced in rules.md red flags.
-- **Quarterly re-scan targets:** Anthropic-official Claude Code Docker images (when published), devcontainers/cli (alternate per-project pattern), AndreiMaksimovich/Unity-Build-and-Test-Automation (alternate Unity CI).
+- **Anti-amnesia signal.** Banner added to SKILL.md description because the coding agent historically tells Shai to "just install Node on your Mac" instead of using docker exec. Reinforced in rules.md red flags.
+- **Quarterly re-scan targets:** Anthropic-official a coding agent Docker images (when published), devcontainers/cli (alternate per-project pattern), AndreiMaksimovich/Unity-Build-and-Test-Automation (alternate Unity CI).
 
 ## 2026-05-01 - M4 absorption: MetaGPT Engineer spec→code handoff (v0.4.0)
 - Pattern: 8-step sequence; schema discipline (verbatim signatures); no scope creep; imports from Shared Knowledge

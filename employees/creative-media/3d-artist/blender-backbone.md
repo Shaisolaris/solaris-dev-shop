@@ -1,11 +1,11 @@
 # Stage 2 - Blender backbone (blender-mcp)
 
-ahujasid/blender-mcp (22.2k+ stars, MIT, v1.6.4). Socket bridge between Claude and a running Blender; the addon runs a server in Blender, the MCP server relays commands.
+ahujasid/blender-mcp (22.2k+ stars, MIT, v1.6.4). Socket bridge between the coding agent and a running Blender; the addon runs a server in Blender, the MCP server relays commands.
 
 ## What it can do (from README)
 - Two-way socket communication with Blender.
 - Object manipulation: create/modify/delete 3D objects; materials/colors.
-- Scene inspection: detailed scene + object info; **viewport screenshots** so Claude can see the scene.
+- Scene inspection: detailed scene + object info; **viewport screenshots** so the coding agent can see the scene.
 - **execute_blender_code**: run ARBITRARY Python in Blender - this is the power tool; it can script any bpy operation and call other tools.
 - Asset libraries: **Poly Haven** (HDRIs, textures, models via API), **Sketchfab** model search/download.
 - Generation from inside Blender: **Hyper3D Rodin** and **Hunyuan3D** generation.
@@ -25,5 +25,5 @@ ahujasid/blender-mcp (22.2k+ stars, MIT, v1.6.4). Socket bridge between Claude a
 - Run ONE instance of the MCP server (don't run it on two clients at once).
 
 ## Access (host connects)
-- Install the Blender addon (addon.py), enable it, click "Connect to Claude".
+- Install the Blender addon (addon.py), enable it, click "Connect to the coding agent".
 - Add blender to the MCP config: `uvx blender-mcp` (env: BLENDER_HOST/BLENDER_PORT, optional DISABLE_TELEMETRY=true).

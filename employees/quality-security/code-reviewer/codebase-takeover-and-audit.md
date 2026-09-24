@@ -1,6 +1,6 @@
 # Codebase Takeover and Audit (Inherited Client Code)
 
-Methodology pack for the moment Solaris inherits a client codebase: a handoff, a rescue, due diligence on a repo before quoting, or a takeover from a prior dev shop. The existing review machinery (rules.md 7-phase Full Audit, trivy/semgrep/osv/gitleaks scanning, claude-context indexing) answers "is this change safe?" This file answers the prior question: "what IS this thing, who really wrote it, where are the buried bodies, and can we trust our own read of it?"
+Methodology pack for the moment Solaris inherits a client codebase: a handoff, a rescue, due diligence on a repo before quoting, or a takeover from a prior dev shop. The existing review machinery (rules.md 7-phase Full Audit, trivy/semgrep/osv/gitleaks scanning, code-context indexing) answers "is this change safe?" This file answers the prior question: "what IS this thing, who really wrote it, where are the buried bodies, and can we trust our own read of it?"
 
 Six methods, lifted methodology-only from ECC (affaan-m/ECC, MIT). Run them in the order below on first contact with unfamiliar inherited code. None of them replaces a tool already in the stack; they are reasoning protocols the scanners cannot do.
 
@@ -50,7 +50,7 @@ You cannot review code you do not understand, and unfamiliar inherited code is t
 4. **Pattern recognition** - what abstractions and naming conventions already exist? (This is the input to method 4 below.)
 5. **Dependency documentation** - external libs/services this path depends on, internal modules it couples to, shared utilities worth reusing rather than re-implementing.
 
-Output per traced feature: Entry Points, Execution Flow (numbered steps), Architecture Insights, a Key Files table (file / role / importance), Dependencies (external + internal), and Recommendations (what to follow, what to reuse, what to avoid). On a large repo this is where claude-context indexing earns its keep: index first, then trace by intent instead of grepping exact strings.
+Output per traced feature: Entry Points, Execution Flow (numbered steps), Architecture Insights, a Key Files table (file / role / importance), Dependencies (external + internal), and Recommendations (what to follow, what to reuse, what to avoid). On a large repo this is where code-context indexing earns its keep: index first, then trace by intent instead of grepping exact strings.
 
 This step is what makes the takeover quote defensible. "We traced the checkout flow; it touches 9 modules across 3 layers and depends on a deprecated payment SDK" is an estimate. "It looks complicated" is not.
 
@@ -119,7 +119,7 @@ census (1) -> trace the load-bearing features (2) -> silent-failure sweep (3) ->
 ## Cross-references
 - rules.md - severity taxonomy, red flags, 7-phase Full Audit, small-task lanes. Decision rule "inherited codebase -> Full Audit" is the trigger for this whole file.
 - references/trivy-sca-secrets-sbom.md + static-analysis-and-pr-automation.md - the deterministic scanning layer these reasoning methods sit on top of. The embedded-third-party bucket from method 1 feeds the supply-chain/license/CVE pass directly.
-- claude-context-operator.md - index any >2,000-file inherited repo BEFORE method 2 tracing.
+- code-context-operator.md - index any >2,000-file inherited repo BEFORE method 2 tracing.
 - security-auditor - hand every embedded-third-party + license finding from method 1, and every confirmed swallowed-error with a security angle from method 3, across the line.
 
 ## Memory scope keys

@@ -4,7 +4,7 @@ Adds Vue 3 (including the Laravel + Vue stack the owner runs), Angular, and Nuxt
 
 Methodology only - distilled from the ECC sources below, no code vendored. Verify the live API per framework version before writing (Context7, rules.md "Connected MCP servers"); framework defaults move fast.
 
-Absorbed from (methodology, not code), all github.com/affaan-m/everything-claude-code (MIT), verified 2026-06-14:
+Absorbed from (methodology, not code), all github.com/affaan-m/everything-the coding agent-code (MIT), verified 2026-06-14:
 - skills/angular-developer (origin ECC) - Angular signals / forms / DI / routing / aria / testing methodology.
 - skills/nuxt4-patterns (origin ECC) - Nuxt 4 hydration safety, data fetching, route rules, lazy hydration.
 - skills/ui-to-vue (origin community) - screenshot to Vue 3 batch conversion workflow + privacy guardrails.

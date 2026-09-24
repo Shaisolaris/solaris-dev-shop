@@ -197,8 +197,8 @@ Lives in **rules.md**: review approach, decision rules, red flags, token-integra
 - `wshobson/agents` → `plugins/blockchain-web3/`: skills/solidity-security (SKILL.md + references/details.md - vulnerable-vs-secure pairs, CEI/pull-over-push/circuit-breaker/commit-reveal, 15-point checklist, gas patterns), skills/web3-testing (Foundry/Hardhat/fork/fuzz patterns), skills/nft-standards (721/1155/metadata/2981), skills/defi-protocol-templates (staking accounting, AMM math), agents/blockchain-developer.md (breadth map).
 - `nascentxyz/simple-security-toolkit`: development-process.md (22-step pipeline, FREI-PI, Safety comments), audit-readiness-checklist.md, pre-launch-security-checklist.md, incident-response-plan-template.md.
 - `transmissions11/solcurity` (no license → concepts only, attributed): review approach + ~20 distilled checks in rules.md.
-- `VoltAgent/awesome-claude-code-subagents` categories/07-specialized-domains/blockchain-developer.md: taxonomy cross-check.
-- Legacy retained: msitarzewski-agency-agents solidity-engineer + blockchain-security-auditor distillates; rohitg00/awesome-claude-code-toolkit blockchain-developer; MetaGPT Engineer SOP (rules.md).
+- `VoltAgent/awesome-the coding agent-code-subagents` categories/07-specialized-domains/blockchain-developer.md: taxonomy cross-check.
+- Legacy retained: msitarzewski-agency-agents solidity-engineer + blockchain-security-auditor distillates; rohitg00/awesome-the coding agent-code-toolkit blockchain-developer; MetaGPT Engineer SOP (rules.md).
 - Frontier deepen (2026-06-13, v0.7.0, into `frontier-references.md`, methodology only): eth-infinitism/account-abstraction (GPL, AA/EIP-7702 architecture, self-host), crytic/slither (AGPL, detector triage, self-host CLI), Cyfrin/audit-checklist Solodit (no license, audit-finding categories, concepts), Vectorized/solady (MIT, gas building blocks, connect), wevm/wagmi (MIT, v3 frontend workflow).
 
 

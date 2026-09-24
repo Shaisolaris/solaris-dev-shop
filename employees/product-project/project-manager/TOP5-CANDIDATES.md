@@ -4,7 +4,7 @@ Domain: planning / WBS / critical path / sprints / risk / stakeholders / budget 
 
 | # | Source | Stars | License | Last commit | Maintainer | What it adds | Gate-0 | Tag |
 |---|--------|-------|---------|-------------|------------|--------------|--------|-----|
-| 1 | github.com/alirezarezvani/claude-skills (project-management pod, 15+ skills) | 17,992 | MIT | 2026-06-12 | alirezarezvani | Jira admin/JQL, scrum-master, meeting-analyzer, velocity-forecasting, retro formats | CONTENT-DUPLICATE (already absorbed) | (absorbed) |
+| 1 | github.com/alirezarezvani/the coding agent-skills (project-management pod, 15+ skills) | 17,992 | MIT | 2026-06-12 | alirezarezvani | Jira admin/JQL, scrum-master, meeting-analyzer, velocity-forecasting, retro formats | CONTENT-DUPLICATE (already absorbed) | (absorbed) |
 | 2 | github.com/phuryn/pm-skills | 17,609 | MIT | 2026-06-06 | phuryn | 100+ PM marketplace skills (mostly PRODUCT-mgmt: discovery/strategy/growth) | OVERLAP/WRONG-LANE - product-management focused; the project-execution slices duplicate alirezarezvani; nothing net-new for schedule/risk/critical-path | REJECT (overlap + product-not-project) |
 | 3 | github.com/deanpeters/Product-Manager-Skills | 5,104 | NOASSERTION | 2026-05-20 | deanpeters | PM career + discovery | WRONG-LANE (product manager, not project manager) - absorbed by product-manager employee instead | (lives with product-manager) |
 | 4 | makeplane/plane (self-host PM execution) | (large) | (AGPL-ish, FLAG) | recent | makeplane | self-hostable issue/sprint board | CONNECT (already noted in rules.md as a self-host execution lane) - tool not methodology | (already CONNECT in rules.md) |

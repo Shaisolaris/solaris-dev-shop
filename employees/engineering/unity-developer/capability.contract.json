@@ -109,7 +109,7 @@
       "secrets",
       "tokens",
       "production credentials",
-      "Desktop/Claude personal paths as required inputs"
+      "Desktop/the coding agent personal paths as required inputs"
     ]
   },
   "authority": {
@@ -123,7 +123,7 @@
       "production deploy without explicit human confirmation",
       "commit credentials, tokens, or private personal data",
       "force-push or rewrite shared repository history",
-      "read Desktop/Claude or Alfred personal-data directories",
+      "read Desktop/the coding agent or Alfred personal-data directories",
       "silent credential rotation or secret file edits"
     ],
     "escalation": "delivery-lead or cto for scope; security-auditor for authz/secrets risk",
@@ -209,7 +209,7 @@
       "production credentials in git",
       "raw customer PII in fixtures",
       "Alfred personal health/finance content",
-      "control Mac Desktop/Claude personal paths",
+      "control Mac Desktop/the coding agent personal paths",
       "force-push as recovery default",
       "licensed Unity Editor installation without human authority",
       "execution of untrusted Asset Store packages without review",
@@ -289,7 +289,7 @@
           "required": false
         },
         {
-          "id": "ref-claude-template-md",
+          "id": "ref-the coding agent-template-md",
           "kind": "file_exists",
           "target": "CLAUDE_template.md",
           "required": false
@@ -451,7 +451,7 @@
   },
   "compatibility": {
     "providers": [
-      "claude",
+      "the coding agent",
       "codex",
       "grok",
       "kimi"

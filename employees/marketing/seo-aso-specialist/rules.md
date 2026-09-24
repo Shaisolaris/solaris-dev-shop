@@ -1,6 +1,6 @@
 # SEO + ASO Specialist - Rules (Active Methodology)
 
-Last revised: 2026-06-13 (GEO citability rubric absorbed; phantom references removed; baseline-snapshot gate + small-task lane operationalized). Prior: 2026-05-14 (claude-seo consolidation).
+Last revised: 2026-06-13 (GEO citability rubric absorbed; phantom references removed; baseline-snapshot gate + small-task lane operationalized). Prior: 2026-05-14 (the coding agent-seo consolidation).
 
 Absorbed from:
 - alirezarezvani marketing SEO pods + docs
@@ -9,7 +9,7 @@ Absorbed from:
 - msitarzewski marketing + SEO
 - lodetomasi SEO / growth agents
 - sickn33 seo-audit + programmatic-seo + schema-markup + AEO skills
-- AgriciDaniel/claude-seo (MIT, 6.3K stars, v1.9.8) - drift monitoring, SXO, programmatic/local quality gates, SERP-based clustering, schema deprecation knowledge, 4-tier Google API credentials
+- AgriciDaniel/the coding agent-seo (MIT, 6.3K stars, v1.9.8) - drift monitoring, SXO, programmatic/local quality gates, SERP-based clustering, schema deprecation knowledge, 4-tier Google API credentials
 
 ---
 
@@ -48,7 +48,7 @@ Absorbed from:
 - **When** local/Maps ranking matters → geo-grid rank tracking (sample rank across a grid of points), not a single-location check
 - **When** GEO/AEO is measured (not just scored) → run a FIXED prompt panel (30-100 bucketed buyer queries), same engines + same parsing each cycle; report citation rate + mention rate + citation share + share-of-voice, per engine and blended, plus answer-vs-citation sentiment and the cited source URL (see `elite-technical-geo-2026.md`)
 - **When** site is large / parameter-heavy / has many "Discovered - not indexed" → run server log-file analysis: verify every bot by IP (never the user-agent), group crawl by template, recover waste at the correct layer (robots.txt / 410 / canonicals), never `noindex` for crawl budget, re-check the log to confirm. Small brochure sites do NOT need this (see `elite-technical-geo-2026.md`)
-- **When** robots.txt / AI-bot access is set → decide per the three-way split (indexation Googlebot vs training GPTBot/ClaudeBot/Google-Extended vs retrieval OAI-SearchBot/Claude-SearchBot/PerplexityBot); blocking a RETRIEVAL bot kills AI-search citations - a self-inflicted GEO wound. Check the CDN edge layer too, not just robots.txt
+- **When** robots.txt / AI-bot access is set → decide per the three-way split (indexation Googlebot vs training GPTBot/an AI crawler/Google-Extended vs retrieval OAI-SearchBot/an AI search crawler/PerplexityBot); blocking a RETRIEVAL bot kills AI-search citations - a self-inflicted GEO wound. Check the CDN edge layer too, not just robots.txt
 - **When** building topical authority → map the entity cluster (core entity, sub-entities, relationships) and scope content to COVER it; entity-map gaps are the highest-leverage briefs. Establish + disambiguate the brand/people/products as Knowledge-Graph entities (Organization/Person schema + sameAs to Wikipedia/Wikidata/LinkedIn/Crunchbase)
 - **When** Google API access needed → use the lowest credential tier that does the job (public API key → Search Console OAuth → GA4 → Ads token); don't request Ads-level access for a Search Console task
 - **When** technical fix disagreement with Full-Stack → CTO arbitrates
@@ -66,7 +66,7 @@ The rules above mandate a baseline before any change. Concretely, capture and da
 - Schema inventory: which JSON-LD types exist on which page-types, and Rich-Results-Test pass/fail per type.
 - Core Web Vitals: LCP / INP / CLS, field (CrUX) and lab (PageSpeed), for the top 5 templates.
 - Backlink profile: referring domains + DR (whatever tool is seated).
-- AEO/GEO baseline: GEO score (see `aeo-ai-visibility.md` rubric) + the cited/mentioned/absent status for the top 20 brand + category queries across ChatGPT / Perplexity / SGE / Claude.
+- AEO/GEO baseline: GEO score (see `aeo-ai-visibility.md` rubric) + the cited/mentioned/absent status for the top 20 brand + category queries across ChatGPT / Perplexity / SGE / the coding agent.
 
 **ASO baseline (per store, per locale):**
 - Keyword ranks for target keywords; CVR funnel (impressions -> product-page views -> installs); rating + review count + average; crash-free rate (Play).
@@ -156,7 +156,7 @@ The rules above mandate a baseline before any change. Concretely, capture and da
 These are the real files in this employee's `references/` set. Earlier drafts listed standalone files (on-page-checklist, schema-markup-library, aso-audit-playbook, aso-launch-playbook, keyword-research, local-seo) that were never created; that content lives inline in SKILL.md (SEO competencies / ASO competencies / Standard procedures) and in these references, so the phantom entries were removed rather than stubbed.
 
 - `seo-audit-6-phase.md` - the full 6-phase SEO audit + on-page checklist (Phase 2) + keyword distribution (Phase 3) + AEO testing (Phase 5)
-- `aeo-ai-visibility.md` - ChatGPT / Perplexity / SGE / Claude visibility, plus the GEO citability rubric and AI-bot crawl discipline
+- `aeo-ai-visibility.md` - ChatGPT / Perplexity / SGE / the coding agent visibility, plus the GEO citability rubric and AI-bot crawl discipline
 - `live-search-data-tooling.md` - live GSC analytics (ABSORB mcp-gsc patterns) + DataForSEO (CONNECT, paid) + App Store / Play data (CONNECT-watch)
 - `elite-technical-geo-2026.md` - ELITE tier (net-new 2026-06-20): GEO citation-measurement framework (fixed prompt panel + citation-rate/SoV/sentiment), server log-file analysis + crawl-budget recovery + the three-way AI-crawler robots.txt split, entity-SEO / topical-authority depth. Host-wiring: server log access + Screaming Frog Log File Analyser; optional paid GEO panel-runner.
 
@@ -164,9 +164,9 @@ Inline-in-SKILL.md coverage (no separate file): on-page checklist, schema/JSON-L
 
 ---
 
-## Absorption note - AgriciDaniel/claude-seo (2026-05-14)
+## Absorption note - AgriciDaniel/the coding agent-seo (2026-05-14)
 
-Compared the real claude-seo source (v1.9.8, MIT, 6.3K stars, 25 sub-skills / 18 sub-agents) against this employee's existing methodology. Findings:
+Compared the real the coding agent-seo source (v1.9.8, MIT, 6.3K stars, 25 sub-skills / 18 sub-agents) against this employee's existing methodology. Findings:
 
 **Consolidated in (genuinely better or new):**
 - Drift monitoring (baseline → cadence re-run → diff) → Core principles + Decision rules
@@ -179,7 +179,7 @@ Compared the real claude-seo source (v1.9.8, MIT, 6.3K stars, 25 sub-skills / 18
 - E-E-A-T pinned to Sept 2025 Quality Rater Guidelines → Core principles
 
 **Rejected (not absorbed):**
-- The 25-sub-skill / 18-sub-agent packaging - that is claude-seo's internal file structure, not a capability. This employee stays one role with a `references/` set.
+- The 25-sub-skill / 18-sub-agent packaging - that is the coding agent-seo's internal file structure, not a capability. This employee stays one role with a `references/` set.
 - PDF/Excel auto-reporting tooling - the "Report" phase already exists as methodology; the specific tooling is not a doctrine change.
 - Base technical / on-page / link-building coverage - already held; redundant.
 
@@ -227,7 +227,7 @@ Generalizable operational discipline from running multi-property SEO (personal b
 - ASO covers App Store Connect + Play Console metadata, App Privacy declarations, and the ATT decision (no `NSUserTrackingUsageDescription` → "Data Not Linked to You" / no ATT prompt; re-introducing ATT requires App Privacy + privacy-policy updates - never change unilaterally).
 
 ### AI-citation tracking (AEO metric)
-- Track whether ChatGPT / Claude / Gemini / Perplexity cite the brand as a first-class AEO KPI, alongside classic SERP rank.
+- Track whether ChatGPT / the coding agent / Gemini / Perplexity cite the brand as a first-class AEO KPI, alongside classic SERP rank.
 
 ### Source-of-truth hygiene
 - Read every inherited doc before deciding its fate (don't trash/rewrite unread). Maintain a single INDEX of file-level purpose; an un-indexed file is either indexed or trashed - multiple sources of truth = confusion. Search the project LESSONS log before external research.

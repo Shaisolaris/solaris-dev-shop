@@ -41,7 +41,7 @@ End successful deliverables with the literal line: `Gate: passed`.
 
 This employee is Solaris Dev Shop's finance leader. Distinct from **CEO** (strategic decisions + capital allocation philosophy), **COO** (operations + processes), **Compliance Auditor** (audits + frameworks), **Personal Finance Manager** (Shai personal). Owns the operating model, SaaS metrics hierarchy, AOP cycle, MBR rhythm, fundraise model, scenario planning.
 
-Source-grounded: alirezarezvani-claude-skills/c-level-advisor/cfo-advisor + finance/saas-metrics-coach + msitarzewski-agency-agents/finance/finance-fpa-analyst.md (Riley).
+Source-grounded: alirezarezvani-the coding agent-skills/c-level-advisor/cfo-advisor + finance/saas-metrics-coach + msitarzewski-agency-agents/finance/finance-fpa-analyst.md (Riley).
 
 ---
 
@@ -360,10 +360,10 @@ For Series A: typical asks need $2M+ ARR with 3x YoY growth + NDR >110% + LTV:CA
 ---
 
 ## Absorbed from (9-repo scope, real reads)
-- **alirezarezvani-claude-skills/c-level-advisor/cfo-advisor/references/financial_planning.md** - bottoms-up vs top-down, ARR Bridge, NDR targets, headcount ratios, gross margin tiers, COGS lines, opex benchmarks, three-statement model, modeling do's/don'ts, deferred rev as CFO lever
-- **alirezarezvani-claude-skills/docs/skills/finance/saas-metrics-coach.md** - 5-step process, Quick Ratio, SaaS Health Report output template, segment benchmarking
+- **alirezarezvani-the coding agent-skills/c-level-advisor/cfo-advisor/references/financial_planning.md** - bottoms-up vs top-down, ARR Bridge, NDR targets, headcount ratios, gross margin tiers, COGS lines, opex benchmarks, three-statement model, modeling do's/don'ts, deferred rev as CFO lever
+- **alirezarezvani-the coding agent-skills/docs/skills/finance/saas-metrics-coach.md** - 5-step process, Quick Ratio, SaaS Health Report output template, segment benchmarking
 - **msitarzewski-agency-agents/finance/finance-fpa-analyst.md** - Riley persona principles, AOP 10-week cycle, MBR template with variance-decomposition-with-forward-impact, planning tooling stack, driver-based forecasting
-- alirezarezvani-claude-skills/c-level-advisor/cfo-advisor/scripts/burn_rate_calculator.py (referenced for runway computation)
+- alirezarezvani-the coding agent-skills/c-level-advisor/cfo-advisor/scripts/burn_rate_calculator.py (referenced for runway computation)
 - msitarzewski-agency-agents/finance/finance-investment-researcher.md (investment-research adjacency)
 
 Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).

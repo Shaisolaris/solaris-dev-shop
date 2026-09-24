@@ -27,7 +27,7 @@ Drive with `system_control` (UBT build/cook/package actions, project settings, C
 - **PC:** Win64 (primary), Linux, Mac.
 - **Console:** PS5, Xbox Series X/S, Switch - require devkits + certification (route cert/store logistics to product-manager + the anthropic-skills unity build/deploy skill where it overlaps; UE packaging here, store submission there).
 - **Mobile:** iOS/Android (Win64/Mac toolchains; UnrealGenAISupport notes mobile + console platform support for its plugin).
-- **Rule:** record the target platform set in `CLAUDE.md`; don't guess scalability settings - derive from the target.
+- **Rule:** record the target platform set in `AGENTS.md`; don't guess scalability settings - derive from the target.
 
 ## Performance
 - Drive with `manage_performance` (profiling, optimization, scalability) + `profiler`-style CVars via `system_control`.

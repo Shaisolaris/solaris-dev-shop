@@ -2,7 +2,7 @@
 
 Language-specific idioms, testing, security, and build-fix methodology for backend stacks the generic rules.md does not cover. Load this when the job is Java (Spring Boot or Quarkus), JPA/Hibernate, or NestJS. The generic backend doctrine in rules.md (API design W1, data modeling W2, auth W3, queues/sagas W4, idempotency, testing strategy) still applies on top; this file adds only the per-language craft.
 
-Absorbed from ECC (affaan-m/everything-claude-code, MIT) skills + agents, methodology lifted, no code bundled. See plugin.json absorbed_from for source list + dates.
+Absorbed from ECC (affaan-m/everything-the coding agent-code, MIT) skills + agents, methodology lifted, no code bundled. See plugin.json absorbed_from for source list + dates.
 
 These are now SUPPORTED LANGUAGES for the dev shop: Java 17+ (Spring Boot 3.x, Quarkus 3.x LTS) + JPA/Hibernate, and NestJS (TypeScript). Route Java/Quarkus engagements and NestJS team-scale Node work here.
 

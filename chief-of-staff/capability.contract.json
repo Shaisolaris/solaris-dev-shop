@@ -207,7 +207,7 @@
     "redaction": "Assignment packets carry minimum necessary context; strip secrets and Alfred personal data.",
     "may_leave_host": false,
     "prohibited": [
-      "Desktop/Claude/Alfred personal-data directory contents",
+      "Desktop/the coding agent/Alfred personal-data directory contents",
       "raw credentials in handoff briefs",
       "private health/finance/personal content in Git or ordinary workers",
       "always-on agent meetings without owner schedule",
@@ -381,7 +381,7 @@
   },
   "compatibility": {
     "providers": [
-      "claude",
+      "the coding agent",
       "codex",
       "grok",
       "kimi"

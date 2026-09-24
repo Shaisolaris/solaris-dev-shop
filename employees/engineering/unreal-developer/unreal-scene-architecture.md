@@ -15,7 +15,7 @@ Every UE game runs on the Gameplay Framework - use it, don't reinvent it. Drive 
 Drive with `manage_level` + `manage_level_structure`.
 - **Persistent level + sublevels** for classic streaming, OR **World Partition** (UE5 default for large worlds) with **data layers** + **HLOD** for auto-streaming by distance/region.
 - **Level streaming triggers** via `manage_volumes` (streaming volumes) - load/unload by player position.
-- **Rule:** decide World Partition vs. sublevels at project start and record it in `CLAUDE.md`. Mixing them ad hoc causes streaming bugs.
+- **Rule:** decide World Partition vs. sublevels at project start and record it in `AGENTS.md`. Mixing them ad hoc causes streaming bugs.
 
 ## Screen / UI flow (UMG)
 Drive with `manage_widget_authoring` (UMG widget creation, layout, styling, animations). PlayerController/HUD owns the widget stack.
@@ -34,7 +34,7 @@ Drive with `manage_ai` + `manage_behavior_tree`.
 - **Rule:** keep AI parameters data-driven (Blackboard keys + DataAssets) so designers can tune without recompiling.
 
 ## Save / load
-- GameInstance + SaveGame objects (UGameplayStatics Save/Load) for persistence. Define the save schema early and record it in `CLAUDE.md`.
+- GameInstance + SaveGame objects (UGameplayStatics Save/Load) for persistence. Define the save schema early and record it in `AGENTS.md`.
 
 ## Networking (if multiplayer)
 Drive with `manage_networking` + `manage_sessions`.

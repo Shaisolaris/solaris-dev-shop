@@ -10,14 +10,14 @@
 |------|------|----------|
 | | | |
 
-## 2026-05-13 - Absorbed AgriciDaniel/claude-ads (scout 2026-05-11) - GAP FILL
+## 2026-05-13 - Absorbed AgriciDaniel/the coding agent-ads (scout 2026-05-11) - GAP FILL
 - 7-platform paid ads audit: Google/Meta/YouTube/LinkedIn/TikTok/Microsoft/Apple
 - 250+ weighted checks, parallel agents, industry templates, AI creative gen
 - MIT license, established author (agricidaniel.com, 35 repos, 9.5K+ stars). Tier 1 PASS.
 
 ## 2026-06-10 - Wave-4 rebuild from real source files
-- Prior claude-ads absorption (2026-05-14) was README-only; opening the actual 26 reference files yielded the bidding ladders, scaling rules, audit check tables, and gotchas ledger that the README never exposed. Lesson: always open files, never absorb from descriptions.
-- coreyhaines31/marketingskills skills/ads is the strongest single paid-ads playbook found to date (29.7K★ MIT); its conversion-tracking reference + claude-ads audit tables are complementary, not overlapping.
+- Prior the coding agent-ads absorption (2026-05-14) was README-only; opening the actual 26 reference files yielded the bidding ladders, scaling rules, audit check tables, and gotchas ledger that the README never exposed. Lesson: always open files, never absorb from descriptions.
+- coreyhaines31/marketingskills skills/ads is the strongest single paid-ads playbook found to date (29.7K★ MIT); its conversion-tracking reference + the coding agent-ads audit tables are complementary, not overlapping.
 
 ## 2026-06-13 - Depth pass (v0.5.0): connector corrections + measurement-science deepen
 - Live-verified the two ad connectors against GitHub: the "official ~224-star Google Ads MCP" was actually the unofficial google-marketing-solutions fork (self-labels NOT official). Corrected to googleads/google-ads-mcp (official org, ~603 stars, Apache-2.0). Meta connector was ~983/NOASSERTION on paper; live it is pipeboard-co/meta-ads-mcp ~807 stars under BSL-1.1 (non-compete, Apache on 2029). Lesson: re-verify connector stars/license at every depth pass - they drift and "official" labels get mis-copied.

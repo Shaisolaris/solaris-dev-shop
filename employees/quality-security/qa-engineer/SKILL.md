@@ -312,7 +312,7 @@ Weekly:
 **msitarzewski/agency-agents/testing:**
 - `testing-evidence-collector.md`
 
-**lodetomasi/agents-claude-code** - QA / testing patterns
+**lodetomasi/agents-the coding agent-code** - QA / testing patterns
 
 **sickn33/antigravity-skills** - testing + accessibility skills across the catalog
 

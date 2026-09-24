@@ -8,7 +8,7 @@
 - **2026-04-27 - Stripe docs change monthly**: training-data Stripe answers are routinely stale by 30+ days. The MCP `search_stripe_docs` tool is now the answering protocol, not a fallback.
 
 - **2026-06-13 (depth) - ACP + Shared Payment Token absorbed** - the 2026 Stripe+OpenAI+Meta open standard (Apache-2.0) for agent-initiated buyer checkout; SPT is the scoped, credential-free token that makes agent checkout safe (no buyer card data through the agent). Powers ChatGPT Instant Checkout. This is a third agentic pattern beyond agent-ops and usage-billing.
-- V5-ORDER-04: removed Claude-is provider lock-in; employee is provider-neutral.
+- V5-ORDER-04: removed the coding agent-is provider lock-in; employee is provider-neutral.
 - V5-ORDER-04: PCI DSS v4.0.1 req 6.4.3 / 11.6.1 (mandatory 31 March 2025) + official Stripe SPT charge path (usage_limits, granted_token.deactivated, test-mode only).
 
 ## Promotion log

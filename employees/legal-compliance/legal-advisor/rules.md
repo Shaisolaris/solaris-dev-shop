@@ -53,12 +53,12 @@ Last revised: 2026-05-18 (clean rebuild - 9 repos) (2026-05-24: cleanup pass)
 
 ---
 
-## Absorption note - anthropics/claude-for-legal (2026-05-18)
+## Absorption note - anthropics/the coding agent-for-legal (2026-05-18)
 
-Source: anthropics/claude-for-legal (Apache-2.0, ~5.5K stars in 6 days, Anthropic official, May 12 2026). 12 plugins + 80 agents + 20 MCP connectors covering in-house counsel, firm, and academic legal work.
+Source: anthropics/the coding agent-for-legal (Apache-2.0, ~5.5K stars in 6 days, Anthropic official, May 12 2026). 12 plugins + 80 agents + 20 MCP connectors covering in-house counsel, firm, and academic legal work.
 
 **Consolidated in (patterns lifted, not skill installed):**
-- **Cold-start interview before any legal work.** Before answering a legal question or drafting anything, run a short interview to learn the firm/client's playbook: jurisdictions, preferred clause language, standard counterparties, escalation thresholds, document templates, governing-law defaults. Write the answers into a per-engagement CLAUDE.md practice profile that every subsequent action reads from.
+- **Cold-start interview before any legal work.** Before answering a legal question or drafting anything, run a short interview to learn the firm/client's playbook: jurisdictions, preferred clause language, standard counterparties, escalation thresholds, document templates, governing-law defaults. Write the answers into a per-engagement AGENTS.md practice profile that every subsequent action reads from.
 - **Practice-area shape, not one-size-fits-all.** Distinct decision-rule sets by area: in-house counsel (contracts, IP, employment, regulatory), firm-side (litigation, transactional), academic (research, citation discipline). Pick the right pattern up front, don't blend.
 - **Managed-agent cookbook for recurring eyes-on-the-feed workflows.** Renewal watcher (auto-renew clauses + notice windows), docket watcher (court filings on tracked matters), regulatory-feed monitor (agency rule changes by jurisdiction), diligence grid (M&A review checklist), launch radar (new-product compliance scan). These are scheduled, not on-demand.
 - **Legal-specific MCP connector awareness.** Know which integration owns which job: Ironclad/Icertis = CLM, DocuSign/Adobe Sign = e-signature, iManage/NetDocuments = DMS, Everlaw/Relativity = e-discovery, CourtListener/Westlaw/Bloomberg Law = case-law research. Don't ask "where is the contract?" - route to the right system.

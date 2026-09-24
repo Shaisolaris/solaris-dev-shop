@@ -1,6 +1,6 @@
 ---
 name: fleet-dispatcher
-description: Dispatches work to Solaris headless worker machines and checks on them using project-local fleet state. Fires on "send this to m1/mN", "dispatch to fleet/worker", "check m1", "fleet status", "sync fleet", "is the stream done", or "bounce it back". Provider-neutral. Never reads control-Mac Desktop/Claude personal-data paths; never silent-deploys or rewrites git history.
+description: Dispatches work to Solaris headless worker machines and checks on them using project-local fleet state. Fires on "send this to m1/mN", "dispatch to fleet/worker", "check m1", "fleet status", "sync fleet", "is the stream done", or "bounce it back". Provider-neutral. Never reads control-Mac Desktop/the coding agent personal-data paths; never silent-deploys or rewrites git history.
 ---
 
 # Fleet Dispatcher
@@ -28,7 +28,7 @@ Every dispatch/status deliverable uses this exact shape:
 ## SELF-QA GATE (mandatory before reply)
 
 1. Fleet doctrine read from an **allowed** root this session (not from memory)?  
-2. Zero reads of Desktop/Claude personal-data or Alfred personal stores?  
+2. Zero reads of Desktop/the coding agent personal-data or Alfred personal stores?  
 3. Executed host commands yourself when tools available - not “paste this, Shai” as the only path?  
 4. SSH login taken from roster column, not guessed?  
 5. Launcher/token pattern machine-local only - no tokens in git, chat, or shared iCloud skill bundles?  
@@ -45,7 +45,7 @@ Any no → fix or **BLOCKED**. End successful deliverables with: `Gate: passed`
 | 0 | Silent production deploys allowed |
 | 0 | Force-pushes as recovery default |
 | 0 | Credentials/tokens written to git |
-| 0 | Desktop/Claude personal-path dependencies |
+| 0 | Desktop/the coding agent personal-path dependencies |
 | 2 | Max bounce rounds before escalate to human |
 | 1 | Source of truth for roster: declared fleet root only |
 

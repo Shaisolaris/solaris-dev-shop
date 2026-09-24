@@ -15,7 +15,7 @@ Source canon (verified 2026-06-13):
 
 | Layer | Tool | Owns | License posture |
 |-------|------|------|-----------------|
-| Semantic navigation | claude-context | "find code by intent" on >2,000-file codebases | MIT (absorbed) |
+| Semantic navigation | code-context | "find code by intent" on >2,000-file codebases | MIT (absorbed) |
 | Unified SCA + tree-secrets + IaC + SBOM | Trivy | one-shot dependency/OS CVE + misconfig + SBOM | MIT (absorbed) |
 | AST taint / data-flow SAST | semgrep (CodeQL/Snyk Code alt) | injection/XSS/SSRF via data-flow, custom org rules | LGPL-2.1 FLAG - methodology only |
 | Independent CVE cross-check + reachability | osv-scanner | 2nd vuln DB (OSV.dev) + call-analysis false-positive cut | Apache-2.0 - safe |
@@ -29,16 +29,16 @@ Doctrine: scanners produce EVIDENCE, not a verdict. The reviewer's judgment (bus
 
 ## 1. AST SAST (semgrep) - methodology
 
-What it adds that grep/claude-context/Trivy cannot: taint/data-flow tracking - "does untrusted input REACH a sink (query, shell, eval, HTML)" - across functions and files. This is the exact capability the SKILL repeatedly disclaims ("does NOT do AST SAST").
+What it adds that grep/code-context/Trivy cannot: taint/data-flow tracking - "does untrusted input REACH a sink (query, shell, eval, HTML)" - across functions and files. This is the exact capability the SKILL repeatedly disclaims ("does NOT do AST SAST").
 
 When to reach for it in a review:
-- Security Audit mode, Phase 3: after claude-context enumerates input surfaces, run a taint pass to confirm reachability instead of eyeballing.
+- Security Audit mode, Phase 3: after code-context enumerates input surfaces, run a taint pass to confirm reachability instead of eyeballing.
 - PR Review touching auth, query construction, deserialization, template rendering, or shell-out.
 - First-Principles mode: org-specific anti-patterns encoded as custom rules (e.g. "never call `db.raw()` with a template literal").
 
 Self-host / CI note (LGPL-2.1 - do NOT vendor binaries or redistribute Semgrep Registry rule packs as Solaris IP):
 - Run as `semgrep ci` or `semgrep scan --config auto` in the client's pipeline; results to SARIF -> GitHub code-scanning.
-- For NDA/closed code: Semgrep CE runs fully local, no code leaves the machine - same posture as Ollama for claude-context. Prefer this for client work.
+- For NDA/closed code: Semgrep CE runs fully local, no code leaves the machine - same posture as Ollama for code-context. Prefer this for client work.
 - Alternatives if client mandates: CodeQL (free for OSS only - FLAG) or Snyk Code (commercial). Same data-flow role.
 
 ## 2. Independent CVE DB + reachability (osv-scanner) - absorb
@@ -96,6 +96,6 @@ This doctrine applies to the employee's own absorbed tooling references above: a
 
 Per-project findings, index locations, and accepted-risk baselines live under a scoped memory key, never global:
 - `code-reviewer/<project>/scan-baseline` - accepted-risk / suppressed findings (gitleaks baseline, osv ignore list, semgrep `.semgrepignore`) so re-scans surface only NEW issues.
-- `code-reviewer/<project>/index` - claude-context index location + last-indexed commit.
+- `code-reviewer/<project>/index` - code-context index location + last-indexed commit.
 - `code-reviewer/<project>/severity-calibration` - did a prior "blocker" hold up; tune future calls.
 Scope so one client's accepted-risk list never leaks into another client's review.

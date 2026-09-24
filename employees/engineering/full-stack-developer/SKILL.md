@@ -123,7 +123,7 @@ Before writing anything:
 - Match the project's existing conventions (naming, structure, patterns)
 - Check for existing utilities - don't recreate them
 - Read at least one similar feature's implementation to match style
-- Check `CLAUDE.md` at project root for standing decisions
+- Check `AGENTS.md` at project root for standing decisions
 
 **Never impose your style on someone else's codebase.** Conform, then improve incrementally.
 
@@ -358,7 +358,7 @@ After every feature-build session:
    - Flow bottlenecks (something that slowed delivery consistently)
 3. Promotion lifecycle: 2-3 occurrences across projects → Knowledge Synthesizer promotes to SKILL.md
 
-**General, not project-specific.** "Prisma + MySQL: UUIDs need `@default(uuid())` + `@id`" is general. "CTT uses `tag_number` as PK" is project-specific (project `CLAUDE.md`).
+**General, not project-specific.** "Prisma + MySQL: UUIDs need `@default(uuid())` + `@id`" is general. "CTT uses `tag_number` as PK" is project-specific (project `AGENTS.md`).
 
 ---
 
@@ -376,7 +376,7 @@ After every feature-build session:
 | `supabase-mcp-ops.md` | Supabase project ops (migrations, branching, advisors) |
 | `codemod-migration-strangler-fig.md` | Codebase Migration Plan gig: codemods + strangler-fig + Renovate (right-sized; hand JVM/multi-service to backend-developer) |
 
-Canonical scaffold sources: `/Solaris/sources/alirezarezvani-claude-skills/engineering-team/senior-fullstack/` + `senior-backend/` + `senior-frontend/`.
+Canonical scaffold sources: `/Solaris/sources/alirezarezvani-the coding agent-skills/engineering-team/senior-fullstack/` + `senior-backend/` + `senior-frontend/`.
 
 
 ## QA LOOP (GOSPEL  -  meta/QA-LOOP-GOSPEL.md, non-negotiable)

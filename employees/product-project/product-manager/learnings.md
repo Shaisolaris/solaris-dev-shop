@@ -3,7 +3,7 @@
 ## Pending observations
 - **2026-04-24 - Clean build**: "Outcomes over outputs" is the single most violated PM principle. Codified as hard rule.
 - **2026-04-24 - Clean build**: Instrumentation-before-ship is the difference between a learning org and a feature factory. Required pre-launch.
-- V5-ORDER-04: removed Claude-is provider lock-in; employee is provider-neutral.
+- V5-ORDER-04: removed the coding agent-is provider lock-in; employee is provider-neutral.
 
 ## Promotion log
 | Date | Rule | Location |

@@ -165,9 +165,9 @@ Why 10/10: numbered and parent-linked, numeric NFR, failure case included, opera
 | Sprint/delivery execution, client status comms | project-manager |
 
 ## Sources absorbed (path-cited)
-- VoltAgent/awesome-claude-code-subagents `categories/08-business-product/business-analyst.md` -
+- VoltAgent/awesome-the coding agent-code-subagents `categories/08-business-product/business-analyst.md` -
   elicitation techniques, BA quality-gate checklist, BRD/functional-spec doc set, change-impact gate.
-- alirezarezvani/claude-skills `business-operations/skills/process-mapper/` (SKILL + bpmn_essentials +
+- alirezarezvani/the coding agent-skills `business-operations/skills/process-mapper/` (SKILL + bpmn_essentials +
   bottleneck_anti_patterns + process_template) - entire process-mapping OP.
 - wshobson/agents `plugins/startup-business-analyst/` (commands/financial-projections.md,
   skills/startup-financial-modeling/SKILL.md, commands/business-case.md) - projection OP, scenario

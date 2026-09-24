@@ -1,6 +1,6 @@
 # Enterprise Network Ops Reference
 
-Methodology lifted from ECC (affaan-m/everything-claude-code, MIT) skills: network-config-validation, cisco-ios-patterns, netmiko-ssh-automation, network-bgp-diagnostics, network-interface-health. All snippets are illustrative patterns - confirm the platform, interface names, current config, rollback path, and out-of-band access before touching a real device. Read-only first; diagnostics before action; resets and policy changes are change-window-only.
+Methodology lifted from ECC (affaan-m/everything-the coding agent-code, MIT) skills: network-config-validation, cisco-ios-patterns, netmiko-ssh-automation, network-bgp-diagnostics, network-interface-health. All snippets are illustrative patterns - confirm the platform, interface names, current config, rollback path, and out-of-band access before touching a real device. Read-only first; diagnostics before action; resets and policy changes are change-window-only.
 
 ---
 

@@ -5,7 +5,7 @@ Added v0.6.0 (2026-06-13, Upgrade Plan Part 2). All sources verified live 2026-0
 ## 1. Shopify Dev MCP (@shopify/dev-mcp) - CONNECT, the #1 upgrade (non-negotiable)
 - Package: `@shopify/dev-mcp` (official Shopify, npm **v1.14.0**, ISC per npm). The docs/schema MCP - no store credentials needed.
 - What it does: validates GraphQL against the **live Admin / Storefront / Functions schemas**, introspects the Admin schema, and searches Shopify dev docs. It is how you stop hallucinating fields/arguments.
-- Host connect (Claude Code): `claude mcp add shopify-dev -- npx -y @shopify/dev-mcp@latest` (or the equivalent claude_desktop_config.json `mcpServers` entry with `command: npx, args: ["-y","@shopify/dev-mcp@latest"]`).
+- Host connect (a coding agent): `agent mcp add shopify-dev -- npx -y @shopify/dev-mcp@latest` (or the equivalent the coding agent_desktop_config.json `mcpServers` entry with `command: npx, args: ["-y","@shopify/dev-mcp@latest"]`).
 - **The discipline it enforces (write into every GraphQL task):**
   1. **Learn the API first** - query the dev docs/schema for the objects + fields involved. Never trust memorized GraphQL.
   2. **Write** the query/mutation.
@@ -20,13 +20,13 @@ Added v0.6.0 (2026-06-13, Upgrade Plan Part 2). All sources verified live 2026-0
   - Metafields (3), Inventory (1: set absolute quantities at a location), Tags (1).
   - Cursor pagination + sortKeys + Shopify search syntax on all list tools.
 - Auth (set up by host, per client): **client credentials** (Dev Dashboard app, Jan 2026+ - clientId/clientSecret, auto-refreshed ~24h tokens) OR legacy static `shpat_` token. Domain = `<shop>.myshopify.com`.
-- Host connect (Claude Code): `claude mcp add shopify -- npx shopify-mcp --clientId <ID> --clientSecret <SECRET> --domain <shop>.myshopify.com`.
+- Host connect (a coding agent): `agent mcp add shopify -- npx shopify-mcp --clientId <ID> --clientSecret <SECRET> --domain <shop>.myshopify.com`.
 - **Division of labor:** dev-MCP = docs + schema validation (no store). GeLi2001 = live data + ops on a real store. Use dev-MCP to get the query RIGHT, GeLi2001 (or the AI-Toolkit `store execute` flow) to RUN it.
 - **Client safety:** vet the OAuth scopes per client before connecting - request the minimum (the existing "Store operations doctrine" / 7 scope groups). A mutation tool on a live store is a write to the client's business - keep the existing "never deploy/destructively-mutate for the client without sign-off" rule.
 
 ## 3. Canonical pattern-source pillars (named upstreams - reference, reinforce existing workflows)
 All MIT except dawn. Use these as the ground-truth upstreams behind the workflows already in SKILL.md:
-- **Shopify/hydrogen** (MIT, 1,972★) - headless storefront patterns. Ships its own CLAUDE.md / .mcp.json - mine it when building Hydrogen.
+- **Shopify/hydrogen** (MIT, 1,972★) - headless storefront patterns. Ships its own AGENTS.md / .mcp.json - mine it when building Hydrogen.
 - **Shopify/function-examples** (MIT, 242★) - worked examples for checkout/discount/delivery/cart Functions (Workflow 4). The canonical "how a Function is structured" reference.
 - **Shopify/theme-tools** (MIT, 216★) - Theme Check / Liquid linting (Workflow 3 step 4 "validate with Shopify theme tooling" = this). The linter to run before delivering a theme component.
 - **Shopify/liquid** (MIT, 11,809★) - the Liquid language ground truth (the Liquid-limits rules in Workflow 3 trace here).

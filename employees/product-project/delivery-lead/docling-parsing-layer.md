@@ -16,7 +16,7 @@ Delivery Lead already owns the OUTPUT side: the client-docs bundle (project.js +
 ## How the host connects it
 - Quick: `pip install docling`, then CLI `docling <file-or-url>` -> Markdown in the cwd.
 - Python: `from docling.document_converter import DocumentConverter; DocumentConverter().convert(src).document.export_to_markdown()`.
-- MCP: Docling ships an **MCP server** (docs: docling-project.github.io/docling/usage/mcp/) - host runs it so Claude can parse in-session.
+- MCP: Docling ships an **MCP server** (docs: docling-project.github.io/docling/usage/mcp/) - host runs it so the coding agent can parse in-session.
 - VLM pipeline for hard docs: `docling --pipeline vlm --vlm-model granite_docling <file>`.
 
 ## How Delivery Lead uses it (the wire into doc generation)

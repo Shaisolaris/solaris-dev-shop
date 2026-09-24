@@ -238,11 +238,11 @@ echo "[Build]   Images noted:      $IMAGES_COUNT (dimensions only - no downloads
 
 ---
 
-## Section 3: Content Sanitisation (Claude In-Context Step)
+## Section 3: Content Sanitisation (the coding agent In-Context Step)
 
-This section is executed by Claude as an in-context judgment step. Claude reads each HTML file written by `scraper.js` and rewrites it with fictional placeholder content. No external tool is called - Claude performs all replacements using its own language capability.
+This section is executed by the coding agent as an in-context judgment step. the coding agent reads each HTML file written by `scraper.js` and rewrites it with fictional placeholder content. No external tool is called - the coding agent performs all replacements using its own language capability.
 
-**Claude performs the following replacements on each `.html` file in `$SCRAPE_DIR`:**
+**the coding agent performs the following replacements on each `.html` file in `$SCRAPE_DIR`:**
 
 ### 3a: HTML Content Replacements (per file)
 
@@ -270,7 +270,7 @@ This section is executed by Claude as an in-context judgment step. Claude reads 
 
    Use the appropriate feature name in the placeholder text (Search, Contact Form, E-commerce Cart, Member Login, Map, Video Embed, Social Feed).
 
-**Claude writes the sanitised HTML back to the same file path**, overwriting the raw scraped version.
+**the coding agent writes the sanitised HTML back to the same file path**, overwriting the raw scraped version.
 
 ### 3b: CSS Sanitisation (Python script - automated)
 
@@ -311,7 +311,7 @@ print('[Build] scrape.json updated with robots_status=$ROBOTS_STATUS')
 
 After `build-visual` Section 6 writes the base `SETUP.md`, this section **appends** URL-clone-specific content. This section is run by COMMAND.md Section 3c after the build-visual pipeline completes.
 
-Claude reads `$SCRAPE_DIR/scrape.json` and generates the following markdown, then appends it to `$BUILD_DIR/SETUP.md`:
+the coding agent reads `$SCRAPE_DIR/scrape.json` and generates the following markdown, then appends it to `$BUILD_DIR/SETUP.md`:
 
 ```bash
 CLONE_TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
@@ -476,7 +476,7 @@ echo "[Build]   VISUAL_MODE=$VISUAL_MODE"
 
 **build-visual Section 1 is skipped for URL builds:** COMMAND.md Section 3c sets `VISUAL_MODE="html-css"` before calling `build-visual` Sections 2-6. The input detection logic in `build-visual` Section 1a is not needed - the mode is already determined by `build-scrape`.
 
-**Content sanitisation is Claude's in-context judgment:** Section 3a requires Claude to read, rewrite, and overwrite each HTML file. There is no automated verification that all verbatim text has been removed. The CONTEXT.md decision is that this is an AI judgment step - acceptable accuracy is achieved by following the 8 replacement rules explicitly. No post-sanitisation text-extraction verification is performed at build time.
+**Content sanitisation is the coding agent's in-context judgment:** Section 3a requires the coding agent to read, rewrite, and overwrite each HTML file. There is no automated verification that all verbatim text has been removed. The CONTEXT.md decision is that this is an AI judgment step - acceptable accuracy is achieved by following the 8 replacement rules explicitly. No post-sanitisation text-extraction verification is performed at build time.
 
 **Dynamic feature detection confidence:** MEDIUM for JavaScript-heavy SPAs. The Playwright `waitUntil: 'networkidle'` strategy gives JS frameworks time to mount their UI before DOM selectors are evaluated. However, sites with continuous background API calls fall back to `domcontentloaded` - in these cases, some dynamically rendered elements may not be present in the DOM when selectors run. The `spa_fallback_used` flag in `scrape.json` signals this condition.
 

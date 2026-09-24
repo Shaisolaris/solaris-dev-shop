@@ -4,7 +4,7 @@ Domain: engineering strategy / architecture / team. (Advisory role - strong dedi
 
 | # | Source | Stars | License | Last commit | Maintainer | What it adds | Gate-0 | Tag |
 |---|--------|-------|---------|-------------|------------|--------------|--------|-----|
-| 1 | github.com/alirezarezvani/claude-skills (cto-advisor pod) | 17,992 | MIT | 2026-06-12 | alirezarezvani | architecture_decision_records (full ADR template, 8 anti-patterns, lifecycle, decision-evaluation framework) | CONTENT-DUPLICATE (already absorbed - CTO's primary source) | (absorbed) |
+| 1 | github.com/alirezarezvani/the coding agent-skills (cto-advisor pod) | 17,992 | MIT | 2026-06-12 | alirezarezvani | architecture_decision_records (full ADR template, 8 anti-patterns, lifecycle, decision-evaluation framework) | CONTENT-DUPLICATE (already absorbed - CTO's primary source) | (absorbed) |
 | 2 | github.com/rinaldofesta/cto-os-skills | 20 | Commercial - License Required (FLAG) | 2025-10-18 | rinaldofesta | 4 skills: architecture/DORA-metrics/tech-roadmap/risk-resilience, Wardley mapping | REJECT - 20 stars (below bar) AND commercial license (cannot absorb safely). DORA/Wardley/ADR are public methodology already covered | REJECT (below bar + commercial license) |
 | 3 | github.com/AlpacaLabsLLC/skills-for-architects | (mid) | (varies) | 2026 | AlpacaLabsLLC | architecture/real-estate/workplace strategy | WRONG DOMAIN - building architects, not software architecture | REJECT (wrong domain) |
 | 4 | engineering employee sources (wshobson, VoltAgent, alirezarezvani engineering pod) | large | MIT | 2026 | various | hands-on architecture/devops/system-design | LIVES WITH engineering employees (CTO sets strategy; engineering executes); boundary preserved | (lives with engineering) |

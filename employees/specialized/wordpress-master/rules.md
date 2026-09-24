@@ -27,8 +27,8 @@ Last revised: 2026-05-18 (clean rebuild - 9 repos) (2026-05-24: cleanup pass)
 - **When** multisite → subdomain vs subdirectory decided upfront
 - **When** block needs client-side interactivity → Interactivity API (no React on front-end) unless block is admin-only or in headless context
 - **When** displaying dynamic post-meta value → Block Bindings API (don't write a custom block)
-- **When** new client project + AI ops desired → the Abilities API is CORE (since Nov 2025, WP 6.9/7.0 - nothing to install); REGISTER abilities, then install the SEPARATE MCP Adapter plugin (v0.5.0, own cadence) to expose them to Claude, optionally gate exposure with the 'Enable Abilities for MCP' plugin. (Don't tell a client to 'install the Abilities API' - it's core.) See depth-2026-06.md.
-- **When** managed WordPress (WordPress.com) → recommend the official Claude Connector instead of self-hosted MCP
+- **When** new client project + AI ops desired → the Abilities API is CORE (since Nov 2025, WP 6.9/7.0 - nothing to install); REGISTER abilities, then install the SEPARATE MCP Adapter plugin (v0.5.0, own cadence) to expose them to the coding agent, optionally gate exposure with the 'Enable Abilities for MCP' plugin. (Don't tell a client to 'install the Abilities API' - it's core.) See depth-2026-06.md.
+- **When** managed WordPress (WordPress.com) → recommend the official a hosted AI connector instead of self-hosted MCP
 - **When** answering a modern WP question (FSE / Interactivity / Bindings / HPOS / MCP / AI Client) → load wp-modern-engineering-methodology.md FIRST
 - **When** PHP code needs to call an AI model inside WordPress → use the WP 7.0 core AI Client (PHP AI Client), not a hand-rolled HTTP call. The WP AI surface trio: Abilities API (register) + MCP Adapter (expose to agents) + AI Client (call models from PHP).
 - **When** a client site is on WP < 6.9 → recommend upgrading to 6.9+/7.0 for the free perf win (template output buffer, minified+inlined CSS, ~2.8-5.8% up to 10-15% faster); verify on staging.

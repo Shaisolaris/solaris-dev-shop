@@ -41,7 +41,7 @@ The methodology already lives in rules.md (Van Westendorp, MaxDiff, Likert, <=10
 - surveyjs (MIT) is the lighter path when the survey must live inside a client's web app rather than a standalone LimeSurvey instance; same instrument discipline applies.
 
 ## CONNECT (host installs - auto-deploy does not install external MCP servers or self-hosted apps)
-- **firecrawl-mcp-server** [MIT]: the clean CONNECT path for Firecrawl - host runs the engine, this repo bundles no AGPL code. `claude mcp add` per client; scoped API key (or self-hosted endpoint), never embedded in a repo.
+- **firecrawl-mcp-server** [MIT]: the clean CONNECT path for Firecrawl - host runs the engine, this repo bundles no AGPL code. `agent mcp add` per client; scoped API key (or self-hosted endpoint), never embedded in a repo.
 - **SearXNG** [AGPL]: host stands up an instance (Docker); point research at its JSON endpoint. Self-host keeps queries private and avoids per-vendor SERP keys.
 - **LimeSurvey** [GPL]: host runs an instance (Docker/managed) for fielding; export CSV for analysis here.
 - **PRAW** [BSD-2]: host installs the Python package + registers a Reddit script app; only when the hosted reddit-research-mcp is not usable.

@@ -33,7 +33,7 @@ Deepened: 2026-06-14 (v0.8.0 - C#/.NET language-level quality+testing delta adde
 - Guessing at an error without reading `console-get-logs`
 - Asking Shai for a screenshot → take it yourself
 - Writing 500 lines of C# inside a single MCP tool call → use the IDE
-- Skipping `CLAUDE.md` + `learnings.md` reads at session start
+- Skipping `AGENTS.md` + `learnings.md` reads at session start
 - Building a screen before answering the 4 Design Review questions
 - Building tools that already exist in Unity-MCP (check the 100+ first)
 - Forgetting Unity-MCP runtime exists for in-game AI use cases

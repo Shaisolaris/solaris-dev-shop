@@ -4,7 +4,7 @@ Shared engineering reference. Added 2026-06-14 (LIGHT absorb) from PatrickJS/awe
 
 ## What this is and why it matters to us
 
-When a client project (or our own) runs on Cursor AI, "Cursor Project Rules" are the per-project guidance files that steer the editor's code generation toward the project's stack, architecture, naming, libraries, and review expectations. They are the Cursor-native equivalent of an AGENTS.md / CLAUDE.md convention layer: reusable project knowledge given to the AI up front so suggestions fit the codebase on the first pass instead of being re-corrected each time. For a white-label shop, dropping a good rules file into a client repo is a cheap, high-leverage way to make any developer's (human or AI) output consistent with that project's conventions.
+When a client project (or our own) runs on Cursor AI, "Cursor Project Rules" are the per-project guidance files that steer the editor's code generation toward the project's stack, architecture, naming, libraries, and review expectations. They are the Cursor-native equivalent of an AGENTS.md / AGENTS.md convention layer: reusable project knowledge given to the AI up front so suggestions fit the codebase on the first pass instead of being re-corrected each time. For a white-label shop, dropping a good rules file into a client repo is a cheap, high-leverage way to make any developer's (human or AI) output consistent with that project's conventions.
 
 ## The convention (modern format)
 
@@ -32,4 +32,4 @@ Workflow when a client/project is on Cursor:
 ## Cross-references
 
 - frontend-developer and full-stack-developer carry one-line pointers to this file for their stacks.
-- Conceptually parallel to project-level AGENTS.md / CLAUDE.md guidance; if a project uses both Cursor and Claude Code, keep the two convention layers consistent.
+- Conceptually parallel to project-level AGENTS.md / AGENTS.md guidance; if a project uses both Cursor and a coding agent, keep the two convention layers consistent.

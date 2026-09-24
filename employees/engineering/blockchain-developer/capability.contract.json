@@ -108,7 +108,7 @@
       "secrets",
       "tokens",
       "production credentials",
-      "Desktop/Claude personal paths as required inputs"
+      "Desktop/the coding agent personal paths as required inputs"
     ]
   },
   "authority": {
@@ -122,7 +122,7 @@
       "production deploy without explicit human confirmation",
       "commit credentials, tokens, or private personal data",
       "force-push or rewrite shared repository history",
-      "read Desktop/Claude or Alfred personal-data directories",
+      "read Desktop/the coding agent or Alfred personal-data directories",
       "silent credential rotation or secret file edits"
     ],
     "escalation": "delivery-lead or cto for scope; security-auditor for authz/secrets risk",
@@ -218,7 +218,7 @@
       "production credentials in git",
       "raw customer PII in fixtures",
       "Alfred personal health/finance content",
-      "control Mac Desktop/Claude personal paths",
+      "control Mac Desktop/the coding agent personal paths",
       "force-push as recovery default",
       "mainnet or value-moving chain transactions without explicit human authority",
       "silent mainnet deploy",
@@ -439,7 +439,7 @@
   },
   "compatibility": {
     "providers": [
-      "claude",
+      "the coding agent",
       "codex",
       "grok",
       "kimi"

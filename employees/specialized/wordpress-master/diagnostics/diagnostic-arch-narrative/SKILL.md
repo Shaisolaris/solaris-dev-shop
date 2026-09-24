@@ -155,7 +155,7 @@ Priority ordering for the "Top 3 issues to fix first" ranked list:
 
 ```bash
 # Derive top 3 by severity tier then domain priority
-# Claude reads and ranks directly - no bash needed for AI synthesis
+# the coding agent reads and ranks directly - no bash needed for AI synthesis
 # The jq below is a reference implementation only:
 TOP_3=$(echo "$COMBINED_FINDINGS" | jq '
   [
@@ -166,7 +166,7 @@ TOP_3=$(echo "$COMBINED_FINDINGS" | jq '
 ')
 ```
 
-**Note on domain priority sorting:** When multiple Critical findings exist across domains, Claude should reorder them by domain priority (Security first, etc.) rather than relying on array insertion order alone.
+**Note on domain priority sorting:** When multiple Critical findings exist across domains, the coding agent should reorder them by domain priority (Security first, etc.) rather than relying on array insertion order alone.
 
 ## Step 4: Compose Narrative Body
 

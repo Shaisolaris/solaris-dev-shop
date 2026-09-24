@@ -21,7 +21,7 @@ Created: 2026-06-13 (v0.1.0 - NEW employee, per UPGRADE-PLAN-2026-06 Part 1 Game
 - **When** editor automation → use the ChiR24 bridge tools, never tell Shai to click.
 - **When** generated content needed (3D model / texture / audio) → use the shared asset layer (blender-mcp / Tripo / Meshy / ElevenLabs), import the result, place via `control_actor`. See `unreal-genai-asset-gen.md`.
 - **When** in-game LLM behavior (dynamic NPCs, runtime decisions) → use UnrealGenAISupport's C++/Blueprint LLM calls at packaged runtime (route keys through a backend, never ship keys).
-- **When** building abilities/stats/damage/buffs (GAS or the lighter Action pattern) → load `unreal-gameplay-patterns.md` Part 1 FIRST; route all stat changes through GameplayEffects, never `Health -= X`; decide ASC ownership (Pawn vs PlayerState) and record it in `CLAUDE.md`.
+- **When** building abilities/stats/damage/buffs (GAS or the lighter Action pattern) → load `unreal-gameplay-patterns.md` Part 1 FIRST; route all stat changes through GameplayEffects, never `Health -= X`; decide ASC ownership (Pawn vs PlayerState) and record it in `AGENTS.md`.
 - **When** the game is slow → do NOT guess. `stat unit` first, name the bottleneck thread (Game/Draw/GPU), then fix that one thing. See `unreal-gameplay-patterns.md` Part 2.
 - **When** the game is multiplayer → decide net mode + ASC ownership at project start; use replicated properties + RepNotify for STATE and RPCs only for events; test with PIE multi-client early. See `unreal-gameplay-patterns.md` Part 3.
 - **When** the task is small (a tweak, a one-line fix, a transform) → skip the Design Review gate; just do it and verify. When it's a prototype → light gate (Q1+Q2 only) and reach for the lighter pattern. Match ceremony to stakes.
@@ -43,7 +43,7 @@ Created: 2026-06-13 (v0.1.0 - NEW employee, per UPGRADE-PLAN-2026-06 Part 1 Game
 - Flipping `MCP_AUTOMATION_ALLOW_NON_LOOPBACK=true` without an explicit reason from Shai.
 - Building tools that already exist among the 36 ChiR24 tools (check the operator file first).
 - Starting a cook/package without raising the request timeout (it WILL time out at 120s default on a real package).
-- Skipping `CLAUDE.md` + `learnings.md` reads at session start.
+- Skipping `AGENTS.md` + `learnings.md` reads at session start.
 - Building a level before answering the 4 Design Review questions.
 - Reaching for full GAS on a throwaway prototype (use the lighter component-based Action pattern; see gameplay-patterns Part 1).
 - Modifying an attribute directly (`Health -= X`) instead of through a GameplayEffect (breaks prediction/replication/buff-stack).
@@ -68,4 +68,4 @@ Created: 2026-06-13 (v0.1.0 - NEW employee, per UPGRADE-PLAN-2026-06 Part 1 Game
 - Quarterly: re-fetch ChiR24/Unreal_mcp README + tool docs for new actions / UE version support / GraphQL changes.
 - Quarterly: re-check UnrealGenAISupport (its MCP is "not actively developed" upstream) + its pro Fab plugins.
 - Watch: Epic's official Unreal MCP for UE 5.8+ - when it ships, re-evaluate the base; it likely supersedes third-party bridges.
-- Tier-1 scan next sweep: Natfii/UnrealClaude (MIT standalone UE MCP) + GenOrca/unreal-mcp (Apache-2.0) for action-breadth deltas.
+- Tier-1 scan next sweep: Natfii/Unrealthe coding agent (MIT standalone UE MCP) + GenOrca/unreal-mcp (Apache-2.0) for action-breadth deltas.

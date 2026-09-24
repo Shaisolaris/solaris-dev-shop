@@ -1,7 +1,7 @@
 # AR/VR/XR Developer - Learnings (Pending)
 
 ## Pending observations
-- **2026-06-09 - Rebuild from primary domain sources**: Claude-agent hub repos (wshobson 35.7K, VoltAgent 20.2K, alirezarezvani 17.6K stars) contain ZERO XR agents - for niche engineering domains, go straight to the framework/engine repos (three.js, A-Frame, Babylon docs) instead of agent aggregators.
+- **2026-06-09 - Rebuild from primary domain sources**: the coding agent-agent hub repos (wshobson 35.7K, VoltAgent 20.2K, alirezarezvani 17.6K stars) contain ZERO XR agents - for niche engineering domains, go straight to the framework/engine repos (three.js, A-Frame, Babylon docs) instead of agent aggregators.
 - **2026-06-09 - Babylon teleport+movement mutual exclusion** is a real API constraint, not a style preference - enabling both corrupts locomotion (babylon WebXRMovement.md).
 - **2026-04-25 - Comfort settings always exposed**: Motion sickness prevention is the #1 XR usability principle. (Carried over; now grounded in XRI LocomotionSetup concepts.)
 

@@ -16,7 +16,7 @@ Last revised: 2026-06-13 (deep quality pass: top-5 scanning stack operationalize
 - **When** audit requested → scope + threat model + authorization letter BEFORE scanning
 - **When** triaging scanner output / hunting exploitable vulns → apply the attacker mindset in `adversarial-bounty-hunting.md`: scanner output is triage input only, keep only remotely-reachable + user-controlled paths to a meaningful sink, prove taint end-to-end + smallest-safe-PoC, everything else is a lead not a finding. Cross-check embedded in-tree third-party libs/versions/licenses (manifest scanners miss them).
 - **When** secure-code review → run the structured 10-dimension pass, not a freeform read: (1) vulnerability detection, (2) authorization enforcement verification, (3) secret scanning, (4) supply-chain/dependency analysis, (5) IaC / container / CI-CD security, (6) threat intelligence - malware / C2 / backdoor patterns in the code itself, MITRE ATT&CK-mapped, (7) AI-generated-code failure patterns, (8) business-logic flaws, (9) **AI agent component review (pattern + LLM)** - prompt injection in skill files, tool poisoning in MCP server descriptions, tool shadowing (duplicate names), toxic flows (chains of tools combining into an attack), malware payloads hidden in markdown, untrusted-content handling, credential mishandling, hardcoded secrets in skill files. Operational tool: `uvx snyk-agent-scan@latest`. (10) **AI agent multi-engine deep analysis** - Python AST dataflow analysis (catches taint flows snyk's pattern matching misses), .pyc bytecode integrity verification (detects compiled-payload smuggling), shell pipeline command taint analysis (catches multi-stage exfil chains), YARA-rule matching, optional VirusTotal hash scan on binary files, LLM-as-judge with consensus runs (3+ runs, keep majority-agreed findings) for FP reduction. Operational tool: `cisco-ai-skill-scanner`. Cross-reference each finding across OWASP + CWE Top 25 + MITRE ATT&CK + the Cisco Integrated AI Security and Safety Framework taxonomy.
-- **When** auditing the agent stack itself (Solaris/Alfred skills, MCP configs, agent harnesses) → run BOTH automated baselines in this order: first `uvx snyk-agent-scan@latest` (auto-discovers Claude Code / Cursor / Windsurf / Gemini CLI / Amp configs; pattern + LLM coverage of dimensions 1-9 above), then `cisco-ai-skill-scanner scan-all <path> --recursive --use-behavioral --use-llm --enable-meta --policy strict` (multi-engine deep coverage of dimension 10 - AST dataflow, bytecode, shell pipeline taint). If they disagree on a finding's severity, take the higher rating. Then layer the manual 10-dimension review pass on top of their combined findings. Reason for running both: different threat models - snyk's pattern + LLM coverage catches descriptive / instructive attacks; cisco's AST dataflow + bytecode + shell taint catches structural / behavioral attacks. Neither alone is comprehensive.
+- **When** auditing the agent stack itself (Solaris/Alfred skills, MCP configs, agent harnesses) → run BOTH automated baselines in this order: first `uvx snyk-agent-scan@latest` (auto-discovers a coding agent / Cursor / Windsurf / Gemini CLI / Amp configs; pattern + LLM coverage of dimensions 1-9 above), then `cisco-ai-skill-scanner scan-all <path> --recursive --use-behavioral --use-llm --enable-meta --policy strict` (multi-engine deep coverage of dimension 10 - AST dataflow, bytecode, shell pipeline taint). If they disagree on a finding's severity, take the higher rating. Then layer the manual 10-dimension review pass on top of their combined findings. Reason for running both: different threat models - snyk's pattern + LLM coverage catches descriptive / instructive attacks; cisco's AST dataflow + bytecode + shell taint catches structural / behavioral attacks. Neither alone is comprehensive.
 - **When** reviewing a PR or a changeset → use diff-scoped mode: audit only the changed files and their blast radius, not the whole repo. Full-repo audits are a separate, scheduled engagement.
 - **When** a scanner flags an issue in framework-handled code → check framework-aware false-positive suppression before reporting (e.g. an ORM that parameterizes, a template engine that auto-escapes). Reporting framework-handled cases as findings burns trust and buries real issues.
 - **When** finding has active exploit in wild → P0, escalate immediately
@@ -71,13 +71,13 @@ Gate-0: Trivy and OWASP ZAP were already NAMED in the tool catalog; this adds th
 
 ---
 
-## Absorption note - AgriciDaniel/claude-cybersecurity (2026-05-14)
+## Absorption note - AgriciDaniel/the coding agent-cybersecurity (2026-05-14)
 
 Compared the real source (MIT, v1.1.0, 23 files / 5,350 lines; a secure-code-review skill - 8 review dimensions, ~11-14 languages, OWASP + CWE Top 25 + MITRE ATT&CK) against this employee.
 
 Star count is low (32) - below the standard scout threshold. This was a quality-over-stars call: the content is substantive and the author has credible larger repos. We absorbed the methodology, not the repo.
 
-This employee is already broader than claude-cybersecurity (it does pentest, STRIDE/PASTA/LINDDUN threat modeling, compliance, IR, red team - claude-cybersecurity is code-review only). So the absorption was scoped to the secure-code-review part of the role.
+This employee is already broader than the coding agent-cybersecurity (it does pentest, STRIDE/PASTA/LINDDUN threat modeling, compliance, IR, red team - the coding agent-cybersecurity is code-review only). So the absorption was scoped to the secure-code-review part of the role.
 
 **Consolidated in (genuinely better or new):**
 - The structured 8-dimension code-review pass → Decision rules. The three dimensions the employee genuinely lacked: AI-generated-code failure patterns, in-code threat intelligence (malware/C2/backdoor detection), and business-logic flaws as a *structured* dimension (it was only a passing gotcha before).
@@ -88,19 +88,19 @@ This employee is already broader than claude-cybersecurity (it does pentest, STR
 - Per-finding confidence tagging → Core principles.
 
 **Rejected (not absorbed):**
-- The "8 parallel agents, spawn all 8 simultaneously" packaging - that is claude-cybersecurity's internal structure. This employee stays one role; the 8 items are absorbed as a *checklist*, not as 8 agents.
-- **Correction of the prior 2026-05-13 blob:** it listed the 8 agents with 3 guessed ("+ 3 more - injection, crypto, dependency CVE") - those were wrong. The real 8th-dimension set is listed above. It also claimed the supply-chain agent "doubles as Talent Scout's absorption-vetting tool" - overstated; claude-cybersecurity is a review skill, not a packaged scanner. What is true: supply-chain review is the *same discipline* Talent Scout's Tier-4 verification needs, so the methodology is shared - but it is not a drop-in tool.
+- The "8 parallel agents, spawn all 8 simultaneously" packaging - that is the coding agent-cybersecurity's internal structure. This employee stays one role; the 8 items are absorbed as a *checklist*, not as 8 agents.
+- **Correction of the prior 2026-05-13 blob:** it listed the 8 agents with 3 guessed ("+ 3 more - injection, crypto, dependency CVE") - those were wrong. The real 8th-dimension set is listed above. It also claimed the supply-chain agent "doubles as Talent Scout's absorption-vetting tool" - overstated; the coding agent-cybersecurity is a review skill, not a packaged scanner. What is true: supply-chain review is the *same discipline* Talent Scout's Tier-4 verification needs, so the methodology is shared - but it is not a drop-in tool.
 
 ---
 
 ## Absorption note - snyk/agent-scan (2026-05-18)
 
-Source: snyk/agent-scan (Apache-2.0, 2.4K stars, Snyk official, 518 commits, v0.5.3 May 12 2026). Different category from claude-cybersecurity. claude-cybersecurity audits CLIENT web/app code; snyk/agent-scan audits OUR OWN AI agent stack (skills, MCP server configs, agent harnesses). Genuinely complementary.
+Source: snyk/agent-scan (Apache-2.0, 2.4K stars, Snyk official, 518 commits, v0.5.3 May 12 2026). Different category from the coding agent-cybersecurity. the coding agent-cybersecurity audits CLIENT web/app code; snyk/agent-scan audits OUR OWN AI agent stack (skills, MCP server configs, agent harnesses). Genuinely complementary.
 
-**Verified beyond the README:** Snyk is a known security company, the repo has a real changelog with weekly releases, real issue codes (E001/E002/E004/E006/W007/W008/W011) documented in `docs/issue-codes.md`, real `well_known_clients.py` that defines agent detection for 13 agent products (Claude Code, Cursor, Windsurf, Gemini CLI, Amp, etc.). Not a vaporware skill.
+**Verified beyond the README:** Snyk is a known security company, the repo has a real changelog with weekly releases, real issue codes (E001/E002/E004/E006/W007/W008/W011) documented in `docs/issue-codes.md`, real `well_known_clients.py` that defines agent detection for 13 agent products (a coding agent, Cursor, Windsurf, Gemini CLI, Amp, etc.). Not a vaporware skill.
 
 **Consolidated in:**
-- 9th review dimension - AI agent component review (prompt injection / tool poisoning / tool shadowing / toxic flows / malware payloads / untrusted content / credential mishandling / hardcoded secrets in skills) → Decision rules. This was an entire category claude-cybersecurity does not cover.
+- 9th review dimension - AI agent component review (prompt injection / tool poisoning / tool shadowing / toxic flows / malware payloads / untrusted content / credential mishandling / hardcoded secrets in skills) → Decision rules. This was an entire category the coding agent-cybersecurity does not cover.
 - Operational tool reference: `uvx snyk-agent-scan@latest` for the automated baseline before the manual pass → Decision rules.
 
 **Rejected (not absorbed):**
@@ -111,7 +111,7 @@ Source: snyk/agent-scan (Apache-2.0, 2.4K stars, Snyk official, 518 commits, v0.
 
 ## Absorption note - cisco-ai-defense/skill-scanner (2026-05-29) - 10th review dimension
 
-Source: cisco-ai-defense/skill-scanner (Apache-2.0, 1,889 stars, 231 forks, Cisco AI Defense team, official Cisco). Real source read: README + Highlights + Security Analyzers matrix + Threat Taxonomy doc reference + the Scope and Limitations disclosure (the project itself acknowledges "best-effort detection, not comprehensive coverage"). Package on PyPI as `cisco-ai-skill-scanner`. Native support for OpenAI Codex Skills + Cursor Agent Skills formats; `--lenient` mode covers Claude Code `.claude/commands/*.md` and flat markdown skill repos.
+Source: cisco-ai-defense/skill-scanner (Apache-2.0, 1,889 stars, 231 forks, Cisco AI Defense team, official Cisco). Real source read: README + Highlights + Security Analyzers matrix + Threat Taxonomy doc reference + the Scope and Limitations disclosure (the project itself acknowledges "best-effort detection, not comprehensive coverage"). Package on PyPI as `cisco-ai-skill-scanner`. Native support for OpenAI Codex Skills + Cursor Agent Skills formats; `--lenient` mode covers a coding agent `.the coding agent/commands/*.md` and flat markdown skill repos.
 
 **Decision: ABSORB as 10th dimension.** Honestly evaluated against snyk/agent-scan (the 9th dimension's operational tool) and the two are genuinely complementary, not overlapping. Different threat models, different detection methods, different ecosystem coverage. Running both gives layered coverage neither tool can provide alone.
 
@@ -131,7 +131,7 @@ Source: cisco-ai-defense/skill-scanner (Apache-2.0, 1,889 stars, 231 forks, Cisc
 | Meta-analyzer FP filtering | No | YES (`--enable-meta`) | NEW - sharper FP rate |
 | SARIF output / GitHub Code Scanning | No | YES | NEW |
 | Pre-commit hook framework | No | YES | NEW |
-| Auto-discovery of Claude/Cursor/Windsurf/Gemini/Amp configs | YES | No (point at path) | snyk advantage |
+| Auto-discovery of the coding agent/Cursor/Windsurf/Gemini/Amp configs | YES | No (point at path) | snyk advantage |
 | Cisco AI Security Framework taxonomy mapping | No | YES | NEW - different taxonomy from snyk's issue codes |
 
 **Consolidated in:**

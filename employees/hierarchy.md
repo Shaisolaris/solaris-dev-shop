@@ -1,6 +1,6 @@
 # The Org Chart
 
-How the Solaris work employees (52 across 12 departments) work together, under the meta orchestration layer. Counts are regenerated from disk in meta/roster-manager/references/roster.md.
+How the Solaris work employees (61 across 12 departments) work together, under the meta orchestration layer. Counts are regenerated from disk in meta/roster-manager/references/roster.md.
 
 ## Command structure
 

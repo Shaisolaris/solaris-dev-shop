@@ -1,6 +1,6 @@
 # Unreal C++ Quality and Build - language-level review, standards, testing, build-fix loop (depth)
 
-> **Depth absorption 2026-06-14 (v0.3.0).** C++ LANGUAGE methodology lifted (methodology only, no code bundled) from `affaan-m/ECC` (everything-claude-code, MIT) skills `cpp-reviewer`, `cpp-coding-standards`, `cpp-testing`, `cpp-build-resolver`. The ECC standards are grounded in the [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines) (isocpp.org). This file is the LANGUAGE-quality layer; the engine layer lives in `unreal-gameplay-patterns.md` (GAS / perf / networking / packaging) and `unreal-testing-pipeline.md` (PIE / UE Automation / cook). Do not duplicate engine work here - this is "is the C++ itself safe, modern, correct, and does it build", not "how do abilities or replication work".
+> **Depth absorption 2026-06-14 (v0.3.0).** C++ LANGUAGE methodology lifted (methodology only, no code bundled) from `affaan-m/ECC` (everything-the coding agent-code, MIT) skills `cpp-reviewer`, `cpp-coding-standards`, `cpp-testing`, `cpp-build-resolver`. The ECC standards are grounded in the [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines) (isocpp.org). This file is the LANGUAGE-quality layer; the engine layer lives in `unreal-gameplay-patterns.md` (GAS / perf / networking / packaging) and `unreal-testing-pipeline.md` (PIE / UE Automation / cook). Do not duplicate engine work here - this is "is the C++ itself safe, modern, correct, and does it build", not "how do abilities or replication work".
 
 **Gate-0 (vs existing content).** Before this file the employee had ZERO C++-language methodology: nothing on memory safety, smart pointers, RAII, Rule of Five, const-correctness, concurrency races, GoogleTest, or a C++/CMake build-error-fix loop. The engine files cover Unreal subsystems but assume the underlying C++ is already sound. This is the missing quality + build-fixing delta for Unreal gameplay C++. PASS.
 
@@ -182,7 +182,7 @@ Stop and report if: the same error survives 3 fix attempts; a fix creates more e
 - `unreal-gameplay-patterns.md` - the ENGINE layer (GAS, performance profiling, networking, packaging). This file is the LANGUAGE layer underneath it; load both when writing a real gameplay system in C++.
 - `unreal-testing-pipeline.md` - UE Automation tests + PIE + cook/package. Part 3 here is the GoogleTest counterpart for plain C++ that does not need the engine; that file owns the engine-test surface.
 - `unreal-mcp-operator.md` - drive the in-editor UBT build via `system_control`; the build-fix discipline in Part 4 wraps it.
-- `learnings.md` / `CLAUDE.md` - record recurring build/quality fixes; promote repeat lessons.
+- `learnings.md` / `AGENTS.md` - record recurring build/quality fixes; promote repeat lessons.
 
 ## Re-check schedule
 - Quarterly with the rest of the stack: re-skim ECC (`affaan-m/ECC`, MIT) cpp-* skills for new patterns; re-check the C++ Core Guidelines for new rules as C++23/26 land and as Unreal's own coding standard evolves (TObjectPtr adoption, IWYU defaults, C++20 in UE5).

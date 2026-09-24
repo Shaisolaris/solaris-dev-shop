@@ -1,6 +1,6 @@
-# CLAUDE.md - Project Memory for [GAME NAME]
+# AGENTS.md - Project Memory for [GAME NAME]
 
-This file lives at the root of the Unity project. It's read by Claude at the start of every session so no question gets asked twice. Fill in what you know; leave blanks for what you don't - Claude will help close them.
+This file lives at the root of the Unity project. It's read by the coding agent at the start of every session so no question gets asked twice. Fill in what you know; leave blanks for what you don't - the coding agent will help close them.
 
 Last updated: [DATE]
 
@@ -136,9 +136,9 @@ Check the boxes that are actually done. Empty ones are known technical debt.
 
 ## 10. Standing answers to "don't ask me this again"
 
-Running list. Every time Shai finds himself explaining something Claude should have remembered, add it here.
+Running list. Every time Shai finds himself explaining something the coding agent should have remembered, add it here.
 
-- **[Date]** - [Question Claude re-asked]: [The answer, written as a standing rule]
+- **[Date]** - [Question the coding agent re-asked]: [The answer, written as a standing rule]
 
 Examples to kickstart:
 - **2026-04-23** - "What's the target framerate?" → 60 on capable devices, 30 on low-end. Locked.

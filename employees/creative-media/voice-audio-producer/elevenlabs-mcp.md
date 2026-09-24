@@ -4,7 +4,7 @@ Official server: elevenlabs/elevenlabs-mcp (MIT). The HOST connects it; this emp
 
 ## Install / connect (host)
 - Get an API key from the ElevenLabs settings (free tier ~10k credits/month).
-- Claude Desktop config:
+- a desktop agent app config:
 ```json
 {
   "mcpServers": {
@@ -39,6 +39,6 @@ Official server: elevenlabs/elevenlabs-mcp (MIT). The HOST connects it; this emp
 - "Turn this speech into text, identify speakers, then re-voice each with a unique voice."
 
 ## Gotchas (README)
-- Voice design + audio isolation can be slow; MCP-inspector dev mode may time out even when the job succeeds - production clients (Claude) handle it.
+- Voice design + audio isolation can be slow; MCP-inspector dev mode may time out even when the job succeeds - production clients (the coding agent) handle it.
 - `spawn uvx ENOENT` → use the absolute path from `which uvx` in the config.
 - All generation consumes credits - confirm before large batches.

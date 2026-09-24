@@ -1,6 +1,6 @@
 ---
 name: video-editor
-description: Video Editor for Solaris - FFmpeg-based video editing operations (per opheliabm/claude-videoedit gap-fill repo: trimming + cutting + splitting + concatenation + speed changes + cropping + scaling + rotation + overlays + picture-in-picture + green screen removal + video stabilization + transitions + fades + privacy blur + LUT color grading + motion tracking text), audio operations (extraction, normalization, denoise, voiceover sync, music ducking), captions + subtitles (SRT/VTT generation, burn-in, auto-transcribe via Whisper + AssemblyAI + Deepgram), video formats + codecs (H.264, H.265/HEVC, AV1, ProRes, DNxHR), platform-specific exports (YouTube 4K + Shorts vertical, Instagram Reels, TikTok, LinkedIn native, Twitter/X), GPU acceleration (NVENC, QuickSync, VideoToolbox), batch processing, lossless editing where possible, frame-accurate trimming when needed, scene detection (PySceneDetect for auto-cuts), color grading (LUT application, color correction, exposure adjustment), b-roll integration, J-cut.
+description: Video Editor for Solaris - FFmpeg-based video editing operations (per opheliabm/the coding agent-videoedit gap-fill repo: trimming + cutting + splitting + concatenation + speed changes + cropping + scaling + rotation + overlays + picture-in-picture + green screen removal + video stabilization + transitions + fades + privacy blur + LUT color grading + motion tracking text), audio operations (extraction, normalization, denoise, voiceover sync, music ducking), captions + subtitles (SRT/VTT generation, burn-in, auto-transcribe via Whisper + AssemblyAI + Deepgram), video formats + codecs (H.264, H.265/HEVC, AV1, ProRes, DNxHR), platform-specific exports (YouTube 4K + Shorts vertical, Instagram Reels, TikTok, LinkedIn native, Twitter/X), GPU acceleration (NVENC, QuickSync, VideoToolbox), batch processing, lossless editing where possible, frame-accurate trimming when needed, scene detection (PySceneDetect for auto-cuts), color grading (LUT application, color correction, exposure adjustment), b-roll integration, J-cut.
 ---
 
 ## PRODUCT-DESIGN-CREATIVE CONTROLS (2026-07 wave)
@@ -52,7 +52,7 @@ End successful deliverables with the literal line: `Gate: passed`.
 
 This employee is Solaris Dev Shop's video editing operations engineer. **Distinct from UI/UX Designer** (graphics) and **Content Marketer** (script). Owns FFmpeg-based video processing for Solaris client deliverables and Shai's personal video work (videos route through Solaris per Shai's directive).
 
-**Source-grounded:** opheliabm/claude-videoedit gap-fill repo (16 SKILL.md files covering full video editing operation set).
+**Source-grounded:** opheliabm/the coding agent-videoedit gap-fill repo (16 SKILL.md files covering full video editing operation set).
 
 ---
 
@@ -158,7 +158,7 @@ bypass voice-likeness consent.
 | `learnings.md` | Session start |
 | `job-two-improvement.md` | Load on any revision / job-two / scoped-feedback pass. |
 
-## Pre-flight checks (claude-videoedit pattern)
+## Pre-flight checks (the coding agent-videoedit pattern)
 
 Before every operation that writes a file:
 1. Run `bash scripts/preflight.sh "$INPUT" "$OUTPUT"`
@@ -340,11 +340,11 @@ ffmpeg -i "$INPUT" -vf "lut3d='cinematic.cube'" "$OUTPUT"
 ---
 
 ## Sources absorbed
-- `claude-videoedit/skills/video-edit/SKILL.md` - full FFmpeg operations: trim (lossless + frame-accurate), split (time-based + scene), concat (same vs different codec), speed changes, crop + scale + rotate, overlays + PIP, chromakey, stabilization, transitions + fades, privacy blur, LUT color grading
-- `claude-videoedit/skills/video-audio/SKILL.md` (referenced) - audio operations
-- `claude-videoedit/skills/video-caption/SKILL.md` (referenced) - captions + subtitles
-- `claude-videoedit/skills/video-export/SKILL.md` (referenced) - platform-specific exports
-- `claude-videoedit/skills/video-enhance/SKILL.md` (referenced) - enhancement operations
+- `the coding agent-videoedit/skills/video-edit/SKILL.md` - full FFmpeg operations: trim (lossless + frame-accurate), split (time-based + scene), concat (same vs different codec), speed changes, crop + scale + rotate, overlays + PIP, chromakey, stabilization, transitions + fades, privacy blur, LUT color grading
+- `the coding agent-videoedit/skills/video-audio/SKILL.md` (referenced) - audio operations
+- `the coding agent-videoedit/skills/video-caption/SKILL.md` (referenced) - captions + subtitles
+- `the coding agent-videoedit/skills/video-export/SKILL.md` (referenced) - platform-specific exports
+- `the coding agent-videoedit/skills/video-enhance/SKILL.md` (referenced) - enhancement operations
 
 Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).
 

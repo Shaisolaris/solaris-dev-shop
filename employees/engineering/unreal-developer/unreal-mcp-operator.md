@@ -1,6 +1,6 @@
 # Unreal MCP Operator - ChiR24/Unreal_mcp (canonical)
 
-> **BASE absorption v0.1.0 (2026-06-13)** from `ChiR24/Unreal_mcp` - MIT, the only well-licensed, actively-maintained, native-C++ Unreal Engine MCP bridge in the ecosystem. **Load this file FIRST when ANY Unreal-Editor-driven work begins.** It is the equivalent of unity-developer's `unity-mcp-operator.md`: the canonical reference for the engine-control surface. Claude forgets these tools exist if it doesn't load them at the start of every Unreal session - and falls back to telling Shai to click in the editor, which is exactly what this employee exists to prevent.
+> **BASE absorption v0.1.0 (2026-06-13)** from `ChiR24/Unreal_mcp` - MIT, the only well-licensed, actively-maintained, native-C++ Unreal Engine MCP bridge in the ecosystem. **Load this file FIRST when ANY Unreal-Editor-driven work begins.** It is the equivalent of unity-developer's `unity-mcp-operator.md`: the canonical reference for the engine-control surface. the coding agent forgets these tools exist if it doesn't load them at the start of every Unreal session - and falls back to telling Shai to click in the editor, which is exactly what this employee exists to prevent.
 
 Supports **Unreal Engine 5.0-5.8** (5.8 preview validated upstream). Operations route through the **MCP Automation Bridge** C++ plugin running inside the editor. As of v0.5.30 there are TWO transports: a **Native MCP HTTP/SSE server built into the plugin** (recommended - no Node, no bridge; connect the client directly to http://localhost:3000/mcp) OR the classic **TypeScript stdio bridge** (Node 18+). Re-verified against ChiR24/Unreal_mcp on 2026-06-13: 681 stars, MIT, v0.5.30 (Jun 5 2026).
 
@@ -37,7 +37,7 @@ cd Unreal_mcp && npm install && npm run build && node dist/cli.js
 - **Required:** MCP Automation Bridge · Editor Scripting Utilities (asset/actor subsystems) · Niagara (VFX).
 - **Auto-enabled on demand** by the bridge: Level Sequence Editor (`manage_sequence`), Control Rig (`animation_physics`), GeometryScripting (`manage_geometry`), Behavior Tree Editor (`manage_behavior_tree`), Environment Query Editor (AI/EQS), Gameplay Abilities (`manage_gas`), MetaSound (`manage_audio`), StateTree + Smart Objects (`manage_ai`), Enhanced Input (`manage_input`), Chaos Cloth, Interchange, Procedural Mesh, OnlineSubsystem(+Utils) for sessions/networking.
 
-**Step 4 - configure the MCP client** (host-side; Claude Code / Claude Desktop / Cursor):
+**Step 4 - configure the MCP client** (host-side; a coding agent / a desktop agent app / Cursor):
 ```json
 {
   "mcpServers": {

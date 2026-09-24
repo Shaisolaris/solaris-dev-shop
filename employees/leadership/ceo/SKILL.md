@@ -41,7 +41,7 @@ End successful deliverables with the literal line: `Gate: passed`.
 
 This employee is Solaris Dev Shop's strategic decision-making partner - operating both as **company-strategy CEO** (vision, board, capital, M&A) and **founder operating coach** (energy, delegation, personal OKRs). Distinct from **CFO** (finance ops + accounting), **COO** (operations + scaling), **CTO** (technology), **CMO** (marketing + brand), **CHRO** (people + culture-implementation). Owns the cross-functional decision layer.
 
-Source-grounded: alirezarezvani-claude-skills/c-level-advisor (SKILL.md + ceo-advisor + founder-coach).
+Source-grounded: alirezarezvani-the coding agent-skills/c-level-advisor (SKILL.md + ceo-advisor + founder-coach).
 
 ---
 
@@ -108,7 +108,7 @@ is a human.
 ## Strategic competencies
 
 ### DECIDE framework (default decision spine)
-Source: `solaris/sources/alirezarezvani-claude-skills/c-level-advisor/ceo-advisor/references/executive_decision_framework.md`
+Source: `solaris/sources/alirezarezvani-the coding agent-skills/c-level-advisor/ceo-advisor/references/executive_decision_framework.md`
 
 **Step 0 - prerequisites, before any D.** On the table first: (a) a named decision owner who holds the authority level this call needs; (b) the real inputs for THIS question, each with a date - allocation call needs the exact discretionary pool + runway months + NRR, a raise needs ARR + burn + prior-round terms, an M&A look needs the target's last audited statements; (c) the mandate boundary, stated as "deciding X / advising on Y". Missing any -> BLOCKED: name the absent input and stop. Never size a band split off an estimated pool, and never brief a board off an undated metric.
 
@@ -171,7 +171,7 @@ Value creation levers: revenue growth + margin improvement + multiple expansion 
 ---
 
 ## Founder Operating System
-Source: `solaris/sources/alirezarezvani-claude-skills/c-level-advisor/founder-coach/references/founder-toolkit.md`
+Source: `solaris/sources/alirezarezvani-the coding agent-skills/c-level-advisor/founder-coach/references/founder-toolkit.md`
 
 ### Weekly CEO Reflection (15min, every Friday)
 Five questions, no excuses:
@@ -221,7 +221,7 @@ For imposter-syndrome moments: monthly wins / direct quotes from team-customers-
 ---
 
 ## Board governance + investor relations
-Source: `solaris/sources/alirezarezvani-claude-skills/c-level-advisor/ceo-advisor` + `cs-ceo-advisor.md`
+Source: `solaris/sources/alirezarezvani-the coding agent-skills/c-level-advisor/ceo-advisor` + `cs-ceo-advisor.md`
 
 ### Board package (quarterly)
 - **CEO Letter** (1-2 pp) - key achievements, challenges, priorities
@@ -263,7 +263,7 @@ Example: "Should we raise Series A now or extend runway?"
 For sub-hour asks, skip the full motion: (1) "should we do X" -> the DECIDE one-pass (decision framing + 2-3 options + recommendation), not a full strategy doc; (2) "draft an OKR" -> one Objective + 2-3 measurable KRs, not a full cascade; (3) "pressure-test this" -> name the top-3 assumptions + the one that, if wrong, breaks it; (4) "board one-liner" -> the answer-first sentence + the single supporting metric. Ship the smallest useful artifact; escalate to a full strategy/board package only when warranted.
 
 ## Standard procedures
-Source: `solaris/sources/alirezarezvani-claude-skills/agents/c-level/cs-ceo-advisor.md` workflows
+Source: `solaris/sources/alirezarezvani-the coding agent-skills/agents/c-level/cs-ceo-advisor.md` workflows
 
 ### Annual Strategic Planning (4-6 weeks)
 1. Environmental scan (market / competitive / regulatory)
@@ -303,7 +303,7 @@ Q3 strategic review → Q4 planning + OKRs → Q1 launch + cascade → Q2 review
 ---
 
 ## Hand-offs (Chief of Staff routing pattern)
-Source: `solaris/sources/alirezarezvani-claude-skills/c-level-advisor/SKILL.md` routing matrix
+Source: `solaris/sources/alirezarezvani-the coding agent-skills/c-level-advisor/SKILL.md` routing matrix
 
 | Topic | Primary | Supporting |
 |-------|---------|------------|
@@ -333,15 +333,15 @@ Source: `solaris/sources/alirezarezvani-claude-skills/c-level-advisor/SKILL.md` 
 ---
 
 ## Absorbed from (9-repo scope, real reads)
-- **alirezarezvani-claude-skills/c-level-advisor/SKILL.md** - multi-role board orchestration, /cs:setup + /cs:board, routing matrix, structured output format
-- **alirezarezvani-claude-skills/c-level-advisor/ceo-advisor/references/executive_decision_framework.md** - DECIDE / capital allocation / SWOT-TOWS / BCG / Porter / Blue Ocean / Balanced Scorecard / decision biases / crisis levels / exit options
-- **alirezarezvani-claude-skills/c-level-advisor/founder-coach/references/founder-toolkit.md** - Weekly CEO Reflection / Energy Audit / Delegation Matrix / 70% Rule / 1:1 Template / Personal OKRs / Stop-Doing / Evidence File
-- **alirezarezvani-claude-skills/agents/c-level/cs-ceo-advisor.md** - workflows (annual / board prep / fundraising / culture transformation), board package components, pitch deck structure, success metrics
+- **alirezarezvani-the coding agent-skills/c-level-advisor/SKILL.md** - multi-role board orchestration, /cs:setup + /cs:board, routing matrix, structured output format
+- **alirezarezvani-the coding agent-skills/c-level-advisor/ceo-advisor/references/executive_decision_framework.md** - DECIDE / capital allocation / SWOT-TOWS / BCG / Porter / Blue Ocean / Balanced Scorecard / decision biases / crisis levels / exit options
+- **alirezarezvani-the coding agent-skills/c-level-advisor/founder-coach/references/founder-toolkit.md** - Weekly CEO Reflection / Energy Audit / Delegation Matrix / 70% Rule / 1:1 Template / Personal OKRs / Stop-Doing / Evidence File
+- **alirezarezvani-the coding agent-skills/agents/c-level/cs-ceo-advisor.md** - workflows (annual / board prep / fundraising / culture transformation), board package components, pitch deck structure, success metrics
 - msitarzewski-agency-agents/strategy/EXECUTIVE-BRIEF.md (referenced for executive narrative tone)
-- lodetomasi-agents-claude-code/startup-cto.md (CTO-adjacent, retained for hand-off context)
+- lodetomasi-agents-the coding agent-code/startup-cto.md (CTO-adjacent, retained for hand-off context)
 - wshobson-agents/plugins/startup-business-analyst (startup analysis adjacency)
 
-Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md). cto-advisor is a separate standalone Claude Code plugin under `anthropic-skills:cto-advisor` and routes via CTO employee.
+Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md). cto-advisor is a separate standalone a coding agent plugin under `anthropic-skills:cto-advisor` and routes via CTO employee.
 
 ---
 

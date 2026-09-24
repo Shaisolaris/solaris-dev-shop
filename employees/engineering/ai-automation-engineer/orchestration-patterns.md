@@ -56,7 +56,7 @@ Concrete starting stack for the abstract "self-hosted or n8n.cloud" claim:
 - **Compose stack:** n8n + Postgres (persistence) + a local LLM runtime (Ollama) + a vector store (Qdrant), wired via docker-compose. Apache-2.0, first-party n8n - safe baseline to fork.
 - **Credentials per environment:** dev / prod separation from day one; secrets via a real store (1Password Connect / Doppler / Vault), never in compose env files committed to git. Matches `rules.md` secret doctrine.
 - **Backups are mandatory:** workflow definitions + credentials + execution history (see `rules.md` standing gotcha). A self-host with no backup is a single disk failure from total loss.
-- **When to add local LLM:** use the local model for cheap/high-volume classification + drafting to cap AI cost; reserve hosted Claude/OpenAI for quality-critical steps. Feeds the cost-budget formula in `rules.md`.
+- **When to add local LLM:** use the local model for cheap/high-volume classification + drafting to cap AI cost; reserve hosted the coding agent/OpenAI for quality-critical steps. Feeds the cost-budget formula in `rules.md`.
 
 ## 6. Activepieces - CONNECT alternative (when n8n isn't the right fit)
 

@@ -10,7 +10,7 @@ description: "Deploy project code from GitHub to a live hosting server via FTP/F
 
 # FTP Deploy Skill
 
-Deploy code changes from a GitHub repository to a live server using GitHub Actions with SamKirkland/FTP-Deploy-Action. GitHub Actions runs FTP from GitHub servers, not from Claude container (which cannot make FTP connections).
+Deploy code changes from a GitHub repository to a live server using GitHub Actions with SamKirkland/FTP-Deploy-Action. GitHub Actions runs FTP from GitHub servers, not from agent container (which cannot make FTP connections).
 
 ## Reference Files
 
@@ -203,9 +203,9 @@ Used `public_html/` path when the app was actually at FTP root. Deploy would hav
 Wasted session time guessing at FTP username/password combinations.
 *Rule: Ask Shai for the exact FTP credentials immediately. Do not guess. Do not try combinations.*
 
-**Tried direct FTP from Claude container**
+**Tried direct FTP from agent container**
 Container egress proxy only allows HTTP/HTTPS - cannot make FTP connections directly.
-*Rule: FTP deployments run via GitHub Actions (SamKirkland/FTP-Deploy-Action) from GitHub's servers. Never attempt direct FTP from Claude container.*
+*Rule: FTP deployments run via GitHub Actions (SamKirkland/FTP-Deploy-Action) from GitHub's servers. Never attempt direct FTP from agent container.*
 
 **Recreated existing skill twice instead of configuring it**
 Started from scratch when the skill already existed.

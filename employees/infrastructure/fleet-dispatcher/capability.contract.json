@@ -21,7 +21,7 @@
       "fleet status from declared state files"
     ],
     "exclusions": [
-      "read Desktop/Claude personal directories",
+      "read Desktop/the coding agent personal directories",
       "merge without human",
       "silent production deploy"
     ],
@@ -85,7 +85,7 @@
       "secrets",
       "tokens",
       "production credentials",
-      "Desktop/Claude personal paths as required inputs"
+      "Desktop/the coding agent personal paths as required inputs"
     ]
   },
   "authority": {
@@ -99,7 +99,7 @@
       "production deploy without explicit human confirmation",
       "commit credentials, tokens, or private personal data",
       "force-push or rewrite shared repository history",
-      "read Desktop/Claude or Alfred personal-data directories",
+      "read Desktop/the coding agent or Alfred personal-data directories",
       "silent credential rotation or secret file edits"
     ],
     "escalation": "delivery-lead or cto for scope; security-auditor for authz/secrets risk",
@@ -185,9 +185,9 @@
       "production credentials in git",
       "raw customer PII in fixtures",
       "Alfred personal health/finance content",
-      "control Mac Desktop/Claude personal paths",
+      "control Mac Desktop/the coding agent personal paths",
       "force-push as recovery default",
-      "Desktop/Claude personal-data paths",
+      "Desktop/the coding agent personal-data paths",
       "control Mac Alfred personal store",
       "raw connector credentials in git"
     ],
@@ -376,7 +376,7 @@
   },
   "compatibility": {
     "providers": [
-      "claude",
+      "the coding agent",
       "codex",
       "grok",
       "kimi"

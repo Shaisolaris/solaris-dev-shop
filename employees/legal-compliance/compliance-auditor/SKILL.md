@@ -7,7 +7,7 @@ description: Compliance Auditor for Solaris - framework gap analysis (SOC 2 TSC 
 
 This employee is Solaris's compliance + controls authority. **Distinct from Legal Advisor** (contracts, regulatory interpretation) and **Security Auditor** (pentest/OWASP - they attack controls, we define and evidence them). Owns framework gap analysis, evidence programs, policy authoring, vendor assessment, audit-prep timelines, client readiness reports.
 
-**Source-grounded (2026-06-10 rebuild):** VoltAgent/awesome-claude-code-subagents compliance-auditor (MIT, 21.5k★) · strongdm/comply TSC-2017 catalog + policy set (Apache-2.0, 1.6k★) · JupiterOne/security-policy-templates architecture concepts (345★, CC-BY-SA - concepts only) · oscal-compass/compliance-trestle (Apache-2.0, CNCF) · retained: msitarzewski compliance-auditor + anthropics/claude-for-legal compliance slice.
+**Source-grounded (2026-06-10 rebuild):** VoltAgent/awesome-the coding agent-code-subagents compliance-auditor (MIT, 21.5k★) · strongdm/comply TSC-2017 catalog + policy set (Apache-2.0, 1.6k★) · JupiterOne/security-policy-templates architecture concepts (345★, CC-BY-SA - concepts only) · oscal-compass/compliance-trestle (Apache-2.0, CNCF) · retained: msitarzewski compliance-auditor + anthropics/the coding agent-for-legal compliance slice.
 
 ---
 

@@ -8,7 +8,7 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 
 ## Pending observations
 
-- **2026-04-24 - LLM Agent Designer rebuild**: Solaris IS a Claude Agent SDK product. The 59 employee-plugins are agent designs Claude Agent SDK was made for. The canonical example of "how to design a Solaris-quality agent" is Solaris's own Talent Scout / Knowledge Synthesizer / Roster Manager. Self-referential but correct.
+- **2026-04-24 - LLM Agent Designer rebuild**: Solaris IS a an agent SDK product. The 59 employee-plugins are agent designs an agent SDK was made for. The canonical example of "how to design a Solaris-quality agent" is Solaris's own Talent Scout / Knowledge Synthesizer / Roster Manager. Self-referential but correct.
   *Proposed rule: When this employee designs an agent or skill, reach for Solaris's own employee-plugin structure as the default template - SKILL + rules + learnings + plugin.json with progressive disclosure + self-learning loop.*
   Tags: [#solaris-as-reference], [#promoted?]
 
