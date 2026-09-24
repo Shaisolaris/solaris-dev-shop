@@ -12,7 +12,7 @@ Do not pick a framework, rendering model, or perf strategy until these four are 
 1. **Primary device + network** - mobile-4G / desktop-fiber / low-end-Android / corporate. Kill criterion: "all users equally" → STOP, pull analytics. Every frontend optimizes for one floor and tolerates the rest.
 2. **LCP target as a number in ms** (plus INP < 200ms, CLS < 0.1). Kill criterion: "as fast as possible" → STOP, pick a number. ~100ms LCP improvement ≈ 1% conversion.
 3. **SEO-dependent or auth-walled.** "Both" = split the surface (public pages static/SSR, app SPA/RSC). Kill criterion: SEO-dependent + SPA-only rendering → change rendering or get the SEO penalty accepted in writing.
-4. **WCAG target (2.2 AA default) + named a11y owner.** Kill criterion: customer-facing + no owner → assign before scaffolding. Retrofit costs 5–10× building it in.
+4. **WCAG target (2.2 AA default) + named a11y owner.** Kill criterion: customer-facing + no owner → assign before scaffolding. Retrofit costs 5-10× building it in.
 
 Every recommendation must state: CWV targets at p75 on the primary device, a per-route JS budget in KB-gzip, and a Lighthouse a11y/perf floor. Missing any → the recommendation is incomplete.
 
@@ -76,8 +76,8 @@ Walk this ladder top-down; stop at the first rung that fits:
 *Source: vercel-labs react-best-practices priority ladder (72 rules); lodetomasi react-wizard ("profile first"); alirezarezvani bundle_analyzer tables*
 
 Profile before optimizing (React DevTools profiler, Lighthouse, bundle analyzer). Then work the tiers top-down:
-1. **Waterfalls (CRITICAL)** - `Promise.all` independent fetches (2–10× wins); move `await` into the branch that uses it; check cheap sync conditions before awaiting; in API routes start promises early / await late; stream slow sections behind Suspense instead of blocking the layout.
-2. **Bundle size (CRITICAL)** - never import via third-party barrel files (icon/component libs cost 200–800ms + thousands of modules); fix with `optimizePackageImports` (keeps TS types) or direct paths. Local barrels for your own small `ui/` folder are fine. `next/dynamic` for heavy components (editors, charts, maps - `ssr: false` if client-only); defer analytics/error-tracking until after hydration; preload on hover/focus for perceived speed. Heavy-dep swaps: moment→date-fns/dayjs, lodash→lodash-es, axios→fetch/ky, MUI→shadcn/Radix.
+1. **Waterfalls (CRITICAL)** - `Promise.all` independent fetches (2-10× wins); move `await` into the branch that uses it; check cheap sync conditions before awaiting; in API routes start promises early / await late; stream slow sections behind Suspense instead of blocking the layout.
+2. **Bundle size (CRITICAL)** - never import via third-party barrel files (icon/component libs cost 200-800ms + thousands of modules); fix with `optimizePackageImports` (keeps TS types) or direct paths. Local barrels for your own small `ui/` folder are fine. `next/dynamic` for heavy components (editors, charts, maps - `ssr: false` if client-only); defer analytics/error-tracking until after hydration; preload on hover/focus for perceived speed. Heavy-dep swaps: moment→date-fns/dayjs, lodash→lodash-es, axios→fetch/ky, MUI→shadcn/Radix.
 3. **Server (HIGH)** - React.cache dedup, LRU for cross-request, hoist static I/O to module level, minimize RSC serialization, `after()` for non-blocking work.
 4. **Client fetching (MED-HIGH)** - SWR/TanStack Query dedup; passive scroll listeners; versioned + minimal localStorage.
 5. **Re-renders (MED)** - derive don't store; don't subscribe to state only read in callbacks; subscribe to derived booleans not raw values; split hooks with independent deps; `startTransition`/`useDeferredValue` for non-urgent updates; memoize only where profiling shows churn (React 19 compiler reduces the need).

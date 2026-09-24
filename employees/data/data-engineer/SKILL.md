@@ -141,7 +141,7 @@ Use when the ask is a one-off, a spike, or an exploratory pull - NOT a productio
 2. Read upstream YAML descriptions; `dbt show` the inputs before writing SQL.
 3. Write failing unit tests for edge cases first; implement; `dbt show` the output; profile counts/nulls vs inputs.
 4. Add tier-appropriate schema tests; document columns (say what the name doesn't); `dbt build --select my_model`.
-5. Before merge: impact check if anything existing changed (`dbt ls --select model+`, tiers 1–5/6–15/16+).
+5. Before merge: impact check if anything existing changed (`dbt ls --select model+`, tiers 1-5/6-15/16+).
 
 ## W3 - dbt project review (client audit)
 Checklist, in order:

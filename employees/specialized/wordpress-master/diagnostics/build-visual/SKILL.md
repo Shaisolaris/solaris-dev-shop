@@ -15,7 +15,7 @@ Translates a visual design input (HTML/CSS export directory or screenshot image)
 This skill expects the following variables to already be set by the calling command:
 
 - `BUILD_DIR` - absolute path to the build directory (set by build-scaffold Section 2)
-- `WP` - the WP-CLI command prefix (e.g., `wp --path=$BUILD_DIR` or the Docker equivalent, set by build-scaffold Section 4)
+- `WP` - the WP-CLI command prefix (e.g. `wp --path=$BUILD_DIR` or the Docker equivalent, set by build-scaffold Section 4)
 - `VISUAL_PATH` - path to the design input (directory or image file, set by COMMAND.md Section 1)
 - `SLUG` - build slug (set by COMMAND.md Section 1)
 - `SITE_TITLE` - site title (set by COMMAND.md Section 1)
@@ -105,10 +105,10 @@ When `VISUAL_MODE="screenshot"`, Claude reads the image file using multimodal vi
 
 Claude reads `$VISUAL_PATH` as an image and identifies:
 
-1. **3-6 dominant/brand colors** - output as hex values (e.g., `#2D3748`)
+1. **3-6 dominant/brand colors** - output as hex values (e.g. `#2D3748`)
 2. **Heading font name + body font name** - or the closest Google Font matches if proprietary
 3. **Approximate section boundaries** - header region, hero area, main content sections, footer region
-4. **Image placeholder areas** - with approximate aspect ratios (e.g., hero 16:9, portrait 1:1, landscape 4:3)
+4. **Image placeholder areas** - with approximate aspect ratios (e.g. hero 16:9, portrait 1:1, landscape 4:3)
 5. **Navigation labels** - any visible menu text (Home, About, Services, Contact, etc.)
 
 Claude outputs a structured JSON block:
@@ -202,7 +202,7 @@ When `VISUAL_MODE="screenshot"`, the token JSON was already produced in Section 
 
 Claude reads the extracted `fonts` array from `$TOKENS_FILE` and determines:
 
-- **Google Font match**: If the font name is a known Google Font (e.g., `Playfair Display`, `DM Sans`, `Inter`, `Roboto`), use directly.
+- **Google Font match**: If the font name is a known Google Font (e.g. `Playfair Display`, `DM Sans`, `Inter`, `Roboto`), use directly.
 - **Proprietary substitution**: If the font is proprietary (Adobe Fonts, paid typefaces) or unrecognisable, find the closest Google Font match by visual characteristics (serif/sans-serif, weight, x-height, personality).
 
 Claude sets `FONT_MAP` as a JSON mapping of original → Google Font slug:
@@ -322,7 +322,7 @@ Text Domain:       custom-{slug}
 }
 ```
 
-Replace `{Slug}` and `{slug}` with the actual slug values (e.g., `Custom Figma Portfolio`, `custom-figma-portfolio`).
+Replace `{Slug}` and `{slug}` with the actual slug values (e.g. `Custom Figma Portfolio`, `custom-figma-portfolio`).
 
 ### 3c: theme.json - Design Token Encoding
 
@@ -487,7 +487,7 @@ if ( ! function_exists( 'custom_{slug}_setup' ) ) {
 add_action( 'after_setup_theme', 'custom_{slug}_setup' );
 ```
 
-Replace `{slug}` and `{Slug}` with the actual slug values throughout (e.g., `custom_figma_portfolio_setup`, `Figma Portfolio`).
+Replace `{slug}` and `{Slug}` with the actual slug values throughout (e.g. `custom_figma_portfolio_setup`, `Figma Portfolio`).
 
 ### 3d-ii: patterns/ - Front-Page Starter Pattern
 
@@ -544,10 +544,10 @@ Claude interprets the design and generates 7 HTML template files using WordPress
 | `<header>` | `wp:template-part {"slug":"header","tagName":"header"}` | Template part boundary |
 | `<footer>` | `wp:template-part {"slug":"footer","tagName":"footer"}` | Template part boundary |
 | `<nav>` / navigation | `wp:navigation` with `wp:navigation-link` children | Static placeholder labels from design |
-| `<h1>`–`<h6>` | `wp:heading {"level":N}` | Preserve heading level from design |
+| `<h1>`-`<h6>` | `wp:heading {"level":N}` | Preserve heading level from design |
 | `<p>` | `wp:paragraph` | |
 | `<img>` | `wp:image` | Use src from design export or placeholder |
-| Hero with background | `wp:cover {"url":"...","dimRatio":N}` | Overlay opacity → dimRatio (0–100) |
+| Hero with background | `wp:cover {"url":"...","dimRatio":N}` | Overlay opacity → dimRatio (0-100) |
 | Two-column layout | `wp:columns` + `wp:column {"width":"50%"}` | |
 | Three-column layout | `wp:columns` + `wp:column {"width":"33.33%"}` | |
 | `<button>` / `.btn` | `wp:buttons` + `wp:button` | |
@@ -934,7 +934,7 @@ download_google_font() {
 
 For each font in `FONT_MAP`:
 
-1. Convert font name to gwfh slug: lowercase, spaces → hyphens (e.g., `"Playfair Display"` → `"playfair-display"`)
+1. Convert font name to gwfh slug: lowercase, spaces → hyphens (e.g. `"Playfair Display"` → `"playfair-display"`)
 2. Download with `download_google_font "$gwfh_slug" "latin" "regular,700"`
 3. If italic was detected in the design, add `"italic"` to variants: `"regular,italic,700,700italic"`
 
@@ -955,7 +955,7 @@ echo "[Build] Font downloads complete. Failed: ${#FONT_DOWNLOAD_FAILED[@]}"
 
 ### 4c: Scan Downloaded Files and Update theme.json
 
-After all downloads, scan `assets/fonts/` and auto-generate the `fontFace.src` entries from actual filenames (gwfh encodes version numbers in filenames - e.g., `playfair-display-v36-latin-regular.woff2`):
+After all downloads, scan `assets/fonts/` and auto-generate the `fontFace.src` entries from actual filenames (gwfh encodes version numbers in filenames - e.g. `playfair-display-v36-latin-regular.woff2`):
 
 ```python
 #!/usr/bin/env python3
@@ -992,7 +992,7 @@ for family in font_families:
         if weight == '400' and style == 'normal':
             variant = 'regular'
         # Convert slug (font-family slug) to gwfh filename prefix
-        # e.g., slug "heading" → look at family["fontFamily"] for the actual name
+        # e.g. slug "heading" → look at family["fontFamily"] for the actual name
         family_name = family.get('fontFamily', '').split(',')[0].strip().lower().replace(' ', '-')
         pattern = f'{family_name}-v*-latin-{variant}.woff2'
         matches = [f for f in woff2_files if re.match(pattern.replace('*', '\\d+'), f)]
@@ -1104,8 +1104,8 @@ fi
 ```
 
 Set output variables:
-- `THEME_SLUG` - `"custom-${SLUG}"` (e.g., `custom-figma-portfolio`)
-- `THEME_NAME` - `"Custom ${SITE_TITLE}"` (e.g., `Custom Figma Portfolio`)
+- `THEME_SLUG` - `"custom-${SLUG}"` (e.g. `custom-figma-portfolio`)
+- `THEME_NAME` - `"Custom ${SITE_TITLE}"` (e.g. `Custom Figma Portfolio`)
 - `THEME_VERSION` - `"1.0.0"`
 - `THEME_INSTALLED` - `true` or `false` based on activation result
 
@@ -1239,9 +1239,9 @@ build-scaffold Sections 2-4 → build-git Sections 1-2-4 → build-mcp Sections 
 
 **Custom HTML block best practices:** When using `<!-- wp:html -->` as a fallback for unmappable elements, ensure all HTML inside is well-formed: close all tags, use valid nesting, avoid deprecated attributes. Malformed HTML inside wp:html blocks causes "Block has been modified externally" errors in the editor.
 
-**Spacing units:** Never use absolute pixel values from design export CSS directly in `theme.json` spacing. Convert px to rem by dividing by 16 (e.g., 48px → 3rem, 16px → 1rem). Use `clamp()` for heading font sizes to ensure responsive scaling.
+**Spacing units:** Never use absolute pixel values from design export CSS directly in `theme.json` spacing. Convert px to rem by dividing by 16 (e.g. 48px → 3rem, 16px → 1rem). Use `clamp()` for heading font sizes to ensure responsive scaling.
 
-**Font filename matching:** gwfh encodes version numbers in filenames (e.g., `playfair-display-v36-latin-regular.woff2`). The version number changes over time. Always scan `assets/fonts/` after download and auto-generate `fontFace.src` entries from actual filenames (Section 4c). Never hard-code assumed version numbers.
+**Font filename matching:** gwfh encodes version numbers in filenames (e.g. `playfair-display-v36-latin-regular.woff2`). The version number changes over time. Always scan `assets/fonts/` after download and auto-generate `fontFace.src` entries from actual filenames (Section 4c). Never hard-code assumed version numbers.
 
 **Anti-patterns (never do):**
 - No raw HTML in templates - only `<!-- wp:* -->` comment syntax; unmappable elements use `<!-- wp:html -->`

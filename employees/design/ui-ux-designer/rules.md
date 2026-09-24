@@ -136,8 +136,8 @@ The employee now carries a searchable design-selection database in `design-intel
 3. Performance (HIGH) - WebP/AVIF, lazy load, reserve space (CLS < 0.1), skeletons > spinners
 4. Style selection (HIGH) - match style to product type via DB; SVG icons, NEVER emoji as icons
 5. Layout & responsive (HIGH) - mobile-first, no horizontal scroll, 4/8pt spacing scale, min-h-dvh not 100vh
-6. Typography & color (MEDIUM) - 16px+ body, line-height 1.5–1.75, semantic tokens not raw hex, tabular figures for data
-7. Animation (MEDIUM) - 150–300ms micro-interactions, transform/opacity only, exit faster than enter, interruptible, reduced-motion respected
+6. Typography & color (MEDIUM) - 16px+ body, line-height 1.5-1.75, semantic tokens not raw hex, tabular figures for data
+7. Animation (MEDIUM) - 150-300ms micro-interactions, transform/opacity only, exit faster than enter, interruptible, reduced-motion respected
 8. Forms & feedback (MEDIUM) - visible labels, error below field with recovery path, validate on blur, autofill support
 9. Navigation (HIGH) - bottom nav ≤5 items, predictable back + state preservation, one nav pattern per hierarchy level
 10. Charts (LOW) - type matches data, never color-alone meaning, table alternative for a11y

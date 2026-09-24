@@ -39,7 +39,7 @@ How the Solaris work employees (52 across 12 departments) work together, under t
 2. **CMO** assembles a marketing team: CRO/Landing Page Designer + SEO+ASO Specialist + Content Marketer
 3. **CTO** assembles a build team: Full-Stack Developer + UI/UX Designer
 4. **Knowledge Synthesizer** watches execution for cross-learnings worth capturing
-5. **Talent Scout** gets notified if the team hits a gap - e.g., "we need an ASO-specific keyword tool we don't have" → scheduled for next external scan
+5. **Talent Scout** gets notified if the team hits a gap - e.g. "we need an ASO-specific keyword tool we don't have" → scheduled for next external scan
 6. Deliverable: landing page + ASO keyword research + implementation + lessons captured
 
 ## Department heads and their teams

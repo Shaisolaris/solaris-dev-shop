@@ -1,21 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="420" viewBox="0 0 1100 420">
-  <rect width="1100" height="420" fill="#f7f4ee"/>
-  <text x="40" y="42" fill="#102033" font-family="Georgia, serif" font-size="22">How a request moves</text>
-  <rect x="40" y="80" width="220" height="90" rx="8" fill="#102033"/>
-  <text x="150" y="122" text-anchor="middle" fill="#f4f1ea" font-family="Georgia, serif" font-size="18">You</text>
-  <text x="150" y="146" text-anchor="middle" fill="#d7deea" font-family="Georgia, serif" font-size="14">one request</text>
-  <polygon points="270,125 310,125 310,115 340,135 310,155 310,145 270,145" fill="#e8a54b"/>
-  <rect x="350" y="70" width="280" height="110" rx="8" fill="#1d3a5f"/>
-  <text x="490" y="112" text-anchor="middle" fill="#f4f1ea" font-family="Georgia, serif" font-size="18">Chief of staff</text>
-  <text x="490" y="136" text-anchor="middle" fill="#d7deea" font-family="Georgia, serif" font-size="14">assigns. Does not do the job.</text>
-  <text x="490" y="158" text-anchor="middle" fill="#e8a54b" font-family="Georgia, serif" font-size="13">control-plane/meta_control_plane.py</text>
-  <polygon points="640,125 680,125 680,115 710,135 680,155 680,145 640,145" fill="#e8a54b"/>
-  <rect x="720" y="70" width="340" height="110" rx="8" fill="#245c45"/>
-  <text x="890" y="112" text-anchor="middle" fill="#f4f1ea" font-family="Georgia, serif" font-size="18">One specialist</text>
-  <text x="890" y="136" text-anchor="middle" fill="#d7deea" font-family="Georgia, serif" font-size="14">one of 61 employees</text>
-  <text x="890" y="158" text-anchor="middle" fill="#f4f1ea" font-family="Georgia, serif" font-size="13">example: QA engineer</text>
-  <rect x="350" y="250" width="710" height="120" rx="8" fill="#fff" stroke="#102033"/>
-  <text x="370" y="286" fill="#102033" font-family="Georgia, serif" font-size="16">Observed example</text>
-  <text x="370" y="316" fill="#333" font-family="Georgia, serif" font-size="15">Request: write a test plan for the client portal login regression.</text>
-  <text x="370" y="342" fill="#333" font-family="Georgia, serif" font-size="15">Route: assign / qa / solaris.qa-engineer / performed_work=false.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="360" viewBox="0 0 1100 360">
+  <rect width="1100" height="360" fill="#f7f4ee"/>
+  <text x="40" y="46" fill="#102033" font-family="Georgia, 'Times New Roman', serif" font-size="22">How a request moves</text>
+  <rect x="40" y="90" width="200" height="88" rx="8" fill="#102033"/>
+  <text x="140" y="142" text-anchor="middle" fill="#f4f1ea" font-family="Georgia, serif" font-size="20">You</text>
+  <polygon points="250,134 300,134 300,122 332,144 300,166 300,154 250,154" fill="#e8a54b"/>
+  <rect x="344" y="80" width="280" height="108" rx="8" fill="#1d3a5f"/>
+  <text x="484" y="124" text-anchor="middle" fill="#f4f1ea" font-family="Georgia, serif" font-size="20">Chief of staff</text>
+  <text x="484" y="152" text-anchor="middle" fill="#d7deea" font-family="Georgia, serif" font-size="15">Assigns. Does not do the job.</text>
+  <polygon points="634,134 684,134 684,122 716,144 684,166 684,154 634,154" fill="#e8a54b"/>
+  <rect x="728" y="80" width="320" height="108" rx="8" fill="#245c45"/>
+  <text x="888" y="124" text-anchor="middle" fill="#f4f1ea" font-family="Georgia, serif" font-size="20">One of 61 specialists</text>
+  <text x="888" y="152" text-anchor="middle" fill="#d7deea" font-family="Georgia, serif" font-size="15">Example: QA engineer</text>
+  <text x="40" y="250" fill="#102033" font-family="Georgia, serif" font-size="18">Observed</text>
+  <text x="40" y="286" fill="#333" font-family="Georgia, serif" font-size="18">Write a test plan for the client portal login regression.</text>
+  <text x="40" y="318" fill="#333" font-family="Georgia, serif" font-size="18">Result: assign, qa, solaris.qa-engineer. performed_work is false.</text>
 </svg>

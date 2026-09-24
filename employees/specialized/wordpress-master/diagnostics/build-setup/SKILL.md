@@ -121,7 +121,7 @@ STEP_NUM=1
 #   STEP_NUM=$((STEP_NUM + 1))
 
 # Claude generates equivalent blocks for every plugin in INSTALLED_PLUGINS
-# that requires user configuration. Plugins that work without setup (e.g.,
+# that requires user configuration. Plugins that work without setup (e.g.
 # a caching plugin that activates silently) can be documented under Important
 # or omitted if no action is needed.
 
@@ -131,7 +131,7 @@ cat >> "$SETUP_FILE" << 'CONTACT_STEP'
    Go to: **Pages > Contact > Edit**
    Replace the following placeholder content with your real details:
    - The fictional business name in the page heading
-   - The fictional street address (e.g., "123 Example Street, Sample City")
+   - The fictional street address (e.g. "123 Example Street, Sample City")
    - The fictional phone number
    - The fictional email address
    - Any fictional business hours or location details
@@ -188,7 +188,7 @@ STEP_NUM=$((STEP_NUM + 1))
 
 # Any additional plugin configuration that falls under Important (not Critical)
 # Claude adds steps here for plugins that need setup but aren't site-breaking
-# if left unconfigured (e.g., SEO plugin configuration, gallery settings)
+# if left unconfigured (e.g. SEO plugin configuration, gallery settings)
 
 # ── OPTIONAL items ────────────────────────────────────────────────────────────
 echo "" >> "$SETUP_FILE"
@@ -241,7 +241,7 @@ echo "[Build] SETUP.md generated (${SETUP_ITEM_COUNT} setup items)"
 
 **Implementation notes for Claude:**
 
-- **Plugin instructions are an AI judgment task.** For each plugin in `INSTALLED_PLUGINS`, Claude generates verbose, step-by-step instructions using its knowledge of that plugin's settings workflow. Instructions must include full WP admin navigation paths (e.g., "Go to WPForms > Add New > Select Contact Form template > Save > Copy shortcode > Edit Contact page > Add shortcode block").
+- **Plugin instructions are an AI judgment task.** For each plugin in `INSTALLED_PLUGINS`, Claude generates verbose, step-by-step instructions using its knowledge of that plugin's settings workflow. Instructions must include full WP admin navigation paths (e.g. "Go to WPForms > Add New > Select Contact Form template > Save > Copy shortcode > Edit Contact page > Add shortcode block").
 - **Context drives priority.** Claude reads `NL_PROMPT` to determine which setup items are Critical vs Important. For a photography portfolio site, replacing portfolio images is Critical. For a restaurant, configuring a reservation plugin is Critical.
 - **Page-by-page coverage.** Every page created by build-content gets a dedicated entry with specific guidance on what placeholder content it contains.
 - **No generic instructions.** All guidance is specific to the plugin and site type - not generic "configure your plugins" advice.

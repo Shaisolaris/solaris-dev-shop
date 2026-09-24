@@ -10,7 +10,7 @@ Sources: coreyhaines31/marketingskills (MIT, 29.7k★) [CH], sickn33/antigravity
 - **Deliverability is infrastructure, not luck.** SPF/DKIM/DMARC, warm-up, hygiene are earned prerequisites. [ES]
 - **Never mix transactional and marketing.** Separate domains/IP pools AND providers (transactional: Postmark/Resend; marketing: Customer.io/ConvertKit class). Never inject marketing content into transactional email. [ES, AA]
 - **Clicks over opens.** 40-60% of lists sit on Apple Mail (MPP) - opens are inflated. Optimize CTR, CTOR, conversion, revenue-per-email; treat opens as directional. [AA]
-- **Segmentation over broadcast.** Every campaign targets a segment defined by ≥2 attributes (e.g., lifecycle stage + engagement recency). No broadcast sends. [AA]
+- **Segmentation over broadcast.** Every campaign targets a segment defined by ≥2 attributes (e.g. lifecycle stage + engagement recency). No broadcast sends. [AA]
 - **Respect the lifecycle.** Won customers never get cold nurture; Lost leads never get review requests; suppressed/irrelevant contacts enter no sequence. Email reflects where contacts ARE now. [AA]
 - **Permission is everything.** Double opt-in for marketing; explicit, documented consent (date, method, source, scope - GDPR Art. 7); transactional is exempt from marketing opt-in. [ES, AA]
 - **Email supports in-app, never duplicates it.** Onboarding emails coordinate with product onboarding. [CH sequence-templates]

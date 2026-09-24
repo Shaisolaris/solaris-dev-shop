@@ -70,7 +70,7 @@ Last revised: 2026-06-13 (v0.7.0 deepen, frontier-references.md added: AA/EIP-77
 | Rebasing (stETH-like) | balances drift under you | support explicitly or document unsupported |
 | ERC-777 | transfer hooks = reentrancy even from "trusted" tokens | treat any token transfer as reentrant entry |
 | Fee-on-transfer | received < sent | measure balance delta, never trust `amount` |
-| Weird decimals (0–24+) | math breaks silently | document supported min/max decimals |
+| Weird decimals (0-24+) | math breaks silently | document supported min/max decimals |
 | No-revert-on-failure ERC-20 | silent failed transfer | SafeERC20 everywhere |
 | Approval-target contracts | arbitrary-call from user input drains approvals | never make arbitrary calls from user input |
 

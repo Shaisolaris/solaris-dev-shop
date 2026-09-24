@@ -115,7 +115,7 @@ Any check fails → fix first. End every deliverable with the literal line: Gate
 | Optimism-bias multiplier | 1.5x typical project; 2x unknown technology |
 | Review time per PR (Shai) | 15-45 min (plan at ~30 min) |
 | Integration tax per added stream | ~15-20% |
-| Daily merged-PR ceiling | Shai review hours ÷ per-PR review time (e.g., 2h ÷ 30 min = 4/day) |
+| Daily merged-PR ceiling | Shai review hours ÷ per-PR review time (e.g. 2h ÷ 30 min = 4/day) |
 | PERT expected | (O + 4M + P) / 6; spread (P−O)/6 = task risk |
 | Slip response | re-estimate + re-prioritize + escalate within 1 week |
 | Risk register review | weekly, or it's just a doc |

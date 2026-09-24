@@ -1,12 +1,12 @@
 # Solaris Dev Shop
 
-A free skill library of **61 employees** plus the original **chief of staff**. Version **0.52**. MIT for owner-authored text.
+61 employees and one chief of staff. Free. Version 0.52. MIT.
 
-You ask for work. The chief of staff assigns one specialist. The specialist does the job. You still decide.
+You send a task. The chief of staff assigns one specialist. That specialist does the work. You still decide.
 
-This is not an app and not a marketplace. It is the V5.2.2 workforce, packaged so you can read it, copy one skill, and route one task.
+This is a skill library, not an app and not a marketplace. It is the V5.2.2 workforce, copied so you can read a role, copy one skill, and route one task.
 
-## Try one path
+## Try it
 
 From this folder:
 
@@ -14,22 +14,22 @@ From this folder:
 python3 control-plane/meta_control_plane.py intake "Write a test plan for the client portal login regression"
 ```
 
-That command assigns `solaris.qa-engineer` and does not perform the specialist work. The saved run is in [`examples/route-a-task/`](examples/route-a-task/).
+That command assigns `solaris.qa-engineer`. It does not write the test plan. The saved run is in [`examples/route-a-task/`](examples/route-a-task/). The skill is [`employees/quality-security/qa-engineer/SKILL.md`](employees/quality-security/qa-engineer/SKILL.md).
 
-The skill it names is [`employees/quality-security/qa-engineer/SKILL.md`](employees/quality-security/qa-engineer/SKILL.md).
+## The library
 
-## Browse the library
+All 61 names: [`docs/employees.md`](docs/employees.md).
 
-All 61 names, departments, and one-line jobs: [`docs/employees.md`](docs/employees.md).
+How to copy a skill: [`docs/install.md`](docs/install.md). How a request moves: [`docs/architecture.md`](docs/architecture.md).
 
-Install notes: [`docs/install.md`](docs/install.md). How routing works: [`docs/architecture.md`](docs/architecture.md).
+![You ask. The chief of staff assigns. A specialist does the work.](assets/social-preview.png)
 
-## Limits
+## What this is not
 
-- 61 employees. Not 73, 58, 52, or 100.
-- Public edition of private V5.2.2. Newer work is not in this tree.
-- Alfred, marketplace catalogs, and patent material are not included.
-- Do not paste passwords, API keys, or tokens into issues or skills.
+- Not 73, 58, 52, or 100 employees. The count is 61 directories.
+- Not the newer Solaris work. This is the public edition of V5.2.2.
+- Not Alfred, a marketplace, or a patent filing.
+- Not a place to paste passwords, API keys, or tokens.
 
 ## License
 

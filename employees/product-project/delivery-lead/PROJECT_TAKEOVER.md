@@ -38,7 +38,7 @@ Outputs to Mac:
 
 **Don't start fixing bugs yet.** If code-review fires before onboarding completes, you'll review things you don't yet understand and produce noise - hallucinated criticism of patterns that are actually idiomatic for the stack.
 
-**Time box:** 2–4 hours for a small project, 1–2 days for a medium one, up to a week for a monolith.
+**Time box:** 2-4 hours for a small project, 1-2 days for a medium one, up to a week for a monolith.
 
 **Stage-1 done signal:** Shai could explain the codebase to a stranger in 10 minutes using only these two docs.
 
@@ -85,7 +85,7 @@ Outputs to Mac:
 
 ## What this playbook deliberately does NOT do
 
-- **Fix anything.** Stages 1–3 produce plans. Fixes happen afterwards in normal PR flow, gated by `code-review` in PR Review Mode.
+- **Fix anything.** Stages 1-3 produce plans. Fixes happen afterwards in normal PR flow, gated by `code-review` in PR Review Mode.
 - **Generate client proposals or quotes.** That's `upwork-proposals` or manual scoping.
 - **Deploy anything.** That's `ftp-deploy`.
 - **Set up QA.** That's `playwright-pro` after the codebase stabilizes post-fix.

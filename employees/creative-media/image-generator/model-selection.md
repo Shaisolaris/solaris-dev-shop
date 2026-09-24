@@ -1,7 +1,7 @@
 # Image model selection - landscape, cost, license (verified 2026-06-13)
 
 ## Primary: Gemini family (Google)
-- **Gemini 3 Pro Image** ("Nano Banana Pro") - the default. Best all-rounder: photoreal AND illustration, best in-image text rendering in the field, conversational editing, strong character consistency across edits. Cost ~$0.13–0.24 per 4K image. Use for finals and anything with text.
+- **Gemini 3 Pro Image** ("Nano Banana Pro") - the default. Best all-rounder: photoreal AND illustration, best in-image text rendering in the field, conversational editing, strong character consistency across edits. Cost ~$0.13-0.24 per 4K image. Use for finals and anything with text.
 - **Gemini 2.5 Flash Image** - ~$0.039/image. The draft horse. Use for 2-4 quick composition explorations before promoting the winner to Pro.
 
 ## Alt / lock-in hedge: FLUX.2 (Black Forest Labs)

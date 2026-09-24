@@ -88,12 +88,12 @@ No,Category,Issue,Platform,Description,Do,Don't,Code Example Good,Code Example B
 87,Content,Placeholder Content,All,Show realistic placeholders during dev,Use realistic sample data,Lorem ipsum everywhere,Real sample content,Lorem ipsum,Low
 88,Onboarding,User Freedom,All,Users should be able to skip tutorials,Provide Skip and Back buttons,Force linear unskippable tour,Skip Tutorial button,Locked overlay until finished,Medium
 89,Search,Autocomplete,Web,Help users find results faster,Show predictions as user types,Require full type and enter,Debounced fetch + dropdown,No suggestions,Medium
-90,Search,No Results,Web,Dead ends frustrate users,Show 'No results' with suggestions,Blank screen or '0 results',Try searching for X instead,No results found.,Medium
+90,Search,No Results,Web,Dead ends frustrate users,Show 'No results' with suggestions,Blank screen or '0 results',Try searching for X instead,No results found.Medium
 91,Data Entry,Bulk Actions,Web,Editing one by one is tedious,Allow multi-select and bulk edit,Single row actions only,Checkbox column + Action bar,Repeated actions per row,Low
 92,AI Interaction,Disclaimer,All,Users need to know they talk to AI,Clearly label AI generated content,Present AI as human,AI Assistant label,Fake human name without label,High
 93,AI Interaction,Streaming,All,Waiting for full text is slow,Stream text response token by token,Show loading spinner for 10s+,Typewriter effect,Spinner until 100% complete,Medium
 94,Spatial UI,Gaze Hover,VisionOS,Elements should respond to eye tracking before pinch,Scale/highlight element on look,Static element until pinch,hoverEffect(),onTap only,High
-95,Spatial UI,Depth Layering,VisionOS,UI needs Z-depth to separate content from environment,Use glass material and z-offset,Flat opaque panels blocking view,.glassBackgroundEffect(),bg-white,Medium
+95,Spatial UI,Depth Layering,VisionOS,UI needs Z-depth to separate content from environment,Use glass material and z-offset,Flat opaque panels blocking view.glassBackgroundEffect(),bg-white,Medium
 96,Sustainability,Auto-Play Video,Web,Video consumes massive data and energy,Click-to-play or pause when off-screen,Auto-play high-res video loops,playsInline muted preload='none',autoplay loop,Medium
 97,Sustainability,Asset Weight,Web,Heavy 3D/Image assets increase carbon footprint,Compress and lazy load 3D models,Load 50MB textures,Draco compression,Raw .obj files,Medium
 98,AI Interaction,Feedback Loop,All,AI needs user feedback to improve,Thumps up/down or 'Regenerate',Static output only,Feedback component,Read-only text,Low

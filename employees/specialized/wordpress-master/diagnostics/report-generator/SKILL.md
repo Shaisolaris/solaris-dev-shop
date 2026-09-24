@@ -275,7 +275,7 @@ Finding IDs enable tracking the same issue across multiple scans. If the same is
 ### ID Generation Rules
 
 1. **Prefix**: Based on category (SECR, CODE, DIAG, SUSP)
-2. **CHECK**: Short identifier for the specific check type (e.g., CHECKSUMS, SQLI, OUTDATED, EVAL)
+2. **CHECK**: Short identifier for the specific check type (e.g. CHECKSUMS, SQLI, OUTDATED, EVAL)
 3. **Hash**: Short hash derived from the finding's location (file path + line number if applicable). Use first 6 characters of the location's MD5 hash.
 
 ### Cross-Scan Tracking

@@ -11,7 +11,7 @@ Last updated: [DATE]
 
 [fill in]
 
-## 2. Pillars (3–5 core experiences)
+## 2. Pillars (3-5 core experiences)
 - [e.g. "flow-state traversal", "high-stakes timer tension", "readable, fair failure"]
 
 ## 3. Target platform & technical constraints
@@ -57,4 +57,4 @@ Last updated: [DATE]
 - [e.g. "raise MCP request timeout before any cook/package"]
 
 ---
-*Claude: update sections 4–9 whenever a new standing decision is made this session.*
+*Claude: update sections 4-9 whenever a new standing decision is made this session.*

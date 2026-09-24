@@ -8,7 +8,7 @@ The pattern that unlocks "command → playable" in games is **three layers, not 
 
 ## What UnrealGenAISupport gives you
 
-A UE5.4–5.7+ C++ plugin that removes the "LLM/GenAI integration layer" so you focus on game logic. Two surfaces:
+A UE5.4-5.7+ C++ plugin that removes the "LLM/GenAI integration layer" so you focus on game logic. Two surfaces:
 
 ### 1. LLM APIs (C++ AND Blueprint, edit-time AND packaged runtime)
 - **OpenAI** - chat (`gpt-4.1`, `gpt-4.1-mini/nano`, `o4-mini`, `o3`, `o3-pro`, `o3-mini`) + **Structured Outputs** (pass a JSON schema inline or from a file, get schema-conformant JSON back).

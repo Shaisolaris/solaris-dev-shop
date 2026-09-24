@@ -17,14 +17,14 @@ Rebuilt 2026-06-10 from verified sources. Tags: [WSH] wshobson/agents plugins/cl
 **AWS compute** [ALI service_selection.md]:
 | Requirement | Service |
 |---|---|
-| Event-driven, <15 min tasks | Lambda (128MB–10GB, 1000 concurrency soft limit; avoid if <50ms latency needed) |
-| Containers, predictable traffic, long-running | ECS Fargate (0.25–16 vCPU) |
+| Event-driven, <15 min tasks | Lambda (128MB-10GB, 1000 concurrency soft limit; avoid if <50ms latency needed) |
+| Containers, predictable traffic, long-running | ECS Fargate (0.25-16 vCPU) |
 | GPU/FPGA, custom configs, Windows | EC2 |
 | Simple container from source | App Runner |
 | Kubernetes | EKS (justify vs PaaS first) |
 | Batch | AWS Batch |
 
-**AWS data** [ALI]: DynamoDB for key-value at any scale (400KB item cap; design access patterns BEFORE table schema, single-table with `PK/SK` + GSIs [ROH]); Aurora Serverless v2 (0.5–128 ACU) for variable relational; Aurora Standard + read replicas (≤15) for steady; Aurora Global / DynamoDB Global Tables for multi-region; Timestream time-series; Neptune graph. DynamoDB = instant scaling + per-request pricing; Aurora = full SQL + ACID - pick on query flexibility, not fashion.
+**AWS data** [ALI]: DynamoDB for key-value at any scale (400KB item cap; design access patterns BEFORE table schema, single-table with `PK/SK` + GSIs [ROH]); Aurora Serverless v2 (0.5-128 ACU) for variable relational; Aurora Standard + read replicas (≤15) for steady; Aurora Global / DynamoDB Global Tables for multi-region; Timestream time-series; Neptune graph. DynamoDB = instant scaling + per-request pricing; Aurora = full SQL + ACID - pick on query flexibility, not fashion.
 
 **GCP compute** [ALI]: Cloud Run for HTTP containers (scale-to-zero, 3600s timeout, 2M req/mo free); Cloud Functions 2nd gen for <9 min events; GKE Autopilot for k8s without node ops; Compute Engine for GPU/TPU. **GCP data**: Firestore (mobile/web docs) vs Cloud SQL (traditional relational) vs Spanner (global strong consistency, per-node cost) vs BigQuery (petabyte analytics) vs Bigtable (>1TB wide-column).
 
@@ -42,11 +42,11 @@ Rebuilt 2026-06-10 from verified sources. Tags: [WSH] wshobson/agents plugins/cl
 | Legacy broker | Amazon MQ | Lift-and-shift AMQP/MQTT |
 
 **Object storage class ladders (price the lifecycle, then write the policy)** [ALI service_selection.md]:
-- S3: Standard $0.023/GB-mo → Standard-IA $0.0125 (30d+) → Glacier Instant $0.004 → Glacier Flexible $0.0036 → Deep Archive $0.00099 (12–48h retrieval). Intelligent-Tiering when access pattern unknown.
+- S3: Standard $0.023/GB-mo → Standard-IA $0.0125 (30d+) → Glacier Instant $0.004 → Glacier Flexible $0.0036 → Deep Archive $0.00099 (12-48h retrieval). Intelligent-Tiering when access pattern unknown.
 - GCS: Standard $0.020 → Nearline (30d min) $0.010 → Coldline (90d min) $0.004 → Archive (365d min) $0.0012; Autoclass when unsure.
 - Azure Blob: Hot → Cool → Archive with soft-delete + versioning on production accounts.
 
-**Pattern vs scale** [ALI architecture_patterns.md]: Serverless Web <50K users $50–500/mo (cold starts 100–500ms); Event-driven microservices $100–1000; Three-tier (ALB + Fargate + Aurora + ElastiCache) 10K–500K users $300–2000; Multi-Region HA >100K users at 1.5–2x single-region. Don't buy the next tier before the user count exists.
+**Pattern vs scale** [ALI architecture_patterns.md]: Serverless Web <50K users $50-500/mo (cold starts 100-500ms); Event-driven microservices $100-1000; Three-tier (ALB + Fargate + Aurora + ElastiCache) 10K-500K users $300-2000; Multi-Region HA >100K users at 1.5-2x single-region. Don't buy the next tier before the user count exists.
 
 ## 3. Landing zone / account structure (BEFORE the first workload)
 - **AWS** [MSI]: AWS Organizations with security-focused OUs; separate accounts for dev/prod/security-tooling/log-archive. Baseline SCPs from day one: deny root-account actions (`aws:PrincipalArn = *:root`), deny `organizations:LeaveOrganization`, require KMS encryption on S3 puts. Centralized audit logging to a log-archive account with S3 Object Lock (compliance mode), GuardDuty + VPC Flow Logs org-wide. Reference implementation: AWS Control Tower as the foundational landing zone, enhanced by the **Landing Zone Accelerator on AWS (LZA)** [LZA] - CDK-based, config-file-driven, 35+ services, Account Factory for new workload accounts, CentralLogsBucket with CMK; hand devops-engineer the LZA rather than reinventing the OU/SCP/logging plumbing.
@@ -70,16 +70,16 @@ Rebuilt 2026-06-10 from verified sources. Tags: [WSH] wshobson/agents plugins/cl
 | 3 Standard | <24 h | <24 h | Backup + restore | 1.1x |
 | 4 Non-critical | <72 h | <72 h | Rebuild from IaC | 1x |
 
-- Multi-region reference decisions (Azure flavor, translate per provider) [ALI]: global LB with health probes (Front Door Premium / Route 53 + Global Accelerator / Cloud Load Balancing), failover detection 10–30s; data layer is THE decision - multi-write document DB (Cosmos/DynamoDB Global/Spanner) vs single-primary relational with failover groups (RPO ~5s async); session state per-region in Redis, never cross-region; static content at the edge.
+- Multi-region reference decisions (Azure flavor, translate per provider) [ALI]: global LB with health probes (Front Door Premium / Route 53 + Global Accelerator / Cloud Load Balancing), failover detection 10-30s; data layer is THE decision - multi-write document DB (Cosmos/DynamoDB Global/Spanner) vs single-primary relational with failover groups (RPO ~5s async); session state per-region in Redis, never cross-region; static content at the edge.
 - Storage redundancy ladder [ALI]: ZRS (zone-redundant) is the production default; geo-redundant (GRS/GZRS, 16 nines) only when cross-region DR is a requirement - it is not free.
-- Multi-region costs 1.5–2x single region: 2x compute, 1.5–2x data, plus cross-region transfer ~$0.02–0.05/GB. Quote it before designing it. [ALI]
+- Multi-region costs 1.5-2x single region: 2x compute, 1.5-2x data, plus cross-region transfer ~$0.02-0.05/GB. Quote it before designing it. [ALI]
 - Hybrid/private connectivity: Direct Connect / ExpressRoute / Interconnect / FastConnect; active-active = connections from different locations + BGP + ECMP + per-connection health monitoring. [WSH]
 - A DR plan that has never been exercised does not exist [ALI/VOL]: monthly point-in-time-restore test, quarterly regional failover test, validate IaC can rebuild from scratch, drill the global-LB failover, measure ACTUAL RTO vs target each drill.
 - Backup matrix (Azure flavor; translate per provider) [ALI azure best_practices.md]:
 | Service | Method | Retention |
 |---|---|---|
 | Managed SQL | Automated backups + PITR | 7d short-term, up to 10y long-term |
-| Document DB (Cosmos) | Continuous backup + PITR | 7–30d |
+| Document DB (Cosmos) | Continuous backup + PITR | 7-30d |
 | Object storage | Soft delete + versioning (+ geo-redundant if Tier 1/2) | 30d soft delete |
 | Kubernetes | Velero to object storage | 7d |
 | Key vault | Soft delete + purge protection | 90d |
@@ -89,13 +89,13 @@ Rebuilt 2026-06-10 from verified sources. Tags: [WSH] wshobson/agents plugins/cl
 | Lever | Savings | Catch |
 |---|---|---|
 | AWS Compute Savings Plan / EC2 SP | 66% / 72% | Commitment; EC2 SP locks family |
-| AWS/Azure Reserved 1–3y | 30–72% | Wrong-instance-type trap; keep ≤4–5 reserved families [CHK] |
-| Azure Hybrid Benefit (+3y RI) | up to 70–80% | Requires owned Windows/SQL licenses |
+| AWS/Azure Reserved 1-3y | 30-72% | Wrong-instance-type trap; keep ≤4-5 reserved families [CHK] |
+| Azure Hybrid Benefit (+3y RI) | up to 70-80% | Requires owned Windows/SQL licenses |
 | GCP Committed Use | up to 57% | Resource- or spend-based |
 | GCP Sustained Use | up to 30% | Automatic, no action |
-| Spot / Preemptible | up to 80–90% | 2-min interruption / 24h cap - batch + stateless only, mixed with on-demand |
+| Spot / Preemptible | up to 80-90% | 2-min interruption / 24h cap - batch + stateless only, mixed with on-demand |
 
-- Commitment ladder by confidence [ALI]: no-upfront 1y (20–30%) when future unclear → all-upfront 3y (50–60%) only for proven steady state. Commit AFTER right-sizing, never before. [CHK]
+- Commitment ladder by confidence [ALI]: no-upfront 1y (20-30%) when future unclear → all-upfront 3y (50-60%) only for proven steady state. Commit AFTER right-sizing, never before. [CHK]
 - Right-sizing thresholds [ALI]: <10% avg CPU over 7d → downsize; >80% → upsize or scale out; review monthly for the first 6 months. Reservation/savings-plan utilization must sit ≈100% - below that, exchange or enforce allowed-SKU policy. [CHK]
 - Storage: lifecycle 30d → IA, 90d → archive-class, 365d → deep archive, expire per retention policy [WSH/ALI]; log retention dev 7d / prod 30d / critical 90d [ALI].
 - Known traps [ALI]: NAT gateway ≈ $32/mo + $0.045/GB - use VPC endpoints (~$7/mo) for AWS-service traffic; cross-AZ/region transfer; unbounded log groups; undeleted EBS/EIP/snapshots; serverless cold starts pushing teams to oversized provisioned concurrency.

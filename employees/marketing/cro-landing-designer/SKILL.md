@@ -137,11 +137,11 @@ Handoff, named per artifact:
 - Message mismatch traced to the ad rather than the page -> routes to **paid-ads-manager**; rewriting the page to match a bad ad is out of scope.
 - An offer test that implies a pricing, discount, or SLA change -> escalate to CEO/CFO or the project owner before the variant is written; the offer is not this desk's to commit.
 
-## Workflow 1 - Build a landing page (e.g., "landing page for a SaaS trial")
+## Workflow 1 - Build a landing page (e.g. "landing page for a SaaS trial")
 
 0. **Preflight (prerequisites for every workflow on this page, not just this one)** - baseline CVR with its exact measurement definition; analytics confirmed firing on the page (events observed, not assumed); the traffic source and the exact promise its ad or email makes; ONE named conversion goal; daily traffic volume if a test is in scope; substantiation for every quantitative claim the page will carry. Missing any -> BLOCKED, name which, do not substitute an industry-average baseline or size a test off an estimated traffic number.
 1. **Intake** - product, audience, pain, key benefit, pricing, traffic source + its exact promise, ONE conversion goal. Missing goal/traffic context → ask.
-2. **Pattern select** - grep `solaris/employees/design/ui-ux-designer/design-intelligence/data/landing.csv` by product keywords (e.g., "saas trial" → Hero+Features+CTA, Funnel, or Lead Magnet rows). Adopt that row's Section Order + Primary CTA Placement as the skeleton.
+2. **Pattern select** - grep `solaris/employees/design/ui-ux-designer/design-intelligence/data/landing.csv` by product keywords (e.g. "saas trial" → Hero+Features+CTA, Funnel, or Lead Magnet rows). Adopt that row's Section Order + Primary CTA Placement as the skeleton.
 3. **Pick copy framework before writing** - PAS (known pain) / AIDA (product page) / BAB (aspirational) / 4Ps (measurable B2B). Write headline variants matched to the audience's awareness stage (rules.md matrix).
 4. **Above-the-fold spec** - headline <10 words (benefit), subhead (specificity or objection-kill), single primary CTA (first-person, action+outcome), one trust signal, product in use. Must pass the 5-second test at 375px.
 5. **Section specs** - per skeleton: features (benefit-framed), social proof (logo bar below hero; testimonial cards with name+title+company+number; case-study metric before pricing), pricing (Good/Better/Best, highlighted plan, annual toggle), FAQ (objection-ordered), final CTA + micro-copy.

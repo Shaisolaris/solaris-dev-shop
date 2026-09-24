@@ -10,8 +10,8 @@ Complete blank WordPress installation pipeline. Spins up an ephemeral Docker MyS
 
 This skill expects the following variables to be set by the calling command before invocation:
 
-- `MODE` - build mode (e.g., "blank")
-- `SLUG` - directory name slug (e.g., "blank-site")
+- `MODE` - build mode (e.g. "blank")
+- `SLUG` - directory name slug (e.g. "blank-site")
 - `WP_VERSION` - WordPress version to install (default: "latest")
 - `SITE_TITLE` - Site title string (default: "Blank WordPress Site")
 

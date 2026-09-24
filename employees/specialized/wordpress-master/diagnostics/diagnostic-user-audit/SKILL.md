@@ -17,7 +17,7 @@ Per user decision, this skill checks ONLY standard user account security issues.
 3. Inactive privileged users (Warning - best-effort, requires last login tracking)
 
 **What we explicitly skip:**
-- Email domain analysis (e.g., @gmail.com for admin users)
+- Email domain analysis (e.g. @gmail.com for admin users)
 - Custom capability overrides
 - Subscriber-to-admin ratios
 - User registration settings (separate check)
@@ -180,7 +180,7 @@ For findings that vary by user (inactive users), generate deterministic IDs base
 
 ```bash
 generate_user_finding_id() {
-  local check_type="$1"  # e.g., INA for inactive
+  local check_type="$1"  # e.g. INA for inactive
   local user_id="$2"
   local hash=$(echo -n "$user_id" | md5sum | cut -c1-3)
   echo "SECR-USERS-${check_type}-${hash}"
@@ -231,7 +231,7 @@ generate_user_finding_id() {
 
 ## Output Format
 
-Return a JSON array of findings. Each check that finds an issue generates one finding. If no issues found (e.g., no 'admin' user, <= 3 admins, last login tracking not available but no other issues), return only Info findings or empty array.
+Return a JSON array of findings. Each check that finds an issue generates one finding. If no issues found (e.g. no 'admin' user, <= 3 admins, last login tracking not available but no other issues), return only Info findings or empty array.
 
 **Example output (default admin username, 5 admins):**
 ```json

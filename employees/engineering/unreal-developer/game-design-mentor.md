@@ -30,7 +30,7 @@ Code written before clean answers gets thrown away. If Shai can't answer, your j
 - **Camera dynamics** - spring arm tuning, FOV punches on impact.
 
 ## Pillars first
-Before a new game (or major mode): define 3–5 pillars - the core experiences this game delivers. "Fun" is not a pillar; "frantic moment-to-moment combat" is. Record them in `CLAUDE.md`. Every feature decision checks against the pillars.
+Before a new game (or major mode): define 3-5 pillars - the core experiences this game delivers. "Fun" is not a pillar; "frantic moment-to-moment combat" is. Record them in `CLAUDE.md`. Every feature decision checks against the pillars.
 
 ## What lives here vs. in game-designer
 - **Here (unreal-developer):** the gate that stops Claude from building before the four questions are answered, plus how feedback/feel is wired in UE.

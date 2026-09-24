@@ -231,10 +231,10 @@ Dismiss a candidate (do NOT create a finding) if:
 
 Read the actual file content. Identify:
 
-- The loop variable (e.g., `$event_id`, `$product_id`, `$term`)
-- The array being looped over (e.g., `$event_ids`, `$products`, `$terms`)
-- The result variable from the query (e.g., `$event`, `$meta_value`, `$custom_data`)
-- The meta key or table name referenced in the query (e.g., `'_venue'`, `'_price'`)
+- The loop variable (e.g. `$event_id`, `$product_id`, `$term`)
+- The array being looped over (e.g. `$event_ids`, `$products`, `$terms`)
+- The result variable from the query (e.g. `$event`, `$meta_value`, `$custom_data`)
+- The meta key or table name referenced in the query (e.g. `'_venue'`, `'_price'`)
 
 Use ALL of these in the fix suggestion. Never substitute with `$posts`, `$items`, `$post_ids`, or other generic names.
 
@@ -249,7 +249,7 @@ Each confirmed N+1 pattern produces one finding:
   "category": "Performance",
   "title": "Potential N+1 query pattern [High confidence]",
   "summary": "A database query inside a loop may cause one query per iteration instead of loading all data in a single batch.",
-  "detail": "File: {file}:{line}\nConfidence: {High|Medium|Low}\nPattern: {description of what was found, e.g., 'get_post_meta() called inside foreach loop'}\nCode:\n{relevant code snippet, 5-10 lines showing the loop and query together}",
+  "detail": "File: {file}:{line}\nConfidence: {High|Medium|Low}\nPattern: {description of what was found, e.g. 'get_post_meta() called inside foreach loop'}\nCode:\n{relevant code snippet, 5-10 lines showing the loop and query together}",
   "location": "{file}:{line}",
   "fix": "Before:\n{actual code from file with real variable names}\n\nAfter:\n{rewrite suggestion using the same variable names}\n\nPattern: Use get_posts() with post__in, get_terms() with include, or a single $wpdb->get_results() with WHERE IN (...) to batch-load all required data before the loop."
 }

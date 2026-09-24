@@ -103,7 +103,7 @@ FORCE_SSL_ADMIN=$($WP_CLI_PREFIX config get FORCE_SSL_ADMIN 2>/dev/null | tr -d 
   "category": "Infrastructure",
   "title": "FORCE_SSL_ADMIN not enabled",
   "summary": "The WordPress admin panel does not explicitly force HTTPS connections, which may allow admin credentials to be transmitted over HTTP",
-  "detail": "The FORCE_SSL_ADMIN constant is not set to true in wp-config.php (current value: {FORCE_SSL_ADMIN_VALUE}). This constant forces WordPress to redirect all admin panel requests to HTTPS, ensuring login credentials and session cookies are never transmitted over unencrypted HTTP. Without it, if a user manually navigates to http://yourdomain.com/wp-admin/, their credentials may be sent unencrypted. Note: If your server already enforces HTTPS via redirect (e.g., .htaccess or server config), this is a belt-and-suspenders measure - still recommended for defense in depth.",
+  "detail": "The FORCE_SSL_ADMIN constant is not set to true in wp-config.php (current value: {FORCE_SSL_ADMIN_VALUE}). This constant forces WordPress to redirect all admin panel requests to HTTPS, ensuring login credentials and session cookies are never transmitted over unencrypted HTTP. Without it, if a user manually navigates to http://yourdomain.com/wp-admin/, their credentials may be sent unencrypted. Note: If your server already enforces HTTPS via redirect (e.g. .htaccess or server config), this is a belt-and-suspenders measure - still recommended for defense in depth.",
   "location": "wp-config.php (FORCE_SSL_ADMIN constant)",
   "fix": "Add the following line to wp-config.php before the '/* That\\'s all, stop editing! */' comment: `define('FORCE_SSL_ADMIN', true);` This forces all WordPress admin panel requests to use HTTPS, protecting login credentials even if server-level HTTPS enforcement is misconfigured."
 }
@@ -123,7 +123,7 @@ When WP_CLI_AVAILABLE=false, include this note in the findings output but do not
 
 ## Part B: Mixed Content Code Grep (runs when LOCAL_PATH is set)
 
-This section runs independently of WP-CLI availability. It requires only that LOCAL_PATH is set (i.e., the codebase has been synced locally).
+This section runs independently of WP-CLI availability. It requires only that LOCAL_PATH is set (i.e. the codebase has been synced locally).
 
 ```bash
 if [ -n "$LOCAL_PATH" ] && [ -d "$LOCAL_PATH" ]; then

@@ -14,7 +14,7 @@ This is the missing capability for Code Reviewer. The base 6-mode review skill (
 |----------|-----|
 | File is open / known location | Read tool directly - don't index for trivial work |
 | Project < 500 files | Grep is fine; indexing overhead exceeds benefit |
-| Project 500–2,000 files, exact symbol search | Grep first, claude-context if grep misses |
+| Project 500-2,000 files, exact symbol search | Grep first, claude-context if grep misses |
 | Project > 2,000 files OR semantic queries | claude-context **mandatory** - index on session start |
 | "Find all functions that look like X" (intent) | claude-context - grep can't do semantic |
 | "Find every input that flows to a SQL query" (taint analysis lite) | claude-context + grep combined |
@@ -59,7 +59,7 @@ For client work with sensitive code: Ollama + local Milvus or local Qdrant. Peri
    ```
    /index_codebase
    ```
-   First index takes 5–30 min depending on size + embedding provider. Subsequent sessions use Merkle-tree to detect changed files and re-embed only those - typically < 30 sec.
+   First index takes 5-30 min depending on size + embedding provider. Subsequent sessions use Merkle-tree to detect changed files and re-embed only those - typically < 30 sec.
 3. **Verify the index:**
    ```
    /search_code "authentication middleware"
@@ -78,7 +78,7 @@ The 7-phase / 20-angle protocol assumes orientation. Claude-context is the orien
 - **Phase 5 - Performance:** "Find every database query." "Find every loop that calls a function - N+1 candidate." "Find every cache invalidation site."
 
 ### Mode: PR Review
-- For diffs touching unfamiliar areas: query "what other code uses this function" - grep can do this for exact names; claude-context catches semantic call-sites (e.g., adapters, facades, dynamic dispatch)
+- For diffs touching unfamiliar areas: query "what other code uses this function" - grep can do this for exact names; claude-context catches semantic call-sites (e.g. adapters, facades, dynamic dispatch)
 - For new feature PRs: query "where does this category of behavior already exist" - find duplications before they're committed
 
 ### Mode: Debug

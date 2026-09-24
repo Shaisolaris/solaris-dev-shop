@@ -100,7 +100,7 @@ ADR (MADR format): **Context → Decision Drivers → Considered Options (pros/c
 
 ## Readability & style
 - Target readability score > 60 (Flesch); technical accuracy 100% verified before style passes.
-- Document layout (Google docguide, CC-BY): H1 title ≈ filename → 1–3 sentence intro written for a complete newcomer → TOC → H2 sections → "See also". ATX headings only; **unique, fully-descriptive heading names** (anchors depend on them); preserve product-name capitalization; prefer Markdown to HTML; ~80-char source lines.
+- Document layout (Google docguide, CC-BY): H1 title ≈ filename → 1-3 sentence intro written for a complete newcomer → TOC → H2 sections → "See also". ATX headings only; **unique, fully-descriptive heading names** (anchors depend on them); preserve product-name capitalization; prefer Markdown to HTML; ~80-char source lines.
 - Voice: second-person "you" for tutorials/how-tos; third-person for reference. Active voice, concise sentences, consistent terminology (glossary for anything domain-specific). Scannable: tables for multi-field facts, lists over prose walls, examples before abstractions.
 - AI-ism scrub (sickn33 avoid-ai-writing): kill hedging, hollow intensifiers, rule-of-three padding, significance inflation ("serves as a testament to"), vague attributions, generic conclusions, promotional adjectives; leverage→use, utilize→use, robust→reliable, seamless→(cut). Audit → rewrite → second-pass audit.
 - Banned words: "easy", "simple", "just", "obviously" - they gaslight the stuck reader.
@@ -119,7 +119,7 @@ Three phases - never skip to writing:
 1. **Discovery** - analyze codebase structure + dependencies; identify components and relationships; extract design patterns and the architectural decisions actually made; map data flows and integration points.
 2. **Structuring** - chapter/section hierarchy with progressive disclosure (bird's-eye → implementation detail); plan diagrams; fix terminology (glossary first).
 3. **Writing** - executive summary first, then architecture, then detail; include the **rationale** for every design decision; code excerpts with explanation, never bare.
-Canonical 10 sections: Executive Summary (1 page, for stakeholders) · Architecture Overview · Design Decisions · Core Components · Data Models · Integration Points · Deployment Architecture · Performance Characteristics · Security Model · Appendices (glossary, references, specs). Length 10–100+ pages; cross-reference sections; technical but accessible.
+Canonical 10 sections: Executive Summary (1 page, for stakeholders) · Architecture Overview · Design Decisions · Core Components · Data Models · Integration Points · Deployment Architecture · Performance Characteristics · Security Model · Appendices (glossary, references, specs). Length 10-100+ pages; cross-reference sections; technical but accessible.
 
 ## User-guide standard (client-facing dashboards/products)
 - Audience first: end user / admin / developer / decision-maker each get different depth, vocabulary, structure. Per-audience entry pages, not one mega-doc.

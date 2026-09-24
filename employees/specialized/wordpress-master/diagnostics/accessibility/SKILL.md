@@ -110,7 +110,7 @@ description: Evaluates WordPress sites against WCAG compliance and data privacy 
 - User accounts and associated data can be permanently deleted
 - Data erasure cascades to comments, orders, form submissions, etc.
 - Backup retention policy documented
-- Legal hold exceptions documented (e.g., accounting records)
+- Legal hold exceptions documented (e.g. accounting records)
 - Confirmation provided when erasure complete
 
 #### Privacy Policy Integration

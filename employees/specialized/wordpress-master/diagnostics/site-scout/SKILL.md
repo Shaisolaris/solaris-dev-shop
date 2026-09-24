@@ -192,7 +192,7 @@ TOTAL_SIZE=$(ssh $SSH_OPTS "${USER}@${HOST}" \
 ```
 
 **Output fields:**
-- `disk.wp_content_total`: string (e.g., "2.3G")
+- `disk.wp_content_total`: string (e.g. "2.3G")
 - `disk.by_directory`: array of {directory, size}
 
 ## Section 3: Output

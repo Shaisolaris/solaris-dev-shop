@@ -187,11 +187,11 @@ def out_of_authority(
     if coordinator == "meta.chief-of-staff":
         for phrase in policy.get("alfred_personal_signals", []):
             if phrase.lower() in text.lower():
-                return f"Alfred personal signal '{phrase}' — redirect to alfred.coordinator"
+                return f"Alfred personal signal '{phrase}', redirect to alfred.coordinator"
     if coordinator == "alfred.coordinator":
         for phrase in policy.get("solaris_work_signals", []):
             if phrase.lower() in text.lower():
-                return f"Solaris work signal '{phrase}' — redirect to meta.chief-of-staff"
+                return f"Solaris work signal '{phrase}', redirect to meta.chief-of-staff"
     return None
 
 
@@ -294,7 +294,7 @@ def intake(
             assignment=None,
             escalation=Escalation(
                 reason=AMBIGUOUS,
-                message="Empty request — no assignable outcome",
+                message="Empty request, no assignable outcome",
                 required_actor="user",
                 evidence=["empty_request"],
             ),
@@ -370,7 +370,7 @@ def intake(
             assignment=None,
             escalation=Escalation(
                 reason=AMBIGUOUS,
-                message="Ambiguous request — ask ONE clarifying question for the desired outcome; do not guess.",
+                message="Ambiguous request, ask ONE clarifying question for the desired outcome; do not guess.",
                 required_actor="user",
                 evidence=["ambiguous_phrases_or_underspecified_goal"],
             ),
@@ -397,7 +397,7 @@ def intake(
             assignment=None,
             escalation=Escalation(
                 reason=BUDGET_EXCEEDED,
-                message="External scout query budget exceeded — review required before further scouting.",
+                message="External scout query budget exceeded, review required before further scouting.",
                 required_actor="owner",
                 evidence=["budgets.scout_external_queries"],
             ),
@@ -452,7 +452,7 @@ def intake(
             assignment=None,
             escalation=Escalation(
                 reason=UNAVAILABLE_CAPABILITY,
-                message=unavail + " — do not invent a specialist; escalate or route to talent-scout for a proposal only.",
+                message=unavail + ", do not invent a specialist; escalate or route to talent-scout for a proposal only.",
                 required_actor="owner",
                 evidence=["roster_active_set", "domain_to_capability"],
             ),
@@ -619,7 +619,7 @@ def self_test() -> int:
     if d2.decision != ESCALATE or (
         d2.escalation and d2.escalation.reason not in (OUT_OF_AUTHORITY, HIGH_RISK)
     ):
-        # health on CoS is out of authority; diagnosis is also high risk — either is genuine
+        # health on CoS is out of authority; diagnosis is also high risk, either is genuine
         if not (
             d2.decision in (ESCALATE, CLARIFY, BLOCK)
             and d2.escalation is not None

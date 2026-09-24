@@ -69,7 +69,7 @@ Skipping any step = scope drift, schema drift, or untested code shipped.
 - KS → Scout: when a learning surfaces a capability gap, KS writes to `gaps-to-scout.md` for next sweep
 
 ## Pattern 7 - Solaris ↔ Alfred federation
-**Trigger:** a cross-namespace need (e.g., "book a flight to a client meeting" → touches both work and personal).
+**Trigger:** a cross-namespace need (e.g. "book a flight to a client meeting" → touches both work and personal).
 
 **Hard rule:** namespace isolation by default. Cross-namespace requires explicit federation invocation + Shai approval logged in `meta/shared/federation/approvals.md`.
 

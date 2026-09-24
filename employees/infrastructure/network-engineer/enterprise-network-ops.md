@@ -110,7 +110,7 @@ Catch `NetmikoAuthenticationException`, `NetmikoTimeoutException`, `ReadTimeout`
 
 Batch: bounded `ThreadPoolExecutor(max_workers=8)`, return `{host, ok, output|error}` per device so one failure does not stop the batch. Keep `max_workers` low unless the estate and AAA can handle the load.
 
-Structured parsing: `send_command(..., use_textfsm=True, raise_parsing_error=False)`. If the result is still a `str`, no template matched - store raw for review. Keep raw output alongside any parsed result that drives a blocking decision.
+Structured parsing: `send_command(... use_textfsm=True, raise_parsing_error=False)`. If the result is still a `str`, no template matched - store raw for review. Keep raw output alongside any parsed result that drives a blocking decision.
 
 Guarded config:
 ```python

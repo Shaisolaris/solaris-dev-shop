@@ -407,7 +407,7 @@ echo ""
 
 ## Section 2: NL Request Decomposition (NL mode only)
 
-Claude reads the NL_REQUEST and decomposes it into a sequence of atomic steps. Each step has a type from the modification taxonomy. Compound requests (e.g., "change the color and add a blog page") are split into separate steps, each getting its own git commit and build.json entry.
+Claude reads the NL_REQUEST and decomposes it into a sequence of atomic steps. Each step has a type from the modification taxonomy. Compound requests (e.g. "change the color and add a blog page") are split into separate steps, each getting its own git commit and build.json entry.
 
 **Skip this section entirely for visual mode** - visual modifications are handled as a single atomic step in Section 5.
 
@@ -460,7 +460,7 @@ Read `theme.json` with Python `json.load`, locate the target token, apply the ch
 
 ```bash
 # theme-token modification pattern
-# Variables: THEME_SLUG, TARGET_SLUG (e.g., "primary"), NEW_VALUE (e.g., "#2d5a27"), TOKEN_PATH (e.g., "color.palette")
+# Variables: THEME_SLUG, TARGET_SLUG (e.g. "primary"), NEW_VALUE (e.g. "#2d5a27"), TOKEN_PATH (e.g. "color.palette")
 
 THEME_JSON_PATH="$BUILD_DIR/wp-content/themes/$THEME_SLUG/theme.json"
 
@@ -621,7 +621,7 @@ if [ "${STEP_SKIPPED:-false}" != "true" ]; then
   STEP_FILES_CHANGED="database.sql"
   # Set step metadata for Section 4b build.json tracking
   # STEP_TYPE is "content-edit" or "content-create" depending on the operation
-  # STEP_DESCRIPTION describes the WP-CLI operation (e.g., "Created page 'Blog'")
+  # STEP_DESCRIPTION describes the WP-CLI operation (e.g. "Created page 'Blog'")
   # BEFORE_JSON and AFTER_JSON capture the change:
   #   BEFORE_JSON='{"content": "previous content summary"}' (or '{}' for create)
   #   AFTER_JSON='{"content": "new content summary"}'
@@ -794,7 +794,7 @@ Visual re-export modification is a multi-step process:
    - pages_created, posts_created, menu_assigned from build.json remain unchanged
 
 7. SMART PLUGIN RE-EVALUATION (optional - Claude judgment)
-   - If visual re-export changes theme structure significantly (e.g., added gallery section)
+   - If visual re-export changes theme structure significantly (e.g. added gallery section)
    - Claude suggests plugin additions/removals based on new layout
    - If plugin changes are needed, call ensure_docker_mysql() and follow Section 3d pattern
 

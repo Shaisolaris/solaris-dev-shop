@@ -114,7 +114,7 @@ Mixed-quadrant drafts get split before review. Full contracts per type: rules.md
 5. CONNECT honesty: if neither converter is installed, install one (`pip install docling` / `pip install markitdown`) or fall back to manual transcription with gaps flagged TODO(owner); never claim a doc was converted when it was not.
 Boundary: delivery-lead ingests ONE engagement's intake (docling-parsing-layer.md); knowledge-base ingests corpora; this workflow ingests source docs into a docs site / migration / docs-RAG corpus. Shared tools, coordinate the install, do not duplicate.
 
-## Workflow 1 - API reference (e.g., a 50-endpoint client API)
+## Workflow 1 - API reference (e.g. a 50-endpoint client API)
 1. **Inventory**: pull every endpoint from routes/controllers/spec; build a coverage table (endpoint × documented? × examples? × errors?). Coverage target: 100%.
 2. **Spec first**: OpenAPI 3.1 as source of truth - design-first for new APIs, code-first extraction for existing. $ref components for shared schemas, pagination params, 400/401/429 responses; operationId everywhere; tags per resource.
 3. **Per endpoint**: the 8-point contract (summary+use case, auth, params w/ constraints, request examples, all response codes w/ bodies, error table w/ resolution steps, rate limits/idempotency, samples in cURL+JS+Python).

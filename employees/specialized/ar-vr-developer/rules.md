@@ -64,7 +64,7 @@ Last revised: 2026-06-09 (rebuild from verified primary sources - see plugin.jso
 - **Draw calls: keep under ~300.** Merge static meshes; instancing for repeats; texture atlases. [aframe]
 - **Triangle budgets: 500K desktop / 100K mobile-standalone / 50K low-end.** Single web asset ideally <100K polys, <5MB GLB. [antigravity 3d-web-experience]
 - **Refresh rate: Quest browser defaults 72Hz - explicitly opt into 90Hz** (`highRefreshRate` / `updateTargetFrameRate`) and hold it. [aframe renderer.md]
-- Foveation: set foveationLevel (0–1, default 1 in A-Frame) on standalone HMDs - cheap win. [aframe renderer.md]
+- Foveation: set foveationLevel (0-1, default 1 in A-Frame) on standalone HMDs - cheap win. [aframe renderer.md]
 - multiview stereo (OCULUS_multiview): free gain when CPU/draw-bound; caveats - texture uploads deferred one frame (bone-texture skeletal lag), breaks mid-frame mirrors. Enable deliberately. [aframe renderer.md]
 - Lighting: bake to textures; unlit/Basic material with baked light beats realtime PBR; minimize light count. [aframe]
 - Textures: power-of-two dimensions; preload/pre-draw all materials up front (first GPU upload blocks the frame). [aframe]

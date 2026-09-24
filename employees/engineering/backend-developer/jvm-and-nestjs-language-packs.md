@@ -115,7 +115,7 @@ Quarkus diverges from Spring on most idioms; do not transplant Spring habits.
 - YAML or properties; profile-aware (`%dev`/`%test`/`%prod`). `hibernate-orm.database.generation`: `drop-and-create` dev/test, `validate` prod (never auto-DDL in prod).
 - Type-safe config: `@ConfigMapping` (build-time validated) for grouped config, `@ConfigProperty` for single values. Externalize secrets to env/Vault (`quarkus-vault`).
 - Logging: JBoss Logging (default, zero-cost build-time) via `Logger.getLogger(...)` or `@Inject Logger`; `logback` + Logstash encoder when structured JSON is needed; propagate a LogContext through service calls (and into `CompletableFuture` work) for request tracing.
-- Async: `CompletableFuture.supplyAsync(..., executor)` on a managed executor (`ManagedExecutor`), not unbounded threads; pass LogContext into the async scope.
+- Async: `CompletableFuture.supplyAsync(... executor)` on a managed executor (`ManagedExecutor`), not unbounded threads; pass LogContext into the async scope.
 - Health checks: `@Liveness` / `@Readiness` `HealthCheck` beans (DB connection, Camel context, etc.).
 - Favor build-time over runtime processing; avoid runtime reflection (add `@RegisterForReflection` only when native image needs it). Stay on the latest 3.x LTS; use dev mode for hot reload; test native compilation periodically.
 
@@ -136,7 +136,7 @@ Quarkus diverges from Spring on most idioms; do not transplant Spring habits.
 - Audit sensitive ops via `SecurityIdentity`. CVE scan: `mvn org.owasp:dependency-check-maven:check` + `mvn quarkus:audit`.
 
 ### TDD (JUnit 5 + Mockito + REST Assured + Camel + JaCoCo)
-- Structure unit tests with `@Nested` (group by method) + `@DisplayName` + `givenX_whenY_thenZ` naming + explicit `// ARRANGE / ACT / ASSERT`. Cover happy paths, null inputs, edge cases (empty collections, boundaries, blank strings), and exceptions. `verify(...)` interactions; `verify(..., never())` in error paths.
+- Structure unit tests with `@Nested` (group by method) + `@DisplayName` + `givenX_whenY_thenZ` naming + explicit `// ARRANGE / ACT / ASSERT`. Cover happy paths, null inputs, edge cases (empty collections, boundaries, blank strings), and exceptions. `verify(...)` interactions; `verify(... never())` in error paths.
 - Panache `persist()` is void: stub with `doNothing().when(repo).persist(any())` + verify.
 - Slices (over-scoping `@QuarkusTest` for units is a finding):
   - unit: plain JUnit 5 + Mockito (`@ExtendWith(MockitoExtension.class)`), no `@QuarkusTest`.

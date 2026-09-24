@@ -177,7 +177,7 @@ ssh -o BatchMode=yes "${USER}@${HOST}" \
   "summary": "WordPress is using the default 'wp_' table prefix, which is widely known and targeted by SQL injection attacks",
   "detail": "The $table_prefix variable is set to 'wp_' in wp-config.php. This is the default value used by WordPress installations. While not a critical vulnerability on its own, using the default prefix makes SQL injection attacks slightly easier because attackers know the table names (wp_users, wp_posts, etc.) without guessing. However, changing the table prefix on an existing site is risky and complex, requiring database-wide updates and potential plugin/theme compatibility issues.",
   "location": "wp-config.php",
-  "fix": "For existing sites: Do NOT change the table prefix unless absolutely necessary. Instead, focus on preventing SQL injection through proper use of $wpdb->prepare() in all custom queries. For new installations: Set a unique table prefix during installation (e.g., 'wp_a3f9b2_' with random characters)."
+  "fix": "For existing sites: Do NOT change the table prefix unless absolutely necessary. Instead, focus on preventing SQL injection through proper use of $wpdb->prepare() in all custom queries. For new installations: Set a unique table prefix during installation (e.g. 'wp_a3f9b2_' with random characters)."
 }
 ```
 

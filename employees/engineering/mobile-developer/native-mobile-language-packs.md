@@ -88,7 +88,7 @@ Relevant when the mobile team owns a KMP shared module or a thin Kotlin BFF. Own
 
 ### B1. Idiomatic Dart + Flutter patterns (source: dart-flutter-patterns)
 
-- **Null safety**: avoid `!`; prefer `?.`/`??`, Dart 3 pattern matching (`switch (user) { User(:final name) => ..., null => ... }`), and early-return guards (which promote to non-null). **Avoid `late` overuse** - it defers null errors to runtime; only use when init is guaranteed before first access (e.g. an `AnimationController` set in `initState`).
+- **Null safety**: avoid `!`; prefer `?.`/`??`, Dart 3 pattern matching (`switch (user) { User(:final name) => ... null => ... }`), and early-return guards (which promote to non-null). **Avoid `late` overuse** - it defers null errors to runtime; only use when init is guaranteed before first access (e.g. an `AnimationController` set in `initState`).
 - **Immutable state**: `sealed class` hierarchies for exhaustive `switch`; **Freezed** (`@freezed`, `copyWith`, `fromJson`/`toJson`) to kill boilerplate.
 - **Async composition**: structured concurrency with Dart 3 records + `.wait` (`final (a, b) = await (f1, f2).wait;`); `StreamBuilder` with `switch` on `AsyncSnapshot`. **CRITICAL: after any `await` in a `StatefulWidget`, check `if (!mounted) return;` before touching `context`** - stale context after an async gap crashes.
 - **Widget architecture**: **extract to widget classes, not `_build*()` methods** (enables `const`, element reuse, framework optimization); aggressive `const` propagation to stop rebuilds; scoped rebuilds (isolate the changing subtree in its own `ConsumerWidget`, keep siblings `const`).

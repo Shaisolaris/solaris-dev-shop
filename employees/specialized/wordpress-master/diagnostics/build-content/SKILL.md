@@ -15,7 +15,7 @@ Seeds a WordPress installation (with FSE theme already active from build-theme) 
 This skill expects the following variables to already be set by the calling command:
 
 - `BUILD_DIR` - absolute path to the build directory (set by build-scaffold Section 2)
-- `WP` - the WP-CLI command prefix (e.g., `wp --path=$BUILD_DIR` or the Docker equivalent, set by build-scaffold Section 4)
+- `WP` - the WP-CLI command prefix (e.g. `wp --path=$BUILD_DIR` or the Docker equivalent, set by build-scaffold Section 4)
 - `NL_PROMPT` - the user's natural language site description string
 - `SITE_TITLE` - site title derived from the NL prompt (set by the calling command)
 - `THEME_SLUG` - installed theme slug (set by build-theme)
@@ -285,7 +285,7 @@ Always create: Home, About, Contact. Add 1-2 site-specific pages based on `NL_PR
 - Made-up business names, addresses, phone numbers, team member names
 - No Lorem Ipsum - ever
 - No `[REPLACE THIS]` markers - ever
-- No verbatim real-world content (e.g., no copying real business names/addresses)
+- No verbatim real-world content (e.g. no copying real business names/addresses)
 - Gutenberg block markup (`<!-- wp:paragraph -->`, `<!-- wp:heading -->`, `<!-- wp:image -->`) so content renders properly in the block editor
 
 **Home page example pattern:**
@@ -307,7 +307,7 @@ cat > /tmp/wp-page-home-$$ << 'CONTENT_EOF'
 <!-- /wp:cover -->
 
 <!-- wp:paragraph -->
-<p>At Harlow &amp; Co., we believe your home should tell your story. Founded in 2019 by designer Mia Harlow, our studio pairs timeless materials with contemporary sensibility to create spaces that are lived in - and loved.</p>
+<p>At Harlow &amp; Co. we believe your home should tell your story. Founded in 2019 by designer Mia Harlow, our studio pairs timeless materials with contemporary sensibility to create spaces that are lived in - and loved.</p>
 <!-- /wp:paragraph -->
 CONTENT_EOF
 
@@ -388,7 +388,7 @@ cat > /tmp/wp-page-contact-$$ << 'CONTENT_EOF'
   <p><strong>Email:</strong> hello@harlowco.example</p>
   <!-- /wp:paragraph -->
   <!-- wp:paragraph -->
-  <p><strong>Studio hours:</strong> Monday – Friday, 9am – 5pm</p>
+  <p><strong>Studio hours:</strong> Monday, Friday, 9am, 5pm</p>
   <!-- /wp:paragraph -->
 </div>
 <!-- /wp:group -->
@@ -412,7 +412,7 @@ Track all page IDs in an array for menu creation:
 PAGE_IDS=("$HOME_ID" "$ABOUT_ID" "$CONTACT_ID")
 PAGE_TITLES=("Home" "About" "Contact")
 # Add site-specific pages as determined by Claude from NL_PROMPT
-# e.g., PAGE_IDS+=("$PORTFOLIO_ID"); PAGE_TITLES+=("Portfolio")
+# e.g. PAGE_IDS+=("$PORTFOLIO_ID"); PAGE_TITLES+=("Portfolio")
 PAGES_CREATED=${#PAGE_IDS[@]}
 ```
 

@@ -34,7 +34,7 @@ If WP-CLI is not available, return a single Warning finding and skip WP-CLI-depe
 ssh {user}@{host} "cd {wp_path} && {wp_cli_path} core version"
 ```
 
-**Parse output:** Extract version number (e.g., "6.4.3")
+**Parse output:** Extract version number (e.g. "6.4.3")
 
 **Check for updates:**
 ```bash
@@ -96,7 +96,7 @@ ssh {user}@{host} "cd {wp_path} && {wp_cli_path} core check-update --format=json
 ssh {user}@{host} "php -v"
 ```
 
-**Parse output:** Extract version number from first line (e.g., "PHP 8.2.10...")
+**Parse output:** Extract version number from first line (e.g. "PHP 8.2.10...")
 
 **Version Support Status (as of 2026):**
 - **PHP < 7.4:** Critical - End of security support
@@ -142,7 +142,7 @@ ssh {user}@{host} "php -v"
 ssh {user}@{host} "cd {wp_path} && {wp_cli_path} db version"
 ```
 
-**Parse output:** Extract database type and version (e.g., "mysql Ver 8.0.35" or "MariaDB 10.6.16")
+**Parse output:** Extract database type and version (e.g. "mysql Ver 8.0.35" or "MariaDB 10.6.16")
 
 **Version Compatibility:**
 - **MySQL < 5.7 or MariaDB < 10.3:** Warning - WordPress minimum recommended versions
@@ -267,7 +267,7 @@ Return findings as a JSON array. Each finding must include:
 - `title` (string) - Short descriptive title
 - `summary` (string) - One non-technical sentence explaining the issue
 - `detail` (string) - Technical detail with version numbers and context
-- `location` (string) - Where the issue exists (e.g., "WordPress Core", "Server PHP Runtime", plugin path)
+- `location` (string) - Where the issue exists (e.g. "WordPress Core", "Server PHP Runtime", plugin path)
 - `fix` (string) - Specific remediation steps with commands
 
 **Example Complete Output:**

@@ -15,7 +15,7 @@ Installs the WordPress MCP adapter (pre-compiled, bundled at `vendor/mcp-adapter
 This skill expects the following variables to already be set by the calling command:
 
 - `BUILD_DIR` - absolute path to the build directory (set by build-scaffold Section 2)
-- `WP` - the WP-CLI command prefix (e.g., `wp --path=$BUILD_DIR` or the Docker equivalent, set by build-scaffold Section 4)
+- `WP` - the WP-CLI command prefix (e.g. `wp --path=$BUILD_DIR` or the Docker equivalent, set by build-scaffold Section 4)
 - `PLUGIN_DIR` - absolute path to the CoWork plugin directory (set by COMMAND.md before invoking this skill)
 
 ## Section 1: MCP Adapter Copy
@@ -148,7 +148,7 @@ On earlier WordPress versions, the plugin loads without errors but MCP features 
 
 ## Admin Credentials
 
-- **WP Admin URL:** Use the site URL shown in Local WP after import (e.g., `http://sitename.local/wp-admin`)
+- **WP Admin URL:** Use the site URL shown in Local WP after import (e.g. `http://sitename.local/wp-admin`)
 - **Username:** `admin`
 - **Password:** Shown in terminal at build time - not stored in any file
 

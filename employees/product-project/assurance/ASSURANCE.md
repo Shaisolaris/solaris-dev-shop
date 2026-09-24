@@ -44,4 +44,4 @@ Engine: `solaris/employees/quality-security/assurance/quality_os.py`
 ## Finding → order
 
 Unresolved product findings convert to orders owned by `product-manager` with
-closure criteria requiring independent BA or human verification for S0–S2.
+closure criteria requiring independent BA or human verification for S0-S2.

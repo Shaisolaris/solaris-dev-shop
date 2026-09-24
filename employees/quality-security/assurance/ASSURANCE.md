@@ -65,12 +65,12 @@ required specialist dimension.
 
 ## Findings → orders
 
-- Findings carry severity (S0–S4/info), defect kind, evidence, accountable role,
+- Findings carry severity (S0-S4/info), defect kind, evidence, accountable role,
   verifier role, and closure criteria.
 - `finding_to_order` / `convert_findings_to_orders` produce deduplicated orders
   (key = defect_kind + normalized title; highest severity wins).
 - Orders are owned by the accountable role; closure still requires independent
-  verification for blocking severities (S0–S2).
+  verification for blocking severities (S0-S2).
 
 ## Self-approval ban (hard control)
 

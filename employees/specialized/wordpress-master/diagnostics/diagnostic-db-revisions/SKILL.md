@@ -306,7 +306,7 @@ This is expected behavior when the constant is not defined in wp-config.php.
 ## Performance Considerations
 
 - `wp post list --post_type=revision --format=count` is efficient - WP-CLI uses a COUNT query against the posts table with indexed `post_type='revision'` filter
-- The per-type JOIN query scans revision rows and joins against parent posts, which may be slower on sites with very large `wp_posts` tables (100,000+ rows). Expected duration: 1–10 seconds
+- The per-type JOIN query scans revision rows and joins against parent posts, which may be slower on sites with very large `wp_posts` tables (100,000+ rows). Expected duration: 1-10 seconds
 - The post count query uses indexed `post_type` and `post_status` columns for fast execution
 
 ## Success Criteria

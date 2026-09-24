@@ -1,6 +1,6 @@
 # Data Engineer - Rules
 
-Last rebuilt: 2026-06-10 from file-level source extraction (artifacts: sources/_analysis/data-engineer/01–05).
+Last rebuilt: 2026-06-10 from file-level source extraction (artifacts: sources/_analysis/data-engineer/01-05).
 Citation keys: [dbt-labs] dbt-labs/dbt-agent-skills · [wsh] wshobson/agents plugins/data-engineering · [alt] AltimateAI/data-engineering-skills · [arz] alirezarezvani/claude-skills senior-data-engineer · [volt] VoltAgent 05-data-ai/data-engineer. Deepen 2026-06-13: [dlt] dlt-hub/dlt · [dag] dagster-io/dagster · [ice] apache/iceberg · [soda] sodadata/soda-core (AGPL, methodology-only) · [ge] great-expectations - see ingestion-orchestration-lakehouse-quality.md.
 
 ## Iron rules (non-negotiable)
@@ -50,8 +50,8 @@ Citation keys: [dbt-labs] dbt-labs/dbt-agent-skills · [wsh] wshobson/agents plu
   5. Schedule periodic full refresh against drift.
   - Merge failing 3+ times = duplicate keys. Dedup fix: `row_number() over (partition by key order by updated_at desc) = 1`.
 - **When** a CTE exceeds ~50 lines → extract to intermediate model; repeated logic across models → macro. [alt refactoring]
-- **When** changing an existing model → impact tiers: 1–5 downstream = proceed `state:modified+`; 6–15 = consider depth limit; 16+ = ask operator about `state:modified+N`. Never unselected `dbt build` on a large project. Column removal needs column-level lineage (`get_column_lineage` via dbt MCP, grep fallback), not just model-level. [dbt-labs evaluating-impact]
-- **When** building metrics → dbt Semantic Layer, not BI tools. Spec detect: `semantic_model:` nested under a model = latest spec (Core 1.12+/Fusion); top-level `semantic_models:` = legacy (1.6–1.11). Match what the project already uses. [dbt-labs building-dbt-semantic-layer]
+- **When** changing an existing model → impact tiers: 1-5 downstream = proceed `state:modified+`; 6-15 = consider depth limit; 16+ = ask operator about `state:modified+N`. Never unselected `dbt build` on a large project. Column removal needs column-level lineage (`get_column_lineage` via dbt MCP, grep fallback), not just model-level. [dbt-labs evaluating-impact]
+- **When** building metrics → dbt Semantic Layer, not BI tools. Spec detect: `semantic_model:` nested under a model = latest spec (Core 1.12+/Fusion); top-level `semantic_models:` = legacy (1.6-1.11). Match what the project already uses. [dbt-labs building-dbt-semantic-layer]
 - **When** crossing teams/domains → dbt Mesh: read `dependencies.yml` first; cross-project = two-arg `ref('project','model')`; only `access: public` models are reachable; requires dbt Cloud Enterprise - confirm plan before setup, else intra-project groups/access/contracts. [dbt-labs working-with-dbt-mesh]
 
 ## Decision rules - testing & quality gates
@@ -81,7 +81,7 @@ Citation keys: [dbt-labs] dbt-labs/dbt-agent-skills · [wsh] wshobson/agents plu
 - **When** backfilling → idempotency verify first; resource-reserve so production queries aren't starved; quality check post-run. Tasks always process their own logical date (`{{ ds }}`), never "latest". [wsh; arz; carried v0.5]
 
 ## Decision rules - warehouse cost & performance
-- **When** hunting Snowflake cost → `QUERY_ATTRIBUTION_HISTORY` ranked by `credits_attributed_compute` (last 7d), then `QUERY_HISTORY` for the top IDs: bytes_scanned, spill local/remote, partitions_scanned vs partitions_total. Read: scanned=total → no pruning; repeated query_hash → caching/materialization opportunity; spill → memory pressure. Deliver ranked list + patterns + top 3–5 fixes. [alt finding-expensive-queries]
+- **When** hunting Snowflake cost → `QUERY_ATTRIBUTION_HISTORY` ranked by `credits_attributed_compute` (last 7d), then `QUERY_HISTORY` for the top IDs: bytes_scanned, spill local/remote, partitions_scanned vs partitions_total. Read: scanned=total → no pruning; repeated query_hash → caching/materialization opportunity; spill → memory pressure. Deliver ranked list + patterns + top 3-5 fixes. [alt finding-expensive-queries]
 - **When** optimizing a query → priority: (1) date/time functions on filter columns → range predicates (`DATE(ts) = 'd'` → `ts >= 'd' and ts < 'd'+1`) to restore pruning; (2) implicit comma joins → explicit JOIN (always safe); (3) `NOT IN` → `NOT EXISTS` only when subquery column provably NOT NULL. NEVER: UNION→UNION ALL, touching window functions, renaming columns/aliases, adding limits. [alt optimizing-query-text]
 - **When** developing → `--select` always; `--defer --state path/to/prod` to reuse prod objects; `dbt clone` for zero-copy dev copies; LIMIT pushed early into CTEs; no unpartitioned BigQuery scans. [dbt-labs cost section]
 - **When** wiring dbt CI (GitHub Actions) → run `dbt build --select state:modified+` against a CI/PR schema with `--defer --state` to the prod manifest, never an unselected build. SHA-pin every third-party action (`uses: actions/checkout@<full-40-char-sha>  # v4`), never a floating `@v4`/`@main` tag - a moved tag is supply-chain risk. Store warehouse creds as repo/org secrets, never inline. [fleet doctrine; dbt-labs cost section]
@@ -115,7 +115,7 @@ Citation keys: [dbt-labs] dbt-labs/dbt-agent-skills · [wsh] wshobson/agents plu
 | Pipeline availability target | 99.9% | [volt] |
 | Table-vs-incremental threshold | ~10M rows | [alt] |
 | Late-data lookback window | 3 days, tune per source | [alt][wsh] |
-| Refactor impact tiers | 1–5 / 6–15 / 16+ downstream | [dbt-labs] |
+| Refactor impact tiers | 1-5 / 6-15 / 16+ downstream | [dbt-labs] |
 | CTE extraction threshold | ~50 lines | [alt] |
 | Discovery sample | 50 rows + grain/null/orphan profile | [dbt-labs] |
 

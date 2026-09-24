@@ -10,7 +10,7 @@
 
 ## Request / response
 
-- **Envelope or no envelope - pick one, stick with it.** `{ data: ..., meta: ... }` is fine; raw arrays at top level is fine. Don't mix.
+- **Envelope or no envelope - pick one, stick with it.** `{ data: ... meta: ... }` is fine; raw arrays at top level is fine. Don't mix.
 - **All datetimes ISO 8601 UTC.** Never client-local in the wire format.
 - **All money as integers in minor units** (cents, paise). Currency code separate field. Never float.
 - **Errors structured.** `{ error: { code: "string_machine_readable", message: "human readable", details: { ... } } }`. Stable error codes the frontend can branch on.

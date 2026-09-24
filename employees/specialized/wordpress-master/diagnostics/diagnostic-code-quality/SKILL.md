@@ -140,7 +140,7 @@ grep -rn -E "(api_key|apikey|api_secret|password|secret_key|access_token)\s*=\s*
 ```
 
 **For each match:**
-1. Check if value is a placeholder (e.g., "your-api-key", "xxxxx", "")
+1. Check if value is a placeholder (e.g. "your-api-key", "xxxxx", "")
 2. Flag if value appears to be a real credential (length > 10, alphanumeric)
 3. **Critical** if it looks like a real key/token/password
 

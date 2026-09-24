@@ -6,7 +6,7 @@
 These are curated link-lists released CC0 (public domain). Use them as a launch pad when a design question needs deeper theory; follow the leaves, not just the branch.
 - **dawdle-deer/awesome-learn-gamedev** (3.4k★, CC0) - broad gamedev learning corpus: design theory, GDD tooling, math, engines, art/audio pipelines. Entry point for "I need to learn/teach X area of gamedev."
 - **Roobyx/awesome-game-design** (588★, CC0) - design-specific corpus: MDA references, GDD templates, **Machinations** (economy/systems modeling), level-design and systems-design reading.
-- **How to use them:** when a design task exceeds what `design-frameworks.md` + SKILL.md cover (e.g., a specific genre's level-design conventions, a balancing technique), pull the relevant leaf from these corpora and verify the source live before relying on it. They are pointers, not vetted Solaris content.
+- **How to use them:** when a design task exceeds what `design-frameworks.md` + SKILL.md cover (e.g. a specific genre's level-design conventions, a balancing technique), pull the relevant leaf from these corpora and verify the source live before relying on it. They are pointers, not vetted Solaris content.
 
 ## CONNECT - commercial / SaaS (reference, do NOT absorb)
 - **Machinations.io** - the de-facto game-economy / balance **simulation** tool (node-based: sources, drains, converters, feedback loops). Use it to model and stress-test economies + progression before building. Commercial SaaS → CONNECT only; host wires it. Reference its modeling vocabulary (covered in the CC0 corpora), don't fork it.

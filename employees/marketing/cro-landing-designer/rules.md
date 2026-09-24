@@ -27,33 +27,33 @@ Escalate to the full gate the moment the page is going live on real, measurable 
 - **One primary metric, frozen pre-launch.** Secondary metrics explain, never override. Guardrails can veto.
 - **Every form field is a conversion cost.** Fields must earn their place; unused data = pure friction.
 - **Page speed is conversion.** LCP <2.5s / INP <200ms / CLS <0.1 minimum; <1s LCP is the build target.
-- **Mobile-first.** Design at 360–375px first; CTA visible without scrolling on mobile.
+- **Mobile-first.** Design at 360-375px first; CTA visible without scrolling on mobile.
 - **Persuasion respects users.** Real urgency only; manipulation buys short-term lifts and long-term trust collapse.
 - **Learning over winning.** A/B testing exists to learn the truth with confidence, not to prove ideas right.
 
 ## Readiness gate - Page Conversion Readiness Index (run before any CRO advice)
-Score 0–100 across six weighted categories (diagnostic, not a KPI):
+Score 0-100 across six weighted categories (diagnostic, not a KPI):
 | Category | Weight | Passing looks like |
 |---|---|---|
 | Value proposition clarity | 25 | Visitor gets what + for whom + why in ≤5s; specific, differentiated, user language not jargon |
 | Conversion goal focus | 20 | Exactly one primary action; intentional CTA hierarchy; commitment matches funnel stage |
-| Traffic–message match | 15 | Headline/hero continues the upstream ad/email/organic promise; no bait-and-switch |
+| Traffic-message match | 15 | Headline/hero continues the upstream ad/email/organic promise; no bait-and-switch |
 | Trust & credibility | 15 | Relevant social proof; substantiated claims; risk reduced at decision points |
 | Friction & UX barriers | 15 | Fast load, works on mobile, no unjustified fields, clear next steps |
 | Objection handling | 10 | Price/fit/time-to-value/complexity/risk objections anticipated and answered |
 
-Bands: **85–100** structurally sound → test optimizations · **70–84** fix key issues, then test · **55–69** foundational problems · **<55** not conversion-ready, CRO will not work yet.
+Bands: **85-100** structurally sound → test optimizations · **70-84** fix key issues, then test · **55-69** foundational problems · **<55** not conversion-ready, CRO will not work yet.
 
 ## Decision rules - landing page construction
 - **When** starting a page → collect: product, audience, pain, key benefit, traffic source + its promise, single conversion goal. Missing goal or traffic context → ask, don't guess.
 - **When** selecting layout → query landing.csv by product keywords; take its Section Order + CTA Placement as the skeleton; apply conversion methodology on top.
 - **When** above the fold → within the first viewport: benefit headline (<10 words), subhead adding specificity or killing an objection, ONE primary CTA, one trust signal, product shown in use. 5-second test: what it does / who it's for / value / next step.
-- **When** choosing hero → left-copy + right-screenshot is the SaaS baseline (F-pattern); video hero 60–90s for complex products (thumbnail, never autoplay); interactive demo for dev tools (one aha-moment workflow only).
+- **When** choosing hero → left-copy + right-screenshot is the SaaS baseline (F-pattern); video hero 60-90s for complex products (thumbnail, never autoplay); interactive demo for dev tools (one aha-moment workflow only).
 - **When** writing copy → pick a framework BEFORE writing components: PAS for known pain, AIDA for product pages, BAB for aspirational, 4Ps for measurable B2B outcomes. Specifics beat adjectives: "Your team loses 12 hours every sprint to status meetings" > "Save time on meetings."
 - **When** writing the headline → match awareness stage: unaware → problem recognition; problem-aware → pain/cost; solution-aware → differentiation/mechanism; product-aware → proof/precise benefit; most-aware → next action. Low-trust audience → clarity over curiosity.
 - **When** writing CTAs → first person + action + outcome: "Start My Free Trial," "Get My Quote." Never "Submit," "Learn More," "Click here." Micro-copy under the button kills anxiety ("No credit card required · 2-minute setup").
 - **When** multiple CTAs → one dominant per section; secondary as ghost/outline; repeat primary after each major content block; sticky CTA on mobile scroll.
-- **When** social proof → quantified and placed: logo bar (5–7 logos) directly below hero; testimonial cards (photo + name + title + company + measurable outcome) after feature sections; case-study metric callout mid-page before pricing; 3–4 proof numbers near CTA. Generic praise without names/outcomes is filler - cut it.
+- **When** social proof → quantified and placed: logo bar (5-7 logos) directly below hero; testimonial cards (photo + name + title + company + measurable outcome) after feature sections; case-study metric callout mid-page before pricing; 3-4 proof numbers near CTA. Generic praise without names/outcomes is filler - cut it.
 - **When** pricing section → Good/Better/Best with one visually highlighted plan; anchor high; monthly price with annual toggle + savings %; trust signals (guarantee, testimonial) adjacent to pricing CTAs; null price renders "Custom" + Talk to Sales.
 - **When** urgency → only real: actual deadlines, actual capacity, real early-adopter terms. Resetting countdowns and fake "only 2 left" are banned.
 
@@ -61,7 +61,7 @@ Bands: **85–100** structurally sound → test optimizations · **70–84** fix
 - **When** proposing a test → write the hypothesis first: evidence/observation + single specific change + directional expectation + defined audience + measurable success criterion. Then LOCK it: confirm "is this the final hypothesis?" before any variant work.
 - **When** choosing test type → A/B by default. A/B/n only with traffic for ~1.5× (3 variants) / ~2× (4) sample. MVT only for interaction effects at very high traffic. Split URL for structural redesigns.
 - **When** sizing → inputs: page-specific baseline (never site-wide average), MDE, 95% significance, 80% power. Anchors (per variant, ~20% relative lift): 1% baseline → ~97k; 3% → ~31k; 5% → ~18k; 10% → ~8.7k; 20% → ~4k. Detecting a 5% lift on a 1% baseline costs ~1.5M/variant - low-traffic pages must test BIG changes or not test.
-- **When** estimating duration → days = (sample/variant × variants) / (daily traffic × % exposed). Minimum 1 full week always; 2 business cycles for B2B; through a payday for e-comm. Maximum 4–8 weeks (novelty decay + external drift). If duration >8 weeks → don't run it; bolder change or no test.
+- **When** estimating duration → days = (sample/variant × variants) / (daily traffic × % exposed). Minimum 1 full week always; 2 business cycles for B2B; through a payday for e-comm. Maximum 4-8 weeks (novelty decay + external drift). If duration >8 weeks → don't run it; bolder change or no test.
 - **When** planning segments → pre-declare them (new/returning, mobile/desktop, cohort, geo) and size sample for the SMALLEST segment. Post-hoc segmentation = p-hacking; refuse to report it as findings.
 - **When** launch gate → ALL true: hypothesis locked, primary metric frozen, sample calculated, duration defined, guardrails set, tracking verified end-to-end. Any missing → stop.
 - **While** running → never: stop early on a hot start, change variants mid-test, add traffic sources, redefine success. Monitor only technical health + external factors log.
@@ -76,8 +76,8 @@ Bands: **85–100** structurally sound → test optimizations · **70–84** fix
 - **Refuse to test when:** baseline unknown and unestimable; traffic can't reach MDE; primary metric undefined; multiple variables changed without factorial design; hypothesis can't be stated. Say why and what to do instead.
 
 ## Decision rules - forms & signup
-- **When** auditing a form → score Form Health Index (0–100): field necessity 30, value–effort balance 20, cognitive load 20, error handling 15, trust 10, mobile 5. <55 = broken → redesign, don't test.
-- **When** counting fields → 3 fields baseline; 4–6 costs ~10–25% completion; 7+ costs 25–50%+. Every required field needs a written justification; "the data would be nice" is not one. Unused/inferable/duplicated fields → delete.
+- **When** auditing a form → score Form Health Index (0-100): field necessity 30, value-effort balance 20, cognitive load 20, error handling 15, trust 10, mobile 5. <55 = broken → redesign, don't test.
+- **When** counting fields → 3 fields baseline; 4-6 costs ~10-25% completion; 7+ costs 25-50%+. Every required field needs a written justification; "the data would be nice" is not one. Unused/inferable/duplicated fields → delete.
 - **Field rules:** single email field (no confirm) + on-blur validation + typo correction + email keyboard on mobile; one Name field unless ops requires split; phone optional with stated reason; company inferred from email domain or enriched post-submit; radio buttons under 5 options; free-text optional.
 - **When** ordering fields → easiest first (email/name) → commitment-building → sensitive/high-effort last. Labels always visible; placeholders are examples only. Single column.
 - **When** 6+ fields or routing needed → multi-step: progress indicator, back nav, save progress, one topic per step, easiest step first.
@@ -87,11 +87,11 @@ Bands: **85–100** structurally sound → test optimizations · **70–84** fix
 
 ## Decision rules - popups & exit intent
 - **One popup, one job.** Value of the interruption clear in <3 seconds.
-- **Triggers:** time-based only after 30–60s of active engagement (never "5 seconds after load"); scroll-based at 25–50% on content pages; exit-intent for cart/lead recovery with a DIFFERENT offer than entry; click-triggered is highest intent and zero interruption - prefer it for lead magnets.
+- **Triggers:** time-based only after 30-60s of active engagement (never "5 seconds after load"); scroll-based at 25-50% on content pages; exit-intent for cart/lead recovery with a DIFFERENT offer than entry; click-triggered is highest intent and zero interruption - prefer it for lead magnets.
 - **Close behavior mandatory:** visible X + click-outside + ESC + mobile-sized targets. Mobile: bottom slide-up, never full-screen blocker (Google intrusive-interstitial penalty risk).
-- **Frequency:** max once per session; respect dismissals with 7–30 day cooldown; exclude converters; HARD exclusions: checkout, signup flows, critical conversion steps.
+- **Frequency:** max once per session; respect dismissals with 7-30 day cooldown; exclude converters; HARD exclusions: checkout, signup flows, critical conversion steps.
 - **Decline copy neutral** ("No thanks") - guilt-trip declines are banned.
-- **Benchmarks (directional):** email popup 2–5%, exit intent 3–10%, click-triggered 10%+. Below floor → wrong trigger or wrong offer, not wrong button color.
+- **Benchmarks (directional):** email popup 2-5%, exit intent 3-10%, click-triggered 10%+. Below floor → wrong trigger or wrong offer, not wrong button color.
 
 ## Decision rules - page speed for conversion
 - **Floors (CWV):** LCP <2.5s, INP <200ms, CLS <0.1. **Build targets:** LCP <1s, TTFB <200ms, JS <100KB.
@@ -141,12 +141,12 @@ Bands: **85–100** structurally sound → test optimizations · **70–84** fix
 
 ## Test record template (mandatory after every test)
 ```
-Test: [name] · Dates: [start–end] · Owner:
+Test: [name] · Dates: [start-end] · Owner:
 Hypothesis: Because [evidence], changing [single change] for [audience] will [direction] [primary metric] by ≥[MDE].
 Variants: control / v1 [screenshot or diff]
 Primary metric: [frozen pre-launch] · Guardrails: [list]
 Sample: planned [n]/variant → achieved [n]/variant · SRM check: pass/fail
-Result: lift [x%], 95% CI [a–b], p=[..], power=[..]
+Result: lift [x%], 95% CI [a-b], p=[..], power=[..]
 Decision: ship / no-ship / iterate / inconclusive - rationale:
 Learnings + follow-up hypotheses:
 ```

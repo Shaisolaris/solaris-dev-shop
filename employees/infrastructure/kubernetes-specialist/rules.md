@@ -20,7 +20,7 @@ Last revised: 2026-06-13 (v0.6.0 depth pass adds platform-patterns.md + register
 
 **Probes** [lk8s/02 + ws deployment-spec]:
 - Readiness = "send traffic now?" (failure removes from endpoints, no restart). Liveness = "stuck beyond self-recovery?" (failure restarts). Startup = "done initializing?" (gates the other two - use for slow starters instead of huge initialDelays).
-- Baselines: startup `period 10s × failureThreshold 30` (5-min budget); liveness `initialDelay 30 / period 10 / timeout 5 / fail 3`; readiness `initialDelay 5 / period 5 / fail 3`. Mechanisms: httpGet (200–399 = pass), tcpSocket, exec, grpc (1.24+).
+- Baselines: startup `period 10s × failureThreshold 30` (5-min budget); liveness `initialDelay 30 / period 10 / timeout 5 / fail 3`; readiness `initialDelay 5 / period 5 / fail 3`. Mechanisms: httpGet (200-399 = pass), tcpSocket, exec, grpc (1.24+).
 - Aggressive liveness restarts containers that would have recovered - the classic self-inflicted CrashLoop. Don't make liveness check dependencies (DB down → whole fleet restarts).
 
 **Resources + QoS** [lk8s/02]:
@@ -44,8 +44,8 @@ Last revised: 2026-06-13 (v0.6.0 depth pass adds platform-patterns.md + register
 - HPA: explicit min/maxReplicas + `behavior.scaleDown.stabilizationWindowSeconds: 300` (anti-flap). Queue/event workloads → KEDA (queue depth, Kafka lag, scale-to-zero; set min/maxReplicaCount, pollingInterval, cooldownPeriod).
 - VPA in `Off` mode = free right-sizing recommendations; `InPlaceOrRecreate` (VPA 1.4+, in-place resize) for auto-apply. **Never HPA + VPA on the same metric** - split: VPA memory, HPA CPU/custom.
 - Right-size to the PEAK, not the average: 200MiB avg with hourly 500MiB spikes needs a 500MiB request or it eventually OOMKills. Loop: estimate → representative load → days of Prometheus/`kubectl top`/VPA-Off data → update. [lk8s/04]
-- Control-loop physics: metric change → new Pod serving = 30–90s. Load-test the ramp (p99 + error rate THROUGH the ramp, watch `kubectl get hpa`). Faster traffic → pre-scale, lower target utilization, or KEDA on a leading signal. Scale-down drains like a node drain - PDBs do not slow HPA.
-- Cost review after 1–2 weeks live: usage ≈20% of request = over-provisioned; node utilization <50% sustained = wasted; target >70% [va]. Tools: VPA-Off, OpenCost, Kubecost.
+- Control-loop physics: metric change → new Pod serving = 30-90s. Load-test the ramp (p99 + error rate THROUGH the ramp, watch `kubectl get hpa`). Faster traffic → pre-scale, lower target utilization, or KEDA on a leading signal. Scale-down drains like a node drain - PDBs do not slow HPA.
+- Cost review after 1-2 weeks live: usage ≈20% of request = over-provisioned; node utilization <50% sustained = wasted; target >70% [va]. Tools: VPA-Off, OpenCost, Kubecost.
 - **Node autoscaling:** cluster-autoscaler for node-group-pinned setups; Karpenter (NodePool/NodeClass, consolidation, disruption budgets, drift, spot+on-demand) where a provider implementation exists - it provisions right-sized nodes from unschedulable pods instead of scaling fixed groups. One owner per scaling axis: Karpenter owns nodes, HPA/KEDA own replicas, never both autoscalers on the same nodes. Full pattern in platform-patterns.md §Node autoscaling. [kp]
 
 ## Security
@@ -118,7 +118,7 @@ Deliver findings as: blocker (red flags list) / required-before-scale / advisory
 - Cluster >1 minor behind; manual kubectl apply to prod; no Velero/etcd backup; single-master self-managed
 
 ## Standing gotchas (battle-tested keepers)
-- Misconfigured requests waste 30–60% of cluster spend - right-size from data, not vibes.
+- Misconfigured requests waste 30-60% of cluster spend - right-size from data, not vibes.
 - ConfigMap changes don't restart pods; subPath mounts never update at all.
 - HPA+VPA on the same metric oscillate; cluster-autoscaler and node-pool autoscaler can fight - one owner per scaling axis.
 - Init containers run sequentially and their resources count toward scheduling; sidecars don't run in order.

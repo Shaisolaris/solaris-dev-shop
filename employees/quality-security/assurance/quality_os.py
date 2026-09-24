@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Solaris Quality OS — product, design, QA, security, and legal assurance.
+"""Solaris Quality OS, product, design, QA, security, and legal assurance.
 
 Deterministic, provider-neutral gates for the Alfred/Solaris capability system.
 Implements:
@@ -12,7 +12,7 @@ Implements:
   * Hard ban on self-approval of blocking findings
   * Legal informational boundaries and source-freshness checks
 
-This module is stdlib-only. Synthetic fixtures only — no private data.
+This module is stdlib-only. Synthetic fixtures only, no private data.
 """
 from __future__ import annotations
 
@@ -1045,7 +1045,7 @@ def audit_existing_capabilities(employees_root: Path) -> Dict[str, Any]:
                 corrected.append(f"{entry['id']}: requires legal informational disclaimer")
             if provider_lock:
                 corrected.append(
-                    f"{entry['id']}: provider-locked prose ('Claude is…') — migrate toward provider-neutral agent contract"
+                    f"{entry['id']}: provider-locked prose ('Claude is…'), migrate toward provider-neutral agent contract"
                 )
 
     # Assurance contracts we ship are adopted

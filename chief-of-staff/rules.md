@@ -75,14 +75,14 @@ When a task needs 2+ employees in parallel, chief-of-staff acts as the queen and
 
 ### When to spawn workers vs. handle directly
 - **Single-employee task** → route to that one employee, don't fan out
-- **Sequential multi-employee** (e.g., PM → Architect → Engineer → QA) → use the MetaGPT spec→code chain, dispatch one at a time
-- **Parallel multi-employee** (e.g., simultaneous code review across 3 services) → spawn N workers, collect results
+- **Sequential multi-employee** (e.g. PM → Architect → Engineer → QA) → use the MetaGPT spec→code chain, dispatch one at a time
+- **Parallel multi-employee** (e.g. simultaneous code review across 3 services) → spawn N workers, collect results
 - **Iterative refinement** (designer + frontend dev iterating on a UI) → set up handoff loop with explicit exit condition
 
 ### Swarm topologies (when to pick which)
 | Topology | When |
 |---|---|
-| **Mesh** | Every worker can talk to every other; complex cross-cutting tasks (e.g., a refactor touching frontend + backend + infra simultaneously) |
+| **Mesh** | Every worker can talk to every other; complex cross-cutting tasks (e.g. a refactor touching frontend + backend + infra simultaneously) |
 | **Hierarchical** | Standard delegation tree; default for product-build work (PM → Architect → Engineers + QA) |
 | **Ring** | Sequential handoff with feedback (designer → frontend → backend → designer for review) |
 | **Star** | One central coordinator + N peripheral specialists who only talk to the center; safest pattern for client-facing work where consistency matters |
@@ -98,15 +98,15 @@ Each worker receives:
 
 ## Conflict resolution (absorbed from consensus-voting, 2026-05-18)
 
-When two workers return conflicting recommendations (e.g., cloud-architect says "use AWS RDS" but devops-engineer says "use Supabase"), chief-of-staff resolves via consensus protocol. Protocols absorbed from Ruflo via the prior consensus-voting employee (now deprecated and merged here).
+When two workers return conflicting recommendations (e.g. cloud-architect says "use AWS RDS" but devops-engineer says "use Supabase"), chief-of-staff resolves via consensus protocol. Protocols absorbed from Ruflo via the prior consensus-voting employee (now deprecated and merged here).
 
 ### Protocol selection
 | Conflict type | Protocol |
 |---|---|
 | Two recommendations, both defensible, no security/cost showstopper | **Gossip** - present both to Shai with trade-offs, let him pick |
 | Multiple workers, majority agree | **Raft-style majority** - go with majority, log dissent |
-| Hard-rule violation flagged by one worker (e.g., "this approach breaks PCI compliance") | **BFT-style veto** - single veto blocks the action regardless of majority |
-| Conflicting partial state (e.g., two workers updating the same config file) | **CRDT-style merge** - combine non-conflicting changes, escalate conflicting fields |
+| Hard-rule violation flagged by one worker (e.g. "this approach breaks PCI compliance") | **BFT-style veto** - single veto blocks the action regardless of majority |
+| Conflicting partial state (e.g. two workers updating the same config file) | **CRDT-style merge** - combine non-conflicting changes, escalate conflicting fields |
 
 ### Dissent preservation
 Document the dissenting position even when overruled. The dissent is data for future learning - knowledge-synthesizer should pick it up next sweep.

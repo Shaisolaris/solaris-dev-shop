@@ -15,7 +15,7 @@ Selects, installs, and activates a Full Site Editing (FSE) block theme from WP.o
 This skill expects the following variables to already be set by the calling command:
 
 - `BUILD_DIR` - absolute path to the build directory (set by build-scaffold Section 2)
-- `WP` - the WP-CLI command prefix (e.g., `wp --path=$BUILD_DIR` or the Docker equivalent, set by build-scaffold Section 4)
+- `WP` - the WP-CLI command prefix (e.g. `wp --path=$BUILD_DIR` or the Docker equivalent, set by build-scaffold Section 4)
 - `NL_PROMPT` - the user's natural language site description string
 - `SITE_TITLE` - site title derived from the NL prompt (set by the calling command before this skill)
 
@@ -242,9 +242,9 @@ echo "[Build] Site tagline set: $SITE_TAGLINE"
 **Docker MySQL container:** The ephemeral Docker MySQL container from `build-scaffold` Section 3 must still be running when this skill executes. WP-CLI theme installation writes to the WordPress options table (active theme slug). The EXIT trap set in `build-scaffold` Section 3 remains active for the entire build session and fires only when the full command exits - not between skill invocations.
 
 **Output variables:** The following variables are set by this skill and consumed by downstream skills (`build-content`, `build-setup`):
-- `THEME_SLUG` - installed theme slug (e.g., `twentytwentyfour`, `flavor`)
-- `THEME_NAME` - display name (e.g., `Twenty Twenty-Four`, `Flavor`)
-- `THEME_VERSION` - installed version string (e.g., `1.3`, `unknown` if undetectable)
+- `THEME_SLUG` - installed theme slug (e.g. `twentytwentyfour`, `flavor`)
+- `THEME_NAME` - display name (e.g. `Twenty Twenty-Four`, `Flavor`)
+- `THEME_VERSION` - installed version string (e.g. `1.3`, `unknown` if undetectable)
 - `THEME_INSTALLED` - `true` if installation succeeded, `false` if all fallbacks failed
 
 **Curated fallback list maintenance:** The curated list maps site categories to known FSE block themes on WP.org. If a curated theme slug is removed from WP.org (causing `wp theme install` to fail with "not found"), update this list with a current FSE-compatible replacement. `twentytwentyfour` is the guaranteed last-resort fallback - it is maintained by the WordPress.org core team and will not be removed.

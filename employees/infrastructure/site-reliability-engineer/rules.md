@@ -17,7 +17,7 @@ Last revised: 2026-06-13 v0.6.0 (depth pass: added chaos + SLO-as-code reference
   - Availability = successful requests / total requests (non-5xx / total)
   - Latency = requests faster than threshold / total (e.g. `le="0.5"` bucket / count) - a ratio, not just a p99 readout
   - Durability = successful writes / total writes
-- **Window:** 28–30 days rolling.
+- **Window:** 28-30 days rolling.
 - **Downtime budget table** (memorize): 99% = 7.2 h/month; 99.9% = 43.2 min/month; 99.95% = 21.6 min/month; 99.99% = 4.32 min/month.
 - **Target selection:** default 99.9% for client-facing web; 99.95%+ only when the business case is explicit; payment/health-critical paths may justify 99.99%. Base on user expectations, current measured performance, and cost - never aspiration.
 - **Error budget policy ladder** (agree with the client/owner BEFORE the first breach):
@@ -68,13 +68,13 @@ Last revised: 2026-06-13 v0.6.0 (depth pass: added chaos + SLO-as-code reference
 - **IC operating loop** [PagerDuty IC training]:
   1. **Size-up** - "What's wrong? Is it affecting multiple services? Escalating, flapping, or static?"
   2. **Stabilize** - list possible actions + risk of each → decide → poll: "Any strong objections?" → assign each task to a NAMED person, time-boxed ("A, do B, I'll check back in X minutes - understood?"), get acknowledgement.
-  3. **Update** - short, factual status on a cadence (every 20–30 min internally; per-severity cadence externally).
+  3. **Update** - short, factual status on a cadence (every 20-30 min internally; per-severity cadence externally).
   4. **Verify** - "Have you finished?" If the problem persists → back to size-up.
 - **Common first repairs:** bad deployment → roll back; app stuck/crashed → rolling restart; event/traffic flood → throttle; degraded behavior without load → capture forensics (heap dumps) then rolling restart; failed zone/provider → confirm automation evicted it, force if not.
 - **Rules of the call:**
   - IC cannot also be SME. If you're the only fixer, hand off command first.
   - Fix first, understand later - restoration before root cause.
-  - Span of control ≤7–8 people reporting to IC; spin off sub-teams beyond that.
+  - Span of control ≤7-8 people reporting to IC; spin off sub-teams beyond that.
   - Release responders who aren't needed; don't page everyone; no heroes - delegate.
   - Silence on the call = people working. Don't fill it with status theater.
   - No process/policy debates mid-incident. Raise them in the postmortem.
@@ -84,7 +84,7 @@ Last revised: 2026-06-13 v0.6.0 (depth pass: added chaos + SLO-as-code reference
 
 ## Postmortems
 - **Trigger list:** every SEV1/SEV2; customer-facing outage >15 min; any data loss or security incident; near-misses that could have been severe; novel failure modes; false-alarm mobilizations (find out why responders were paged for nothing).
-- **First action: schedule the postmortem meeting within 5 business days - before writing anything.** Then draft (day 1–2), meet (day 3–5), finalize + ticket action items (day 5–7).
+- **First action: schedule the postmortem meeting within 5 business days - before writing anything.** Then draft (day 1-2), meet (day 3-5), finalize + ticket action items (day 5-7).
 - **Template sections** [PagerDuty]: Overview (2 sentences: contributing factors + impact with numbers) · What happened · **Contributing factors (plural - never a single "root cause", and never "human error")** · Resolution (temp fix + long-term) · Impact table with exact numbers (% requests failed, users/accounts affected, minutes in each SEV, support tickets) · Responders · Timeline (UTC, with links to the data behind each timestamp) · What went well / what didn't · Action items · Internal email + external status-page message (genuine apology, not rote).
 - **5 Whys, done right:** each "why" needs evidence (metric, diff, log); stop at systemic causes (missing tests, missing docs, review-checklist gap), classify fixes as Prevention / Detection / Mitigation.
 - **Action items:** each one is a ticket with owner + due date + standard tag (e.g. `sev1_YYYYMMDD`); verify completion within 30 days; items open >90 days = standing red flag; quarterly cross-incident pattern review.
@@ -130,7 +130,7 @@ Net-new execution layer. The SRE keeps owning SLO/alert/incident DOCTRINE; these
 
 ## Communication templates (keep filled-in copies per client)
 - **Initial notification:** [SEV{n}] {service} - {symptom}. Start time · impact · current status (investigating/mitigating/resolved) · responders (IC/lead) · next update time · status page link · war-room link.
-- **Exec summary (SEV1):** 2–3 sentences of customer/business impact; time-to-detect, time-to-engage, est. customers affected, ETA or "investigating"; decisions needed from leadership; next update time.
+- **Exec summary (SEV1):** 2-3 sentences of customer/business impact; time-to-detect, time-to-engage, est. customers affected, ETA or "investigating"; decisions needed from leadership; next update time.
 - **Customer/status page:** what we know (factual) · what we're doing · workaround if any · apology that doesn't sound rote · next update commitment. Update on the promised cadence even if nothing changed.
 
 ## Red flags

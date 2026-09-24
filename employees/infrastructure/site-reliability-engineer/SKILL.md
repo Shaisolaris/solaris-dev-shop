@@ -1,6 +1,6 @@
 ---
 name: site-reliability-engineer
-description: Site Reliability Engineer for Solaris - SLOs / SLIs / error budgets, burn-rate alerting, alert design, on-call rotations and handoffs, incident command (SEV1–SEV5), blameless postmortems, runbook engineering, observability design (golden signals, RED/USE, logs, traces), production readiness reviews. Use whenever Shai says "SLO", "SLI", "SLA", "error budget", "uptime", "availability", "downtime", "site is down", "client site down", "outage", "incident", "on-call", "pager", "PagerDuty", "Opsgenie", "postmortem", "post-mortem", "blameless", "runbook", "observability", "alerting", "alert fatigue", "burn rate", "status page", "war room", "severity", "SEV1", "production readiness", "game day", "MTTR".
+description: Site Reliability Engineer for Solaris - SLOs / SLIs / error budgets, burn-rate alerting, alert design, on-call rotations and handoffs, incident command (SEV1-SEV5), blameless postmortems, runbook engineering, observability design (golden signals, RED/USE, logs, traces), production readiness reviews. Use whenever Shai says "SLO", "SLI", "SLA", "error budget", "uptime", "availability", "downtime", "site is down", "client site down", "outage", "incident", "on-call", "pager", "PagerDuty", "Opsgenie", "postmortem", "post-mortem", "blameless", "runbook", "observability", "alerting", "alert fatigue", "burn rate", "status page", "war room", "severity", "SEV1", "production readiness", "game day", "MTTR".
 ---
 
 ## RUNTIME HARDENING (platform-reliability wave 2026-07-24)
@@ -111,7 +111,7 @@ alerting catches the slow burn a single window misses, and every alert has a run
 ## Workflow 3 - Run an incident ("client site down at 2am")
 1. **First 5 min:** impact + blast radius → declare severity (unsure? assume higher - never debate it live) → name IC/Scribe in one war-room channel → status page if customer-facing.
 2. **Stabilize quick wins:** recent deploy? roll back. App hung? rolling restart. Flood? throttle. Flag off / circuit-break what's bleeding.
-3. **IC loop:** size-up → stabilize (decide, poll objections, assign named + time-boxed tasks) → update (20–30 min cadence; per-SEV cadence externally) → verify; repeat. Wrong decision beats no decision. Fix first, understand later.
+3. **IC loop:** size-up → stabilize (decide, poll objections, assign named + time-boxed tasks) → update (20-30 min cadence; per-SEV cadence externally) → verify; repeat. Wrong decision beats no decision. Fix first, understand later.
 4. **Escalate without hesitation;** auto-upgrade per triggers (no cause in 30 min on SEV1 → next tier; data integrity → SEV1).
 4a. **Re-plan when the incident diverges** (the mitigation plan is void, not merely slow): the working hypothesis survives one full 20-30 min update cycle with the SLI flat; the rollback completes and the SLI still does not recover; blast radius grows past the declared severity (a second service starts burning budget, or data integrity enters scope). On any of these, re-declare severity out loud, re-run size-up from step 1 against a new hypothesis, and hand the disproven thread to a named SME with a time box. Do not keep firing mitigations at a hypothesis the metrics already refuted, and never let a scope change ride on the original severity.
 5. **Close** only when SLIs are validated back to normal; announce, list cleanup TODOs, schedule the postmortem meeting (≤5 business days) before leaving the channel.
@@ -157,7 +157,7 @@ Not every request is a full SLO program or a SEV1. Match the lane to the stakes;
 | SEV1 clock | IC ≤5 min, execs ≤15 min, status page ≤15 min, comms q15 min |
 | SEV2 clock | IC ≤30 min, status page ≤30 min, comms q30 min |
 | Postmortem | meeting ≤5 business days; draft ≤48 h |
-| IC span of control | ≤7–8 people, then sub-teams |
+| IC span of control | ≤7-8 people, then sub-teams |
 | Targets | MTTD <5 min · MTTR <30 min · runbook coverage >80% |
 
 ---

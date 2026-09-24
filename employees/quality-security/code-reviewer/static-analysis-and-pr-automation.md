@@ -34,7 +34,7 @@ What it adds that grep/claude-context/Trivy cannot: taint/data-flow tracking - "
 When to reach for it in a review:
 - Security Audit mode, Phase 3: after claude-context enumerates input surfaces, run a taint pass to confirm reachability instead of eyeballing.
 - PR Review touching auth, query construction, deserialization, template rendering, or shell-out.
-- First-Principles mode: org-specific anti-patterns encoded as custom rules (e.g., "never call `db.raw()` with a template literal").
+- First-Principles mode: org-specific anti-patterns encoded as custom rules (e.g. "never call `db.raw()` with a template literal").
 
 Self-host / CI note (LGPL-2.1 - do NOT vendor binaries or redistribute Semgrep Registry rule packs as Solaris IP):
 - Run as `semgrep ci` or `semgrep scan --config auto` in the client's pipeline; results to SARIF -> GitHub code-scanning.
@@ -47,7 +47,7 @@ Why a SECOND scanner alongside Trivy: different advisory sources catch different
 
 Fold into Dependency Audit mode:
 - `osv-scanner scan source -r .` for the lockfile pass (11+ ecosystems, one command).
-- `osv-scanner --licenses="MIT,Apache-2.0,BSD-3-Clause,..." .` for the copyleft-into-closed-product check (pairs with the org license-flag doctrine).
+- `osv-scanner --licenses="MIT,Apache-2.0,BSD-3-Clause..." .` for the copyleft-into-closed-product check (pairs with the org license-flag doctrine).
 - Offline mode (`--offline --download-offline-databases`) for air-gapped / NDA clients.
 - SARIF output + the official GitHub Action for PR-time new-vuln gating.
 

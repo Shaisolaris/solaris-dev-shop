@@ -14,7 +14,7 @@ Fold the four pillars into the existing 10-dimension secure-code pass:
 - **License**: copyleft/GPL-into-closed-product flags for the compliance section.
 - **SBOM** (SPDX/CycloneDX): generate for the supply-chain section; re-scan the SBOM as new CVEs land WITHOUT rebuild, and answer "are we affected by CVE-XXXX" against a fixed component inventory.
 
-Layering doctrine (unchanged): Trivy/SCA does not replace AST SAST (semgrep/CodeQL/Snyk Code own taint), the agent-component scanners (snyk-agent-scan + cisco-ai-skill-scanner, dims 9–10), or manual logic/business-abuse review. Run order in a full audit: SAST → SCA(Trivy) → secrets(Trivy + semantic) → IaC/container(Trivy) → DAST(ZAP, below) → agent-component scanners → manual.
+Layering doctrine (unchanged): Trivy/SCA does not replace AST SAST (semgrep/CodeQL/Snyk Code own taint), the agent-component scanners (snyk-agent-scan + cisco-ai-skill-scanner, dims 9-10), or manual logic/business-abuse review. Run order in a full audit: SAST → SCA(Trivy) → secrets(Trivy + semantic) → IaC/container(Trivy) → DAST(ZAP, below) → agent-component scanners → manual.
 
 Host installs trivy-mcp (needs the `trivy` binary). Optional Aqua Platform integration is commercial - flag if a client wants assurance-policy compliance.
 

@@ -216,7 +216,7 @@ Apply thresholds in order (first match wins per CPT):
 }
 ```
 
-**Very few posts (1–5 published) - Info:**
+**Very few posts (1-5 published) - Info:**
 ```json
 {
   "id": "ARCH-CPT-c1d2e3",
@@ -240,11 +240,11 @@ Apply thresholds in order (first match wins per CPT):
   "summary": "A custom post type has an unusually high row count, suggesting it may be used as a data store rather than as content.",
   "detail": "Post type 'api_log' is registered at: plugins/my-plugin/includes/logging.php:23\nPost count (any status): 14,523\nThe WordPress posts table is optimized for content (pages, posts, products) - not high-volume logging or data storage. Using CPTs for logging or transactional data causes wp_posts table bloat, degrades query performance across the entire site, and breaks standard WordPress pagination and export tools. CPTs with >10,000 entries are frequently seen in sites using them as event logs, API response caches, or form submission archives.",
   "location": "plugins/my-plugin/includes/logging.php:23",
-  "fix": "If this CPT is storing logs, events, or transactional data rather than content: migrate to a custom database table using $wpdb->query() with CREATE TABLE and dbDelta(). The wp_posts table lacks the indexes needed for efficient high-volume data queries. If the high count is expected (e.g., a large product catalog), verify that appropriate database indexes exist and that pagination is handled via WP_Query with sensible posts_per_page limits."
+  "fix": "If this CPT is storing logs, events, or transactional data rather than content: migrate to a custom database table using $wpdb->query() with CREATE TABLE and dbDelta(). The wp_posts table lacks the indexes needed for efficient high-volume data queries. If the high count is expected (e.g. a large product catalog), verify that appropriate database indexes exist and that pagination is handled via WP_Query with sensible posts_per_page limits."
 }
 ```
 
-**Healthy CPT (6–10,000 posts) - No finding emitted.** Do not generate findings for CPTs with reasonable post counts.
+**Healthy CPT (6-10,000 posts) - No finding emitted.** Do not generate findings for CPTs with reasonable post counts.
 
 ---
 
@@ -506,10 +506,10 @@ This is a heuristic - some uncached DB queries are intentional (admin-only, low-
 |----|----------|---------|
 | ARCH-CPT-SKIP | Info | CPT analysis skipped - WP-CLI not available |
 | ARCH-CPT-{hash} | Warning | Dead CPT (0 posts) registered in custom code |
-| ARCH-CPT-{hash} | Info | CPT with very few posts (1–5) |
+| ARCH-CPT-{hash} | Info | CPT with very few posts (1-5) |
 | ARCH-CPT-{hash} | Warning | CPT with >10,000 posts - possible data-store misuse |
 | ARCH-HOOK-{hash} | Warning | Hook with ≥20 callbacks from custom code |
-| ARCH-HOOK-{hash} | Info | Hook with 10–19 callbacks from custom code |
+| ARCH-HOOK-{hash} | Info | Hook with 10-19 callbacks from custom code |
 | ARCH-HOOK-INIT-{hash} | Warning | Expensive operation (DB/HTTP) on 'init' or 'wp_loaded' |
 | ARCH-HOOK-PRI-{hash} | Warning | Same hook+priority from multiple plugin directories |
 | ARCH-HOOK-OK | Info | All hook checks pass - no abuse detected |

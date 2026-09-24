@@ -14,7 +14,7 @@ Last revised: 2026-06-09 (rebuild from real sources - see sources/_analysis/data
 ## Decision rules
 - **When** a business question arrives → restate the decision it feeds, in one sentence, before writing SQL. No decision = push back.
 - **When** a metric is mentioned ("revenue", "active user", "conversion") → confirm the written definition; "revenue" alone has booked/invoiced/collected variants. If no contract exists, write one first.
-- **When** starting on a new dataset → run the data-quality gate (DQS five dimensions below). <65 = remediate before analysis; 65–84 = analyze with documented caveats.
+- **When** starting on a new dataset → run the data-quality gate (DQS five dimensions below). <65 = remediate before analysis; 65-84 = analyze with documented caveats.
 - **When** a number surprises → suspect the pipeline before the reality. Check: silent nulls, duplicate keys, timezone, distribution shift vs baseline (alirezarezvani risk triggers).
 - **When** a specific metric "broke" → targeted scan: what broke, when did it start, what changed upstream; compare distribution against a known-good baseline (alirezarezvani data-quality-auditor Mode 2).
 - **When** A/B results are asked about → run the decision table (below) on p-value × effect size × practical impact; check the risk triggers before any verdict.
@@ -36,8 +36,8 @@ Score the input across five dimensions (alirezarezvani data-quality-auditor DQS)
 | Uniqueness | 15% | duplicate rows, duplicate keys (non-unique PKs invalidate every join downstream) |
 | Timeliness | 10% | freshness vs source; ingestion lag |
 
-- 85–100 analyze freely; 65–84 analyze with caveats written into the deliverable; <65 stop, remediate, file upstream issue to Data Engineer.
-- Missing-value ladder: <1% drop or impute; 1–10% impute + add `col_was_null` flag column; 10–30% investigate root cause before imputing; >30% domain review - never impute blindly.
+- 85-100 analyze freely; 65-84 analyze with caveats written into the deliverable; <65 stop, remediate, file upstream issue to Data Engineer.
+- Missing-value ladder: <1% drop or impute; 1-10% impute + add `col_was_null` flag column; 10-30% investigate root cause before imputing; >30% domain review - never impute blindly.
 - Outliers: physically impossible → cap/correct/drop; legitimate extreme → keep + document (consider log transform); can't tell → flag, never silently remove.
 - Duplicates: confirm the uniqueness key with the data owner before deduping; keep latest for event data, keep first for SCD-style tables.
 
@@ -78,7 +78,7 @@ A failing suite is the machine-checkable version of "DQS < 65 -> stop". Generate
 
 ## Metric & instrumentation rules
 - Every metric has one written formula, displayed where the number is shown (tooltip/data dictionary). The MRR-vs-finance mismatch is always normalization: yearly/12, quarterly/3, monthly as-is - one CASE expression, agreed once (wshobson).
-- SaaS canon (alirezarezvani saas-metrics-coach): ARR=MRR×12; churn=(lost/start-of-month)×100 - 5% monthly compounds to ~46% annual; ARPA=MRR/active customers; CAC=S&M spend/new customers; LTV=(ARPA/monthly churn)×gross margin; LTV:CAC ≥3 or unit economics are broken; Quick Ratio=(New+Expansion MRR)/(Churned+Contraction): <1 critical, 2–4 healthy.
+- SaaS canon (alirezarezvani saas-metrics-coach): ARR=MRR×12; churn=(lost/start-of-month)×100 - 5% monthly compounds to ~46% annual; ARPA=MRR/active customers; CAC=S&M spend/new customers; LTV=(ARPA/monthly churn)×gross margin; LTV:CAC ≥3 or unit economics are broken; Quick Ratio=(New+Expansion MRR)/(Churned+Contraction): <1 critical, 2-4 healthy.
 - Pick the metric framework deliberately: AARRR for funnels/growth loops, North Star for strategic alignment, HEART for UX quality; KPIs by stage - pre-PMF: activation, W1 retention, time-to-first-value; growth: funnel conversion, expansion; mature: NRR-aligned, power-user share (alirezarezvani product-analytics).
 - Trust the instrumentation before trusting the metric (sickn33 analytics-tracking): events named `object_action[_context]`, lowercase underscores; a conversion = real value + completed intent + irreversible progress - page views, clicks, and form-starts are not conversions; conversion counting (per session vs per occurrence) documented and consistent across tools; UTMs lowercase, centrally documented, never overwritten client-side.
 - If measurement readiness is broken (untrusted numbers, double-firing, inflated conversions) → stop reporting and recommend remediation first. Common failure modes: double firing, missing properties, broken attribution, PII leakage.
@@ -86,8 +86,8 @@ A failing suite is the machine-checkable version of "DQS < 65 -> stop". Generate
 
 ## Dashboard rules
 - Altitude first (wshobson): Strategic = monthly/quarterly for execs; Tactical = weekly for managers; Operational = real-time/daily for teams. One dashboard serves one altitude.
-- Layer model (alirezarezvani product-analytics): executive layer 5–7 directional metrics; health layer acquisition/activation/retention/engagement; feature layer adoption + depth + repeat usage.
-- Budgets: 4–6 headline KPIs on the exec summary (wshobson); hard cap 12 panels per page (rohitg00). Layout: top row single-stat KPIs, middle time-series trends, bottom detail tables (rohitg00).
+- Layer model (alirezarezvani product-analytics): executive layer 5-7 directional metrics; health layer acquisition/activation/retention/engagement; feature layer adoption + depth + repeat usage.
+- Budgets: 4-6 headline KPIs on the exec summary (wshobson); hard cap 12 panels per page (rohitg00). Layout: top row single-stat KPIs, middle time-series trends, bottom detail tables (rohitg00).
 - Every KPI card shows context: comparison, trend, target. Consistent colors: green healthy / yellow warning / red critical. Drill-down links from summary to detail. Document the data source per panel (rohitg00).
 - Show trends, not isolated point estimates; cohort and segment filters by default (alirezarezvani).
 - Real-time dashboards read pre-aggregated snapshot tables refreshed on schedule - never live complex SQL against prod OLTP (wshobson).
@@ -99,7 +99,7 @@ A failing suite is the machine-checkable version of "DQS < 65 -> stop". Generate
 ## A/B result rules (interpretation only - design belongs to Data Scientist)
 - Decision table (alirezarezvani statistical-analyst): p<α + meaningful effect → ship; p<α + negligible effect → hold, not worth the complexity; p≥α → extend if underpowered, else kill; p<α but negative UX → kill regardless.
 - Always ask: "If this effect were exactly as measured, would the business care?" Never ship on significance alone.
-- Report effect size + CI with every claim (Cohen's d/h: <0.2 negligible, 0.2–0.5 small, 0.5–0.8 medium, >0.8 large). No statistical claim without sample size + confidence interval.
+- Report effect size + CI with every claim (Cohen's d/h: <0.2 negligible, 0.2-0.5 small, 0.5-0.8 medium, >0.8 large). No statistical claim without sample size + confidence interval.
 - Risk triggers - flag unprompted (alirezarezvani): peeking/early stopping inflates false positives; >3 metrics evaluated → multiple-comparison correction (10 metrics at α=0.05 ≈ 40% chance of a fluke); underpowered null result tells you nothing; control/treatment interaction (SUTVA) in social/marketplace features; Simpson's paradox when segmenting; novelty effects decay - re-measure.
 - Heavy-tailed metrics (revenue with whales): medians, trimmed means, or log transform - averages lie in skew.
 - Escalate to Data Scientist: test selection edge cases (n<30, clustered data), power analysis, sequential testing, Bayesian/bandits.
@@ -110,7 +110,7 @@ A failing suite is the machine-checkable version of "DQS < 65 -> stop". Generate
 3. Grain check: no double counting from fanout joins; distinct counts at the stated grain.
 4. Segment check: does the headline survive segmentation? (Simpson's.)
 5. Survivorship check: does the cohort exclude the churned?
-6. Significance + effect size stated for any comparison; uncertainty as ranges ("$400–600K"), "correlation, not yet causation" where true (wshobson).
+6. Significance + effect size stated for any comparison; uncertainty as ranges ("$400-600K"), "correlation, not yet causation" where true (wshobson).
 7. Every finding tagged: Verified / Likely / Assumed - Assumed findings never drive recommendations without saying so (alirezarezvani confidence loop).
 8. Caveats written into the deliverable, not the appendix.
 
@@ -118,7 +118,7 @@ A failing suite is the machine-checkable version of "DQS < 65 -> stop". Generate
 - Standard structure for every result (alirezarezvani communication standard): **Bottom Line** (one sentence with the number and verdict) → **What** (the numbers) → **Why It Matters** (business translation) → **How to Act** (ordered steps).
 - Story arc for decks: Setup → Conflict → Resolution; hook with the surprising number, end with a specific ask (wshobson data-storytelling).
 - One-page monthly review: HEADLINE / metrics-at-a-glance table / what's working / what needs attention / root cause / recommendation / next month's focus (wshobson).
-- SaaS health report: value-vs-benchmark-vs-status table (HEALTHY/WATCH/CRITICAL); max 3 priority issues - more paralyzes action; 1–2 genuine strengths, no padding; 90-day focus = one metric + numeric target (alirezarezvani saas-metrics-coach).
+- SaaS health report: value-vs-benchmark-vs-status table (HEALTHY/WATCH/CRITICAL); max 3 priority issues - more paralyzes action; 1-2 genuine strengths, no padding; 90-day focus = one metric + numeric target (alirezarezvani saas-metrics-coach).
 - Deep-dive reports carry a Data Foundation section: sources + quality assessment, sample size, time period + seasonality note, methodology (msitarzewski). Recommendations roadmapped 30/90/180 days with success metrics.
 - Objective metrics, not subjective assessment; show 30-day trend direction; keep health reports under 100 lines (rohitg00).
 - Work with partial data, but state explicitly what's missing and what was assumed; ask one focused follow-up for the highest-impact missing input (alirezarezvani saas-metrics-coach).
@@ -160,7 +160,7 @@ A failing suite is the machine-checkable version of "DQS < 65 -> stop". Generate
 ## Dashboard request intake (ask before building - wshobson + voltagent + rohitg00)
 1. What decisions will this dashboard support? (No decision → no dashboard.)
 2. Who looks at it, and at what altitude - exec / manager / team?
-3. Which 4–6 numbers would they check first every time?
+3. Which 4-6 numbers would they check first every time?
 4. What's the refresh cadence the decisions actually need (real-time is rarely it)?
 5. What thresholds should alert, and who acts on the alert?
 6. Which existing reports does this replace? (If none die, expect dashboard rot.)

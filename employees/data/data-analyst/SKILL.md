@@ -127,15 +127,15 @@ Ask: what broke, when exactly did it start, what changed upstream (release? trac
 1. Collect in one grouped ask: MRR now/last month, expansion + churned MRR, customers (total/new/churned), S&M spend, gross margin. Work with partial data; state assumptions.
 2. Compute: ARR, MoM growth, churn, ARPA, CAC, LTV, LTV:CAC, CAC payback, NRR, Quick Ratio (formulas in rules.md).
 3. Benchmark **by segment and stage** (Enterprise vs SMB/PLG churn tolerance differs ~3x). Label each HEALTHY / WATCH / CRITICAL.
-4. Output the SaaS health report (rules.md Reporting): glance table → 2–3 sentence picture → max 3 priority issues (what/why/fix this month) → genuine strengths → 90-day focus (one metric, numeric target).
+4. Output the SaaS health report (rules.md Reporting): glance table → 2-3 sentence picture → max 3 priority issues (what/why/fix this month) → genuine strengths → 90-day focus (one metric, numeric target).
 5. If numbers can't be trusted → instrumentation audit first: event naming, conversion definitions (real value + completed intent + irreversible progress), counting rules, UTM hygiene, double-firing. Broken measurement → remediate before reporting.
 
 ## Workflow 4 - Dashboard spec
 *(wshobson kpi-dashboard-design + rohitg00 analytics-reporter + alirezarezvani product-analytics + lodetomasi data-storyteller)*
 
-1. Intake questions (rules.md): decisions, audience altitude, top 4–6 numbers, true refresh cadence, alert thresholds + owners, which reports die.
+1. Intake questions (rules.md): decisions, audience altitude, top 4-6 numbers, true refresh cadence, alert thresholds + owners, which reports die.
 2. Write metric contracts for every number, formula displayed on-card (the MRR-vs-finance lesson).
-3. Choose layer: executive (5–7 directional), health (acquisition/activation/retention/engagement), feature (adoption/depth/repeat), or ops (real-time from pre-aggregated snapshot tables only).
+3. Choose layer: executive (5-7 directional), health (acquisition/activation/retention/engagement), feature (adoption/depth/repeat), or ops (real-time from pre-aggregated snapshot tables only).
 4. Layout: top row single-stat KPIs with trend + target, middle time-series, bottom detail tables; ≤12 panels; green/yellow/red consistently; drill-down links; data source documented per panel.
 5. Alerts: dynamic thresholds (>2σ from 30-day rolling mean), each with a named responder.
 6. Pair lagging infra metrics with user-perceived ones (P95 load, task completion, ticket volume).
@@ -146,13 +146,13 @@ Ask: what broke, when exactly did it start, what changed upstream (release? trac
 
 1. Confirm: metric type, n per arm, observed values, predeclared hypothesis + stopping rule (no predeclaration → flag p-hacking risk).
 2. Check risk triggers: peeking, >3 metrics (multiple comparisons), underpowered, SUTVA interaction, novelty effect.
-3. Read result on TWO axes: statistical (p, CI) and practical (effect size, business value). Cohen's d/h: <0.2 negligible, 0.2–0.5 small, 0.5–0.8 medium, >0.8 large.
+3. Read result on TWO axes: statistical (p, CI) and practical (effect size, business value). Cohen's d/h: <0.2 negligible, 0.2-0.5 small, 0.5-0.8 medium, >0.8 large.
 4. Verdict table: significant + meaningful → ship; significant + negligible → hold; not significant → extend if underpowered, else kill; significant but negative UX/guardrails → kill.
 5. Segment the lift; check guardrail metrics; report as Bottom Line → What → Why → How to Act with CI and caveats.
 6. Escalate to Data Scientist: n<30, heavy tails, clustered data, sequential testing, Bayesian/bandits, power analysis.
 
 ## Workflow 6 - Validate an analysis before it ships (QA gate)
-Run rules.md "Analysis QA gate" 1–8: inputs validated → sanity → grain → segment → survivorship → significance + effect size → confidence tags → caveats in the body. A deliverable that fails any step goes back, not out.
+Run rules.md "Analysis QA gate" 1-8: inputs validated → sanity → grain → segment → survivorship → significance + effect size → confidence tags → caveats in the body. A deliverable that fails any step goes back, not out.
 
 ## Workflow 7 - Executive reporting & storytelling
 *(wshobson data-storytelling + msitarzewski analytics-reporter + rohitg00 report.md)*
@@ -162,7 +162,7 @@ Run rules.md "Analysis QA gate" 1–8: inputs validated → sanity → grain →
 - Pick the frame: Problem-Solution (cost of inaction → insight → fix → ROI → ask) / Trend (what changed → transformation table → going forward) / Comparison (weighted scoring matrix → recommendation → risk mitigation).
 - Progressive reveal: one added layer per slide ("revenue growing" → "growth slowing" → "one segment" → "saturating" → "need new segments").
 - Deep dives carry a Data Foundation block (sources + quality, n, period + seasonality, methodology) and a 30/90/180-day roadmap with success metrics.
-- Uncertainty: ranges not points ("$400–600K"), confidence stated, "correlation, not yet causation" where true.
+- Uncertainty: ranges not points ("$400-600K"), confidence stated, "correlation, not yet causation" where true.
 - Keep health reports objective-metrics-only, trend-direction included, under 100 lines.
 
 ---

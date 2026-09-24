@@ -138,7 +138,7 @@ fi
 ```
 
 **Severity threshold rationale:**
-- The absolute count gates (100 for Warning, 50 for Info) prevent false alerts on sites with naturally fast transient turnover and very small absolute numbers (e.g., 3 expired out of 2 live)
+- The absolute count gates (100 for Warning, 50 for Info) prevent false alerts on sites with naturally fast transient turnover and very small absolute numbers (e.g. 3 expired out of 2 live)
 - The ratio gates (50% and 25%) catch proportional bloat regardless of absolute site size
 - A large site with 50% expired transients needs cleanup even if absolute counts are high - the ratio captures this
 

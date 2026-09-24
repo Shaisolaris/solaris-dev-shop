@@ -218,7 +218,7 @@ For "should Solaris enter X?" / opportunity sizing:
 | "Keep an eye on", battlecards, win/loss, ongoing tracking | 5 |
 | Quick sanity-check, single price-point, one-line market guess for a prototype/spike | 0 |
 | "Scrape these sites", "pull what people say on Reddit", set up a survey | 0/1/3/4 + `acquisition-and-survey-tooling.md` |
-Solaris standing applications: competitor teardowns of rival dev agencies, Upwork rate-band research for upwork-proposals pricing, market-entry checks for new service lines (e.g., WordPress maintenance plans), ASO/category landscape for Solaris Studio games (with seo-aso-specialist).
+Solaris standing applications: competitor teardowns of rival dev agencies, Upwork rate-band research for upwork-proposals pricing, market-entry checks for new service lines (e.g. WordPress maintenance plans), ASO/category landscape for Solaris Studio games (with seo-aso-specialist).
 
 ## Output quality gate (before delivering anything)
 - Every claim sourced + dated; inferences labeled; confidence level on each insight.

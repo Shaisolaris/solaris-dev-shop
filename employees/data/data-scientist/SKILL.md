@@ -106,7 +106,7 @@ Not every request is a launch-gated experiment. When the ask is a quick sanity c
 1. **Hypothesis Lock** (hard gate): "Because [observation], we believe [change] will cause [outcome] for [audience]; we'll know when [metric]." Confirm: "Is this the final hypothesis we are committing to?" (sickn33 ab-test-setup; alirezarezvani)
 2. **Assumptions & validity**: traffic stability, user independence (SUTVA), metric reliability, randomization quality, external factors. Weak → delay or redesign.
 3. **Metrics**: one primary (frozen), secondaries (diagnostic), guardrails (stop conditions).
-4. **Power**: baseline + MDE (business-value threshold) + α=0.05 + power=0.80 → N per variant via statsmodels power; duration = N×variants / (daily traffic × exposure). Min 1 week, max 4–8 weeks.
+4. **Power**: baseline + MDE (business-value threshold) + α=0.05 + power=0.80 → N per variant via statsmodels power; duration = N×variants / (daily traffic × exposure). Min 1 week, max 4-8 weeks.
 5. **Randomization**: user-level, stratified where balance matters, consistent on return; 50/50 default split.
 6. **Execution Readiness Gate**: all six items locked or stop. Document stopping rule + rollback before launch.
 7. Refuse if: baseline unknown, traffic can't reach the MDE, primary undefined, multi-variable mess, or hypothesis unstatable - and say which.
@@ -128,7 +128,7 @@ Verdict uses the shared decision table (same one Data Analyst holds): ship / hol
 
 ## Workflow 4 - Forecast
 
-1. EDA: trend, seasonality, outliers; cohort decomposition (consolidated numbers hide leaky cohorts 2–3 quarters).
+1. EDA: trend, seasonality, outliers; cohort decomposition (consolidated numbers hide leaky cohorts 2-3 quarters).
 2. Score input reliability: CoV per series → HIGH/MEDIUM/soft-floor/unusable bands.
 3. Baseline first (naive/seasonal-naive), then ARIMA/Prophet/state-space; walk-forward out-of-sample validation only.
 4. Deliver three numbers + the assumption block (rate, window - 70/30 recent/long blend, weighting, coverage). A single undefended number is refused by policy.

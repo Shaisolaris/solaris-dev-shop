@@ -107,7 +107,7 @@ Supabase is the Solaris BaaS default whenever a project needs Postgres + auth + 
 
 ### Cross-employee handoff (the fuzzy boundary)
 - **DBA → Full-Stack / Backend:** authors the RLS policy text and the schema. Hands off with the migration + a one-page explainer of what each policy permits and denies. Full-Stack / Backend implements the client-side auth flow and assumes the RLS policy is correct.
-- **Full-Stack / Backend → DBA:** any time a new auth flow surfaces a need for a new policy (e.g., "let team admins edit team-member rows"), bring it back to DBA as a schema change, not a hack in app code.
+- **Full-Stack / Backend → DBA:** any time a new auth flow surfaces a need for a new policy (e.g. "let team admins edit team-member rows"), bring it back to DBA as a schema change, not a hack in app code.
 
 ### Absorption note - supabase/agent-skills `supabase-postgres-best-practices` (2026-05-29)
 
@@ -131,7 +131,7 @@ Source: supabase/agent-skills (MIT, verified at https://github.com/supabase/agen
 
 ## NoSQL operational admin + live SQL execution (DB MCP layer - added 2026-06-13)
 Net-new live execution layer. The DBA owned the modeling concepts; this is how it inspects, indexes, diagnoses, and provisions databases live, safely.
-- **MongoDB** [mongodb-js/mongodb-mcp-server, Apache-2.0, official - ABSORB]: full operational toolkit in mongodb-nosql-admin.md. Daily loop: list-databases → list-collections → collection-schema/collection-indexes → `explain` (COLLSCAN = missing index) → `create-index` (ESR: Equality, Sort, Range) → drop unused indexes. Atlas control-plane: provision (atlas-create-cluster M10–M80), users + access-list, and `atlas-get-performance-advisor` (Atlas's own slow-query + suggested-index recs - start there before hand-rolling). Read-only is the DEFAULT posture (`--readOnly`/`MDB_MCP_READ_ONLY=true`); every drop-* and unfiltered update-many/delete-many is destructive - confirm filter + backup, writes are deliberate and change-controlled. Index discipline mirrors the relational rules.
+- **MongoDB** [mongodb-js/mongodb-mcp-server, Apache-2.0, official - ABSORB]: full operational toolkit in mongodb-nosql-admin.md. Daily loop: list-databases → list-collections → collection-schema/collection-indexes → `explain` (COLLSCAN = missing index) → `create-index` (ESR: Equality, Sort, Range) → drop unused indexes. Atlas control-plane: provision (atlas-create-cluster M10-M80), users + access-list, and `atlas-get-performance-advisor` (Atlas's own slow-query + suggested-index recs - start there before hand-rolling). Read-only is the DEFAULT posture (`--readOnly`/`MDB_MCP_READ_ONLY=true`); every drop-* and unfiltered update-many/delete-many is destructive - confirm filter + backup, writes are deliberate and change-controlled. Index discipline mirrors the relational rules.
 - **MySQL/MariaDB** [benborla/mcp-server-mysql, MIT - CONNECT]: for live MySQL/MariaDB work the DBA connects this MCP rather than absorbing it - run queries, inspect schema/indexes, EXPLAIN slow queries, against a real MySQL instance. Same posture: read-only/scoped DB user by default, writes deliberate. Use when a client is on MySQL (legacy / Laravel shared-host / WordPress per the existing pick-the-DB rule). Host installs; least-privilege MySQL user, never root, never app's prod write creds. Goes through ProxySQL/connection-pool boundary, never direct-to-prod for sustained use.
 
 ## SQL operational layer - diagnostics, online DDL, backup/PITR, self-managed HA (added 2026-06-13)

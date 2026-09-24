@@ -167,7 +167,7 @@ Layer 3 - Component (specific usage)
 
 - **Mobile-first** breakpoints (sm: 640 / md: 768 / lg: 1024 / xl: 1280 / 2xl: 1536)
 - **Container queries** (`@container`) for component-level responsiveness - modern alternative to media queries
-- **Fluid typography** with `clamp()` (e.g., `clamp(1rem, 2vw + 1rem, 1.5rem)`)
+- **Fluid typography** with `clamp()` (e.g. `clamp(1rem, 2vw + 1rem, 1.5rem)`)
 - **Aspect ratio** with `aspect-ratio` CSS property
 - **Logical properties** for RTL support (margin-block-start vs margin-top)
 

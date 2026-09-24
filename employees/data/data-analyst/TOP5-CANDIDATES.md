@@ -39,7 +39,7 @@ Scope covered by the brief: pandas/Polars, SQL analytics, viz, notebook reportin
 - Why METHODOLOGY: tool, not content; lift the reproducible-notebook doctrine (pure-Python, no hidden state, deterministic order, SQL cells, deploy-as-app) into the notebook-reporting reference.
 
 ### 5. Evidence.dev (METHODOLOGY)
-- What it adds: business-intelligence-as-code - SQL + Markdown compiled to a versioned, PR-reviewed, deployable BI site. Net-new delivery surface alongside the existing BI-tool list (Metabase/Looker/Tableau/etc., all GUI) and Excel: a code-first, git-reviewable report that pairs naturally with DuckDB as its query engine.
+- What it adds: business-intelligence-as-code - SQL + Markdown compiled to a versioned, PR-reviewed, deployable BI site. Net-new delivery surface alongside the existing BI-tool list (Metabase/Looker/Tableau/etc. all GUI) and Excel: a code-first, git-reviewable report that pairs naturally with DuckDB as its query engine.
 - Gate-0 verdict: net-new. The only "evidence" hit is the English word in a hand-off table row; no BI-as-code concept exists. NOT a duplicate.
 - Safety: MIT, 6.4k stars, pushed 2026-02-18 (within 6mo, on the older edge - flag for re-check next pass). Safe.
 - Why METHODOLOGY: framework, not content; lift the BI-as-code doctrine (SQL+MD, version-controlled reports, PR review, templated pages) into the notebook/BI-reporting reference.

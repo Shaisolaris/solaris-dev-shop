@@ -142,7 +142,7 @@ Library-
 
 ## Custom Docker image (advanced - for specific Unity modules)
 
-If a build needs Unity modules not in the default image (e.g., specific iOS toolchain, Android NDK version, IL2CPP for additional platforms):
+If a build needs Unity modules not in the default image (e.g. specific iOS toolchain, Android NDK version, IL2CPP for additional platforms):
 
 ```yaml
 - uses: game-ci/unity-builder@v4

@@ -2,11 +2,11 @@
 // Standalone Node.js Playwright scraper for URL clone mode.
 //
 // Usage:  node scraper.js <url> <output_dir>
-// Stdout: Single JSON line — { success: true, manifest: {...} }
+// Stdout: Single JSON line, { success: true, manifest: {...} }
 //                         or { success: false, error: "..." }
 //
 // Dependencies: playwright, fs (stdlib), path (stdlib), url (stdlib)
-// Do NOT require readline — interactive confirmation is handled by SKILL.md shell code.
+// Do NOT require readline, interactive confirmation is handled by SKILL.md shell code.
 // Do NOT call page.screenshot() or download any images.
 
 'use strict';
@@ -17,7 +17,7 @@ const path = require('path');
 const { URL } = require('url');
 
 // ── CLI arguments ─────────────────────────────────────────────────────────────
-const [,, targetUrl, outputDir] = process.argv;
+const [, targetUrl, outputDir] = process.argv;
 
 if (!targetUrl || !outputDir) {
   process.stdout.write(JSON.stringify({
@@ -122,7 +122,7 @@ async function gotoWithFallback(page, url) {
                 }
               }
             } catch (e) {
-              // CORS-blocked external stylesheet — record href but skip rules
+              // CORS-blocked external stylesheet, record href but skip rules
               if (sheet.href) blockedHrefs.push(sheet.href);
             }
           }
@@ -269,7 +269,7 @@ async function gotoWithFallback(page, url) {
     try {
       innerLinks = await discoverInnerLinks();
     } catch (e) {
-      // Discovery failure is non-fatal — continue with homepage only
+      // Discovery failure is non-fatal, continue with homepage only
       failedPages.push({ url: targetUrl + ' (inner-link discovery)', error: e.message });
     }
 
@@ -284,7 +284,7 @@ async function gotoWithFallback(page, url) {
     }
 
     // ── Write concatenated CSS ───────────────────────────────────────────────
-    // Deduplication not required — the Python CSS extractor uses set() for tokens
+    // Deduplication not required, the Python CSS extractor uses set() for tokens
     fs.writeFileSync(path.join(outputDir, 'styles', 'main.css'), allCSSText, 'utf8');
 
     // ── Deduplicate dynamic features across all pages ────────────────────────
@@ -318,7 +318,7 @@ async function gotoWithFallback(page, url) {
     process.stdout.write(JSON.stringify({ success: true, manifest }) + '\n');
 
   } catch (err) {
-    // Homepage failure — abort with error
+    // Homepage failure, abort with error
     process.stdout.write(JSON.stringify({ success: false, error: err.message }) + '\n');
     process.exit(1);
 

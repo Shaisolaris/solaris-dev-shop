@@ -69,7 +69,7 @@ AUTOLOAD_KB=$((AUTOLOAD_BYTES / 1024))
 AUTOLOAD_MB=$(awk "BEGIN {printf \"%.2f\", $AUTOLOAD_BYTES / 1048576}")
 ```
 
-**Note:** This query may take 5–30 seconds on sites with large databases (10,000+ options rows or large serialized values). Do not add a timeout that would kill a legitimate query.
+**Note:** This query may take 5-30 seconds on sites with large databases (10,000+ options rows or large serialized values). Do not add a timeout that would kill a legitimate query.
 
 **Severity Thresholds:**
 
@@ -322,7 +322,7 @@ If a `wp db query` command returns non-zero exit or empty output unexpectedly, r
 
 ## Performance Considerations
 
-- **Query duration:** The `SUM(LENGTH(option_value))` aggregate scan may take 5–30 seconds on large databases. This is expected behavior - do not cancel or retry.
+- **Query duration:** The `SUM(LENGTH(option_value))` aggregate scan may take 5-30 seconds on large databases. This is expected behavior - do not cancel or retry.
 - **Offenders query:** The `LENGTH(option_value) > 10240` filter in the offenders query limits the result set significantly compared to scanning all options.
 - **Multisite note:** On WordPress Multisite, this check covers the primary site's options table only. Subsite options (in `wp_N_options` tables) are not included. This is a known scope limitation, not a bug.
 

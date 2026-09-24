@@ -37,7 +37,7 @@ Fire explicit human review when any of:
 2. `legal_file` or other high-stakes action requested
 3. Regulatory + external blast radius on a release packet
 4. Stale or missing sources on a legal conclusion
-5. Waiver requested on a legal_risk or compliance S0–S2 finding
+5. Waiver requested on a legal_risk or compliance S0-S2 finding
 
 ## Engine checks
 

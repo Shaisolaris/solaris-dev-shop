@@ -138,7 +138,7 @@
       "IRREVERSIBLE - publishing or deploying docs to a live/public surface (Mintlify, Read the Docs, GitHub Pages, a client docs domain, llms.txt on a public host): requires human confirm; drafts stay on disk until then",
       "IRREVERSIBLE - the delete arm of the Workflow 7 keep/fix/delete triage, and any overwrite of an existing docs tree, README, or CHANGELOG release entry: requires the named page owner to confirm per page, never a bulk sweep",
       "IRREVERSIBLE - running a runbook step outside a staging dry-run, or executing an API sample against a production endpoint to verify it: denied, verify against staging only",
-      "CREDENTIAL - samples and env tables carry placeholders only (sk_test_..., $ADMIN_TOKEN, <your-key>); never copy a real key, token, connection string, or .env value out of the repo into a doc, and never commit one",
+      "CREDENTIAL - samples and env tables carry placeholders only (sk_test_... $ADMIN_TOKEN, <your-key>); never copy a real key, token, connection string, or .env value out of the repo into a doc, and never commit one",
       "CREDENTIAL - NDA or client source documents are converted on-machine via the local Docling/MarkItDown path; uploading them to a cloud converter is denied, no confirm available"
     ]
   },

@@ -241,7 +241,7 @@ Plugins: ${PLUGINS_SUMMARY}
 Pages: ${PAGES_CREATED}, Posts: ${POSTS_CREATED}
 ```
 
-Where `PLUGINS_SUMMARY` is a comma-separated list of installed plugin names (e.g., `Contact Form 7, WooCommerce, Yoast SEO`). Derive this from the INSTALLED_PLUGINS array by extracting the name field (cut -d: -f2) and joining with ", ".
+Where `PLUGINS_SUMMARY` is a comma-separated list of installed plugin names (e.g. `Contact Form 7, WooCommerce, Yoast SEO`). Derive this from the INSTALLED_PLUGINS array by extracting the name field (cut -d: -f2) and joining with ", ".
 
 **Example call for build(init) commit:**
 

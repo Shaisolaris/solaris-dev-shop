@@ -42,7 +42,7 @@ Refuse outright when: baseline unknown and unestimable; traffic cannot detect th
 - Inputs: baseline rate, MDE, α (default 0.05), power (default 0.80). MDE is set by the business value threshold - the smallest lift worth implementing - not by optimism (experiment-designer statistics-reference; sample-size-guide).
 - Compute with `statsmodels.stats.power` (`TTestIndPower`/`NormalIndPower` `.solve_power`) or the closed form n = (z_α/2 + z_β)² × (p1(1−p1)+p2(1−p2)) / (p2−p1)² (statistical-testing-concepts).
 - Anchors per variant at 80% power, α=0.05 (alirezarezvani sample-size-guide): baseline 1% / +20% lift → 97k; 3% / +20% → 31k; 5% / +20% → 18k; 10% / +20% → 8.7k; 5% / +50% → 3.1k. Low-baseline + small-lift tests are usually infeasible - say so early.
-- Duration = (N per variant × variants) / (daily traffic × % exposed). Minimums: 1 full week always; 2 business cycles for B2B; through paydays for e-commerce. Maximum 4–8 weeks - beyond that novelty decay and external drift contaminate (sample-size-guide).
+- Duration = (N per variant × variants) / (daily traffic × % exposed). Minimums: 1 full week always; 2 business cycles for B2B; through paydays for e-commerce. Maximum 4-8 weeks - beyond that novelty decay and external drift contaminate (sample-size-guide).
 - Levers: bigger MDE → smaller N; higher power → bigger N; lower α → bigger N (statistical-testing-concepts).
 
 ## Test selection & inference discipline
@@ -59,7 +59,7 @@ Refuse outright when: baseline unknown and unestimable; traffic cannot detect th
 - p-value discipline: p=0.03 means "3% chance of data this extreme if there were no effect" - NOT "97% chance the effect is real" (statistical-testing-concepts). p≥α with low power tells you nothing - check power retroactively before declaring "no effect" (statistical-analyst).
 - **Peeking math**: checking at 50/75/100% of planned N inflates true α from 0.05 to ~0.13 (2.6×). Fixes: pre-committed stopping rule, SPRT for genuine early-stop needs, Bonferroni-corrected scheduled looks (statistical-testing-concepts). Operational tool: spotify/confidence ships group-sequential tests (alpha-spending across pre-scheduled looks) and always-valid inference (look anytime) - the licensed way to look without inflating the family-wise rate; the spending function is still pre-committed (experimentation-and-forecasting-stack.md).
 - **Multiple comparisons**: P(≥1 false positive) at α=0.05: 3 tests→14%, 5→23%, 10→40%, 20→64%. Bonferroni/Holm for few independent tests; Benjamini-Hochberg FDR when many tests with expected true positives. Use `statsmodels.stats.multitest.multipletests` (methods: bonferroni, holm, holm-sidak, hommel, fdr_bh, fdr_by) (statistical-testing-concepts; statsmodels multitest.py).
-- Effect sizes mandatory: Cohen's d / h - <0.2 negligible, 0.2–0.5 small, 0.5–0.8 medium, >0.8 large; Cramér's V - <0.1 negligible, 0.1–0.3 small, 0.3–0.5 medium, >0.5 large (statistical-analyst).
+- Effect sizes mandatory: Cohen's d / h - <0.2 negligible, 0.2-0.5 small, 0.5-0.8 medium, >0.8 large; Cramér's V - <0.1 negligible, 0.1-0.3 small, 0.3-0.5 medium, >0.5 large (statistical-analyst).
 - Verdict table (shared contract with Data Analyst): p<α + meaningful effect → ship; p<α + negligible → hold; p≥α → extend if underpowered, else kill; p<α + negative UX/guardrail → kill regardless. Closing question: "If this effect were exactly as measured, would the business care?" (statistical-analyst).
 - Analysis discipline: don't generalize beyond the tested population; don't claim causality beyond the tested change; no retroactive segmentation without correction - segment reads are valid only if pre-registered (sickn33; experiment-playbook).
 - Report structure: Bottom Line (one sentence with number + verdict) → What → Why It Matters → How to Act (statistical-analyst).
@@ -91,8 +91,8 @@ Method table - each row names the assumption you are buying (matheusfacure/pytho
 ## Forecasting
 - Always ship three numbers - commit / best-case / pipe-only (or low/base/high) - with the assumption block: rate used, data window, weighting choice, coverage. The CLI/report refuses a single number (commercial-forecaster).
 - Data window: blend recent and long-run - last-4Q weighted 70%, last-12Q 30%; single-window estimates miss regime change at ~3-quarter lag (commercial-forecaster).
-- Decompose by cohort: a consolidated retention/NRR number hides a leaky recent cohort for 2–3 quarters before the topline moves (commercial-forecaster).
-- Score input reliability by coefficient of variation (CoV = StDev/Mean) per input series: <10% HIGH confidence; 10–25% MEDIUM; 25–50% soft floor only; >50% do not forecast off it. Same mean, very different reliability (commercial-forecaster).
+- Decompose by cohort: a consolidated retention/NRR number hides a leaky recent cohort for 2-3 quarters before the topline moves (commercial-forecaster).
+- Score input reliability by coefficient of variation (CoV = StDev/Mean) per input series: <10% HIGH confidence; 10-25% MEDIUM; 25-50% soft floor only; >50% do not forecast off it. Same mean, very different reliability (commercial-forecaster).
 - Stalled-input rule: any pipeline item older than 2× the median stage duration is excluded from commit (commercial-forecaster).
 - Failure modes to check the output against: sandbagging (forecast ≪ actuals) and hockey-sticking (forecast ≫ actuals); coverage floor - forecast above pipeline÷3 is an anti-pattern (commercial-forecaster).
 - Time-series models: decomposition → baseline (naive/seasonal-naive) → ARIMA/Prophet/state-space; named forecast-validation step, out-of-sample (VoltAgent data-scientist; rohitg00 quant approach: out-of-sample testing against overfitting). Named tools (experimentation-and-forecasting-stack.md): Nixtla/statsforecast for auto-tuned classical models (AutoARIMA/AutoETS/AutoTheta/MSTL) with probabilistic + conformal intervals; Nixtla/mlforecast for gradient-boosted / sklearn-regressor forecasts with leakage-safe auto-generated lag/rolling/date features. Classical baseline first; ML when covariates or non-linearity justify it; always compare both to naive.
@@ -129,14 +129,14 @@ Method table - each row names the assumption you are buying (matheusfacure/pytho
 - **No overlap** - propensity methods extrapolate into regions with no data (ch.11).
 - **Manipulated running variable** - RDD dies at the McCrary test (ch.16).
 - **Single-window forecast conversion rates** - miss regime change by ~3 quarters (commercial-forecaster).
-- **Consolidated retention hiding leaky cohorts** for 2–3 quarters (commercial-forecaster).
+- **Consolidated retention hiding leaky cohorts** for 2-3 quarters (commercial-forecaster).
 - **Retroactive segmentation** sold as a finding (experiment-playbook; sickn33).
 - **Changing variants, targeting, or success criteria mid-test** (sickn33; ab-test-setup).
 
 ## Working code anchors (from source repos, adapt not re-derive)
 - Sample size (proportions): pooled effect size → n = ((z_α/2 + z_β)/effect)²; or `statsmodels.stats.power` solve_power (senior-data-scientist `calculate_sample_size`; statsmodels power.py).
 - Two-proportion z: pooled p̄, SE = √(p̄(1−p̄)(1/n₁+1/n₂)); return lift, p, significance, 95% CI as a dict - never a bare p-value (senior-data-scientist `analyze_experiment`).
-- Welch's t df via Welch–Satterthwaite; Cohen's d on pooled SD; Cohen's h via arcsine transform (statistical-testing-concepts formulas).
+- Welch's t df via Welch-Satterthwaite; Cohen's d on pooled SD; Cohen's h via arcsine transform (statistical-testing-concepts formulas).
 - DiD: `smf.ols("y ~ treat * post + controls").fit(cov_type="HC3")`; ATT = the interaction coefficient; CI from `conf_int()` (senior-data-scientist `diff_in_diff`).
 - Multiplicity: `multipletests(pvals, method="holm")` or `method="fdr_bh"` (statsmodels multitest.py).
 - Time features without leakage: cyclical sin/cos encodings for dow/month; lag/rolling features generated respecting the temporal split (senior-data-scientist `add_time_features` + checklist). Operational tool: feature-engine (BSD-3) makes this leakage-safe by default - LagFeatures/WindowFeatures/ExpandingWindowFeatures/CyclicalFeatures and target/WoE encoders are sklearn-Pipeline transformers fit on train only; DropHighPSIFeatures flags drifted features. The leakage failure mode to hunt in QA: any encoder or aggregate fit on the full dataset before the split (experimentation-and-forecasting-stack.md).

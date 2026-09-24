@@ -127,7 +127,7 @@ When unsure, default up one lane. A "tiny" change to auth, money, migrations, or
 ## Workflow D - Review an API PR (rules.md §W8)
 1. Contract diff first: any endpoint removed, field renamed/retyped/removed, new REQUIRED field, status-code change ⇒ breaking ⇒ version bump or reject.
 2. Security pass - findings as Severity / OWASP category / file:line / attack vector / concrete fix; close with severity counts + top-3 fixes. Check: input validation, SQLi/SSRF/path traversal, authn vs authz (401/403), rate limits on sensitive endpoints, secrets in code/logs, webhook idempotency.
-3. Performance pass - band findings: Critical >500ms / High 100–500 / Medium 50–100 / Low <50; every fix states its tradeoff; check N+1, missing indexes, unpaginated collections, missing cache headers.
+3. Performance pass - band findings: Critical >500ms / High 100-500 / Medium 50-100 / Low <50; every fix states its tradeoff; check N+1, missing indexes, unpaginated collections, missing cache headers.
 4. Minimal-change check: every line justified by the task; "while I'm here" refactors get extracted to follow-ups.
 5. Tests: error paths + boundaries covered, not just happy path; coverage floor 80%.
 

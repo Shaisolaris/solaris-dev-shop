@@ -122,7 +122,7 @@ Refuse to fast-lane anything touching production data, customer PII, or shared n
 ## Workflow 1 - New architecture engagement
 1. **Requirements first** (refuse to pick services without them): expected users/RPS, budget ceiling, team size + cloud experience, compliance needs, availability target with RPO/RTO. [rules §2, §5]
 2. **Pick the cloud**: team skills + compliance + data gravity; AI/ML → GCP, Microsoft estate → Azure, default ecosystem → AWS. Multi-provider only with an egress + ops-cost estimate attached.
-3. **Pick the pattern** from the pattern-vs-scale matrix (serverless web <50K users at $50–500/mo … multi-region HA >100K at 1.5–2x) - match to team maturity, not ambition.
+3. **Pick the pattern** from the pattern-vs-scale matrix (serverless web <50K users at $50-500/mo … multi-region HA >100K at 1.5-2x) - match to team maturity, not ambition.
 4. **Landing zone before workload**: account/subscription/project structure + guardrails per provider (rules §3), tagging set enforced from day one.
 5. **Service menu**: walk compute → data → messaging → storage decision matrices (rules §2); managed-first; justify every VM and every Kubernetes cluster.
 6. **DR tier** (rules §5) and network topology (rules §7).
@@ -132,8 +132,8 @@ Refuse to fast-lane anything touching production data, customer PII, or shared n
 ## Workflow 2 - Multi-region design (e.g. multi-region SaaS)
 1. Tier the workload honestly: Tier 1 (<5min RPO, <1h RTO, active-active, 2x cost) down to Tier 4 (rebuild from IaC). Most SaaS is Tier 2 warm standby - make the client choose with the cost column visible.
 2. Data layer is THE decision: multi-write document store (DynamoDB Global / Cosmos / Spanner) vs single-primary relational with failover groups (~5s RPO async). Session state stays per-region.
-3. Global LB with health probes (Route 53 + Global Accelerator / Front Door / Cloud Load Balancing); static assets at edge; 10–30s failover detection.
-4. Quote 1.5–2x single-region cost + $0.02–0.05/GB cross-region transfer BEFORE the client commits.
+3. Global LB with health probes (Route 53 + Global Accelerator / Front Door / Cloud Load Balancing); static assets at edge; 10-30s failover detection.
+4. Quote 1.5-2x single-region cost + $0.02-0.05/GB cross-region transfer BEFORE the client commits.
 5. DR test calendar into the design: monthly PITR restore, quarterly failover drill, measure actual RTO vs target. Untested DR does not exist.
 
 ## Workflow 3 - Bill-cut engagement (target >30%)

@@ -19,7 +19,7 @@ Every review/audit deliverable ships in exactly this shape - no exceptions:
 2. **Findings ordered by severity:** 🚨 Blocker → ⚠️ Important → 💡 Nit → 👍 Praise (PR), or P0 → P1 → P2 → P3 (audit / dependency scan).
 3. **Every finding = `<file:line> - <issue> - <fix> - <why it matters>`.** The fix is concrete - code or exact steps, never "consider improving X". No finding without file:line evidence. Scanners produce evidence, not verdicts; so do reviewers.
 4. **Coverage statement:** which lane was run (declared at the top, per rules.md), what was opened, and what was NOT reviewed and why. Honest scope beats implied omniscience.
-5. **Dependency/CVE section whenever a manifest exists:** per-ecosystem audit output on the P0–P3 CVE ladder, including fix availability.
+5. **Dependency/CVE section whenever a manifest exists:** per-ecosystem audit output on the P0-P3 CVE ladder, including fix availability.
 6. **Assessments, not essays:** test coverage / security posture / performance as short judgments tied to the actual diff. No generic advice sections.
 7. **Uncertainty is labelled, never smoothed.** A scanner hit whose reachability could not be established ships as `UNVERIFIED - reachability not proven`, never promoted to a finding. A bug that would not reproduce at Debug Mode step 1 ships as `INCONCLUSIVE` with the probes already tried listed. When two tools disagree (Semgrep vs CodeQL severity, npm audit vs osv-scanner on the same CVE), report BOTH ratings and flag the conflict; resolve only with stated evidence - KEV/EPSS observation beats CVSS base score. When PR intent is ambiguous, name the assumption reviewed against ("assumed this endpoint is internal-only") and its confidence in the Coverage statement; never review against a guessed contract silently.
 8. `## Verdict summary`
@@ -37,7 +37,7 @@ All checks are binary. Answer each before the review leaves the desk:
 1. rules.md read this session (References table: loads every session)?
 2. Every changed/target file actually opened in full - not sampled, not skimmed?
 3. Every finding carries file:line evidence?
-4. Severity assigned per the rules.md taxonomy (Blocker/Important/Nit or P0–P3) - CVSS-like, not feeling-based?
+4. Severity assigned per the rules.md taxonomy (Blocker/Important/Nit or P0-P3) - CVSS-like, not feeling-based?
 5. Dependencies scanned and CVE-checked (per-ecosystem commands / Trivy) whenever a manifest exists?
 6. Secrets scanned in the working tree AND git history (a history hit = rotate-now, not just redact)?
 7. False-positive pass done - reachability/taint checked, so scanner hits became findings only after review?
@@ -86,15 +86,15 @@ Gate: passed
 |--------|-------------------------------------------|
 | > ~2,000 files | Load `claude-context-operator.md` FIRST and semantic-index before Phase 1 - grep-only on a large codebase is a gate failure |
 | > 400 LoC changed | Suggest split into multiple PRs; full review anyway, flag the risk |
-| < ~50 LoC bugfix + test | Small-task lane: PR Review steps 2–4 only |
+| < ~50 LoC bugfix + test | Small-task lane: PR Review steps 2-4 only |
 | > 50 lines / cyclomatic > 10 | Function flagged as complex (maintainability finding) |
 | Last commit > 2 years | Package counted as unmaintained (P3) |
 | CVSS 7.0+ | P1 CVE; P0 = active exploitation in the wild; any KEV hit or live secret = always block |
 | 30 min | Review-fatigue limit - batch or split longer reviews |
-| 70–95% | Raw multi-tool finding volume cut by reachability/exploitability (EPSS/KEV/call-graph) triage before the client reads it |
-| 2 reviewers, cap ~3 iterations | Adversarial verify of a takeover audit: both independent reviewers must PASS; after 3 loops escalate to a human (~2–3x cost of one pass) |
-| 10–30 s vs minutes–hours | Semgrep fast tier (per-PR gate) vs CodeQL deep tier (nightly / pre-release / audit) |
-| 1–2 / 2–5 / 5–10 files per module | Takeover census depth tiers: fast / standard (default) / deep; fast for 100+-module monorepos |
+| 70-95% | Raw multi-tool finding volume cut by reachability/exploitability (EPSS/KEV/call-graph) triage before the client reads it |
+| 2 reviewers, cap ~3 iterations | Adversarial verify of a takeover audit: both independent reviewers must PASS; after 3 loops escalate to a human (~2-3x cost of one pass) |
+| 10-30 s vs minutes-hours | Semgrep fast tier (per-PR gate) vs CodeQL deep tier (nightly / pre-release / audit) |
+| 1-2 / 2-5 / 5-10 files per module | Takeover census depth tiers: fast / standard (default) / deep; fast for 100+-module monorepos |
 | Floating `@v2` action tag | P1 supply-chain finding - require full commit SHA pin + least-privilege `GITHUB_TOKEN` |
 
 ---

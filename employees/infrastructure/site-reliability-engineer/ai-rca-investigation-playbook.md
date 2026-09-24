@@ -111,7 +111,7 @@ Observability payloads are huge; the RCA loop must not blow the window:
 ## CONNECT note (host installs)
 HolmesGPT itself is a host-installed/operated agent (CLI or Kubernetes operator) that
 ingests alerts from AlertManager/PagerDuty/OpsGenie/Jira and connects to data sources
-(Prometheus/Grafana/Datadog/Loki/Tempo/SQL/etc., many via MCP). The SRE recommends and
+(Prometheus/Grafana/Datadog/Loki/Tempo/SQL/etc. many via MCP). The SRE recommends and
 reasons with this methodology; the host runs the tool with read-only credentials. This
 playbook is the methodology; it does not require HolmesGPT to be installed - the loop is
 runnable by hand against the same data sources (e.g. the prometheus-mcp already wired in

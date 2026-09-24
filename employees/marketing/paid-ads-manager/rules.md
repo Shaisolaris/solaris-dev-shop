@@ -28,7 +28,7 @@ Last revised: 2026-06-10 (rebuild from real source files: coreyhaines31/marketin
 - **Creative diversity floor** - flag Meta ad sets with <5 creatives (<10 for Advantage+ Sales), <3 formats, or no 9:16 video.
 
 ## Account & campaign architecture
-- Naming: `[Platform]_[Objective]_[Audience]_[Offer]_[Date]` (e.g., META_Conv_LAL-Customers_FreeTrial_2026Q3). Consistent across every platform.
+- Naming: `[Platform]_[Objective]_[Audience]_[Offer]_[Date]` (e.g. META_Conv_LAL-Customers_FreeTrial_2026Q3). Consistent across every platform.
 - **Google:** brand and non-brand in SEPARATE campaigns, always. Classify by keyword composition (>50% brand kw = brand campaign), not by campaign name. Single-theme ad groups ≤10 keywords. ≤5 campaigns per objective (strip geo qualifiers before counting). PMax alongside brand Search requires PMax brand exclusions; PMax supports campaign-level negatives (use them - one account: 15% immediate cost cut). Display Network OFF on Search campaigns. Local targeting = "People in", never "People in or interested in".
 - **Meta:** 1-3 campaigns total - one campaign per goal. CBO for >$500/day; ABO for testing <$100/day. No ad-set audience overlap >30%. Advantage+ Sales for ecom with catalog (benchmarks: +22% ROAS).
 - **LinkedIn:** (renamed Oct 2025: Campaign Groups→Campaigns, Campaigns→Ad Sets.) Thought Leader Ads get ≥30% of B2B budget - CPC $2.29-4.14 vs $13.23 standard. Lead Gen Forms ≤5 fields, real-time CRM sync (13% CVR ≈ 3.25x landing pages).
@@ -125,10 +125,10 @@ Last revised: 2026-06-10 (rebuild from real source files: coreyhaines31/marketin
 | Manual CPC | Maximize Clicks | ready to test automation |
 | Any | Target Impression Share | brand-protection need identified |
 
-## Performance-drop diagnosis runbook (e.g., "ROAS fell 50% this week")
+## Performance-drop diagnosis runbook (e.g. "ROAS fell 50% this week")
 Order matters - cheapest, most-likely causes first:
 1. **Tracking integrity.** Did conversions stop being recorded, or did sales stop? Check Events Manager lag (>4h = broken), dedup rate, recent site deploys, consent banner changes, GA4-vs-platform divergence. A tracking break looks identical to a performance collapse.
-2. **Measurement/metric changes.** Check the platform gotchas ledger - e.g., Meta link-click redefinition (2/2025), removed view-through windows (1/2026) make week-over-week comparisons lie.
+2. **Measurement/metric changes.** Check the platform gotchas ledger - e.g. Meta link-click redefinition (2/2025), removed view-through windows (1/2026) make week-over-week comparisons lie.
 3. **Account changes log.** Any edit during learning phase (reset), budget jump >20%, new targets >20% off historical, paused load-bearing campaigns.
 4. **Creative fatigue + saturation.** Frequency vs thresholds, CTR trend over 14d, impression share / audience penetration, creative age vs 2-4-week lifespan.
 5. **Auction pressure.** CPM trend - seasonal (Q4 surge; Meta CPC peaked $1.32 Nov 2025 vs $0.85 Jan), new competitor entering, or platform-wide.

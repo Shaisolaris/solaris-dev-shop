@@ -85,7 +85,7 @@ NOT assessed: DAST on prod (no authz), mobile client, social-eng. Gate: passed
 - Produced: threat model doc with per-threat severity + mitigations + residual risk
 
 ### OWASP frameworks
-- **Top 10** - web application top risks (A01–A10 latest)
+- **Top 10** - web application top risks (A01-A10 latest)
 - **API Security Top 10** - BOLA, broken auth, etc.
 - **Mobile Top 10** + **MASVS** (Mobile Application Security Verification Standard)
 - **ASVS** (Application Security Verification Standard) - L1/L2/L3 for certification

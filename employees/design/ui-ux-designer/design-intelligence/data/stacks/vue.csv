@@ -17,7 +17,7 @@ No,Category,Guideline,Description,Do,Don't,Code Good,Code Bad,Severity,Docs URL
 16,Lifecycle,Use onMounted for DOM access,DOM is ready in onMounted,onMounted for DOM operations,Access DOM in setup directly,onMounted(() => el.value.focus()),el.value.focus() in setup,High,https://vuejs.org/api/composition-api-lifecycle.html
 17,Lifecycle,Clean up in onUnmounted,Remove listeners and subscriptions,onUnmounted for cleanup,Leave listeners attached,onUnmounted(() => window.removeEventListener()),No cleanup on unmount,High,
 18,Lifecycle,Avoid onBeforeMount for data,Use onMounted or setup for data fetching,Fetch in onMounted or setup,Fetch in onBeforeMount,onMounted(async () => await fetchData()),onBeforeMount(async () => await fetchData()),Low,
-19,Components,Use single-file components,Keep template script style together,.vue files for components,Separate template/script files,Component.vue with all parts,Component.js + Component.html,Low,
+19,Components,Use single-file components,Keep template script style together.vue files for components,Separate template/script files,Component.vue with all parts,Component.js + Component.html,Low,
 20,Components,Use PascalCase for components,Consistent component naming,PascalCase in imports and templates,kebab-case in script,<MyComponent/>,<my-component/>,Low,https://vuejs.org/style-guide/rules-strongly-recommended.html
 21,Components,Prefer composition over mixins,Composables replace mixins,Composables for shared logic,Mixins for code reuse,const { data } = useApi(),mixins: [apiMixin],Medium,
 22,Composables,Name composables with use prefix,Convention for composable functions,useFetch useAuth useForm,getData or fetchApi,export function useFetch(),export function fetchData(),Medium,https://vuejs.org/guide/reusability/composables.html
@@ -42,7 +42,7 @@ No,Category,Guideline,Description,Do,Don't,Code Good,Code Bad,Severity,Docs URL
 41,TypeScript,Use PropType for complex props,Type complex prop types,PropType<User> for object props,Object without type,type: Object as PropType<User>,type: Object,Medium,
 42,Testing,Use Vue Test Utils,Official testing library,mount shallowMount for components,Manual DOM testing,import { mount } from '@vue/test-utils',document.createElement,Medium,https://test-utils.vuejs.org/
 43,Testing,Test component behavior,Focus on inputs and outputs,Test props emit and rendered output,Test internal implementation,expect(wrapper.text()).toContain(),expect(wrapper.vm.internalState),Medium,
-44,Forms,Use v-model modifiers,Built-in input handling,.lazy .number .trim modifiers,Manual input parsing,"<input v-model.number=""age"">","<input v-model=""age""> then parse",Low,https://vuejs.org/guide/essentials/forms.html#modifiers
+44,Forms,Use v-model modifiers,Built-in input handling.lazy .number .trim modifiers,Manual input parsing,"<input v-model.number=""age"">","<input v-model=""age""> then parse",Low,https://vuejs.org/guide/essentials/forms.html#modifiers
 45,Forms,Use VeeValidate or FormKit,Form validation libraries,VeeValidate for complex forms,Manual validation logic,useField useForm from vee-validate,Custom validation in each input,Medium,
 46,Accessibility,Use semantic elements,Proper HTML elements in templates,button nav main for purpose,div for everything,<button @click>,<div @click>,High,
 47,Accessibility,Bind aria attributes dynamically,Keep ARIA in sync with state,":aria-expanded=""isOpen""",Static ARIA values,":aria-expanded=""menuOpen""","aria-expanded=""true""",Medium,

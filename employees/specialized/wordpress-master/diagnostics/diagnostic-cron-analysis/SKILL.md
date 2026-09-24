@@ -13,7 +13,7 @@ WordPress wp-cron is triggered by page loads, not a real system cron daemon. Thi
 
 - **Overdue events** - If traffic is low (overnight, weekends), scheduled events may not run on time. Events overdue by more than an hour indicate a cron health problem that could affect backups, email sending, plugin updates, and other time-sensitive operations.
 - **Duplicate hooks** - Plugins sometimes register the same cron hook multiple times, either due to bugs or missed deregistration during deactivation. This causes redundant execution and unnecessary server load.
-- **Excessive frequency** - Some plugins register cron events with intervals under 5 minutes (300 seconds). Events running every 30–60 seconds add persistent background load, even for low-traffic sites.
+- **Excessive frequency** - Some plugins register cron events with intervals under 5 minutes (300 seconds). Events running every 30-60 seconds add persistent background load, even for low-traffic sites.
 
 **Source type note:** This skill requires a live WordPress database. It must NOT run on `git` source types (no live DB). It self-gates when `WP_CLI_AVAILABLE` is false.
 
@@ -60,7 +60,7 @@ TOTAL_EVENTS=$(echo "$CRON_EVENTS" | jq 'length')
 
 ## Cross-Platform Date Conversion
 
-`next_run_gmt` is returned as a UTC string (e.g., `"2024-01-15 03:00:00"`). Convert to Unix epoch for comparison. Handle the difference between Linux `date -d` and macOS `date -j -f`:
+`next_run_gmt` is returned as a UTC string (e.g. `"2024-01-15 03:00:00"`). Convert to Unix epoch for comparison. Handle the difference between Linux `date -d` and macOS `date -j -f`:
 
 ```bash
 # Cross-platform epoch conversion function
@@ -129,7 +129,7 @@ done < <(echo "$CRON_EVENTS" | jq -c '.[]')
 **Finding ID:** `PERF-CRON-OVRD` - one finding per overdue event, hook name in title and detail.
 
 **Severity thresholds:**
-- `Warning`: overdue by 1–24 hours
+- `Warning`: overdue by 1-24 hours
 - `Critical`: overdue by more than 24 hours
 
 ---
@@ -196,7 +196,7 @@ while IFS= read -r freq_json; do
     INTERVAL_DISPLAY="${INTERVAL_MIN} minutes (${INTERVAL}s)"
   fi
 
-  FINDINGS_FREQUENT+=("{\"id\":\"PERF-CRON-FREQ\",\"severity\":\"Warning\",\"category\":\"Performance\",\"title\":\"Excessive cron frequency: ${HOOK} (every ${INTERVAL_DISPLAY})\",\"summary\":\"A cron event is scheduled to run more frequently than every 5 minutes, adding persistent background load to the server.\",\"detail\":\"Hook '${HOOK}' (schedule: ${SCHEDULE}) fires every ${INTERVAL_DISPLAY}. Events running more frequently than every 5 minutes (300 seconds) create persistent background load - on shared hosting, this can trigger rate limiting or host complaints. On any server, sub-5-minute intervals are rarely justified by actual business requirements.\",\"location\":\"wp-cron\",\"fix\":\"Review the plugin that registers '${HOOK}' and determine if this frequency is genuinely required. Most tasks (cache refreshes, feed updates, health checks) can safely run every 15–60 minutes. To change the interval, the plugin's source code or its settings must be updated - intervals are not configurable via wp-cron directly. If the plugin is abandoned or misconfigured, consider: wp cron event delete ${HOOK}\"}")
+  FINDINGS_FREQUENT+=("{\"id\":\"PERF-CRON-FREQ\",\"severity\":\"Warning\",\"category\":\"Performance\",\"title\":\"Excessive cron frequency: ${HOOK} (every ${INTERVAL_DISPLAY})\",\"summary\":\"A cron event is scheduled to run more frequently than every 5 minutes, adding persistent background load to the server.\",\"detail\":\"Hook '${HOOK}' (schedule: ${SCHEDULE}) fires every ${INTERVAL_DISPLAY}. Events running more frequently than every 5 minutes (300 seconds) create persistent background load - on shared hosting, this can trigger rate limiting or host complaints. On any server, sub-5-minute intervals are rarely justified by actual business requirements.\",\"location\":\"wp-cron\",\"fix\":\"Review the plugin that registers '${HOOK}' and determine if this frequency is genuinely required. Most tasks (cache refreshes, feed updates, health checks) can safely run every 15-60 minutes. To change the interval, the plugin's source code or its settings must be updated - intervals are not configurable via wp-cron directly. If the plugin is abandoned or misconfigured, consider: wp cron event delete ${HOOK}\"}")
 done < <(echo "$FREQUENT" | jq -c '.[]' 2>/dev/null)
 ```
 

@@ -12,7 +12,7 @@ Unity → Window → Package Manager → + → Add package from git URL:
 Then: Window → MCP for Unity → "Configure All Detected Clients". Docs: https://coplaydev.github.io/unity-mcp/
 
 ## Capabilities net-new over IvanMurzak (the reason to absorb)
-- **Tool groups** - vfx / animation / ui / testing / etc., so the LLM gets a scoped, relevant toolset per task instead of one flat list.
+- **Tool groups** - vfx / animation / ui / testing / etc. so the LLM gets a scoped, relevant toolset per task instead of one flat list.
 - **Roslyn script validation** - compile-checks generated C# before applying it (distinct from IvanMurzak's Roslyn execute).
 - **Multi-instance routing** - drive multiple Unity Editor instances at once.
 - **Remote-hosted server with auth** - run the MCP server remotely behind authentication, not just local.

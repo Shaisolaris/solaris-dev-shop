@@ -174,7 +174,7 @@ done
 
 **REGRESSION limitation:** REGRESSION classification (a finding that was resolved and reappeared) requires 3+ scan history. With the 2-scan retention policy (current + prior), reappeared findings are classified as [NEW] because the resolution event is not recorded. This is a known limitation of the 2-scan retention policy. Plan 08-02 (comparison matrix) will surface these patterns through grade-over-grade comparisons.
 
-**Fuzzy match risk:** Fuzzy matching on (finding_type + file_path) may produce false RECURRING classifications when multiple findings of the same type exist in the same file (e.g., two N+1 query patterns in the same plugin file). This is an accepted trade-off for catching reformatted code where the content hash changes but the structural finding is the same.
+**Fuzzy match risk:** Fuzzy matching on (finding_type + file_path) may produce false RECURRING classifications when multiple findings of the same type exist in the same file (e.g. two N+1 query patterns in the same plugin file). This is an accepted trade-off for catching reformatted code where the content hash changes but the structural finding is the same.
 
 ## Step 4: Identify Resolved Findings
 
@@ -283,10 +283,10 @@ Build the current scan's findings record from COMBINED_FINDINGS (tracking fields
 **Tracking fields extracted from each finding:**
 - `id` - deterministic finding identifier
 - `title` - finding title for resolved display
-- `finding_type` - derived from ID by stripping last hash segment (e.g., `SECR-CFGSEC`)
+- `finding_type` - derived from ID by stripping last hash segment (e.g. `SECR-CFGSEC`)
 - `file_path` - from `.location` field (used for fuzzy matching on next scan)
 - `severity` - Critical, Warning, or Info
-- `content_hash` - last segment of the ID (the hash portion, e.g., `a1b2c3`)
+- `content_hash` - last segment of the ID (the hash portion, e.g. `a1b2c3`)
 
 ```bash
 SCAN_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")

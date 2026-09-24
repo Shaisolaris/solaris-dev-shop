@@ -44,7 +44,7 @@ A `theme.json` is the canonical config for FSE themes. The Solaris baseline:
 - Define spacing scale (T-shirt sizes: xs / s / m / l / xl)
 - Lock down user-editable sections via `templateParts` to prevent client team from breaking the design
 - `appearanceTools: true` to give editor users layout controls (margin / padding / border)
-- Settings differentiated by block (e.g., headings can have unique font sizes; paragraphs cannot)
+- Settings differentiated by block (e.g. headings can have unique font sizes; paragraphs cannot)
 
 ### Block templates + template parts pattern
 - `templates/` - full page templates (single.html, page.html, archive.html, 404.html, search.html)

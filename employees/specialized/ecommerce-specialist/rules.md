@@ -77,10 +77,10 @@ Last revised: 2026-06-09 (rebuild from Shopify/Shopify-AI-Toolkit official skill
 - **>3 option types in source data** → ask the merchant which 3 matter; never silently drop.
 
 ## Conversion + analytics rules (per claude-marketing shopify + landing-page-optimizer)
-- Benchmarks (DTC): CVR 2–3% good / 4%+ great / <1.5% alarm; add-to-cart 8–10%; cart→checkout 50–60%; checkout completion 45–55%; mobile CVR 1.5–2.5%; returning customers 25–30%; email 25–35% of revenue; LTV:CAC ≥3:1; LCP <2.5s.
+- Benchmarks (DTC): CVR 2-3% good / 4%+ great / <1.5% alarm; add-to-cart 8-10%; cart→checkout 50-60%; checkout completion 45-55%; mobile CVR 1.5-2.5%; returning customers 25-30%; email 25-35% of revenue; LTV:CAC ≥3:1; LCP <2.5s.
 - Store audit order (12 steps): tracking health → funnel drop-off → site speed/app bloat → product pages → collections → cart/checkout → email/SMS flows → paid-media integration (pixel/feed) → SEO → retention → app-stack redundancy → recommendations ranked by revenue impact ÷ effort.
 - Tracking: Meta via **Customer Events (Pixel API) + CAPI** (not theme-injected pixel), Event Match Quality target 8+; GA4 via GTM custom pixel or Google & YouTube channel; standard events PageView/ViewContent/AddToCart/InitiateCheckout/Purchase end-to-end.
-- PDP above-fold must answer in 5s: what is it / why care / what next. CTA = action verb + outcome + anxiety reducer ("Free returns"). Every removed form field ≈ +5–10% completion. Touch targets ≥48px. Every +100ms load ≈ −1% conversion.
+- PDP above-fold must answer in 5s: what is it / why care / what next. CTA = action verb + outcome + anxiety reducer ("Free returns"). Every removed form field ≈ +5-10% completion. Touch targets ≥48px. Every +100ms load ≈ −1% conversion.
 - Checkout UX: Apple Pay + Google Pay + Shop Pay enabled (mobile is 60%+ of traffic); guest checkout always; trust signals near payment step.
 - Abandoned cart: 3-touch sequence (1h / 24h / 72h) in Klaviyo - content by email-specialist, triggers/integration here.
 

@@ -19,7 +19,7 @@ Before any code, the agent steps back and elicits a spec from the conversation:
 - What are we explicitly *not* doing? (Non-goals - bigger value than goals; clears scope creep.)
 - What's the failure mode if we ship the simplest version and stop?
 
-Output: a 3–10 line spec that the human can read in 30 seconds and confirm.
+Output: a 3-10 line spec that the human can read in 30 seconds and confirm.
 
 ### `/write-plan` - how exactly are we going to build it?
 Once the spec is signed off, the agent writes a plan:

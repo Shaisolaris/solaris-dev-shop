@@ -14,7 +14,7 @@ Absorbed from mongodb-js/mongodb-mcp-server (Apache-2.0, official MongoDB, ~1k s
 - **Query/maintain:** `find` / `count` / `aggregate` / `aggregate-db` for reads; `insert-many` / `update-many` / `delete-many` for writes; `create-collection` / `rename-collection` / `drop-collection` / `drop-database` for DDL. Treat every `drop-*` and unfiltered `update-many`/`delete-many` as destructive - confirm filter + backup before running, read-only mode off only deliberately.
 
 ## Atlas control-plane (provisioning + tuning)
-- **Provision:** `atlas-create-project` / `atlas-create-cluster` (M10–M80, replica set or shard, autoscaling default) / `atlas-create-free-cluster` / `atlas-upgrade-cluster` (M0→Flex/M10 tier bumps).
+- **Provision:** `atlas-create-project` / `atlas-create-cluster` (M10-M80, replica set or shard, autoscaling default) / `atlas-create-free-cluster` / `atlas-upgrade-cluster` (M0→Flex/M10 tier bumps).
 - **Access:** `atlas-create-db-user` / `atlas-list-db-users` / `atlas-create-access-list` / `atlas-inspect-access-list` (IP/CIDR allow-listing).
 - **Operate + tune:** `atlas-inspect-cluster`, `atlas-list-clusters`, `atlas-list-alerts`, and crucially `atlas-get-performance-advisor` - Atlas's own slow-query + suggested-index recommendations; use it as the starting point before hand-rolling index changes.
 - **Stream processing:** `atlas-streams-build/discover/manage/teardown` for Kafka-style pipelines (set up workspace, start/stop processors, debug a failing processor).

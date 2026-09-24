@@ -2,7 +2,7 @@
 
 ![How a request moves](../assets/architecture.svg)
 
-Three parts:
+Three parts.
 
 1. You send one request.
 2. The chief of staff (`chief-of-staff/SKILL.md`) runs intake and emits one assignment. It does not do the specialist job.

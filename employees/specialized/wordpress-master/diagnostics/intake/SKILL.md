@@ -115,7 +115,7 @@ Gather information across these six dimensions. You do NOT need to ask about all
 
 ### Pre-seeding from User Input
 
-When the user invokes `/investigate` with context (e.g., "investigate security on mysite - it got hacked last week"), extract:
+When the user invokes `/investigate` with context (e.g. "investigate security on mysite - it got hacked last week"), extract:
 - **Concern type:** security (from "security" keyword)
 - **Symptom:** hacked (from "got hacked")
 - **Timeline:** last week (from "last week")

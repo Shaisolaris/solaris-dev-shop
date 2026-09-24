@@ -10,7 +10,7 @@ runs-before: [build-visual Section 2]
 
 Scrapes a target URL with Playwright headless Chromium, enforces ethical guardrails (robots.txt check + copyright disclaimer + interactive confirmation), sanitises all content with AI-generated placeholder text and dimensions, and produces a clean HTML/CSS directory that feeds directly into the `build-visual` FSE pipeline - as if the user had exported a Figma or Canva design.
 
-**Critical sequencing:** This skill runs AFTER `build-scaffold` and `build-mcp` complete (WordPress is installed, MCP adapter is active) and BEFORE `build-visual` Sections 2–6 (CSS token extraction, theme scaffolding, font download, activation, SETUP.md).
+**Critical sequencing:** This skill runs AFTER `build-scaffold` and `build-mcp` complete (WordPress is installed, MCP adapter is active) and BEFORE `build-visual` Sections 2-6 (CSS token extraction, theme scaffolding, font download, activation, SETUP.md).
 
 This skill expects the following variables to already be set by the calling command:
 
@@ -246,7 +246,7 @@ This section is executed by Claude as an in-context judgment step. Claude reads 
 
 ### 3a: HTML Content Replacements (per file)
 
-1. **Text content replacement:** For all text inside `<p>`, `<span>`, `<li>`, `<td>`, `<h1>`, `<h2>`, `<h3>`, `<h4>`, `<h5>`, `<h6>` tags - replace with fictional placeholder text that matches the approximate word count. Use generic business/site copy relevant to a generic version of the detected site type (e.g., professional services, retail, portfolio, blog). Do NOT use Lorem Ipsum - use readable placeholder prose ("Providing expert solutions for modern businesses", "Our team brings over a decade of experience", etc.).
+1. **Text content replacement:** For all text inside `<p>`, `<span>`, `<li>`, `<td>`, `<h1>`, `<h2>`, `<h3>`, `<h4>`, `<h5>`, `<h6>` tags - replace with fictional placeholder text that matches the approximate word count. Use generic business/site copy relevant to a generic version of the detected site type (e.g. professional services, retail, portfolio, blog). Do NOT use Lorem Ipsum - use readable placeholder prose ("Providing expert solutions for modern businesses", "Our team brings over a decade of experience", etc.).
 
 2. **Brand name replacement:** Detect the source brand name from: `<title>`, `<meta name="description">`, logo `<img alt="...">`, prominent `<h1>`. Replace all occurrences of the detected brand name throughout the file with "Your Brand" or "Company Name".
 
@@ -472,9 +472,9 @@ echo "[Build]   VISUAL_MODE=$VISUAL_MODE"
 
 **build-scrape always produces html-css output:** `VISUAL_MODE` must always be set to `"html-css"` when this skill is used. URL builds produce a directory containing `.html` and `.css` files - never a screenshot image. Setting `VISUAL_MODE="screenshot"` for URL builds is an anti-pattern that will cause build-visual to misroute the input.
 
-**SCRAPE_DIR lifetime:** The temp directory is cleaned up by the EXIT trap registered in Section 0. After `build-visual` completes its pipeline (Sections 2–6), COMMAND.md Section 3c copies `scrape.json` to `$BUILD_DIR` before the EXIT trap fires. Only `scrape.json` is preserved in the final build zip - the raw and sanitised HTML/CSS are temporary.
+**SCRAPE_DIR lifetime:** The temp directory is cleaned up by the EXIT trap registered in Section 0. After `build-visual` completes its pipeline (Sections 2-6), COMMAND.md Section 3c copies `scrape.json` to `$BUILD_DIR` before the EXIT trap fires. Only `scrape.json` is preserved in the final build zip - the raw and sanitised HTML/CSS are temporary.
 
-**build-visual Section 1 is skipped for URL builds:** COMMAND.md Section 3c sets `VISUAL_MODE="html-css"` before calling `build-visual` Sections 2–6. The input detection logic in `build-visual` Section 1a is not needed - the mode is already determined by `build-scrape`.
+**build-visual Section 1 is skipped for URL builds:** COMMAND.md Section 3c sets `VISUAL_MODE="html-css"` before calling `build-visual` Sections 2-6. The input detection logic in `build-visual` Section 1a is not needed - the mode is already determined by `build-scrape`.
 
 **Content sanitisation is Claude's in-context judgment:** Section 3a requires Claude to read, rewrite, and overwrite each HTML file. There is no automated verification that all verbatim text has been removed. The CONTEXT.md decision is that this is an AI judgment step - acceptable accuracy is achieved by following the 8 replacement rules explicitly. No post-sanitisation text-extraction verification is performed at build time.
 
@@ -494,5 +494,5 @@ echo "[Build]   VISUAL_MODE=$VISUAL_MODE"
 **References:**
 - `@skills/build-visual/SKILL.md` - downstream consumer of `VISUAL_PATH` and `VISUAL_MODE`; Section 2a CSS token extraction; Section 1a html-css input detection (skipped for URL builds)
 - `@commands/build/COMMAND.md` - Section 3c URL build execution; `VISUAL_PATH` handoff pattern
-- `@.planning/phases/15-url-clone-creation/15-RESEARCH.md` - Playwright patterns, robots-parser API, pitfalls 1–7, anti-patterns
+- `@.planning/phases/15-url-clone-creation/15-RESEARCH.md` - Playwright patterns, robots-parser API, pitfalls 1-7, anti-patterns
 - `@.planning/phases/15-url-clone-creation/15-CONTEXT.md` - Locked decisions: scraping scope, copyright guardrails, content replacement, dynamic feature detection

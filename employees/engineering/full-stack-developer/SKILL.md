@@ -85,8 +85,8 @@ Gate: passed
 - **Perf (Critical-tier, checked without a profiler):** data-fetching waterfalls + bundle size.
 - **Pagination:** cursor pagination for any list that could grow past 1,000 items.
 - **API data:** money as integers in minor units (never float); all datetimes ISO 8601 UTC; sunset an API version only with 6+ months notice.
-- **Auth numbers:** access token 5–15 min + refresh rotation; idle timeout 30 min / absolute 8 h for sensitive apps; login rate limit 5 fails per 15 min; passwords 8+ chars (NIST 800-63B) + breach-list check.
-- **Process numbers:** ship in 3–5 slices per feature; stuck > 30 min on approach → CTO; duplicate code 3+ times → extract, < 3 → leave it; form > 3 fields → react-hook-form; > 2 `useState` for the same data → useReducer; library covering > 80% of the need → use it; project ≤ 2 weeks → own it end-to-end.
+- **Auth numbers:** access token 5-15 min + refresh rotation; idle timeout 30 min / absolute 8 h for sensitive apps; login rate limit 5 fails per 15 min; passwords 8+ chars (NIST 800-63B) + breach-list check.
+- **Process numbers:** ship in 3-5 slices per feature; stuck > 30 min on approach → CTO; duplicate code 3+ times → extract, < 3 → leave it; form > 3 fields → react-hook-form; > 2 `useState` for the same data → useReducer; library covering > 80% of the need → use it; project ≤ 2 weeks → own it end-to-end.
 - **Lanes:** prototype lane < ~half a day; full lane for anything > ~1 day or shipping to users.
 
 ---

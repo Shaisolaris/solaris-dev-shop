@@ -178,7 +178,7 @@ Gate: passed
 
 ### Test strategy design (new project)
 
-1. **Identify critical user flows** (with Product Manager): top 5–10 happy paths
+1. **Identify critical user flows** (with Product Manager): top 5-10 happy paths
 2. **Define test pyramid ratios:** ~70% unit, ~20% integration, ~10% E2E
 3. **Pick frameworks** by stack (Playwright for web, Detox/Maestro for mobile)
 4. **Define what's NOT tested** explicitly (experiments, exploratory features)
@@ -368,7 +368,7 @@ If a control fails, do not emit `Gate: passed` for the affected path.
 
 - Accountable gate for **functional** and **accessibility** defects.
 - Independent verifier for functional findings: **code-reviewer**; for a11y: **ui-ux-designer**.
-- Blocking findings (S0–S2) **cannot be self-closed** by qa-engineer - `SELF_APPROVAL_FORBIDDEN`.
+- Blocking findings (S0-S2) **cannot be self-closed** by qa-engineer - `SELF_APPROVAL_FORBIDDEN`.
 - Planted defects and release packets: see `../assurance/ASSURANCE.md` and run
   `python3 ../assurance/quality_os.py suite` from fixtures root.
 - Evidence required: run results with pass/fail counts + artifact paths; never “tests written” alone.

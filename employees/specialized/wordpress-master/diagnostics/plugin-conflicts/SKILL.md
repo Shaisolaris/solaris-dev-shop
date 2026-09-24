@@ -10,7 +10,7 @@ description: Identifies and resolves conflicts between WordPress plugins and the
 - Hook priority collisions (same hook, same priority, conflicting behavior)
 - JavaScript global namespace pollution
 - CSS specificity wars between plugins/themes
-- Shared library version conflicts (e.g., different jQuery UI versions)
+- Shared library version conflicts (e.g. different jQuery UI versions)
 - REST API route collisions
 - Custom post type / taxonomy slug conflicts
 - Cron job interference
