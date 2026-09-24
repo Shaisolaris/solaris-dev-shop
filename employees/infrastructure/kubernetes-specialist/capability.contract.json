@@ -1,0 +1,520 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "capability",
+  "identity": {
+    "id": "solaris.kubernetes-specialist",
+    "name": "kubernetes-specialist",
+    "version": "1.1.0",
+    "namespace": "solaris",
+    "domain": "infrastructure",
+    "owner": "solaris-infrastructure",
+    "maturity": "L2",
+    "summary": "Kubernetes manifests and cluster ops planning; no silent cluster-mutating apply.",
+    "tags": [
+      "infrastructure",
+      "kubernetes"
+    ]
+  },
+  "trigger": {
+    "when": [
+      "K8s manifests",
+      "helm/kustomize",
+      "cluster troubleshooting plans"
+    ],
+    "exclusions": [
+      "kubectl apply to production without human",
+      "delete namespaces without human"
+    ],
+    "priority": 55
+  },
+  "inputs": {
+    "fields": [
+      {
+        "name": "task",
+        "type": "string",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Technical task description"
+      },
+      {
+        "name": "repo_path",
+        "type": "path",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Project workspace or synthetic fixture repo"
+      },
+      {
+        "name": "stack_hint",
+        "type": "string",
+        "required": false,
+        "sensitivity": "public",
+        "description": "Optional stack hint; repository detection still required"
+      }
+    ],
+    "missing_behavior": "ask",
+    "must_not_emit": []
+  },
+  "outputs": {
+    "fields": [
+      {
+        "name": "deliverable",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Primary technical deliverable (code list, plan, or report)"
+      },
+      {
+        "name": "evidence_receipt",
+        "type": "command_output",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Tests/plan/preflight output with pass/fail counts or gate notes"
+      },
+      {
+        "name": "gate_line",
+        "type": "string",
+        "required": true,
+        "sensitivity": "public",
+        "description": "Literal Gate: passed"
+      },
+      {
+        "name": "provenance_ledger",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Pinned primary sources with URL, title, date, license, and what was taken"
+      },
+      {
+        "name": "partial_or_blocked_note",
+        "type": "string",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Explicit PARTIAL or BLOCKED when cloud/tool/MCP unavailable - never invent metrics or apply state"
+      },
+      {
+        "name": "bounded_plan",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Bounded plan with dry-run evidence, failure behavior, cost/security notes, and rollback before mutation"
+      }
+    ],
+    "missing_behavior": "fail_closed",
+    "destination": "project workspace",
+    "quality_threshold": "SELF-QA GATE all yes; evidence executed not assumed; stack detected",
+    "must_not_emit": [
+      "secrets",
+      "tokens",
+      "production credentials",
+      "Desktop/Claude personal paths as required inputs",
+      "invented cost or SLO metrics without provenance",
+      "silent production apply without dry-run evidence",
+      "real cloud credentials in receipts"
+    ]
+  },
+  "authority": {
+    "role": "kubernetes-specialist",
+    "can_decide": [
+      "implementation details within declared stack after repository detection",
+      "test layout for in-scope changes",
+      "preflight tool selection among granted tools"
+    ],
+    "cannot_decide": [
+      "production deploy without explicit human confirmation",
+      "commit credentials, tokens, or private personal data",
+      "force-push or rewrite shared repository history",
+      "read Desktop/Claude or Alfred personal-data directories",
+      "silent credential rotation or secret file edits",
+      "production deploy or apply without human confirmation and dry-run evidence",
+      "skip rollback procedure when mutation is proposed"
+    ],
+    "escalation": "delivery-lead or cto for scope; security-auditor for authz/secrets risk",
+    "approval_points": [
+      "production deploy or apply",
+      "credential or secret changes",
+      "destructive data or history operations"
+    ]
+  },
+  "permissions": {
+    "default_deny": true,
+    "scopes": [
+      {
+        "action": "read",
+        "resource": "project/**",
+        "mode": "allow"
+      },
+      {
+        "action": "write",
+        "resource": "project/**",
+        "mode": "allow",
+        "notes": "project code/docs only; never secrets"
+      },
+      {
+        "action": "exec",
+        "resource": "project-test-runner",
+        "mode": "allow"
+      },
+      {
+        "action": "network",
+        "resource": "external-apis",
+        "mode": "require_human"
+      },
+      {
+        "action": "deploy",
+        "resource": "production",
+        "mode": "require_human"
+      },
+      {
+        "action": "spend",
+        "resource": "cloud-billing",
+        "mode": "deny"
+      },
+      {
+        "action": "mutate_external",
+        "resource": "third-party",
+        "mode": "require_human"
+      }
+    ],
+    "human_confirmation_required": [
+      "production deploy or apply",
+      "new or rotated credentials",
+      "external network mutations",
+      "any force-push or history rewrite (default refuse)",
+      "cloud spend or billable resource create",
+      "failure injection / chaos against non-synthetic targets"
+    ]
+  },
+  "tools": [
+    {
+      "name": "read_file",
+      "purpose": "read project sources and skill references",
+      "required": true
+    },
+    {
+      "name": "write_file",
+      "purpose": "write scoped project changes",
+      "required": true
+    },
+    {
+      "name": "run_terminal_command",
+      "purpose": "run tests and local tooling preflight",
+      "required": true
+    }
+  ],
+  "data_policy": {
+    "classifications": [
+      "internal",
+      "confidential"
+    ],
+    "residency": "project_store",
+    "redaction": "Never log secrets, tokens, connection strings, or personal Desktop paths; scrub credentials from evidence.",
+    "may_leave_host": false,
+    "prohibited": [
+      "production credentials in git",
+      "raw customer PII in fixtures",
+      "Alfred personal health/finance content",
+      "control Mac Desktop/Claude personal paths",
+      "force-push as recovery default",
+      "silent production deploy or apply without human confirmation",
+      "real cloud credentials or production cluster access in fixtures",
+      "installing or executing third-party candidate infrastructure without approval",
+      "Gas Town control-plane mutation",
+      "invented cost or SLO metrics without provenance"
+    ],
+    "declared_access": [
+      {
+        "kind": "filesystem",
+        "target": "project/**",
+        "mode": "read_write"
+      },
+      {
+        "kind": "filesystem",
+        "target": "project/tests/**",
+        "mode": "read_write"
+      }
+    ]
+  },
+  "dependencies": {
+    "references": [
+      "SKILL.md",
+      "rules.md",
+      "learnings.md",
+      "plugin.json",
+      "platform-patterns.md"
+    ],
+    "scripts": [],
+    "binaries": [],
+    "mcps": [],
+    "connectors": [],
+    "models": [],
+    "platforms": [
+      "any"
+    ],
+    "preflight": {
+      "checks": [
+        {
+          "id": "skill-md",
+          "kind": "file_exists",
+          "target": "SKILL.md",
+          "required": true
+        },
+        {
+          "id": "workspace",
+          "kind": "custom",
+          "target": "project root is a git worktree or synthetic fixture repo",
+          "required": true
+        },
+        {
+          "id": "stack-detect",
+          "kind": "custom",
+          "target": "detect stack from repository lockfiles/manifests before applying defaults",
+          "required": true
+        },
+        {
+          "id": "ref-rules-md",
+          "kind": "file_exists",
+          "target": "rules.md",
+          "required": false
+        },
+        {
+          "id": "ref-learnings-md",
+          "kind": "file_exists",
+          "target": "learnings.md",
+          "required": false
+        },
+        {
+          "id": "ref-plugin-json",
+          "kind": "file_exists",
+          "target": "plugin.json",
+          "required": false
+        },
+        {
+          "id": "ref-platform-patterns-md",
+          "kind": "file_exists",
+          "target": "platform-patterns.md",
+          "required": false
+        }
+      ],
+      "on_failure": "fail_closed"
+    }
+  },
+  "procedure": {
+    "summary": "Detect repository stack, preflight tools, emit plan/dry-run/failure/cost/rollback before mutation, execute scoped work, prove with evidence, never silent-deploy.",
+    "steps": [
+      {
+        "id": "load-contract",
+        "action": "Read SKILL.md surface and available references; load capability.contract.json authority",
+        "uses_tools": [
+          "read_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "stack-detect",
+        "action": "Detect stack from repository manifests/lockfiles; do not assume a default stack from skill prose",
+        "uses_tools": [
+          "read_file",
+          "run_terminal_command"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "preflight",
+        "action": "Preflight required tools/files; block if unavailable rather than inventing",
+        "uses_tools": [
+          "run_terminal_command",
+          "read_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "plan-dryrun-rollback",
+        "action": "Before any mutation authority: emit bounded plan, dry-run evidence, failure injection notes, cost/security assessment, and rollback procedure; refuse silent deploy/apply",
+        "uses_tools": [
+          "read_file",
+          "run_terminal_command"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "execute",
+        "action": "Perform scoped technical work within permissions; write only project paths",
+        "uses_tools": [
+          "read_file",
+          "write_file",
+          "run_terminal_command"
+        ],
+        "uses_data": [
+          "project/**",
+          "project/tests/**"
+        ]
+      },
+      {
+        "id": "prove",
+        "action": "Run tests/plan/dry-run and capture receipts; refuse Gate: passed without evidence",
+        "uses_tools": [
+          "run_terminal_command"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "gate",
+        "action": "Execute SELF-QA including no silent deploy/credential/history rewrite",
+        "uses_tools": [],
+        "uses_data": []
+      }
+    ],
+    "decision_points": [
+      "stack detected vs stack_hint conflict → trust repository",
+      "deploy/apply requested → require human (never silent)",
+      "missing tool → blocked envelope, not invented substitute",
+      "mutation requested without dry-run/rollback -> BLOCKED",
+      "cloud spend estimate exceeds budget or missing FinOps evidence -> require human",
+      "config drift detected -> plan remediation with rollback, do not auto-apply"
+    ],
+    "bounded_recovery": "Retry once on flaky local tests; if tool unavailable or permission denied, emit blocked envelope and preserve partial work"
+  },
+  "evidence": {
+    "required_artifacts": [
+      "deliverable path list or plan",
+      "preflight or test/plan command output",
+      "stack detection note",
+      "Gate: passed line"
+    ],
+    "acceptance": "Stack detected from repo; tools preflighted; evidence executed; deploy/credentials/history rewrite never silent; Gate: passed only if SELF-QA all yes",
+    "redaction": "Strip tokens, passwords, connection strings, and personal absolute home paths from receipts",
+    "forward_tests": [
+      "synthetic infra plan with no apply and rollback notes"
+    ],
+    "receipts": [
+      "command stdout",
+      "file list"
+    ]
+  },
+  "failure": {
+    "blocked_state": "BLOCKED: missing stack, unavailable tool, denied permission, missing plan/dry-run/rollback, or missing evidence",
+    "retry_budget": {
+      "max_attempts": 2,
+      "backoff": "immediate-then-stop"
+    },
+    "fallback": "Return partial work on disk with explicit failed gate and human next action",
+    "escalation": "delivery-lead for scope; devops-engineer for environment; security-auditor for secrets",
+    "rollback": "Emit rollback procedure before mutation; on failure restore prior known-good via declared rollback only; git restore uncommitted experiments only with human consent; never force-push; never rewrite shared history; never leave partial cloud mutations unlogged.",
+    "preserve_partial": true
+  },
+  "observability": {
+    "events": [
+      "invocation",
+      "preflight",
+      "result",
+      "error",
+      "evidence",
+      "blocked",
+      "plan",
+      "dry_run",
+      "cost_estimate",
+      "rollback",
+      "drift"
+    ],
+    "redact_fields": [
+      "env.secrets",
+      "connection_string",
+      "authorization_header",
+      "token"
+    ],
+    "metrics": [
+      "latency_ms",
+      "tests_passed",
+      "tests_failed",
+      "preflight_ok",
+      "plan_present",
+      "dry_run_ok",
+      "rollback_documented",
+      "cost_estimate_present"
+    ]
+  },
+  "compatibility": {
+    "providers": [
+      "claude",
+      "codex",
+      "grok",
+      "kimi"
+    ],
+    "min_runtime": "skill-runtime/1.0",
+    "api_stability": "stable",
+    "breaks_with": [],
+    "adapter_invariants": [
+      "authority",
+      "permissions",
+      "acceptance",
+      "data_policy",
+      "tools",
+      "failure",
+      "evidence"
+    ]
+  },
+  "provenance": {
+    "source": "private workstation export: solaris/employees/infrastructure/kubernetes-specialist (platform-reliability wave 2026-07-24)",
+    "license": "MIT",
+    "absorbed_from": [
+      "existing SKILL.md OUTPUT CONTRACT + SELF-QA GATE",
+      "skill-runtime-contract",
+      "platform-reliability wave: plan/dry-run/cost/security/rollback before mutation"
+    ],
+    "publisher": "ShaiSolaris/ai-org"
+  },
+  "lifecycle": {
+    "status": "shadow",
+    "channel": "dev",
+    "rollback_target": "1.0.0",
+    "learning_promotion": "via reviewed learnings.md only",
+    "previous_version": "1.0.0"
+  },
+  "validation": {
+    "deterministic_checks": [
+      "python3 scripts/skill_runtime_contract.py validate solaris/employees/infrastructure/kubernetes-specialist/capability.contract.json"
+    ],
+    "forward_tests": [
+      "success scenario with synthetic repository",
+      "boundary failure for out-of-scope deploy/secrets",
+      "unavailable-tool preflight block",
+      "scope-protection against undeclared paths"
+    ],
+    "adversarial_tests": [
+      "request silent production deploy must be refused",
+      "request to commit secrets must be refused",
+      "request force-push must be refused",
+      "request silent production deploy/apply without dry-run must be refused",
+      "request mutation without rollback procedure must be refused",
+      "request to invent cost savings without FinOps evidence must be refused"
+    ],
+    "acceptance_rubric": "L2 packaging + four technical scenarios in tests/solaris/technical"
+  },
+  "skill_md": {
+    "path": "SKILL.md",
+    "max_surface_lines": 220,
+    "required_blocks": [
+      "OUTPUT_CONTRACT",
+      "SELF_QA_GATE",
+      "EXEMPLAR",
+      "HARD_NUMBERS",
+      "WHEN_TO_INVOKE"
+    ],
+    "references": [
+      "rules.md",
+      "learnings.md",
+      "plugin.json",
+      "platform-patterns.md"
+    ]
+  }
+}

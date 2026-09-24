@@ -1,0 +1,72 @@
+{
+  "name": "unity-developer",
+  "version": "0.8.1",
+  "description": "Unity game developer for Solaris. v0.3.0 absorbs IvanMurzak/Unity-MCP - the canonical Unity MCP bridge with 100+ Editor tools, Roslyn-powered C# script-execute, full reflection-method-call/find for any C# in any DLL, runtime (in-game) MCP for AI-driven NPCs/dynamic content/in-game debugging, screenshot-camera/game-view/scene-view, package-add/remove/search, prefab-create/save/instantiate, scene-create/open/save/set-active, GameObject CRUD (create/destroy/duplicate/find/modify/set-parent), component-add/destroy/get/modify/list-all, console-get-logs, editor-application-get-state/set-state, editor-selection-get/set, tests-run for EditMode/PlayMode. Optional add-on packs: AI Animation, AI ParticleSystem, AI ProBuilder. Layered on Shai's existing unity skill (game-design-mentor + unity-scene-architecture + unity-testing-pipeline + CLAUDE_template).",
+  "author": "Shai Ali",
+  "license": "MIT",
+  "skills": [
+    "SKILL.md"
+  ],
+  "references": [
+    "rules.md",
+    "learnings.md",
+    "game-design-mentor.md",
+    "unity-scene-architecture.md",
+    "unity-testing-pipeline.md",
+    "unity-build-ship.md",
+    "unity-performance-mobile.md",
+    "csharp-dotnet-quality.md",
+    "coplaydev-unity-mcp.md",
+    "unity-mcp-operator.md",
+    "CLAUDE_template.md"
+  ],
+  "tags": [
+    "engineering",
+    "unity",
+    "game-dev",
+    "unity-mcp",
+    "ivanmurzak",
+    "roslyn",
+    "reflection",
+    "in-game-ai",
+    "mcp-tools",
+    "editor-automation",
+    "scene-architecture",
+    "game-design",
+    "testing",
+    "ci-cd",
+    "build-pipeline",
+    "mobile-optimization",
+    "gameci",
+    "fastlane",
+    "iap",
+    "ads",
+    "game-patterns",
+    "coplaydev",
+    "csharp",
+    "dotnet",
+    "code-quality",
+    "ecc",
+    "specialist-engineering"
+  ],
+  "department": "engineering",
+  "absorbed_from": [
+    "Shai's custom-built unity laptop skill (game-design-mentor + unity-scene-architecture + unity-testing-pipeline + CLAUDE_template) - ABSORBED; snapshot of the trigger SKILL.md at solaris/archives/shai-laptop-skills-2026-06/unity/ (the laptop snapshot is the single-file trigger version; the richer reference set was absorbed from Shai's full custom skill in the v0.3.0 build)",
+    "IvanMurzak/Unity-MCP (https://github.com/IvanMurzak/Unity-MCP) - README + docs/default-mcp-tools.md, v0.51.4 - 100+ tools across Project/Scene/Scripting categories, runtime + editor support, Roslyn execution, full reflection access",
+    "MetaGPT (FoundationAgents/MetaGPT) - Engineer spec\u2192code handoff SOP absorbed 2026-05-01: read task \u2192 read interface defs \u2192 read shared knowledge \u2192 match schema verbatim \u2192 no scope creep \u2192 self-review against File List",
+    "CoplayDev/unity-mcp (https://github.com/CoplayDev/unity-mcp) - MIT, v9.7.1, 10.4k stars - NEW PRIMARY Unity MCP. Net-new over IvanMurzak: tool groups (vfx/animation/ui/testing), Roslyn script validation, multi-instance routing, remote-hosted server w/ auth, built-in test runner. Absorbed 2026-06-08.",
+    "game-ci/unity-builder (https://github.com/game-ci/unity-builder) - MIT, ~1k stars, v4.8.1 (2025-11-22). CI/CD build+ship methodology (GitHub Actions Unity license activation + cross-platform builds) paired with fastlane (match/gym/pilot/deliver/supply) for code signing + TestFlight/Play distribution. Methodology absorbed 2026-06-13 into unity-build-ship.md; no third-party code bundled.",
+    "GuardianOfGods/unity-mobile-optimization (https://github.com/GuardianOfGods/unity-mobile-optimization) - MIT, 92 stars (notable Unity-mobile maintainer), active 2026-06. Mobile performance + build-size playbook (texture/audio/mesh import discipline, object pooling, centralized update, GPU instancing, fixed-timestep). METHODOLOGY absorbed 2026-06-13 into unity-performance-mobile.md; knowledge only, no code lifted.",
+    "alttester/AltTester-Unity-SDK (https://github.com/alttester/AltTester-Unity-SDK) - GPL-3.0 (FLAGGED, copyleft), 102 stars, V.2.3.0 (2026-01-28). E2E UI test automation. METHODOLOGY only (already referenced in unity-testing-pipeline.md); 2026-06-13 added GPL flag + external-harness/self-host note + corrected install URL. Source NOT bundled.",
+    "Unity-Technologies/game-programming-patterns-demo (https://github.com/Unity-Technologies/game-programming-patterns-demo) - NO LICENSE / NOASSERTION (FLAGGED) + STALE (9 commits), 1.7k stars, official Unity. METHODOLOGY only: Observer/State/Command/Factory/Object-Pool/MVC pattern toolkit summarized from general knowledge into unity-scene-architecture.md, repo cited as study reference. No code copied.",
+    "everything-claude-code (github.com/affaan-m/everything-claude-code) - MIT. ECC skills `dotnet-patterns` + `csharp-testing`. METHODOLOGY ONLY (no third-party code bundled) absorbed 2026-06-14 into csharp-dotnet-quality.md: idiomatic C#/.NET (nullable-ref types honored, record/init immutability, abstractions-at-boundaries, Options + Result patterns, guard clauses), async/await idioms (async-all-the-way, threaded CancellationToken, Task.WhenAll, no async-void/.Result), and C# testing (xUnit + FluentAssertions + NSubstitute + Testcontainers + WebApplicationFactory, AAA, test-data builders, anti-pattern checklists). Note: ECC has no `csharp-reviewer` skill at skills/ - its review methodology is carried inside `dotnet-patterns` (reviewing C# code) + `csharp-testing` (review test quality), both captured. Scoped as a language/tooling delta distinct from the engine references; Unity caveats added inline (SerializeField null!, no record MonoBehaviour, coroutine/UniTask scheduler vs Task, UTF EditMode/PlayMode vs xUnit)."
+  ],
+  "available_sources_for_scout": [
+    "sickn33/antigravity-awesome-skills (1,426 community skills - Scout mines weekly)",
+    "IvanMurzak/Unity-AI-Animation",
+    "IvanMurzak/Unity-AI-ParticleSystem",
+    "IvanMurzak/Unity-AI-ProBuilder",
+    "MiAO-AI-Lab/MiAO-MCP-for-Unity (alternate Unity MCP - Scout to compare quarterly)"
+  ],
+  "build_notes": "REBUILD 2026-04-25 v0.3.0 - Talent Scout v2 caught IvanMurzak/Unity-MCP after v1 missed it. unity-mcp-operator.md fully rewritten from canonical source (271 lines, 55 tools listed by category, install/Docker/runtime sections). This is the proof-of-correctness for the v2 protocol. | 2026-05-01 v0.4.0: MetaGPT Engineer SOP absorbed (M4). | 2026-05-18: Source landscape audit. IvanMurzak/Unity-MCP confirmed at 2.6K stars (still best). MuharremTozan/unity-agent-skills logged as watchlist (Unity 6 design patterns, complementary). Open-source Unity AI ecosystem still thin overall in 2026. | 2026-06-04 v0.5.0: DELTA metadata fix per Consolidation Plan 2.4 - removed self-contradictory 'NO Shai personal skills mixed' + 'shai_skills_excluded' fields (the employee already absorbs Shai's unity skill; doctrine retired 2026-06-04). absorbed_from retained + snapshot cited. | 2026-06-13 v0.6.1: DEEPEN per UPGRADE-PLAN Part 1 (Games/1a). Gate-0 check: IvanMurzak's tests-run EditMode/PlayMode, reflection-method-call (any C# incl. private/DLL), [McpPluginTool] custom-tool-in-3-lines, and unity-mcp-cli/batchmode patterns were ALREADY absorbed as tools (operator file). Net-new = the autonomous play/edit-mode execute-AND-verify LOOP as a methodology (the gap CoplayDev has) - added as Tier 0 in unity-testing-pipeline.md + a decision rule in rules.md. No CoplayDev content duplicated; version bumped only because genuinely additive. | 2026-06-13 v0.7.0: DEEP QUALITY PASS (Wave 1 engineering). FIXES: registered the phantom unregistered file coplaydev-unity-mcp.md in references; normalized phantom LESSONS.md -> learnings.md across SKILL.md/rules.md/unity-mcp-operator.md (the skill's actual lessons log); resolved the stale PRIMARY-bridge contradiction (SKILL.md banner/description/routing now state CoplayDev PRIMARY + IvanMurzak fallback, matching rules.md/coplaydev file); fixed stale 'AnkleBreaker/Coplay' labels in SKILL.md reference table + learnings.md category; fixed phantom path references/deep-discovery-protocol.md in unity-mcp-operator.md; corrected stale stars (CoplayDev 10,062 verified; IvanMurzak ~2.6-3k) and the 'ecosystem still thin / competition is commercial' claim in rules.md; corrected AltTester install URL + added GPL-3.0 flag. PERFECTION: added small-task + prototype/game-jam fast lanes to the Design Review Protocol (was mandatory for ALL features); operationalized the visual-regression gate (drop-in visual_diff.py + pass/fail formula). DEEPEN (methodology, no code bundled): new unity-build-ship.md (GameCI CI/CD + fastlane sign/ship + IAP/ads sandbox gate; ABSORB net-new); new unity-performance-mobile.md (GuardianOfGods mobile perf/build-size playbook; METHODOLOGY); gameplay-patterns toolkit added to unity-scene-architecture.md (patterns-demo as study ref, FLAGGED no-license+stale, no code copied); AltTester deepened with GPL self-host note. Regenerated stale unity.skill bundle from current sources. See TOP5-CANDIDATES.md for verified source table. | 2026-06-14 v0.8.0: DEEPEN (ECC exec Wave A, languages). Added csharp-dotnet-quality.md - C#/.NET LANGUAGE-LEVEL code-quality + testing delta absorbed (methodology only, no code bundled) from ECC dotnet-patterns + csharp-testing: nullable-ref/async idioms, immutability/Result/Options patterns, xUnit/FluentAssertions/NSubstitute/Testcontainers testing, anti-pattern review checklists. Gate-0 check: existing refs cover the Unity ENGINE (scene/MCP/build/perf/UTF EditMode-PlayMode); none carried C#-as-a-language quality (nullable-ref honoring, record immutability, xUnit stack, .NET anti-patterns) - confirmed non-duplicating. Directly useful for gameplay/tooling C# and companion .NET services. ECC has no csharp-reviewer skill (review methodology lives inside dotnet-patterns + csharp-testing, both captured). Registered in references; added csharp/dotnet/code-quality/ecc tags; rules.md pointer added. No shared/engine files touched."
+}

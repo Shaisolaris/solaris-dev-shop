@@ -1,0 +1,69 @@
+{
+  "name": "full-stack-developer",
+  "version": "1.4.0",
+  "description": "GENERALIST - end-to-end builder who owns frontend AND backend on smaller projects. Coordinates cross-stack work + handoffs to frontend-developer and backend-developer specialists when work goes deep on one side. React/Vite/TS/Tailwind + PHP(WP)/Node/Python + MySQL 8+. 6 scaffold templates, minimal-change mode for inherited work. Split happened 2026-05-18: frontend-only work routes to frontend-developer, backend-only to backend-developer, true cross-stack stays here. v1.4.0 (2026-07-24): engineering-core upstream pins (Next 16, Laravel 13, Node 24) + toolchain preflight.",
+  "author": "Shai Ali",
+  "homepage": "https://github.com/shaisolaris/solaris-employees",
+  "license": "MIT",
+  "skills": [
+    "SKILL.md"
+  ],
+  "references": [
+    "rules.md",
+    "learnings.md",
+    "stack-defaults.md",
+    "api-design.md",
+    "auth-patterns.md",
+    "type-safe-api-layer.md",
+    "minimal-change-mode.md",
+    "supabase-mcp-ops.md",
+    "codemod-migration-strangler-fig.md"
+  ],
+  "references_pending_expansion": [],
+  "references_source_note": "Canonical scaffold sources in /Solaris/sources/alirezarezvani-claude-skills/engineering-team/senior-fullstack/ + senior-backend/ + senior-frontend/. wshobson api-design-checklist at wshobson-agents/plugins/backend-development/skills/api-design-principles/assets/api-design-checklist.md. wshobson saga/projection patterns at wshobson-agents/plugins/backend-development/skills/saga-orchestration/ and projection-patterns/.",
+  "mcp_servers": [],
+  "tags": [
+    "engineering",
+    "fullstack",
+    "builder",
+    "react",
+    "nodejs",
+    "php",
+    "wordpress",
+    "api-design",
+    "supabase",
+    "apify",
+    "baas",
+    "scraping"
+  ],
+  "department": "engineering",
+  "absorbed_from": [
+    "wshobson/plugins/backend-development (8 specialist agents: backend-architect, test-automator, performance-engineer, graphql-architect, event-sourcing-architect, security-auditor, tdd-orchestrator, temporal-python-pro; api-design-principles SKILL with REST + GraphQL + api-design-checklist.md; architecture-patterns including advanced-patterns.md; microservices-patterns; workflow-orchestration-patterns; saga-orchestration; projection-patterns; event-store-design; feature-development command)",
+    "alirezarezvani/engineering-team/senior-fullstack (project scaffolder with 4 templates: nextjs, fastapi-react, mern, django-react; code quality analysis with security + complexity scoring; stack selection guidance)",
+    "alirezarezvani/engineering-team/senior-backend (api_design_patterns.md)",
+    "alirezarezvani/engineering-team/senior-frontend (react_patterns.md)",
+    "alirezarezvani/engineering-team/senior-architect (architecture_patterns.md)",
+    "VoltAgent/01-core-development/fullstack-developer (8-item cross-stack checklist, data flow architecture framework, cross-stack auth with session/JWT/SSO/RBAC/row-level-security, real-time implementation with WebSocket + pub/sub, 4-tier testing strategy)",
+    "VoltAgent/01-core-development/backend-developer + frontend-developer (role separation, specialist handoffs)",
+    "VoltAgent/02-language-specialists (react-specialist, nextjs-developer, laravel-specialist, fastapi-developer, django-developer, typescript-pro, php-pro, node-specialist, python-pro, vue-expert, rails-expert, expo-react-native-expert - per-language detail as in-context depth when needed, not separate employees)",
+    "lodetomasi (react-wizard with state management decision order, nextjs-architect, vue-virtuoso, typescript-sage, nodejs-ninja, python-alchemist, laravel-wizard, rails-architect, svelte-sorcerer, angular-authority - pragmatic voice: 'Premature optimization is still evil. Profile first, optimize what matters.')",
+    "msitarzewski/engineering (engineering-software-architect, engineering-backend-architect, engineering-rapid-prototyper; engineering-minimal-change-engineer concept absorbed as 'Minimal-change mode' for inherited codebase work)",
+    "MetaGPT (FoundationAgents/MetaGPT) - Engineer spec\u2192code handoff SOP absorbed 2026-05-01: read task \u2192 read interface defs \u2192 read shared knowledge \u2192 match schema verbatim \u2192 no scope creep \u2192 self-review against File List",
+    "vercel-labs/agent-skills (MIT, official Vercel Labs, 22.1K stars) - react-best-practices (waterfalls + bundle size as Critical-tier), web-design-guidelines (UI-code correctness checklist), composition-patterns (boolean-prop-proliferation \u2192 compound components), react-native-guidelines. Consolidated into methodology 2026-05-14. vercel-deploy-claimable rejected (DevOps owns deploy).",
+    "supabase/agent-skills `supabase` skill (MIT, 2K stars, 133 forks, official Supabase, verified 2026-05-29) - BaaS / Supabase integration patterns: service_role vs anon key client-safety rule, @supabase/ssr cookie-refresh middleware as the only SSR path, getUser() vs getSession() discipline, Realtime channel-level filters + cleanup discipline, Edge Functions Deno HTTP shape + SQL functions/rpc() rule for DB-tight work, Storage bucket policies are RLS too + signed-URL pattern, client-direct Storage upload pattern over server proxy. Consolidated into rules.md 2026-05-29. Source correction noted: scout originally listed supabase-community/supabase-plugin (3 stars, distribution wrapper) - re-pointed to upstream supabase/agent-skills. The supabase-postgres-best-practices sibling skill lives in DBA per the dual-absorption split.",
+    "supabase-community/supabase-mcp (Apache 2.0, ~2.6k\u2605, official Supabase community, verified 2026-06-13). ABSORB BaaS *operational* slice \u2192 references/supabase-mcp-ops.md: apply_migration(DDL,tracked) vs execute_sql; branching create/merge/rebase/reset as the real test-on-clone path; get_advisors(security+perf) pre-ship gate; get_logs by service; generate_typescript_types post-migration; read_only + project_ref + features safety modes; don't-point-at-prod. Server host-installed (hosted HTTP / CLI endpoint). Gate-0: employee had deep BaaS *coding* patterns (service_role/@supabase/ssr/getUser/Realtime/Edge/Storage-RLS) but ZERO project-ops/migration-tracking/branching/advisors/logs/codegen tooling - net-new operational layer, absorbed as upgrade.",
+    "CONNECT: apify/actors-mcp-server (MIT, ~1.3k\u2605) - managed web scraping via 5,000+ Apify Actors; discover/run Actor, pull dataset into the data-flow. Commercial: host installs server + Apify API token, runs consume credits (flag cost). Documented in rules.md \u00a7Connected MCP servers.",
+    "trpc/trpc (MIT, 40.3K stars, verified 2026-06-13). ABSORB methodology -> references/type-safe-api-layer.md: end-to-end TS type safety with no codegen; router/procedure model (query/mutation/subscription); zod input validation at the boundary; export AppRouter TYPE not impl; auth as protectedProcedure middleware; built-in typed error codes. Gate-0: 0 hits, genuine gap (employee said 'types shared end-to-end' but only offered codegen/hand-written TS as the mechanism). tRPC is the no-codegen path for the all-TS Solaris stack; REST/GraphQL stay the default for public/multi-language APIs.",
+    "t3-oss/create-t3-app (MIT, 29K stars, verified 2026-06-13). METHODOLOGY -> references/type-safe-api-layer.md: scaffold composition (Next.js App Router + tRPC + Prisma/Drizzle + Auth.js + Tailwind + zod) as the blueprint for a typed Next.js template + the 'install only what you need' philosophy. CLI not bundled. Gate-0: 0 hits, gap (existing Next.js template stops at Auth.js + shadcn, no typed API layer).",
+    "better-auth/better-auth (MIT, 28.7K stars, verified 2026-06-13). ABSORB -> references/auth-patterns.md: the self-hosted-library auth bucket (the middle path between managed SaaS and hand-rolling). Framework-agnostic TS auth that owns its own tables in YOUR DB, with 2FA + multi-tenant/org + plugins. Reach for it on data-residency/cost-constrained clients who can't use Clerk/Auth0. Still obeys never-build-auth (maintained library, not your code). Gate-0: 0 hits, gap (auth matrix was managed-provider-only).",
+    "drizzle-team/drizzle-orm (Apache-2.0, 34.8K stars, verified 2026-06-13). ABSORB -> references/type-safe-api-layer.md: real Prisma-vs-Drizzle decision rule (Drizzle for edge/serverless + SQL-first + ~7.4kb zero-dep; Prisma for standard Node + richest tooling). Drizzle Kit migrations + Drizzle Studio noted. Gate-0: 1 thin mention ('Drizzle if Prisma perf issues') with no methodology; deepened, not a content-duplicate.",
+    "vercel/turborepo (MIT, 30.5K stars, verified 2026-06-13). CONNECT/METHODOLOGY -> references/type-safe-api-layer.md: monorepo build orchestration on top of pnpm workspaces (task pipeline + content-aware caching + remote cache) for the apps/web + apps/api + packages/shared layout that the tRPC typed-contract pattern needs. Dev-time build graph only; deploy/CI config stays with DevOps Engineer per standing boundary. Gate-0: 1 thin mention ('Monorepo (pnpm workspaces)') with no orchestration methodology; deepened, not a duplicate.",
+    "CONNECT + LICENSE FLAG (confirmed 2026-06-14): supabase/supabase is Apache-2.0 = clean (permissive; self-host/customize/build-on/ship client work freely, no copyleft). The Solaris BaaS default; supabase MCP server is CONNECT (host-installed per engagement, see supabase-mcp-ops.md), not auto-deployed. Documented in rules.md (BaaS / Supabase). Upgrade-to-CONNECT confirmation of an already-referenced tool."
+  ],
+  "available_sources_for_scout": [
+    "sickn33/antigravity-awesome-skills (Scout mines for new framework patterns, language-specific gotchas, scaffold templates for emerging stacks)",
+    "vercel-labs/agent-skills vercel-deploy-claimable skill - for the DevOps Engineer, not this employee",
+    "Supabase MCP server (hosted, see supabase/agent-skills .mcp.json) - activate per-engagement when the client is on Supabase; not pre-installed."
+  ],
+  "build_notes": "2026-05-01 v0.4.0: MetaGPT Engineer SOP absorbed (M4). | 2026-05-13: vercel-labs/agent-skills staged from description (lightweight append-blob; included a meaningless 'Agent Skills format' bullet, missed composition-patterns). 2026-05-14: redone properly from real source (github.com/vercel-labs/agent-skills README) - compared against existing methodology, consolidated 4 genuinely-better/new skills into rules.md, rejected vercel-deploy as DevOps scope, removed the append-blob. | 2026-05-18 v0.6.0: Wrote 4 high-priority references (stack-defaults, api-design, auth-patterns, minimal-change-mode). Reduces references_pending_expansion from 9 to 5. Bread-and-butter web dev work is the agency's revenue engine - these references are the no-look defaults for every new project. | 2026-05-18 v0.7.0: Role narrowed to GENERALIST + cross-stack COORDINATOR. Pure-frontend work routes to new frontend-developer specialist; pure-backend to backend-developer. This employee handles small projects where one person does both AND coordinates handoffs on bigger projects. | 2026-05-24: pending refs cleared (content lives in rules.md per Sprint 7/8 completion) | 2026-05-29 v0.8.0: supabase/agent-skills `supabase` skill absorbed - new 'BaaS / Supabase integration patterns' section in rules.md covering auth flows + SSR + Edge Functions + Realtime + Storage + client idioms. Cross-referenced with DBA (RLS lives there) and backend-developer (deeper SDK + service_role-side work). | 2026-06-04: project-takeover chain (codebase-onboarding stage1 + migration-architect stage3) cited in rules.md; performed by engineering, orchestrated by delivery-lead. | 2026-06-13 v1.1.0: Depth pass. Added references/type-safe-api-layer.md (tRPC + create-t3-app + Drizzle + Turborepo methodology; all MIT/Apache, all verified 2026-06-13, all 28K+ stars). Added self-hosted auth bucket (Better Auth) to auth-patterns.md. Perfection pass: added two-lane model (full vs prototype/small-task) to SKILL.md + decision rules; operationalized the cross-stack checklist into an ordered ship gate; fixed stale References table in SKILL.md and the '(pending)' references list in rules.md (files now exist / consolidated); deconflicted the SKILL.md 5-step vs rules.md 10-step workflow (SKILL.md canonical, rules.md is its expanded form). TOP5-CANDIDATES.md written. No em-dashes; edits confined to this employee's dir. | CONNECT 2026-06-14 v1.2.0: added explicit Supabase CONNECT + LICENSE FLAG (Apache-2.0 = clean) one-liner to rules.md BaaS section + absorbed_from line. Plus a one-line Cursor Project Rules pointer to backend-developer/references/cursor-rules-scaffolds.md (CC0-1.0, shared engineering ref). Supabase already referenced; this makes the clean-license posture explicit. No new reference file. No em-dashes. | DEPTH 2026-06-20 v1.3.0 (Codebase Migration ELITE, right-sized): added codemod-migration-strangler-fig.md - the migration METHOD for small/all-in-one full-stack projects (React/Next, TS monorepo, single app+API). Codemods (jscodeshift MIT; prefer vendor codemods @next/codemod/React/MUI; dry-run->diff->test->commit-separately), strangler-fig route-by-route flag-gated zero-downtime cutover with parity checks (minimal-change-mode at migration scale), Renovate dependency currency (AGPL-3.0 CLI flagged, recommend-only run-not-fork / free Mend hosted App default). Hands off to backend-developer for OpenRewrite/JVM, multi-service decomposition, DBA-coordinated data migration (see its codemod-migration-playbook.md incl. MSAL/Moderne-SaaS flags). Registered in references. HOST-WIRING: repo access + github-mcp; PLAN-ONLY otherwise; no new MCP required."
+}

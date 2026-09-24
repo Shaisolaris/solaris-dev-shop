@@ -1,0 +1,45 @@
+{
+  "name": "coo",
+  "version": "0.5.1",
+  "description": "COO / Chief Operating Officer  -  strategy execution + process design (Ad hoc \u2192 Optimized maturity scale) + operational cadence (daily/weekly/monthly/quarterly) + OKR cascade + tracking + scaling operations (full Seed \u2192 Series A \u2192 B \u2192 C \u2192 Growth playbook with what-breaks/hiring/process/tools/comm/culture per stage) + bottleneck analysis (TOC) + cross-functional coordination (RACI + escalation) + span of control rule (1:6-8 IC, 1:4-6 manager, 1:3-5 director, 1:5-8 VP) + SOP authoring + resource + vendor management + operational metrics (burn <2x, decision <48h, OKR >70%). Distinct from CEO / CFO / CTO / CHRO. Clean rebuild from 3 source files.",
+  "author": "Shai Ali",
+  "license": "MIT",
+  "skills": [
+    "SKILL.md"
+  ],
+  "references": [
+    "rules.md",
+    "learnings.md",
+    "eos-operating-cadence.md",
+    "../decision-quality-protocol-2026.md",
+    "capability.contract.json"
+  ],
+  "references_pending_expansion": [],
+  "tags": [
+    "leadership",
+    "coo",
+    "operations",
+    "operational-excellence",
+    "process-design",
+    "okr",
+    "scaling",
+    "bottleneck",
+    "cadence",
+    "raci",
+    "span-of-control",
+    "sop",
+    "process-maturity",
+    "lean-operations",
+    "continuous-improvement"
+  ],
+  "department": "leadership",
+  "absorbed_from": [
+    "alirezarezvani/docs/skills/c-level-advisor/coo-advisor.md",
+    "alirezarezvani/c-level-advisor/coo-advisor/references/scaling_playbook.md",
+    "msitarzewski-agency-agents/project-management/project-management-studio-operations.md",
+    "ABSORB (methodology, 2026-06-15): bradfeld/ceos (MIT, 117 stars, Brad Feld - notable) EOS/Traction operating cadence (Rocks, L10 agenda, Scorecard, IDS, Accountability Chart, FBA process scoring). Methodology/templates only. -> eos-operating-cadence.md. Net-new: the operating RHYTHM under the advisory frameworks."
+  ],
+  "phase_artifacts": "sources/_analysis/coo/01-discovery.md + 02-extraction.md [artifact lost in 2026-06 consolidation  -  see solaris/reports/audits/2026-06-09-brain-audit.md]",
+  "build_notes": "REBUILD 2026-04-25. Phase 1 grep + Phase 2 read 3 source files + Phase 3 cross-source synthesis + Phase 4 SKILL/rules/plugin/learnings + Phase 6 ledger entry. Clean v0.2.0. | 2026-05-18 v0.3.0: COO advisory (bottleneck-first ops, ROI-required tool adoption, quarterly vendor review, cross-team SLA hard rules). | 2026-05-18 pending refs (3) consolidated into rules.md (not external files): scaling-playbook, sop-template, operational-cadence. | 2026-06-13 v0.4.0: deep quality pass. PART A: no new bar-clearing OSS (advisory role; alirezarezvani coo-advisor 5-stage scaling playbook already absorbed = strongest; scalability-advisor is wrong-lane=CTO; process-mapping=business-analyst; commercial COO skills not OSS - all reject). PART B: refs clean (references/scaling_playbook.md + roster.md in SKILL are upstream-source/cross-org citations, not phantoms), added small-task/quick-turn lane, 0 em-dashes. PART C: none warranted (TOC/OKR/meeting-rhythm methodology public + already reflected). See TOP5-CANDIDATES.md. | 2026-06-15 v0.5.0: EOS operating cadence (execution-depth). | 2026-07-24 skill-8qr: decision-quality protocol + L2 contract surface (upgraded_decision_quality; post version 1.1.0).",
+  "doctrine_note": "'never fold Shai skills' doctrine retired 2026-06-04 (residual sweep, step 2.10)."
+}

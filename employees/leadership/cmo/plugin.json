@@ -1,0 +1,49 @@
+{
+  "name": "cmo",
+  "version": "0.5.1",
+  "description": "CMO / Head of Marketing  -  brand positioning (April Dunford 5-step / Geoffrey Moore Crossing the Chasm), category design (Three-Act + Lightning Strike), messaging hierarchy (5 levels), 3-VP architecture, proof point hierarchy, competitive positioning maps + battlecards, growth strategy (North Star, K-factor, AARRR, 30% experiment winner rate), GTM motion design (PLG / sales-assist / inside / field), demand waterfall (Inquiry \u2192 MQL \u2192 SAL \u2192 SQL \u2192 Opportunity \u2192 Closed-Won), marketing organization design, martech stack (Salesforce / HubSpot / Marketo / Segment / GA4 / 6sense / Bizible / G2), pricing + packaging governance, brand defense, attribution philosophy, marketing-influenced pipeline. Distinct from Content Marketer / CRO Designer / Paid Ads / SEO / Email / Social Media / Market Researcher. CLEAN REBUILD via Deep Absorption Protocol.",
+  "author": "Shai Ali",
+  "license": "MIT",
+  "skills": [
+    "SKILL.md"
+  ],
+  "references": [
+    "rules.md",
+    "learnings.md"
+  ],
+  "references_pending_expansion": [],
+  "tags": [
+    "leadership",
+    "cmo",
+    "marketing",
+    "positioning",
+    "category-design",
+    "april-dunford",
+    "geoffrey-moore",
+    "crossing-the-chasm",
+    "messaging-architecture",
+    "value-propositions",
+    "battlecards",
+    "north-star-metric",
+    "k-factor",
+    "aarrr",
+    "demand-waterfall",
+    "gtm",
+    "ple",
+    "abm",
+    "martech",
+    "attribution"
+  ],
+  "department": "leadership",
+  "absorbed_from": [
+    "alirezarezvani-claude-skills/c-level-advisor/cmo-advisor/references/brand_positioning.md (Category Design Three-Act + Lightning Strike, Messaging Hierarchy, Proof Point Hierarchy, competitive maps, battlecards)",
+    "alirezarezvani-claude-skills/marketing-skill/marketing-strategy-pmm/references/positioning-frameworks.md (April Dunford 5-step, Attribute Audit, Geoffrey Moore template, Crossing the Chasm, Whole Product)",
+    "msitarzewski-agency-agents/marketing/marketing-growth-hacker.md (North Star, K-factor, AARRR, success benchmarks)",
+    "alirezarezvani-claude-skills/business-growth/sales-engineer/references/competitive-positioning-framework.md (CMO \u2194 Sales alignment)",
+    "lodetomasi-agents-claude-code/growth-hacker.md (cross-source K-factor patterns)",
+    "METHODOLOGY POINTER (2026-06-13): the 2026 sales+marketing depth absorbed into the functional employees feeds CMO strategy  -  content/social (social-media-manager linkedin-and-social-depth-2026.md), content/GEO (content-marketer content-strategy-taste-2026.md), email lifecycle (email-specialist email-marketing-depth-2026.md), outbound (outreach-specialist cold-call-deliverability-2026.md), sales motion (sales-engineer discovery-demo-multithread-2026.md). CMO orchestrates; the functional depth lives with the specialists. Key org-level levers: distribution>creation, founder/exec personal brand out-reaches pages 5-10x, original data as the defensible asset, premium-quality over volume."
+  ],
+  "rebuild_notes": "REBUILD 2026-04-24: Phase 1-6 Deep Absorption Protocol executed. 3+ source files deeply read. Phase artifacts at sources/_analysis/cmo/. Previous v0.3.0 had Shai's skills mixed in  -  DELETED. This is the clean v0.2.0.",
+  "build_notes": " | 2026-05-18 v0.3.0: GTM motion selection, narrow-ICP discipline, positioning template, brand/perf mix, CAC-per-channel hard rules. | 2026-05-18 pending refs (5) consolidated into rules.md (not external files): positioning-templates, category-design-playbook, messaging-hierarchy, battlecard-template, launch-playbook. | 2026-06-13 v0.4.0: pointer to the 2026 sales+marketing depth absorbed across the functional employees (no duplicate content  -  CMO orchestrates). Per Shai 'sales and marketing for tech companies'. | 2026-06-13 v0.5.0: deep quality pass. PART A: no new bar-clearing OSS (coreyhaines31 + alirezarezvani cmo-advisor already absorbed = strongest; kostja94/AICMO/timescale/syntax-syndicate are channel-EXECUTION libs or mirrors that belong to marketing employee/pods, not the CMO strategy layer - boundary preserved). PART B: refs clean (references/*.md in SKILL are upstream-source/cross-org citations, not phantoms), added small-task/quick-turn lane, 0 em-dashes. PART C: none warranted (CMO also deepened in prior Wave-3 pass). See TOP5-CANDIDATES.md.",
+  "doctrine_note": "'never fold Shai skills' doctrine retired 2026-06-04 (residual sweep, step 2.10)."
+}

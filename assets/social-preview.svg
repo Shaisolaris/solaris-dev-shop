@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+  <rect width="1280" height="640" fill="#102033"/>
+  <rect x="0" y="0" width="14" height="640" fill="#e8a54b"/>
+  <text x="72" y="150" fill="#e8a54b" font-family="Georgia, serif" font-size="28">SOLARIS DEV SHOP</text>
+  <text x="72" y="230" fill="#f4f1ea" font-family="Georgia, serif" font-size="64">61 employees. One chief of staff.</text>
+  <text x="72" y="300" fill="#d7deea" font-family="Georgia, serif" font-size="32">A free skill library. Version 0.52. MIT.</text>
+  <text x="72" y="420" fill="#f4f1ea" font-family="Georgia, serif" font-size="28">You ask. The chief of staff assigns. A specialist does the work.</text>
+  <text x="72" y="470" fill="#d7deea" font-family="Georgia, serif" font-size="26">You still decide.</text>
+  <text x="72" y="560" fill="#9aabc4" font-family="Georgia, serif" font-size="22">Example: a login regression routes to the QA engineer. The chief of staff does not write the test plan.</text>
+</svg>

@@ -1,0 +1,69 @@
+{
+  "name": "ai-automation-engineer",
+  "version": "0.13.1",
+  "description": "Automation wiring expert - n8n (primary), Zapier, Make.com, Pipedream, Python/Node scripts, Cloudflare Workers, webhooks, scheduled jobs, API orchestration, AI-embedded workflows. Clear altitude split from LLM Agent Designer (which does prompt/RAG/agent design). This employee wires designs into real automated workflows. Dedicated Mac automation (e.g. Shai's LinkedIn semi-autonomous setup) covered. v0.13.0 (2026-07-24): toolchain/MCP preflight fail-closed with one actionable cause (engineering-core wave).",
+  "author": "Shai Ali",
+  "homepage": "https://github.com/shaisolaris/solaris-employees",
+  "license": "MIT",
+  "skills": [
+    "SKILL.md"
+  ],
+  "references": [
+    "rules.md",
+    "learnings.md",
+    "n8n-mcp.md",
+    "orchestration-patterns.md",
+    "mcp-and-pipeline-building.md"
+  ],
+  "references_pending_expansion": [],
+  "references_source_note": "n8n + Zapier + Make + Pipedream are canonical platform docs. linkedin-automation-playbook.md is Solaris-specific for Shai's planned Mac setup. Cross-reference LLM Agent Designer for prompt/RAG/agent design - this employee wires their designs.",
+  "mcp_servers": [],
+  "tags": [
+    "engineering",
+    "automation",
+    "n8n",
+    "zapier",
+    "make",
+    "workflow",
+    "webhook",
+    "scheduled-jobs",
+    "api-orchestration",
+    "linkedin-automation",
+    "cron",
+    "browserbase",
+    "apify",
+    "cloud-browser",
+    "web-automation"
+  ],
+  "department": "engineering",
+  "absorbed_from": [
+    "alirezarezvani jira-expert automation-examples (workflow pattern vocabulary)",
+    "msitarzewski specialized/automation-governance-architect (governance, compliance, risk-scoring for automations)",
+    "sickn33/antigravity-skills/revops/references/automation-playbooks.md (CRM + email + calendar automation)",
+    "sickn33/antigravity-skills/whatsapp-cloud-api/references/automation-patterns.md (messaging automation)",
+    "wshobson workflow / automation patterns",
+    "VoltAgent automation orchestration",
+    "Solaris's own scheduled-task architecture (Talent Scout weekly scan, Knowledge Synthesizer Sunday sweep - canonical examples)",
+    "Shai's planned LinkedIn Mac automation requirements (informs Mac-native pattern)",
+    "MetaGPT (FoundationAgents/MetaGPT) - Engineer spec\u2192code handoff SOP absorbed 2026-05-01: read task \u2192 read interface defs \u2192 read shared knowledge \u2192 match schema verbatim \u2192 no scope creep \u2192 self-review against File List",
+    "czlonkowski/n8n-mcp (https://github.com/czlonkowski/n8n-mcp) - MIT, v2.54.0, 21.1k stars. Node-accurate n8n workflow construction: node-catalog lookup (schemas/params/operations), build from real node defs, validate before deploy. Closes the multi-scan miss on the employee's primary tool. Absorbed 2026-06-08.",
+    "CONNECT: browserbase/mcp-server-browserbase (Apache 2.0, ~3.4k\u2605, COMMERCIAL) - cloud headless-browser agent with Stagehand act/extract/observe over Playwright; stealth/captcha/proxy/parallel sessions for API-less site automation at scale (heavier sibling to local Web Operator). Host installs server + BROWSERBASE_API_KEY + project ID (+ model key); paid per session - flag cost, requires Shai approval. Documented in rules.md \u00a7Connected MCP servers. Gate-0: no browserbase/stagehand content present - net-new.",
+    "CONNECT: apify/actors-mcp-server (MIT, ~1.3k\u2605) - 5,000+ managed scraping/automation Actors \u2192 structured datasets; host installs server + Apify API token, runs consume credits (flag cost). Gate-0: no apify content present - net-new. Documented in rules.md \u00a7Connected MCP servers.",
+    "Zie619/n8n-workflows (https://github.com/Zie619/n8n-workflows) - MIT, 55.1k stars, pushed 2026-05-31. ~2k real searchable n8n workflow JSONs. Template-library-first methodology (search \u2192 adapt \u2192 validate via n8n-mcp). Gate-0: absent - net-new. Lifted into orchestration-patterns.md \u00a74. Absorbed 2026-06-13.",
+    "browser-use/workflow-use (https://github.com/browser-use/workflow-use) - AGPL-3.0 (FLAGGED copyleft), 4.0k stars, pushed 2026-06-12. RPA 2.0: record once \u2192 deterministic replay \u2192 agent fallback on drift. Methodology only; self-host the tool if ever run, no code redistribution. Gate-0: absent - net-new. Lifted into orchestration-patterns.md \u00a73. Absorbed 2026-06-13.",
+    "temporalio/temporal (https://github.com/temporalio/temporal) - MIT, 21.0k stars, pushed 2026-06-13. Durable execution for long-running stateful workflows (crash recovery, exactly-once effect, saga/compensation). Fills the multi-day-workflow gap above n8n. Gate-0: absent - net-new. Lifted into orchestration-patterns.md \u00a72 + SKILL decision tree. Absorbed 2026-06-13.",
+    "activepieces/activepieces (https://github.com/activepieces/activepieces) - NOASSERTION/mixed license (FLAGGED), 22.7k stars, pushed 2026-06-13. CONNECT: MCP-native self-hosted Zapier/n8n alternative (~400 MCP servers). Verify per-piece license before adopting. Gate-0: absent - net-new. Documented orchestration-patterns.md \u00a76. Absorbed 2026-06-13.",
+    "n8n-io/self-hosted-ai-starter-kit (https://github.com/n8n-io/self-hosted-ai-starter-kit) - Apache-2.0, 15.0k stars, pushed 2026-01-06. Canonical self-host stack: n8n + Postgres + Ollama + Qdrant via docker-compose. Operationalizes the 'n8n self-hosted is primary' claim. Gate-0: absent - net-new. Lifted into orchestration-patterns.md \u00a75. Absorbed 2026-06-13.",
+    "affaan-m/ECC (Everything Claude Code) - MIT - DEEPENED 2026-06-14 (v0.9.0) into new references/mcp-and-pipeline-building.md (BUILD craft for 3 sellable capabilities, methodology only, no source code bundled). Lifted from: mcp-server-patterns (ECC) - build MCP servers with Node/TS SDK + Zod validation + tools/resources/prompts primitives + stdio vs Streamable HTTP transport choice + schema-first/LLM-readable-errors/idempotency/SDK-pinning best practices (verify registration signatures against current MCP docs/Context7, do not copy from memory); recsys-pipeline-architect (community, MIT; pattern popularized by xAI open-sourced For You algo, Apache-2.0) - six-stage Source->Hydrator->Filter->Scorer->Selector->SideEffect framework + 8-step workflow + 3 trade-offs (single vs multi-action scoring, isolation vs joint, online vs offline) + hard rules (attribution, no trademark, scaffold must run, side effects never block) for feed/ranking/RAG-rerank/notification-triage pipelines; data-scraper-agent (community) - complete scheduled scraper stack (COLLECT->ENRICH->STORE; Python + free-tier LLM + GitHub Actions cron + Notion/Sheets/Supabase) with batch-LLM + model-fallback cost discipline + feedback-learning loop + robots.txt/ToS/dedup/secrets guardrails + quality checklist. Gate-0 vs existing n8n-mcp.md (consuming n8n via MCP) and orchestration-patterns.md (durable/RPA/template orchestration): NO overlap - section 1 is BUILDING an MCP server (not consuming one), sections 2-3 are net-new pipeline + scraper capabilities. FLEET DOCTRINE applied: the ECC scraper reference pins GitHub Actions to mutable tags; this file overrides with SHA-pin requirement for shipped client CI. No license flags (ECC MIT; recsys MIT; data-scraper community-permissive).",
+    "CONNECT + LICENSE FLAG (confirmed 2026-06-14): n8n-io/n8n is fair-code / NOASSERTION (Sustainable Use License + n8n Enterprise License), NOT OSI open-source. Internal use OK (Solaris's default self-hosted orchestrator); RESALE and hosting-n8n-as-a-service to clients are RESTRICTED by the Sustainable Use License (commercial/embed license required from n8n). Client automations running on our/the client's own n8n instance = internal use; productizing n8n-the-platform is not. Documented in rules.md (n8n workflows). License-clean self-host resale alternative: activepieces (orchestration-patterns.md), verify per-piece license. Upgrade-to-CONNECT of an already-referenced tool.",
+    "OpenHands + Goose DEEPENED 2026-06-15 (v0.11.0) by EXTENDING orchestration-patterns.md with new section 7 'Agentic automation run discipline' (methodology only, no source code bundled or run; tools self-hosted per their own licenses if ever run). Sources vetted 2026-06-15 (OSI-permissive, credible maintainer, >1k stars, active <6mo): All-Hands-AI/OpenHands (MIT core, ~65k stars, Graham Neubig/All Hands AI, active) - autonomous-run guardrails for LLM-driven automations: sandboxed execution + 3 action-confirmation modes (full-auto/confirm-risky/read-only) + per-run resource budget + stuck-loop detection; block/goose (Apache-2.0, ~38k stars, now Agentic AI Foundation/Linux Foundation, active) - recipe pattern: portable parameterized agent-task definition (params + instructions + scoped tools + sub-recipes + schema validation), one level up from an n8n template. Gate-0 vs mcp-and-pipeline-building.md (build MCP servers / recsys pipelines / scraper stacks) + orchestration-patterns.md sections 1-6 (durable execution / deterministic RPA / template-library / self-host) + n8n-mcp.md (consume n8n via MCP): NET-NEW - existing idempotency/retries/kill-switch are not the autonomous-agent-run guardrail set; the n8n template-library (section 4) is a fixed node graph, the Goose recipe is a reusable agent-task spec (distinct altitude, cross-referenced not duplicated). Agent-DESIGN altitude of these patterns (signatures, critic loops, prompt optimization) routed to LLM Agent Designer's agentic-build-patterns.md. No license flags (MIT/Apache-2.0).",
+    "czlonkowski/n8n-mcp (https://github.com/czlonkowski/n8n-mcp) + n8n skills - verified live 2026-06-22, maintained. ABSORB tool surface + workflow methodology; live MCP operator-installed. Node-accurate workflow building: query the real n8n node catalog + per-node param schemas, generate VALID importable workflow JSON, validate before import. n8n is this employee's primary tool -> closes a confirmed prior miss. Gate 0 PASS (no node-accurate building surface before). -> n8n-mcp.md + rules tool-surface line."
+  ],
+  "available_sources_for_scout": [
+    "n8n.io + Zapier templates + Make community (Scout mines for new integration patterns, platform updates, community-proven workflows)",
+    "affaan-m/ECC (Everything Claude Code) - MIT - skills/ tree has further automation/pipeline methodology (automation-audit-ops, orch-pipeline, social-graph-ranker, connections-optimizer); re-scan",
+    "All-Hands-AI/OpenHands (MIT) - re-scan autonomous-run guardrail advances for agentic automations",
+    "block/goose (Apache-2.0, Agentic AI Foundation/Linux Foundation) - re-scan recipe/extension patterns"
+  ],
+  "build_notes": "2026-05-01 v0.4.0: MetaGPT Engineer SOP absorbed (M4). | 2026-05-24: pending refs cleared (content lives in rules.md per Sprint 7/8 completion) | 2026-06-13 v0.8.0: depth pass - TOP5-CANDIDATES.md added; orchestration-patterns.md created (durable execution, deterministic RPA, template-library-first, self-host bring-up, Activepieces CONNECT) and registered; n8n-mcp.md registered as a reference; rules.md fixed phantom references block, added small-task/prototype lane + cost-budget formula; SKILL.md updated references table, platform escalation rules, prototype-lane note. Absorbed Zie619/n8n-workflows, workflow-use (AGPL), Temporal, Activepieces (mixed-license), self-hosted-ai-starter-kit. | 2026-06-14 v0.9.0 ECC BUILD-CAPABILITY DEEPENING: created references/mcp-and-pipeline-building.md from affaan-m/ECC (MIT) - lifted mcp-server-patterns (build MCP servers: Node/TS SDK, Zod, stdio/Streamable-HTTP) + recsys-pipeline-architect (six-stage recommendation/ranking/feed/RAG-rerank framework) + data-scraper-agent (complete scheduled scraper stack, a sellable capability). Methodology only, no code bundled. Gate-0 enforced vs n8n-mcp.md (consume n8n via MCP) + orchestration-patterns.md (durable/RPA orchestration): zero overlap, all net-new build craft. Fleet doctrine: SHA-pinned the GitHub Actions CI (ECC reference used mutable tags); no em-dashes; secrets/robots.txt/ToS guardrails preserved. Registered in references[], rules.md pointer added. No license flags (MIT/permissive). | CONNECT 2026-06-14 v0.10.0: upgraded n8n to an explicit CONNECT + LICENSE FLAG (fair-code / NOASSERTION, Sustainable Use License): internal use OK, resale/hosting-to-clients restricted. Added to rules.md (n8n workflows) + absorbed_from CONNECT line. n8n was already heavily referenced; this makes the license posture explicit. No new reference file. No em-dashes. | 2026-06-15 v0.11.0 AGENTIC-RUN-DISCIPLINE DEEPENING: extended orchestration-patterns.md with section 7 'Agentic automation run discipline' lifting OpenHands autonomous-run guardrails (sandbox + confirmation modes + per-run budget + stuck detection) and Goose recipe pattern (portable parameterized agent-task definition). Methodology only, no source code bundled or run. Gate-0 enforced vs mcp-and-pipeline-building.md + orchestration-patterns.md sections 1-6 + n8n-mcp.md: net-new (existing idempotency/retries/kill-switch are not the autonomous-agent-run guardrail set; recipe is one level above an n8n template, cross-referenced not duplicated). Extended an existing reference rather than creating a near-duplicate file, so no new references[] entry; rules.md pointer updated. All sources OSI-permissive (MIT/Apache-2.0), >1k stars, credible maintainers, active <6mo - no license flags. No em-dashes. | 2026-06-22 v0.12.0: czlonkowski/n8n-mcp absorbed - node-aware n8n workflow building (real node catalog + schemas -> valid workflow JSON + pre-import validation), replacing conceptual-only n8n guidance. Confirmed prior-miss closed. Gate 0 PASS."
+}

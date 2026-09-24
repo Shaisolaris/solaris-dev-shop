@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solaris.local/schemas/assurance-finding.schema.json",
+  "title": "Quality OS finding",
+  "schema_version": "1.0.0",
+  "type": "object",
+  "required": [
+    "finding_id",
+    "defect_kind",
+    "severity",
+    "title",
+    "evidence",
+    "accountable_role",
+    "reporter_role",
+    "status",
+    "verifier_role"
+  ],
+  "properties": {
+    "finding_id": { "type": "string" },
+    "defect_kind": { "type": "string" },
+    "severity": {
+      "type": "string",
+      "enum": ["S0", "S1", "S2", "S3", "S4", "info"]
+    },
+    "title": { "type": "string" },
+    "evidence": { "type": "array", "items": { "type": "string" } },
+    "accountable_role": { "type": "string" },
+    "reporter_role": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["open", "in_progress", "waived", "closed"]
+    },
+    "closure_criteria": { "type": "string" },
+    "verifier_role": { "type": "string" },
+    "closed_by_role": { "type": "string" },
+    "order_id": { "type": "string" },
+    "waiver_id": { "type": "string" },
+    "created_at": { "type": "string" },
+    "updated_at": { "type": "string" }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,40 @@
+{
+  "name": "chief-of-staff",
+  "version": "0.7.0",
+  "description": "Top-level request dispatcher. Parses intent, assembles the right team, enforces session-end learnings capture.",
+  "author": "Shai Ali",
+  "homepage": "https://github.com/shaisolaris/solaris-employees",
+  "license": "MIT",
+  "skills": [
+    "SKILL.md"
+  ],
+  "references": [
+    "rules.md",
+    "learnings.md",
+    "references/cross-employee-integration-patterns.md",
+    "references/supervisor-handoff-tool-pattern.md",
+    "references/routing-table.md",
+    "references/routing-patterns.md",
+    "NATURAL-ROUTING-PLAN.md",
+    "references/company-facts.md"
+  ],
+  "mcp_servers": [],
+  "tags": [
+    "meta",
+    "orchestration",
+    "routing",
+    "dispatch"
+  ],
+  "department": "meta",
+  "absorbed_from": [
+    "msitarzewski/agency-agents (specialized-chief-of-staff)",
+    "swarm-coordinator (deprecated 2026-05-18, merged here) - hive-mind orchestration, swarm topologies (mesh/hierarchical/ring/star), shared context handoff",
+    "consensus-voting (deprecated 2026-05-18, merged here) - Raft/BFT/Gossip/CRDT conflict resolution protocols, dissent preservation",
+    "crewAIInc/crewAI (MIT, 50.5K stars, 2.3K commits, v1.14.4) - hierarchical process pattern: manager-led delegation + validation gate, three crew modes (sequential/hierarchical/flows), structured output contracts (pydantic/zod/JSON schema), human review hooks. Pattern lifted into rules.md 2026-05-18; the Python framework itself is not adopted (Solaris employees are markdown SOPs, not Python crews).",
+    "langchain-ai/langgraph-supervisor-py \"LangGraph Multi-Agent Supervisor\" (MIT, ~1.6k stars, README methodology read 2026-06-15). METHODOLOGY ONLY, no code vendored/run -> references/supervisor-handoff-tool-pattern.md. Adds the central-supervisor dispatch doctrine: per-worker handoff tools with an injected task_description brief the supervisor must author (no context-bleed reconstruction); full_history vs last_message history modes (default last_message for token economy, full_history only when a later step needs the trail); add_handoff_messages-style concise-handoff suppression for token-tight runs; create_forward_message_tool message-forwarding (forward a worker's exact answer instead of paraphrasing - saves supervisor tokens + avoids misrepresentation); multi-level supervisor-of-supervisors hierarchies (mid-level domain supervisors over leaf employees, routing convenience that preserves the flat execution layer). Gate-0 vs cross-employee-integration-patterns.md: that file documents schema CONTRACTS between named employee pairs + topologies + conflict protocols; it had NO handoff-tool anatomy, no task_description-brief discipline, no full-vs-last history modes, no message-forwarding, no supervisor-of-supervisors layering - all net-new. Library not adopted (employees are markdown SOPs not LangGraph graphs). No em-dashes."
+  ],
+  "available_sources_for_scout": [
+    "sickn33/antigravity-awesome-skills (1,426 community skills - Scout mines weekly)"
+  ],
+  "build_notes": " | 2026-05-18 v0.3.0: Absorbed swarm-coordinator (hive-mind orchestration + swarm topologies) AND consensus-voting (Raft/BFT/Gossip/CRDT conflict resolution). Both deprecated to _deprecated-2026-05-18/. | 2026-05-18 v0.4.0: CrewAI hierarchical process pattern absorbed (50.5K stars, MIT). Three crew modes + validation gate + structured output contracts + human review hooks. Anti-pattern catalog (re-do without feedback, hierarchical for trivial tasks, skipping output validation). | 2026-06-13 v0.4.1: Part-B fix, references/cross-employee-integration-patterns.md (documented handoff protocols between employees) was orphaned (present on disk, not registered, not cited); now registered in plugin.json references[] and cross-referenced from rules.md so the orchestration playbook surfaces it. em-dashes purged from plugin.json text. No content change. | 2026-06-15 v0.5.0 (dispatch-doctrine pass): added references/supervisor-handoff-tool-pattern.md (langgraph-supervisor-py, MIT, methodology-only, no code bundled). Registered in references; rules.md References gains a pointer. Net-new dispatch mechanics: injected task_description handoff briefs, full-vs-last-message history modes, concise-handoff suppression, message-forwarding to skip re-summarization, multi-level domain supervisors. Gate-0: complements (does not duplicate) cross-employee-integration-patterns.md, which only covered pairwise schema contracts/topologies/conflict protocols. No em-dashes. | 2026-06-28 v0.6.0: routing made executable - routing-table.md (machine source of truth) + scripts/route.py deterministic resolver (10-case self-test) + routing-patterns.md (fills the SKILL-referenced file). Spec routing -> tested executable. | 2026-07-24 meta-orchestration wave: capability contract upgrade, RUNTIME HARDENING (handoff/context-boundary/provenance/conflict/failure/escalation/no-autonomy/provider-parity), evaluation fixtures under fixtures/evaluation/meta-orchestration/."
+}

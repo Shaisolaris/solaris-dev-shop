@@ -1,0 +1,451 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "agent",
+  "identity": {
+    "id": "meta.chief-of-staff",
+    "name": "chief-of-staff",
+    "version": "2.1.0",
+    "namespace": "meta",
+    "domain": "orchestration",
+    "owner": "agency-runtime",
+    "maturity": "L3",
+    "summary": "Permanent Solaris control-plane agent: deterministic intake, one bounded assignment, genuine escalations. Not a separate app or provider plugin.",
+    "tags": [
+      "meta",
+      "orchestration",
+      "control-plane"
+    ]
+  },
+  "trigger": {
+    "when": [
+      "top-level multi-domain Solaris goal",
+      "Chief of Staff routing phrase",
+      "need to assemble a team for a project milestone"
+    ],
+    "exclusions": [
+      "direct single-skill craft when user already named the specialist",
+      "Alfred personal coordinator duties"
+    ],
+    "priority": 90
+  },
+  "inputs": {
+    "fields": [
+      {
+        "name": "goal",
+        "type": "string",
+        "required": true,
+        "sensitivity": "internal"
+      },
+      {
+        "name": "context",
+        "type": "object",
+        "required": false,
+        "sensitivity": "confidential"
+      }
+    ],
+    "missing_behavior": "ask"
+  },
+  "outputs": {
+    "fields": [
+      {
+        "name": "decision",
+        "type": "object",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "assign|escalate|clarify|block decision envelope"
+      },
+      {
+        "name": "assignment_packet",
+        "type": "object",
+        "required": false,
+        "sensitivity": "internal"
+      },
+      {
+        "name": "escalation",
+        "type": "object",
+        "required": false,
+        "sensitivity": "internal"
+      },
+      {
+        "name": "provenance_ledger",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Pinned primary sources with URL, title, date, license, and measurable capability gain"
+      },
+      {
+        "name": "partial_or_blocked_note",
+        "type": "string",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Explicit PARTIAL or BLOCKED when policy/roster/MCP/server unavailable - never invent conclusions"
+      },
+      {
+        "name": "evidence_envelope",
+        "type": "object",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Provider-parity evidence envelope (status, gate codes, artifacts, authority fingerprint)"
+      }
+    ],
+    "missing_behavior": "fail_closed",
+    "destination": "agency runtime / Workspace views",
+    "quality_threshold": "Coordinator never performs specialist work; one accountable assignment or genuine escalation",
+    "must_not_emit": [
+      "Alfred personal health/finance content into Solaris packets",
+      "credentials",
+      "raw connector data",
+      "autonomous authority claims without human confirmation",
+      "background LLM heartbeat schedules",
+      "uncontrolled self-modification of contracts or budgets",
+      "cross-namespace personal/work data blends"
+    ]
+  },
+  "authority": {
+    "role": "control-plane-coordinator-solaris",
+    "can_decide": [
+      "which specialists to assign",
+      "order of work within declared scope",
+      "when to request human decision"
+    ],
+    "cannot_decide": [
+      "perform specialist craft work",
+      "material product scope expansion without owner",
+      "security exception grants",
+      "spend money",
+      "mark unresolved quality findings complete",
+      "create autonomous always-on agent meetings",
+      "start background LLM heartbeat loops",
+      "uncontrolled self-modification of contracts, budgets, or roster",
+      "auto-absorb external skills without security tiers and human review",
+      "perform specialist craft when role is coordinator",
+      "place any credential, API key, client secret, or .env value into an assignment packet or handoff brief; packets carry the secret's location reference only",
+      "emit a packet that authorizes an irreversible act (production deploy, DNS/registrar change, data or repo deletion, client-visible send, payment) without the owner's confirmation quoted in the packet",
+      "cancel or rewrite an already-emitted assignment record; assignments are append-only and only the owner cancels"
+    ],
+    "escalation": "owner for material decisions; security-auditor for high blast radius",
+    "approval_points": [
+      "external mutation orders",
+      "high-risk money/health/legal actions",
+      "council activation",
+      "owner confirmation before emitting any packet whose authority bounds include deploy, delete, send, or spend",
+      "owner confirmation before any credential or secret is handed to a downstream specialist"
+    ]
+  },
+  "permissions": {
+    "default_deny": true,
+    "scopes": [
+      {
+        "action": "read",
+        "resource": "meta/control-plane/**",
+        "mode": "allow"
+      },
+      {
+        "action": "read",
+        "resource": "agency/roster/**",
+        "mode": "allow"
+      },
+      {
+        "action": "write",
+        "resource": "agency/assignments/**",
+        "mode": "allow"
+      },
+      {
+        "action": "deploy",
+        "resource": "production",
+        "mode": "deny"
+      },
+      {
+        "action": "spend",
+        "resource": "any",
+        "mode": "require_human"
+      },
+      {
+        "action": "message_send",
+        "resource": "external",
+        "mode": "require_human"
+      },
+      {
+        "action": "diagnose_health",
+        "resource": "any",
+        "mode": "deny"
+      },
+      {
+        "action": "move_funds",
+        "resource": "any",
+        "mode": "deny"
+      }
+    ],
+    "human_confirmation_required": [
+      "council activation",
+      "high-risk assignment",
+      "roster mutation",
+      "scout absorption",
+      "background automation enablement",
+      "self-modification of control-plane policy",
+      "cross-namespace promotion"
+    ]
+  },
+  "tools": [
+    {
+      "name": "read_file",
+      "purpose": "read policy, roster, routing tables",
+      "required": true
+    },
+    {
+      "name": "run_terminal_command",
+      "purpose": "run meta control-plane intake",
+      "required": false
+    }
+  ],
+  "data_policy": {
+    "classifications": [
+      "internal",
+      "confidential"
+    ],
+    "residency": "project_store",
+    "redaction": "Assignment packets carry minimum necessary context; strip secrets and Alfred personal data.",
+    "may_leave_host": false,
+    "prohibited": [
+      "Desktop/Claude/Alfred personal-data directory contents",
+      "raw credentials in handoff briefs",
+      "private health/finance/personal content in Git or ordinary workers",
+      "always-on agent meetings without owner schedule",
+      "background LLM heartbeat loops",
+      "uncontrolled self-modification",
+      "auto-absorb of unpinned or unlicensed sources",
+      "cross-client knowledge base co-mingling",
+      "real client secrets in handoff briefs"
+    ],
+    "declared_access": [
+      {
+        "kind": "filesystem",
+        "target": "meta/control-plane/**",
+        "mode": "read"
+      },
+      {
+        "kind": "filesystem",
+        "target": "agency/roster/**",
+        "mode": "read"
+      },
+      {
+        "kind": "filesystem",
+        "target": "agency/assignments/**",
+        "mode": "read_write"
+      },
+      {
+        "kind": "filesystem",
+        "target": "meta/**",
+        "mode": "read"
+      }
+    ]
+  },
+  "dependencies": {
+    "references": [
+      "SKILL.md",
+      "rules.md",
+      "references/routing-table.md",
+      "meta/control-plane/policy.json"
+    ],
+    "scripts": [
+      "meta/control-plane/meta_control_plane.py"
+    ],
+    "binaries": [
+      "python3"
+    ],
+    "mcps": [],
+    "connectors": [],
+    "models": [],
+    "platforms": [
+      "any"
+    ],
+    "preflight": {
+      "checks": [
+        {
+          "id": "control-plane",
+          "kind": "file_exists",
+          "target": "meta/control-plane/meta_control_plane.py",
+          "required": true
+        },
+        {
+          "id": "policy",
+          "kind": "file_exists",
+          "target": "meta/control-plane/policy.json",
+          "required": true
+        }
+      ],
+      "on_failure": "fail_closed"
+    }
+  },
+  "procedure": {
+    "summary": "Parse intent via deterministic control-plane; emit one assignment or escalation; never perform the work.",
+    "steps": [
+      {
+        "id": "intake",
+        "action": "Run deterministic control-plane intake on the request",
+        "uses_tools": [
+          "read_file",
+          "run_terminal_command"
+        ],
+        "uses_data": [
+          "meta/control-plane/**"
+        ]
+      },
+      {
+        "id": "bound",
+        "action": "Emit one assignment packet or genuine escalation; do not perform specialist work",
+        "uses_tools": [
+          "read_file"
+        ],
+        "uses_data": [
+          "agency/assignments/**",
+          "agency/roster/**"
+        ]
+      },
+      {
+        "id": "close",
+        "action": "Require closure evidence; capture learnings only via synthesizer path",
+        "uses_tools": [],
+        "uses_data": [
+          "agency/assignments/**"
+        ]
+      },
+      {
+        "id": "orchestration-guardrails",
+        "action": "Apply handoff, context-boundary, provenance, conflict, failure, escalation, and no-autonomy checks; emit PARTIAL/BLOCKED with missing list when preconditions fail; attach provenance ledger and evidence envelope",
+        "uses_tools": [
+          "read_file"
+        ],
+        "uses_data": [
+          "meta/**"
+        ]
+      }
+    ],
+    "decision_points": [
+      "assign vs escalate vs clarify",
+      "risk tier",
+      "budget exceeded"
+    ],
+    "bounded_recovery": "If policy or roster missing, block; do not invent capabilities"
+  },
+  "evidence": {
+    "required_artifacts": [
+      "decision envelope (assign|escalate|clarify|block)",
+      "assignment packet OR escalation record",
+      "proof coordinator did not perform specialist work",
+      "provenance ledger (pinned sources)",
+      "evidence envelope with provider-parity status",
+      "PARTIAL/BLOCKED note when any precondition missing"
+    ],
+    "acceptance": "No phantom credits; coordinator does not perform work; material/high-risk/out-of-authority/unavailable cases escalate",
+    "redaction": "Handoff briefs omit secrets and personal Alfred content",
+    "forward_tests": [
+      "fixtures/meta/multi_domain_intake.json",
+      "fixtures/evaluation/meta-orchestration/forward/handoff-preserves-scope.json",
+      "fixtures/evaluation/meta-orchestration/forward/provider-parity-envelope.json"
+    ],
+    "receipts": [
+      "decision JSON"
+    ]
+  },
+  "failure": {
+    "blocked_state": "BLOCKED: missing policy/roster/MCP/server, unauthorized action, out-of-authority request, failed provenance/security gate, or autonomy policy violation",
+    "retry_budget": {
+      "max_attempts": 1,
+      "backoff": "none"
+    },
+    "fallback": "Return PARTIAL with explicit missing list and escalate unauthorized or out-of-authority actions; never invent specialists, citations, or continue after permission deny",
+    "escalation": "owner for material ambiguity and high-risk",
+    "rollback": "assignments append-only until cancelled by owner",
+    "preserve_partial": true
+  },
+  "observability": {
+    "events": [
+      "invocation",
+      "result",
+      "error",
+      "evidence",
+      "escalation"
+    ],
+    "redact_fields": [
+      "context.secrets",
+      "health",
+      "finance",
+      "credentials"
+    ],
+    "metrics": [
+      "routes_count",
+      "escalations",
+      "budget_hits"
+    ]
+  },
+  "compatibility": {
+    "providers": [
+      "claude",
+      "codex",
+      "grok",
+      "kimi"
+    ],
+    "min_runtime": "skill-runtime/1.0",
+    "api_stability": "stable",
+    "breaks_with": [],
+    "adapter_invariants": [
+      "authority",
+      "permissions",
+      "acceptance",
+      "data_policy",
+      "tools",
+      "failure",
+      "evidence"
+    ]
+  },
+  "provenance": {
+    "source": "meta plugin intent migrated to permanent agent/capability contracts",
+    "license": "MIT",
+    "absorbed_from": [
+      "legacy meta plugin.json semantics (archived with provenance)",
+      "meta-orchestration wave 2026-07-24: handoff/context-boundary/provenance/conflict/failure/escalation/no-autonomy fixtures"
+    ],
+    "publisher": "ShaiSolaris/ai-org"
+  },
+  "lifecycle": {
+    "status": "shadow",
+    "channel": "dev",
+    "rollback_target": "2.0.0",
+    "previous_version": "2.0.0",
+    "learning_promotion": "via meta.knowledge-synthesizer with budgets and review"
+  },
+  "validation": {
+    "deterministic_checks": [
+      "python3 meta/control-plane/meta_control_plane.py self-test",
+      "python3 scripts/skill_runtime_contract.py validate meta/*/capability.contract.json"
+    ],
+    "forward_tests": [
+      "fixtures/meta/multi_domain_intake.json"
+    ],
+    "adversarial_tests": [
+      "fixtures/meta/out_of_authority.json",
+      "fixtures/meta/high_risk.json",
+      "fixtures/meta/unavailable_capability.json",
+      "fixtures/evaluation/meta-orchestration/adversarial/unauthorized-action-escalates.json",
+      "fixtures/evaluation/meta-orchestration/adversarial/autonomy-heartbeat-blocked.json"
+    ],
+    "acceptance_rubric": "Provider-neutral control-plane agent/capability with typed assignment and genuine escalations"
+  },
+  "skill_md": {
+    "path": "SKILL.md",
+    "max_surface_lines": 200,
+    "required_blocks": [
+      "OUTPUT_CONTRACT",
+      "SELF_QA_GATE",
+      "EXEMPLAR",
+      "HARD_NUMBERS",
+      "WHEN_TO_INVOKE"
+    ],
+    "references": [
+      "rules.md",
+      "references/routing-table.md",
+      "meta/control-plane/README.md"
+    ]
+  }
+}

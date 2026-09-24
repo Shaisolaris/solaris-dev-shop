@@ -1,0 +1,453 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "capability",
+  "identity": {
+    "id": "solaris.cmo",
+    "name": "cmo",
+    "version": "1.0.0",
+    "namespace": "solaris",
+    "domain": "leadership",
+    "owner": "solaris-leadership",
+    "maturity": "L2",
+    "summary": "Brand strategy, go-to-market narrative, and marketing portfolio decisions with brand-policy gates.",
+    "tags": [
+      "leadership",
+      "business-hardening",
+      "permission-bounded",
+      "growth-revenue",
+      "consent-suppression",
+      "platform-policy"
+    ]
+  },
+  "trigger": {
+    "when": [
+      "brand strategy",
+      "GTM plan",
+      "marketing portfolio",
+      "positioning",
+      "campaign brief approval"
+    ],
+    "exclusions": [
+      "ad account click-ops (paid-ads-manager)",
+      "single SEO page edit (seo-aso-specialist)",
+      "sending outbound (outreach-specialist)"
+    ],
+    "priority": 55
+  },
+  "inputs": {
+    "fields": [
+      {
+        "name": "brief",
+        "type": "string",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Typed business/creative brief for this turn"
+      },
+      {
+        "name": "brand_kit_path",
+        "type": "path",
+        "required": false,
+        "sensitivity": "internal",
+        "description": "Optional brand kit / voice guide path"
+      },
+      {
+        "name": "authority_level",
+        "type": "string",
+        "required": false,
+        "sensitivity": "internal",
+        "description": "Sealed order authority; default L0 draft-only"
+      }
+    ],
+    "missing_behavior": "ask",
+    "must_not_emit": []
+  },
+  "outputs": {
+    "fields": [
+      {
+        "name": "marketing_strategy_brief",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Typed marketing strategy brief deliverable"
+      },
+      {
+        "name": "brand_check",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Typed brand check deliverable"
+      },
+      {
+        "name": "approval_preview",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "confidential",
+        "description": "Typed approval preview deliverable"
+      },
+      {
+        "name": "gate_line",
+        "type": "string",
+        "required": true,
+        "sensitivity": "public",
+        "description": "Literal Gate: passed when rubric satisfied"
+      }
+    ],
+    "missing_behavior": "fail_closed",
+    "destination": "project workspace drafts",
+    "quality_threshold": "claim ledger clean; approval_preview present for any external action; Gate: passed",
+    "must_not_emit": [
+      "credentials",
+      "secrets",
+      "raw connector payloads",
+      "unverified metrics presented as facts",
+      "autonomous send/spend/publish confirmation"
+    ]
+  },
+  "authority": {
+    "role": "cmo-strategist",
+    "can_decide": [
+      "draft structure and recommendations within domain",
+      "which claims are UNVERIFIED or STALE",
+      "when to emit approval_preview vs pure internal draft"
+    ],
+    "cannot_decide": [
+      "production deploy",
+      "autonomous message send",
+      "autonomous media buy or ad publish",
+      "autonomous CMS/social/store publish",
+      "binding pricing, discount, SLA, or contract signature",
+      "fund movement",
+      "legal filing as counsel"
+    ],
+    "escalation": "ceo/cfo/cmo or project owner for authority; legal-advisor for counsel-level questions",
+    "approval_points": [
+      "campaign publish",
+      "media buy",
+      "public brand statement release"
+    ]
+  },
+  "permissions": {
+    "default_deny": true,
+    "scopes": [
+      {
+        "action": "read",
+        "resource": "project/**",
+        "mode": "allow"
+      },
+      {
+        "action": "write",
+        "resource": "project/**",
+        "mode": "allow",
+        "notes": "drafts and briefs only"
+      },
+      {
+        "action": "network",
+        "resource": "public-research",
+        "mode": "require_human",
+        "notes": "live web/MCP research when connector present"
+      },
+      {
+        "action": "deploy",
+        "resource": "production",
+        "mode": "deny"
+      },
+      {
+        "action": "move_funds",
+        "resource": "any",
+        "mode": "deny"
+      },
+      {
+        "action": "diagnose_health",
+        "resource": "any",
+        "mode": "deny"
+      },
+      {
+        "action": "book",
+        "resource": "any",
+        "mode": "deny"
+      },
+      {
+        "action": "legal_file",
+        "resource": "any",
+        "mode": "deny"
+      },
+      {
+        "action": "message_send",
+        "resource": "external-channels",
+        "mode": "require_human"
+      },
+      {
+        "action": "spend",
+        "resource": "media-or-paid-apis",
+        "mode": "require_human"
+      },
+      {
+        "action": "mutate_external",
+        "resource": "publish-crm-dns",
+        "mode": "require_human"
+      }
+    ],
+    "human_confirmation_required": [
+      "any message send",
+      "any media buy or ad publish",
+      "any public publish",
+      "any pricing or contractual commitment",
+      "campaign publish",
+      "media buy",
+      "public brand statement release"
+    ]
+  },
+  "tools": [
+    {
+      "name": "read_file",
+      "purpose": "read briefs, brand kit, prior artifacts",
+      "required": true
+    },
+    {
+      "name": "write_file",
+      "purpose": "write drafts and ledgers under project store",
+      "required": true
+    }
+  ],
+  "data_policy": {
+    "classifications": [
+      "internal",
+      "confidential"
+    ],
+    "residency": "project_store",
+    "redaction": "Never log secrets, tokens, raw CRM exports, or personal Alfred data; scrub emails/phones in evidence to synthetic forms when needed.",
+    "may_leave_host": false,
+    "prohibited": [
+      "production credentials in git",
+      "raw customer PII in fixtures",
+      "Alfred personal health/finance content",
+      "unredacted connector payloads in evidence"
+    ],
+    "declared_access": [
+      {
+        "kind": "filesystem",
+        "target": "project/**",
+        "mode": "read_write"
+      },
+      {
+        "kind": "filesystem",
+        "target": "solaris/employees/leadership/cmo/**",
+        "mode": "read"
+      },
+      {
+        "kind": "filesystem",
+        "target": "solaris/employees/leadership/RUNTIME-POLICY.md",
+        "mode": "read"
+      }
+    ]
+  },
+  "dependencies": {
+    "references": [
+      "SKILL.md",
+      "rules.md",
+      "../RUNTIME-POLICY.md"
+    ],
+    "scripts": [],
+    "binaries": [],
+    "mcps": [],
+    "connectors": [],
+    "models": [],
+    "platforms": [
+      "any"
+    ],
+    "preflight": {
+      "checks": [
+        {
+          "id": "skill-md",
+          "kind": "file_exists",
+          "target": "SKILL.md",
+          "required": true
+        },
+        {
+          "id": "contract-self",
+          "kind": "file_exists",
+          "target": "capability.contract.json",
+          "required": true
+        },
+        {
+          "id": "runtime-policy",
+          "kind": "file_exists",
+          "target": "../RUNTIME-POLICY.md",
+          "required": true
+        }
+      ],
+      "on_failure": "fail_closed"
+    }
+  },
+  "procedure": {
+    "summary": "Load policy + brief, research with provenance, draft typed deliverable, claim-check, emit approval_preview for any external action, gate.",
+    "steps": [
+      {
+        "id": "load-policy",
+        "action": "Read RUNTIME-POLICY.md, SKILL.md surface, and rules if present",
+        "uses_tools": [
+          "read_file"
+        ],
+        "uses_data": [
+          "project/**",
+          "solaris/employees/leadership/cmo/**",
+          "solaris/employees/leadership/RUNTIME-POLICY.md"
+        ]
+      },
+      {
+        "id": "research-and-draft",
+        "action": "Produce typed brief/deliverable with source and claim ledgers; no external mutation",
+        "uses_tools": [
+          "read_file",
+          "write_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "claim-and-brand-check",
+        "action": "Fail closed on invented metrics, stale facts-as-current, brand violations, unapproved commitments",
+        "uses_tools": [],
+        "uses_data": []
+      },
+      {
+        "id": "approval-preview",
+        "action": "If any send/spend/publish/commit proposed, emit approval_preview and STOP for human authority",
+        "uses_tools": [
+          "write_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "gate",
+        "action": "Emit Gate: passed only if rubric satisfied and no autonomous external action taken",
+        "uses_tools": [],
+        "uses_data": []
+      }
+    ],
+    "decision_points": [
+      "internal draft only vs external-action preview required",
+      "claim keep vs UNVERIFIED vs STALE vs drop",
+      "escalate commercial/legal commitments"
+    ],
+    "bounded_recovery": "On missing sources or denied permission, preserve partial draft, emit blocked/preview state, do not retry send/spend"
+  },
+  "evidence": {
+    "required_artifacts": [
+      "typed deliverable",
+      "claim_ledger or explicit none-declared",
+      "approval_preview when external action proposed",
+      "Gate: passed line"
+    ],
+    "acceptance": "No autonomous send/spend/publish; all material claims sourced or marked UNVERIFIED/STALE; brand policy checked for public drafts; financial authority respected; Gate: passed only when rubric holds",
+    "redaction": "Strip secrets, tokens, raw emails/phones, and connector payloads from receipts",
+    "forward_tests": [
+      "synthetic cmo brief produces typed deliverable + gate without external mutation",
+      "growth-revenue fixtures for cmo pass consent/suppression/approval gates"
+    ],
+    "receipts": [
+      "draft paths",
+      "approval_preview block when applicable"
+    ]
+  },
+  "failure": {
+    "blocked_state": "BLOCKED: missing brief, unverifiable material claims, brand kit conflict, or external action without human authority",
+    "retry_budget": {
+      "max_attempts": 1,
+      "backoff": "none"
+    },
+    "fallback": "Return partial draft with failed gate, claim gaps, and required human action",
+    "escalation": "project owner or department lead; legal-advisor for counsel questions",
+    "rollback": "retain drafts; do not execute queued external actions; capability rollback_target prior version",
+    "preserve_partial": true
+  },
+  "observability": {
+    "events": [
+      "invocation",
+      "preflight",
+      "result",
+      "error",
+      "evidence",
+      "blocked"
+    ],
+    "redact_fields": [
+      "email",
+      "phone",
+      "authorization_header",
+      "api_key",
+      "access_token"
+    ],
+    "metrics": [
+      "latency_ms",
+      "claims_verified",
+      "claims_unverified",
+      "previews_emitted"
+    ]
+  },
+  "compatibility": {
+    "providers": [
+      "claude",
+      "codex",
+      "grok",
+      "kimi"
+    ],
+    "min_runtime": "skill-runtime/1.0",
+    "api_stability": "stable",
+    "breaks_with": [],
+    "adapter_invariants": [
+      "authority",
+      "permissions",
+      "acceptance",
+      "data_policy",
+      "tools",
+      "failure",
+      "evidence"
+    ]
+  },
+  "provenance": {
+    "source": "solaris/employees/leadership/cmo",
+    "license": "MIT",
+    "absorbed_from": [
+      "existing SKILL.md / rules.md domain methodology",
+      "skill-runtime-contract L2 schema",
+      "skill-wave-growth-revenue-20260724 (skill-7fw) GROWTH-REVENUE-STANDARD"
+    ],
+    "publisher": "ShaiSolaris/ai-org"
+  },
+  "lifecycle": {
+    "status": "shadow",
+    "channel": "dev",
+    "rollback_target": "none",
+    "learning_promotion": "via reviewed learnings.md only"
+  },
+  "validation": {
+    "deterministic_checks": [
+      "python3 scripts/skill_runtime_contract.py validate solaris/employees/leadership/cmo/capability.contract.json"
+    ],
+    "forward_tests": [
+      "fixtures/solaris/business/forward/*"
+    ],
+    "adversarial_tests": [
+      "fixtures/solaris/business/adversarial/*"
+    ],
+    "acceptance_rubric": "L2 contract valid for four providers; external actions require_human; unsupported claims fail fixtures"
+  },
+  "skill_md": {
+    "path": "SKILL.md",
+    "max_surface_lines": 280,
+    "required_blocks": [
+      "OUTPUT_CONTRACT",
+      "SELF_QA_GATE",
+      "EXEMPLAR",
+      "HARD_NUMBERS",
+      "WHEN_TO_INVOKE"
+    ],
+    "references": [
+      "rules.md",
+      "../RUNTIME-POLICY.md"
+    ]
+  }
+}

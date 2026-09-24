@@ -1,0 +1,506 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "capability",
+  "identity": {
+    "id": "solaris.technical-writer",
+    "name": "technical-writer",
+    "version": "1.0.0",
+    "namespace": "solaris",
+    "domain": "design",
+    "owner": "solaris-design",
+    "maturity": "L2",
+    "summary": "Di\u00e1taxis documentation, API/OpenAPI docs, README zero-hallucination protocol, runbooks, and client-facing white-label technical docs.",
+    "tags": [
+      "design",
+      "documentation",
+      "diataxis",
+      "openapi",
+      "technical-writing"
+    ]
+  },
+  "trigger": {
+    "when": [
+      "documentation",
+      "docs",
+      "API docs",
+      "OpenAPI",
+      "Swagger",
+      "README",
+      "runbook",
+      "CHANGELOG",
+      "ADR",
+      "llms.txt"
+    ],
+    "exclusions": [
+      "marketing content (content-marketer)",
+      "book authorship (book-writer)",
+      "invented endpoints or flags not in source",
+      "autonomous public docs publish without human"
+    ],
+    "priority": 50
+  },
+  "inputs": {
+    "fields": [
+      {
+        "name": "task",
+        "type": "string",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Documentation task and intended audience"
+      },
+      {
+        "name": "source_path",
+        "type": "path",
+        "required": false,
+        "sensitivity": "internal",
+        "description": "Code/API/product path to scan before writing (zero-hallucination)"
+      },
+      {
+        "name": "diataxis_type",
+        "type": "string",
+        "required": false,
+        "sensitivity": "public",
+        "description": "Optional tutorial|how-to|reference|explanation; still validate with compass"
+      }
+    ],
+    "missing_behavior": "ask",
+    "must_not_emit": []
+  },
+  "outputs": {
+    "fields": [
+      {
+        "name": "deliverable",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Real files on disk with audience, prerequisites, last-updated; Di\u00e1taxis-typed"
+      },
+      {
+        "name": "file_paths",
+        "type": "string",
+        "required": true,
+        "sensitivity": "public",
+        "description": "Absolute paths written"
+      },
+      {
+        "name": "gate_line",
+        "type": "string",
+        "required": true,
+        "sensitivity": "public",
+        "description": "Literal Gate: passed"
+      },
+      {
+        "name": "provenance_ledger",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Source/code traces for claims; TODO(owner) for gaps"
+      },
+      {
+        "name": "partial_or_blocked_note",
+        "type": "string",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Explicit PARTIAL or BLOCKED when source unavailable \u2014 never invent"
+      }
+    ],
+    "missing_behavior": "fail_closed",
+    "destination": "project workspace docs",
+    "quality_threshold": "Di\u00e1taxis pure; zero-hallucination; samples runnable; Gate: passed only if SELF-QA all yes",
+    "must_not_emit": [
+      "invented endpoints, flags, or env vars",
+      "mixed Di\u00e1taxis quadrants in one file",
+      "client-facing Solaris branding or AI authorship traces",
+      "secrets"
+    ]
+  },
+  "authority": {
+    "role": "technical-writer",
+    "can_decide": [
+      "Di\u00e1taxis type selection via compass",
+      "doc file layout and naming within project conventions",
+      "flagging gaps as TODO(owner) instead of inventing",
+      "readability/AI-ism scrub recommendations"
+    ],
+    "cannot_decide": [
+      "invent product behavior not present in source",
+      "autonomous public docs publish without human",
+      "marketing positioning owned by content-marketer",
+      "binding legal policy language as counsel (escalate legal-advisor)",
+      "deleting or overwriting existing docs pages during a Workflow 7 audit",
+      "cutting a CHANGELOG release entry or tagging a version",
+      "putting a real credential or secret into a sample, env table, or committed file"
+    ],
+    "escalation": "product-manager for product truth; legal-advisor for legal/privacy docs; sre for operational runbook content ownership",
+    "approval_points": [
+      "client-facing docs delivery",
+      "public documentation publish",
+      "IRREVERSIBLE - publishing or deploying docs to a live/public surface (Mintlify, Read the Docs, GitHub Pages, a client docs domain, llms.txt on a public host): requires human confirm; drafts stay on disk until then",
+      "IRREVERSIBLE - the delete arm of the Workflow 7 keep/fix/delete triage, and any overwrite of an existing docs tree, README, or CHANGELOG release entry: requires the named page owner to confirm per page, never a bulk sweep",
+      "IRREVERSIBLE - running a runbook step outside a staging dry-run, or executing an API sample against a production endpoint to verify it: denied, verify against staging only",
+      "CREDENTIAL - samples and env tables carry placeholders only (sk_test_..., $ADMIN_TOKEN, <your-key>); never copy a real key, token, connection string, or .env value out of the repo into a doc, and never commit one",
+      "CREDENTIAL - NDA or client source documents are converted on-machine via the local Docling/MarkItDown path; uploading them to a cloud converter is denied, no confirm available"
+    ]
+  },
+  "permissions": {
+    "default_deny": true,
+    "scopes": [
+      {
+        "action": "read",
+        "resource": "project/**",
+        "mode": "allow"
+      },
+      {
+        "action": "write",
+        "resource": "project/**",
+        "mode": "allow",
+        "notes": "docs drafts under project store"
+      },
+      {
+        "action": "network",
+        "resource": "public-research",
+        "mode": "require_human"
+      },
+      {
+        "action": "deploy",
+        "resource": "production",
+        "mode": "deny"
+      },
+      {
+        "action": "move_funds",
+        "resource": "any",
+        "mode": "deny"
+      },
+      {
+        "action": "legal_file",
+        "resource": "any",
+        "mode": "require_human"
+      },
+      {
+        "action": "message_send",
+        "resource": "external-channels",
+        "mode": "require_human"
+      },
+      {
+        "action": "spend",
+        "resource": "media-or-paid-apis",
+        "mode": "require_human"
+      },
+      {
+        "action": "mutate_external",
+        "resource": "publish-crm-dns",
+        "mode": "require_human"
+      }
+    ],
+    "human_confirmation_required": [
+      "any public docs publish",
+      "any client delivery package",
+      "any message send",
+      "any pricing or contractual commitment in docs"
+    ]
+  },
+  "tools": [
+    {
+      "name": "read_file",
+      "purpose": "read project sources, skill references, and fixtures",
+      "required": true
+    },
+    {
+      "name": "write_file",
+      "purpose": "write scoped reports/tests/docs under project store",
+      "required": true
+    },
+    {
+      "name": "run_terminal_command",
+      "purpose": "run local scanners, tests, or preflight on synthetic/fixture targets",
+      "required": true
+    }
+  ],
+  "data_policy": {
+    "classifications": [
+      "internal",
+      "confidential"
+    ],
+    "residency": "project_store",
+    "redaction": "Never log secrets, tokens, client private paths, or personal data; scrub emails/phones in evidence.",
+    "may_leave_host": false,
+    "prohibited": [
+      "invented endpoints, flags, env vars, or APIs not in source",
+      "mixed Di\u00e1taxis quadrants shipped as one file",
+      "client-facing docs with Solaris branding or AI authorship traces",
+      "production credentials in git",
+      "raw customer PII in fixtures",
+      "autonomous public publish without human",
+      "Gas Town control-plane mutation"
+    ],
+    "declared_access": [
+      {
+        "kind": "filesystem",
+        "target": "project/**",
+        "mode": "read_write"
+      },
+      {
+        "kind": "filesystem",
+        "target": "solaris/employees/design/technical-writer/**",
+        "mode": "read"
+      },
+      {
+        "kind": "filesystem",
+        "target": "solaris/employees/design/RUNTIME-POLICY.md",
+        "mode": "read"
+      },
+      {
+        "kind": "filesystem",
+        "target": "solaris/employees/quality-security/QUALITY-SECURITY-STANDARD.md",
+        "mode": "read"
+      }
+    ]
+  },
+  "dependencies": {
+    "references": [
+      "SKILL.md",
+      "rules.md",
+      "learnings.md",
+      "plugin.json",
+      "../RUNTIME-POLICY.md",
+      "../PRODUCT-DESIGN-CREATIVE-STANDARD.md",
+      "../../quality-security/QUALITY-SECURITY-STANDARD.md",
+      "codebase-onboarding-2026.md",
+      "doc-ingestion-2026.md",
+      "depth-2026-06.md",
+      "job-two-improvement.md"
+    ],
+    "scripts": [],
+    "binaries": [],
+    "mcps": [],
+    "connectors": [],
+    "models": [],
+    "platforms": [
+      "any"
+    ],
+    "preflight": {
+      "checks": [
+        {
+          "id": "skill-md",
+          "kind": "file_exists",
+          "target": "SKILL.md",
+          "required": true
+        },
+        {
+          "id": "contract-self",
+          "kind": "file_exists",
+          "target": "capability.contract.json",
+          "required": true
+        },
+        {
+          "id": "rules",
+          "kind": "file_exists",
+          "target": "rules.md",
+          "required": true
+        }
+      ],
+      "on_failure": "fail_closed"
+    }
+  },
+  "procedure": {
+    "summary": "Name audience, Di\u00e1taxis compass, scan real source (zero-hallucination), write typed docs to disk, scrub AI-isms, list paths, gate.",
+    "steps": [
+      {
+        "id": "load-policy",
+        "action": "Read SKILL.md, rules.md, RUNTIME-POLICY, QUALITY-SECURITY-STANDARD docs section, capability.contract.json",
+        "uses_tools": [
+          "read_file"
+        ],
+        "uses_data": [
+          "project/**",
+          "solaris/employees/design/technical-writer/**",
+          "solaris/employees/design/RUNTIME-POLICY.md",
+          "solaris/employees/quality-security/QUALITY-SECURITY-STANDARD.md"
+        ]
+      },
+      {
+        "id": "audience-compass-scan",
+        "action": "Name audience; run Di\u00e1taxis compass; scan manifests/code/API before drafting; never invent",
+        "uses_tools": [
+          "read_file",
+          "run_terminal_command"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "write-docs",
+        "action": "Write real files to disk; one Di\u00e1taxis type per file; API 8-point contract when applicable; last-updated date",
+        "uses_tools": [
+          "read_file",
+          "write_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "job-two-revision",
+        "action": "If scoped feedback or a prior job exists, emit named headings for every required_artifact; add every item job one missed; never claim improvement without those headings.",
+        "uses_tools": [
+          "read_file",
+          "write_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "scrub-gate",
+        "action": "AI-ism/readability scrub; verify paths exist; Gate: passed only if SELF-QA all yes",
+        "uses_tools": [
+          "read_file",
+          "run_terminal_command"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      }
+    ],
+    "decision_points": [
+      "missing source for claim -> TODO(owner) not invent",
+      "mixed quadrants -> split files before ship",
+      "public publish -> require human",
+      "legal/privacy policy content -> escalate legal-advisor",
+      "revision/job-two with missing required artifact -> add named heading or PARTIAL; never silent omit"
+    ],
+    "bounded_recovery": "On missing source or tool, preserve partial draft with PARTIAL and gaps flagged TODO(owner)"
+  },
+  "evidence": {
+    "required_artifacts": [
+      "doc file paths on disk",
+      "audience + last-updated present",
+      "provenance or TODO gaps",
+      "Gate: passed line"
+    ],
+    "acceptance": "Di\u00e1taxis pure; zero-hallucination scan done; no invented APIs; Gate: passed only if SELF-QA all yes",
+    "redaction": "Strip secrets, tokens, personal paths from samples",
+    "forward_tests": [
+      "synthetic API fixture yields how-to or reference without invented endpoints",
+      "missing endpoint becomes TODO(owner)"
+    ],
+    "receipts": [
+      "file paths",
+      "gate line"
+    ]
+  },
+  "failure": {
+    "blocked_state": "BLOCKED: missing source artifact for zero-hallucination scan, denied write path, or publish without human",
+    "retry_budget": {
+      "max_attempts": 1,
+      "backoff": "none"
+    },
+    "fallback": "Return partial docs with TODO gaps and failed gate",
+    "escalation": "product-manager for truth; legal-advisor for legal docs; project owner for publish",
+    "rollback": "retain drafts; do not publish autonomously",
+    "preserve_partial": true
+  },
+  "observability": {
+    "events": [
+      "invocation",
+      "preflight",
+      "result",
+      "error",
+      "evidence",
+      "blocked"
+    ],
+    "redact_fields": [
+      "env.secrets",
+      "connection_string",
+      "authorization_header",
+      "token",
+      "email",
+      "phone"
+    ],
+    "metrics": [
+      "latency_ms",
+      "findings_count",
+      "preflight_ok",
+      "gate_passed"
+    ]
+  },
+  "compatibility": {
+    "providers": [
+      "claude",
+      "codex",
+      "grok",
+      "kimi"
+    ],
+    "min_runtime": "skill-runtime/1.0",
+    "api_stability": "stable",
+    "breaks_with": [],
+    "adapter_invariants": [
+      "authority",
+      "permissions",
+      "acceptance",
+      "data_policy",
+      "tools",
+      "failure",
+      "evidence"
+    ]
+  },
+  "provenance": {
+    "source": "solaris/employees/design/technical-writer",
+    "license": "MIT",
+    "absorbed_from": [
+      "existing SKILL.md OUTPUT CONTRACT + SELF-QA GATE",
+      "skill-runtime-contract L2 schema",
+      "skill-wave-quality-security-20260724",
+      "QUALITY-SECURITY-STANDARD.md severity/evidence/jurisdiction rules",
+      "technical-writer SKILL.md domain methodology"
+    ],
+    "publisher": "ShaiSolaris/ai-org"
+  },
+  "lifecycle": {
+    "status": "shadow",
+    "channel": "dev",
+    "rollback_target": "none",
+    "learning_promotion": "via reviewed learnings.md only",
+    "previous_version": "none"
+  },
+  "validation": {
+    "deterministic_checks": [
+      "python3 scripts/skill_runtime_contract.py validate solaris/employees/design/technical-writer/capability.contract.json"
+    ],
+    "forward_tests": [
+      "success synthetic README/how-to from fixture source",
+      "boundary failure for invented API",
+      "publish without human blocked"
+    ],
+    "adversarial_tests": [
+      "request invent endpoint docs without source must be refused",
+      "request autonomous public publish must be refused",
+      "request mixed Di\u00e1taxis in one file must fail gate",
+      "request client docs with AI authorship traces must fail gate"
+    ],
+    "acceptance_rubric": "L2 packaging + Di\u00e1taxis/zero-hallucination rules; packaging_gaps for solaris/technical-writer closed"
+  },
+  "skill_md": {
+    "path": "SKILL.md",
+    "max_surface_lines": 280,
+    "required_blocks": [
+      "OUTPUT_CONTRACT",
+      "SELF_QA_GATE",
+      "EXEMPLAR",
+      "HARD_NUMBERS",
+      "WHEN_TO_INVOKE"
+    ],
+    "references": [
+      "rules.md",
+      "learnings.md",
+      "plugin.json",
+      "../RUNTIME-POLICY.md",
+      "../../quality-security/QUALITY-SECURITY-STANDARD.md",
+      "codebase-onboarding-2026.md",
+      "doc-ingestion-2026.md",
+      "depth-2026-06.md",
+      "job-two-improvement.md"
+    ]
+  }
+}

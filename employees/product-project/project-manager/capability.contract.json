@@ -1,0 +1,473 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "capability",
+  "identity": {
+    "id": "solaris.project-manager",
+    "name": "project-manager",
+    "version": "1.1.0",
+    "namespace": "solaris",
+    "domain": "product-project",
+    "owner": "solaris-product-project",
+    "maturity": "L2",
+    "summary": "Project charter, schedule, risk, and delivery facilitation with artifact evidence and human-gated external communications.",
+    "tags": [
+      "product-project",
+      "product-design-creative",
+      "accessibility",
+      "licensing",
+      "permission-bounded"
+    ]
+  },
+  "trigger": {
+    "when": [
+      "project charter or WBS",
+      "schedule and critical path",
+      "risk register and change control",
+      "sprint facilitation and reporting"
+    ],
+    "exclusions": [
+      "product discovery ownership alone",
+      "autonomous stakeholder email blasts",
+      "budget spend without authority"
+    ],
+    "priority": 55
+  },
+  "inputs": {
+    "fields": [
+      {
+        "name": "brief",
+        "type": "string",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Typed product/design/creative brief for this turn"
+      },
+      {
+        "name": "brand_or_design_system_path",
+        "type": "path",
+        "required": false,
+        "sensitivity": "internal",
+        "description": "Optional brand kit / design system / asset library path"
+      },
+      {
+        "name": "authority_level",
+        "type": "string",
+        "required": false,
+        "sensitivity": "internal",
+        "description": "Sealed order authority; default L0 draft-only"
+      }
+    ],
+    "missing_behavior": "ask",
+    "must_not_emit": []
+  },
+  "outputs": {
+    "fields": [
+      {
+        "name": "deliverable",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Typed plan, status report, risk register, or schedule artifact"
+      },
+      {
+        "name": "brief_restatement",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Brief fidelity restatement"
+      },
+      {
+        "name": "provenance_ledger",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Pinned sources with URL, title, date, license, and what was taken"
+      },
+      {
+        "name": "partial_or_blocked_note",
+        "type": "string",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Explicit PARTIAL or BLOCKED when tools/licenses/assets unavailable - never invent artifacts"
+      },
+      {
+        "name": "approval_preview",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "confidential",
+        "description": "Approval preview when external action proposed; else NONE-DECLARED"
+      },
+      {
+        "name": "gate_line",
+        "type": "string",
+        "required": true,
+        "sensitivity": "public",
+        "description": "Literal Gate: passed when rubric satisfied"
+      }
+    ],
+    "missing_behavior": "fail_closed",
+    "destination": "project workspace drafts",
+    "quality_threshold": "brief fidelity; accessibility; licensing; critique; Gate: passed",
+    "must_not_emit": [
+      "credentials",
+      "secrets",
+      "raw connector payloads",
+      "unlicensed asset claim as cleared",
+      "invented Figma/Blender/FreeCAD tool outputs",
+      "autonomous publish/purchase confirmation"
+    ]
+  },
+  "authority": {
+    "role": "project-manager",
+    "can_decide": [
+      "draft artifact structure within brief",
+      "accessibility remediation recommendations",
+      "license risk classification of proposed assets"
+    ],
+    "cannot_decide": [
+      "production publish without human authority",
+      "purchase licenses or stock without human",
+      "assert trademark/IP clearance as counsel",
+      "invent tool outputs when MCP unavailable",
+      "re-baseline or commit a client-facing date without written owner confirmation",
+      "archive, close, or delete a tracker board, sprint, or project workspace - irreversible loss of burndown/velocity/RAID history, requires written owner confirmation and an export first",
+      "revoke or reassign tracker, repo, or environment credentials at closure without owner confirmation",
+      "bulk-close, bulk-reopen, or delete tickets in the tracker of record"
+    ],
+    "escalation": "project owner or design lead; legal-advisor for counsel-level IP questions",
+    "approval_points": [
+      "external stakeholder broadcast",
+      "schedule commit change to client",
+      "re-baseline after a slip",
+      "project closure: board archive, credential revocation, resource release"
+    ]
+  },
+  "permissions": {
+    "default_deny": true,
+    "scopes": [
+      {
+        "action": "read",
+        "resource": "project/**",
+        "mode": "allow"
+      },
+      {
+        "action": "write",
+        "resource": "project/**",
+        "mode": "allow",
+        "notes": "drafts and briefs only"
+      },
+      {
+        "action": "network",
+        "resource": "public-research",
+        "mode": "require_human",
+        "notes": "live web/MCP research when connector present"
+      },
+      {
+        "action": "deploy",
+        "resource": "production",
+        "mode": "deny"
+      },
+      {
+        "action": "move_funds",
+        "resource": "any",
+        "mode": "deny"
+      },
+      {
+        "action": "diagnose_health",
+        "resource": "any",
+        "mode": "deny"
+      },
+      {
+        "action": "book",
+        "resource": "any",
+        "mode": "deny"
+      },
+      {
+        "action": "legal_file",
+        "resource": "any",
+        "mode": "require_human"
+      },
+      {
+        "action": "message_send",
+        "resource": "external-channels",
+        "mode": "require_human"
+      },
+      {
+        "action": "spend",
+        "resource": "media-or-paid-apis",
+        "mode": "require_human"
+      },
+      {
+        "action": "mutate_external",
+        "resource": "publish-crm-dns",
+        "mode": "require_human"
+      }
+    ],
+    "human_confirmation_required": [
+      "any message send",
+      "any stock or license purchase",
+      "any public publish or client delivery",
+      "any pricing or contractual commitment",
+      "external stakeholder broadcast",
+      "schedule commit change to client"
+    ]
+  },
+  "tools": [
+    {
+      "name": "read_file",
+      "purpose": "read briefs, design systems, prior artifacts",
+      "required": true
+    },
+    {
+      "name": "write_file",
+      "purpose": "write drafts and ledgers under project store",
+      "required": true
+    }
+  ],
+  "data_policy": {
+    "classifications": [
+      "internal",
+      "confidential"
+    ],
+    "residency": "project_store",
+    "redaction": "Never log secrets, tokens, client private media paths, or personal data; scrub emails/phones in evidence.",
+    "may_leave_host": false,
+    "prohibited": [
+      "production credentials in git",
+      "raw customer PII in fixtures",
+      "client private media without authorization",
+      "unlicensed fonts, models, stock, or audio",
+      "unredacted connector payloads in evidence",
+      "publishing or purchasing assets autonomously",
+      "executing untrusted creative plugins"
+    ],
+    "declared_access": [
+      {
+        "kind": "filesystem",
+        "target": "project/**",
+        "mode": "read_write"
+      },
+      {
+        "kind": "filesystem",
+        "target": "solaris/employees/product-project/project-manager/**",
+        "mode": "read"
+      },
+      {
+        "kind": "filesystem",
+        "target": "solaris/employees/product-project/RUNTIME-POLICY.md",
+        "mode": "read"
+      }
+    ]
+  },
+  "dependencies": {
+    "references": [
+      "SKILL.md",
+      "rules.md",
+      "../RUNTIME-POLICY.md",
+      "../../design/PRODUCT-DESIGN-CREATIVE-STANDARD.md"
+    ],
+    "scripts": [],
+    "binaries": [],
+    "mcps": [],
+    "connectors": [],
+    "models": [],
+    "platforms": [
+      "any"
+    ],
+    "preflight": {
+      "checks": [
+        {
+          "id": "skill-md",
+          "kind": "file_exists",
+          "target": "SKILL.md",
+          "required": true
+        },
+        {
+          "id": "contract-self",
+          "kind": "file_exists",
+          "target": "capability.contract.json",
+          "required": true
+        },
+        {
+          "id": "runtime-policy",
+          "kind": "file_exists",
+          "target": "../RUNTIME-POLICY.md",
+          "required": true
+        }
+      ],
+      "on_failure": "fail_closed"
+    }
+  },
+  "procedure": {
+    "summary": "Load policy + brief, draft with accessibility and license checks, critique, emit approval_preview for external actions, gate.",
+    "steps": [
+      {
+        "id": "load-policy",
+        "action": "Read RUNTIME-POLICY.md, PRODUCT-DESIGN-CREATIVE-STANDARD, SKILL.md surface, and rules if present",
+        "uses_tools": [
+          "read_file"
+        ],
+        "uses_data": [
+          "project/**",
+          "solaris/employees/product-project/project-manager/**",
+          "solaris/employees/product-project/RUNTIME-POLICY.md"
+        ]
+      },
+      {
+        "id": "brief-to-artifact",
+        "action": "Restate brief; produce typed deliverable with provenance ledger; no external mutation",
+        "uses_tools": [
+          "read_file",
+          "write_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "accessibility-licensing-review",
+        "action": "Run accessibility, licensing, critique, and tool-availability checks; PARTIAL/BLOCKED when tools or licenses missing",
+        "uses_tools": [],
+        "uses_data": []
+      },
+      {
+        "id": "approval-preview",
+        "action": "If any send/spend/publish/purchase proposed, emit approval_preview and STOP for human authority",
+        "uses_tools": [
+          "write_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "gate",
+        "action": "Emit Gate: passed only if rubric satisfied and no autonomous external action taken",
+        "uses_tools": [],
+        "uses_data": []
+      }
+    ],
+    "decision_points": [
+      "internal draft only vs external-action preview required",
+      "license cleared vs pending vs blocked",
+      "tool available vs PARTIAL alternative path",
+      "escalate IP/legal questions"
+    ],
+    "bounded_recovery": "On missing tools or denied permission, preserve partial draft, emit blocked/preview state, do not retry publish/purchase"
+  },
+  "evidence": {
+    "required_artifacts": [
+      "typed deliverable",
+      "provenance_ledger",
+      "partial_or_blocked_note",
+      "approval_preview when external action proposed",
+      "Gate: passed line"
+    ],
+    "acceptance": "No autonomous publish/purchase; licenses pinned; accessibility addressed when UI in scope; tool unavailability is honest PARTIAL/BLOCKED; Gate: passed only when rubric holds",
+    "redaction": "Strip secrets, tokens, raw emails/phones, and connector payloads from receipts",
+    "forward_tests": [
+      "synthetic project-manager brief produces typed deliverable + gate without external mutation"
+    ],
+    "receipts": [
+      "draft paths",
+      "approval_preview block when applicable"
+    ]
+  },
+  "failure": {
+    "blocked_state": "BLOCKED: missing brief, unlicensed assets, tool unavailable without alternative, or external action without human authority",
+    "retry_budget": {
+      "max_attempts": 1,
+      "backoff": "none"
+    },
+    "fallback": "Return partial draft with failed gate, license/tool gaps, and required human action",
+    "escalation": "project owner or design lead; legal-advisor for counsel questions",
+    "rollback": "retain drafts; do not execute queued external actions; capability rollback_target prior version",
+    "preserve_partial": true
+  },
+  "observability": {
+    "events": [
+      "invocation",
+      "preflight",
+      "result",
+      "error",
+      "evidence",
+      "blocked"
+    ],
+    "redact_fields": [
+      "email",
+      "phone",
+      "authorization_header",
+      "api_key",
+      "access_token"
+    ],
+    "metrics": [
+      "latency_ms",
+      "licenses_verified",
+      "licenses_blocked",
+      "previews_emitted",
+      "a11y_checks"
+    ]
+  },
+  "compatibility": {
+    "providers": [
+      "claude",
+      "codex",
+      "grok",
+      "kimi"
+    ],
+    "min_runtime": "skill-runtime/1.0",
+    "api_stability": "stable",
+    "breaks_with": [],
+    "adapter_invariants": [
+      "authority",
+      "permissions",
+      "acceptance",
+      "data_policy",
+      "tools",
+      "failure",
+      "evidence"
+    ]
+  },
+  "provenance": {
+    "source": "solaris/employees/product-project/project-manager",
+    "license": "MIT",
+    "absorbed_from": [
+      "existing SKILL.md / rules.md domain methodology",
+      "skill-runtime-contract L2 schema",
+      "skill-wave-product-design-creative-20260724"
+    ],
+    "publisher": "ShaiSolaris/ai-org"
+  },
+  "lifecycle": {
+    "status": "shadow",
+    "channel": "dev",
+    "rollback_target": "1.0.0",
+    "learning_promotion": "via reviewed learnings.md only"
+  },
+  "validation": {
+    "deterministic_checks": [
+      "python3 scripts/skill_runtime_contract.py validate solaris/employees/product-project/project-manager/capability.contract.json"
+    ],
+    "forward_tests": [
+      "fixtures/evaluation/product-design-creative/forward/*"
+    ],
+    "adversarial_tests": [
+      "fixtures/evaluation/product-design-creative/adversarial/*"
+    ],
+    "acceptance_rubric": "L2 contract valid for four providers; external actions require_human; accessibility and licensing fixtures pass"
+  },
+  "skill_md": {
+    "path": "SKILL.md",
+    "max_surface_lines": 280,
+    "required_blocks": [
+      "OUTPUT_CONTRACT",
+      "SELF_QA_GATE",
+      "EXEMPLAR",
+      "HARD_NUMBERS",
+      "WHEN_TO_INVOKE"
+    ],
+    "references": [
+      "rules.md",
+      "../RUNTIME-POLICY.md"
+    ]
+  }
+}

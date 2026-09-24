@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0.0",
+  "description": "Synthetic active capability roster for meta control-plane fixtures. Not a live org dump. Roster mutations require human review.",
+  "updated_at": "2026-07-23",
+  "capabilities": [
+    {
+      "id": "meta.chief-of-staff",
+      "status": "active",
+      "kind": "agent",
+      "namespace": "meta"
+    },
+    {
+      "id": "alfred.coordinator",
+      "status": "active",
+      "kind": "agent",
+      "namespace": "alfred"
+    },
+    {
+      "id": "meta.context-manager",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "meta"
+    },
+    {
+      "id": "meta.roster-manager",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "meta"
+    },
+    {
+      "id": "meta.knowledge-synthesizer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "meta"
+    },
+    {
+      "id": "meta.talent-scout",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "meta"
+    },
+    {
+      "id": "solaris.backend-developer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.full-stack-developer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.ui-ux-designer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.qa-engineer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.code-reviewer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.security-auditor",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.content-marketer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.legal-advisor",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.mobile-developer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "alfred.health-manager",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "alfred"
+    },
+    {
+      "id": "alfred.personal-finance-manager",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "alfred"
+    },
+    {
+      "id": "alfred.travel-agent",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "alfred"
+    }
+  ]
+}

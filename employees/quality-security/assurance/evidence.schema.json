@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solaris.local/schemas/assurance-evidence.schema.json",
+  "title": "Quality OS gate evidence",
+  "schema_version": "1.0.0",
+  "type": "object",
+  "required": ["gate", "role", "summary", "artifacts"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "gate": {
+      "type": "string",
+      "enum": [
+        "functional",
+        "ux",
+        "accessibility",
+        "security",
+        "privacy",
+        "legal_risk",
+        "compliance",
+        "requirements",
+        "design",
+        "performance",
+        "release"
+      ]
+    },
+    "role": { "type": "string", "minLength": 1 },
+    "summary": { "type": "string", "minLength": 1 },
+    "artifacts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "blocking_open": { "type": "integer", "minimum": 0 },
+    "timestamp": { "type": "string" }
+  },
+  "additionalProperties": true
+}

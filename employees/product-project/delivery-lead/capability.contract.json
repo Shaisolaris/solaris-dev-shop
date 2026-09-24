@@ -1,0 +1,494 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "capability",
+  "identity": {
+    "id": "solaris.delivery-lead",
+    "name": "delivery-lead",
+    "version": "1.0.0",
+    "namespace": "solaris",
+    "domain": "product-project",
+    "owner": "solaris-product-project",
+    "maturity": "L2",
+    "summary": "Client delivery orchestration, spec-lock, milestones, takeover chain, and technical due-diligence synthesis with explicit authority, escalation, and rollback discipline.",
+    "tags": [
+      "product-project",
+      "leadership-operations",
+      "decision-quality",
+      "permission-bounded",
+      "upstream-20260724"
+    ]
+  },
+  "trigger": {
+    "when": [
+      "client delivery plan",
+      "spec-lock / milestone gate",
+      "project takeover orchestration",
+      "technical due diligence synthesis",
+      "contractor information wall",
+      "white-label client delivery"
+    ],
+    "exclusions": [
+      "pure tech strategy (cto)",
+      "requirements elicitation depth (business-analyst)",
+      "PM schedule mechanics ownership (project-manager)",
+      "production deploy execution (devops)",
+      "fund movement (never)"
+    ],
+    "priority": 55
+  },
+  "inputs": {
+    "fields": [
+      {
+        "name": "brief",
+        "type": "string",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Typed project brief for this turn"
+      },
+      {
+        "name": "authority_level",
+        "type": "string",
+        "required": false,
+        "sensitivity": "internal",
+        "description": "Sealed order authority; default L0 draft-only"
+      },
+      {
+        "name": "prior_artifacts",
+        "type": "path",
+        "required": false,
+        "sensitivity": "internal",
+        "description": "Optional prior BRD/spec/audit path"
+      }
+    ],
+    "missing_behavior": "ask",
+    "must_not_emit": []
+  },
+  "outputs": {
+    "fields": [
+      {
+        "name": "delivery_brief",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Typed delivery plan / audit / milestone brief"
+      },
+      {
+        "name": "decision_record",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Decision record with seven decision-quality fields"
+      },
+      {
+        "name": "approval_preview",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "confidential",
+        "description": "Approval preview when external or commercial action proposed"
+      },
+      {
+        "name": "gate_line",
+        "type": "string",
+        "required": true,
+        "sensitivity": "public",
+        "description": "Literal Gate: passed when rubric satisfied"
+      }
+    ],
+    "missing_behavior": "fail_closed",
+    "destination": "project workspace drafts",
+    "quality_threshold": "decision record names facts/assumptions/options/risk/dissent/decision_owner/required_evidence; claim ledger clean; approval_preview for external action; Gate: passed",
+    "must_not_emit": [
+      "credentials",
+      "secrets",
+      "raw connector payloads",
+      "unverified metrics presented as facts",
+      "autonomous send/spend/publish confirmation",
+      "invented company financials presented as audited fact"
+    ]
+  },
+  "authority": {
+    "role": "delivery-lead",
+    "can_decide": [
+      "draft structure and recommendations within delivery domain",
+      "which claims are UNVERIFIED or STALE",
+      "milestone gate shape in draft",
+      "when to emit approval_preview vs pure internal draft"
+    ],
+    "cannot_decide": [
+      "production deploy",
+      "autonomous message send",
+      "autonomous media buy or ad publish",
+      "autonomous CMS/social/store publish",
+      "binding pricing, discount, SLA, or contract signature",
+      "fund movement",
+      "legal filing as counsel",
+      "contractor hire commit",
+      "client SOW signature"
+    ],
+    "escalation": "project owner for commercial commit; cto for architecture; cfo for budget; legal-advisor for counsel",
+    "approval_points": [
+      "milestone declared done",
+      "client SOW / commercial commit",
+      "contractor hire / rate commit",
+      "production deploy authorization request"
+    ],
+    "decision_owner_required": true
+  },
+  "permissions": {
+    "default_deny": true,
+    "scopes": [
+      {
+        "action": "read",
+        "resource": "project/**",
+        "mode": "allow"
+      },
+      {
+        "action": "write",
+        "resource": "project/**",
+        "mode": "allow",
+        "notes": "drafts and briefs only"
+      },
+      {
+        "action": "network",
+        "resource": "public-research",
+        "mode": "require_human",
+        "notes": "live web/MCP research when connector present"
+      },
+      {
+        "action": "deploy",
+        "resource": "production",
+        "mode": "deny"
+      },
+      {
+        "action": "move_funds",
+        "resource": "any",
+        "mode": "deny"
+      },
+      {
+        "action": "diagnose_health",
+        "resource": "any",
+        "mode": "deny"
+      },
+      {
+        "action": "book",
+        "resource": "any",
+        "mode": "deny"
+      },
+      {
+        "action": "legal_file",
+        "resource": "any",
+        "mode": "deny"
+      },
+      {
+        "action": "message_send",
+        "resource": "external-channels",
+        "mode": "require_human"
+      },
+      {
+        "action": "spend",
+        "resource": "media-or-paid-apis",
+        "mode": "require_human"
+      },
+      {
+        "action": "mutate_external",
+        "resource": "publish-crm-dns",
+        "mode": "require_human"
+      }
+    ],
+    "human_confirmation_required": [
+      "any message send",
+      "any media buy or ad publish",
+      "any public publish",
+      "any pricing or contractual commitment",
+      "investor outreach send",
+      "term sheet signature",
+      "budget commitment beyond briefing"
+    ]
+  },
+  "tools": [
+    {
+      "name": "read_file",
+      "purpose": "read briefs, brand kit, prior artifacts",
+      "required": true
+    },
+    {
+      "name": "write_file",
+      "purpose": "write drafts and ledgers under project store",
+      "required": true
+    }
+  ],
+  "data_policy": {
+    "classifications": [
+      "internal",
+      "confidential"
+    ],
+    "residency": "project_store",
+    "redaction": "Never log secrets, tokens, raw CRM exports, or personal Alfred data; scrub emails/phones in evidence to synthetic forms when needed.",
+    "may_leave_host": false,
+    "prohibited": [
+      "production credentials in git",
+      "raw customer PII in fixtures",
+      "Alfred personal health/finance content",
+      "unredacted connector payloads in evidence"
+    ],
+    "declared_access": [
+      {
+        "kind": "filesystem",
+        "target": "project/**",
+        "mode": "read_write"
+      },
+      {
+        "kind": "filesystem",
+        "target": "solaris/employees/product-project/delivery-lead/**",
+        "mode": "read"
+      },
+      {
+        "kind": "filesystem",
+        "target": "solaris/employees/leadership/RUNTIME-POLICY.md",
+        "mode": "read"
+      },
+      {
+        "kind": "filesystem",
+        "target": "solaris/employees/leadership/decision-quality-protocol-2026.md",
+        "mode": "read"
+      }
+    ]
+  },
+  "dependencies": {
+    "references": [
+      "SKILL.md",
+      "rules.md",
+      "PROJECT_TAKEOVER.md",
+      "spec-driven-handoff-2026.md",
+      "technical-due-diligence-2026.md",
+      "docling-parsing-layer.md",
+      "../../leadership/RUNTIME-POLICY.md",
+      "../../leadership/decision-quality-protocol-2026.md"
+    ],
+    "scripts": [],
+    "binaries": [],
+    "mcps": [],
+    "connectors": [],
+    "models": [],
+    "platforms": [
+      "any"
+    ],
+    "preflight": {
+      "checks": [
+        {
+          "id": "skill-md",
+          "kind": "file_exists",
+          "target": "SKILL.md",
+          "required": true
+        },
+        {
+          "id": "contract-self",
+          "kind": "file_exists",
+          "target": "capability.contract.json",
+          "required": true
+        },
+        {
+          "id": "decision-quality",
+          "kind": "file_exists",
+          "target": "../../leadership/decision-quality-protocol-2026.md",
+          "required": true
+        }
+      ],
+      "on_failure": "fail_closed"
+    }
+  },
+  "procedure": {
+    "summary": "Load policy + brief, research with provenance, apply decision-quality protocol, claim-check, emit approval_preview for external action, gate.",
+    "steps": [
+      {
+        "id": "load-policy",
+        "action": "Read RUNTIME-POLICY, decision-quality protocol, SKILL.md surface, and rules",
+        "uses_tools": [
+          "read_file"
+        ],
+        "uses_data": [
+          "solaris/employees/product-project/delivery-lead/**",
+          "solaris/employees/leadership/RUNTIME-POLICY.md",
+          "solaris/employees/leadership/decision-quality-protocol-2026.md",
+          "project/**"
+        ]
+      },
+      {
+        "id": "research-and-draft",
+        "action": "Produce typed deliverable with source and claim ledgers; no external mutation",
+        "uses_tools": [
+          "read_file",
+          "write_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "decision-quality",
+        "action": "Structure material recommendations with facts, assumptions, options, risk, dissent, decision_owner, and required_evidence",
+        "uses_tools": [],
+        "uses_data": [
+          "solaris/employees/leadership/decision-quality-protocol-2026.md",
+          "solaris/employees/product-project/delivery-lead/**"
+        ]
+      },
+      {
+        "id": "claim-and-brand-check",
+        "action": "Fail closed on invented metrics, stale facts-as-current, unapproved commitments",
+        "uses_tools": [],
+        "uses_data": []
+      },
+      {
+        "id": "approval-preview",
+        "action": "If any send/spend/publish/commit proposed, emit approval_preview and STOP for human authority",
+        "uses_tools": [
+          "write_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "gate",
+        "action": "Emit Gate: passed only if rubric satisfied and no autonomous external action taken",
+        "uses_tools": [],
+        "uses_data": []
+      }
+    ],
+    "decision_points": [
+      "internal draft only vs external-action preview required",
+      "facts vs assumptions labeling",
+      "dissent captured or explicitly none",
+      "decision_owner and authority level named",
+      "required_evidence complete before commit",
+      "claim keep vs UNVERIFIED vs STALE vs drop"
+    ],
+    "bounded_recovery": "On missing sources or denied permission, preserve partial draft, emit blocked/preview state, do not retry send/spend",
+    "high_stakes_escalation": "On fund-move/spend-commit/legal-file/deploy/send/signature attempts without human authority: PERMISSION_DENIED or SAFETY_VIOLATION; surface one actionable cause; never fabricate a successful corporate, investment, or legal action; emit APPROVAL_PREVIEW only when drafting a request for human authority."
+  },
+  "evidence": {
+    "required_artifacts": [
+      "typed deliverable",
+      "decision_record with seven fields when recommending",
+      "dissent or explicit none",
+      "claim_ledger or explicit none-declared",
+      "approval_preview when external action proposed",
+      "Gate: passed line"
+    ],
+    "acceptance": "No autonomous send/spend/publish; decision quality fields present; all material claims sourced or marked UNVERIFIED/STALE; financial authority respected; Gate: passed only when rubric holds",
+    "redaction": "Strip secrets, tokens, raw emails/phones, and connector payloads from receipts",
+    "forward_tests": [
+      "fixtures/evaluation/leadership-operations/delivery-lead/"
+    ],
+    "receipts": [
+      "draft paths",
+      "approval_preview block when applicable"
+    ]
+  },
+  "failure": {
+    "blocked_state": "BLOCKED: missing brief, unverifiable material claims, missing decision_owner, or external action without human authority",
+    "retry_budget": {
+      "max_attempts": 1,
+      "backoff": "none"
+    },
+    "fallback": "Return partial draft with failed gate, claim gaps, and required human action",
+    "escalation": "project owner for commercial commit; cto for architecture; cfo for budget; legal-advisor for counsel",
+    "rollback": "retain drafts; do not execute queued external actions; capability rollback_target prior version",
+    "preserve_partial": true
+  },
+  "observability": {
+    "events": [
+      "invocation",
+      "preflight",
+      "result",
+      "error",
+      "evidence",
+      "blocked"
+    ],
+    "redact_fields": [
+      "email",
+      "phone",
+      "authorization_header",
+      "api_key",
+      "access_token"
+    ],
+    "metrics": [
+      "latency_ms",
+      "claims_verified",
+      "claims_unverified",
+      "previews_emitted"
+    ]
+  },
+  "compatibility": {
+    "providers": [
+      "claude",
+      "codex",
+      "grok",
+      "kimi"
+    ],
+    "min_runtime": "skill-runtime/1.0",
+    "api_stability": "stable",
+    "breaks_with": [],
+    "adapter_invariants": [
+      "authority",
+      "permissions",
+      "acceptance",
+      "data_policy",
+      "tools",
+      "failure",
+      "evidence"
+    ]
+  },
+  "provenance": {
+    "source": "solaris/employees/product-project/delivery-lead",
+    "license": "MIT",
+    "absorbed_from": [
+      "existing SKILL.md / rules.md domain methodology",
+      "skill-runtime-contract L2 schema",
+      "decision-quality-protocol-2026.md",
+      "EVAL 2026-07-24 skill-8qr: first L2 contract + leadership-operations fixtures"
+    ],
+    "publisher": "ShaiSolaris/ai-org",
+    "evaluation_slice": "meta/skill-rotation/evaluations/20260724/leadership-operations",
+    "evaluation_issue": "skill-8qr"
+  },
+  "lifecycle": {
+    "status": "shadow",
+    "channel": "dev",
+    "rollback_target": "none",
+    "learning_promotion": "via reviewed learnings.md only"
+  },
+  "validation": {
+    "deterministic_checks": [
+      "python3 scripts/skill_runtime_contract.py validate solaris/employees/product-project/delivery-lead/capability.contract.json"
+    ],
+    "forward_tests": [
+      "fixtures/evaluation/leadership-operations/delivery-lead/"
+    ],
+    "adversarial_tests": [
+      "fixtures/evaluation/leadership-operations/delivery-lead/adversarial.json",
+      "fixtures/evaluation/leadership-operations/delivery-lead/high-stakes-escalation.json"
+    ],
+    "acceptance_rubric": "L2 contract valid for four providers; decision quality fields; external actions require_human; high-stakes finance/legal bounded"
+  },
+  "skill_md": {
+    "path": "SKILL.md",
+    "max_surface_lines": 320,
+    "required_blocks": [
+      "OUTPUT_CONTRACT",
+      "SELF_QA_GATE",
+      "EXEMPLAR",
+      "HARD_NUMBERS",
+      "WHEN_TO_INVOKE"
+    ],
+    "references": [
+      "rules.md",
+      "PROJECT_TAKEOVER.md",
+      "spec-driven-handoff-2026.md",
+      "technical-due-diligence-2026.md",
+      "../../leadership/RUNTIME-POLICY.md",
+      "../../leadership/decision-quality-protocol-2026.md"
+    ]
+  }
+}

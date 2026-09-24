@@ -1,0 +1,478 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "capability",
+  "identity": {
+    "id": "solaris.legal-advisor",
+    "name": "legal-advisor",
+    "version": "1.0.0",
+    "namespace": "solaris",
+    "domain": "legal-compliance",
+    "owner": "solaris-legal-compliance",
+    "maturity": "L2",
+    "summary": "Commercial contracts, IP, employment, and regulatory research \u2014 informational only; not a licensed attorney.",
+    "tags": [
+      "legal-compliance",
+      "legal",
+      "contracts",
+      "ip",
+      "nda",
+      "privacy"
+    ]
+  },
+  "trigger": {
+    "when": [
+      "contract review",
+      "MSA",
+      "SOW",
+      "NDA",
+      "EULA",
+      "Terms of Service",
+      "Privacy Policy",
+      "DPA",
+      "IP protection",
+      "legal research",
+      "legal intake"
+    ],
+    "exclusions": [
+      "acting as licensed attorney or client representation",
+      "autonomous legal_file or court/regulatory filing",
+      "binding signature or fee engagement without human"
+    ],
+    "priority": 55
+  },
+  "inputs": {
+    "fields": [
+      {
+        "name": "task",
+        "type": "string",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Legal research or contract/IP task description"
+      },
+      {
+        "name": "jurisdiction",
+        "type": "string",
+        "required": false,
+        "sensitivity": "internal",
+        "description": "Governing law / jurisdiction or multi/unknown"
+      },
+      {
+        "name": "document_path",
+        "type": "path",
+        "required": false,
+        "sensitivity": "confidential",
+        "description": "Path to draft contract or policy under review"
+      }
+    ],
+    "missing_behavior": "ask",
+    "must_not_emit": []
+  },
+  "outputs": {
+    "fields": [
+      {
+        "name": "deliverable",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "confidential",
+        "description": "Contract markup/issue list, clause analysis, or research memo \u2014 informational"
+      },
+      {
+        "name": "jurisdiction_and_disclaimer",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "public",
+        "description": "Jurisdiction, uncertainty, human_counsel_required=true when binding, not-a-lawyer disclaimer"
+      },
+      {
+        "name": "gate_line",
+        "type": "string",
+        "required": true,
+        "sensitivity": "public",
+        "description": "Literal Gate: passed"
+      },
+      {
+        "name": "provenance_ledger",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Primary sources with retrieved/source_date; LEGAL_SOURCE_STALE when aged"
+      },
+      {
+        "name": "partial_or_blocked_note",
+        "type": "string",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Explicit PARTIAL or BLOCKED when primary authority missing"
+      }
+    ],
+    "missing_behavior": "fail_closed",
+    "destination": "project workspace drafts",
+    "quality_threshold": "Disclaimer present; jurisdiction stated; sources dated; Gate: passed only if SELF-QA all yes",
+    "must_not_emit": [
+      "I am your attorney claims",
+      "binding representation language",
+      "autonomous filing confirmation",
+      "secrets"
+    ]
+  },
+  "authority": {
+    "role": "legal-advisor",
+    "can_decide": [
+      "draft issue lists and clause risk notes as informational analysis",
+      "when human_counsel_required must be true",
+      "which clauses need licensed counsel review",
+      "structure of engagement/intake checklists"
+    ],
+    "cannot_decide": [
+      "act as licensed attorney or form attorney-client relationship",
+      "autonomous legal_file or court filing",
+      "binding signature, settlement, or fee agreement",
+      "destroy or alter evidence",
+      "present research as counsel opinion without disclaimer",
+      "transmitting a redline, notice to cure, or termination letter to a counterparty - drafting is in scope, sending is irreversible (it starts a cure or limitation clock that cannot be recalled) and requires the owner's written confirmation",
+      "holding or using e-signature, filing, or registry credentials (DocuSign, USPTO, Companies House); those stay with the owner and licensed counsel",
+      "disclosing privileged or without-prejudice material outside the engagement"
+    ],
+    "escalation": "licensed human counsel for jurisdiction-specific/high-stakes; compliance-auditor for framework certifications; cfo for financial terms",
+    "approval_points": [
+      "any filing or signature",
+      "any client delivery as legal advice",
+      "any settlement or fee commitment",
+      "owner confirms before a redline, notice to cure, or termination letter leaves Solaris - transmission is irreversible and starts a contractual clock",
+      "licensed counsel confirms before any trademark, incorporation, or registry filing; no filing or e-signature credential is handled here"
+    ]
+  },
+  "permissions": {
+    "default_deny": true,
+    "scopes": [
+      {
+        "action": "read",
+        "resource": "project/**",
+        "mode": "allow"
+      },
+      {
+        "action": "write",
+        "resource": "project/**",
+        "mode": "allow",
+        "notes": "drafts, gap matrices, policies under project store"
+      },
+      {
+        "action": "network",
+        "resource": "public-research",
+        "mode": "require_human",
+        "notes": "primary-source fetch when connector present"
+      },
+      {
+        "action": "deploy",
+        "resource": "production",
+        "mode": "deny"
+      },
+      {
+        "action": "move_funds",
+        "resource": "any",
+        "mode": "deny"
+      },
+      {
+        "action": "legal_file",
+        "resource": "any",
+        "mode": "require_human"
+      },
+      {
+        "action": "message_send",
+        "resource": "external-channels",
+        "mode": "require_human"
+      },
+      {
+        "action": "spend",
+        "resource": "any",
+        "mode": "require_human"
+      },
+      {
+        "action": "mutate_external",
+        "resource": "filing-or-registry",
+        "mode": "require_human"
+      }
+    ],
+    "human_confirmation_required": [
+      "any legal filing or regulatory submission",
+      "any binding signature, representation, or counsel engagement",
+      "any client delivery presented as legal advice",
+      "any destroy/alter evidence request (refuse + escalate)",
+      "any message send or external publish"
+    ]
+  },
+  "tools": [
+    {
+      "name": "read_file",
+      "purpose": "read project sources, skill references, and fixtures",
+      "required": true
+    },
+    {
+      "name": "write_file",
+      "purpose": "write scoped reports/tests/docs under project store",
+      "required": true
+    }
+  ],
+  "data_policy": {
+    "classifications": [
+      "internal",
+      "confidential"
+    ],
+    "residency": "project_store",
+    "redaction": "Never log secrets, client private counsel materials, or personal data; scrub emails/phones; mark jurisdiction and source dates.",
+    "may_leave_host": false,
+    "prohibited": [
+      "claiming to be a licensed attorney or binding counsel",
+      "autonomous legal_file or regulatory filing",
+      "destroying or altering evidence",
+      "presenting research as counsel opinion without disclaimer",
+      "production credentials in git",
+      "raw customer PII in fixtures",
+      "stale primary sources presented as current without LEGAL_SOURCE_STALE flag",
+      "Gas Town control-plane mutation"
+    ],
+    "declared_access": [
+      {
+        "kind": "filesystem",
+        "target": "project/**",
+        "mode": "read_write"
+      },
+      {
+        "kind": "filesystem",
+        "target": "solaris/employees/legal-compliance/legal-advisor/**",
+        "mode": "read"
+      },
+      {
+        "kind": "filesystem",
+        "target": "solaris/employees/quality-security/QUALITY-SECURITY-STANDARD.md",
+        "mode": "read"
+      },
+      {
+        "kind": "filesystem",
+        "target": "fixtures/evaluation/**",
+        "mode": "read"
+      }
+    ]
+  },
+  "dependencies": {
+    "references": [
+      "SKILL.md",
+      "rules.md",
+      "learnings.md",
+      "plugin.json",
+      "depth-2026-06.md",
+      "legal-intake-ops.md",
+      "../../quality-security/QUALITY-SECURITY-STANDARD.md"
+    ],
+    "scripts": [],
+    "binaries": [],
+    "mcps": [],
+    "connectors": [],
+    "models": [],
+    "platforms": [
+      "any"
+    ],
+    "preflight": {
+      "checks": [
+        {
+          "id": "skill-md",
+          "kind": "file_exists",
+          "target": "SKILL.md",
+          "required": true
+        },
+        {
+          "id": "contract-self",
+          "kind": "file_exists",
+          "target": "capability.contract.json",
+          "required": true
+        },
+        {
+          "id": "rules",
+          "kind": "file_exists",
+          "target": "rules.md",
+          "required": true
+        }
+      ],
+      "on_failure": "fail_closed"
+    }
+  },
+  "procedure": {
+    "summary": "Load skill + standard, declare jurisdiction and not-a-lawyer disclaimer, analyze draft or research with dated sources, escalate binding matters, never file, gate.",
+    "steps": [
+      {
+        "id": "load-contract",
+        "action": "Read SKILL.md, rules.md, QUALITY-SECURITY-STANDARD jurisdiction/counsel rules, capability.contract.json",
+        "uses_tools": [
+          "read_file"
+        ],
+        "uses_data": [
+          "project/**",
+          "solaris/employees/legal-compliance/legal-advisor/**",
+          "solaris/employees/quality-security/QUALITY-SECURITY-STANDARD.md"
+        ]
+      },
+      {
+        "id": "disclaimer-jurisdiction",
+        "action": "State informational-only disclaimer, jurisdiction, uncertainty, human_counsel_required",
+        "uses_tools": [],
+        "uses_data": []
+      },
+      {
+        "id": "analyze",
+        "action": "Review contract/research with clause-level notes; pin primary sources with dates; flag LEGAL_SOURCE_STALE",
+        "uses_tools": [
+          "read_file",
+          "write_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "gate",
+        "action": "Refuse binding/filing actions; emit Gate: passed only if disclaimer and SELF-QA hold",
+        "uses_tools": [
+          "write_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      }
+    ],
+    "decision_points": [
+      "high-stakes or jurisdiction-specific -> human_counsel_required true",
+      "missing primary authority -> PARTIAL/BLOCKED no Gate: passed for legal conclusions",
+      "filing/signature requested -> require human licensed counsel",
+      "compliance certification framing -> handoff compliance-auditor"
+    ],
+    "bounded_recovery": "On missing sources, preserve partial memo with PARTIAL and required counsel next step"
+  },
+  "evidence": {
+    "required_artifacts": [
+      "informational deliverable",
+      "disclaimer + jurisdiction block",
+      "provenance_ledger",
+      "Gate: passed line"
+    ],
+    "acceptance": "Not-a-lawyer disclaimer present; sources dated; no autonomous filing; Gate: passed only if SELF-QA all yes",
+    "redaction": "Strip secrets, private counsel materials, emails/phones",
+    "forward_tests": [
+      "synthetic MSA review produces clause issues + disclaimer",
+      "filing request yields refuse + human_counsel_required"
+    ],
+    "receipts": [
+      "memo path",
+      "disclaimer block"
+    ]
+  },
+  "failure": {
+    "blocked_state": "BLOCKED: missing document/jurisdiction for conclusions, request to act as counsel, or filing without human",
+    "retry_budget": {
+      "max_attempts": 1,
+      "backoff": "none"
+    },
+    "fallback": "Return partial analysis with failed gate and licensed counsel next action",
+    "escalation": "licensed human counsel; compliance-auditor for frameworks; cfo for commercial terms",
+    "rollback": "retain drafts; do not file or send as counsel",
+    "preserve_partial": true
+  },
+  "observability": {
+    "events": [
+      "invocation",
+      "preflight",
+      "result",
+      "error",
+      "evidence",
+      "blocked"
+    ],
+    "redact_fields": [
+      "env.secrets",
+      "connection_string",
+      "authorization_header",
+      "token",
+      "email",
+      "phone"
+    ],
+    "metrics": [
+      "latency_ms",
+      "findings_count",
+      "preflight_ok",
+      "gate_passed"
+    ]
+  },
+  "compatibility": {
+    "providers": [
+      "claude",
+      "codex",
+      "grok",
+      "kimi"
+    ],
+    "min_runtime": "skill-runtime/1.0",
+    "api_stability": "stable",
+    "breaks_with": [],
+    "adapter_invariants": [
+      "authority",
+      "permissions",
+      "acceptance",
+      "data_policy",
+      "tools",
+      "failure",
+      "evidence"
+    ]
+  },
+  "provenance": {
+    "source": "solaris/employees/legal-compliance/legal-advisor",
+    "license": "MIT",
+    "absorbed_from": [
+      "existing SKILL.md OUTPUT CONTRACT + SELF-QA GATE",
+      "skill-runtime-contract L2 schema",
+      "skill-wave-quality-security-20260724",
+      "QUALITY-SECURITY-STANDARD.md severity/evidence/jurisdiction rules",
+      "legal-advisor SKILL.md domain methodology"
+    ],
+    "publisher": "ShaiSolaris/ai-org"
+  },
+  "lifecycle": {
+    "status": "shadow",
+    "channel": "dev",
+    "rollback_target": "none",
+    "learning_promotion": "via reviewed learnings.md only",
+    "previous_version": "none"
+  },
+  "validation": {
+    "deterministic_checks": [
+      "python3 scripts/skill_runtime_contract.py validate solaris/employees/legal-compliance/legal-advisor/capability.contract.json"
+    ],
+    "forward_tests": [
+      "success synthetic contract review",
+      "boundary failure for autonomous filing",
+      "stale source LEGAL_SOURCE_STALE"
+    ],
+    "adversarial_tests": [
+      "request to claim I am your attorney must be refused",
+      "request autonomous legal_file must be refused",
+      "request destroy evidence must be refused",
+      "request binding signature must be refused"
+    ],
+    "acceptance_rubric": "L2 packaging + not-counsel/disclaimer rules; packaging_gaps for solaris/legal-advisor closed"
+  },
+  "skill_md": {
+    "path": "SKILL.md",
+    "max_surface_lines": 280,
+    "required_blocks": [
+      "OUTPUT_CONTRACT",
+      "SELF_QA_GATE",
+      "EXEMPLAR",
+      "HARD_NUMBERS",
+      "WHEN_TO_INVOKE"
+    ],
+    "references": [
+      "rules.md",
+      "learnings.md",
+      "plugin.json",
+      "depth-2026-06.md",
+      "legal-intake-ops.md",
+      "../../quality-security/QUALITY-SECURITY-STANDARD.md"
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "name": "ceo",
+  "version": "0.5.1",
+  "description": "CEO / Strategic Advisor  -  vision + strategy, board governance + investor relations, fundraising (Series A/B), capital allocation (40-50/30-40/10-15/5-10), DECIDE framework, SWOT-TOWS / BCG / Porter / Blue Ocean / Balanced Scorecard / Eisenhower / Risk-Impact, M&A 4-track DD, crisis management (4-level), exit strategy (IPO / strategic / PE / MBO), Founder Operating System (Weekly Reflection / Energy Audit / Delegation Matrix + 70% Rule / 1:1 / Personal OKRs / Stop-Doing / Evidence File), culture transformation (12-18mo), executive comms (board package + pitch deck + earnings call). Solaristek-aware. Output format: Bottom Line / What / Why / How to Act / Your Decision. CLEAN REBUILD via Deep Absorption Protocol from 9 repos. Distinct from CFO / CTO / CMO / COO / CHRO.",
+  "author": "Shai Ali",
+  "license": "MIT",
+  "skills": [
+    "SKILL.md"
+  ],
+  "references": [
+    "rules.md",
+    "learnings.md",
+    "investor-narrative-and-outreach.md",
+    "../decision-quality-protocol-2026.md",
+    "capability.contract.json"
+  ],
+  "references_pending_expansion": [],
+  "tags": [
+    "leadership",
+    "ceo",
+    "founder",
+    "strategy",
+    "board",
+    "investor-relations",
+    "fundraising",
+    "capital-allocation",
+    "m-and-a",
+    "crisis-management",
+    "exit-strategy",
+    "culture-transformation",
+    "decide-framework",
+    "swot-tows",
+    "bcg",
+    "porter",
+    "blue-ocean",
+    "balanced-scorecard",
+    "okrs",
+    "stop-doing",
+    "energy-audit",
+    "delegation"
+  ],
+  "department": "leadership",
+  "absorbed_from": [
+    "alirezarezvani-claude-skills/c-level-advisor/SKILL.md (multi-role board, /cs:setup, /cs:board, routing, Bottom-Line output)",
+    "alirezarezvani-claude-skills/c-level-advisor/ceo-advisor/references/executive_decision_framework.md (DECIDE / capital alloc / SWOT-TOWS / BCG / Porter / Blue Ocean / Scorecard / biases / crisis levels / exit)",
+    "alirezarezvani-claude-skills/c-level-advisor/founder-coach/references/founder-toolkit.md (Weekly Reflection / Energy Audit / Delegation Matrix / 70% Rule / 1:1 / Personal OKRs / Stop-Doing / Evidence File)",
+    "alirezarezvani-claude-skills/agents/c-level/cs-ceo-advisor.md (workflows: annual / board / fundraise / culture)",
+    "msitarzewski-agency-agents/strategy/EXECUTIVE-BRIEF.md (executive narrative tone)",
+    "wshobson-agents/plugins/startup-business-analyst (startup analysis adjacency)",
+    "lodetomasi-agents-claude-code/startup-cto.md (CTO-adjacent for handoff context)",
+    "METHODOLOGY (2026-06-14, github.com/affaan-m/ECC MIT) investor-outreach skill (whole) + investor-materials NARRATIVE slice: pitch story arc + slide-by-slide deck structure (wedge/problem/why-now/solution/market/model/traction/team/competition/ask/appendix), one-pager/memo craft, cold investor email structure + hard-ban phrases + personalization-source discipline, warm-intro forwardable blurb (<100 words), day-0/4-5/10-12 follow-up cadence, post-meeting + monthly investor updates. Methodology lifted, no code bundled. Gate-0 PASS: existing CEO canon ran fundraising at PROCESS level (timeline, 10-12 slide cap, data room, board prep) but lacked the narrative craft + outreach/update mechanics. -> references/investor-narrative-and-outreach.md."
+  ],
+  "rebuild_notes": "REBUILD 2026-04-24: Phase 1-6 Deep Absorption Protocol executed. 4 source files deeply read. Phase artifacts at sources/_analysis/ceo/. Previous v0.3.0 mixed Shai's cto-advisor in  -  DELETED. This is the clean v0.2.0.",
+  "build_notes": "| 2026-05-18 v0.3.0: CEO advisory decision rules (prioritization frameworks, shiny-object discipline, North Star + OKR + cash hard rules, founder-mode gotchas). | 2026-05-18 pending refs (5) consolidated into rules.md (not external files): decision-frameworks, founder-toolkit, board-package, fundraising-playbook, m-and-a-dd. | 2026-06-13 v0.4.0: deep quality pass. PART A: no new bar-clearing OSS (advisory role; alirezarezvani ceo-advisor+founder-coach already absorbed = strongest; aapersh strategy-skills 0 stars/no license below bar; OKR repos overlap). PART B: refs clean (the references/*.md in SKILL are upstream-source/cross-org citations, not phantoms), added small-task/quick-turn lane, 0 em-dashes. PART C: none warranted (no Gate-0-passing external methodology). See TOP5-CANDIDATES.md. | 2026-06-14 v0.5.0: ECC investor-outreach + investor-materials NARRATIVE methodology absorbed (pitch story arc + deck structure, cold/warm outreach, follow-up cadence, investor updates). Distinct from existing process-level fundraising canon (Gate-0 PASS). First references/ file (references/investor-narrative-and-outreach.md) + dir created; rules.md pointer added; 0 em-dashes; scope key investor_narrative_outreach. Pairs with cfo/references/fundraising-materials.md (CEO=story+process, CFO=numbers). | 2026-07-24 skill-8qr: decision-quality protocol + L2 contract surface (upgraded_decision_quality; post version 1.1.0).",
+  "doctrine_note": "'never fold Shai skills' doctrine retired 2026-06-04 (residual sweep, step 2.10)."
+}

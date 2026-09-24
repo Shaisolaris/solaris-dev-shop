@@ -1,0 +1,497 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "capability",
+  "identity": {
+    "id": "solaris.compliance-auditor",
+    "name": "compliance-auditor",
+    "version": "1.0.0",
+    "namespace": "solaris",
+    "domain": "legal-compliance",
+    "owner": "solaris-legal-compliance",
+    "maturity": "L2",
+    "summary": "Framework gap analysis, evidence programs, policy mapping, vendor assessment, and readiness reports \u2014 informational, not a licensed audit opinion.",
+    "tags": [
+      "legal-compliance",
+      "compliance",
+      "soc2",
+      "iso27001",
+      "gdpr",
+      "evidence"
+    ]
+  },
+  "trigger": {
+    "when": [
+      "SOC 2",
+      "ISO 27001",
+      "HIPAA",
+      "PCI-DSS",
+      "GDPR compliance",
+      "compliance gap analysis",
+      "audit prep",
+      "control mapping",
+      "vendor assessment",
+      "policy authoring"
+    ],
+    "exclusions": [
+      "binding audit opinion without licensed auditor engagement",
+      "autonomous legal_file or regulatory submission",
+      "destroying or altering evidence"
+    ],
+    "priority": 55
+  },
+  "inputs": {
+    "fields": [
+      {
+        "name": "task",
+        "type": "string",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Compliance task (framework, gap analysis, policy, vendor, readiness)"
+      },
+      {
+        "name": "jurisdiction",
+        "type": "string",
+        "required": false,
+        "sensitivity": "internal",
+        "description": "Jurisdiction or multi/unknown; must be stated in deliverable"
+      },
+      {
+        "name": "framework_scope",
+        "type": "string",
+        "required": false,
+        "sensitivity": "public",
+        "description": "Optional frameworks in scope (SOC2, ISO, HIPAA, PCI, GDPR, EU AI Act)"
+      },
+      {
+        "name": "repo_or_evidence_path",
+        "type": "path",
+        "required": false,
+        "sensitivity": "internal",
+        "description": "Workspace or evidence pack path when available"
+      }
+    ],
+    "missing_behavior": "ask",
+    "must_not_emit": []
+  },
+  "outputs": {
+    "fields": [
+      {
+        "name": "deliverable",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Gap matrix / evidence plan / policy mapping / readiness report as required by OUTPUT CONTRACT"
+      },
+      {
+        "name": "jurisdiction_and_disclaimer",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "public",
+        "description": "Jurisdiction, source dates, uncertainty, human_counsel_required, informational-not-audit-opinion disclaimer"
+      },
+      {
+        "name": "gate_line",
+        "type": "string",
+        "required": true,
+        "sensitivity": "public",
+        "description": "Literal Gate: passed"
+      },
+      {
+        "name": "provenance_ledger",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Pinned framework sources with dates; LEGAL_SOURCE_STALE when aged"
+      },
+      {
+        "name": "partial_or_blocked_note",
+        "type": "string",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Explicit PARTIAL or BLOCKED when evidence/sources missing"
+      }
+    ],
+    "missing_behavior": "fail_closed",
+    "destination": "project workspace drafts",
+    "quality_threshold": "Control-level mapping; every status evidence-backed; disclaimer present; Gate: passed only if SELF-QA all yes",
+    "must_not_emit": [
+      "binding audit opinion language",
+      "secrets",
+      "autonomous filing confirmation",
+      "unchecked Compliant status without evidence source"
+    ]
+  },
+  "authority": {
+    "role": "compliance-auditor",
+    "can_decide": [
+      "gap status labels Compliant|Attention|Gap|Unknown when evidence supports",
+      "control-level mapping structure and evidence collection plan shape",
+      "vendor verdict recommendation language as informational readiness",
+      "when human_counsel_required or licensed auditor engagement is needed"
+    ],
+    "cannot_decide": [
+      "binding audit opinion or attestation as licensed auditor",
+      "autonomous legal_file or regulatory submission",
+      "destroy or alter evidence",
+      "sign policies as client officer",
+      "claim Compliant without named evidence source",
+      "hold or use client production credentials (IdP admin, IAM access keys, EHR service-role key) to self-collect evidence - the named system-of-record owner exports it, we never take the secret",
+      "file a breach notification or any regulatory submission against the 72-hour clock - draft only; the client officer confirms and sends, and a filing is irreversible",
+      "flip a control to Compliant inside the client GRC platform (Vanta/Drata/Secureframe) - that state feeds the auditor and is set by the client, not by us",
+      "approve a vendor for production access or execute a DPA - VTR outcome is a recommendation until the business owner confirms in writing"
+    ],
+    "escalation": "legal-advisor for counsel-level questions; security-auditor for technical control testing; client officer for attestation",
+    "approval_points": [
+      "client-facing readiness report delivery",
+      "any filing or external submission",
+      "any officer attestation",
+      "any evidence step that would require a live credential or secret - human confirms and exports instead",
+      "publishing or updating the client public subprocessor list (irreversible once public)",
+      "deleting, replacing, or re-dating an evidence artifact already collected in a Type 2 period"
+    ]
+  },
+  "permissions": {
+    "default_deny": true,
+    "scopes": [
+      {
+        "action": "read",
+        "resource": "project/**",
+        "mode": "allow"
+      },
+      {
+        "action": "write",
+        "resource": "project/**",
+        "mode": "allow",
+        "notes": "drafts, gap matrices, policies under project store"
+      },
+      {
+        "action": "network",
+        "resource": "public-research",
+        "mode": "require_human",
+        "notes": "primary-source fetch when connector present"
+      },
+      {
+        "action": "deploy",
+        "resource": "production",
+        "mode": "deny"
+      },
+      {
+        "action": "move_funds",
+        "resource": "any",
+        "mode": "deny"
+      },
+      {
+        "action": "legal_file",
+        "resource": "any",
+        "mode": "require_human"
+      },
+      {
+        "action": "message_send",
+        "resource": "external-channels",
+        "mode": "require_human"
+      },
+      {
+        "action": "spend",
+        "resource": "any",
+        "mode": "require_human"
+      },
+      {
+        "action": "mutate_external",
+        "resource": "filing-or-registry",
+        "mode": "require_human"
+      }
+    ],
+    "human_confirmation_required": [
+      "any legal filing or regulatory submission",
+      "any binding signature, representation, or counsel engagement",
+      "any client delivery presented as legal advice",
+      "any destroy/alter evidence request (refuse + escalate)",
+      "any message send or external publish"
+    ]
+  },
+  "tools": [
+    {
+      "name": "read_file",
+      "purpose": "read project sources, skill references, and fixtures",
+      "required": true
+    },
+    {
+      "name": "write_file",
+      "purpose": "write scoped reports/tests/docs under project store",
+      "required": true
+    },
+    {
+      "name": "run_terminal_command",
+      "purpose": "run local scanners, tests, or preflight on synthetic/fixture targets",
+      "required": true
+    }
+  ],
+  "data_policy": {
+    "classifications": [
+      "internal",
+      "confidential"
+    ],
+    "residency": "project_store",
+    "redaction": "Never log secrets, client private counsel materials, or personal data; scrub emails/phones; mark jurisdiction and source dates.",
+    "may_leave_host": false,
+    "prohibited": [
+      "claiming to be a licensed attorney or binding counsel",
+      "autonomous legal_file or regulatory filing",
+      "destroying or altering evidence",
+      "presenting research as counsel opinion without disclaimer",
+      "production credentials in git",
+      "raw customer PII in fixtures",
+      "stale primary sources presented as current without LEGAL_SOURCE_STALE flag",
+      "Gas Town control-plane mutation"
+    ],
+    "declared_access": [
+      {
+        "kind": "filesystem",
+        "target": "project/**",
+        "mode": "read_write"
+      },
+      {
+        "kind": "filesystem",
+        "target": "solaris/employees/legal-compliance/compliance-auditor/**",
+        "mode": "read"
+      },
+      {
+        "kind": "filesystem",
+        "target": "solaris/employees/quality-security/QUALITY-SECURITY-STANDARD.md",
+        "mode": "read"
+      },
+      {
+        "kind": "filesystem",
+        "target": "fixtures/evaluation/**",
+        "mode": "read"
+      }
+    ]
+  },
+  "dependencies": {
+    "references": [
+      "SKILL.md",
+      "rules.md",
+      "learnings.md",
+      "plugin.json",
+      "depth-2026-06.md",
+      "healthcare-dev-compliance.md",
+      "probo-grc-patterns.md",
+      "../../quality-security/QUALITY-SECURITY-STANDARD.md"
+    ],
+    "scripts": [],
+    "binaries": [],
+    "mcps": [],
+    "connectors": [],
+    "models": [],
+    "platforms": [
+      "any"
+    ],
+    "preflight": {
+      "checks": [
+        {
+          "id": "skill-md",
+          "kind": "file_exists",
+          "target": "SKILL.md",
+          "required": true
+        },
+        {
+          "id": "contract-self",
+          "kind": "file_exists",
+          "target": "capability.contract.json",
+          "required": true
+        },
+        {
+          "id": "rules",
+          "kind": "file_exists",
+          "target": "rules.md",
+          "required": true
+        }
+      ],
+      "on_failure": "fail_closed"
+    }
+  },
+  "procedure": {
+    "summary": "Load standard + skill, declare jurisdiction and frameworks, map controls to evidence, emit gap/readiness artifacts with disclaimer, never file autonomously, gate.",
+    "steps": [
+      {
+        "id": "load-contract",
+        "action": "Read SKILL.md, rules.md, QUALITY-SECURITY-STANDARD jurisdiction rules, capability.contract.json",
+        "uses_tools": [
+          "read_file"
+        ],
+        "uses_data": [
+          "project/**",
+          "solaris/employees/legal-compliance/compliance-auditor/**",
+          "solaris/employees/quality-security/QUALITY-SECURITY-STANDARD.md"
+        ]
+      },
+      {
+        "id": "scope-jurisdiction",
+        "action": "State jurisdiction, frameworks, uncertainty, and human_counsel_required; flag stale sources",
+        "uses_tools": [
+          "read_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "map-and-evidence",
+        "action": "Produce control-level gap matrix or evidence plan; every status backed by named evidence source; cross-framework dedupe",
+        "uses_tools": [
+          "read_file",
+          "write_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "disclaimer-gate",
+        "action": "Attach informational-not-audit-opinion disclaimer; approval_preview for external delivery; Gate only if SELF-QA yes",
+        "uses_tools": [
+          "write_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      }
+    ],
+    "decision_points": [
+      "missing evidence -> Unknown/Gap not Compliant",
+      "stale source -> LEGAL_SOURCE_STALE + human review",
+      "binding opinion or filing requested -> require human / licensed auditor",
+      "security control testing needed -> escalate security-auditor"
+    ],
+    "bounded_recovery": "On missing sources or denied permission, preserve partial matrix, emit PARTIAL/BLOCKED, do not invent Compliant statuses"
+  },
+  "evidence": {
+    "required_artifacts": [
+      "typed compliance deliverable",
+      "jurisdiction + disclaimer block",
+      "provenance_ledger with source dates",
+      "Gate: passed line"
+    ],
+    "acceptance": "Control-level coverage; statuses evidence-backed; informational disclaimer present; no autonomous filing; Gate: passed only if SELF-QA all yes",
+    "redaction": "Strip secrets, client private counsel materials, emails/phones",
+    "forward_tests": [
+      "synthetic SOC2/ISO gap fixture produces matrix with evidence columns",
+      "missing evidence forces Gap/Unknown not Compliant"
+    ],
+    "receipts": [
+      "matrix path",
+      "disclaimer block"
+    ]
+  },
+  "failure": {
+    "blocked_state": "BLOCKED: missing framework scope, missing sources, request for binding opinion without licensed engagement, or filing without human",
+    "retry_budget": {
+      "max_attempts": 1,
+      "backoff": "none"
+    },
+    "fallback": "Return partial matrix with failed gate and required human/licensed next action",
+    "escalation": "legal-advisor; licensed auditor engagement; client officer for attestation",
+    "rollback": "retain drafts; do not file or send externally",
+    "preserve_partial": true
+  },
+  "observability": {
+    "events": [
+      "invocation",
+      "preflight",
+      "result",
+      "error",
+      "evidence",
+      "blocked"
+    ],
+    "redact_fields": [
+      "env.secrets",
+      "connection_string",
+      "authorization_header",
+      "token",
+      "email",
+      "phone"
+    ],
+    "metrics": [
+      "latency_ms",
+      "findings_count",
+      "preflight_ok",
+      "gate_passed"
+    ]
+  },
+  "compatibility": {
+    "providers": [
+      "claude",
+      "codex",
+      "grok",
+      "kimi"
+    ],
+    "min_runtime": "skill-runtime/1.0",
+    "api_stability": "stable",
+    "breaks_with": [],
+    "adapter_invariants": [
+      "authority",
+      "permissions",
+      "acceptance",
+      "data_policy",
+      "tools",
+      "failure",
+      "evidence"
+    ]
+  },
+  "provenance": {
+    "source": "solaris/employees/legal-compliance/compliance-auditor",
+    "license": "MIT",
+    "absorbed_from": [
+      "existing SKILL.md OUTPUT CONTRACT + SELF-QA GATE",
+      "skill-runtime-contract L2 schema",
+      "skill-wave-quality-security-20260724",
+      "QUALITY-SECURITY-STANDARD.md severity/evidence/jurisdiction rules",
+      "compliance-auditor SKILL.md domain methodology"
+    ],
+    "publisher": "ShaiSolaris/ai-org"
+  },
+  "lifecycle": {
+    "status": "shadow",
+    "channel": "dev",
+    "rollback_target": "none",
+    "learning_promotion": "via reviewed learnings.md only",
+    "previous_version": "none"
+  },
+  "validation": {
+    "deterministic_checks": [
+      "python3 scripts/skill_runtime_contract.py validate solaris/employees/legal-compliance/compliance-auditor/capability.contract.json"
+    ],
+    "forward_tests": [
+      "success synthetic framework gap analysis",
+      "boundary failure for autonomous filing",
+      "stale source flagged LEGAL_SOURCE_STALE"
+    ],
+    "adversarial_tests": [
+      "request binding audit opinion without engagement must be refused",
+      "request autonomous legal_file must be refused",
+      "request destroy evidence must be refused and escalated",
+      "request Compliant without evidence must fail gate"
+    ],
+    "acceptance_rubric": "L2 packaging + jurisdiction/disclaimer rules; packaging_gaps for solaris/compliance-auditor closed"
+  },
+  "skill_md": {
+    "path": "SKILL.md",
+    "max_surface_lines": 280,
+    "required_blocks": [
+      "OUTPUT_CONTRACT",
+      "SELF_QA_GATE",
+      "EXEMPLAR",
+      "HARD_NUMBERS",
+      "WHEN_TO_INVOKE"
+    ],
+    "references": [
+      "rules.md",
+      "learnings.md",
+      "plugin.json",
+      "depth-2026-06.md",
+      "healthcare-dev-compliance.md",
+      "probo-grc-patterns.md",
+      "../../quality-security/QUALITY-SECURITY-STANDARD.md"
+    ]
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0.0",
+  "engine_version": "1.0.0",
+  "decision": "assign",
+  "coordinator": "meta.chief-of-staff",
+  "request_summary": "Write a test plan for the client portal login regression",
+  "domains": [
+    "qa"
+  ],
+  "risk": "low",
+  "assignment": {
+    "assignment_id": "asg-c545edeaf7f1",
+    "outcome": "Bounded delivery for: Write a test plan for the client portal login regression",
+    "accountable": "solaris.qa-engineer",
+    "primary_capability": "solaris.qa-engineer",
+    "supporting": [],
+    "scope": "Domains=qa; risk=low; coordinator=meta.chief-of-staff does not perform specialist work.",
+    "authority_bound": [
+      "stay within declared capability authority",
+      "no production deploy without human",
+      "no spend / message_send / external mutation without human",
+      "no autonomous scope expansion"
+    ],
+    "must_not": [
+      "coordinator_performs_specialist_work",
+      "phantom_credit_without_invocation",
+      "autonomous_scope_expansion",
+      "alfred_personal_data_in_solaris_packet",
+      "credentials_in_handoff"
+    ],
+    "evidence_required": [
+      "routing_decision_with_named_roles",
+      "assignment_packet_with_task_description",
+      "list_of_capabilities_invoked_or_queued",
+      "coordinator_did_not_perform_work"
+    ],
+    "domains": [
+      "qa"
+    ],
+    "risk": "low"
+  },
+  "escalation": null,
+  "closure_evidence": {
+    "required_artifacts": [
+      "routing_decision_with_named_roles",
+      "assignment_packet_with_task_description",
+      "list_of_capabilities_invoked_or_queued",
+      "coordinator_did_not_perform_work"
+    ],
+    "acceptance": "Every named capability was invoked or explicitly queued; no phantom credits; coordinator did not perform specialist work; material decisions escalated.",
+    "redaction": "Strip credentials, tokens, private health/finance/personal content, raw connector data from packets, logs, and evidence."
+  },
+  "budgets_applied": {
+    "context_tokens_soft": 15000,
+    "context_tokens_hard": 100000,
+    "scout_external_queries": 20,
+    "scout_auto_absorb": 0,
+    "learning_promotions_auto_max": 3,
+    "learning_promotions_require_review_above": 3,
+    "roster_mutations_require_review": true,
+    "roster_mutations_auto_max": 0,
+    "assignment_max_supporting": 5,
+    "council_invocation_require_human": true
+  },
+  "provider_invariants": [
+    "authority",
+    "permissions",
+    "acceptance",
+    "data_policy",
+    "tools",
+    "failure",
+    "evidence"
+  ],
+  "performed_work": false,
+  "ts": "2026-09-24T10:32:44Z"
+}

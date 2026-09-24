@@ -1,0 +1,60 @@
+{
+  "name": "project-manager",
+  "version": "0.6.2",
+  "description": "Project Manager / Scrum Master - project charter + scope + WBS + schedule management (critical path, milestones, dependencies, buffer, schedule compression, recovery) + resource management (allocation, capacity 60-70%, skill matching) + risk management (P\u00d7I scoring, mitigation, contingency, escalation, decision logs, change control) + budget tracking (variance <5%, forecasting) + stakeholder communication (4-quadrant map, cadence, comm matrix) + methodology selection (Waterfall / Agile-Scrum / Hybrid / Kanban / PRINCE2 / PMP / Six Sigma / Lean) + sprint planning + retros + velocity + DoR/DoD + tooling (Jira / ClickUp / Linear / Asana / Monday / Notion) + reports (burndown, burnup, velocity, CFD, cycle/lead time) + project closure (handoff, lessons learned, post-mortem). Targets: on-time >90%, budget <5% variance, scope creep <10%. Distinct from Product Manager (what/why) and Business Analyst (BRDs). Clean rebuild from voltagent + alirezarezvani PM plugin family.",
+  "author": "Shai Ali",
+  "license": "MIT",
+  "skills": [
+    "SKILL.md"
+  ],
+  "references": [
+    "rules.md",
+    "learnings.md"
+  ],
+  "references_pending_expansion": [],
+  "tags": [
+    "product-project",
+    "project-manager",
+    "scrum-master",
+    "scrum",
+    "agile",
+    "kanban",
+    "waterfall",
+    "wbs",
+    "critical-path",
+    "risk-register",
+    "stakeholder-management",
+    "sprint-planning",
+    "retrospective",
+    "velocity",
+    "burndown",
+    "jira",
+    "clickup",
+    "linear",
+    "asana",
+    "monday",
+    "pmp",
+    "prince2",
+    "six-sigma",
+    "lean",
+    "technical-pm-analysis",
+    "delivery-risk-scoring",
+    "key-person-risk",
+    "bus-factor",
+    "project-audit",
+    "raid",
+    "schedule-risk"
+  ],
+  "department": "product-project",
+  "absorbed_from": [
+    "voltagent/categories/08-business-product/project-manager.md",
+    "voltagent/categories/08-business-product/scrum-master.md",
+    "alirezarezvani/project-management/* (atlassian-admin + jira-expert + scrum-master + meeting-analyzer + team-communications + status-reporter + 10+ more)",
+    "MetaGPT (FoundationAgents/MetaGPT) - Task decomposition SOP absorbed 2026-05-01: 3rd-party packages / Logic Analysis (1:1 with File List) / Task list with DAG / Shared Knowledge sequenced first",
+    "CONNECT: Plane + plane-mcp (official, MIT) - host self-hosts; self-host issue/sprint/cycle execution lane Solaris controls (vs advice-only on Jira/ClickUp/Linear/Asana/Monday). Shared instance with delivery-lead; one-system-of-record-per-project guard applies. Documented in rules.md.",
+    "METHODOLOGY (2026-06-20, delivery-risk scoring for the Technical PM Analysis / project-audit gig, methodology only - public PM/risk methodology, nothing bundled): roll the existing RAID log into a scored delivery-health verdict (overall RED/AMBER/GREEN driven by the highest unmitigated likelihood x impact + the schedule confidence band) + a key-person / bus-factor capability matrix (critical-function x who-can-do-it grid; single-capable-person = single point of failure = a RAID Dependency; bus factor of 1 on the critical path = red flag) + schedule-realism-as-a-finding (a single-point date with no 3-point band/buffer is itself a HIGH risk) + a GitHub-is-truth claimed-vs-merged delta check. Gate-0 PASS vs existing (v0.5.0 already had RAID + EMV/contingency + 3-point PERT + pre-mortem + Monte-Carlo P50/P80): those were for RUNNING a project; net-new is the ASSESS-an-existing-build scoring (delivery-health verdict + capability/bus-factor matrix + schedule-realism finding + GitHub-vs-claim delta) that feeds delivery-lead's technical-due-diligence rubric as its domain 9 (PM-lens). Boundary: delivery-lead owns the full 9-domain audit + verdict; project-manager owns the delivery/schedule-risk mechanics underneath. -> appended to the Risk quantification + RAID section in rules.md (same risk domain, no new file). 0 em-dashes."
+  ],
+  "phase_artifacts": "sources/_analysis/project-manager/01-discovery.md + 02-extraction.md [artifact lost in 2026-06 consolidation - see solaris/reports/audits/2026-06-09-brain-audit.md]",
+  "build_notes": "REBUILD 2026-04-25. Phase 1 grep + Phase 2 read voltagent PM/SM agents + alirezarezvani PM plugin family overview + Phase 3 cross-source synthesis + Phase 4 SKILL/rules/plugin/learnings + Phase 6 ledger entry. Clean v0.2.0. | 2026-05-01 v0.4.0: MetaGPT task decomposition SOP absorbed (M3). | 2026-05-18 v0.3.0: Charter-before-kickoff, WBS estimation by doers (range not point), methodology selection, risk-log discipline, scope-creep = change request. | 2026-05-18 pruned 6 stale pending refs (consolidated into rules.md). | 2026-06-13 v0.5.0: deep quality pass. PART A: no new bar-clearing OSS (alirezarezvani PM pod + voltagent already absorbed; phuryn pm-skills 17.6K + deanpeters 5.1K are PRODUCT-mgmt - project-execution slices duplicate alirezarezvani, product-strategy stays with product-manager employee; makeplane/plane already a CONNECT self-host lane in rules.md). PART B: refs clean (references/roster.md + cross-employee-integration-patterns.md are cross-org pointers, not phantoms), added small-task/quick-turn lane, 0 em-dashes. PART C tighten: RAID log + EMV/contingency-reserve + 3-point PERT + pre-mortem + Monte-Carlo P50/P80 framing added to rules.md (established public PMBOK/PRINCE2 methodology, no flagged repo bundled) - risk register was P x I only before. See TOP5-CANDIDATES.md. | DEPTH 2026-06-20 v0.6.0: ELITE Technical PM Analysis gig - delivery-risk SCORING layer added (methodology only, public PM/risk methodology, nothing bundled). Gate-0 PASS vs v0.5.0 (had RAID+EMV+PERT+pre-mortem+Monte-Carlo for RUNNING a project; had NO ASSESS-an-existing-build scoring). Net-new: roll RAID into a RED/AMBER/GREEN delivery-health verdict (highest unmitigated PxI + schedule confidence band), key-person/bus-factor capability matrix (function x who-can-do-it; bus-factor-1 on critical path = red flag), schedule-realism-as-a-finding, GitHub-is-truth claimed-vs-merged delta. Feeds delivery-lead's technical-due-diligence rubric as its PM-lens domain 9 (delivery-lead owns the full 9-domain audit; project-manager owns the delivery/schedule-risk mechanics). Appended to the RAID section in rules.md (same risk domain, no new file). 0 em-dashes. | 2026-07-24 product-design-creative wave (skill-5sg): accessibility/licensing/critique controls + contract 1.1.0",
+  "doctrine_note": "'never fold Shai skills' doctrine retired 2026-06-04 (residual sweep, step 2.10)."
+}

@@ -1,0 +1,298 @@
+{
+  "schema_version": "1.0.0",
+  "description": "Deterministic routing and authority policy for meta control-plane. Provider reasoning must not change these rules.",
+  "provider_invariants": [
+    "authority",
+    "permissions",
+    "acceptance",
+    "data_policy",
+    "tools",
+    "failure",
+    "evidence"
+  ],
+  "min_words_for_clear_goal": 4,
+  "outcome_verbs": [
+    "build",
+    "review",
+    "write",
+    "fix",
+    "design",
+    "plan",
+    "audit",
+    "route",
+    "scout",
+    "promote",
+    "trim",
+    "retire",
+    "assemble",
+    "implement",
+    "draft",
+    "test",
+    "migrate"
+  ],
+  "ambiguous_phrases": [
+    "i don't know",
+    "not sure what",
+    "help me figure out",
+    "what should i do",
+    "something something",
+    "maybe do stuff",
+    "figure it out",
+    "whatever works"
+  ],
+  "high_risk_keywords": [
+    "wire",
+    "charge the",
+    "charge client's",
+    "charge the client",
+    "move funds",
+    "transfer money",
+    "purchase",
+    "buy now",
+    "deploy to production",
+    "production deploy",
+    "diagnose",
+    "prescribe",
+    "file a lawsuit",
+    "legal filing",
+    "send message to client now",
+    "book the flight",
+    "spend"
+  ],
+  "medium_risk_keywords": [
+    "client-facing",
+    "proposal",
+    "contract",
+    "nda",
+    "invoice",
+    "security",
+    "pentest"
+  ],
+  "domain_keywords": {
+    "engineering": [
+      "api",
+      "backend",
+      "frontend",
+      "code",
+      "python",
+      "typescript",
+      "rest",
+      "endpoint",
+      "bug",
+      "refactor",
+      "implement"
+    ],
+    "design": [
+      "landing page",
+      "ui",
+      "ux",
+      "layout",
+      "wireframe",
+      "figma",
+      "mockup",
+      "screen"
+    ],
+    "marketing": [
+      "marketing",
+      "copy",
+      "blog post",
+      "newsletter",
+      "seo",
+      "campaign"
+    ],
+    "security": [
+      "security",
+      "vuln",
+      "owasp",
+      "threat",
+      "pentest"
+    ],
+    "qa": [
+      "test plan",
+      "qa",
+      "regression",
+      "quality"
+    ],
+    "legal": [
+      "nda",
+      "contract",
+      "legal",
+      "gdpr",
+      "liability"
+    ],
+    "mobile": [
+      "mobile app",
+      "ios",
+      "android",
+      "native mobile",
+      "react native"
+    ],
+    "learning": [
+      "what have we learned",
+      "promote lessons",
+      "synthesize learnings",
+      "promote learning"
+    ],
+    "scout": [
+      "what's new",
+      "find a tool",
+      "talent scout",
+      "absorb",
+      "ecosystem scan"
+    ],
+    "context": [
+      "trim context",
+      "retire this chat",
+      "handover",
+      "context budget",
+      "rehydrate"
+    ],
+    "roster": [
+      "who do we have",
+      "roster",
+      "coverage",
+      "employee status",
+      "staffing"
+    ],
+    "health": [
+      "blood pressure",
+      "sleep",
+      "hrv",
+      "workout",
+      "whoop",
+      "oura",
+      "blood test",
+      "hypertension"
+    ],
+    "finance_personal": [
+      "401k",
+      "roth",
+      "mortgage",
+      "personal budget",
+      "fire number"
+    ],
+    "travel": [
+      "flight",
+      "hotel",
+      "itinerary",
+      "airbnb"
+    ]
+  },
+  "domain_to_capability": {
+    "engineering": "solaris.backend-developer",
+    "design": "solaris.ui-ux-designer",
+    "marketing": "solaris.content-marketer",
+    "security": "solaris.security-auditor",
+    "qa": "solaris.qa-engineer",
+    "legal": "solaris.legal-advisor",
+    "mobile": "solaris.mobile-developer",
+    "learning": "meta.knowledge-synthesizer",
+    "scout": "meta.talent-scout",
+    "context": "meta.context-manager",
+    "roster": "meta.roster-manager",
+    "health": "alfred.health-manager",
+    "finance_personal": "alfred.personal-finance-manager",
+    "travel": "alfred.travel-agent",
+    "general": "solaris.backend-developer"
+  },
+  "domain_accountable": {
+    "engineering": "solaris.backend-developer",
+    "design": "solaris.ui-ux-designer",
+    "marketing": "solaris.content-marketer",
+    "security": "solaris.security-auditor",
+    "qa": "solaris.qa-engineer",
+    "legal": "solaris.legal-advisor",
+    "mobile": "solaris.mobile-developer",
+    "learning": "meta.knowledge-synthesizer",
+    "scout": "meta.talent-scout",
+    "context": "meta.context-manager",
+    "roster": "meta.roster-manager",
+    "health": "alfred.health-manager",
+    "finance_personal": "alfred.personal-finance-manager",
+    "travel": "alfred.travel-agent",
+    "general": "solaris.backend-developer"
+  },
+  "multi_domain_accountable": {
+    "meta.chief-of-staff": "meta.chief-of-staff",
+    "alfred.coordinator": "alfred.coordinator"
+  },
+  "default_capability": "solaris.backend-developer",
+  "route_overrides": [
+    {
+      "keywords": ["code review", "review this code", "pull request"],
+      "capabilities": ["solaris.code-reviewer"]
+    },
+    {
+      "keywords": ["build me a landing page", "landing page"],
+      "capabilities": [
+        "solaris.full-stack-developer",
+        "solaris.ui-ux-designer",
+        "solaris.qa-engineer"
+      ]
+    }
+  ],
+  "coordinator_authority": {
+    "meta.chief-of-staff": {
+      "allowed_namespaces": ["solaris", "meta"],
+      "forbidden_domains": ["health", "finance_personal", "travel"],
+      "escalate_to": "owner"
+    },
+    "alfred.coordinator": {
+      "allowed_namespaces": ["alfred", "meta"],
+      "forbidden_domains": [
+        "engineering",
+        "design",
+        "marketing",
+        "security",
+        "qa",
+        "legal",
+        "mobile"
+      ],
+      "escalate_to": "owner"
+    }
+  },
+  "alfred_personal_signals": [
+    "blood pressure",
+    "whoop",
+    "oura",
+    "my therapy",
+    "roth ira",
+    "book a flight for me",
+    "personal budget"
+  ],
+  "solaris_work_signals": [
+    "upwork",
+    "client proposal",
+    "client portal",
+    "pull request",
+    "production deploy",
+    "solaris",
+    "fiverr",
+    "sow"
+  ],
+  "assignment_authority_bounds": [
+    "stay within declared capability authority",
+    "no production deploy without human",
+    "no spend / message_send / external mutation without human",
+    "no autonomous scope expansion"
+  ],
+  "assignment_must_not": [
+    "coordinator_performs_specialist_work",
+    "phantom_credit_without_invocation",
+    "autonomous_scope_expansion",
+    "alfred_personal_data_in_solaris_packet",
+    "credentials_in_handoff"
+  ],
+  "closure_evidence_required": [
+    "routing_decision_with_named_roles",
+    "assignment_packet_with_task_description",
+    "list_of_capabilities_invoked_or_queued",
+    "coordinator_did_not_perform_work"
+  ],
+  "high_risk_extra_evidence": [
+    "human_confirmation_record",
+    "permission_scope_snapshot"
+  ],
+  "closure_acceptance": "Every named capability was invoked or explicitly queued; no phantom credits; coordinator did not perform specialist work; material decisions escalated.",
+  "closure_redaction": "Strip credentials, tokens, private health/finance/personal content, raw connector data from packets, logs, and evidence."
+}

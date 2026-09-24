@@ -1,0 +1,52 @@
+{
+  "name": "proposal-writer",
+  "version": "0.6.1",
+  "description": "Proposal Writer - freelance marketplace proposals (Upwork, Freelancer, Toptal, Fiverr Pro), B2B direct sales proposals, RFP responses, SOW + MSA + change-request drafts, pitch decks. 3-act narrative structure, win themes, flag analysis, pricing strategy (floor/target/ceiling), portfolio curation, objection handling. v0.4.0 (2026-06-04): general proposal CRAFT lifted from Shai's upwork-proposals (now gig #1): opening-line algorithm, one-insight principle, AI-tell never-list, structure templates. Operational specifics (portfolio waterfall / pricing / credential / cadence) stay in the gig at solaris/gigs/upwork-proposals/.",
+  "author": "Shai Ali",
+  "homepage": "https://github.com/shaisolaris/solaris-employees",
+  "license": "MIT",
+  "skills": [
+    "SKILL.md"
+  ],
+  "references": [
+    "rules.md",
+    "learnings.md",
+    "sow-contract-clause-depth-2026.md"
+  ],
+  "references_pending_expansion": [],
+  "references_source_note": "Canonical msitarzewski sales-proposal-strategist (3-act narrative) underpins the base. General proposal CRAFT from Shai's upwork-proposals lifted into rules.md 2026-06-04; the gig itself (portfolio waterfall, pricing, credentials, cadence) lives at solaris/gigs/upwork-proposals/.",
+  "mcp_servers": [],
+  "tags": [
+    "sales-outreach",
+    "proposal",
+    "upwork",
+    "rfp",
+    "sow",
+    "msa",
+    "contracts",
+    "freelance",
+    "b2b-sales",
+    "pricing",
+    "win-themes",
+    "3-act-narrative"
+  ],
+  "department": "sales-outreach",
+  "absorbed_from": [
+    "msitarzewski/agency-agents/sales/sales-proposal-strategist (3-act narrative + win themes)",
+    "alirezarezvani contracts-proposals + docs/skills/sales",
+    "VoltAgent proposal / sales patterns",
+    "wshobson marketing / sales content",
+    "lodetomasi sales agents",
+    "sickn33 business / sales writing skills",
+    "solaris/gigs/upwork-proposals (general proposal craft lifted 2026-06-04: opening-line algorithm, one-insight principle, AI-tell never-list, structure templates, pre-submit verification)",
+    "CONNECT: PandaDoc MCP (official hosted, COMMERCIAL - paid plan + key, cost-flag) - host installs; send/track/sign client-facing proposals from templates. Documented in rules.md 'Document delivery + e-signature connectors'.",
+    "CONNECT: Documenso (~13k stars, AGPL - self-host/connect, copyleft if served) - host installs; open-source e-sign for SOW/MSA without a commercial seat. Documented in rules.md.",
+    "METHODOLOGY (2026-06-13, github.com/borghei/Claude-Skills contract-and-proposal-writer, 262\u2605, license NOASSERTION/'MIT + Commons Clause' = FLAG, methodology only - .py scripts NOT bundled, self-host upstream for tooling): SOW deliverables-matrix + objective acceptance criteria, jurisdiction clause library (US-Delaware/EU/UK/DACH), MSA<-SOW attachment framework, GDPR Art.28 DPA trigger, contract pre-send review checklist, change-order discipline, and e-sign workflow operationalizing the existing CONNECT note. Gate-0 PASS: employee owned proposal craft + pricing + flag analysis but had no contract-clause/SOW-structure/jurisdiction depth. Heavy redline/negotiation stays with Legal Advisor. -> sow-contract-clause-depth-2026.md"
+  ],
+  "available_sources_for_scout": [
+    "solaris/gigs/upwork-proposals/references/strategy.md + portfolio-links.md - the gig retains Shai's win-rate data + portfolio waterfall; cross-reference per-engagement, do not re-merge (dividing line logged in ledger)"
+  ],
+  "rebuild_notes": "REBUILD 2026-04-24: Original had Shai's upwork-proposals wholesale-absorbed (now removed per HARD RULE). Clean v0.2.0 from 6 repos only. Shai's upwork-proposals remains a STANDALONE plugin - never mixed in. | 2026-06-04: Shai's upwork-proposals is now GIG #1 (solaris/gigs/upwork-proposals/). General craft lifted here; cross-references re-pointed to the gig path. Doctrine retired 2026-06-04.",
+  "build_notes": " | 2026-05-18 v0.3.0: Qualify-before-drafting, exec summary structure, mirror buyer language, fixed-vs-T&M pricing decision, win-rate tracking. | 2026-05-18 pending refs (7) consolidated into rules.md (not external files): proposal-3-act-framework, flag-analysis, opening-line-library, pricing-playbook, sow-template, rfp-response-framework, objection-library. | 2026-06-13 v0.6.0: deep quality pass. PART A: borghei/Claude-Skills (262\u2605, NOASSERTION FLAG) clears bar + Gate-0 (contract/SOW legal structure); msitarzewski/alirezarezvani content-duplicate; DeepRFP/CLEATUS proprietary (reject). PART B: FIXED 7 phantom reference files (rules.md 'References' pointed to references/*.md that never existed; content was inline in SKILL.md/rules.md - rewritten to point at real inline locations), added small-task/quick-turn lane, 0 em-dashes. PART C: SOW/clause/jurisdiction/DPA/e-sign METHODOLOGY (scripts left upstream per Commons Clause) -> sow-contract-clause-depth-2026.md. Gate-0 PASS. See TOP5-CANDIDATES.md.",
+  "doctrine_note": "'never fold Shai skills' doctrine retired 2026-06-04 (residual sweep, step 2.10)."
+}

@@ -1,0 +1,70 @@
+{
+  "name": "image-generator",
+  "version": "1.2.1",
+  "description": "Generative image discipline for Solaris. Owns text-to-image, image editing, character/brand consistency, and vector/logo generation across the full model landscape. Primary model: Gemini 3 Pro Image ('Nano Banana Pro') - best all-rounder for realism + illustration + in-image text + conversational edit + character consistency; Gemini 2.5 Flash Image for cheap drafts. Alt/lock-in hedge: FLUX.2 (photographic control, multi-reference consistency, inpaint/outpaint via FLUX Tools, Kontext editing). Specialists: Recraft V3 (true editable SVG - logos/vector/brand), Ideogram 3.0 (text-in-image reserve), Adobe Firefly (commercial-safety only). Access layer: Replicate official MCP (mcp.replicate.com - one key reaches Gemini/FLUX/Recraft/Ideogram/SDXL) + official fal MCP. Free local-GPU path: ComfyUI + joenorton/comfyui-mcp-server + FLUX.2[klein]/SDXL + ControlNet/IP-Adapter/LoRA for zero per-image cost and full editing control. Cost-aware by default: Flash/SDXL for iteration, Pro/FLUX for finals. Distinct from UI/UX Designer (layout/graphics composition), Video Editor (motion), 3D Artist (meshes). Part of the Solaris creative cluster sharing a common tool layer.",
+  "author": "Shai Ali",
+  "license": "MIT",
+  "skills": [
+    "SKILL.md"
+  ],
+  "references": [
+    "rules.md",
+    "learnings.md",
+    "model-selection.md",
+    "prompt-craft.md",
+    "editing-and-consistency.md",
+    "access-and-local-gpu.md",
+    "depth-2026-06.md"
+  ],
+  "tags": [
+    "creative-media",
+    "image-generator",
+    "text-to-image",
+    "generative-image",
+    "gemini-3-pro-image",
+    "nano-banana-pro",
+    "gemini-flash-image",
+    "flux-2",
+    "flux-kontext",
+    "recraft-v3",
+    "ideogram-3",
+    "sdxl",
+    "comfyui",
+    "comfyui-mcp",
+    "replicate-mcp",
+    "fal-mcp",
+    "controlnet",
+    "ip-adapter",
+    "lora",
+    "inpaint",
+    "outpaint",
+    "vector",
+    "svg",
+    "logo",
+    "text-in-image",
+    "character-consistency",
+    "brand-consistency",
+    "recraft-v4",
+    "qwen-image",
+    "fal-workflow",
+    "estimate-cost"
+  ],
+  "department": "creative-media",
+  "absorbed_from": [
+    "reports/UPGRADE-PLAN-2026-06.md Part 4.B (model landscape + access decisions, verified live 2026-06-13)",
+    "Replicate official MCP (mcp.replicate.com) - one-key gateway to Gemini 3 Pro Image / FLUX.2 / Recraft V3 / Ideogram 3.0 / SDXL. CONNECT.",
+    "fal official MCP (fal.ai) - alternate hosted-model gateway. CONNECT.",
+    "joenorton/comfyui-mcp-server (333\u2605, Apache-2.0) - free local-GPU path: drives ComfyUI graphs (FLUX.2[klein]/SDXL + ControlNet/IP-Adapter/LoRA) from MCP. ABSORB methodology / CONNECT server.",
+    "Black Forest Labs FLUX.2 docs (FLUX Tools fill/inpaint/outpaint, Kontext in-context editing; [klein] Apache-2.0 + SDXL OpenRAIL-M are commercially clean; [dev]/SD3.5 carry license conditions)",
+    "Recraft V4 (released Feb 2026, ground-up rebuild) - supersedes V3 for vector/logo/brand-mark (true editable SVG + brand kit). METHODOLOGY. Verified 2026-06-13.",
+    "Qwen-Image / Qwen-Image-2512 (Alibaba, Apache-2.0) - open, commercially clean, best-in-class multilingual in-image text + layout reasoning; runs in ComfyUI + hosted on Replicate/fal. ABSORB methodology / CONNECT. Verified 2026-06-13.",
+    "License correction 2026-06-13: FLUX.2 klein 4B = Apache-2.0 but klein 9B = NON-commercial; FLUX.1 schnell = Apache-2.0. 'klein' is NOT blanket-Apache. comfyui-mcp-server star count corrected 333 -> ~153.",
+    "affaan-m/ECC fal-ai-media (MIT) - METHODOLOGY only. Net-new fal MCP workflow depth folded into access-and-local-gpu.md (the existing fal gateway section): drift warning (verify current app_id/pricing/params before promising), the fal MCP tool surface (search/find/models/generate/result/status/cancel/estimate_cost/upload) which differs from Replicate slug+poll, the generate(app_id,input_data) image call shape + upload-then-image_url for edits, seed-for-repro, and estimate_cost-before-expensive cost gate. Gate-0: fal was already named as fallback gateway + FAL_KEY connect item + fal-exclusive endpoint use; only the operational workflow was added. fal video/audio endpoints deliberately deferred to video-editor / voice-audio-producer (no scope creep). Absorbed 2026-06-14."
+  ],
+  "shared_creative_tool_layer": [
+    "ComfyUI + comfyui-mcp-server (shared with 3d-artist for texture/material passes)",
+    "Replicate MCP + fal MCP (shared hosted-model gateway across the creative cluster)",
+    "Blender-MCP (3d-artist owner; image-generator may supply textures/reference renders)"
+  ],
+  "build_notes": "NEW 2026-06-13 (build/creative). Net-new discipline - nothing in the bench covered generative image. Built from UPGRADE-PLAN Part 4.B + source READMEs. Cost-aware defaults baked into rules (Flash/SDXL draft, Pro/FLUX final). Midjourney deliberately excluded: no production API. | DEPTH 2026-06-13: added Recraft V4 (vector route) + Qwen-Image (Apache-2.0 open multilingual-text model); corrected FLUX.2 klein license (4B Apache vs 9B non-commercial) across SKILL/model-selection/rules - a client-safety fix; fixed comfyui-mcp-server stars 333 -> ~153; made small-task/draft lane + wired-vs-plan-only execution map explicit in depth-2026-06.md. No code bundled. | DEPTH 2026-06-14 v1.2.0: extended access-and-local-gpu.md fal section with net-new fal MCP workflow depth from ECC fal-ai-media (MIT, methodology only). Gate-0: fal already present as fallback gateway/FAL_KEY/fal-exclusive endpoints (ABSORBED-ALREADY at the access level); ADDED only the operational layer (tool surface, generate/upload call shape, drift warning, estimate_cost cost gate, seed-for-repro). Scoped to image; fal video/audio left to their owners. No new file, no shared files touched. | 2026-07-24 product-design-creative wave (skill-5sg): accessibility/licensing/critique controls + contract 1.1.0"
+}

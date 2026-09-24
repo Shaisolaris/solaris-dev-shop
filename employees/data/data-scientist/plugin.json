@@ -1,0 +1,60 @@
+{
+  "name": "data-scientist",
+  "version": "1.2.1",
+  "description": "Data Scientist - experiment design (gated A/B setup with hypothesis lock, power analysis, sample size, user-level randomization, stratification, SRM checks), statistical inference discipline (test selection, Welch's t, Wilson CIs, peeking control, multiple-comparison correction via statsmodels, Bayesian-vs-frequentist calls), causal inference with honest assumption checks (DiD/parallel trends, propensity/overlap, RDD/McCrary, synthetic control/placebo inference, IV), forecasting (three-number forecasts with assumption blocks, CoV confidence bands, cohort decomposition, walk-forward validation), and the statistical QA gate Data Analyst escalates methodology questions to.",
+  "author": "Shai Ali",
+  "license": "MIT",
+  "skills": [
+    "SKILL.md"
+  ],
+  "references": [
+    "rules.md",
+    "learnings.md",
+    "experimentation-and-forecasting-stack.md"
+  ],
+  "references_pending_expansion": [],
+  "tags": [
+    "data",
+    "data-scientist",
+    "statistics",
+    "experiment-design",
+    "ab-testing",
+    "power-analysis",
+    "sample-size",
+    "hypothesis-testing",
+    "multiple-comparisons",
+    "causal-inference",
+    "diff-in-diff",
+    "propensity-score",
+    "regression-discontinuity",
+    "synthetic-control",
+    "forecasting",
+    "bayesian",
+    "statsmodels"
+  ],
+  "department": "data",
+  "absorbed_from": [
+    "wshobson/agents - plugins/machine-learning-ops/agents/data-scientist.md (experimental-design + causal toolbox: stratified/block randomization, FDR, sequential testing, PSM/DiD/synthetic control/RDD/mediation/sensitivity), plugins/data-engineering/commands/data-driven-feature.md (Step 3 statistical experiment design prompt, checkpoint-before-implementation discipline, Bayesian-for-faster-decisions)",
+    "VoltAgent/awesome-claude-code-subagents - categories/05-data-ai/data-scientist.md (DS checklist, phase workflow, time-series + forecast-validation step, agent hand-offs)",
+    "alirezarezvani/claude-skills - engineering/statistical-analyst (3 modes, test-selection table, decision framework, effect-size tables, risk triggers, confidence tags) + references/statistical-testing-concepts.md (Welch's-always, Wilson CI, peeking \u03b1\u22480.13 math, multiple-comparison table, SUTVA, power formulas), product-team/experiment-designer (If/Then/Because, ICE, stopping rules) + experiment-playbook (metric triad, novelty/primacy, readout template), engineering-team/senior-data-scientist (sample-size + z-test + DiD code w/ HC3 + clustered SEs, user-level randomization, SRM<1%, model-eval checklist; its references/ verified as boilerplate and skipped), commercial/commercial-forecaster (3-tier forecast, assumption-block hard rule, 70/30 window blend, CoV bands, cohort decomposition), marketing-skill/ab-test-setup + references/sample-size-guide.md (hypothesis framework, sample-size anchors, duration formula, min/max duration, traffic allocation)",
+    "sickn33/antigravity-awesome-skills - skills/ab-test-setup (UNIQUE vs alirezarezvani by diff: Hypothesis Lock hard gate, Assumptions & Validity check, Execution Readiness Gate, refusal conditions, guardrail-failure-overrides-win); its skills/data-scientist verified as a wshobson mirror and credited to wshobson",
+    "rohitg00/awesome-claude-code-toolkit - agents/data-ai/data-scientist.md (EDA-first workflow, parametric-vs-nonparametric rules, regression diagnostics, DAG/PSM/IPW/DiD/RDD rules, reproducibility: seeds/pinned deps/DVC), plugins/experiment-tracker (seeds + dataset versioning, same-dataset comparisons, no single-run conclusions), plugins/model-evaluator (AUC-PR w/ AUC-ROC, calibration, baselines, leakage check, CIs on metrics)",
+    "matheusfacure/python-causality-handbook - causal-inference-for-the-brave-and-true ch.02 (randomization independence), ch.11 (positivity/overlap, propensity weighting), ch.13 (DID estimator + parallel trends), ch.15 (synthetic control + placebo inference), ch.16 (RDD: running variable, bandwidth/kernel, McCrary test)",
+    "statsmodels/statsmodels - statsmodels/stats/power.py (TTestIndPower/NormalIndPower solve_power) + statsmodels/stats/multitest.py (multipletests method set: bonferroni/holm/holm-sidak/hommel/fdr_bh/fdr_by)",
+    "METHODOLOGY (2026-06-13 depth pass, no code bundled) -> references/experimentation-and-forecasting-stack.md: spotify/confidence (Apache-2.0, 286 stars, release 4.1.0 2026-02-26) operationalizes CUPED variance reduction + group-sequential/always-valid sequential testing + SRM + guardrails/non-inferiority on statsmodels; pymc-labs/CausalPy (Apache-2.0, 1.2k stars, release 0.8.1 2026-05-15) staggered DiD + interrupted time series + geographical lift + regression kink + IPW with HDI/ROPE/tail-probability outputs; Nixtla/statsforecast (Apache-2.0, 4.8k stars, pushed 2026-05-26) AutoARIMA/AutoETS/AutoTheta/MSTL with probabilistic + conformal intervals; feature-engine/feature_engine (BSD-3-Clause, 2.2k stars, release 1.9.4 2026-02-27) leakage-safe sklearn-Pipeline feature engineering/selection; Nixtla/mlforecast (Apache-2.0, 1.2k stars, release 1.0.2 2026-02-18) gradient-boosted forecasting with leakage-safe auto features. All permissive (no GPL/AGPL/NOASSERTION); verified live 2026-06-13 via GitHub UI/release pages.",
+    "skill-wave-data-ai-20260724 (evaluation + fixtures; methodology-only, no untrusted code)"
+  ],
+  "phase_artifacts": {
+    "discovery": "sources/_analysis/data-scientist/01-discovery.md",
+    "extraction": "sources/_analysis/data-scientist/02-extraction.md",
+    "outline": "sources/_analysis/data-scientist/03-outline.md",
+    "qa": "sources/_analysis/data-scientist/05-qa.md"
+  },
+  "build_notes": "2026-06-13 depth pass (v1.1.0): Top-5 verified 2026 sources for experimentation/causal/forecasting/feature-engineering (see TOP5-CANDIDATES.md), all permissive, all Gate-0 net-new or operationalizing a previously-conceptual rule. PART B perfection: operationalized the CUPED rule (was explicitly \"no in-house methodology codified yet\"), named the sequential-testing tool on the peeking-fixes line, named statsforecast/mlforecast on the forecasting line and feature-engine on the leakage line, extended the causal method table with staggered-DiD/interrupted-TS/geo-lift rows + a CausalPy tooling note, added Workflow 0 (small-task/prototype lane with proportionate rigor), fixed the stale SKILL.md References table. PART C deepen: lifted all five sources as methodology (no code bundled, host-install notes) into references/experimentation-and-forecasting-stack.md and registered it + TOP5-CANDIDATES.md in references[]. Verified plugin.json parses. No em-dashes introduced. Fleet doctrine: memory namespaced {client}:data-scientist:{project}; SHA-pin any CI-wired check. Note: phase_artifacts sources/_analysis paths are the fleet-wide repo-root build-artifact convention (matches peers), left as-is. | 2026-06-09 rebuild from real sources (was 229 lines/7 credits). Stars/licenses verified live via api.github.com same day. Credits STRUCK: lodetomasi/agents-claude-code (149 stars, last push 2025-08-01 - fails both bars); msitarzewski/agency-agents (repo passes bar but has zero data-scientist-territory content - its analytics material lives in data-analyst's 2026-06-09 rebuild). Credits ADDED: matheusfacure/python-causality-handbook (3,375\u2605 MIT) and statsmodels/statsmodels (11,453\u2605 BSD-3). Territory enforced: result interpretation stays with data-analyst (this employee is its methodology escalation target), training/MLOps with ai-ml-engineer, pipelines with data-engineer. CUPED intentionally thin: only Tier-1-licensed mention found is a platform-feature note (GrowthBook docs fail license bar) - logged for a future source hunt. | Prior: 2026-05-18 v0.3.0 clean build. | data-ai upstream wave 2026-07-24: runtime hardening + contract v1.1.0 + synthetic eval fixtures",
+  "absorption_candidates": [
+    "RESOLVED 2026-06-13: CUPED / variance-reduction - absorbed as methodology via spotify/confidence (Apache-2.0); GrowthBook stays rejected (NOASSERTION)",
+    "RESOLVED 2026-06-13: Bayesian A/B + quasi-experimental depth - absorbed as methodology via pymc-labs/CausalPy (Apache-2.0)",
+    "facebookincubator/GeoLift (MIT, R) - geo synthetic-control; recency borderline (last datable activity ~Oct 2025) and overlaps CausalPy geo-lift. Re-check commit recency next pass",
+    "Always-valid e-values depth (jakorostami/expectation / gostevehoward/confseq) - if a 100-star+ or notable-maintainer source with 2026 activity surfaces; current sequential need met by spotify/confidence"
+  ]
+}

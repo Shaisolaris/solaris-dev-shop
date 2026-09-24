@@ -1,0 +1,48 @@
+{
+  "name": "content-marketer",
+  "version": "0.6.1",
+  "description": "Content Marketer - AI-powered content creation (Jasper / ContentBot / Agility Writer with Google Helpful Content alignment) + SEO/semantic search optimization (entity / schema / Core Web Vitals / featured snippets / voice search) + platform-specific social content (LinkedIn / X / Instagram / TikTok) + email marketing automation (behavioral triggers, A/B subject lines, deliverability) + omnichannel distribution + repurposing (1 blog \u2192 5-10 social units) + email nurture sequences + 5-pillar content architecture (40% Educational / 20% BTS / 15% Social Proof / 15% Engagement / 10% Promotional) + editorial calendar + batch creation + performance analytics (GA4 + attribution + A/B + heat mapping + LTV cohorts) + e-commerce content (Shopify / WooCommerce / Amazon - product SEO, abandoned cart sequences) + video + multimedia (YouTube SEO + Reels / Shorts / TikTok). Distinct from SEO Specialist / Social Media Manager / Email Specialist / Paid Ads Manager. Clean rebuild from wshobson content-marketer + alirezarezvani marketing pods.",
+  "author": "Shai Ali",
+  "license": "MIT",
+  "skills": [
+    "SKILL.md"
+  ],
+  "references": [
+    "rules.md",
+    "learnings.md",
+    "content-strategy-taste-2026.md",
+    "geo-operational-2026.md"
+  ],
+  "references_pending_expansion": [],
+  "tags": [
+    "marketing",
+    "content-marketer",
+    "content-strategy",
+    "content-pillars",
+    "editorial-calendar",
+    "ai-content",
+    "semantic-seo",
+    "schema-markup",
+    "featured-snippets",
+    "content-repurposing",
+    "thought-leadership",
+    "email-nurture",
+    "ga4",
+    "attribution",
+    "ecommerce-content",
+    "youtube-seo"
+  ],
+  "department": "marketing",
+  "absorbed_from": [
+    "wshobson/plugins/content-marketing/agents/content-marketer.md",
+    "alirezarezvani/marketing-skill/social-media-manager/SKILL.md",
+    "alirezarezvani/docs/skills/marketing-skill/email-sequence.md",
+    "alirezarezvani/docs/skills/marketing-skill/cold-email.md",
+    "METHODOLOGY (2026-06-13, web research): content pillars/topic-DNA; show-don't-tell for tech + specificity-as-quality; the premium-vs-cheap TASTE rubric (2026 return-to-quality, premium 4.3x consideration); 1-idea->N repurposing (~40% more output); editorial calendar mapped to funnel; distribution>creation (~40/60), exec amplification, and SEO + GEO/AEO for AI search (topical clusters, AI-parseable structure, programmatic SEO with unique per-page data). Gate 0 PASS: deepening with what-to-post/taste + GEO. -> content-strategy-taste-2026.md",
+    "METHODOLOGY (2026-06-13, depth pass): GEO operational layer absorbed from Auriti-Labs/geo-optimizer-skill (468*, MIT), mascanho/RustySEO (279*, GPL-3.0 self-host note), amplifying-ai/awesome-generative-engine-optimization (411*, NOASSERTION cite-only), spatie/schema-org (1493*, MIT CONNECT); research arXiv:2311.09735 (KDD 2024) / 2510.11438 (ICLR 2026) / 2506.11097 (C-SEO Bench). Adds: crawled->understood->cited->monitored audit spine, 8-area citability scoring rubric, KDD-2024 citability levers (cite-sources +115% / quotation +41% / statistics +40% / fluency +29%), AI-bot access layer (robots/llms.txt/CDN), RAG-chunk readiness, citation monitoring loop. Gate-0 PASS: depth file had GEO content PRINCIPLES only; this adds the operational measurement + access half (no content-duplicate). -> geo-operational-2026.md",
+    "CONNECT 2026-06-14: TryGhost/Ghost (MIT, ~54k stars) - white-label publishing + newsletter + paid-membership/subscription platform. Clean home for a client's blog/publication + newsletter + membership monetization in one. Documented in rules.md (White-label publishing / newsletter / membership platform). MIT = clean resale (self-host + customize + white-label freely, no copyleft). Boundary: content owns editorial/publishing; email-specialist owns deliverability + newsletter-as-email. Host-installed; auto-deploy does NOT install it."
+  ],
+  "phase_artifacts": "Phase 1 grep + Phase 2 read + synthesize 4 source files",
+  "build_notes": "REBUILD 2026-04-25. Clean v0.2.0 from real source content. | 2026-05-18 v0.3.0: Search-intent first, hub-and-spoke structure, 50%-on-distribution, AI-draft + human-final hard rule, anti-AI-slop gotchas. | 2026-05-18 pending refs (4) consolidated into rules.md (not external files): 5-pillar-mix, repurposing-playbook, content-calendar, seo-content-checklist. | 2026-06-13: content strategy + taste + GEO DEPTH absorbed (methodology) -> content-strategy-taste-2026.md. Deepening per Shai 'what to post, how to post, taste'. Gate 0 PASS. | 2026-06-13 v0.5.0: DEEPEN pass - GEO OPERATIONAL layer added (geo-operational-2026.md): access/citability/monitoring, research-backed; top-5 2026 sources verified (TOP5-CANDIDATES.md). PERFECTION: distribution ratio reconciled to ~40/60 doctrine, small-task/prototype lane added, GEO pointers wired into SKILL + rules. Fleet doctrine: memory-scope keys n/a (no memory writes); SHA-pin CI note added; no new em-dashes. Gate-0 PASS. | CONNECT 2026-06-14 v0.6.0: documented Ghost (MIT) as white-label publishing/newsletter/membership platform in rules.md + absorbed_from CONNECT line. MIT = clean resale. email-specialist carries a one-line Ghost note (deliverability boundary). Concise CONNECT note, no new reference file. No em-dashes.",
+  "doctrine_note": "'never fold Shai skills' doctrine retired 2026-06-04 (residual sweep, step 2.10)."
+}

@@ -1,0 +1,59 @@
+{
+  "name": "ai-ml-engineer",
+  "version": "0.7.0",
+  "description": "Classical ML + deep learning + model training + MLOps engineer. Scikit-learn, XGBoost/LightGBM, PyTorch, TensorFlow, HuggingFace Transformers, computer vision, time-series forecasting, recommender systems, anomaly detection, LLM fine-tuning (LoRA/QLoRA) when genuinely needed. Distinct from LLM Agent Designer (which handles prompting / RAG / agents).",
+  "author": "Shai Ali",
+  "homepage": "https://github.com/shaisolaris/solaris-employees",
+  "license": "MIT",
+  "skills": [
+    "SKILL.md"
+  ],
+  "references": [
+    "rules.md",
+    "learnings.md",
+    "jupyter-notebook-workflow.md",
+    "ml-engineering-stack.md",
+    "rag-architecture.md"
+  ],
+  "references_pending_expansion": [],
+  "references_source_note": "Canonical alirezarezvani senior-ml-engineer at /Solaris/sources/alirezarezvani-claude-skills/engineering-team/senior-ml-engineer/. Distinct from LLM Agent Designer (prompting/RAG/agents/MCP) - this employee handles TRAINING.",
+  "mcp_servers": [],
+  "tags": [
+    "engineering",
+    "ml",
+    "ai",
+    "machine-learning",
+    "deep-learning",
+    "pytorch",
+    "tensorflow",
+    "scikit-learn",
+    "xgboost",
+    "mlops",
+    "fine-tuning",
+    "lora",
+    "qlora",
+    "computer-vision",
+    "recommender",
+    "forecasting",
+    "jupyter",
+    "notebook",
+    "huggingface",
+    "model-discovery"
+  ],
+  "department": "engineering",
+  "absorbed_from": [
+    "alirezarezvani/engineering-team/senior-ml-engineer (senior ML patterns + llm_integration_guide)",
+    "VoltAgent/05-data-ai/ml-engineer + ai-engineer + data-scientist (ML-specific slices)",
+    "wshobson ai-engineer (production ML patterns)",
+    "msitarzewski + lodetomasi + sickn33 (ML / DS patterns across repos)",
+    "MetaGPT (FoundationAgents/MetaGPT) - Engineer spec\u2192code handoff SOP absorbed 2026-05-01: read task \u2192 read interface defs \u2192 read shared knowledge \u2192 match schema verbatim \u2192 no scope creep \u2192 self-review against File List",
+    "datalayer/jupyter-mcp-server (BSD-3-Clause, ~1.2k\u2605, verified 2026-06-13). ABSORB notebook-driven ML methodology \u2192 references/jupyter-notebook-workflow.md: live-kernel iterative loop (execute\u2192read real output incl. plots\u2192adjust); one-concern-per-cell; surgical edit_cell_source over rewrite; restart+run-all reproducibility gate; multimodal output for visual eval; multi-notebook separation. Server host-installed against JupyterLab. Gate-0: employee had zero notebook/Jupyter content - net-new.",
+    "CONNECT: huggingface/hf-mcp-server (MIT, official HuggingFace) - Hub model/dataset/Space search + cards + trending models/papers, on-demand model selection mid-task; host installs server + optional HF token (gated/private models). Watch model licenses before client use. Documented in rules.md \u00a7Connected MCP servers.",
+    "2026-06-13 depth pass - ML engineering stack (Apache-2.0, all permissive, methodology-only, runtimes host-installed): unslothai/unsloth (66.4k stars) + axolotl-ai-cloud/axolotl (12k) fine-tuning recipes/config-as-spec; confident-ai/deepeval (16.1k) generative/fine-tune eval harness (pytest-style, LLM-as-judge, per-metric thresholds); mlflow/mlflow (26.5k) experiment tracking + registry promotion flow; vllm-project/vllm (82.8k) LLM serving + LoRA-adapter hot-swap (CONNECT: runtime host-installed, GPU infra to DevOps). Gate-0: all thin/list mentions or net-new - distilled into references/ml-engineering-stack.md.",
+    "skill-wave-data-ai-20260724 (evaluation + fixtures; methodology-only, no untrusted code)"
+  ],
+  "available_sources_for_scout": [
+    "HuggingFace Hub + Papers With Code + Kaggle (Scout mines for new models, SOTA on specific tasks, FE techniques)"
+  ],
+  "build_notes": "2026-05-01 v0.4.0: MetaGPT Engineer SOP absorbed (M4). | 2026-05-24: pending refs cleared (content lives in rules.md per Sprint 7/8 completion) | 2026-06-13 v0.6.0: depth pass - added references/ml-engineering-stack.md (Unsloth/Axolotl/DeepEval/MLflow/vLLM methodology); registered previously-unregistered references/rag-architecture.md + the new stack file; perfection pass: replaced 6 phantom reference paths in rules.md with real files, added small-task/prototype lane to SKILL, wired new decision rules + reference table. TOP5-CANDIDATES.md written. | data-ai upstream wave 2026-07-24: runtime hardening + contract v1.1.0 + synthetic eval fixtures"
+}

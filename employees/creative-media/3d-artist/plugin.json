@@ -1,0 +1,72 @@
+{
+  "name": "3d-artist",
+  "version": "1.2.1",
+  "description": "Game-ready 3D asset discipline for Solaris: describe -> rigged, textured, engine-ready mesh. Pipeline: GENERATE (commercial: Rodin Gen-2 cleanest topology / Tripo via tripo-mcp / Meshy-6 with rig+anim API, ~$0.30-0.40/asset; open on 16GB+ GPU: Hunyuan3D-2.1 real PBR (license excludes EU/UK/Korea) or TRELLIS MIT best geometry + Hunyuan3D-Paint for PBR) -> BACKBONE blender-mcp (18.5k stars, MIT) for import/cleanup/decimate/UV/assemble/export (runs Python, drives every other tool) -> RIG (UniRig MIT humans/animals/objects via skeleton-prediction + skinning-weight + merge; Mixamo free humanoid-only via browser; Meshy/Tripo rig APIs for any creature) -> TEXTURE (gen-native PBR or Hunyuan3D-Paint) -> ENGINE IMPORT CONTRACT (static = GLB via Unity glTFast / Unreal native; rigged = FBX 2020 binary, embed media). Documents BOTH the commercial path and the open-GPU path. Distinct from Unity/Unreal developers (engine logic) and Image Generator (2D). Part of the Solaris creative cluster sharing a tool layer.",
+  "author": "Shai Ali",
+  "license": "MIT",
+  "skills": [
+    "SKILL.md"
+  ],
+  "references": [
+    "rules.md",
+    "learnings.md",
+    "generation-pipeline.md",
+    "blender-backbone.md",
+    "blender-motion-debugging.md",
+    "rigging.md",
+    "engine-import-contract.md",
+    "depth-2026-06.md"
+  ],
+  "tags": [
+    "creative-media",
+    "3d-artist",
+    "game-ready-3d",
+    "text-to-3d",
+    "image-to-3d",
+    "rodin-gen2",
+    "tripo",
+    "tripo-mcp",
+    "meshy",
+    "hunyuan3d",
+    "trellis",
+    "hunyuan3d-paint",
+    "blender-mcp",
+    "unirig",
+    "mixamo",
+    "auto-rig",
+    "skinning",
+    "pbr-texture",
+    "retopology",
+    "decimate",
+    "uv-unwrap",
+    "glb",
+    "fbx",
+    "gltfast",
+    "unity-import",
+    "unreal-import",
+    "motion-state-inspection",
+    "rig-debugging",
+    "foot-sliding",
+    "retarget-debug"
+  ],
+  "department": "creative-media",
+  "absorbed_from": [
+    "reports/UPGRADE-PLAN-2026-06.md Part 4.C (pipeline + model + license decisions, verified live 2026-06-13)",
+    "ahujasid/blender-mcp (18.5k+ stars, MIT, v1.5.5) - README: socket bridge + execute_blender_code (arbitrary Python in Blender) + Poly Haven assets + Hyper3D Rodin generation + Hunyuan3D support + viewport screenshots + Sketchfab download. ABSORB methodology / CONNECT server. SHARED BACKBONE.",
+    "VAST-AI-Research/UniRig (1.6k+ stars, MIT, SIGGRAPH'25) - README: two-stage auto-rig (Skeleton Prediction via Skeleton Tree Tokenization + Skinning Weight Prediction via Bone-Point Cross Attention), CLI generate_skeleton/generate_skin/merge, supports obj/fbx/glb/vrm, 8GB+ VRAM. Successor SkinTokens noted. ABSORB.",
+    "Rodin Gen-2 (Hyper3D, SIGGRAPH'25 best paper) - cleanest topology; wired into blender-mcp. CONNECT.",
+    "Tripo (tripo-mcp official) + Meshy-6 (rig+anim API) - commercial generation w/ rigging. CONNECT.",
+    "Tencent Hunyuan3D-2.1 (13.9k+ stars, real PBR, license excludes EU/UK/Korea) + Microsoft TRELLIS (12.8k+ stars, MIT, best geometry) - open-GPU generation. ABSORB/CONNECT.",
+    "Mixamo (Adobe, free) - humanoid auto-rig + animation library via browser. CONNECT (Web Operator).",
+    "microsoft/TRELLIS.2 (MIT, O-Voxel field-free latents, full PBR) - upgrades the open path so MIT-clean PBR is available in EU/UK/Korea, removing the geometry-only tradeoff vs Hunyuan3D. ABSORB methodology / CONNECT. Verified 2026-06-13.",
+    "VAST-AI-Research/SkinTokens (~79 stars, UniRig authors, released 2026) - unified autoregressive skeleton+skin, +98-133% skinning accuracy / +17-22% bone prediction; promoted from watch to preferred rig route when license-compatible. METHODOLOGY (self-host, no code bundled). Verified 2026-06-13.",
+    "Refresh 2026-06-13: ahujasid/blender-mcp v1.5.5/18.5k -> v1.6.4/22.2k; Hunyuan3D-2.1 jurisdiction gate (EU/UK/Korea excluded) re-confirmed via repo LICENSE + issue #94.",
+    "affaan-m/ECC blender-motion-state-inspection (MIT) - structured rig/pose/contact/motion-state debugging: facts-before-screenshots, scene inventory, skeleton ID, forward/up/side axis + mirror detection, revealing-frame sampling, contact diagnosis (penetration/foot-slide/crossover/twist/scale-drift), report shape + thresholds + anti-patterns. METHODOLOGY only (no code bundled). Net-new vs blender-backbone.md (tooling/static cleanup). Absorbed 2026-06-14."
+  ],
+  "shared_creative_tool_layer": [
+    "blender-mcp (owned here; the Python-scriptable backbone the whole cluster can call)",
+    "ComfyUI + comfyui-mcp-server (image-generator owner; borrowed here for texture/material generation)",
+    "Replicate MCP + fal MCP (cluster-shared hosted-model gateway; some 3D-gen models reachable here too)"
+  ],
+  "build_notes": "NEW 2026-06-13 (build/creative). Net-new discipline - nothing covered 3D asset creation. blender-mcp/Meshy/Tripo were catalogued in the upgrade plan as a reusable backbone (NOT re-counted); this employee ADDS Rodin/Hunyuan/TRELLIS/UniRig + the rig step + the engine import contract. Documents BOTH commercial and open-GPU paths. License flag: Hunyuan3D-2.1 excludes EU/UK/Korea; TRELLIS (MIT) is the clean open fallback there. | DEPTH 2026-06-13: refreshed stale blender-mcp facts (v1.6.4/22.2k); promoted SkinTokens (UniRig successor, released) as preferred rig route; added TRELLIS.2 (MIT) as the open PBR path that clears the EU/UK/Korea jurisdiction gate; added small-task/prototype lane + operationalized pre-export gate (G1-G7) + wired-vs-plan-only execution map in depth-2026-06.md. No code bundled; methodology + self-host notes only. | DEPTH 2026-06-14: added blender-motion-debugging.md - structured motion-state inspection (rig/pose/contact/orientation debugging) absorbed from ECC blender-motion-state-inspection (MIT, methodology only). Gate-0: blender-backbone.md covered tooling + static cleanup but not moving-rig debugging; net-new. No shared files touched. | 2026-07-24 product-design-creative wave (skill-5sg): accessibility/licensing/critique controls + contract 1.1.0"
+}

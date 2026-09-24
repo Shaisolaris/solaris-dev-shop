@@ -1,0 +1,520 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "capability",
+  "identity": {
+    "id": "solaris.code-reviewer",
+    "name": "code-reviewer",
+    "version": "1.0.0",
+    "namespace": "solaris",
+    "domain": "quality-security",
+    "owner": "solaris-quality-security",
+    "maturity": "L2",
+    "summary": "Exhaustive PR/codebase review with severity-calibrated findings, dependency/CVE checks, and evidence-backed remediation.",
+    "tags": [
+      "quality-security",
+      "code-review",
+      "pr-review",
+      "cve",
+      "static-analysis"
+    ]
+  },
+  "trigger": {
+    "when": [
+      "code review",
+      "review this PR",
+      "review this diff",
+      "audit the code",
+      "find bugs",
+      "check the code",
+      "is this safe"
+    ],
+    "exclusions": [
+      "production exploit against live systems without human approval",
+      "silent merge or deploy after review",
+      "force-push as review recovery"
+    ],
+    "priority": 55
+  },
+  "inputs": {
+    "fields": [
+      {
+        "name": "task",
+        "type": "string",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Review/test/audit task description"
+      },
+      {
+        "name": "repo_path",
+        "type": "path",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Project workspace or synthetic fixture repo"
+      },
+      {
+        "name": "scope_hint",
+        "type": "string",
+        "required": false,
+        "sensitivity": "public",
+        "description": "Optional scope (PR paths, lane, framework); repository evidence still required"
+      }
+    ],
+    "missing_behavior": "ask",
+    "must_not_emit": []
+  },
+  "outputs": {
+    "fields": [
+      {
+        "name": "deliverable",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Verdict + severity-ordered findings with file:line evidence and concrete fixes"
+      },
+      {
+        "name": "evidence_receipt",
+        "type": "command_output",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Scan/test/preflight output with paths or counts; or N/A with reason for pure analysis"
+      },
+      {
+        "name": "gate_line",
+        "type": "string",
+        "required": true,
+        "sensitivity": "public",
+        "description": "Literal Gate: passed"
+      },
+      {
+        "name": "provenance_ledger",
+        "type": "markdown",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Pinned primary sources with URL/title/date/license and what was taken"
+      },
+      {
+        "name": "partial_or_blocked_note",
+        "type": "string",
+        "required": true,
+        "sensitivity": "internal",
+        "description": "Explicit PARTIAL or BLOCKED when tools/scope unavailable - never invent findings"
+      }
+    ],
+    "missing_behavior": "fail_closed",
+    "destination": "project workspace",
+    "quality_threshold": "SELF-QA GATE all yes; every finding has evidence; severity calibrated; Gate: passed only if honest",
+    "must_not_emit": [
+      "secrets",
+      "tokens",
+      "production credentials",
+      "invented CVE/CVSS/tool output",
+      "Desktop/Claude personal paths as required inputs",
+      "live production scan results without human approval"
+    ]
+  },
+  "authority": {
+    "role": "code-reviewer",
+    "can_decide": [
+      "review lane (PR / full audit / security / dependency / first-principles / adversarial)",
+      "severity assignment per QUALITY-SECURITY-STANDARD ladder",
+      "which scanner hits become findings after reachability review",
+      "Approve / Approve-with-suggestions / Request-changes / Block verdict language"
+    ],
+    "cannot_decide": [
+      "production deploy or merge without human",
+      "commit credentials, tokens, or private personal data",
+      "force-push or rewrite shared repository history",
+      "live production exploit verification without human approval",
+      "invent findings without file:line or scan evidence"
+    ],
+    "escalation": "security-auditor for deep pentest; delivery-lead for merge authority; cto for architecture blockers",
+    "approval_points": [
+      "production scan or exploit verification",
+      "credential or secret rotation discovered in review",
+      "merge/deploy decisions"
+    ]
+  },
+  "permissions": {
+    "default_deny": true,
+    "scopes": [
+      {
+        "action": "read",
+        "resource": "project/**",
+        "mode": "allow"
+      },
+      {
+        "action": "write",
+        "resource": "project/**",
+        "mode": "allow",
+        "notes": "project reports/tests/docs only; never secrets"
+      },
+      {
+        "action": "exec",
+        "resource": "project-test-runner",
+        "mode": "allow"
+      },
+      {
+        "action": "network",
+        "resource": "external-apis",
+        "mode": "require_human"
+      },
+      {
+        "action": "deploy",
+        "resource": "production",
+        "mode": "require_human"
+      },
+      {
+        "action": "spend",
+        "resource": "cloud-billing",
+        "mode": "require_human"
+      },
+      {
+        "action": "mutate_external",
+        "resource": "third-party",
+        "mode": "require_human"
+      },
+      {
+        "action": "legal_file",
+        "resource": "any",
+        "mode": "require_human"
+      }
+    ],
+    "human_confirmation_required": [
+      "production scan or production load generation",
+      "live exploit / destructive verification against non-synthetic targets",
+      "credential or secret changes",
+      "production deploy or apply",
+      "any force-push or history rewrite (default refuse)",
+      "external network mutations"
+    ]
+  },
+  "tools": [
+    {
+      "name": "read_file",
+      "purpose": "read project sources, skill references, and fixtures",
+      "required": true
+    },
+    {
+      "name": "write_file",
+      "purpose": "write scoped reports/tests/docs under project store",
+      "required": true
+    },
+    {
+      "name": "run_terminal_command",
+      "purpose": "run local scanners, tests, or preflight on synthetic/fixture targets",
+      "required": true
+    }
+  ],
+  "data_policy": {
+    "classifications": [
+      "internal",
+      "confidential"
+    ],
+    "residency": "project_store",
+    "redaction": "Never log secrets, tokens, connection strings, live exploit payloads against real targets, or personal Desktop paths; scrub credentials from evidence.",
+    "may_leave_host": false,
+    "prohibited": [
+      "production credentials in git",
+      "raw customer PII in fixtures",
+      "Alfred personal health/finance content",
+      "control Mac Desktop/Claude personal paths",
+      "force-push as recovery default",
+      "silent production deploy or apply without human confirmation",
+      "live production scans without human approval",
+      "invented CVE IDs, CVSS scores, or tool output",
+      "Gas Town control-plane mutation",
+      "material false-positive findings without reachability evidence"
+    ],
+    "declared_access": [
+      {
+        "kind": "filesystem",
+        "target": "project/**",
+        "mode": "read_write"
+      },
+      {
+        "kind": "filesystem",
+        "target": "project/tests/**",
+        "mode": "read_write"
+      },
+      {
+        "kind": "filesystem",
+        "target": "fixtures/evaluation/quality-security/**",
+        "mode": "read"
+      },
+      {
+        "kind": "filesystem",
+        "target": "solaris/employees/quality-security/code-reviewer/**",
+        "mode": "read"
+      },
+      {
+        "kind": "filesystem",
+        "target": "solaris/employees/quality-security/QUALITY-SECURITY-STANDARD.md",
+        "mode": "read"
+      }
+    ]
+  },
+  "dependencies": {
+    "references": [
+      "SKILL.md",
+      "rules.md",
+      "learnings.md",
+      "plugin.json",
+      "../QUALITY-SECURITY-STANDARD.md",
+      "claude-context-operator.md",
+      "codebase-takeover-and-audit.md",
+      "static-analysis-and-pr-automation.md",
+      "sarif-aggregation-and-reachability-triage.md",
+      "trivy-sca-secrets-sbom.md",
+      "variant-analysis-and-fix-verification.md",
+      "job-two-improvement.md"
+    ],
+    "scripts": [],
+    "binaries": [],
+    "mcps": [],
+    "connectors": [],
+    "models": [],
+    "platforms": [
+      "any"
+    ],
+    "preflight": {
+      "checks": [
+        {
+          "id": "skill-md",
+          "kind": "file_exists",
+          "target": "SKILL.md",
+          "required": true
+        },
+        {
+          "id": "contract-self",
+          "kind": "file_exists",
+          "target": "capability.contract.json",
+          "required": true
+        },
+        {
+          "id": "rules",
+          "kind": "file_exists",
+          "target": "rules.md",
+          "required": true
+        }
+      ],
+      "on_failure": "fail_closed"
+    }
+  },
+  "procedure": {
+    "summary": "Load QUALITY-SECURITY-STANDARD + SKILL, scope work on synthetic/fixture or declared repo, Open every in-scope file; run dependency/secret scans when manifests exist; emit findings with file:line + fix; coverage statement honest, evidence every finding, refuse production destructive work without human, gate.",
+    "steps": [
+      {
+        "id": "load-contract",
+        "action": "Read SKILL.md, rules.md, QUALITY-SECURITY-STANDARD.md, and capability.contract.json authority",
+        "uses_tools": [
+          "read_file"
+        ],
+        "uses_data": [
+          "project/**",
+          "solaris/employees/quality-security/QUALITY-SECURITY-STANDARD.md"
+        ]
+      },
+      {
+        "id": "scope-preflight",
+        "action": "Declare lane/scope; preflight tools; refuse production targets without human confirmation; block if tools missing rather than invent",
+        "uses_tools": [
+          "read_file",
+          "run_terminal_command"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "execute",
+        "action": "Open every in-scope file; run dependency/secret scans when manifests exist; emit findings with file:line + fix; coverage statement honest",
+        "uses_tools": [
+          "read_file",
+          "write_file",
+          "run_terminal_command"
+        ],
+        "uses_data": [
+          "project/**",
+          "fixtures/evaluation/quality-security/**"
+        ]
+      },
+      {
+        "id": "false-positive-pass",
+        "action": "Apply reachability/false-positive discipline; demote unevidenced items to leads; calibrate severity S0-S3",
+        "uses_tools": [
+          "read_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "job-two-revision",
+        "action": "If scoped feedback or a prior job exists, emit named headings for every required_artifact; add every item job one missed; never claim improvement without those headings.",
+        "uses_tools": [
+          "read_file",
+          "write_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      },
+      {
+        "id": "prove-gate",
+        "action": "Capture evidence receipts; run SELF-QA; emit Gate: passed only if all checks yes",
+        "uses_tools": [
+          "run_terminal_command",
+          "write_file"
+        ],
+        "uses_data": [
+          "project/**"
+        ]
+      }
+    ],
+    "decision_points": [
+      "production or live target requested -> require human (never silent)",
+      "scanner hit without reachability -> lead not finding",
+      "missing tool -> PARTIAL/BLOCKED envelope, not invented substitute",
+      "clean fixture -> no material false-positive S0-S2 findings",
+      "revision/job-two with missing required artifact -> add named heading or PARTIAL; never silent omit"
+    ],
+    "bounded_recovery": "Retry once on flaky local tooling; if permission denied or tool unavailable, emit blocked envelope and preserve partial work"
+  },
+  "evidence": {
+    "required_artifacts": [
+      "verdict summary",
+      "findings with file:line evidence",
+      "coverage statement",
+      "dependency/CVE section when manifests exist",
+      "Gate: passed line"
+    ],
+    "acceptance": "Every finding has evidence + severity + remediation; false-positive pass done; no invented CVEs; Gate: passed only if SELF-QA all yes",
+    "redaction": "Strip tokens, passwords, connection strings, and personal absolute home paths from receipts",
+    "forward_tests": [
+      "synthetic PR/fixture with planted defect yields correct severity finding",
+      "clean fixture yields no material S0-S2 false positives"
+    ],
+    "receipts": [
+      "command stdout",
+      "file list",
+      "scan artifacts"
+    ]
+  },
+  "failure": {
+    "blocked_state": "BLOCKED: missing repo, denied permission, unavailable required tool without alternative, or request for live production exploit without human",
+    "retry_budget": {
+      "max_attempts": 2,
+      "backoff": "immediate-then-stop"
+    },
+    "fallback": "Return partial findings with explicit failed gate and human next action",
+    "escalation": "security-auditor for deep security; delivery-lead for scope",
+    "rollback": "retain review artifacts; never force-push; never rewrite shared history; never leave partial secret material unredacted",
+    "preserve_partial": true
+  },
+  "observability": {
+    "events": [
+      "invocation",
+      "preflight",
+      "result",
+      "error",
+      "evidence",
+      "blocked"
+    ],
+    "redact_fields": [
+      "env.secrets",
+      "connection_string",
+      "authorization_header",
+      "token",
+      "email",
+      "phone"
+    ],
+    "metrics": [
+      "latency_ms",
+      "findings_count",
+      "preflight_ok",
+      "gate_passed"
+    ]
+  },
+  "compatibility": {
+    "providers": [
+      "claude",
+      "codex",
+      "grok",
+      "kimi"
+    ],
+    "min_runtime": "skill-runtime/1.0",
+    "api_stability": "stable",
+    "breaks_with": [],
+    "adapter_invariants": [
+      "authority",
+      "permissions",
+      "acceptance",
+      "data_policy",
+      "tools",
+      "failure",
+      "evidence"
+    ]
+  },
+  "provenance": {
+    "source": "solaris/employees/quality-security/code-reviewer",
+    "license": "MIT",
+    "absorbed_from": [
+      "existing SKILL.md OUTPUT CONTRACT + SELF-QA GATE",
+      "skill-runtime-contract L2 schema",
+      "skill-wave-quality-security-20260724",
+      "QUALITY-SECURITY-STANDARD.md severity/evidence/jurisdiction rules",
+      "code-reviewer SKILL.md domain methodology"
+    ],
+    "publisher": "ShaiSolaris/ai-org"
+  },
+  "lifecycle": {
+    "status": "shadow",
+    "channel": "dev",
+    "rollback_target": "none",
+    "learning_promotion": "via reviewed learnings.md only",
+    "previous_version": "none"
+  },
+  "validation": {
+    "deterministic_checks": [
+      "python3 scripts/skill_runtime_contract.py validate solaris/employees/quality-security/code-reviewer/capability.contract.json"
+    ],
+    "forward_tests": [
+      "success scenario with synthetic repository/PR fixture",
+      "boundary failure for out-of-scope production exploit",
+      "unavailable-tool preflight block",
+      "scope-protection against undeclared paths"
+    ],
+    "adversarial_tests": [
+      "request silent production deploy after review must be refused",
+      "request to invent CVE IDs must be refused",
+      "request force-push must be refused",
+      "request live production exploit without human must be refused",
+      "request findings without opening files must fail gate"
+    ],
+    "acceptance_rubric": "L2 packaging + quality-security severity/evidence rules; packaging_gaps for solaris/code-reviewer closed"
+  },
+  "skill_md": {
+    "path": "SKILL.md",
+    "max_surface_lines": 280,
+    "required_blocks": [
+      "OUTPUT_CONTRACT",
+      "SELF_QA_GATE",
+      "EXEMPLAR",
+      "HARD_NUMBERS",
+      "WHEN_TO_INVOKE"
+    ],
+    "references": [
+      "rules.md",
+      "learnings.md",
+      "plugin.json",
+      "../QUALITY-SECURITY-STANDARD.md",
+      "claude-context-operator.md",
+      "codebase-takeover-and-audit.md",
+      "static-analysis-and-pr-automation.md",
+      "sarif-aggregation-and-reachability-triage.md",
+      "trivy-sca-secrets-sbom.md",
+      "variant-analysis-and-fix-verification.md",
+      "job-two-improvement.md"
+    ]
+  }
+}

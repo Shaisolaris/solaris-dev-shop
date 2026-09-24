@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0.0",
+  "description": "Hard budgets for learning promotion, roster changes, context loading, and external scouting. Exceeding a budget yields genuine escalation / review - never silent expansion.",
+  "defaults": {
+    "context_tokens_soft": 15000,
+    "context_tokens_hard": 100000,
+    "scout_external_queries": 20,
+    "scout_auto_absorb": 0,
+    "learning_promotions_auto_max": 3,
+    "learning_promotions_require_review_above": 3,
+    "roster_mutations_require_review": true,
+    "roster_mutations_auto_max": 0,
+    "assignment_max_supporting": 5,
+    "council_invocation_require_human": true
+  },
+  "notes": [
+    "scout_auto_absorb=0: Talent Scout proposes only; Shai approves absorptions.",
+    "roster_mutations_auto_max=0: Roster Manager reports; writes require review.",
+    "learning_promotions_auto_max: Knowledge Synthesizer may auto-promote up to N low-risk rewrites; above that escalate.",
+    "context_tokens_hard: Context Manager must propose retirement rather than unbounded load."
+  ]
+}
