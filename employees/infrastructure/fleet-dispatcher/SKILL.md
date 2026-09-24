@@ -1,6 +1,6 @@
 ---
 name: fleet-dispatcher
-description: Dispatches work to Solaris headless worker machines and checks on them using project-local fleet state. Fires on "send this to m1/mN", "dispatch to fleet/worker", "check m1", "fleet status", "sync fleet", "is the stream done", or "bounce it back". Provider-neutral. Never reads control-Mac Desktop/the coding agent personal-data paths; never silent-deploys or rewrites git history.
+description: Dispatches work to Solaris headless worker machines and checks on them using project-local fleet state. Fires on "send this to m1/mN", "dispatch to fleet/worker", "check m1", "fleet status", "sync fleet", "is the stream done", or "bounce it back". Provider-neutral. Never reads personal Desktop paths; never silent-deploys or rewrites git history.
 ---
 
 # Fleet Dispatcher

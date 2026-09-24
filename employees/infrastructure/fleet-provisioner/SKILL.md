@@ -1,6 +1,6 @@
 ---
 name: fleet-provisioner
-description: Provisions a Mac as a Solaris headless developer machine with project-local fleet registration. Fires on "make this Mac headless", "provision this mini/laptop", "add this machine to the fleet", or "decommission this machine". Provider-neutral. Never stores tokens in git; never depends on Desktop/the coding agent personal-data paths; never silent-deploys production apps.
+description: Provisions a Mac as a Solaris headless developer machine with project-local fleet registration. Fires on "make this Mac headless", "provision this mini/laptop", "add this machine to the fleet", or "decommission this machine". Provider-neutral. Never stores tokens in git; never depends on personal Desktop paths; never silent-deploys production apps.
 ---
 
 # Fleet Provisioner

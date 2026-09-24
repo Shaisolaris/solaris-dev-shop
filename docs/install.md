@@ -14,7 +14,7 @@ To use one employee in a coding agent:
 
 1. Copy the employee directory, for example `employees/quality-security/qa-engineer/`, into the place your agent loads project skills.
 2. Point the agent at `SKILL.md` in that directory.
-3. If the skill says to load `rules.md` or a reference next to it, copy those files too. They sit beside the skill on purpose.
+3. If the skill says to load `rules.md` or a reference next to it, copy those files too. They sit beside the skill on purpose. Three roles have no separate rules file: fleet dispatcher, fleet provisioner, and project onboarding. Their `SKILL.md` is the whole job.
 
 The chief of staff is `chief-of-staff/SKILL.md`. Routing uses `control-plane/`. Keep those two folders together if you want the intake command to keep working.
 
