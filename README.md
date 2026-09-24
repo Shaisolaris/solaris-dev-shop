@@ -4,7 +4,7 @@ A free skill library of **61 employees** plus the original **chief of staff**. V
 
 You ask for work. The chief of staff assigns one specialist. The specialist does the job. You still decide.
 
-This is not an app, a marketplace, or a four-role sample. It is the V5.2.2 workforce, packaged so you can read it, copy one skill, and route one task.
+This is not an app and not a marketplace. It is the V5.2.2 workforce, packaged so you can read it, copy one skill, and route one task.
 
 ## Try one path
 
