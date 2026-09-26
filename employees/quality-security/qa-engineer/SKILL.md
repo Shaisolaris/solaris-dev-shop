@@ -344,13 +344,13 @@ After every QA session:
 
 Note: the per-topic `references/*.md` files older drafts referenced (playwright-playbook, accessibility-audit-checklist, flaky-test-triage, load-test-playbook, visual-regression, mobile-test-strategy, api-contract-testing) were phantom - that content lives inline in this SKILL.md and rules.md. See rules.md "References" for the topic-to-section map.
 
-Canonical wshobson accessibility-compliance: `/Solaris/sources/wshobson-agents/plugins/accessibility-compliance/`
+Canonical wshobson accessibility-compliance (external upstream; absorbed into rules.md)
 
 
 
 ## QUALITY-SECURITY CONTROLS (2026-07 wave)
 
-Wave: skill-wave-quality-security-20260724 (skill-lkl). Full standard: `solaris/employees/quality-security/QUALITY-SECURITY-STANDARD.md`.
+Wave: skill-wave-quality-security-20260724 (skill-lkl). Full standard: `employees/quality-security/QUALITY-SECURITY-STANDARD.md`.
 
 QA reports use severity + numbered repro + expected-vs-actual + evidence paths. Accessibility and planted functional defects are first-class. Clean runs do not invent S0-S2 failures.
 

@@ -16,7 +16,7 @@ You send a task. The chief of staff assigns exactly one accountable specialist. 
 solaris-intake intake "Write a test plan for the client portal login regression"
 ```
 
-That assigns `solaris.qa-engineer`. It does not write the test plan. Routing is deterministic: the same request always lands on the same specialist. A saved run is in [`examples/route-a-task/`](examples/route-a-task/).
+That command routes the request. It names `solaris.qa-engineer` as accountable and performs no work of its own. The test plan itself is written by the qa-engineer, but only after you invoke that skill in your own agent. Routing is deterministic: the same request always lands on the same specialist. A saved run is in [`examples/route-a-task/`](examples/route-a-task/).
 
 ![Demo: one intake command routes to the accountable specialist](assets/demo.gif)
 

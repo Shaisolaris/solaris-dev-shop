@@ -1,6 +1,6 @@
 # Notice
 
-Owner-authored packaging and owner-authored employee text in this repository are under the MIT license in `LICENSE`.
+The packaging and employee text in this repository are under the MIT license in `LICENSE`.
 
 Some employee folders cite upstream methods or carry an upstream license file next to absorbed material. Those notices stay with the file that names them. This repository does not relicense that third-party expression.
 

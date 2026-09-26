@@ -25,4 +25,4 @@ Copy this folder to `employees/<department>/<skill-name>/` and fill every file. 
 
 ## Propose first
 
-Open a [new employee proposal](/.github/ISSUE_TEMPLATE/new-employee.md) issue before building. Unproposed skills will not be merged.
+Open a [new employee proposal](../../.github/ISSUE_TEMPLATE/new-employee.md) issue before building. Unproposed skills will not be merged.

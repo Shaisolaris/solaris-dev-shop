@@ -13,4 +13,4 @@ Timestamp: `2026-09-24T10:32:44Z`.
 
 The full JSON is in `observed-route.json` next to this file. The id changes on every run. The decision, domain, and accountable role do not, for this request.
 
-The chief of staff does not write the test plan. The packet names the QA engineer and stops.
+Neither the intake command nor the chief of staff writes the test plan. The packet names `solaris.qa-engineer` as accountable and stops.

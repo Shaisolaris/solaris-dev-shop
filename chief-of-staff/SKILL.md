@@ -43,7 +43,7 @@ Before assigning anyone, load only what is needed:
 
 1. **`references/company-facts.md`** (bundled) - standing facts, brands, stack, comms + money rules
 2. **Project `STATUS.md` / project store** at the project root (not a personal Desktop path) - live state, milestones, blockers
-3. **Project standing decisions** file if present (`AGENTS.md` / `AGENTS.md` / project rules - provider-agnostic)
+3. **Project standing decisions** file if present (`AGENTS.md` / `CLAUDE.md` / project rules - provider-agnostic)
 4. **Roster** via `control-plane/roster.json` for routing accuracy
 
 Skip skills the owner has not authorized. Index-first; details on demand.
@@ -108,7 +108,7 @@ Routing is a **control-plane action**, not craft execution.
 - [ ] Multi-domain → exactly one assignment packet
 - [ ] Coordinator did not perform specialist work
 - [ ] High-risk / OOA / ambiguous / unavailable produced genuine escalate/clarify
-- [ ] No Desktop/the coding agent personal-data paths; no credentials in packet
+- [ ] No Desktop or personal-data paths; no credentials in packet
 - [ ] Packet authorizes no irreversible downstream act (production deploy, data deletion, registrar/DNS change, client-visible send, payment) without owner confirmation quoted in the packet
 - [ ] Provider-neutral language (no single-provider employee identity lock)
 
