@@ -56,6 +56,12 @@ Details: [`docs/install.md`](docs/install.md). How a request moves: [`docs/archi
 - Want a new specialist? Open a [new employee proposal](.github/ISSUE_TEMPLATE/new-employee.md).
 - Improving the router? `python3 tests/test_router.py` must stay green. CI runs it on every push.
 
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=Shaisolaris/solaris-dev-shop)](https://github.com/Shaisolaris/solaris-dev-shop/graphs/contributors)
+
+[![Star History](https://api.star-history.com/svg?repos=Shaisolaris/solaris-dev-shop&type=Date)](https://star-history.com/#Shaisolaris/solaris-dev-shop&Date)
+
 ## What this is not
 
 - Not 73, 58, 52, or 100 employees. The count is 61 directories.

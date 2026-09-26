@@ -1,10 +1,14 @@
 # Install
 
-One command, from the repository root:
+One command, from anywhere:
 
 ```bash
-./install.sh
+curl -fsSL https://raw.githubusercontent.com/Shaisolaris/solaris-dev-shop/main/install.sh | bash
 ```
+
+It clones to `~/.solaris-dev-shop`, verifies the tree, runs the control-plane self-test and the routing suite, installs the `solaris-intake` command into `~/.local/bin`, and prints per-agent skill paths. Uninstall any time with `~/.solaris-dev-shop/install.sh --uninstall`.
+
+From a repository checkout, `./install.sh` does the same against the checkout you are in.
 
 It verifies the tree, runs the control-plane self-test and the routing suite, and installs the `solaris-intake` command into `~/.local/bin`.
 
@@ -27,3 +31,13 @@ To use one employee in a coding agent:
 The chief of staff is `chief-of-staff/SKILL.md`. Routing uses `control-plane/`. Keep those two folders together if you want the intake command to keep working.
 
 Do not copy a personal Desktop path into the skill. Do not commit `.env` files.
+
+## Per-agent install notes
+
+- **Claude Code**: copy the employee folder into `~/.claude/skills/`. It is picked up automatically.
+- **Cursor**: copy the employee folder into `.cursor/skills/` in your project, or `~/.cursor/skills/` for global use.
+- **Windsurf**: copy the employee folder into `.windsurf/skills/` in your project.
+- **Codex CLI**: copy the employee folder into `~/.codex/skills/`.
+- **Aider**: copy the employee folder anywhere, then point Aider at the `SKILL.md` with `--read` or add it to your conventions file.
+
+In every case, keep the five files together (`SKILL.md`, `rules.md`, `plugin.json`, `capability.contract.json`, `learnings.md`) and point the agent at `SKILL.md`.
