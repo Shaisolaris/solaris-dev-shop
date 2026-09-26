@@ -8,7 +8,7 @@ One command, from the repository root:
 
 It verifies the tree, runs the control-plane self-test and the routing suite, and installs the `solaris-intake` command into `~/.local/bin`.
 
-These files are skills, not a package you pip-install. No PyPI publish in this pass.
+These files are skills, not a package you pip-install. No PyPI publish in this pass. A `pyproject.toml` ships so the tree can be built as a wheel (`python3 -m pip wheel . --no-deps`); the wheel installs a working `solaris-intake` command backed by the bundled control plane. The repo layout keeps `solaris_intake/` as the entry-point package with `control-plane/` symlinked inside it.
 
 Manual check, same thing the installer runs:
 

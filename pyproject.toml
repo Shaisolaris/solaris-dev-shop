@@ -17,3 +17,8 @@ solaris-intake = "solaris_intake:main"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["solaris_intake*"]
+
+# control-plane/ is symlinked into the package (solaris_intake/control-plane
+# -> ../control-plane) so the wheel ships the router the entry point needs.
+[tool.setuptools.package-data]
+solaris_intake = ["control-plane/**/*"]

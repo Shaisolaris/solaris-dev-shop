@@ -1,0 +1,379 @@
+{
+  "schema_version": "1.0.0",
+  "description": "Active capability roster for the Solaris Dev Shop control plane. One entry per employee in employees/*/*/ (61), plus the meta chief-of-staff coordinator. Roster mutations require human review.",
+  "updated_at": "2026-09-26",
+  "capabilities": [
+    {
+      "id": "meta.chief-of-staff",
+      "status": "active",
+      "kind": "agent",
+      "namespace": "meta"
+    },
+    {
+      "id": "solaris.3d-artist",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.ai-automation-engineer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.ai-ml-engineer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.ar-vr-developer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.backend-developer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.blockchain-developer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.business-analyst",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.ceo",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.cfo",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.cloud-architect",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.cmo",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.code-reviewer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.compliance-auditor",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.content-marketer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.coo",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.cro-landing-designer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.cto",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.customer-success",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.data-analyst",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.data-engineer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.data-scientist",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.database-administrator",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.delivery-lead",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.devops-engineer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.ecommerce-specialist",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.email-specialist",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.engineering-design",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.fleet-dispatcher",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.fleet-provisioner",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.frontend-developer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.full-stack-developer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.game-designer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.image-generator",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.iot-engineer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.kubernetes-specialist",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.legal-advisor",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.llm-agent-designer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.market-researcher",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.mobile-developer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.network-engineer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.outreach-specialist",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.paid-ads-manager",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.payments-specialist",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.performance-engineer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.product-manager",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.project-manager",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.project-onboarding",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.proposal-writer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.qa-engineer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.sales-engineer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.security-auditor",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.seo-aso-specialist",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.site-reliability-engineer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.social-media-manager",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.technical-writer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.ui-ux-designer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.unity-developer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.unreal-developer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.video-editor",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.voice-audio-producer",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    },
+    {
+      "id": "solaris.wordpress-master",
+      "status": "active",
+      "kind": "capability",
+      "namespace": "solaris"
+    }
+  ]
+}
