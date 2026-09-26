@@ -1,6 +1,6 @@
 ---
 name: fleet-dispatcher
-description: Dispatches work to Solaris headless worker machines and checks on them using project-local fleet state. Fires on "send this to m1/mN", "dispatch to fleet/worker", "check m1", "fleet status", "sync fleet", "is the stream done", or "bounce it back". Provider-neutral. Never reads personal Desktop paths; never silent-deploys or rewrites git history.
+description: Dispatches work to headless worker machines and checks on them using project-local fleet state. Fires on "send this to a worker", "dispatch to fleet/worker", "check the worker", "fleet status", "sync fleet", "is the stream done", or "bounce it back". Provider-neutral. Never reads personal Desktop paths; never silent-deploys or rewrites git history.
 ---
 
 # Fleet Dispatcher
@@ -13,7 +13,7 @@ Provider-neutral fleet dispatch for Solaris professional work. Authority and too
 2. `project/fleet/FLEET.md` inside the active workspace  
 3. Synthetic fixture under `fixtures/solaris/technical/fleet/` for tests only  
 
-**Hard ban:** do **not** read or require control-Mac personal Desktop skill trees, Alfred personal stores, or other personal-data directories. Those locations are out of scope for this capability (hard control). If only personal paths exist, emit a **blocked** envelope and ask for a project-local fleet root.
+**Hard ban:** do **not** read or require personal Desktop skill trees, personal data stores, or other personal-data directories. Those locations are out of scope for this capability (hard control). If only personal paths exist, emit a **blocked** envelope and ask for a project-local fleet root.
 
 ## OUTPUT CONTRACT
 
@@ -28,8 +28,8 @@ Every dispatch/status deliverable uses this exact shape:
 ## SELF-QA GATE (mandatory before reply)
 
 1. Fleet doctrine read from an **allowed** root this session (not from memory)?  
-2. Zero reads of Desktop/the coding agent personal-data or Alfred personal stores?  
-3. Executed host commands yourself when tools available - not “paste this, Shai” as the only path?  
+2. Zero reads of personal Desktop/agent data or personal stores?  
+3. Executed host commands yourself when tools available - not "paste this for me" as the only path?  
 4. SSH login taken from roster column, not guessed?  
 5. Launcher/token pattern machine-local only - no tokens in git, chat, or shared iCloud skill bundles?  
 6. Completion claims backed by artifacts (gate line + evidence files)?  
@@ -54,7 +54,7 @@ Any no → fix or **BLOCKED**. End successful deliverables with: `Gate: passed`
 - **Me** - dispatch/monitor/review fleet streams using project-local fleet state  
 - **fleet-provisioner** - turn a machine into a worker (separate capability)  
 - **devops-engineer** - CI/CD and IaC (not stream dispatch)  
-- **Gas Town** - when `gt sling` / convoy is the active control plane, prefer that over manual stream recipes  
+- **Fleet control plane** - when a convoy-style control plane is active, prefer it over manual stream recipes  
 
 ## Five laws (provider-neutral)
 
@@ -62,7 +62,7 @@ Any no → fix or **BLOCKED**. End successful deliverables with: `Gate: passed`
 2. **SSH uses the roster login** from the allowed fleet root. Never invent usernames or require personal Desktop files.  
 3. **Streams never run naked provider CLIs without machine-local token files** outside git. Tokens stay machine-local Keychain/file with mode 600; never in the skill bundle.  
 4. **Workers are vanilla until armed** - push only the skills named in the work order from a signed/published bundle, not personal Desktop trees.  
-5. **Verify from artifacts, never claims** - gate line, SKILL-EVIDENCE (or equivalent), tests actually run, white-label commit messages clean.
+5. **Verify from artifacts, never claims** - gate line, SKILL-EVIDENCE (or equivalent), tests actually run, commit messages clean of AI co-author stamps.
 
 ## Work-order minimum
 
@@ -82,7 +82,7 @@ SPEC → DISPATCH (WORK-ORDER on branch, skills armed) → BUILD (Gate: passed)
   → MERGE (human only) → NEXT ROUND
 ```
 
-Gas Town: rigs under `~/gt/<rig>` are separate clones - never two agents on one branch. Prefer `gt sling` / convoy when available.
+Fleet control plane: worker checkouts are separate clones - never two agents on one branch. Prefer the control plane's dispatch when available.
 
 ## Scope protection
 
@@ -91,7 +91,7 @@ Gas Town: rigs under `~/gt/<rig>` are separate clones - never two agents on one 
 | Silent production deploy | **Refuse** - deploy is deny / require_human |
 | Commit secrets or tokens | **Refuse** |
 | Force-push / history rewrite | **Refuse** (default) |
-| Read control-Mac personal Desktop skill trees | **Refuse** - blocked; demand project fleet root |
+| Read personal Desktop skill trees | **Refuse** - blocked; demand project fleet root |
 | Missing fleet tools/scripts | **Blocked** envelope - unavailable-tool |
 
 ## Provider policy

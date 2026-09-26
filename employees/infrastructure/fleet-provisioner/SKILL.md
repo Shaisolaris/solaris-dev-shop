@@ -1,6 +1,6 @@
 ---
 name: fleet-provisioner
-description: Provisions a Mac as a Solaris headless developer machine with project-local fleet registration. Fires on "make this Mac headless", "provision this mini/laptop", "add this machine to the fleet", or "decommission this machine". Provider-neutral. Never stores tokens in git; never depends on personal Desktop paths; never silent-deploys production apps.
+description: Provisions a machine as a headless worker with project-local fleet registration. Fires on "make this machine headless", "provision this mini/laptop", "add this machine to the fleet", or "decommission this machine". Provider-neutral. Never stores tokens in git; never depends on personal Desktop paths; never silent-deploys production apps.
 ---
 
 # Fleet Provisioner
@@ -25,15 +25,15 @@ Provider-neutral worker provisioning for Solaris. Authority and tools come only 
   1. `$SOLARIS_KEYS_ROOT` if set  
   2. `project/fleet/keys/` in the active workspace (dev/synthetic only - never real production secrets in git)  
   3. Machine-local `~/.solaris/keys/` (host only; not versioned)  
-- **Forbidden as dependencies:** control-Mac personal Desktop skill trees, Alfred personal stores, raw Keychain dumps into git or evidence.  
+- **Forbidden as dependencies:** personal Desktop skill trees, personal data stores, raw credential dumps into git or evidence.  
 - Two trust tiers: **Fleet** (own projects) vs **Sandbox** (untrusted client code - isolated machine, single-repo deploy key, never fleet token).  
-- Provider CLI auth tokens stay **machine-local** (e.g. `~/.solaris/the coding agent.token` mode 600). Never iCloud-share oauth tokens across machines.
+- Provider CLI auth tokens stay **machine-local** (e.g. `~/.fleet/agent.token` mode 600). Never cloud-share oauth tokens across machines.
 
 ## SELF-QA GATE (mandatory)
 
 1. Host access proven with real command output (or blocked if tools unavailable)?  
 2. Keys read only from allowed roots - never pasted in chat, never committed?  
-3. Zero Desktop/the coding agent personal-path requirements?  
+3. Zero personal Desktop/agent-data path requirements?  
 4. Only missing components installed?  
 5. Every verification step shows actual output?  
 6. Machine registered in **project-local or `$SOLARIS_FLEET_ROOT`** FLEET.md (or blocked with explicit reason)?  
@@ -61,9 +61,9 @@ Any no → fix or **BLOCKED**. End with: `Gate: passed`
 
 ## Phase outline (host tools; fail closed)
 
-1. **Preflight** - confirm session is on the target machine; prove host shell; locate keys via allowed roots only. Missing keys → stop with exact path template (do not ask human to paste secrets into chat).  
-2. **Install** - install only missing toolchain pieces; white-label git identity (never provider co-author stamps).  
-3. **Remote access** - enable Remote Login / Screen Sharing only with explicit human password prompts; Tailscale join with machine-local authkey handling.  
+1. **Preflight** - confirm session is on the target machine; prove host shell; locate keys via allowed roots only. Missing keys → stop with exact path template (do not ask the human to paste secrets into chat).  
+2. **Install** - install only missing toolchain pieces; neutral git identity (never provider co-author stamps).  
+3. **Remote access** - enable remote access (SSH / screen sharing per OS) only with explicit human password prompts; VPN/mesh join with machine-local authkey handling.  
 4. **Provider auth** - machine-local token files only; verify in stream/SSH context, not GUI-only.  
 5. **Register** - append roster line to allowed FLEET.md; write `fleet/<alias>-info.txt` under allowed fleet root.  
 6. **Verify** - show real versions and connectivity; never “should work”.
