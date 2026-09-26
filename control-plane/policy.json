@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "description": "Deterministic routing and authority policy for meta control-plane. Provider reasoning must not change these rules.",
+  "description": "Deterministic routing and authority policy for the Solaris Dev Shop control plane. Routes intake to one of 61 employee capabilities. Provider reasoning must not change these rules.",
   "provider_invariants": [
     "authority",
     "permissions",
@@ -12,23 +12,29 @@
   ],
   "min_words_for_clear_goal": 4,
   "outcome_verbs": [
-    "build",
-    "review",
-    "write",
-    "fix",
-    "design",
-    "plan",
-    "audit",
-    "route",
-    "scout",
-    "promote",
-    "trim",
-    "retire",
     "assemble",
-    "implement",
+    "audit",
+    "build",
+    "design",
     "draft",
+    "fix",
+    "grow",
+    "implement",
+    "improve",
+    "integrate",
+    "migrate",
+    "optimize",
+    "plan",
+    "promote",
+    "rank",
+    "retire",
+    "review",
+    "route",
+    "scale",
+    "scout",
     "test",
-    "migrate"
+    "trim",
+    "write"
   ],
   "ambiguous_phrases": [
     "i don't know",
@@ -57,7 +63,11 @@
     "legal filing",
     "send message to client now",
     "book the flight",
-    "spend"
+    "spend",
+    "production outage",
+    "outage",
+    "site is down",
+    "production is down"
   ],
   "medium_risk_keywords": [
     "client-facing",
@@ -126,56 +136,6 @@
       "android",
       "native mobile",
       "react native"
-    ],
-    "learning": [
-      "what have we learned",
-      "promote lessons",
-      "synthesize learnings",
-      "promote learning"
-    ],
-    "scout": [
-      "what's new",
-      "find a tool",
-      "talent scout",
-      "absorb",
-      "ecosystem scan"
-    ],
-    "context": [
-      "trim context",
-      "retire this chat",
-      "handover",
-      "context budget",
-      "rehydrate"
-    ],
-    "roster": [
-      "who do we have",
-      "roster",
-      "coverage",
-      "employee status",
-      "staffing"
-    ],
-    "health": [
-      "blood pressure",
-      "sleep",
-      "hrv",
-      "workout",
-      "whoop",
-      "oura",
-      "blood test",
-      "hypertension"
-    ],
-    "finance_personal": [
-      "401k",
-      "roth",
-      "mortgage",
-      "personal budget",
-      "fire number"
-    ],
-    "travel": [
-      "flight",
-      "hotel",
-      "itinerary",
-      "airbnb"
     ]
   },
   "domain_to_capability": {
@@ -186,13 +146,6 @@
     "qa": "solaris.qa-engineer",
     "legal": "solaris.legal-advisor",
     "mobile": "solaris.mobile-developer",
-    "learning": "meta.knowledge-synthesizer",
-    "scout": "meta.talent-scout",
-    "context": "meta.context-manager",
-    "roster": "meta.roster-manager",
-    "health": "alfred.health-manager",
-    "finance_personal": "alfred.personal-finance-manager",
-    "travel": "alfred.travel-agent",
     "general": "solaris.backend-developer"
   },
   "domain_accountable": {
@@ -203,27 +156,41 @@
     "qa": "solaris.qa-engineer",
     "legal": "solaris.legal-advisor",
     "mobile": "solaris.mobile-developer",
-    "learning": "meta.knowledge-synthesizer",
-    "scout": "meta.talent-scout",
-    "context": "meta.context-manager",
-    "roster": "meta.roster-manager",
-    "health": "alfred.health-manager",
-    "finance_personal": "alfred.personal-finance-manager",
-    "travel": "alfred.travel-agent",
     "general": "solaris.backend-developer"
-  },
-  "multi_domain_accountable": {
-    "meta.chief-of-staff": "meta.chief-of-staff",
-    "alfred.coordinator": "alfred.coordinator"
   },
   "default_capability": "solaris.backend-developer",
   "route_overrides": [
     {
-      "keywords": ["code review", "review this code", "pull request"],
-      "capabilities": ["solaris.code-reviewer"]
+      "keywords": [
+        "code review",
+        "review this code",
+        "pull request",
+        "review this pr",
+        "review this diff",
+        "audit the code",
+        "pr review"
+      ],
+      "keywords_all": [],
+      "capabilities": [
+        "solaris.code-reviewer"
+      ]
     },
     {
-      "keywords": ["build me a landing page", "landing page"],
+      "keywords": [],
+      "keywords_all": [
+        "review",
+        "code"
+      ],
+      "capabilities": [
+        "solaris.code-reviewer"
+      ]
+    },
+    {
+      "keywords": [
+        "build me a landing page",
+        "landing page"
+      ],
+      "keywords_all": [],
       "capabilities": [
         "solaris.full-stack-developer",
         "solaris.ui-ux-designer",
@@ -233,20 +200,14 @@
   ],
   "coordinator_authority": {
     "meta.chief-of-staff": {
-      "allowed_namespaces": ["solaris", "meta"],
-      "forbidden_domains": ["health", "finance_personal", "travel"],
-      "escalate_to": "owner"
-    },
-    "alfred.coordinator": {
-      "allowed_namespaces": ["alfred", "meta"],
+      "allowed_namespaces": [
+        "solaris",
+        "meta"
+      ],
       "forbidden_domains": [
-        "engineering",
-        "design",
-        "marketing",
-        "security",
-        "qa",
-        "legal",
-        "mobile"
+        "health",
+        "finance_personal",
+        "travel"
       ],
       "escalate_to": "owner"
     }
@@ -294,5 +255,571 @@
     "permission_scope_snapshot"
   ],
   "closure_acceptance": "Every named capability was invoked or explicitly queued; no phantom credits; coordinator did not perform specialist work; material decisions escalated.",
-  "closure_redaction": "Strip credentials, tokens, private health/finance/personal content, raw connector data from packets, logs, and evidence."
+  "closure_redaction": "Strip credentials, tokens, private health/finance/personal content, raw connector data from packets, logs, and evidence.",
+  "capability_keywords": {
+    "solaris.3d-artist": [
+      "3d model",
+      "3d asset",
+      "blender",
+      "pbr",
+      "fbx",
+      "low poly",
+      "retopo",
+      "rig a character",
+      "game-ready model"
+    ],
+    "solaris.ai-automation-engineer": [
+      "automate",
+      "automation",
+      "n8n",
+      "zapier",
+      "workflow",
+      "webhook",
+      "scheduled task",
+      "crm sync",
+      "pipedream"
+    ],
+    "solaris.ai-ml-engineer": [
+      "ml model",
+      "train a model",
+      "train",
+      "classifier",
+      "pytorch",
+      "tensorflow",
+      "xgboost",
+      "fine-tune",
+      "lora",
+      "recommender"
+    ],
+    "solaris.ar-vr-developer": [
+      "webxr",
+      "quest",
+      "vision pro",
+      "arkit",
+      "arcore",
+      "hand tracking",
+      "passthrough",
+      "spatial computing"
+    ],
+    "solaris.backend-developer": [
+      "rest api",
+      "api design",
+      "backend",
+      "server-side",
+      "fastapi",
+      "django",
+      "laravel",
+      "graphql",
+      "microservice"
+    ],
+    "solaris.blockchain-developer": [
+      "blockchain",
+      "solidity",
+      "smart contract",
+      "web3",
+      "erc-20",
+      "defi",
+      "nft"
+    ],
+    "solaris.business-analyst": [
+      "brd",
+      "requirements",
+      "acceptance criteria",
+      "process map",
+      "bpmn",
+      "stakeholder",
+      "elicitation"
+    ],
+    "solaris.ceo": [
+      "ceo",
+      "fundraising",
+      "pitch deck",
+      "series a",
+      "m&a",
+      "exit strategy",
+      "board"
+    ],
+    "solaris.cfo": [
+      "cfo",
+      "financial model",
+      "three-statement",
+      "runway",
+      "burn multiple",
+      "unit economics",
+      "arr"
+    ],
+    "solaris.cloud-architect": [
+      "aws",
+      "azure",
+      "gcp",
+      "cloud architecture",
+      "multi-region",
+      "disaster recovery",
+      "landing zone",
+      "vpc"
+    ],
+    "solaris.cmo": [
+      "cmo",
+      "brand positioning",
+      "category design",
+      "go-to-market",
+      "positioning"
+    ],
+    "solaris.code-reviewer": [
+      "code review",
+      "review this code",
+      "pull request",
+      "review this pr",
+      "review this diff",
+      "audit the code",
+      "find bugs",
+      "pr review"
+    ],
+    "solaris.compliance-auditor": [
+      "compliance",
+      "soc 2",
+      "iso 27001",
+      "hipaa",
+      "gdpr",
+      "pci-dss",
+      "gap analysis",
+      "evidence collection"
+    ],
+    "solaris.content-marketer": [
+      "blog post",
+      "content marketing",
+      "editorial calendar",
+      "newsletter",
+      "seo content",
+      "social content"
+    ],
+    "solaris.coo": [
+      "coo",
+      "okr",
+      "sop",
+      "operational cadence",
+      "process improvement",
+      "cadence",
+      "raci"
+    ],
+    "solaris.cro-landing-designer": [
+      "landing page",
+      "conversion rate",
+      "cro",
+      "checkout funnel",
+      "heatmap",
+      "a/b test",
+      "split test"
+    ],
+    "solaris.cto": [
+      "cto",
+      "tech debt",
+      "adr",
+      "architecture decision",
+      "dora",
+      "build vs buy",
+      "microservices"
+    ],
+    "solaris.customer-success": [
+      "churn",
+      "customer success",
+      "retention",
+      "qbr",
+      "renewal",
+      "health score",
+      "save plan"
+    ],
+    "solaris.data-analyst": [
+      "dashboard",
+      "sql query",
+      "kpi",
+      "cohort",
+      "metabase",
+      "metrics",
+      "funnel analysis"
+    ],
+    "solaris.data-engineer": [
+      "data pipeline",
+      "etl",
+      "airflow",
+      "dbt",
+      "snowflake",
+      "data warehouse",
+      "kafka"
+    ],
+    "solaris.data-scientist": [
+      "a/b test",
+      "p-value",
+      "confidence interval",
+      "forecast",
+      "causal",
+      "experiment",
+      "significant",
+      "sample size"
+    ],
+    "solaris.database-administrator": [
+      "postgres",
+      "database",
+      "slow query",
+      "index",
+      "indexes",
+      "migration",
+      "schema",
+      "redis",
+      "read replica",
+      "replication"
+    ],
+    "solaris.delivery-lead": [
+      "client engagement",
+      "new client",
+      "milestone",
+      "white-label",
+      "spec lock",
+      "clickup"
+    ],
+    "solaris.devops-engineer": [
+      "ci/cd",
+      "github actions",
+      "docker",
+      "terraform",
+      "deploy pipeline",
+      "observability"
+    ],
+    "solaris.ecommerce-specialist": [
+      "shopify",
+      "ecommerce",
+      "e-commerce",
+      "liquid",
+      "store"
+    ],
+    "solaris.email-specialist": [
+      "email sequence",
+      "welcome series",
+      "drip campaign",
+      "deliverability",
+      "klaviyo",
+      "lifecycle email"
+    ],
+    "solaris.engineering-design": [
+      "cad",
+      "3d-printable",
+      "3d printable",
+      "tolerance",
+      "tolerances",
+      "step file",
+      "stl",
+      "bracket",
+      "enclosure",
+      "pcb",
+      "kicad",
+      "parametric"
+    ],
+    "solaris.fleet-dispatcher": [
+      "dispatch",
+      "send this to",
+      "fleet status",
+      "check m1",
+      "worker machine",
+      "sync fleet"
+    ],
+    "solaris.fleet-provisioner": [
+      "provision",
+      "headless",
+      "add this machine to the fleet",
+      "decommission",
+      "set up this mac"
+    ],
+    "solaris.frontend-developer": [
+      "react",
+      "next.js",
+      "frontend",
+      "tailwind",
+      "figma-to-code",
+      "shadcn",
+      "ui component"
+    ],
+    "solaris.full-stack-developer": [
+      "full-stack",
+      "full stack",
+      "mvp",
+      "prototype",
+      "scaffold",
+      "cross-stack"
+    ],
+    "solaris.game-designer": [
+      "game mechanics",
+      "level design",
+      "gdd",
+      "progression",
+      "game design",
+      "playtesting"
+    ],
+    "solaris.image-generator": [
+      "generate an image",
+      "make an image",
+      "logo",
+      "brand",
+      "thumbnail",
+      "concept art",
+      "vector"
+    ],
+    "solaris.iot-engineer": [
+      "iot",
+      "esp32",
+      "firmware",
+      "embedded",
+      "arduino",
+      "mqtt",
+      "sensors"
+    ],
+    "solaris.kubernetes-specialist": [
+      "kubernetes",
+      "k8s",
+      "pod",
+      "pods",
+      "crashloopbackoff",
+      "hpa",
+      "helm",
+      "eks",
+      "manifest"
+    ],
+    "solaris.legal-advisor": [
+      "contract",
+      "nda",
+      "terms of service",
+      "privacy policy",
+      "msa",
+      "sow",
+      "legal",
+      "redline",
+      "liability"
+    ],
+    "solaris.llm-agent-designer": [
+      "llm agent",
+      "rag",
+      "prompt engineering",
+      "mcp server",
+      "agent architecture",
+      "chatbot",
+      "tool calling",
+      "guardrails",
+      "agent"
+    ],
+    "solaris.market-researcher": [
+      "market research",
+      "competitor analysis",
+      "competitor teardown",
+      "tam",
+      "market sizing"
+    ],
+    "solaris.mobile-developer": [
+      "mobile app",
+      "ios",
+      "android",
+      "react native",
+      "flutter",
+      "swift",
+      "kotlin",
+      "push notifications",
+      "native"
+    ],
+    "solaris.network-engineer": [
+      "vlan",
+      "vlans",
+      "wireguard",
+      "homelab",
+      "subnet",
+      "pihole",
+      "reverse proxy",
+      "vpn"
+    ],
+    "solaris.outreach-specialist": [
+      "cold email",
+      "outreach",
+      "prospecting",
+      "lead list",
+      "cold outbound"
+    ],
+    "solaris.paid-ads-manager": [
+      "google ads",
+      "paid ads",
+      "ppc",
+      "roas",
+      "facebook ads",
+      "retargeting",
+      "ad campaign",
+      "meta ads"
+    ],
+    "solaris.payments-specialist": [
+      "stripe",
+      "payment",
+      "checkout",
+      "subscription",
+      "webhook",
+      "billing"
+    ],
+    "solaris.performance-engineer": [
+      "performance",
+      "latency",
+      "lighthouse",
+      "web vitals",
+      "load test",
+      "optimize",
+      "profile",
+      "bundle size",
+      "slow"
+    ],
+    "solaris.product-manager": [
+      "prd",
+      "roadmap",
+      "prioritize",
+      "rice",
+      "user story",
+      "product requirements",
+      "backlog"
+    ],
+    "solaris.project-manager": [
+      "sprint",
+      "scrum",
+      "jira",
+      "kanban",
+      "retrospective",
+      "gantt",
+      "project plan"
+    ],
+    "solaris.project-onboarding": [
+      "onboard",
+      "new project",
+      "project setup",
+      "activate",
+      "client onboarding",
+      "activation"
+    ],
+    "solaris.proposal-writer": [
+      "proposal",
+      "upwork proposal",
+      "rfp",
+      "cover letter",
+      "pitch"
+    ],
+    "solaris.qa-engineer": [
+      "test plan",
+      "qa",
+      "playwright",
+      "cypress",
+      "e2e",
+      "end-to-end",
+      "regression suite",
+      "flaky test",
+      "smoke test"
+    ],
+    "solaris.sales-engineer": [
+      "demo",
+      "poc",
+      "proof of concept",
+      "sales engineer",
+      "technical objection"
+    ],
+    "solaris.security-auditor": [
+      "security audit",
+      "pentest",
+      "penetration test",
+      "owasp",
+      "vulnerability",
+      "vulnerabilities",
+      "threat model",
+      "soc 2",
+      "security review",
+      "security"
+    ],
+    "solaris.seo-aso-specialist": [
+      "seo",
+      "google ranking",
+      "organic traffic",
+      "backlinks",
+      "keyword research",
+      "aso",
+      "app store optimization",
+      "technical seo"
+    ],
+    "solaris.site-reliability-engineer": [
+      "sre",
+      "slo",
+      "slos",
+      "sli",
+      "error budget",
+      "error budgets",
+      "on-call",
+      "incident",
+      "postmortem",
+      "runbook",
+      "observability",
+      "uptime"
+    ],
+    "solaris.social-media-manager": [
+      "social media",
+      "linkedin",
+      "tiktok",
+      "content calendar",
+      "engagement rate"
+    ],
+    "solaris.technical-writer": [
+      "documentation",
+      "api docs",
+      "openapi",
+      "readme",
+      "user guide",
+      "changelog",
+      "diataxis"
+    ],
+    "solaris.ui-ux-designer": [
+      "ui design",
+      "ux design",
+      "figma",
+      "design system",
+      "wireframe",
+      "mockup",
+      "design tokens",
+      "tokens"
+    ],
+    "solaris.unity-developer": [
+      "unity",
+      "c#",
+      "gameobject",
+      "prefab",
+      "urp"
+    ],
+    "solaris.unreal-developer": [
+      "unreal",
+      "ue5",
+      "blueprint",
+      "blueprints",
+      "niagara",
+      "nanite"
+    ],
+    "solaris.video-editor": [
+      "video",
+      "ffmpeg",
+      "edit this video",
+      "captions",
+      "subtitles",
+      "reels"
+    ],
+    "solaris.voice-audio-producer": [
+      "voiceover",
+      "tts",
+      "text to speech",
+      "podcast",
+      "transcribe",
+      "elevenlabs",
+      "voice"
+    ],
+    "solaris.wordpress-master": [
+      "wordpress",
+      "gutenberg",
+      "woocommerce",
+      "wp plugin",
+      "block theme"
+    ]
+  }
 }

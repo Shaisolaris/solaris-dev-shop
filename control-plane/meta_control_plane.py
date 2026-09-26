@@ -183,16 +183,41 @@ def out_of_authority(
     for d in domains:
         if d in forbidden:
             return f"domain '{d}' is outside authority of {coordinator}"
-    # Cross-app: Solaris CoS must not touch Alfred personal health/finance content
+    # Cross-app: Solaris CoS must not touch personal health/finance content.
+    # There is no alfred.* in this tree; personal signals escalate to the owner.
     if coordinator == "meta.chief-of-staff":
         for phrase in policy.get("alfred_personal_signals", []):
             if phrase.lower() in text.lower():
-                return f"Alfred personal signal '{phrase}', redirect to alfred.coordinator"
+                return (
+                    f"Personal signal '{phrase}' is out of scope for this tree, "
+                    "escalate to the owner"
+                )
     if coordinator == "alfred.coordinator":
         for phrase in policy.get("solaris_work_signals", []):
             if phrase.lower() in text.lower():
                 return f"Solaris work signal '{phrase}', redirect to meta.chief-of-staff"
     return None
+
+
+def _rule_score(keywords: List[str], text: str) -> Tuple[int, int]:
+    """Return (total matched keyword length, longest single matched keyword)."""
+    hits = [k for k in keywords if _word_boundary_hit(k, text)]
+    if not hits:
+        return 0, 0
+    return sum(len(k) for k in hits), max(len(k) for k in hits)
+
+
+def _override_phrase_hit(text: str, policy: Dict[str, Any]) -> bool:
+    """True if any route_override exact keyword phrase hits.
+
+    Used to let canonical override phrasings (e.g. "review this code")
+    bypass the min-words ambiguity check. keywords_all rules are resolve-time
+    only and do not count here.
+    """
+    for rule in policy.get("route_overrides", []):
+        if any(_word_boundary_hit(k, text) for k in rule.get("keywords", [])):
+            return True
+    return False
 
 
 def resolve_capability(
@@ -201,19 +226,47 @@ def resolve_capability(
     roster: Dict[str, Any],
     policy: Dict[str, Any],
 ) -> Tuple[Optional[str], List[str], Optional[str]]:
-    """Return (primary, supporting, unavailable_reason)."""
-    route_map = policy.get("domain_to_capability", {})
+    """Return (primary, supporting, unavailable_reason).
+
+    Scoring router: every route_override rule and every capability_keywords
+    entry is scored by word-boundary keyword hits (sum of matched keyword
+    lengths). Highest score wins; ties break by route_overrides listed order,
+    then by longest single matched keyword. With no keyword hits at all, falls
+    back to domain_to_capability, then the default capability.
+    """
+    candidates: List[Tuple[int, int, int, int, List[str]]] = []
+    # (score, source_order, rule_index, longest_keyword, capabilities)
+    for idx, rule in enumerate(policy.get("route_overrides", [])):
+        kws = list(rule.get("keywords", []))
+        all_kws = list(rule.get("keywords_all", []))
+        score_any, longest_any = _rule_score(kws, text)
+        if all_kws:
+            if all(_word_boundary_hit(k, text) for k in all_kws):
+                s_all, l_all = _rule_score(all_kws, text)
+                score_any += s_all
+                longest_any = max(longest_any, l_all)
+            else:
+                score_any, longest_any = 0, 0
+        if score_any > 0:
+            candidates.append(
+                (score_any, 0, idx, longest_any, list(rule.get("capabilities", [])))
+            )
+
+    for cap_id, kws in policy.get("capability_keywords", {}).items():
+        score, longest = _rule_score(list(kws), text)
+        if score > 0:
+            candidates.append((score, 1, 0, longest, [cap_id]))
+
     caps: List[str] = []
-    for d in domains:
-        cap = route_map.get(d)
-        if cap:
-            caps.append(cap)
-    # Keyword overrides (more specific)
-    for rule in policy.get("route_overrides", []):
-        kws = rule.get("keywords", [])
-        if any(_word_boundary_hit(k, text) for k in kws):
-            caps = list(rule.get("capabilities", caps))
-            break
+    if candidates:
+        candidates.sort(key=lambda c: (-c[0], c[1], c[2], -c[3]))
+        caps = list(candidates[0][4])
+    else:
+        route_map = policy.get("domain_to_capability", {})
+        for d in domains:
+            cap = route_map.get(d)
+            if cap:
+                caps.append(cap)
 
     if not caps:
         caps = [policy.get("default_capability", "solaris.backend-developer")]
@@ -357,8 +410,8 @@ def intake(
             ts=_now(),
         )
 
-    # Ambiguous
-    if is_ambiguous(text, policy):
+    # Ambiguous (canonical route_override phrasings bypass the min-words check)
+    if not _override_phrase_hit(text, policy) and is_ambiguous(text, policy):
         return Decision(
             schema_version=SCHEMA_VERSION,
             engine_version=ENGINE_VERSION,
@@ -452,7 +505,7 @@ def intake(
             assignment=None,
             escalation=Escalation(
                 reason=UNAVAILABLE_CAPABILITY,
-                message=unavail + ", do not invent a specialist; escalate or route to talent-scout for a proposal only.",
+                message=unavail + ", do not invent a specialist; escalate to the owner.",
                 required_actor="owner",
                 evidence=["roster_active_set", "domain_to_capability"],
             ),
@@ -464,15 +517,20 @@ def intake(
         )
 
     assert primary is not None
-    # Multi-domain: still ONE assignment packet with one accountable lead
-    accountable = policy.get("domain_accountable", {}).get(
-        domains[0], primary
-    )
-    # For multi-domain, lead is first domain's accountable agent or primary capability owner
-    if len(domains) > 1:
-        accountable = policy.get("multi_domain_accountable", {}).get(
-            coordinator, accountable
-        )
+    # Enforce assignment_max_supporting from budgets.json (CODE-08).
+    max_supporting = int(defaults.get("assignment_max_supporting", 5))
+    supporting_truncated = len(supporting) > max_supporting
+    supporting = supporting[:max_supporting]
+    # Multi-domain: still ONE assignment packet with one accountable specialist.
+    # The accountable is the first domain's accountable agent; it is never the
+    # coordinator. Falls back to the primary capability if the mapped value is
+    # not an active roster capability.
+    active_ids = {
+        c["id"] for c in roster.get("capabilities", []) if c.get("status") == "active"
+    }
+    accountable = policy.get("domain_accountable", {}).get(domains[0], primary)
+    if accountable not in active_ids:
+        accountable = primary
 
     assignment = Assignment(
         assignment_id=f"asg-{uuid.uuid4().hex[:12]}",
@@ -510,6 +568,10 @@ def intake(
         risk=risk,
     )
 
+    budgets_applied = dict(defaults)
+    if supporting_truncated:
+        budgets_applied["supporting_truncated_to_max"] = True
+
     return Decision(
         schema_version=SCHEMA_VERSION,
         engine_version=ENGINE_VERSION,
@@ -521,7 +583,7 @@ def intake(
         assignment=assignment,
         escalation=None,
         closure_evidence=_closure_evidence(risk, policy),
-        budgets_applied=defaults,
+        budgets_applied=budgets_applied,
         provider_invariants=list(policy.get("provider_invariants", [])),
         performed_work=False,
         ts=_now(),
@@ -697,6 +759,39 @@ def self_test() -> int:
     d6 = intake("Review this Python API code for security issues")
     if d6.decision == ASSIGN and not d6.provider_invariants:
         failures.append("assign must list provider invariants")
+
+    # Canonical override phrasing reaches code-reviewer despite min_words
+    d7 = intake("review this code")
+    if (
+        d7.decision != ASSIGN
+        or not d7.assignment
+        or d7.assignment.primary_capability != "solaris.code-reviewer"
+    ):
+        failures.append(
+            f"'review this code' expected assign to solaris.code-reviewer, got "
+            f"{d7.decision}/{d7.assignment.primary_capability if d7.assignment else None}"
+        )
+
+    # Longer review phrasing still reaches code-reviewer, not backend/security
+    d8 = intake("please review this python code for security issues")
+    if (
+        d8.decision != ASSIGN
+        or not d8.assignment
+        or d8.assignment.primary_capability != "solaris.code-reviewer"
+    ):
+        failures.append(
+            f"review-python-code expected solaris.code-reviewer, got "
+            f"{d8.decision}/{d8.assignment.primary_capability if d8.assignment else None}"
+        )
+
+    # Multi-domain accountability names a specialist, never the coordinator
+    d9 = intake("Build a REST API and a marketing landing page for the client portal")
+    if (
+        d9.decision == ASSIGN
+        and d9.assignment
+        and d9.assignment.accountable == "meta.chief-of-staff"
+    ):
+        failures.append("multi-domain accountable must not be the coordinator")
 
     # Fixture dir if present
     if FIXTURE_ROOT.is_dir():
