@@ -6,11 +6,11 @@ typed assignment packets, escalations, and closure-evidence requirements.
 Coordinators never perform specialist work here.
 
 Usage:
-  python3 meta/control-plane/meta_control_plane.py intake "build API + landing page"
-  python3 meta/control-plane/meta_control_plane.py intake --fixture fixtures/meta/multi_domain_intake.json
-  python3 meta/control-plane/meta_control_plane.py self-test
-  python3 meta/control-plane/meta_control_plane.py roster
-  python3 meta/control-plane/meta_control_plane.py budgets
+  python3 control-plane/meta_control_plane.py intake "build API + landing page"
+  python3 control-plane/meta_control_plane.py intake --fixture fixtures/control-plane/multi_domain_intake.json
+  python3 control-plane/meta_control_plane.py self-test
+  python3 control-plane/meta_control_plane.py roster
+  python3 control-plane/meta_control_plane.py budgets
 """
 from __future__ import annotations
 
@@ -108,8 +108,17 @@ def _now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+class InputError(Exception):
+    """User-facing input problem: missing file, bad JSON, invalid fixture."""
+
+
 def _load_json(path: Path) -> Dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        raise InputError(f"file not found: {path}")
+    except json.JSONDecodeError as e:
+        raise InputError(f"invalid JSON in {path}: {e}")
 
 
 def load_policy() -> Dict[str, Any]:
@@ -865,7 +874,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         return 0
     if args.cmd == "intake":
         if args.fixture:
-            decision, fixture = run_fixture(args.fixture)
+            try:
+                decision, fixture = run_fixture(args.fixture)
+            except InputError as e:
+                print(f"error: {e}", file=sys.stderr)
+                return 2
             errs = check_fixture_expectations(decision, fixture)
             out = decision.as_dict()
             if args.json:
@@ -877,7 +890,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                 return 1
             return 0
         req = " ".join(args.request).strip()
-        decision = intake(req, coordinator=args.coordinator)
+        try:
+            decision = intake(req, coordinator=args.coordinator)
+        except InputError as e:
+            print(f"error: {e}", file=sys.stderr)
+            return 2
         print(json.dumps(decision.as_dict(), indent=2))
         return 0 if decision.decision in (ASSIGN, CLARIFY, ESCALATE, BLOCK) else 1
 
@@ -885,4 +902,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except InputError as e:
+        print(f"error: {e}", file=sys.stderr)
+        sys.exit(2)

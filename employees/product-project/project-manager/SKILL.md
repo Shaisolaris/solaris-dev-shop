@@ -311,7 +311,7 @@ For sub-hour asks, skip the full planning motion: (1) "estimate this" -> a 3-poi
 | `alirezarezvani/project-management/*` (15+ skills) | Tooling depth (Jira admin / JQL / Confluence / scrum master / meeting analyzer / team comms / velocity forecasting / retro formats) |
 | `solaris/sources/voltagent-subagents/categories/08-business-product/scrum-master.md` | Agile/Scrum ceremonies + roles depth |
 
-Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).
+External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 ## MAINTENANCE WAVE CONTROLS (2026-07-24)
 

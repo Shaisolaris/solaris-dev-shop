@@ -268,7 +268,7 @@ static void sensor_task(void *arg) {
 - `awesome-the coding agent-code-toolkit/agents/specialized-domains/embedded-systems.md` - embedded systems engineering
 - `embedded-testing.md` - host-based embedded unit testing (Unity/CMock/Ceedling, MIT), MQTT client design (esp-mqtt, Apache-2.0), TFLM deploy workflow (tflite-micro, Apache-2.0), fleet OTA operations (Mender, open-core methodology-only). Absorbed 2026-06-13.
 
-Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).
+External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 
 ## QA LOOP (GOSPEL  -  meta/QA-LOOP-GOSPEL.md, non-negotiable)

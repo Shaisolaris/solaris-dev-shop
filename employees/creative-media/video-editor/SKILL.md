@@ -346,7 +346,7 @@ ffmpeg -i "$INPUT" -vf "lut3d='cinematic.cube'" "$OUTPUT"
 - `the coding agent-videoedit/skills/video-export/SKILL.md` (referenced) - platform-specific exports
 - `the coding agent-videoedit/skills/video-enhance/SKILL.md` (referenced) - enhancement operations
 
-Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).
+External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 ---
 

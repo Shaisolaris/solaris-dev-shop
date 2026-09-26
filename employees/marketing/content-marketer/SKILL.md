@@ -288,7 +288,7 @@ Step 0b - Prerequisites, checked before a single headline is drafted: (a) ICP/pe
 | `solaris/sources/alirezarezvani-the coding agent-skills/docs/skills/marketing-skill/email-sequence.md` + `cold-email.md` | Email nurture + cold email patterns |
 | METHODOLOGY 2026-06-13 (web): Auriti-Labs/geo-optimizer-skill (MIT), mascanho/RustySEO (GPL, self-host), amplifying-ai/awesome-generative-engine-optimization (NOASSERTION, cite-only), spatie/schema-org (MIT); research arXiv:2311.09735 / 2510.11438 / 2506.11097 | GEO operational layer: crawled/understood/cited/monitored audit spine, citability scoring rubric + KDD-2024 levers, AI-bot access (robots/llms.txt/CDN), RAG-chunk structure, citation monitoring loop -> `geo-operational-2026.md` |
 
-Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).
+External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 
 ## QA LOOP (GOSPEL - meta/QA-LOOP-GOSPEL.md, non-negotiable)

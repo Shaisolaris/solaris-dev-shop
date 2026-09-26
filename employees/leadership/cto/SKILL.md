@@ -320,7 +320,7 @@ For sub-hour asks, skip the full motion: (1) "decide X vs Y" -> a one-page ADR (
 | `solaris/sources/voltagent-subagents/categories/04-quality-security/architect-reviewer.md` | 8-item review checklist, 8-pattern vocabulary, scalability dimensions, modernization strategies, evolutionary architecture |
 | `solaris/sources/msitarzewski-agency-agents/engineering/engineering-software-architect.md` | DDD bounded contexts, event storming, architecture selection matrix, quality attribute analysis |
 
-Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).) absorbed. Those remain standalone plugins.
+External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 ---
 

@@ -261,7 +261,7 @@ only after the underlying cost is gone.
 - `solaris/sources/voltagent-subagents/categories/08-business-product/wordpress-master.md` - full WordPress mastery checklist (8 metrics), core/theme/plugin/Gutenberg/performance/security pillars (CLASSIC stack - base layer)
 - `WordPress/agent-skills` (https://github.com/WordPress/agent-skills, 1.3K stars, official WordPress org) - methodology and patterns absorbed in Solaris voice into `wp-modern-engineering-methodology.md` (FSE, Interactivity API, Block Bindings, WP Abilities API + MCP Adapter, HPOS migration). License-safe absorption: zero copy-paste; methodology is not copyrightable.
 
-Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).
+External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 
 ## QA LOOP (GOSPEL  -  meta/QA-LOOP-GOSPEL.md, non-negotiable)

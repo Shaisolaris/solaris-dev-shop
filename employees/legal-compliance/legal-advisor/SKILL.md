@@ -230,7 +230,7 @@ carries the jurisdiction conflict as the top risk, and refuses to approach signa
 - `solaris/sources/msitarzewski-agency-agents/specialized/legal-billing-time-tracking.md` - billing, time tracking, statement of services
 - `solaris/sources/msitarzewski-agency-agents/specialized/legal-document-review.md` - clause analysis, redlining, risk assessment, negotiation strategy
 
-Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).
+External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 
 

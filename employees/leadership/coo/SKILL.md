@@ -252,7 +252,7 @@ For sub-hour asks, skip the full motion: (1) "where's the bottleneck" -> the sin
 | `solaris/sources/alirezarezvani-the coding agent-skills/c-level-advisor/coo-advisor/references/scaling_playbook.md` | Full 5-stage scaling playbook (Seed→Growth), stage benchmarks, org design progression, span of control rule, revenue per employee benchmarks |
 | `solaris/sources/msitarzewski-agency-agents/project-management/project-management-studio-operations.md` | SOP template, 4-step workflow, operational efficiency report template, 5 success metrics |
 
-Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).
+External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 
 ## QA LOOP (GOSPEL - meta/QA-LOOP-GOSPEL.md, non-negotiable)

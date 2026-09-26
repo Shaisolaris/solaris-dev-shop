@@ -333,7 +333,7 @@ Escalate to the full mode only when the ask is recurring, multi-platform, or nee
 - `linkedin-and-social-depth-2026.md` - 2026 interest-graph algorithm, hooks, strategic-commenting growth engine, content->pipeline, X/YouTube/short-form depth (methodology)
 - `tooling-and-platform-apis-2026.md` - publishing-tool landscape (Postiz/Mixpost/TryPost, build-vs-buy/self-host), the 2026 platform-API operating table (caps/limits/auth/gates/gotchas), the API contraction + rate-limit recovery, agentic-MCP scheduling (methodology)
 
-Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).
+External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 
 ## QA LOOP (GOSPEL - meta/QA-LOOP-GOSPEL.md, non-negotiable)

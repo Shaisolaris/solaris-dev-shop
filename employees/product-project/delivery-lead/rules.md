@@ -51,7 +51,7 @@ The CTO employee owns pure technical strategy; Delivery Lead owns the client eng
 
 **Rule:** **GitHub is truth.** When verifying milestone state, always check BOTH ClickUp (the owner's intent signal) AND GitHub (the developer's truth signal). On divergence, the repo wins. The **project-manager** reconciles ClickUp to match the repo - never the reverse. To prevent recurrence, every dev task instruction requires: "push branch + post a comment with the commit hash."
 
-This event is registered in both hierarchy files (`meta/shared/hierarchy.md`, `solaris/employees/hierarchy.md`).
+This event is registered in both hierarchy files (`employees/hierarchy.md`).
 
 ---
 

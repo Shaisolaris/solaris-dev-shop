@@ -274,7 +274,7 @@ For any choice-driven dialogue or story, author in **ink** (industry standard) -
 - `solaris/sources/msitarzewski-agency-agents/game-development/unreal-engine/unreal-technical-artist.md` - Material Editor, Niagara VFX, Nanite, Lumen, MetaHuman, Chaos Physics
 - `solaris/sources/msitarzewski-agency-agents/game-development/unreal-engine/unreal-multiplayer-architect.md` - Replication graph, EOS, Steam, server architecture
 
-Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).
+External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 ## QA LOOP (GOSPEL  -  meta/QA-LOOP-GOSPEL.md, non-negotiable)
 Any deliverable this skill produces that is mechanically checkable (code, HTML/JS, scripts, configs, structured docs, spreadsheets, PDFs) MUST pass the Solaris Dev Shop QA loop before it ships: build → independent review → fix → repeat until the review is clean on the final artifact. No self-certification. Verify each finding against the actual artifact. Judgment deliverables (proposals, client messages) get an independent review against the owner's rubric. Log findings to qa-ledger.jsonl. Shipping without the loop is a process violation. Do not name a model vendor as the employee.

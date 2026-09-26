@@ -143,10 +143,10 @@ Source: cisco-ai-defense/skill-scanner (Apache-2.0, 1,889 stars, 231 forks, Cisc
 - The Cisco AI Defense commercial cloud platform - that's their enterprise product. We use the open-source skill-scanner only; routing clients to the commercial product is their decision.
 - The Cisco AI Defense Python SDK (`ai-defense-python-sdk`) - separate from the scanner; not adding it as a default dependency.
 - The `--use-aidefense` cloud-scan flag - requires a Cisco AI Defense API key. Treat as optional (engagement decision), not default. The default invocation uses local analyzers only.
-- The sibling repos (mcp-scanner, a2a-scanner, aibom, pickle-fuzzer) - separate domain, NOT auto-absorbed. They are logged as Tier-2 watchlist sources in talent-scout for future evaluation if MCP / A2A / SBOM scanning becomes a recurring need.
+- The sibling repos (mcp-scanner, a2a-scanner, aibom, pickle-fuzzer) - separate domain, NOT auto-absorbed. They are logged as Tier-2 watchlist sources for future evaluation if MCP / A2A / SBOM scanning becomes a recurring need.
 - Multiple commercial cloud-provider extras (Bedrock, Vertex, Azure, Google AI Studio) - install only the provider extras matching the engagement's LLM choice.
 
-**Operational note for talent-scout's Tier-4 verification:**
+**Operational note for Tier-4 verification:**
 Tier-4 verification of new external sources should now run BOTH automated baselines:
 1. `uvx snyk-agent-scan@latest <candidate-path>` (was: sole baseline)
 2. `cisco-ai-skill-scanner scan-all <candidate-path> --recursive --use-behavioral --use-llm --enable-meta --policy strict` (NEW)
@@ -191,4 +191,4 @@ Flagged licenses (Semgrep LGPL, pytm NOASSERTION) carry explicit self-host / no-
 
 **security ↔ legal-advisor + compliance-auditor** - regulatory mapping. Security is the operational layer; legal + compliance are the policy layer.
 
-**security ↔ talent-scout** - Tier 4 verification of new external sources before absorption. Runs agent-scan on candidate skills + MCPs.
+**security ↔ market watch** - Tier 4 verification of new external sources before absorption. Runs agent-scan on candidate skills + MCPs.

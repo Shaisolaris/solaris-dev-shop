@@ -426,7 +426,7 @@ alternative from the product page or reconstruct funnel rates from a single quar
 - alirezarezvani-the coding agent-skills/docs/skills/c-level-advisor/cmo-advisor.md (advisor structure reference)
 - lodetomasi-agents-the coding agent-code/growth-hacker.md (cross-source K-factor patterns)
 
-Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).
+External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 ---
 

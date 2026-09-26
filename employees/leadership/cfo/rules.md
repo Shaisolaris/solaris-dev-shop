@@ -101,7 +101,7 @@ Compared the real source (Apache-2.0, anthropics official, 6.7K stars; 5 plugins
 
 This role owns the canon for: **financial discipline (spend authority, runway thresholds, vendor approval, capital allocation)**.
 
-When execution-layer employees disagree on questions in this discipline, they defer here. Documented in `meta/shared/hierarchy.md`. Anyone can be overridden by CEO (strategic) or by Shai directly (anything).
+When execution-layer employees disagree on questions in this discipline, they defer here. Documented in `employees/hierarchy.md`. Anyone can be overridden by CEO (strategic) or by the owner directly (anything).
 
 This is NOT a human-org "team lead" pattern - AI fleet is flat at the execution layer. The canon ownership is just the documented "official voice" when ambiguity hits, not a routing or capacity-management role.
 

@@ -190,4 +190,4 @@ Source: obra/superpowers (MIT, ~174K stars, Jesse Vincent / Prime Radiant, ~7 mo
 
 **llm-agent-designer ↔ security-auditor** - every agent that has tool access needs the 9th review dimension (AI agent component review) before going live.
 
-**llm-agent-designer ↔ knowledge-synthesizer** - the lessons learned from agent designs feed back into the Solaris employee patterns (we ARE running an agent system; eat your own dogfood).
+**llm-agent-designer ↔ learnings sweep** - the lessons learned from agent designs feed back into the Solaris employee patterns (we ARE running an agent system; eat your own dogfood).

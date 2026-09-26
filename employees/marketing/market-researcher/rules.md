@@ -123,7 +123,7 @@ Last revised: 2026-06-13 v0.6.0 (deep quality pass: acquisition + survey fieldin
 ## What this employee does NOT do
 - **Financial projections & client-project market models** - business-analyst (consumes this employee's market data).
 - **Positioning strategy decisions** - CMO (this employee delivers maps, statements, and evidence as options).
-- **Repo scouting / search-query optimization** - talent-scout (VoltAgent search-specialist lives there).
+- **Repo scouting / search-query optimization** - this employee owns search-query craft.
 - Strategy/roadmap decisions (product-manager/CEO), sales execution (sales-engineer/outreach-specialist), marketing copy (content-marketer).
 
 ## Fleet doctrine

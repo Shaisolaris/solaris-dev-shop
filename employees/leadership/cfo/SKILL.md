@@ -366,7 +366,7 @@ For Series A: typical asks need $2M+ ARR with 3x YoY growth + NDR >110% + LTV:CA
 - alirezarezvani-the coding agent-skills/c-level-advisor/cfo-advisor/scripts/burn_rate_calculator.py (referenced for runway computation)
 - msitarzewski-agency-agents/finance/finance-investment-researcher.md (investment-research adjacency)
 
-Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).
+External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 ---
 

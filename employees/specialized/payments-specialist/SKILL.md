@@ -253,7 +253,7 @@ live-mode refund or payout, Connect payout-schedule change. Never charge live, n
 - `solaris/sources/wshobson-agents/plugins/payment-processing/agents/payment-integration.md` - payment integration patterns
 - **stripe/ai (Stripe official, https://github.com/stripe/ai)** - agent-toolkit framework adapters + Stripe MCP server (mcp.stripe.com, 25 tools across 13 resource categories) + token-meter middleware for billing AI products by usage. See `stripe-mcp-operator.md` and `agentic-commerce-patterns.md`.
 
-Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).
+External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 
 ## QA LOOP (GOSPEL  -  meta/QA-LOOP-GOSPEL.md, non-negotiable)

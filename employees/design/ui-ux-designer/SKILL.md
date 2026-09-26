@@ -320,7 +320,7 @@ Step 0 - preflight prerequisites. Read rules.md NOW; skipping is a gate failure.
 | `solaris/sources/wshobson-agents/plugins/ui-design/skills/web-component-design` | Custom Elements + Shadow DOM, Lit/Stencil/FAST, ::part / ::slotted |
 | `solaris/sources/wshobson-agents/plugins/accessibility-compliance` | WCAG 2.1 AA, ARIA patterns, screen reader, touch targets, reduced motion |
 
-Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md).
+External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 ## Quality OS assurance (product-quality hardening)
 

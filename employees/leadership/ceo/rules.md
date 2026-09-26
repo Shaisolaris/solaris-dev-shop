@@ -106,6 +106,6 @@ Last revised: 2026-05-18 (clean DAP rebuild from 9 repos) (2026-05-24: cleanup p
 
 This role owns the canon for: **product strategy + final authority on cross-discipline disagreements (what we build, who for, when we ship; override on any other canon)**.
 
-When execution-layer employees disagree on questions in this discipline, they defer here. Documented in `meta/shared/hierarchy.md`. Anyone can be overridden by CEO (strategic) or by Shai directly (anything).
+When execution-layer employees disagree on questions in this discipline, they defer here. Documented in `employees/hierarchy.md`. Anyone can be overridden by CEO (strategic) or by the owner directly (anything).
 
 This is NOT a human-org "team lead" pattern - AI fleet is flat at the execution layer. The canon ownership is just the documented "official voice" when ambiguity hits, not a routing or capacity-management role.

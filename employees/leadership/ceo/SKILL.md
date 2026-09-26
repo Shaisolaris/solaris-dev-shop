@@ -341,7 +341,7 @@ Source: `solaris/sources/alirezarezvani-the coding agent-skills/c-level-advisor/
 - lodetomasi-agents-the coding agent-code/startup-cto.md (CTO-adjacent, retained for hand-off context)
 - wshobson-agents/plugins/startup-business-analyst (startup analysis adjacency)
 
-Shai's personal/work skills MAY be absorbed where additive (the 'never fold' doctrine was retired 2026-06-04 by Shai's direction; see meta/roster-manager/references/roster.md). cto-advisor is a separate standalone a coding agent plugin under `anthropic-skills:cto-advisor` and routes via CTO employee.
+External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 ---
 
