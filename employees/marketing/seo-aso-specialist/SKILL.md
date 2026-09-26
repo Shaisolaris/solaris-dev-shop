@@ -442,8 +442,8 @@ After every SEO/ASO session:
 | `live-search-data-tooling.md` | When live GSC / SERP / App Store data is needed |
 | `elite-technical-geo-2026.md` | Elite tier: GEO citation-measurement (fixed prompt panel + SoV), server log-file / crawl-budget analysis + AI-crawler split, entity / topical-authority depth |
 
-Canonical alirezarezvani marketing SEO: `/Solaris/sources/alirezarezvani-the coding agent-skills/`
-Canonical sickn33 SEO skills: `/Solaris/sources/sickn33-antigravity-skills/skills/`
+Canonical alirezarezvani marketing SEO (external upstream; absorbed into this skill)
+Canonical sickn33 SEO skills (external upstream; absorbed into this skill)
 
 
 ## QA Loop

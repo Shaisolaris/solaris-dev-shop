@@ -19,7 +19,7 @@
     "supabase-mcp-ops.md",
     "codemod-migration-strangler-fig.md"
   ],
-  "references_source_note": "Canonical scaffold sources in /Solaris/sources/alirezarezvani-the coding agent-skills/engineering-team/senior-fullstack/ + senior-backend/ + senior-frontend/. wshobson api-design-checklist at wshobson-agents/plugins/backend-development/skills/api-design-principles/assets/api-design-checklist.md. wshobson saga/projection patterns at wshobson-agents/plugins/backend-development/skills/saga-orchestration/ and projection-patterns/.",
+  "references_source_note": "Canonical scaffold sources: alirezarezvani senior-fullstack + senior-backend + senior-frontend, wshobson api-design-checklist, saga/projection patterns (all external upstream; absorbed into this skill).",
   "mcp_servers": [],
   "tags": [
     "engineering",

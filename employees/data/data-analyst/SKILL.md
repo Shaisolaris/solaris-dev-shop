@@ -185,7 +185,6 @@ Run rules.md "Analysis QA gate" 1-8: inputs validated → sanity → grain → s
 | `learnings.md` | Session start |
 | `excel-mcp-patterns.md` | Delivering or reading an .xlsx (the excel-mcp loop) |
 | `analyst-compute-and-reporting-stack.md` | Local-first compute/reporting: DuckDB, Polars, marimo notebooks, Evidence BI-as-code |
-| `TOP5-CANDIDATES.md` | Source-tooling provenance for the compute/reporting stack |
 | `sources/_analysis/data-analyst/02-extraction.md` | When tracing a pattern to its source (build artifact, repo root) |
 
 

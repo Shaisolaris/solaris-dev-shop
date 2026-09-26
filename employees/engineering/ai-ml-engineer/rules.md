@@ -121,7 +121,7 @@ The baseline-to-production pipeline, fine-tune decision tree, feature-engineerin
 - `jupyter-notebook-workflow.md` - live-kernel iterative ML loop (Jupyter MCP)
 - `rag-architecture.md` - RAG patterns for *context*; building RAG systems routes to LLM Agent Designer
 
-Canonical alirezarezvani senior-ml-engineer: `/Solaris/sources/alirezarezvani-the coding agent-skills/engineering-team/senior-ml-engineer/`
+Canonical alirezarezvani senior-ml-engineer (external upstream; absorbed into this skill)
 
 ---
 

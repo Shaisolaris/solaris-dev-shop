@@ -376,7 +376,7 @@ After every feature-build session:
 | `supabase-mcp-ops.md` | Supabase project ops (migrations, branching, advisors) |
 | `codemod-migration-strangler-fig.md` | Codebase Migration Plan gig: codemods + strangler-fig + Renovate (right-sized; hand JVM/multi-service to backend-developer) |
 
-Canonical scaffold sources: `/Solaris/sources/alirezarezvani-the coding agent-skills/engineering-team/senior-fullstack/` + `senior-backend/` + `senior-frontend/`.
+Canonical scaffold sources (external upstream; absorbed into this skill) + `senior-backend/` + `senior-frontend/`.
 
 
 ## QA Loop

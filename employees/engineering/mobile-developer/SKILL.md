@@ -333,8 +333,8 @@ After every mobile project session:
 
 `TOP5-CANDIDATES.md` is a scout artifact (verified 2026-source list), not a session reference.
 
-Canonical wshobson mobile-developer: `/Solaris/sources/wshobson-agents/plugins/frontend-mobile-development/agents/mobile-developer.md`
-Canonical sickn33 mobile-design suite: `/Solaris/sources/sickn33-antigravity-skills/skills/mobile-design/`
+Canonical wshobson mobile-developer (external upstream; absorbed into this skill)
+Canonical sickn33 mobile-design suite (external upstream; absorbed into this skill)
 
 
 ## QA Loop

@@ -15,7 +15,7 @@
     "ml-engineering-stack.md",
     "rag-architecture.md"
   ],
-  "references_source_note": "Canonical alirezarezvani senior-ml-engineer at /Solaris/sources/alirezarezvani-the coding agent-skills/engineering-team/senior-ml-engineer/. Distinct from LLM Agent Designer (prompting/RAG/agents/MCP) - this employee handles TRAINING.",
+  "references_source_note": "Canonical alirezarezvani senior-ml-engineer (external upstream; absorbed into this skill). Distinct from LLM Agent Designer (prompting/RAG/agents/MCP) - this employee handles TRAINING.",
   "mcp_servers": [],
   "tags": [
     "engineering",

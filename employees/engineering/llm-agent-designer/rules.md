@@ -129,7 +129,7 @@ Absorbed from:
 
 The prompt-patterns / rag-architecture / agent-patterns / mcp-server-guide / the coding agent-skill-guide / safety-guardrails / cost-optimization topics are NOT separate files. They live inline in the SKILL.md "Core competencies" plus "Standard procedures" sections. Do not link them as references/ files; they do not exist as files.
 
-Canonical VoltAgent: `/Solaris/sources/voltagent-subagents/categories/05-data-ai/llm-architect.md`
+Canonical VoltAgent (external upstream; absorbed into this skill)
 
 
 ---

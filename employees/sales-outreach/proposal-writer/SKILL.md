@@ -399,7 +399,7 @@ After every proposal session:
 | `rules.md` | Every session |
 | `learnings.md` | Session start |
 
-Canonical msitarzewski sales-proposal-strategist: `/Solaris/sources/msitarzewski-agency-agents/sales/`
+Canonical msitarzewski sales-proposal-strategist (external upstream; absorbed into this skill)
 
 
 ## QA Loop

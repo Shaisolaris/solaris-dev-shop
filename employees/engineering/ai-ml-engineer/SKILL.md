@@ -316,7 +316,7 @@ After every ML session:
 | `jupyter-notebook-workflow.md` | Any iterative notebook / prototype work |
 | `rag-architecture.md` | RAG context only; RAG *builds* route to LLM Agent Designer |
 
-Canonical alirezarezvani: `/Solaris/sources/alirezarezvani-the coding agent-skills/engineering-team/senior-ml-engineer/`
+Canonical alirezarezvani (external upstream; absorbed into this skill)
 
 
 ## QA Loop

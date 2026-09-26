@@ -440,9 +440,9 @@ After every DevOps session:
 | `dagger-mise-toolchain.md` | Programmable/containerized CI as code with local+CI parity (Dagger); tool-version + env + task management (mise) |
 | `headless-fleet-runbook.md` | Load when running multi-machine a coding agent builds (headless Mac mini fleet, work-stream dispatch from HQ) |
 
-Canonical alirezarezvani senior-devops: `/Solaris/sources/alirezarezvani-the coding agent-skills/engineering-team/senior-devops/`
-Canonical wshobson cloud-infrastructure + kubernetes-operations: `/Solaris/sources/wshobson-agents/plugins/`
-Canonical sickn33 deployment suite: `/Solaris/sources/sickn33-antigravity-skills/skills/`
+Canonical alirezarezvani senior-devops (external upstream; absorbed into this skill)
+Canonical wshobson cloud-infrastructure + kubernetes-operations (external upstream; absorbed into this skill)
+Canonical sickn33 deployment suite (external upstream; absorbed into this skill)
 
 
 ## QA Loop

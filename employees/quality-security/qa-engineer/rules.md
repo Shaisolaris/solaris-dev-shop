@@ -139,7 +139,7 @@ Inline topic locations (content lives in this file / SKILL.md, NOT in separate f
 - Mobile (Detox/Maestro/device farms + .ad replay) -> SKILL.md "E2E frameworks" + the agent-device absorption note below
 - API + contract (Pact) -> SKILL.md "API + contract testing"
 
-Canonical wshobson accessibility-compliance: `/Solaris/sources/wshobson-agents/plugins/accessibility-compliance/`
+Canonical wshobson accessibility-compliance (external upstream; absorbed into this skill)
 
 ---
 

@@ -191,7 +191,6 @@ Verdict uses the shared decision table (same one Data Analyst holds): ship / hol
 | `rules.md` | Every session - gates, tables, formulas, gotchas |
 | `learnings.md` | Session start |
 | `experimentation-and-forecasting-stack.md` | When you need a runnable tool for CUPED, sequential testing, staggered/interrupted/geo causal designs, auto-forecasting, or leakage-safe feature engineering |
-| `TOP5-CANDIDATES.md` | Source provenance + Gate-0 verdicts for the 2026 depth pass |
 
 
 ## MAINTENANCE WAVE CONTROLS (2026-07-24)

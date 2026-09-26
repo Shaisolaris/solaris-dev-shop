@@ -445,9 +445,9 @@ After every review session:
 | `sarif-aggregation-and-reachability-triage.md` | ELITE delivery: merge/normalize/de-dup multi-tool SARIF into one ranked report; reachability + exploitability triage (EPSS/KEV/call-graph) to cut false positives; the CodeQL deep-query tier above the fast Semgrep PR tier. |
 | `job-two-improvement.md` | Load on any revision / job-two / scoped-feedback pass. |
 
-Canonical alirezarezvani code-reviewer: `/Solaris/sources/alirezarezvani-the coding agent-skills/engineering-team/code-reviewer/`
-Canonical wshobson comprehensive-review: `/Solaris/sources/wshobson-agents/plugins/comprehensive-review/`
-Canonical sickn33 code-review suite: `/Solaris/sources/sickn33-antigravity-skills/skills/code-review-*/`
+Canonical alirezarezvani code-reviewer (external upstream; absorbed into this skill)
+Canonical wshobson comprehensive-review (external upstream; absorbed into this skill)
+Canonical sickn33 code-review suite (external upstream; absorbed into this skill)
 
 
 

@@ -325,8 +325,8 @@ After every LLM-design session:
 | `superpowers-methodology.md` | FIRST, before designing ANY new agent / app / skill / MCP / workflow |
 | `eval-methodology.md` | Designing evals, RAG eval, agent/MCP scoring, memory scoping, orchestration |
 
-Canonical VoltAgent llm-architect: `/Solaris/sources/voltagent-subagents/categories/05-data-ai/llm-architect.md`
-Canonical alirezarezvani prompt engineer: `/Solaris/sources/alirezarezvani-the coding agent-skills/engineering-team/senior-prompt-engineer/`
+Canonical VoltAgent llm-architect (external upstream; absorbed into this skill)
+Canonical alirezarezvani prompt engineer (external upstream; absorbed into this skill)
 
 
 ## QA Loop
