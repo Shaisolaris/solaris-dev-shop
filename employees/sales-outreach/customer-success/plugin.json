@@ -41,24 +41,5 @@
     "ttv",
     "vitally"
   ],
-  "department": "sales-outreach",
-  "absorbed_from": [
-    "msitarzewski/agency-agents/specialized/customer-success-manager.md",
-    "alirezarezvani/the coding agent-skills/business-growth/skills/customer-success-manager/references/cs-playbooks.md",
-    "alirezarezvani/the coding agent-skills/business-growth/skills/customer-success-manager/references/cs-metrics-benchmarks.md",
-    "alirezarezvani/the coding agent-skills/business-growth/skills/customer-success-manager/references/health-scoring-framework.md",
-    "alirezarezvani/the coding agent-skills/business-growth/skills/customer-success-manager/assets/success_plan_template.md",
-    "alirezarezvani/the coding agent-skills/business-growth/skills/customer-success-manager/assets/qbr_template.md",
-    "alirezarezvani/the coding agent-skills/business-growth/skills/customer-success-manager/assets/executive_business_review_template.md",
-    "alirezarezvani/the coding agent-skills/business-growth/skills/customer-success-manager/assets/onboarding_checklist_template.md",
-    "coreyhaines31/marketingskills/skills/onboarding/SKILL.md",
-    "coreyhaines31/marketingskills/skills/churn-prevention/SKILL.md (CS-process slice: exit-survey taxonomy + offer-to-reason matrix; email mechanics owned by email-specialist)",
-    "CONNECT: Chatwoot (~31k stars, NOASSERTION/custom license - FLAG, self-host/connect only) support platform - host installs; live source for the health-score Support/Engagement signals (ticket volume, open/escalation/resolution, spike-then-silent early warning), save-play inbox. Documented in rules.md 'Support-platform connector'.",
-    "METHODOLOGY (2026-06-13, web-research synthesis): 2026 AI-CS shift - continuous rolling-window health (14-day login/usage) vs quarterly batch, open-ended language capture (ticket/call/free-text) over bare 0-10, threshold-to-playbook AUTO-WIRING (breach triggers the matching W3/training play, not just an alert), signal hierarchy (declining-logins -> adoption-depth -> support-sentiment -> renewal-proximity decay), and retainer proxy variant. Sources: HubSpot 2026 CS-metrics, Perspective AI 2026 platform survey, customerscore.io, Pylon, Authencio. Gate-0 PASS: rules.md owned the weighted health model + thresholds + calibration but treated scoring as periodic and had no trigger->play wiring. -> ai-cs-signals-2026.md",
-    "anthropics/knowledge-work-plugins customer-support plugin (ticket-triage/draft-response/customer-escalation/kb-article/customer-research) - Apache-2.0, official, verified live 2026-06-22. ABSORB methodology (net-new inbound support-ops layer; CSM owned only post-sale relationship). Gate 0 PASS. -> support-ops-workflow.md"
-  ],
-  "build_notes": "REBUILD 2026-04-25. Clean v0.2.0. alirezarezvani CS pod is comprehensive - risk-tier playbooks + metrics benchmarks. Strongest source for CSM work. | 2026-05-18 v0.3.0: Time-to-first-value as core metric, account segmentation tiers (high-touch/tech-touch/self-serve), churn signal hierarchy, EBR structure, expansion timing. | 2026-06-09 v0.4.0 rebuild from real sources (was 227 lines/2 credits): added msitarzewski/agency-agents CSM (108,906\u2605 MIT, verified via api.github.com 2026-06-09), alirezarezvani health-scoring-framework + 4 asset templates (17,640\u2605 MIT - previously only cs-playbooks + cs-metrics were absorbed; prior absorbed_from paths corrected to include /skills/ segment, both verified upstream, nothing struck), coreyhaines31/marketingskills onboarding + churn-prevention process slice (32,665\u2605 MIT). VoltAgent CSM (21,485\u2605) evaluated + rejected: checklist headers, no process depth. wshobson + sickn33 rejected (support-only / mirror of marketingskills). Boundary enforced vs email-specialist (owns dunning/cancel-save/win-back email mechanics). rules.md 92\u2192157 dense lines, SKILL.md 125\u219284 workflow-first lines. | 2026-06-13 v0.6.0: deep quality pass. PART A scan: no new bar-clearing CS OSS (msitarzewski/alirezarezvani/coreyhaines31 already absorbed = strongest + content-duplicate; wshobson customer-support re-rejected thin; citizenjosh/customer-success-skills below bar 10 stars + NOASSERTION). PART B: verified refs (no phantoms), added Workflow 8 small-task/quick-turn lane, confirmed 0 em-dashes. PART C: 2026 continuous-signal AI-CS methodology -> ai-cs-signals-2026.md (web-research). Gate-0 PASS. See TOP5-CANDIDATES.md. | 2026-06-28 v0.7.0: knowledge-work-plugins customer-support absorbed (Apache-2.0) - inbound support ops (P1-P4 triage, situational draft-response, escalation packaging, KB authoring) as net-new reactive layer atop the retention lane. Gate 0 PASS.",
-  "doctrine_note": "'never fold Shai skills' doctrine retired 2026-06-04 (residual sweep, step 2.10).",
-  "credits_removed": [],
-  "phase_artifacts": "sources/_analysis/customer-success/01-discovery-2026-06-09.md + 02-extraction-2026-06-09.md + 03-outline-2026-06-09.md + 05-qa-2026-06-09.md"
+  "department": "sales-outreach"
 }

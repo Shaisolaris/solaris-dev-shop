@@ -1,7 +1,7 @@
 {
   "name": "cto",
   "version": "0.4.1",
-  "description": "CTO  -  technology strategy + architecture governance (ADRs) + engineering leadership (DORA / scaling / hiring) + tech debt assessment (Severity \u00d7 Blast Radius / Cost-to-fix) + build-vs-buy (default buy unless core IP) + DDD bounded contexts + modernization strategies (strangler / branch-by-abstraction / parallel run) + crisis mgmt + investor DD prep. Two modes: pragmatic startup CTO (default monolith / managed DB / Auth0 / Stripe / Vercel\u2192AWS) + strategic CTO (post-PMF scaling). Distinct from DevOps / Cloud Architect / Code Reviewer / SRE. Clean rebuild from 5 source files across 9 repos.",
+  "description": "CTO  -  technology strategy + architecture governance (ADRs) + engineering leadership (DORA / scaling / hiring) + tech debt assessment (Severity × Blast Radius / Cost-to-fix) + build-vs-buy (default buy unless core IP) + DDD bounded contexts + modernization strategies (strangler / branch-by-abstraction / parallel run) + crisis mgmt + investor DD prep. Two modes: pragmatic startup CTO (default monolith / managed DB / Auth0 / Stripe / Vercel→AWS) + strategic CTO (post-PMF scaling). Distinct from DevOps / Cloud Architect / Code Reviewer / SRE. Clean rebuild from 5 source files across 9 repos.",
   "author": "Shai Ali",
   "license": "MIT",
   "skills": [
@@ -13,7 +13,6 @@
     "../decision-quality-protocol-2026.md",
     "capability.contract.json"
   ],
-  "references_pending_expansion": [],
   "tags": [
     "leadership",
     "cto",
@@ -33,15 +32,5 @@
     "technical-due-diligence",
     "crisis-management"
   ],
-  "department": "leadership",
-  "absorbed_from": [
-    "alirezarezvani/docs/skills/c-level-advisor/cto-advisor.md",
-    "alirezarezvani/agents/personas/startup-cto.md",
-    "alirezarezvani/c-level-advisor/cto-advisor/references/architecture_decision_records.md",
-    "voltagent-subagents/categories/04-quality-security/architect-reviewer.md",
-    "msitarzewski-agency-agents/engineering/engineering-software-architect.md"
-  ],
-  "phase_artifacts": "sources/_analysis/cto/01-discovery.md + 02-extraction.md [artifact lost in 2026-06 consolidation  -  see solaris/reports/audits/2026-06-09-brain-audit.md]",
-  "build_notes": "REBUILD 2026-04-25. Phase 1 grep + Phase 2 read 5 source files + Phase 3 cross-source synthesis + Phase 4 SKILL/rules/plugin/learnings + Phase 6 ledger entry. Prior cto-upgrade analysis (which had Shai skill mixing) was DISCARDED. Clean v0.2.0. | 2026-05-18 v0.3.0: CTO advisory rules (stack-by-team-skill, ADR discipline, tech debt categorization, scale-first-measure rule, hire-vs-contract). | 2026-05-18 pending refs (4) consolidated into rules.md (not external files): adr-template, build-vs-buy-matrix, dora-dashboard, modernization-strategies. | 2026-06-13 v0.4.0: deep quality pass. PART A: no new bar-clearing OSS (advisory role; alirezarezvani cto-advisor ADR pod already absorbed = strongest; rinaldofesta/cto-os-skills FAILS both - 20 stars below bar AND Commercial/License-Required; AlpacaLabs=building-architects wrong domain; hands-on architecture=engineering employees - all reject). PART B: refs clean (references/architecture_decision_records.md etc. in SKILL are upstream-source/cross-org citations, not phantoms), added small-task/quick-turn lane, 0 em-dashes. PART C tighten: Team Topologies team-design (4 team types + 3 interaction modes + Conway's Law + cognitive load) added to rules.md from established public methodology (no flagged repo bundled). See TOP5-CANDIDATES.md. | 2026-07-24 skill-8qr: decision-quality protocol + L2 contract surface (upgraded_decision_quality; post version 1.1.0).",
-  "doctrine_note": "'never fold Shai skills' doctrine retired 2026-06-04 (residual sweep, step 2.10)."
+  "department": "leadership"
 }

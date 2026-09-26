@@ -13,7 +13,6 @@
     "excel-mcp-patterns.md",
     "analyst-compute-and-reporting-stack.md"
   ],
-  "references_pending_expansion": [],
   "tags": [
     "data",
     "analyst",
@@ -31,25 +30,5 @@
     "data-storytelling",
     "executive-reporting"
   ],
-  "department": "data",
-  "absorbed_from": [
-    "wshobson/agents - plugins/business-analytics (kpi-dashboard-design + data-storytelling skills incl. references/details.md, business-analyst agent), plugins/developer-essentials/skills/sql-optimization-patterns, plugins/database-design/agents/sql-pro",
-    "VoltAgent/awesome-the coding agent-code-subagents - categories/05-data-ai/data-analyst.md (checklist, metric-contract fields, 3-phase workflow, profile-quality-first order)",
-    "alirezarezvani/the coding agent-skills - engineering/data-quality-auditor (DQS gate, risk triggers, remediation ladder), engineering/statistical-analyst (A/B decision table, effect sizes, risk triggers), finance/saas-metrics-coach (formulas, benchmarks, health report), product-team/product-analytics (layers, retention curve reading, anti-patterns), engineering/skills/sql-database-assistant (NL\u2192SQL, EXPLAIN workflow, rewrite table)",
-    "sickn33/antigravity-awesome-skills - skills/analytics-tracking (Signal Quality Index, event taxonomy, conversion rules, UTM discipline) + sql-pro safety wrapper (read replicas/limits for prod exploration); its sql/kpi/business-analyst skills verified as wshobson mirrors, credited to wshobson",
-    "msitarzewski/agency-agents - support/support-analytics-reporter.md (BI report template w/ Data Foundation block, validate-before-analyze rules, RFM segmentation, 40/40/20 attribution default, 30/90/180 roadmap)",
-    "lodetomasi/agents-the coding agent-code - data-detective.md (6-step investigation, business-terms rule), data-storyteller.md (one insight per visual, no-manual rule, presentation tactics)",
-    "rohitg00/awesome-the coding agent-code-toolkit - plugins/analytics-reporter (dashboard.md: 12-panel budget, layout rows, color coding, per-panel data sources; report.md: objective metrics, <100 lines, trend direction)",
-    "haris-musa/excel-mcp-server (MIT, ~3.9k stars, main @ 2026-06-13): ABSORB \u2192 references/excel-mcp-patterns.md + rules.md 'Delivery + live-warehouse layer'. Net-new: native .xlsx read/write w/o Excel installed (openpyxl) - create_workbook/worksheet, write/read_data, apply_formula (+ validate_formula_syntax first), format_range, create_table/pivot_table/chart. Deliver the spreadsheet stakeholders actually open; .xlsx is a presentation surface not a 2nd source of truth",
-    "CONNECT: official Snowflake MCP Server (docs.snowflake.com, Cortex Agents MCP) - live warehouse query/exploration for analysis + Excel/dashboard outputs; read-mostly scoped role, commercial key flag, host installs. NOTE: assignment named Snowflake-Labs/mcp but that is DEPRECATED upstream (verified 2026-06-10, per data-engineer rules.md) \u2192 connect the OFFICIAL Snowflake MCP instead \u2192 rules.md 'Delivery + live-warehouse layer'",
-    "METHODOLOGY (2026-06-13 deepen pass, no code bundled) -> references/analyst-compute-and-reporting-stack.md: duckdb/duckdb (MIT, 38.3k stars, pushed 2026-05-20) in-process SQL over files; pola-rs/polars (MIT, 38.7k stars, pushed 2026-06-02) fast lazy DataFrames; marimo-team/marimo (Apache-2.0, 21k stars, release 2026-05-11) reproducible pure-Python notebook reporting; evidence-dev/evidence (MIT, 6.4k stars, pushed 2026-02-18) BI-as-code SQL+Markdown reports. Plus great-expectations/great_expectations (Apache-2.0, 11.5k stars, pushed 2026-05-26): expectation-suite pattern lifted into rules.md DQS gate. All Gate-0 net-new vs prior employee content; all permissive licenses.",
-    "skill-wave-data-ai-20260724 (evaluation + fixtures; methodology-only, no untrusted code)"
-  ],
-  "phase_artifacts": {
-    "discovery": "sources/_analysis/data-analyst/01-discovery.md",
-    "extraction": "sources/_analysis/data-analyst/02-extraction.md",
-    "outline": "sources/_analysis/data-analyst/03-outline.md",
-    "qa": "sources/_analysis/data-analyst/05-qa.md"
-  },
-  "build_notes": "2026-06-09 rebuild: content written in from real sources (was 202 lines/7 credits with workflows never written in). All 7 credited sources located and read - sickn33 repo corrected to antigravity-awesome-skills; msitarzewski resolved to agency-agents; lodetomasi to agents-the coding agent-code; rohitg00 to awesome-the coding agent-code-toolkit. All credits KEPT, now itemized to actual files. Boundaries enforced vs data-engineer (pipelines/dbt not absorbed) and data-scientist (experiment design/stats methodology escalated, result-interpretation kept). | Prior: 2026-05-18 v0.3.0 metric discipline rules. | 2026-06-13 v1.1.0: absorb-gates data pass. Gate-0: zero Excel tooling + zero Snowflake MCP -> both net-new. ABSORB excel-mcp-server -> references/excel-mcp-patterns.md. CONNECT Snowflake (redirected Snowflake-Labs->official, deprecated upstream). Minor bump 1.0.0->1.1.0. | 2026-06-13 v1.2.0 depth pass: PART A top-5 verified (DuckDB/Polars/Great Expectations/marimo/Evidence, all Gate-0 net-new, all permissive) -> TOP5-CANDIDATES.md. PART B perfection: registered the orphaned references/excel-mcp-patterns.md (existed on disk, was missing from references[]) + new methodology ref + TOP5 doc; operationalized the DQS score (weights existed, no formula) with an explicit weighted formula + per-dimension 0-100 scoring; added a small-task/prototype lane (Workflow 0); fixed stale SKILL.md References table; added namespaced memory-write doctrine to learnings.md. PART C deepen: lifted DuckDB/Polars/marimo/Evidence methodology into references/analyst-compute-and-reporting-stack.md and the Great Expectations expectation-suite pattern into rules.md. No em-dashes reintroduced. Fleet doctrine: memory namespaced {client}:{employee}:{project}. | data-ai upstream wave 2026-07-24: runtime hardening + contract v1.1.0 + synthetic eval fixtures"
+  "department": "data"
 }

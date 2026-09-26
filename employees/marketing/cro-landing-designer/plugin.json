@@ -56,37 +56,5 @@
     "unbounce",
     "vwo"
   ],
-  "department": "marketing",
-  "absorbed_from": [
-    "sickn33/antigravity-awesome-skills/skills/ab-test-setup/SKILL.md",
-    "sickn33/antigravity-awesome-skills/skills/page-cro/SKILL.md",
-    "sickn33/antigravity-awesome-skills/skills/form-cro/SKILL.md",
-    "sickn33/antigravity-awesome-skills/skills/popup-cro/SKILL.md",
-    "sickn33/antigravity-awesome-skills/skills/signup-flow-cro/SKILL.md",
-    "sickn33/antigravity-awesome-skills/skills/headline-psychologist/SKILL.md",
-    "sickn33/antigravity-awesome-skills/skills/landing-page-generator/SKILL.md + references/{conversion-patterns,frameworks,landing-page-patterns}.md",
-    "alirezarezvani/the coding agent-skills/marketing-skill/skills/ab-test-setup/references/sample-size-guide.md + scripts/sample_size_calculator.py",
-    "alirezarezvani/the coding agent-skills/marketing-skill/skills/page-cro/scripts/conversion_audit.py",
-    "VoltAgent/awesome-the coding agent-code-subagents/categories/10-research-analysis/ab-test-analysis.md",
-    "alirezarezvani/c-level-advisor/cro-advisor/references/sales_playbook.md (retained from v0.2.0)",
-    "wshobson/plugins/ui-design/skills/interaction-design/references/microinteraction-patterns.md (retained)",
-    "wshobson/plugins/ui-design/skills/interaction-design/references/scroll-animations.md (retained)",
-    "growthbook/growthbook statistics engine (NOASSERTION/open-core, methodology only: CUPED, sequential/always-valid p-values, SRM chi-square, multi-armed bandits) [depth 2026-06-13]",
-    "openreplay/openreplay (NOASSERTION/Apache-2.0 core, methodology only: behavioral-signal taxonomy) [depth 2026-06-13]",
-    "microsoft/clarity (MIT: behavioral-signal taxonomy, default day-1 instrumentation) [depth 2026-06-13]",
-    "Unleash/unleash (AGPL-3.0, methodology only: gradual-rollout + kill-switch safe-deploy) / flagsmith/flagsmith (BSD-3, permissive alt) [depth 2026-06-13]"
-  ],
-  "build_notes": "REBUILD 2026-04-25. Clean v0.2.0. Note: alirezarezvani's CRO file is named after the role 'Chief Revenue Officer' but contains the full sales funnel that maps directly to CRO/conversion work. | 2026-05-18 v0.3.0: Landing-page anatomy rules, headline + social proof + CTA discipline, one-variable A/B testing, CWV hard rules. | 2026-06-09 v0.4.0 rebuild from real sources (was 182 lines/3 credits): sickn33 CRO suite (ab-test-setup, page-cro, form-cro, popup-cro, signup-flow-cro, headline-psychologist, landing-page-generator refs) + alirezarezvani upstream sample-size guide/scripts + VoltAgent ab-test-analysis statistics discipline. Readiness Index gate, Form Health Index, SRM/ship-no-ship verdicts, sample anchor tables, landing.csv cross-reference added. Source star counts verified via api.github.com: sickn33 39,081 / wshobson 35,739 / VoltAgent 20,242 / alirezarezvani 15,761. | 2026-06-13 v0.5.0 depth pass: registered cro-experimentation-depth-2026.md (CUPED, sequential testing, SRM operationalization via chi-square p<0.001, multi-armed bandits, behavioral-signal taxonomy from OpenReplay/Clarity, safe-rollout patterns from Unleash/Flagsmith). Fixed phantom refs (frameworks.md removed; conversion_audit.py + sample_size_calculator.py reframed as upstream-only, not bundled). Added small-task/prototype lane. Added sample-size source-basis note (anchors are conservative upstream figures, ~2x textbook pooled calc; inline pooled formula added). Source stars re-verified via api.github.com 2026-06-13: PostHog 34,770 / Unleash 13,581 / OpenReplay 12,098 / GrowthBook 7,881 / Flagsmith 6,408 / Microsoft Clarity 2,677. License flags: GrowthBook/PostHog/OpenReplay NOASSERTION (open-core), Unleash AGPL-3.0 - methodology only, no code bundled; Clarity MIT, Flagsmith BSD-3 clean. No CI workflows present in this employee dir, so no SHA-pin action required; memory scope key namespace 'marketing/cro-landing-designer'.",
-  "doctrine_note": "'never fold Shai skills' doctrine retired 2026-06-04 (residual sweep, step 2.10).",
-  "cross_references": [
-    "ui-ux-designer/design-intelligence/data/landing.csv (34 landing patterns - queried, not duplicated)"
-  ],
-  "phase_artifacts": [
-    "sources/_analysis/cro-landing-designer/01-discovery.md",
-    "sources/_analysis/cro-landing-designer/02-extraction.md",
-    "sources/_analysis/cro-landing-designer/03-outline.md",
-    "sources/_analysis/cro-landing-designer/05-qa.md",
-    "TOP5-CANDIDATES.md"
-  ],
-  "memory_scope": "marketing/cro-landing-designer"
+  "department": "marketing"
 }

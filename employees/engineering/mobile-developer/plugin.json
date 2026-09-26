@@ -1,7 +1,7 @@
 {
   "name": "mobile-developer",
   "version": "0.10.0",
-  "description": "\u26a0\ufe0f ALWAYS load mobile-mcp-operator.md FIRST in any mobile session - it's the most-forgotten file and contains canonical mobile-next/mobile-mcp + Android-Ui-MCP usage. Mobile developer for Solaris. Covers native iOS (Swift/SwiftUI), native Android (Kotlin/Jetpack Compose), React Native (New Architecture), Flutter, Expo SDK 55+, Ionic/Capacitor, offline-first sync, push, deep linking, biometric auth, ASO, mobile CI/CD, OWASP MASVS, AR + on-device ML + wearables. v0.3.0 absorbs (1) mobile-next/mobile-mcp - cross-platform iOS+Android MCP for real devices + simulators + emulators with full app lifecycle + accessibility-first interaction; (2) infiniV/Android-Ui-MCP - Android screenshot fallback; (3) dpconde/the coding agent-android-skill - NowInAndroid + Google official architecture (Clean Arch + Compose + MVVM + UDF + Hilt + Room + multi-module + offline-first). v0.8.0 deepens the testing + release pillars (Maestro, Detox, Patrol, Paparazzi, fastlane) into mobile-test-and-release.md with operationalized gates + a small-task/prototype lane. v0.10.0 (2026-07-24): Expo SDK 55+ / RN 0.83 pin + toolchain mismatch preflight.",
+  "description": "⚠️ ALWAYS load mobile-mcp-operator.md FIRST in any mobile session - it's the most-forgotten file and contains canonical mobile-next/mobile-mcp + Android-Ui-MCP usage. Mobile developer for Solaris. Covers native iOS (Swift/SwiftUI), native Android (Kotlin/Jetpack Compose), React Native (New Architecture), Flutter, Expo SDK 55+, Ionic/Capacitor, offline-first sync, push, deep linking, biometric auth, ASO, mobile CI/CD, OWASP MASVS, AR + on-device ML + wearables. v0.3.0 absorbs (1) mobile-next/mobile-mcp - cross-platform iOS+Android MCP for real devices + simulators + emulators with full app lifecycle + accessibility-first interaction; (2) infiniV/Android-Ui-MCP - Android screenshot fallback; (3) dpconde/the coding agent-android-skill - NowInAndroid + Google official architecture (Clean Arch + Compose + MVVM + UDF + Hilt + Room + multi-module + offline-first). v0.8.0 deepens the testing + release pillars (Maestro, Detox, Patrol, Paparazzi, fastlane) into mobile-test-and-release.md with operationalized gates + a small-task/prototype lane. v0.10.0 (2026-07-24): Expo SDK 55+ / RN 0.83 pin + toolchain mismatch preflight.",
   "author": "Shai Ali",
   "homepage": "https://github.com/shaisolaris/solaris-employees",
   "license": "MIT",
@@ -16,7 +16,6 @@
     "mobile-test-and-release.md",
     "native-mobile-language-packs.md"
   ],
-  "references_pending_expansion": [],
   "references_source_note": "Canonical wshobson mobile-developer at /Solaris/sources/wshobson-agents/plugins/frontend-mobile-development/agents/mobile-developer.md. Canonical sickn33 mobile-design suite at /Solaris/sources/sickn33-antigravity-skills/skills/mobile-design/. v0.3.0 added IvanMurzak ecosystem peer (mobile-next/mobile-mcp) + dpconde NowInAndroid patterns + infiniV Android-Ui-MCP fallback. v0.8.0 added mobile-test-and-release.md (Maestro/Detox/Patrol/Paparazzi/fastlane methodology + release gate formulas). TOP5-CANDIDATES.md holds the 2026-06-13 verified-source scout output (not a loadable reference, a scout artifact).",
   "mcp_servers": [
     "@mobilenext/mobile-mcp (PRIMARY - install: agent mcp add mobile-mcp -- npx -y @mobilenext/mobile-mcp@latest)",
@@ -78,42 +77,5 @@
     "kotest",
     "ecc"
   ],
-  "department": "engineering",
-  "absorbed_from": [
-    "wshobson/plugins/frontend-mobile-development/agents/mobile-developer.md (PRIMARY capability matrix)",
-    "wshobson/plugins/multi-platform-apps/agents/mobile-developer.md",
-    "wshobson/plugins/frontend-mobile-security/agents/mobile-security-coder.md (OWASP MASVS)",
-    "wshobson/plugins/ui-design (mobile-ios-design HIG + mobile-accessibility + react-native-design)",
-    "lodetomasi/agents-the coding agent-code/mobile-architect.md",
-    "VoltAgent mobile-developer (01-core) + mobile-app-developer (07-specialized)",
-    "sickn33/antigravity-awesome-skills/mobile-design suite (8 refs + mobile_audit.py)",
-    "msitarzewski engineering patterns",
-    "mobile-next/mobile-mcp (https://github.com/mobile-next/mobile-mcp) - cross-platform iOS+Android MCP, full app lifecycle, accessibility-first interaction, cross-app workflows, SSE server mode",
-    "infiniV/Android-Ui-MCP (https://github.com/infiniV/Android-Ui-MCP) - Android screenshot fallback for Expo/RN/Flutter dev loop",
-    "dpconde/the coding agent-android-skill (https://github.com/dpconde/the coding agent-android-skill) - NowInAndroid + Google architecture: Clean Arch + Compose + MVVM/UDF + Hilt + Room + multi-module + offline-first",
-    "MetaGPT (FoundationAgents/MetaGPT) - Engineer spec\u2192code handoff SOP absorbed 2026-05-01: read task \u2192 read interface defs \u2192 read shared knowledge \u2192 match schema verbatim \u2192 no scope creep \u2192 self-review against File List",
-    "callstackincubator/agent-device (MIT, Callstack official) - companion to mobile-mcp/Android-Ui-MCP: .ad replay scripts, tvOS/Android TV/macOS/Linux desktop reach, snapshot diffs, component-tree inspection. Consolidated 2026-05-18. | expo/skills (Expo official) - Expo + EAS workflow patterns (config plugins, EAS Build/Submit/Update, OTA strategy, dev-client vs Expo Go). Skills fine-tuned for Opus. Layered on top of existing VoltAgent expo-react-native-expert coverage. Consolidated 2026-05-18.",
-    "mobile-dev-inc/Maestro (Apache-2.0, 14.1k stars, CLI 2.5.1 2026-04-30) - cross-platform E2E methodology (YAML flows, a11y-first, smart-wait, CI lanes). Methodology lifted into mobile-test-and-release.md 2026-06-13. | wix/Detox (MIT, 11.8k) - RN gray-box E2E methodology (runloop sync, testID contract). | leancodepl/patrol (Apache-2.0, ~1.3k) - Flutter native-interaction E2E methodology. | cashapp/paparazzi (Apache-2.0, 2.5k) - Android JVM visual-regression methodology. | fastlane/fastlane (MIT, 41.3k, 2.232.2 2026-02-27) - store-release lane methodology (match/gym/pilot/deliver/supply) + numeric release gates. All five permissive; methodology only, no code bundled. Depth pass 2026-06-13.",
-    "affaan-m/everything-the coding agent-code (ECC, MIT) - native-mobile language depth absorbed 2026-06-14 (methodology only, NO code bundled). 15 source skills lifted into references/native-mobile-language-packs.md: kotlin-patterns, kotlin-coroutines-flows, kotlin-testing, kotlin-ktor-patterns, kotlin-exposed-patterns, android-clean-architecture, compose-multiplatform-patterns (Kotlin/Android/KMP/Compose); dart-flutter-patterns, flutter-dart-code-review (Dart/Flutter); swiftui-patterns, swift-concurrency-6-2, swift-actor-persistence, swift-protocol-di-testing, liquid-glass-design (iOS 26), foundation-models-on-device (Apple on-device LLM) (Swift/SwiftUI/iOS). Adds native Kotlin/Android, Flutter, and Swift/iOS language depth on top of the prior RN/Expo + cross-platform + test/release coverage. Existing files unchanged."
-  ],
-  "available_sources_for_scout": [
-    "sickn33 (new mobile frameworks, SDK updates, ASO shifts, platform policy changes)",
-    "twostraws/Swift-Agent-Skills (MIT, Paul Hudson) - curated index of vetted Swift skills; NOT a skill itself, mine it for candidates. Re-evaluated 2026-05-14: rejected for direct absorption (it's a link directory), reclassified as a watchlist source.",
-    "twostraws/SwiftUI-Agent-Skill - real absorbable skill, fetch + run the 5-step protocol individually",
-    "twostraws/Swift-Concurrency-Agent-Skill - real absorbable skill, fetch + run the 5-step protocol individually",
-    "twostraws/SwiftData-Agent-Skill - real absorbable skill, fetch + run the 5-step protocol individually",
-    "twostraws/Swift-Testing-Agent-Skill - real absorbable skill, fetch + run the 5-step protocol individually",
-    "CursorTouch/Android-MCP (alternate Android MCP)",
-    "minhalvp/android-mcp-server (Python ADB-based)",
-    "jsuarezruiz/mobile-dev-mcp-server (alternate cross-platform)",
-    "skydoves/android-skills-mcp (official Android skills packager)",
-    "rcosteira79/android-skills (Android + KMP)",
-    "Drjacky/the coding agent-android-ninja (Compose + Navigation3 - newer than dpconde)",
-    "SimoneAvogadro/android-reverse-engineering-skill (security/RE work)",
-    "takahirom/roborazzi (Apache-2.0, 951 stars, 1.63.0 2026-05-02) - Compose + AI-assertion screenshot testing; below Paparazzi on maturity, re-evaluate as it grows",
-    "Google com.android.compose.screenshot (first-party Compose Preview screenshot testing; alpha as of 2026-06 - promote when stable)",
-    "sergio-sastre/ComposablePreviewScanner - auto-generates screenshot tests from previews across libraries"
-  ],
-  "build_notes": "REBUILD 2026-04-25 v0.3.0 - Talent Scout v2 caught mobile-next/mobile-mcp + infiniV/Android-Ui-MCP + dpconde/the coding agent-android-skill. Anti-amnesia banner added to surface mobile-mcp-operator.md every session. | 2026-05-01 v0.4.0: MetaGPT Engineer SOP absorbed (M4). | 2026-05-13: twostraws/Swift-Agent-Skills staged from description (lightweight; listed sub-skill 'patterns' that were never fetched). 2026-05-14: re-evaluated from real source (github.com/twostraws/swift-agent-skills README) - it is a curated link directory, not a skill. REJECTED for absorption per the doctrine, reclassified as a scout watchlist source. False absorbed_from entry + append-blob removed. The 4 linked twostraws sub-skills logged as individual scout candidates. | 2026-05-18 v0.6.0: callstackincubator/agent-device (testing-layer companion) + expo/skills (Expo-official RN patterns) consolidated into rules.md. | 2026-05-24: pending refs cleared (content lives in rules.md per Sprint 7/8 completion). | 2026-06-13 v0.8.0 (depth pass): TOP5-CANDIDATES.md written (5 verified permissive 2026 sources). New mobile-test-and-release.md registered - lifts Maestro/Detox/Patrol/Paparazzi/fastlane methodology + numeric release gates (crash-free, cold-start, app-size, frame, phased rollout). Perfection edits: fixed stale SKILL.md References table (was 2 of 4 files, now lists all 5), added small-task/prototype lane to SKILL.md, de-duped Self-Learning vs References, fixed description claiming v0.3.0 as the headline. plugin.json verified parses. | 2026-06-14 v0.9.0 (native-language depth pass): absorbed ECC (affaan-m/everything-the coding agent-code, MIT) native-mobile methodology - created references/native-mobile-language-packs.md grouped by platform (Pack A Kotlin/Android/Compose + Ktor/Exposed; Pack B Dart/Flutter; Pack C Swift/SwiftUI/iOS incl Liquid Glass iOS 26 + on-device FoundationModels). Methodology only, no code-bundling. Registered the new reference, added absorbed_from entry, added rules.md pointer. Keeps the RN/Expo default + test/release stack intact; ADDS native Kotlin/Android, Flutter, and Swift/iOS language depth + on-device LLM. Supported platforms/languages: Kotlin (Android/KMP/Ktor/Exposed), Compose + Compose Multiplatform, Dart/Flutter, Swift 6.2/SwiftUI/UIKit/WidgetKit (iOS 26), Apple FoundationModels. plugin.json verified parses.",
-  "doctrine_note": "'never fold Shai skills' doctrine retired 2026-06-04 (residual sweep, step 2.10)."
+  "department": "engineering"
 }

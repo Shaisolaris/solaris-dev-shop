@@ -12,7 +12,6 @@
     "learnings.md",
     "platform-patterns.md"
   ],
-  "references_pending_expansion": [],
   "tags": [
     "infrastructure",
     "kubernetes",
@@ -42,31 +41,5 @@
     "crashloopbackoff",
     "oomkilled"
   ],
-  "department": "infrastructure",
-  "absorbed_from": [
-    "learnk8s/kubernetes-production-best-practices (MIT, 1,136 stars, pushed 2026-05-12): the production checklist canon - app/container contract, manifest runtime contract (probes/QoS/PDB/topology/rollouts/reload), security (PSA/RBAC/NetworkPolicy/admission/workload identity/external secrets), scaling (HPA/KEDA/VPA, right-size-to-peak, control-loop lag), going-live (rollback posture, failure rehearsal, runbooks, cost)",
-    "wshobson/agents (MIT, 35,739 stars, pushed 2026-05-19): plugins/kubernetes-operations - kubernetes-architect agent, k8s-manifest-generator (deployment-spec probe baselines, QoS), k8s-security-policies (rbac-patterns role shapes + audit), helm-chart-scaffolding, gitops-workflow",
-    "sickn33/antigravity-awesome-skills (MIT, 40,179 stars, pushed 2026-06-09): container-security-hardening/references/kubernetes-pod-security.md ONLY - PSA rollout, NetworkPolicy DNS-egress pattern, RBAC audit commands, 5 baseline Kyverno policies, SA hardening, ESO example. Its k8s-manifest-generator/k8s-security-policies/kubernetes-architect skills are wshobson mirrors (diff-verified) and are not separately credited",
-    "rohitg00/awesome-the coding agent-code-toolkit (Apache-2.0, 2,004 stars, pushed 2026-05-12): k8s-helper debug-pod diagnosis tree + kubernetes-operations manifest baseline (topologySpreadConstraints, Helm layout)",
-    "VoltAgent/awesome-the coding agent-code-subagents (MIT, 20,242 stars, pushed 2026-05-20): 03-infrastructure/kubernetes-specialist.md coverage map + mastery targets (utilization >70%, CIS benchmark, DR tested)",
-    "alirezarezvani/the coding agent-skills (MIT, 17,640 stars, pushed 2026-06-07): engineering/skills/kubernetes-operator - operator/CRD adoption guidance (concepts)",
-    "awslabs/mcp eks-mcp-server (Apache-2.0, ~9,300 stars, AWS-official): CONNECT - live EKS cluster/node-group state, EKS-aware manifest gen+apply, pod troubleshooting against the real cluster, CloudWatch/Application Signals reads → rules.md 'Live cluster execution'. Host installs uvx awslabs.eks-mcp-server@latest; least-privilege IAM + workload identity",
-    "googleapis/gcloud-mcp (Apache-2.0, ~830 stars): CONNECT - live GKE (Autopilot-first) + surrounding GCP via gcloud CLI wrap; cluster/node-pool/Autopilot state in context → rules.md 'Live cluster execution'. Host installs per repo (Node + authenticated gcloud); least-privilege service account + Workload Identity",
-    "kubernetes-sigs/karpenter (Apache-2.0, 1,900 stars, v1.13.0 2026-06-10): ABSORB methodology -> platform-patterns.md Node autoscaling. NodePool/NodeClass, consolidation (WhenEmptyOrUnderutilized), disruption budgets, drift, spot+on-demand, expireAfter. Self-host: host installs the provider impl (aws/Azure/etc.); specialist authors NodePool/NodeClass/disruption manifests in Git.",
-    "argoproj/argo-cd (Apache-2.0, 22,900 stars, v3.4.2 2026-05-12): METHODOLOGY -> platform-patterns.md GitOps. App-of-apps, ApplicationSet generators, sync-waves + PreSync/PostSync hooks, sync windows, manual-sync guardrails for prod, drift/self-heal trade-offs. Self-host: host runs Argo CD; specialist designs repo layout + Application shapes.",
-    "kyverno/policies (Apache-2.0, 473 stars, 1,596 commits active): CONNECT + methodology -> platform-patterns.md Policy-as-code. Curated baseline set as code, CEL/ValidatingAdmissionPolicy variants preferred, Audit-before-Enforce ladder, verifyImages, ecosystem policy sets. Self-host: host installs Kyverno + curated subset via GitOps; specialist selects/tunes + owns Audit->Enforce promotion (no vendored library copy).",
-    "helm/helm (Apache-2.0, 29,900 stars, v4.2.1 2026-06-12, Helm 4 GA): METHODOLOGY -> platform-patterns.md Helm. values.schema.json, helm lint + helm template|kubeconform + chart-testing CI on kind, helm diff upgrade gate, Chart.lock pinning, OCI chart registries. Self-host: host runs helm/CI; specialist authors the chart contract.",
-    "kubescape/kubescape (Apache-2.0, 11,300 stars, v4.0.3 2026-03-17): CONNECT -> platform-patterns.md Compliance posture scanning + rules.md supply chain. CIS/NSA-CISA/MITRE ATT&CK posture scoring, SARIF/JUnit CI gating, air-gapped mode, Prometheus metrics. OBSERVE+SCORE only; remediation lands as manifests via GitOps (same doctrine as EKS/GKE MCP). Self-host: host installs CLI/operator; specialist drives remediation."
-  ],
-  "build_notes": " | 2026-05-18 v0.3.0: Added decision rules, red flags, standing gotchas for real-world k8s client work (managed-first, GitOps default, observability stack, secrets discipline). | 2026-05-18 pending refs (7) consolidated into rules.md (not external files): cluster-design-playbook, helm-kustomize-patterns, gitops-argocd-flux, security-hardening, autoscaling-playbook, upgrade-procedure, dr-velero. | 2026-06-09 v0.4.0: rebuild from real sources (was 233 lines/6 credits). Tier-1 verified every credit via GitHub API; struck 1 (stale), re-scoped 1 (mirror); added learnk8s production-best-practices as canon. rules.md rebuilt 153 dense path-cited lines (workload contract, security ladders, multi-tenancy, upgrades, troubleshooting trees); SKILL.md rebuilt 92 lines with 5 workflows + decision gates. | 2026-06-13 v0.5.0: absorb-gates infra pass. Gate-0: deep design/troubleshooting present but NO managed-cluster MCP execution layer -> both net-new. CONNECT awslabs/mcp eks-mcp-server + googleapis/gcloud-mcp for live EKS/GKE observe+diagnose (GitOps stays source of truth) -> rules.md 'Live cluster execution'. Minor bump 0.4.0->0.5.0. | 2026-06-13 v0.6.0: depth pass. Researched + Tier-1 verified 5 Apache-2.0 sources (karpenter 1.9k, kyverno/policies 473, argo-cd 22.9k, kubescape 11.3k, helm 29.9k) - see TOP5-CANDIDATES.md. NEW reference platform-patterns.md (54 lines, methodology-only, self-host notes): GitOps repo structure [acd], Karpenter node autoscaling [kp], policy-as-code at scale [kyv], Helm chart CI [hlm], compliance posture scanning [ksc]. PERFECTION: registered previously-unregistered citation keys [ar][AWS][GCP] in rules.md legend; fixed stale 'Last revised' header; added SHA-pin-CI + continuous-config-scan to supply chain; cross-linked autoscaling/admission/helm/gitops lines to platform-patterns.md. SKILL.md: added Workflow 0 small-task/prototype lane + 2 quick-trigger rows + registered platform-patterns.md in references. No new em-dashes. Minor->minor bump 0.5.0->0.6.0. | 2026-07-24 v0.7.0: platform-reliability wave (skill-edl) - capability.contract.json 1.1.0 plan/dry-run/cost/security/rollback before mutation; RUNTIME HARDENING; provenance + PARTIAL/BLOCKED outputs; synthetic fixtures.",
-  "credits_removed": [
-    "2026-06-09: lodetomasi/agents-the coding agent-code (devops-maestro) - failed Tier-1: 149 stars (<300) and pushed 2025-08-01 (~10 months stale). Verified via GitHub API.",
-    "2026-06-09: sickn33 'kubernetes-deployment + k8s-manifest-generator' credit re-scoped - those skills are byte-near mirrors of wshobson/kubernetes-operations (diff-verified); kubernetes-deployment is a 171-line meta-workflow with no original depth. Credit now covers only the unique kubernetes-pod-security.md reference."
-  ],
-  "phase_artifacts": [
-    "sources/_analysis/kubernetes-specialist/01-discovery.md",
-    "sources/_analysis/kubernetes-specialist/02-extraction.md",
-    "sources/_analysis/kubernetes-specialist/03-outline.md",
-    "sources/_analysis/kubernetes-specialist/05-qa.md"
-  ]
+  "department": "infrastructure"
 }

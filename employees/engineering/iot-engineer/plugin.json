@@ -44,14 +44,5 @@
     "mtls",
     "specialist-engineering"
   ],
-  "department": "engineering",
-  "absorbed_from": [
-    "msitarzewski-agency-agents/engineering/engineering-embedded-firmware-engineer.md",
-    "awesome-the coding agent-code-toolkit/agents/specialized-domains/iot-engineer.md",
-    "awesome-the coding agent-code-toolkit/agents/specialized-domains/embedded-systems.md",
-    "MetaGPT (FoundationAgents/MetaGPT) - Engineer spec\u2192code handoff SOP absorbed 2026-05-01: read task \u2192 read interface defs \u2192 read shared knowledge \u2192 match schema verbatim \u2192 no scope creep \u2192 self-review against File List",
-    "ThrowTheSwitch Unity+CMock+Ceedling (MIT) + espressif/esp-mqtt (Apache-2.0) + tensorflow/tflite-micro (Apache-2.0) + mendersoftware/mender (open-core, methodology-only) absorbed 2026-06-13: host-based embedded unit testing with HAL mocking, MQTT client design (QoS/LWT/retained/keepalive/backoff), TFLM INT8 deploy workflow, fleet OTA operations (artifact/A-B/delta/canary/rollback). See references/embedded-testing.md."
-  ],
-  "build_notes": "REBUILD 2026-04-25. Clean v0.2.0. msitarzewski embedded firmware engineer has the deepest production-grade firmware patterns. | 2026-05-01 v0.4.0: MetaGPT Engineer SOP absorbed (M4). | 2026-06-13 v0.6.0: depth pass. Added references/embedded-testing.md (Unity/CMock/Ceedling host-based unit testing, esp-mqtt client design, tflite-micro deploy workflow, Mender fleet-OTA ops). SKILL: removed deprecated Google Cloud IoT from live cloud table + description, added esp-iot-solution production-components CONNECT block, added TFLM quantize->deploy workflow. rules.md: added prototype/pilot/production lane. (v0.5.0 was a version-only bump with no recorded notes; reconciled here.)",
-  "doctrine_note": "'never fold Shai skills' doctrine retired 2026-06-04 (residual sweep, step 2.10)."
+  "department": "engineering"
 }
