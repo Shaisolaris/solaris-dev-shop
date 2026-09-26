@@ -68,3 +68,8 @@ Format: - **<YYYY-MM-DD> - <anonymized context>**: <what happened> *Proposed rul
 
 ### 2026-06-15 - DEEPEN: spec-driven handoff discipline (v0.6.0)
 - Absorbed **github/spec-kit** (MIT, 112,273 stars; methodology only - CLI/templates/agent files NOT installed) as the ARTIFACT SHAPE for a locked spec: constitution -> versioned PR-reviewable spec -> clarify gate -> plan -> tasks (= ClickUp doc) -> analyze coverage -> self-checklist. Gate-0 PASS: spec-LOCK was a sign-off discipline only; it had no artifact-shape/coverage-gate and no PR-reviewable-spec-as-client-deliverable. *Rule promoted:* shape the locked spec on the ladder, run clarify + requirement-to-task coverage BEFORE build, optionally ship the spec/plan/tasks as a white-label client deliverable (signed-off spec = billable baseline). spec-lock primacy + three-layer review + billing-model rule + doc bundle/registry UNCHANGED. Boundary: product-manager authors product specs; cloud-architect owns the plan. (See rules.md + spec-driven-handoff-2026.md.) Tags: [#spec-lock] [#docs] [#process]
+## Sources
+
+- Upstream: alirezarezvani/the coding agent-skills (MIT); PROJECT_TAKEOVER + codebase-onboarding + migration-architect + docling-parsing-l (n/a)
+- What was used: noted: alirezarezvani/the coding agent-skills; methodology absorbed: PROJECT_TAKEOVER + codebase-onboarding + migration-architect + docling-parsing-l; rejected (not used): sdi2200262/agentic-project-management, opf/openproject, client-portal / client-management GitHub topics
+- License notes: opf/openproject: GPL-3.0 (FLAG)

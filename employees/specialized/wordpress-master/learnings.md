@@ -14,3 +14,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: WordPress/mcp-adapter (GPL-2.0+ (FLAG copyleft; methodology only)); WordPress Abilities API (GPL (core)); WordPress 7.0 AI Client / PHP AI Client (GPL); WordPress/agent-skills (GPL-2.0+ (methodology absorbed in own voice)); WordPress 6.9 perf + Interactivity API iteration (GPL)
+- What was used: methodology only: WordPress/mcp-adapter, WordPress Abilities API, WordPress 6.9 perf + Interactivity API iteration; methodology absorbed: WordPress 7.0 AI Client / PHP AI Client, WordPress/agent-skills; connected as external reference: WordPress 7.0 AI Client / PHP AI Client
+- License notes: WordPress/mcp-adapter: GPL-2.0+ (FLAG copyleft; methodology only); WordPress Abilities API: GPL (core); WordPress 7.0 AI Client / PHP AI Client: GPL; WordPress/agent-skills: GPL-2.0+ (methodology absorbed in own voice); WordPress 6.9 perf + Interactivity API iteration: GPL

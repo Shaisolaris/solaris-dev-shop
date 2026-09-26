@@ -19,3 +19,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: DuckDB (license not stated: 38,323); Polars (license not stated: 38,658); Great Expectations (license not stated: 11,526); marimo (license not stated: 21,000); Evidence.dev (license not stated: 6,425)
+- What was used: methodology only: DuckDB, Polars, Great Expectations, marimo, Evidence.dev
+- License notes: licenses not recorded in scan for: DuckDB, Polars, Great Expectations, marimo, Evidence.dev - verify before reuse; no code vendored

@@ -20,3 +20,8 @@
 - RUNTIME HARDENING: mutation authority only after plan, dry-run evidence, failure notes, cost/security, and rollback.
 - Provider adapters retain default_deny + require_human for deploy/spend/mutate_external.
 - Evaluation packet: meta/skill-rotation/evaluations/20260724/platform-reliability/.
+## Sources
+
+- Upstream: NikolayS/postgres_dba (BSD-3-Clause (permissive, safe)); github/gh-ost (MIT (permissive, safe)); pgbackrest/pgbackrest (MIT (permissive, safe)); patroni/patroni (MIT (permissive, safe)); dhamaniasad/awesome-postgres (NOASSERTION (FLAG - awesome-list, typically CC-style but no SPDX-detectable license file)
+- What was used: methodology absorbed: NikolayS/postgres_dba, github/gh-ost, pgbackrest/pgbackrest; methodology only: patroni/patroni, dhamaniasad/awesome-postgres; connected as external reference: patroni/patroni, dhamaniasad/awesome-postgres
+- License notes: dhamaniasad/awesome-postgres: NOASSERTION (FLAG - awesome-list, typically CC-style but no SPDX-detectable license file

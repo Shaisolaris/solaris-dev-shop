@@ -13,3 +13,8 @@
 | 2026-06-09 | Drafts-first imports, @idempotent inventory, 100-variant/3-option limits | rules.md Catalog + migration |
 | 2026-06-09 | HMAC base64 raw-body + 200-within-5s webhook contract | rules.md Webhook rules |
 | 2026-06-13 | Shopify Dev MCP search-then-VALIDATE before delivering GraphQL; GeLi2001 live-data MCP for store ops (min scopes) | rules.md GraphQL discipline + references/shopify-mcp-layer.md |
+## Sources
+
+- Upstream: @shopify/dev-mcp (MIT (AI Toolkit open-sourced 2026-04-09)); GeLi2001/shopify-mcp (MIT); Shopify/Shopify-AI-Toolkit (MIT); Shopify/hydrogen (MIT); Shopify/liquid (MIT)
+- What was used: connected as external reference: @shopify/dev-mcp, GeLi2001/shopify-mcp, Shopify/Shopify-AI-Toolkit, Shopify/hydrogen, Shopify/liquid
+- License notes: absorbed sources permissive (MIT/Apache-2.0); no code vendored

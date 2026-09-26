@@ -26,3 +26,8 @@
 - RUNTIME HARDENING: mutation authority only after plan, dry-run evidence, failure notes, cost/security, and rollback.
 - Provider adapters retain default_deny + require_human for deploy/spend/mutate_external.
 - Evaluation packet: meta/skill-rotation/evaluations/20260724/platform-reliability/.
+## Sources
+
+- Upstream: awslabs/landing-zone-accelerator-on-aws (Apache-2.0); infracost/infracost (Apache-2.0); aws-samples/sample-well-architected-skills-and-steering (MIT-0); openops-cloud/openops (Apache-2.0); FinOps-Open-Cost-and-Usage-Spec/FOCUS_Spec (FLAG: spec license (Community Spec / CC-BY family, non-OSI; not a code license))
+- What was used: methodology only: awslabs/landing-zone-accelerator-on-aws, aws-samples/sample-well-architected-skills-and-steering, openops-cloud/openops, FinOps-Open-Cost-and-Usage-Spec/FOCUS_Spec; connected as external reference: awslabs/landing-zone-accelerator-on-aws, infracost/infracost; methodology absorbed: infracost/infracost
+- License notes: FinOps-Open-Cost-and-Usage-Spec/FOCUS_Spec: FLAG: spec license (Community Spec / CC-BY family, non-OSI; not a code license)

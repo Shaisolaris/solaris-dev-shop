@@ -17,3 +17,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: spotify/confidence (license not stated: 286); pymc-labs/CausalPy (license not stated: 1.2k); Nixtla/statsforecast (license not stated: 4.8k); feature-engine/feature_engine (license not stated: 2.2k); Nixtla/mlforecast (license not stated: 1.2k)
+- What was used: methodology only: spotify/confidence; noted: pymc-labs/CausalPy, Nixtla/statsforecast, feature-engine/feature_engine, Nixtla/mlforecast
+- License notes: licenses not recorded in scan for: spotify/confidence, pymc-labs/CausalPy, Nixtla/statsforecast, feature-engine/feature_engine, Nixtla/mlforecast - verify before reuse; no code vendored

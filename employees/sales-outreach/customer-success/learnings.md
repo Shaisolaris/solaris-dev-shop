@@ -8,3 +8,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: msitarzewski/agency-agents (MIT); alirezarezvani/the coding agent-skills (MIT); coreyhaines31/marketingskills (MIT)
+- What was used: methodology absorbed: msitarzewski/agency-agents, alirezarezvani/the coding agent-skills, coreyhaines31/marketingskills; rejected (not used): wshobson/agents, citizenjosh/customer-success-skills
+- License notes: citizenjosh/customer-success-skills: NOASSERTION (FLAG)

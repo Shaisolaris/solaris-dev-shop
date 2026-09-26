@@ -19,3 +19,8 @@
 - YouTube creator depth: retention scripts, hook writing, thumbnail briefs, Shorts, analytics, monetization, cross-platform repurpose
 - Directly powers Shai's TechTribe channel
 - MIT, established author. Tier 1 PASS.
+## Sources
+
+- Upstream: Postiz (license not stated: 30,767); Mixpost (license not stated: 3,300); Postproxy API-rules reference (n/a (maintained living doc)); Socialcrawl "Social Media APIs in 2026" (n/a (maintained)); TryPost (license not stated: 269)
+- What was used: noted: Postiz, Mixpost, Postproxy API-rules reference, Socialcrawl "Social Media APIs in 2026", TryPost
+- License notes: licenses not recorded in scan for: Postiz, Mixpost, TryPost - verify before reuse; no code vendored

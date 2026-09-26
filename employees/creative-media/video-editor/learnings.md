@@ -12,3 +12,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: samuelgursky/davinci-resolve-mcp (MIT (permissive)); m-bain/whisperX (BSD-2/4 (permissive)); WyattBlue/auto-editor (Public Domain (Unlicense)); remotion-dev/remotion (FLAG: source-available, free <=3 employees; $25/seat/mo creators or $0.01/render); Breakthrough/PySceneDetect (BSD-3 (permissive))
+- What was used: connected as external reference: samuelgursky/davinci-resolve-mcp, m-bain/whisperX, WyattBlue/auto-editor, remotion-dev/remotion, Breakthrough/PySceneDetect
+- License notes: remotion-dev/remotion: FLAG: source-available, free <=3 employees; $25/seat/mo creators or $0.01/render

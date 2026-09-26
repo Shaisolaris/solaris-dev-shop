@@ -50,3 +50,8 @@ When a lesson has been observed 2+ times across different projects, it gets prom
 - Pattern: 8-step sequence; schema discipline (verbatim signatures); no scope creep; imports from Shared Knowledge
 - Anti-patterns refused: improvements, helper additions, renames
 - Source: github.com/FoundationAgents/MetaGPT
+## Sources
+
+- Upstream: CoplayDev/unity (license not recorded); game (license not recorded); GuardianOfGods/unity (license not recorded); alttester/AltTester (license not recorded); Unity (license not recorded)
+- What was used: connected as external reference: CoplayDev/unity; methodology absorbed: game; methodology only: GuardianOfGods/unity, alttester/AltTester, Unity
+- License notes: licenses not recorded in scan for: CoplayDev/unity, game, GuardianOfGods/unity, alttester/AltTester, Unity - verify before reuse; no code vendored

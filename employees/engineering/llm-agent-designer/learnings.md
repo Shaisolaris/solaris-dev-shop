@@ -50,3 +50,8 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
   *Proposed rule: agent quality is bounded by 4 budgets (action-space, observation, recovery, context) - diagnose which is starved before reaching for a bigger model.* Tags: [#agent], [#promoted?]
   *Proposed rule: before shipping ANY agent/LLM feature to a client, run the 12-layer architecture audit; fixes are code-first, never prompt-first; "must use tool X" in prompt text only is a tool-discipline failure.* Tags: [#agent], [#safety]
 - Fleet doctrine honored: memory-scope keys stay in eval-methodology.md (not re-stated); no em-dashes used as sentence punctuation in the new file (hyphens only); SHA-pin/CI guidance left to existing infra. No license flags (ECC is MIT).
+## Sources
+
+- Upstream: confident-ai/deepeval (license not stated: ~16k); langchain-ai/langgraph (license not stated: ~35k); vibrantlabsai/ragas (license not stated: ~14k); mem0ai/mem0 (license not stated: ~58k); agno-agi/agno (license not stated: ~41k)
+- What was used: methodology absorbed: confident-ai/deepeval; methodology only: langchain-ai/langgraph, vibrantlabsai/ragas, mem0ai/mem0; connected as external reference: mem0ai/mem0, agno-agi/agno
+- License notes: licenses not recorded in scan for: confident-ai/deepeval, langchain-ai/langgraph, vibrantlabsai/ragas, mem0ai/mem0, agno-agi/agno - verify before reuse; no code vendored

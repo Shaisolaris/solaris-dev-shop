@@ -12,3 +12,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | 2026-06-09 | Teleport/movement mutual exclusion | rules.md Locomotion SOP |
+## Sources
+
+- Upstream: pmndrs/xr (MIT (LICENSE file; pmndrs standard)); mrdoob/three.js (MIT); BabylonJS/Babylon.js (Apache-2.0); De-Panther/unity-webxr-export (Apache-2.0); aframevr/aframe (MIT)
+- What was used: methodology absorbed: pmndrs/xr; connected as external reference: pmndrs/xr, mrdoob/three.js, BabylonJS/Babylon.js, De-Panther/unity-webxr-export, aframevr/aframe
+- License notes: absorbed sources permissive (MIT/Apache-2.0); no code vendored

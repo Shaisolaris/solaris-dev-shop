@@ -24,3 +24,8 @@
 - Doctrine: vendor diversity (Trivy + OSV-Scanner side by side) is itself a supply-chain control - do not let one scanner's supply chain be a single point of failure.
 
 - **2026-08-13 - named-heading protocol**: measured D5 gap was job-two omitting contract-required artifact headings; closed by named-heading protocol in `job-two-improvement.md`.
+## Sources
+
+- Upstream: Semgrep (license not recorded); OSV (license not recorded); gitleaks (license not recorded); OWASP pytm (license not recorded); Nuclei (license not recorded)
+- What was used: noted: Semgrep, OSV, gitleaks, OWASP pytm, Nuclei
+- License notes: licenses not recorded in scan for: Semgrep, OSV, gitleaks, OWASP pytm, Nuclei - verify before reuse; no code vendored

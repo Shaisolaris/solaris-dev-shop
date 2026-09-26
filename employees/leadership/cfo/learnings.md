@@ -15,3 +15,8 @@
 - 10 named workflow agents: pitch-builder, kyc-screener, month-end-closer, model-builder, market-researcher, valuation-reviewer, gl-reconciler, statement-auditor, earnings-reviewer, meeting-preparer
 - Official Anthropic source, Apache 2.0, 14.2K stars
 - Security verification: Tier 1 PASS (official org). CLI tiers + sandbox pending Mac.
+## Sources
+
+- Upstream: EveryInc/charlie-cfo-skill (MIT); alirezarezvani/the coding agent-skills (MIT); OctagonAI/skills (license not stated: (varies))
+- What was used: methodology absorbed: EveryInc/charlie-cfo-skill, alirezarezvani/the coding agent-skills, OctagonAI/skills; rejected (not used): borghei/the coding agent-skills, Anthropic finance team's 150 internal skills
+- License notes: borghei/the coding agent-skills: NOASSERTION (FLAG)

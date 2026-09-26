@@ -9,3 +9,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: coreyhaines31/marketingskills (MIT); alirezarezvani/the coding agent-skills (MIT)
+- What was used: methodology absorbed: coreyhaines31/marketingskills, alirezarezvani/the coding agent-skills; rejected (not used): kostja94/marketing-skills, AICMO/AiCMO-Marketing-Prompt-Collection, timescale/marketing-skills, syntax-syndicate/marketing-skills
+- License notes: absorbed sources permissive (MIT/Apache-2.0); no code vendored

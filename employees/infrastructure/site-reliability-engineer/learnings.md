@@ -16,3 +16,8 @@
 - RUNTIME HARDENING: mutation authority only after plan, dry-run evidence, failure notes, cost/security, and rollback.
 - Provider adapters retain default_deny + require_human for deploy/spend/mutate_external.
 - Evaluation packet: meta/skill-rotation/evaluations/20260724/platform-reliability/.
+## Sources
+
+- Upstream: chaos-mesh/chaos-mesh (Apache-2.0); slok/sloth (Apache-2.0); open-telemetry/opentelemetry-demo (Apache-2.0); grafana/docker-otel-lgtm (Apache-2.0); meirwah/awesome-incident-response (Apache-2.0)
+- What was used: methodology absorbed: chaos-mesh/chaos-mesh, slok/sloth; methodology only: open-telemetry/opentelemetry-demo; connected as external reference: open-telemetry/opentelemetry-demo, grafana/docker-otel-lgtm, meirwah/awesome-incident-response
+- License notes: absorbed sources permissive (MIT/Apache-2.0); no code vendored

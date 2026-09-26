@@ -22,3 +22,8 @@ Prefix each pending observation with a scope key so promotion stays searchable: 
 - RUNTIME HARDENING: mutation authority only after plan, dry-run evidence, failure notes, cost/security, and rollback.
 - Provider adapters retain default_deny + require_human for deploy/spend/mutate_external.
 - Evaluation packet: meta/skill-rotation/evaluations/20260724/platform-reliability/.
+## Sources
+
+- Upstream: kubernetes-sigs/karpenter (license not stated: 1.9k); kyverno/policies (license not stated: 473); argoproj/argo-cd (license not stated: 22.9k); kubescape/kubescape (license not stated: 11.3k); helm/helm (license not stated: 29.9k)
+- What was used: methodology only: kubernetes-sigs/karpenter, argoproj/argo-cd, helm/helm; noted: kyverno/policies, kubescape/kubescape
+- License notes: licenses not recorded in scan for: kubernetes-sigs/karpenter, kyverno/policies, argoproj/argo-cd, kubescape/kubescape, helm/helm - verify before reuse; no code vendored

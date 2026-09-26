@@ -16,3 +16,8 @@
 - **Why this matters**: Eliminates "engineer started but missing types from another file" failures
 - **Hard rule added**: Logic Analysis must match File List exactly; Shared Knowledge first
 - **Source**: github.com/FoundationAgents/MetaGPT
+## Sources
+
+- Upstream: alirezarezvani/the coding agent-skills (MIT); deanpeters/Product-Manager-Skills (NOASSERTION); makeplane/plane ((AGPL-ish, FLAG)); voltagent project-manager + scrum-master agents (MIT)
+- What was used: methodology absorbed: alirezarezvani/the coding agent-skills, voltagent project-manager + scrum-master agents; noted: deanpeters/Product-Manager-Skills; connected as external reference: makeplane/plane; rejected (not used): phuryn/pm-skills
+- License notes: deanpeters/Product-Manager-Skills: NOASSERTION; makeplane/plane: (AGPL-ish, FLAG)

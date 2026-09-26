@@ -20,3 +20,8 @@
 - RUNTIME HARDENING: mutation authority only after plan, dry-run evidence, failure notes, cost/security, and rollback.
 - Provider adapters retain default_deny + require_human for deploy/spend/mutate_external.
 - Evaluation packet: meta/skill-rotation/evaluations/20260724/platform-reliability/.
+## Sources
+
+- Upstream: locustio/locust (license not stated: 27.8k); grafana/pyroscope (license not stated: ~10k (7.2k @ 2023 acquisition, grew since; 2.0 GA)); open-telemetry/opentelemetry-collector (license not stated: ~5k core (+4.6k contrib)); harlan-zw/unlighthouse (license not stated: 4.5k); darold/pgbadger (license not stated: ~4k)
+- What was used: methodology only: locustio/locust, grafana/pyroscope, harlan-zw/unlighthouse, darold/pgbadger; noted: open-telemetry/opentelemetry-collector
+- License notes: licenses not recorded in scan for: locustio/locust, grafana/pyroscope, open-telemetry/opentelemetry-collector, harlan-zw/unlighthouse, darold/pgbadger - verify before reuse; no code vendored

@@ -43,3 +43,8 @@ Read at the start of every Unreal session. Append at the end when a lesson surfa
 - 2026-06-13 v0.2.0 DEPTH: tranek/GASDocumentation (MIT, 5.8k stars) -> GAS methodology in `unreal-gameplay-patterns.md` (Gate-0 PASS). tomlooman/ActionRoguelike (NOASSERTION, 4.4k - concepts only, license FLAGGED) -> perf/pooling/async/PSO/replicate-early concepts. insthync/awesome-unreal (Unlicense, 1.5k) -> scouting index. Base re-verified: ChiR24/Unreal_mcp now 23 tools / UE 5.0-5.8 / v0.5.30. See TOP5-CANDIDATES.md.
 
 - 2026-06-14 v0.3.0 ECC LANGUAGE DEPTH: affaan-m/ECC (everything-the coding agent-code, MIT, renamed) cpp-reviewer + cpp-coding-standards + cpp-testing + cpp-build-resolver (Core Guidelines) -> unreal-cpp-quality-and-build.md (C++ review triage + standards checklist + GoogleTest/CTest + sanitizers + C++/CMake/UBT build-fix loop). Methodology only, NO code bundled; adapted to Unreal (UObject GC / TObjectPtr / UBT / Epic coding standard / Game-thread). Gate-0 PASS (zero prior C++-language methodology). Kept a delta vs the engine files.
+## Sources
+
+- Upstream: tranek/GASDocumentation (license not stated: 5.8k); tomlooman/ActionRoguelike (license not stated: 4.4k); GenOrca/unreal-mcp (license not stated: 108); insthync/awesome-unreal (license not stated: 1.5k); remiphilippe/mcp-unreal (license not stated: 2)
+- What was used: noted: tranek/GASDocumentation, tomlooman/ActionRoguelike, GenOrca/unreal-mcp, remiphilippe/mcp-unreal; methodology absorbed: insthync/awesome-unreal
+- License notes: licenses not recorded in scan for: tranek/GASDocumentation, tomlooman/ActionRoguelike, GenOrca/unreal-mcp, insthync/awesome-unreal, remiphilippe/mcp-unreal - verify before reuse; no code vendored

@@ -48,3 +48,8 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 ## 2026-07-24 engineering-core upstream
 - Align FE+BE greenfield pins with specialist employees (Next 16, Laravel 13, Node 24, PG 17).
 - Shared-type + migration rollback gates retained; toolchain preflight added.
+## Sources
+
+- Upstream: trpc/trpc (MIT (permissive, clean)); t3-oss/create-t3-app (MIT); better-auth/better-auth (MIT); drizzle-team/drizzle-orm (Apache-2.0 (permissive)); Turborepo, monorepo build orchestration (MIT)
+- What was used: noted: trpc/trpc, t3-oss/create-t3-app, better-auth/better-auth, drizzle-team/drizzle-orm, Turborepo, monorepo build orchestration
+- License notes: absorbed sources permissive (MIT/Apache-2.0); no code vendored

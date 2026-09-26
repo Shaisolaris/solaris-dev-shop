@@ -21,3 +21,8 @@
 - **Absorbed (methodology only, nothing bundled/run)**: github/spec-kit (MIT, 112,273 stars) constitution -> spec -> clarify -> plan -> tasks -> analyze -> checklist ladder; bmad-code-org/BMAD-METHOD (MIT per LICENSE text; GitHub auto-detect NOASSERTION = FLAG; 49,144 stars) greenfield persona pipeline analyst -> PM -> architect -> scrum master + plan-then-build.
 - **Net-new (Gate-0 PASS)**: the constitution layer + the spec-as-PR-reviewable-source-of-truth ladder + BMAD plan-then-build sequencing - none existed; the PM had PRD/OST/RICE/roadmap/metrics but no explicit spec-driven artifact discipline.
 - **Wired**: spec-driven-2026.md + Workflow 1.5 (spec-driven kickoff) + two When-rules. Boundary held: PM owns constitution(product half)/spec/clarify/checklist; cloud-architect owns the plan; project-manager/delivery-lead own tasks->implement.
+## Sources
+
+- Upstream: deanpeters/Product-Manager-Skills (NOASSERTION (FLAG)); msitarzewski/agency-agents (MIT); alirezarezvani/the coding agent-skills (MIT)
+- What was used: methodology only: deanpeters/Product-Manager-Skills; methodology absorbed: msitarzewski/agency-agents, alirezarezvani/the coding agent-skills; rejected (not used): Digidai/product-manager-skills, pratikshadake/the coding agent-product-management-skills
+- License notes: deanpeters/Product-Manager-Skills: NOASSERTION (FLAG); Digidai/product-manager-skills: NOASSERTION (FLAG)

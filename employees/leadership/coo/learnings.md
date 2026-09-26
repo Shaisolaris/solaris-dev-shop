@@ -10,3 +10,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: alirezarezvani/the coding agent-skills (MIT); business-analyst process-mapper (MIT)
+- What was used: methodology absorbed: alirezarezvani/the coding agent-skills; noted: business-analyst process-mapper; rejected (not used): alirezarezvani/the coding agent-cto-team, commercial COO-advisor skills, general PM/ops repos
+- License notes: commercial COO-advisor skills: proprietary

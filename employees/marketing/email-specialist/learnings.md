@@ -10,3 +10,8 @@
 |------|------|----------|
 | 2026-06-13 | Deliverability harness gate in launch protocol + self-hosted ESP option | rules.md Launch step 3, ESP decision rule; email-infrastructure-tooling-2026.md |
 | 2026-06-13 | Small-task/prototype lane (skip full audit, keep minimum bar) | rules.md |
+## Sources
+
+- Upstream: knadh/listmonk (license not stated: ~21.4k (web)); happyDomain/happydeliver (license not stated: 50+ notable maintainer (happyDomain DNS team)); mjmlio/mjml (license not stated: 18099); maizzle/framework (license not stated: ~1.5k (web)); mautic/mautic (license not stated: ~9.2k (web))
+- What was used: noted: knadh/listmonk, happyDomain/happydeliver, maizzle/framework, mautic/mautic; methodology only: mjmlio/mjml
+- License notes: licenses not recorded in scan for: knadh/listmonk, happyDomain/happydeliver, mjmlio/mjml, maizzle/framework, mautic/mautic - verify before reuse; no code vendored

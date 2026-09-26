@@ -61,3 +61,8 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 - Default Expo SDK 55+ (RN 0.83, React 19.2). SDK 50 language retired for greenfield.
 - Toolchain preflight fails closed with one actionable cause before implementation.
 - Source: expo.dev upgrading-to-sdk-55.
+## Sources
+
+- Upstream: mobile-dev-inc/Maestro (Apache-2.0); fastlane/fastlane (MIT); wix/Detox (MIT); leancodepl/patrol (Apache-2.0); cashapp/paparazzi (Apache-2.0)
+- What was used: methodology absorbed: mobile-dev-inc/Maestro, wix/Detox, leancodepl/patrol, cashapp/paparazzi; methodology only: fastlane/fastlane
+- License notes: absorbed sources permissive (MIT/Apache-2.0); no code vendored

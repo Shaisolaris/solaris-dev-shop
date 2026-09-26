@@ -9,3 +9,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: firecrawl/firecrawl (license not stated: 132,359 (mcp: 6,561)); searxng/searxng (license not stated: 32,021); limesurvey/limesurvey (license not stated: 3,640); praw-dev/praw (license not stated: 4,152); scrapy/scrapy (license not stated: 62,238)
+- What was used: noted: firecrawl/firecrawl, searxng/searxng, limesurvey/limesurvey, scrapy/scrapy; methodology absorbed: praw-dev/praw
+- License notes: licenses not recorded in scan for: firecrawl/firecrawl, searxng/searxng, limesurvey/limesurvey, praw-dev/praw, scrapy/scrapy - verify before reuse; no code vendored

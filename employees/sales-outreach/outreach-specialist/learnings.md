@@ -8,3 +8,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: growthenginenowoslawski/coldoutboundskills (MIT); msitarzewski/agency-agents (MIT); coreyhaines31/marketingskills (MIT)
+- What was used: methodology absorbed: growthenginenowoslawski/coldoutboundskills, msitarzewski/agency-agents, coreyhaines31/marketingskills; rejected (not used): iPythoning/b2b-sdr-agent-template, ARUNAGIRINATHAN-K/awesome-ai-agents-2026
+- License notes: ARUNAGIRINATHAN-K/awesome-ai-agents-2026: NOASSERTION (FLAG)

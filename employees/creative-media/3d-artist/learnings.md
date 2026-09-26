@@ -13,3 +13,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: microsoft/TRELLIS.2 (MIT (permissive)); VAST-AI-Research/SkinTokens (check repo, treat restricted until confirmed); ahujasid/blender-mcp (MIT); VAST-AI-Research/tripo-mcp (check repo); Tencent-Hunyuan/Hunyuan3D-2.1 (FLAG: Tencent community license, Territory EXCLUDES EU/UK/Korea (not permissive))
+- What was used: methodology absorbed: microsoft/TRELLIS.2; connected as external reference: microsoft/TRELLIS.2, ahujasid/blender-mcp, VAST-AI-Research/tripo-mcp, Tencent-Hunyuan/Hunyuan3D-2.1; methodology only: VAST-AI-Research/SkinTokens, Tencent-Hunyuan/Hunyuan3D-2.1
+- License notes: VAST-AI-Research/SkinTokens: check repo, treat restricted until confirmed; VAST-AI-Research/tripo-mcp: check repo; Tencent-Hunyuan/Hunyuan3D-2.1: FLAG: Tencent community license, Territory EXCLUDES EU/UK/Korea (not permissive)

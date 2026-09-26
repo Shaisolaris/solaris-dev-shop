@@ -18,3 +18,8 @@
 | 2026-06-13 | SRM chi-square + p<0.001 gate | rules.md A/B section + depth §3 |
 | 2026-06-13 | Small-task/prototype lane | rules.md (skips full gate for no-traffic/one-off work) |
 | 2026-06-13 | CUPED low-traffic lever | rules.md A/B section + depth §1 |
+## Sources
+
+- Upstream: growthbook/growthbook (NOASSERTION (FLAG) - open-core: core MIT, enterprise/ dirs under a separate commercial); PostHog (NOASSERTION (FLAG) - MIT core + ee/ enterprise dir; experimentation/replay usable); OpenReplay (NOASSERTION (FLAG) - core Apache-2.0 per vendor docs; repo ships an ee/ enterprise dir); Microsoft Clarity (MIT (clean - permissive, preferred)); Unleash (AGPL-3.0 (FLAG))
+- What was used: noted: growthbook/growthbook, PostHog, OpenReplay, Microsoft Clarity, Unleash
+- License notes: growthbook/growthbook: NOASSERTION (FLAG) - open-core: core MIT, enterprise/ dirs under a separate commercial; PostHog: NOASSERTION (FLAG) - MIT core + ee/ enterprise dir; experimentation/replay usable; OpenReplay: NOASSERTION (FLAG) - core Apache-2.0 per vendor docs; repo ships an ee/ enterprise dir; Unleash: AGPL-3.0 (FLAG)

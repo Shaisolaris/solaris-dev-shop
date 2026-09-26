@@ -12,3 +12,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: Recraft V4 (commercial SaaS (check ToS for indemnity)); Qwen-Image / Qwen-Image-2512 (Apache-2.0 (permissive)); joenorton/comfyui-mcp-server (Apache-2.0); Black Forest Labs FLUX.2 (klein 4B = Apache-2.0; klein 9B = NON-commercial; dev = conditioned); Gemini 3 Pro Image / "Nano Banana Pro" (hosted commercial)
+- What was used: methodology only: Recraft V4; methodology absorbed: Qwen-Image / Qwen-Image-2512; connected as external reference: Qwen-Image / Qwen-Image-2512, joenorton/comfyui-mcp-server, Black Forest Labs FLUX.2, Gemini 3 Pro Image / "Nano Banana Pro"
+- License notes: Recraft V4: commercial SaaS (check ToS for indemnity); Black Forest Labs FLUX.2: klein 4B = Apache-2.0; klein 9B = NON-commercial; dev = conditioned; Gemini 3 Pro Image / "Nano Banana Pro": hosted commercial

@@ -11,3 +11,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: EU AI Act (license not stated: EU regulation); ISO/IEC 42001:2023 (license not stated: ISO); getprobo/probo (ISC (permissive)); strongdm/comply (Apache-2.0); Comp AI (FLAG: AGPL (copyleft if served))
+- What was used: methodology absorbed: EU AI Act, ISO/IEC 42001:2023; connected as external reference: getprobo/probo, strongdm/comply, Comp AI
+- License notes: Comp AI: FLAG: AGPL (copyleft if served)

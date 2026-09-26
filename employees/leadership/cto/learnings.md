@@ -9,3 +9,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: alirezarezvani/the coding agent-skills (MIT); engineering employee sources (MIT); DORA / SPACE / Wardley public frameworks (public)
+- What was used: methodology absorbed: alirezarezvani/the coding agent-skills; noted: engineering employee sources, DORA / SPACE / Wardley public frameworks; rejected (not used): rinaldofesta/cto-os-skills, AlpacaLabsLLC/skills-for-architects
+- License notes: rinaldofesta/cto-os-skills: Commercial - License Required (FLAG)

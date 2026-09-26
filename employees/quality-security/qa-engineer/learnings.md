@@ -34,3 +34,8 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 - 7 quality gates, all hard-block
 - CI-only execution, no local-only testing
 - Source: github.com/FoundationAgents/MetaGPT
+## Sources
+
+- Upstream: Schemathesis (license not stated: 3,318); Stryker-JS (license not stated: ~2,900); Testcontainers (license not stated: 2,500 (node); 4.8k Go, 4.3k .NET); Vitest (license not stated: ~16,600); faker-js (license not stated: 15,363)
+- What was used: methodology absorbed: Schemathesis, Stryker-JS, Testcontainers; methodology only: Vitest, faker-js
+- License notes: licenses not recorded in scan for: Schemathesis, Stryker-JS, Testcontainers, Vitest, faker-js - verify before reuse; no code vendored

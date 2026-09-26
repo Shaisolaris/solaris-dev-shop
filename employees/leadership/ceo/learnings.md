@@ -10,3 +10,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: alirezarezvani/the coding agent-skills (MIT); joelparkerhenderson/objectives-and-key-results ((CC/permissive))
+- What was used: methodology absorbed: alirezarezvani/the coding agent-skills; noted: joelparkerhenderson/objectives-and-key-results; rejected (not used): aapersh/strategy-skills-for-the coding agent, mohitagw15856/pm-the coding agent-skills, commercial CEO-advisor skills
+- License notes: commercial CEO-advisor skills: proprietary

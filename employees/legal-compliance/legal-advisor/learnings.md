@@ -11,3 +11,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: US Copyright Office AI report Part 2 + SCOTUS cert denial (license not stated: guidance/caselaw); AI vendor contract clause set 2026 (license not stated: drafting playbook); EU AI Act - contractual responsibility allocation (license not stated: regulation (legal side)); anthropics/the coding agent-for-legal (Apache-2.0); Documenso / DocuSeal + CourtListener (AGPL / Free Law API)
+- What was used: methodology absorbed: US Copyright Office AI report Part 2 + SCOTUS cert denial, AI vendor contract clause set 2026, EU AI Act - contractual responsibility allocation; connected as external reference: anthropics/the coding agent-for-legal, Documenso / DocuSeal + CourtListener
+- License notes: Documenso / DocuSeal + CourtListener: AGPL / Free Law API

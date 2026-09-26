@@ -8,3 +8,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: msitarzewski/agency-agents (MIT); coreyhaines31/marketingskills (MIT); VoltAgent/awesome-the coding agent-code-subagents (MIT); alirezarezvani/the coding agent-skills (MIT)
+- What was used: methodology absorbed: msitarzewski/agency-agents, coreyhaines31/marketingskills, VoltAgent/awesome-the coding agent-code-subagents, alirezarezvani/the coding agent-skills; rejected (not used): github topics: sales-engineering
+- License notes: absorbed sources permissive (MIT/Apache-2.0); no code vendored

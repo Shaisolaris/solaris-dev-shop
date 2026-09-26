@@ -20,3 +20,8 @@ Dated observations. A pattern seen 2-3 times graduates into rules.md.
 
 ## Tags
 [#parametric] [#printability] [#tolerances] [#export] [#fem] [#freecad] [#kicad] [#blender-boundary]
+## Sources
+
+- Upstream: mixelpixx/KiCAD-MCP-Server (MIT (permissive)); gumyr/build123d (Apache-2.0 (permissive)); CadQuery/cadquery (Apache-2.0 (permissive)); neka-nat/freecad-mcp (MIT); lamaalrajih/kicad-mcp (MIT)
+- What was used: connected as external reference: mixelpixx/KiCAD-MCP-Server, neka-nat/freecad-mcp, lamaalrajih/kicad-mcp; methodology absorbed: gumyr/build123d, CadQuery/cadquery
+- License notes: absorbed sources permissive (MIT/Apache-2.0); no code vendored

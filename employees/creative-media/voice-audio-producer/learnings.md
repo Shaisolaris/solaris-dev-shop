@@ -15,3 +15,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: elevenlabs/elevenlabs-mcp (MIT (permissive)); hexgrad/kokoro (Apache-2.0 (permissive)); fishaudio/fish-speech (Apache-2.0 (permissive)); ace-step/ACE-Step-1.5 (Apache-2.0 (permissive)); Coqui XTTS v2 (FLAG: CPML (Coqui Public Model License, NOT permissive - contact Coqui for commercial)
+- What was used: connected as external reference: elevenlabs/elevenlabs-mcp; methodology absorbed: hexgrad/kokoro, fishaudio/fish-speech, ace-step/ACE-Step-1.5; methodology only: Coqui XTTS v2
+- License notes: Coqui XTTS v2: FLAG: CPML (Coqui Public Model License, NOT permissive - contact Coqui for commercial

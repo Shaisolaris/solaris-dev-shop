@@ -23,3 +23,8 @@
 - Live-verified the two ad connectors against GitHub: the "official ~224-star Google Ads MCP" was actually the unofficial google-marketing-solutions fork (self-labels NOT official). Corrected to googleads/google-ads-mcp (official org, ~603 stars, Apache-2.0). Meta connector was ~983/NOASSERTION on paper; live it is pipeboard-co/meta-ads-mcp ~807 stars under BSL-1.1 (non-compete, Apache on 2029). Lesson: re-verify connector stars/license at every depth pass - they drift and "official" labels get mis-copied.
 - MMM, incrementality, and LTV:CAC were named across description/tags/rules but had ZERO method. Added references/measurement-science.md (adstock/saturation/budget-opt, geo-test power-calc-first design, BTYD/CLV derivation, three-lens reconciliation order). Methodology-only; Meridian/PyMC/GeoLift all self-host, nothing bundled.
 - Added a Workflow 0 small-task lane so scoped one-offs (a few RSA headlines, a sanity-check) skip the 4-question intake without losing the tracking gate.
+## Sources
+
+- Upstream: googleads/google-ads-mcp (license not stated: 603); pipeboard-co/meta-ads-mcp (license not stated: 807); google/meridian (license not stated: 1,400); pymc-labs/pymc-marketing (license not stated: 987); facebookincubator/GeoLift (license not stated: 241)
+- What was used: methodology only: googleads/google-ads-mcp; connected as external reference: pipeboard-co/meta-ads-mcp; noted: google/meridian, pymc-labs/pymc-marketing, facebookincubator/GeoLift
+- License notes: licenses not recorded in scan for: googleads/google-ads-mcp, pipeboard-co/meta-ads-mcp, google/meridian, pymc-labs/pymc-marketing, facebookincubator/GeoLift - verify before reuse; no code vendored

@@ -27,3 +27,8 @@ Format: - **<YYYY-MM-DD> - <context>**: <what> *Proposed rule: <takeaway>* Tags:
 | Date | Observation → Rule | Location |
 |------|-------------------|----------|
 | | | |
+## Sources
+
+- Upstream: borghei/the coding agent-Skills (NOASSERTION / "MIT + Commons Clause" (FLAG)); msitarzewski/agency-agents (MIT); alirezarezvani/the coding agent-skills (MIT)
+- What was used: methodology only: borghei/the coding agent-Skills; methodology absorbed: msitarzewski/agency-agents, alirezarezvani/the coding agent-skills; rejected (not used): DeepRFP / CLEATUS, github topics: proposal-generation
+- License notes: borghei/the coding agent-Skills: NOASSERTION / "MIT + Commons Clause" (FLAG); DeepRFP / CLEATUS: proprietary

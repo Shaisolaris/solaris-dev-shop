@@ -21,3 +21,8 @@ This section IS the "living protocol" from OpenGame's Debug Skill. When a genera
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: YarnSpinnerTool/YarnSpinner (MIT (permissive)); Donchitos/the coding agent-Code-Game-Studios (MIT); inkle/ink (MIT); leigest519/OpenGame (Apache-2.0); Machinations.io + spreadsheet method (proprietary (FLAG))
+- What was used: methodology absorbed: YarnSpinnerTool/YarnSpinner, Donchitos/the coding agent-Code-Game-Studios, leigest519/OpenGame; connected as external reference: inkle/ink, Machinations.io + spreadsheet method; methodology only: Machinations.io + spreadsheet method
+- License notes: Machinations.io + spreadsheet method: proprietary (FLAG)

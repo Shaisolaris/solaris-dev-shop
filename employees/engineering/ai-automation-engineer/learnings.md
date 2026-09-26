@@ -46,3 +46,8 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 ## 2026-07-24 engineering-core upstream
 - Fail closed when n8n-mcp or required automation toolchain is unavailable; one BLOCKED toolchain cause.
 - Still no unattended external message send or purchase without human.
+## Sources
+
+- Upstream: Zie619/n8n-workflows (MIT (permissive - clean)); browser-use/workflow-use (AGPL-3.0  *** FLAGGED: copyleft. Methodology only; no code bundling. Self-host if ever); temporalio/temporal (MIT (permissive - clean)); activepieces/activepieces (NOASSERTION  *** FLAGGED: GitHub reports NOASSERTION; repo is MIT for the framework with); n8n-io/self-hosted-ai-starter-kit (Apache-2.0 (permissive - clean))
+- What was used: methodology absorbed: Zie619/n8n-workflows; connected as external reference: Zie619/n8n-workflows, temporalio/temporal, activepieces/activepieces; methodology only: browser-use/workflow-use, temporalio/temporal, n8n-io/self-hosted-ai-starter-kit
+- License notes: browser-use/workflow-use: AGPL-3.0  *** FLAGGED: copyleft. Methodology only; no code bundling. Self-host if ever; activepieces/activepieces: NOASSERTION  *** FLAGGED: GitHub reports NOASSERTION; repo is MIT for the framework with

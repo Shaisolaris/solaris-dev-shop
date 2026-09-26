@@ -20,3 +20,8 @@
 - Pin Stripe API to 2026-06-24.dahlia; refuse live keys in agent context.
 - Toolchain mismatch / missing MCP fails with one BLOCKED toolchain cause.
 - Source: docs.stripe.com/api/versioning.
+## Sources
+
+- Upstream: agentic-commerce-protocol/agentic-commerce-protocol (Apache-2.0 (permissive)); stripe/ai (MIT); https://docs.stripe.com/agentic-commerce/acp (n/a); mcp.stripe.com (n/a); getlago/lago (FLAG: AGPL (copyleft if served))
+- What was used: methodology absorbed: agentic-commerce-protocol/agentic-commerce-protocol; connected as external reference: agentic-commerce-protocol/agentic-commerce-protocol, stripe/ai, mcp.stripe.com, getlago/lago; methodology only: https://docs.stripe.com/agentic-commerce/acp
+- License notes: getlago/lago: FLAG: AGPL (copyleft if served)

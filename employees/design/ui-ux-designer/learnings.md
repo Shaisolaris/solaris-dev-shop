@@ -11,3 +11,8 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## Sources
+
+- Upstream: Figma Dev Mode MCP server (license not stated: Figma ToS (CONNECT, no code)); GLips/Figma-Context-MCP (MIT (permissive)); nextlevelbuilder/ui-ux-pro-max (MIT); wshobson/agents ui-design suite (MIT); WCAG 2.2 AA + APG ARIA patterns (license not stated: W3C)
+- What was used: methodology absorbed: Figma Dev Mode MCP server; connected as external reference: Figma Dev Mode MCP server, GLips/Figma-Context-MCP, nextlevelbuilder/ui-ux-pro-max, wshobson/agents ui-design suite, WCAG 2.2 AA + APG ARIA patterns
+- License notes: licenses not recorded in scan for: Figma Dev Mode MCP server, WCAG 2.2 AA + APG ARIA patterns - verify before reuse; no code vendored

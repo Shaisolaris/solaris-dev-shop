@@ -35,3 +35,8 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 | Date | Observation → Rule | Location |
 |------|-------------------|----------|
 | | | |
+## Sources
+
+- Upstream: semgrep/semgrep (license not stated: 15k); google/osv-scanner (license not stated: 10.5k); gitleaks/gitleaks (license not stated: 26.5k); danger/danger-js (license not stated: 5.5k); github/codeql + SonarSource/sonarqube (n/a (CLI free for OSS))
+- What was used: methodology only: semgrep/semgrep; noted: google/osv-scanner, gitleaks/gitleaks, danger/danger-js; connected as external reference: github/codeql + SonarSource/sonarqube
+- License notes: licenses not recorded in scan for: semgrep/semgrep, google/osv-scanner, gitleaks/gitleaks, danger/danger-js - verify before reuse; no code vendored

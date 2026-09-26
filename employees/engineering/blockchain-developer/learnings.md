@@ -28,3 +28,8 @@
 - wevm/wagmi (MIT): v3 hooks workflow (simulate then write then waitForReceipt). Retired Workflow 6 list-level note.
 - Part B same pass: removed phantom phase_artifacts (sources/_analysis/ dir absent), added small-task/prototype lane, fixed stale wagmi/AA reference rows, tightened cross-refs. TOP5-CANDIDATES.md written.
 - FLAGS for Shai: GPL (eth-infinitism), AGPL (slither), no-license (Cyfrin), all handled methodology/self-host only, no code bundled.
+## Sources
+
+- Upstream: eth (license not recorded); Vectorized/solady (license not recorded); Cyfrin/audit (license not recorded); crytic/slither (license not recorded); wevm/wagmi (license not recorded)
+- What was used: methodology absorbed: eth; methodology only: Vectorized/solady, Cyfrin/audit, crytic/slither, wevm/wagmi; connected as external reference: Vectorized/solady, wevm/wagmi
+- License notes: licenses not recorded in scan for: eth, Vectorized/solady, Cyfrin/audit, crytic/slither, wevm/wagmi - verify before reuse; no code vendored

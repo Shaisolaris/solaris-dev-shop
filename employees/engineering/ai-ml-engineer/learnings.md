@@ -38,3 +38,8 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 - Key bright lines locked: QLoRA-first defaults (rank16/alpha16, 4-bit nf4); eval is a pytest-style test suite with per-metric thresholds (before AND after fine-tune); MLflow registry stage-promotion (Staging->Production) instead of hardcoded paths; serve the model + contract, hand GPU cluster to DevOps; LoRA-adapter hot-swap in vLLM for many-fine-tunes-one-base.
 - Fixed: rules.md had 6 phantom reference paths (content was inline in SKILL) - replaced with real files. rag-architecture.md existed but was unregistered in plugin.json - now registered (RAG *builds* still route to LLM Agent Designer).
 - Added small-task/prototype lane to SKILL so quick feasibility checks do not get over-built into full pipelines.
+## Sources
+
+- Upstream: Unsloth (license not recorded); Axolotl (license not recorded); DeepEval (license not recorded); MLflow (license not recorded); vLLM (license not recorded)
+- What was used: noted: Unsloth, Axolotl, DeepEval, vLLM; methodology only: MLflow
+- License notes: licenses not recorded in scan for: Unsloth, Axolotl, DeepEval, MLflow, vLLM - verify before reuse; no code vendored

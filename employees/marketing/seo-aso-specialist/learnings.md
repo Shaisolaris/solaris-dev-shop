@@ -40,3 +40,8 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
   *Proposed rule: a reference list that names files which do not exist is worse than no list - it sends a session chasing a 404. Audit references against `ls references/` every depth pass.*
   Tags: [#aeo], [#aso-ios], [#aso-android], [#dedup], [#promoted?]
 - FLAGS: ahonn/mcp-server-gsc = NOASSERTION license (avoided in favor of AminForou/mcp-gsc MIT). facundoolano/aso stale since 2023 (methodology kept, package not pinned). geo-optimizer-skill is MIT so self-host is permitted; kept as methodology + self-host note rather than a hard dependency.
+## Sources
+
+- Upstream: AminForou/mcp-gsc (MIT); Auriti-Labs/geo-optimizer-skill (MIT); facundoolano/google-play-scraper (MIT); dataforseo/mcp-server-typescript (Apache-2.0); appreply-co/mcp-appstore (MIT)
+- What was used: methodology absorbed: AminForou/mcp-gsc, Auriti-Labs/geo-optimizer-skill; connected as external reference: AminForou/mcp-gsc, facundoolano/google-play-scraper, dataforseo/mcp-server-typescript, appreply-co/mcp-appstore; methodology only: facundoolano/google-play-scraper
+- License notes: absorbed sources permissive (MIT/Apache-2.0); no code vendored

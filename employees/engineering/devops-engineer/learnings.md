@@ -57,3 +57,8 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 - RUNTIME HARDENING: mutation authority only after plan, dry-run evidence, failure notes, cost/security, and rollback.
 - Provider adapters retain default_deny + require_human for deploy/spend/mutate_external.
 - Evaluation packet: meta/skill-rotation/evaluations/20260724/platform-reliability/.
+## Sources
+
+- Upstream: argoproj/argo-cd (license not stated: 22.9k); fluxcd/flux2 (license not stated: 8.2k); getsops/sops (license not stated: ~22k); open-telemetry/opentelemetry-collector (license not stated: 7.1k (core; contrib higher)); aquasecurity/trivy (license not stated: 36.4k)
+- What was used: methodology only: argoproj/argo-cd, fluxcd/flux2, getsops/sops, aquasecurity/trivy; connected as external reference: argoproj/argo-cd; noted: open-telemetry/opentelemetry-collector
+- License notes: licenses not recorded in scan for: argoproj/argo-cd, fluxcd/flux2, getsops/sops, open-telemetry/opentelemetry-collector, aquasecurity/trivy - verify before reuse; no code vendored
