@@ -18,6 +18,8 @@ solaris-intake intake "Write a test plan for the client portal login regression"
 
 That assigns `solaris.qa-engineer`. It does not write the test plan. Routing is deterministic: the same request always lands on the same specialist. A saved run is in [`examples/route-a-task/`](examples/route-a-task/).
 
+![Demo: one intake command routes to the accountable specialist](assets/demo.gif)
+
 ## What you get
 
 | You get | Details |
