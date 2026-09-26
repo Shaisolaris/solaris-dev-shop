@@ -1,8 +1,16 @@
 # Install
 
-These files are skills, not a package you pip-install.
+One command, from the repository root:
 
-Tested on this export:
+```bash
+./install.sh
+```
+
+It verifies the tree, runs the control-plane self-test and the routing suite, and installs the `solaris-intake` command into `~/.local/bin`.
+
+These files are skills, not a package you pip-install. No PyPI publish in this pass.
+
+Manual check, same thing the installer runs:
 
 ```bash
 python3 control-plane/meta_control_plane.py self-test
@@ -14,7 +22,7 @@ To use one employee in a coding agent:
 
 1. Copy the employee directory, for example `employees/quality-security/qa-engineer/`, into the place your agent loads project skills.
 2. Point the agent at `SKILL.md` in that directory.
-3. If the skill says to load `rules.md` or a reference next to it, copy those files too. They sit beside the skill on purpose. Three roles have no separate rules file: fleet dispatcher, fleet provisioner, and project onboarding. Their `SKILL.md` is the whole job.
+3. If the skill says to load `rules.md` or a reference next to it, copy those files too. They sit beside the skill on purpose. Every employee ships `SKILL.md`, `rules.md`, `plugin.json`, `capability.contract.json`, and `learnings.md`.
 
 The chief of staff is `chief-of-staff/SKILL.md`. Routing uses `control-plane/`. Keep those two folders together if you want the intake command to keep working.
 

@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "solaris-dev-shop"
+version = "0.53"
+description = "61 specialist employees plus a chief of staff: a deterministic intake router that assigns every task to one accountable specialist."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+keywords = ["agents", "skills", "routing", "chief-of-staff"]
+
+[project.scripts]
+solaris-intake = "solaris_intake:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["solaris_intake*"]
