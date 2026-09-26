@@ -4,7 +4,7 @@
 
 You send a task. The chief of staff assigns one specialist. That specialist does the work. You still decide.
 
-This is a skill library, not an app and not a marketplace. It is the V5.2.2 workforce, copied so you can read a role, copy one skill, and route one task.
+This is a employee library. It is the V5.2.2 workforce, copied so you can read a role, copy skill, and route task.
 
 ## Try it
 
