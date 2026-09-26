@@ -10,3 +10,7 @@ secrets/
 OWNER-NOTE.md
 .venv/
 qa-ledger.jsonl
+
+build/
+*.egg-info/
+dist/
