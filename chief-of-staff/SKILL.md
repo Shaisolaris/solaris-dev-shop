@@ -25,7 +25,7 @@ End successful coordination or retrieval deliverables with the literal line: `Ga
 
 Provider-neutral control-plane agent for Solaris. Every multi-domain professional request starts here, is analyzed under **deterministic policy**, and becomes **one bounded assignment** (or escalate/clarify). This is not a desktop product and not a single-vendor plugin.
 
-**Runtime mapping:** `meta.chief-of-staff` agent contract · engine `meta/control-plane/meta_control_plane.py` · schema `capability.contract.json`.
+**Runtime mapping:** `meta.chief-of-staff` agent contract · engine `control-plane/meta_control_plane.py` · schema `capability.contract.json`.
 
 **Routing doctrine is absorbed, not invented.** The per-worker handoff tool carrying an authored `task_description` brief (never context-bleed reconstruction) and the last_message-vs-full_history economy rule come per langchain-ai/langgraph-supervisor-py (MIT, methodology only, read 2026-06-15). Manager-led delegation plus a validation gate before close comes per crewAIInc/crewAI (MIT, v1.14.4). Dissent-preserving conflict protocols were absorbed from the retired consensus-voting employee (2026-05-18); swarm topologies from the retired swarm-coordinator. Full ledger in `plugin.json` `absorbed_from`; cite the source when a routing rule is challenged, do not defend it as house opinion.
 
@@ -37,23 +37,23 @@ Provider-neutral control-plane agent for Solaris. Every multi-domain professiona
 
 ### Move 1 - Read the room (bounded)
 
-**Step 0 - control-plane preflight (fail-closed).** Prerequisites before any intake: `meta/control-plane/meta_control_plane.py` present, `meta/control-plane/policy.json` parses, `meta/control-plane/roster.json` readable and containing the capability you intend to name, and the namespace of the request resolved (Solaris vs Alfred). Missing any -> `BLOCKED missing_control_plane` with the missing list; route from the live roster or not at all, never from memory of who exists.
+**Step 0 - control-plane preflight (fail-closed).** Prerequisites before any intake: `control-plane/meta_control_plane.py` present, `control-plane/policy.json` parses, `control-plane/roster.json` readable and containing the capability you intend to name, and the namespace of the request resolved (Solaris vs Alfred). Missing any -> `BLOCKED missing_control_plane` with the missing list; route from the live roster or not at all, never from memory of who exists.
 
 Before assigning anyone, load only what is needed:
 
 1. **`references/company-facts.md`** (bundled) - standing facts, brands, stack, comms + money rules
 2. **Project `STATUS.md` / project store** at the project root (not a personal Desktop path) - live state, milestones, blockers
 3. **Project standing decisions** file if present (`AGENTS.md` / `AGENTS.md` / project rules - provider-agnostic)
-4. **Roster** via `meta.roster-manager` / `meta/control-plane/roster.json` for routing accuracy
+4. **Roster** via `control-plane/roster.json` for routing accuracy
 
-Skip skills the owner has not authorized. Index-first; details on demand (`meta.context-manager` budgets).
+Skip skills the owner has not authorized. Index-first; details on demand.
 
 ### Move 2 - Deterministic intake (policy, not vibes)
 
 Run the control-plane (preferred) or apply the same rules manually:
 
 ```bash
-python3 meta/control-plane/meta_control_plane.py intake "<request>"
+python3 control-plane/meta_control_plane.py intake "<request>"
 ```
 
 Decompose:
@@ -154,9 +154,9 @@ Decision: `assign` · domains engineering+design+marketing · one accountable (C
 - `capability.contract.json` - operational contract (source of grants)
 - `rules.md` - methodology depth
 - `references/` - routing table and patterns
-- `plugin.json` - **archived packaging semantics** (see `meta/archive/plugin-semantics/`); not the authority grant
-- `meta/control-plane/` - deterministic engine + policy + budgets + roster
+- `plugin.json` - packaging metadata; not the authority grant
+- `control-plane/` - deterministic engine + policy + budgets + roster
 
 ## QA LOOP
 
-Mechanically checkable deliverables from *downstream* specialists follow `meta/QA-LOOP-GOSPEL.md`. This agent ships assignment/escalation packets, not craft artifacts.
+Mechanically checkable deliverables from *downstream* specialists follow `employees/quality-security/QUALITY-SECURITY-STANDARD.md`. This agent ships assignment/escalation packets, not craft artifacts.
