@@ -54,13 +54,13 @@ How-to fragment (one quadrant, goal-titled, competence assumed, links out instea
        curl -X POST https://api.acme.dev/v1/keys \
          -H "Authorization: Bearer $ADMIN_TOKEN"
        # → 201 { "id": "key_9f2", "secret": "sk_live_…", "status": "active" }
-    2. Deploy `key_9f2` to your services and confirm traffic on it (see [Verifying key usage](./verify-key-usage.md)).
+    2. Deploy `key_9f2` to your services and confirm traffic on it (see Verifying key usage).
     3. Revoke the old key:
        curl -X DELETE https://api.acme.dev/v1/keys/key_3ab \
          -H "Authorization: Bearer $ADMIN_TOKEN"
        # → 204 (no body)
 
-    If step 3 returns `409 key_in_use`, traffic still hits the old key - return to step 2. Full codes: [Key errors](./reference/key-errors.md).
+    If step 3 returns `409 key_in_use`, traffic still hits the old key - return to step 2. Full codes: Key errors.
     Gate: passed
 
 ## HARD NUMBERS

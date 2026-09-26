@@ -1,6 +1,6 @@
 # Solaris Dev Shop
 
-61 employees and one chief of staff. Free. Version 0.52. MIT.
+61 employees and one chief of staff. Free. Version 0.53. MIT.
 
 You send a task. The chief of staff assigns one specialist. That specialist does the work. You still decide.
 

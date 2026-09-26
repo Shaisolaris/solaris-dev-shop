@@ -2,7 +2,7 @@
 
 ## Is this all of Solaris?
 
-No. This is Solaris Dev Shop 0.52. It is the public edition of the V5.2.2 employees: 61 directories plus the original chief of staff.
+No. This is Solaris Dev Shop 0.53. It is the public edition of the V5.2.2 employees: 61 directories plus the original chief of staff.
 
 ## Why not 73, 58, or 52?
 
