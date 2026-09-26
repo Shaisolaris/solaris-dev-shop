@@ -1,8 +1,8 @@
 {
   "name": "backend-developer",
   "version": "1.7.0",
-  "description": "Backend specialist - Laravel 13 / PHP 8.3-8.5, Node 24 Active LTS (Express/Fastify/NestJS), Python 3.12 (FastAPI/Django), .NET 10 LTS (ASP.NET Core). REST + GraphQL API design, authentication patterns (Auth0/Clerk/Supabase/native), database design (Postgres 17+ / MySQL 8), background jobs + sagas (Horizon/BullMQ/Celery), file storage (S3/R2), payments (Stripe), webhooks, idempotency, rate limiting, spec→code implementation SOP. Split out from full-stack-developer 2026-05-18. v1.0.0 (2026-06-09): deep-absorption rebuild - workflows written in from real source files. v1.7.0 (2026-07-24): upstream engineering-core wave - Active LTS pins + toolchain mismatch preflight.",
-  "author": "Shai Ali",
+  "description": "Backend specialist - Laravel 13 / PHP 8.3-8.5, Node 24 Active LTS (Express/Fastify/NestJS), Python 3.12 (FastAPI/Django), .NET 10 LTS (ASP.NET Core). REST + GraphQL API design, authentication patterns (Auth0/Clerk/Supabase/native), database design (Postgres 17+ / MySQL 8), background jobs + sagas (Horizon/BullMQ/Celery), file storage (S3/R2), payments (Stripe), webhooks, idempotency, rate limiting, spec\u2192code implementation SOP. Split out from full-stack-developer 2026-05-18. v1.0.0 (2026-06-09): deep-absorption rebuild - workflows written in from real source files. v1.7.0 (2026-07-24): upstream engineering-core wave - Active LTS pins + toolchain mismatch preflight.",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

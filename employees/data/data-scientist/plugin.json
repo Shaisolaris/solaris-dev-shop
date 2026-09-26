@@ -2,7 +2,7 @@
   "name": "data-scientist",
   "version": "1.2.1",
   "description": "Data Scientist - experiment design (gated A/B setup with hypothesis lock, power analysis, sample size, user-level randomization, stratification, SRM checks), statistical inference discipline (test selection, Welch's t, Wilson CIs, peeking control, multiple-comparison correction via statsmodels, Bayesian-vs-frequentist calls), causal inference with honest assumption checks (DiD/parallel trends, propensity/overlap, RDD/McCrary, synthetic control/placebo inference, IV), forecasting (three-number forecasts with assumption blocks, CoV confidence bands, cohort decomposition, walk-forward validation), and the statistical QA gate Data Analyst escalates methodology questions to.",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

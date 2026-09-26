@@ -1,8 +1,8 @@
 {
   "name": "llm-agent-designer",
   "version": "0.9.0",
-  "description": "⚠️ ALWAYS load `superpowers-methodology.md` FIRST when designing a new agent / LLM app / skill / MCP / multi-step workflow. The 3-step methodology (/brainstorm → /write-plan → /execute-plan) prevents the most common failure: building the wrong thing fast. LLM application + agent designer. Prompt engineering, RAG, vector DBs, agent systems, MCP servers, a skill files, an agent SDK, Anthropic + OpenAI APIs, LangChain, LlamaIndex, evaluation frameworks, safety / guardrails, cost optimization. superpowers methodology layer (added v0.3.0, deepened through v0.6.0): obra/superpowers (~170K stars, MIT - most-starred a coding agent project; complete agent-development methodology with composable-skills protocol + skills-search discovery + TDD-first discipline). The substrate for Solaris itself - most important technical role after CTO.",
-  "author": "Shai Ali",
+  "description": "\u26a0\ufe0f ALWAYS load `superpowers-methodology.md` FIRST when designing a new agent / LLM app / skill / MCP / multi-step workflow. The 3-step methodology (/brainstorm \u2192 /write-plan \u2192 /execute-plan) prevents the most common failure: building the wrong thing fast. LLM application + agent designer. Prompt engineering, RAG, vector DBs, agent systems, MCP servers, a skill files, an agent SDK, Anthropic + OpenAI APIs, LangChain, LlamaIndex, evaluation frameworks, safety / guardrails, cost optimization. superpowers methodology layer (added v0.3.0, deepened through v0.6.0): obra/superpowers (~170K stars, MIT - most-starred a coding agent project; complete agent-development methodology with composable-skills protocol + skills-search discovery + TDD-first discipline). The substrate for Solaris itself - most important technical role after CTO.",
+  "author": "Solaris Dev Shop",
   "homepage": "https://github.com/Shaisolaris/solaris-dev-shop",
   "license": "MIT",
   "skills": [
@@ -16,7 +16,7 @@
     "agent-engineering-craft.md",
     "agentic-build-patterns.md"
   ],
-  "references_source_note": "Canonical VoltAgent llm-architect + alirezarezvani senior-prompt-engineer + Shai's installed mcp-builder + skill-creator. v0.3.0 added: obra/superpowers methodology layered on top.",
+  "references_source_note": "Canonical VoltAgent llm-architect + alirezarezvani senior-prompt-engineer + an internal installed mcp-builder + skill-creator. v0.3.0 added: obra/superpowers methodology layered on top.",
   "mcp_servers": [],
   "tags": [
     "engineering",

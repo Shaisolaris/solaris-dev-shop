@@ -2,7 +2,7 @@
   "name": "video-editor",
   "version": "0.7.2",
   "description": "Video Editor - FFmpeg-based video editing operations (per opheliabm/the coding agent-videoedit gap-fill repo with 16 SKILL files: trim lossless + frame-accurate, split time-based + scene-boundary via PySceneDetect, concat same-codec + filter_complex, speed changes setpts+atempo, crop + scale + rotate, overlays + PIP, chromakey green screen, vidstab stabilization, transitions xfade + fades, privacy blur boxblur + motion-tracked, LUT color grading) + audio operations (extraction, EBU R128 normalization, anlmdn denoise, sidechain music ducking, voiceover sync) + captions + subtitles (SRT/VTT generation, Whisper auto-transcribe, AssemblyAI + Deepgram, burn-in vs soft subtitles) + format + codec expertise (H.264 libx264, H.265 libx265, AV1 libsvtav1, ProRes prores_ks, DNxHR dnxhd) + platform-specific exports (YouTube 4K + 1080p + Shorts vertical, Instagram Reels, TikTok, LinkedIn native, Twitter/X with proper resolution + aspect + bitrate per platform) + GPU acceleration (NVIDIA NVENC h264/hevc, Intel QuickSync, macOS VideoToolbox, AMD AMF) + batch processing + lossless editing where possible + frame-accurate trimming when needed + scene detection + color grading (LUT + waveform/vectorscope verification) + b-roll integration + J-cut + L-cut audio editing + transcript-driven editing (Descript-style) + motion graphics basic. Distinct from UI/UX Designer (graphics) / Content Marketer (script) / Social Media Manager (distribution). Clean rebuild from opheliabm/the coding agent-videoedit gap-fill repo.",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

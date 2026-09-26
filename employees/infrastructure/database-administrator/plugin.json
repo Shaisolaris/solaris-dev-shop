@@ -2,7 +2,7 @@
   "name": "database-administrator",
   "version": "0.8.0",
   "description": "Database Administrator - schema design, query optimization, migrations (zero-downtime), backup + restore, replication, HA/failover, indexing, partitioning, sharding, capacity planning. PostgreSQL (primary), MySQL, SQLite, MongoDB, DynamoDB, Redis, Elasticsearch, Snowflake, BigQuery. Clean build from 9 repos.",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

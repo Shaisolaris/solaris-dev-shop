@@ -1,8 +1,8 @@
 {
   "name": "performance-engineer",
   "version": "0.8.0",
-  "description": "Performance Engineer - profiling (Node / Python / Go / Rust / Java / PHP / web / mobile), bundle analysis, load / stress / soak testing, PageSpeed + Web Vitals, APM interpretation, DB query optimization (with DBA), caching strategy, memory profiling, cold-start optimization, network optimization (HTTP/2 + HTTP/3 + compression). v0.4.0 (2026-06-04): Shai's performance-profiler laptop skill absorbed (delta) - static performance-risk scanner, before/after measurement template, quick-wins optimization checklist (DB/Node/bundle/API), measure-first golden rule.",
-  "author": "Shai Ali",
+  "description": "Performance Engineer - profiling (Node / Python / Go / Rust / Java / PHP / web / mobile), bundle analysis, load / stress / soak testing, PageSpeed + Web Vitals, APM interpretation, DB query optimization (with DBA), caching strategy, memory profiling, cold-start optimization, network optimization (HTTP/2 + HTTP/3 + compression). v0.4.0 (2026-06-04): an internal performance-profiler laptop skill absorbed (delta) - static performance-risk scanner, before/after measurement template, quick-wins optimization checklist (DB/Node/bundle/API), measure-first golden rule.",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

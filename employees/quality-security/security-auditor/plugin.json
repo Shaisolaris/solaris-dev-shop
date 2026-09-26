@@ -2,7 +2,7 @@
   "name": "security-auditor",
   "version": "0.10.2",
   "description": "Security Auditor - pentest, threat modeling (STRIDE / PASTA / LINDDUN), vulnerability assessment, OWASP (Top 10 + ASVS + MASVS + SAMM), SAST / DAST / IAST / SCA, SBOM + supply chain, cloud security (CSPM), container + K8s security, secrets scanning, compliance (SOC 2 / ISO 27001 / HIPAA / PCI / GDPR / CCPA), incident response + forensics, red team, zero-trust, secure-code review. Deeper than Code Reviewer's security pass. Clean build from 9 repos.",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

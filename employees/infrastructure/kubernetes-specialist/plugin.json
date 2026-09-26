@@ -2,7 +2,7 @@
   "name": "kubernetes-specialist",
   "version": "0.7.0",
   "description": "Kubernetes Specialist - workload design (probes, resources, QoS, PDB, HPA/VPA/KEDA, topology spread, graceful shutdown), cluster architecture (EKS/GKE/AKS, CNI, ingress + Gateway API, storage, node pools), security (RBAC, NetworkPolicy, Pod Security Admission, CEL/Kyverno/Gatekeeper admission, workload identity, External Secrets), multi-tenancy (namespace-per-team, quotas, team RBAC), upgrades + capacity + cost right-sizing, DR (Velero), troubleshooting trees (CrashLoopBackOff, OOMKilled, Pending, ImagePullBackOff, DNS). Rebuilt 2026-06-09 from verified sources.",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

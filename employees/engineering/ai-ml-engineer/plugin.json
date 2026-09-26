@@ -2,7 +2,7 @@
   "name": "ai-ml-engineer",
   "version": "0.7.0",
   "description": "Classical ML + deep learning + model training + MLOps engineer. Scikit-learn, XGBoost/LightGBM, PyTorch, TensorFlow, HuggingFace Transformers, computer vision, time-series forecasting, recommender systems, anomaly detection, LLM fine-tuning (LoRA/QLoRA) when genuinely needed. Distinct from LLM Agent Designer (which handles prompting / RAG / agents).",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "homepage": "https://github.com/Shaisolaris/solaris-dev-shop",
   "license": "MIT",
   "skills": [

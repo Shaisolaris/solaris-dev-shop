@@ -2,7 +2,7 @@
   "name": "cloud-architect",
   "version": "0.9.0",
   "description": "Cloud Architect - cloud service selection + architecture across AWS / GCP / Azure (per-provider compute/storage/db/messaging decision matrices), multi-region + DR design (RTO/RPO tiers), cost architecture + bill-cut engagements (right-sizing, savings plans, egress traps), landing zones + account structure (AWS Orgs/SCPs, Azure ALZ, GCP FAST), org-level IAM architecture, migration (6R + waves), well-architected reviews. Distinct from DevOps Engineer (who executes). Rebuilt 2026-06-10 from 9 verified sources incl. 3 vendor-official landing-zone repos.",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

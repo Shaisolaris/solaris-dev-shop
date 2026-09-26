@@ -2,7 +2,7 @@
   "name": "voice-audio-producer",
   "version": "1.3.3",
   "description": "Voice + audio production discipline for Solaris, built on the official ElevenLabs MCP (MIT). Owns voiceover/narration and game audio: Text-to-Speech (multi-voice, multi-language), voice cloning + voice design, sound-effects generation, music generation, speech-to-text transcription (with speaker diarization), and voice isolation (clean voice from noisy recordings). Workflow discipline for character voices, narration scripts, SFX libraries, and audio deliverables. The voice-isolation tool is SHARED - video-editor borrows it for dialogue cleanup (single owner here, no duplication). Distinct from Video Editor (owns FFmpeg/Resolve audio post + mixing into video) and Content Marketer (script writing). Part of the Solaris creative cluster sharing a tool layer.",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

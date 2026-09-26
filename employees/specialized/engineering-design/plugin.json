@@ -2,7 +2,7 @@
   "name": "engineering-design",
   "version": "1.1.2",
   "description": "Engineering Design (CAD) - precise, parametric, manufacturable design. Owns FreeCAD MCP (neka-nat, MIT) for parametric solid modeling, printable/CNC-ready parts, FEM stress checks (CalculiX), and clean engineering exports (STEP for CAD interchange, STL for 3D print, plus the FreeCAD parts library). Adds a KiCad MCP note (lamaalrajih, MIT) for PCB / electronics design when a part needs a board. The PRECISE-geometry complement to blender-mcp (organic / artistic 3D): use FreeCAD when dimensions, tolerances, constraints, and printability matter; use Blender when it's organic/visual. Covers parametric modeling discipline (sketch -> constrain -> feature tree -> export), technical/printable part design (wall thickness, tolerances, orientation), assemblies, and the export contract per downstream use (STEP/STL/3MF). CONNECT employee: the host runs FreeCAD with the MCP addon (RPC server) and the KiCad MCP server; this employee is the design doctrine that drives them. Distinct from game-designer / 3d creative (artistic 3D), ar-vr-developer (XR), and full-stack (web). v1.0.0 (2026-06-13): NEW employee, Upgrade Plan 2026-06 Part 3 (Engineering-Design CAD candidate).",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "homepage": "https://github.com/Shaisolaris/solaris-dev-shop",
   "license": "MIT",
   "skills": [

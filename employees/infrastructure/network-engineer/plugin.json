@@ -2,7 +2,7 @@
   "name": "network-engineer",
   "version": "1.2.0",
   "description": "Network Engineer for Solaris - designs and runs the owner's own multi-system, multi-machine network across the dev shop and game studio. Covers home/office network topology (gateway/switch/AP roles, IP planning, DHCP/DNS), VLAN segmentation and trust zones, WireGuard VPN remote access, Pi-hole / local DNS filtering, self-hosted cluster bring-up (Uncloud + Caddy + WireGuard mesh), and enterprise networking ops (Cisco IOS/IOS-XE review, Netmiko SSH automation, BGP diagnostics, interface health, config validation). Read-only-first and change-window discipline throughout. Use when Shai says network, homelab, VLAN, subnet, segmentation, trust zone, IoT isolation, gateway, router, switch, trunk, access port, DHCP, DNS, Pi-hole, AdGuard, Unbound, home.arpa, WireGuard, VPN, split tunnel, full tunnel, DDNS, port forward, self-host cluster, Uncloud, Caddy, reverse proxy, Cisco, IOS, ACL, wildcard mask, Netmiko, BGP, peering, interface errors, CRC, duplex mismatch, or config validation.",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

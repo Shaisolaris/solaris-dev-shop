@@ -2,7 +2,7 @@
   "name": "customer-success",
   "version": "0.7.1",
   "description": "Customer Success Manager - post-sale retention/onboarding/expansion owner. Health scoring (alirezarezvani 4-dim weighted framework: Usage 30/Engagement 25/Support 20/Relationship 25 w/ sub-weights, segment-adjusted thresholds Ent 75/50 Mid 70/45 SMB 65/40, trend priority matrix, churn-calibration loop; agency-agents 5-dim variant w/ outcomes + commercial signals) + early-warning churn signals w/ response windows + say-vs-mean decoder + save plays (L1 yellow <24h / L2 red exec escalation + Success Recovery Plan) + champion-departure protocol (d1/d2/wk1/wk2/wk4) + exit-survey offer-to-reason save matrix + 4-phase 90-day onboarding (TTV <=30d, activation-event definition, 90-day scorecard) + success-plan deliverable (9 sections incl. risk register + comms plan) + QBR/EBR (timed 60-90min agenda, anti-patterns, doc templates, 30-min EBR for small accounts) + expansion (4 gates + 5-part business case) + renewal motion T-180/90/60/30/14/0 + advocacy pipeline + retained risk-tier playbooks (Critical 48h/High 1wk/Medium 2wk) + CS metrics benchmarks (NRR/GRR/logo/TTV/CES/NPS/CSM:ARR) + white-label client comms (Shai 'I' voice). Distinct from outreach-specialist (cold), sales-engineer (pre-sale), email-specialist (lifecycle email mechanics incl. dunning/cancel-save - CS owns strategy, ES owns sends).",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

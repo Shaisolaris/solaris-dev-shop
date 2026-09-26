@@ -2,7 +2,7 @@
   "name": "game-designer",
   "version": "0.4.2",
   "description": "Game Designer - Unity 6 LTS development (URP / HDRP rendering, Shader Graph + HLSL, Unity Profiler + Frame Debugger + Memory Profiler, Job System + Burst Compiler, DOTS/ECS architecture, Addressables, asset compression per wshobson unity-developer + unity-ecs-patterns) + Unreal Engine 5 (C++ + Blueprint hybrid, Gameplay Framework, Nanite + Lumen + MetaHuman + Chaos Physics + Niagara VFX, replication for multiplayer per msitarzewski unreal-systems-engineer + technical-artist + multiplayer-architect) + game design fundamentals (MDA framework: Mechanics + Dynamics + Aesthetics, core loops moment/short/long/meta, game feel <100ms input lag) + level + narrative design + monetization (LiveOps, battle pass, gacha with published rates, cosmetic-only preferred) + multiplayer (Mirror / Netcode for GameObjects / Photon Fusion+PUN / Nakama / PlayFab / Unreal native replication, EOS, Steam SDK) + platform deployment (PC Steam/Epic, mobile App Store/Play, console PS5/Xbox/Switch certification, Quest/SteamVR/PSVR2, WebGL). Distinct from AR/VR Developer (XR-specific) / UI/UX Designer / Mobile Developer. Clean rebuild from wshobson Unity + msitarzewski Unreal pods.",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

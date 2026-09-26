@@ -2,7 +2,7 @@
   "name": "data-analyst",
   "version": "1.3.0",
   "description": "Data Analyst - SQL analysis (window functions, EXPLAIN review), dashboards + KPI design (Metabase / Looker / Tableau / Power BI / Superset / Grafana), metric definition contracts, SaaS metrics (MRR/ARR/churn/CAC/LTV/NRR/Quick Ratio), cohort + funnel + retention analysis, A/B result interpretation, data-quality gating, instrumentation audits, data storytelling, executive reporting.",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

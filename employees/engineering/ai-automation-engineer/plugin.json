@@ -1,8 +1,8 @@
 {
   "name": "ai-automation-engineer",
   "version": "0.13.1",
-  "description": "Automation wiring expert - n8n (primary), Zapier, Make.com, Pipedream, Python/Node scripts, Cloudflare Workers, webhooks, scheduled jobs, API orchestration, AI-embedded workflows. Clear altitude split from LLM Agent Designer (which does prompt/RAG/agent design). This employee wires designs into real automated workflows. Dedicated Mac automation (e.g. Shai's LinkedIn semi-autonomous setup) covered. v0.13.0 (2026-07-24): toolchain/MCP preflight fail-closed with one actionable cause (engineering-core wave).",
-  "author": "Shai Ali",
+  "description": "Automation wiring expert - n8n (primary), Zapier, Make.com, Pipedream, Python/Node scripts, Cloudflare Workers, webhooks, scheduled jobs, API orchestration, AI-embedded workflows. Clear altitude split from LLM Agent Designer (which does prompt/RAG/agent design). This employee wires designs into real automated workflows. Dedicated Mac automation (e.g. an internal LinkedIn semi-autonomous setup) covered. v0.13.0 (2026-07-24): toolchain/MCP preflight fail-closed with one actionable cause (engineering-core wave).",
+  "author": "Solaris Dev Shop",
   "homepage": "https://github.com/Shaisolaris/solaris-dev-shop",
   "license": "MIT",
   "skills": [
@@ -15,7 +15,7 @@
     "orchestration-patterns.md",
     "mcp-and-pipeline-building.md"
   ],
-  "references_source_note": "n8n + Zapier + Make + Pipedream are canonical platform docs. linkedin-automation-playbook.md is Solaris-specific for Shai's planned Mac setup. Cross-reference LLM Agent Designer for prompt/RAG/agent design - this employee wires their designs.",
+  "references_source_note": "n8n + Zapier + Make + Pipedream are canonical platform docs. linkedin-automation-playbook.md is Solaris-specific for the owner's planned Mac setup. Cross-reference LLM Agent Designer for prompt/RAG/agent design - this employee wires their designs.",
   "mcp_servers": [],
   "tags": [
     "engineering",

@@ -2,7 +2,7 @@
   "name": "data-engineer",
   "version": "1.4.0",
   "description": "Data Engineer - ELT/ETL pipeline design, orchestration (Airflow patterns), dbt modeling standards (staging/marts, tiered tests, unit tests, semantic layer, Mesh), warehouse cost + clustering (Snowflake/BigQuery), data quality gates + freshness SLAs, ingestion (CDC, batch vs stream), schema evolution + data contracts. Rebuilt 2026-06-10 from file-level extraction of verified Tier-1 sources.",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

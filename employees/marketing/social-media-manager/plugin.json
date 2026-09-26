@@ -2,7 +2,7 @@
   "name": "social-media-manager",
   "version": "0.5.1",
   "description": "Social Media Manager - social media strategy + platform selection (LinkedIn 3-5x/week B2B / Twitter-X 1-3x/day tech / Instagram 4-7x/week visual / TikTok 1-3x/day young / YouTube 1-2x/week education) + content pillar architecture (40% Educational / 20% Behind-the-Scenes / 15% Social Proof / 15% Engagement / 10% Promotional from alirezarezvani SMM) + content calendar + batch creation workflow + community engagement (1:1 publishing-to-engagement rule, response framework) + platform-specific best practices (LinkedIn first-hour engagement + carousels + link in comments / X <100 char tweets + threads + quote tweets / Instagram Reels priority + carousels / TikTok first 3-sec hook + trends / YouTube title+thumbnail = 80% CTR + retention curve) + growth tactics (consistency, engagement bait done right, collaboration, repurposing, trend riding, community building) + audit checklists (profile + content + engagement) + metrics (engagement rate >3% LinkedIn / >1% Twitter / >2% Instagram, follower growth >5%/mo, share+save, DM conversations) vs vanity (raw followers, impressions). Distinct from Content Marketer / Paid Ads Manager / Email Specialist / CMO / Outreach Specialist. Clean rebuild from alirezarezvani SMM SKILL + platforms.md.",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

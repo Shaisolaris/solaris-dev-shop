@@ -1,8 +1,8 @@
 {
   "name": "cmo",
   "version": "0.5.1",
-  "description": "CMO / Head of Marketing  -  brand positioning (April Dunford 5-step / Geoffrey Moore Crossing the Chasm), category design (Three-Act + Lightning Strike), messaging hierarchy (5 levels), 3-VP architecture, proof point hierarchy, competitive positioning maps + battlecards, growth strategy (North Star, K-factor, AARRR, 30% experiment winner rate), GTM motion design (PLG / sales-assist / inside / field), demand waterfall (Inquiry → MQL → SAL → SQL → Opportunity → Closed-Won), marketing organization design, martech stack (Salesforce / HubSpot / Marketo / Segment / GA4 / 6sense / Bizible / G2), pricing + packaging governance, brand defense, attribution philosophy, marketing-influenced pipeline. Distinct from Content Marketer / CRO Designer / Paid Ads / SEO / Email / Social Media / Market Researcher. CLEAN REBUILD via Deep Absorption Protocol.",
-  "author": "Shai Ali",
+  "description": "CMO / Head of Marketing  -  brand positioning (April Dunford 5-step / Geoffrey Moore Crossing the Chasm), category design (Three-Act + Lightning Strike), messaging hierarchy (5 levels), 3-VP architecture, proof point hierarchy, competitive positioning maps + battlecards, growth strategy (North Star, K-factor, AARRR, 30% experiment winner rate), GTM motion design (PLG / sales-assist / inside / field), demand waterfall (Inquiry \u2192 MQL \u2192 SAL \u2192 SQL \u2192 Opportunity \u2192 Closed-Won), marketing organization design, martech stack (Salesforce / HubSpot / Marketo / Segment / GA4 / 6sense / Bizible / G2), pricing + packaging governance, brand defense, attribution philosophy, marketing-influenced pipeline. Distinct from Content Marketer / CRO Designer / Paid Ads / SEO / Email / Social Media / Market Researcher. CLEAN REBUILD via Deep Absorption Protocol.",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

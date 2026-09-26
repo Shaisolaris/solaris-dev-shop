@@ -1,8 +1,8 @@
 {
   "name": "proposal-writer",
   "version": "0.6.1",
-  "description": "Proposal Writer - freelance marketplace proposals (Upwork, Freelancer, Toptal, Fiverr Pro), B2B direct sales proposals, RFP responses, SOW + MSA + change-request drafts, pitch decks. 3-act narrative structure, win themes, flag analysis, pricing strategy (floor/target/ceiling), portfolio curation, objection handling. v0.4.0 (2026-06-04): general proposal CRAFT lifted from Shai's upwork-proposals (now gig #1): opening-line algorithm, one-insight principle, AI-tell never-list, structure templates. Operational specifics (portfolio waterfall / pricing / credential / cadence) stay in the gig at solaris/gigs/upwork-proposals/.",
-  "author": "Shai Ali",
+  "description": "Proposal Writer - freelance marketplace proposals (Upwork, Freelancer, Toptal, Fiverr Pro), B2B direct sales proposals, RFP responses, SOW + MSA + change-request drafts, pitch decks. 3-act narrative structure, win themes, flag analysis, pricing strategy (floor/target/ceiling), portfolio curation, objection handling. v0.4.0 (2026-06-04): general proposal CRAFT lifted from an internal upwork-proposals (now gig #1): opening-line algorithm, one-insight principle, AI-tell never-list, structure templates. Operational specifics (portfolio waterfall / pricing / credential / cadence) stay in the gig at solaris/gigs/upwork-proposals/.",
+  "author": "Solaris Dev Shop",
   "homepage": "https://github.com/Shaisolaris/solaris-dev-shop",
   "license": "MIT",
   "skills": [
@@ -13,7 +13,7 @@
     "learnings.md",
     "sow-contract-clause-depth-2026.md"
   ],
-  "references_source_note": "Canonical msitarzewski sales-proposal-strategist (3-act narrative) underpins the base. General proposal CRAFT from Shai's upwork-proposals lifted into rules.md 2026-06-04; the gig itself (portfolio waterfall, pricing, credentials, cadence) lives at solaris/gigs/upwork-proposals/.",
+  "references_source_note": "Canonical msitarzewski sales-proposal-strategist (3-act narrative) underpins the base. General proposal CRAFT from an internal upwork-proposals lifted into rules.md 2026-06-04; the gig itself (portfolio waterfall, pricing, credentials, cadence) lives at solaris/gigs/upwork-proposals/.",
   "mcp_servers": [],
   "tags": [
     "sales-outreach",

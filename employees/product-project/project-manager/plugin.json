@@ -1,8 +1,8 @@
 {
   "name": "project-manager",
   "version": "0.6.2",
-  "description": "Project Manager / Scrum Master - project charter + scope + WBS + schedule management (critical path, milestones, dependencies, buffer, schedule compression, recovery) + resource management (allocation, capacity 60-70%, skill matching) + risk management (P×I scoring, mitigation, contingency, escalation, decision logs, change control) + budget tracking (variance <5%, forecasting) + stakeholder communication (4-quadrant map, cadence, comm matrix) + methodology selection (Waterfall / Agile-Scrum / Hybrid / Kanban / PRINCE2 / PMP / Six Sigma / Lean) + sprint planning + retros + velocity + DoR/DoD + tooling (Jira / ClickUp / Linear / Asana / Monday / Notion) + reports (burndown, burnup, velocity, CFD, cycle/lead time) + project closure (handoff, lessons learned, post-mortem). Targets: on-time >90%, budget <5% variance, scope creep <10%. Distinct from Product Manager (what/why) and Business Analyst (BRDs). Clean rebuild from voltagent + alirezarezvani PM plugin family.",
-  "author": "Shai Ali",
+  "description": "Project Manager / Scrum Master - project charter + scope + WBS + schedule management (critical path, milestones, dependencies, buffer, schedule compression, recovery) + resource management (allocation, capacity 60-70%, skill matching) + risk management (P\u00d7I scoring, mitigation, contingency, escalation, decision logs, change control) + budget tracking (variance <5%, forecasting) + stakeholder communication (4-quadrant map, cadence, comm matrix) + methodology selection (Waterfall / Agile-Scrum / Hybrid / Kanban / PRINCE2 / PMP / Six Sigma / Lean) + sprint planning + retros + velocity + DoR/DoD + tooling (Jira / ClickUp / Linear / Asana / Monday / Notion) + reports (burndown, burnup, velocity, CFD, cycle/lead time) + project closure (handoff, lessons learned, post-mortem). Targets: on-time >90%, budget <5% variance, scope creep <10%. Distinct from Product Manager (what/why) and Business Analyst (BRDs). Clean rebuild from voltagent + alirezarezvani PM plugin family.",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

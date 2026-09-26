@@ -2,7 +2,7 @@
   "name": "image-generator",
   "version": "1.2.1",
   "description": "Generative image discipline for Solaris. Owns text-to-image, image editing, character/brand consistency, and vector/logo generation across the full model landscape. Primary model: Gemini 3 Pro Image ('Nano Banana Pro') - best all-rounder for realism + illustration + in-image text + conversational edit + character consistency; Gemini 2.5 Flash Image for cheap drafts. Alt/lock-in hedge: FLUX.2 (photographic control, multi-reference consistency, inpaint/outpaint via FLUX Tools, Kontext editing). Specialists: Recraft V3 (true editable SVG - logos/vector/brand), Ideogram 3.0 (text-in-image reserve), Adobe Firefly (commercial-safety only). Access layer: Replicate official MCP (mcp.replicate.com - one key reaches Gemini/FLUX/Recraft/Ideogram/SDXL) + official fal MCP. Free local-GPU path: ComfyUI + joenorton/comfyui-mcp-server + FLUX.2[klein]/SDXL + ControlNet/IP-Adapter/LoRA for zero per-image cost and full editing control. Cost-aware by default: Flash/SDXL for iteration, Pro/FLUX for finals. Distinct from UI/UX Designer (layout/graphics composition), Video Editor (motion), 3D Artist (meshes). Part of the Solaris creative cluster sharing a common tool layer.",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

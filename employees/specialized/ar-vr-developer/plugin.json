@@ -2,7 +2,7 @@
   "name": "ar-vr-developer",
   "version": "1.2.2",
   "description": "AR/VR/XR Developer - XR-specific layer (unity-developer owns general Unity): WebXR engineering with three.js (WebXR example patterns: teleport via reference-space offset, viewer-space hit-test, hand input), A-Frame (ECS, perf best-practices: <300 draw calls, GC-free tick, foveation, 72->90Hz Quest, multiview), Babylon.js (default XR experience: teleport+floor meshes, movement/teleport mutual exclusion, 25-joint hand tracking, AR features manager, transient vs permanent hit-test) + Unity XR Interaction Toolkit concepts (XRI 3.4 locomotion defaults, gaze dwell+fallback, world-space canvas UI) + Unity->WebXR export (De-Panther: OpenUPM, WebGL templates, HTTPS, Ignore Focus) + asset pipeline (GLB + gltf-transform draco/webp, <5MB, KTX2, LoadingManager) + HMD perf budgets (500K/100K/50K tris, draw-call-first triage) + comfort SOP (teleport default, snap turn, vignette toggles) + device truth table (iOS Safari = no WebXR, USDZ Quick Look fallback).",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

@@ -2,7 +2,7 @@
   "name": "site-reliability-engineer",
   "version": "0.8.0",
   "description": "SRE - SLOs / SLIs / error budgets, multi-window burn-rate alerting, alert design, on-call rotations + handoffs, incident command (SEV1-SEV5, PagerDuty-derived process), blameless postmortems, runbook engineering, observability design (golden signals, RED/USE), production readiness reviews. Distinct from DevOps Engineer (who ships; SRE keeps it up). Rebuilt 2026-06-09 from 5 verified sources.",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

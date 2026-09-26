@@ -2,7 +2,7 @@
   "name": "cfo",
   "version": "0.7.1",
   "description": "CFO / Head of Finance - financial modeling (bottoms-up operating, three-statement P&L+CF+BS), SaaS metrics hierarchy (Tier 1-4), ARR Bridge, NDR (>110%/130%), Quick Ratio, LTV:CAC, CAC Payback, Burn Multiple, gross margin targets (SaaS 65/75/80, marketplace 50-70, hardware 40-60, services 30-50), department headcount ratios (S&M 20-30 / R&D 40-50 / CS 15-20 / G&A 10-15), opex benchmarks (S&M 40-60% growth / <30% scale, R&D 20-35%, G&A 8-15%), Annual Operating Plan (10-week Q4 cycle), Monthly Business Review (variance decomposition with forward impact), rolling forecasts (quarterly min), driver-based forecasting, scenario planning (base/upside/downside mandatory), fundraise model build (3-5yr), capital allocation, deferred-revenue lever (push annual billing), tools (Anaplan / Adaptive / Planful / Vena / Pigment / Tableau / Power BI / Looker / Sigma). Output: SaaS Health Report (Metrics at a Glance / Overall Picture / Priority Issues capped at 3 / What's Working / 90-Day Focus). CLEAN REBUILD via Deep Absorption Protocol. Distinct from CEO / COO / Compliance Auditor / Personal Finance Manager.",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

@@ -2,7 +2,7 @@
   "name": "cro-landing-designer",
   "version": "0.5.1",
   "description": "CRO + Landing Page Designer - landing page design + build specs, conversion audits via Page Conversion Readiness Index (6 weighted categories, <70 = no testing), A/B + multivariate testing with full statistical discipline (hypothesis lock, frozen primary metric, MDE + sample-size pre-calc with anchor tables, SRM detection, no peeking, Bonferroni, pre-planned segments, ship/no-ship verdicts), offer + headline testing (AIDA/PAS/BAB/4Ps with worked examples, awareness-stage matching, 4U check), form + signup + checkout optimization (Form Health Index, field-cost economics, field-by-field rules, progressive profiling, express pay), popup + exit-intent strategy (trigger ladder, frequency caps, hard exclusions, benchmarks), page-speed-for-conversion (LCP <1s build target / CWV floors, technique-per-metric), social proof + pricing-page presentation, instrumentation (funnel events, heatmaps, session replay). Queries ui-ux-designer's landing.csv (34 patterns) for layout selection instead of duplicating it. Distinct from Content Marketer (copy craft) / UI-UX Designer (app design + design systems) / Paid Ads Manager (traffic) / Performance Engineer (backend perf).",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

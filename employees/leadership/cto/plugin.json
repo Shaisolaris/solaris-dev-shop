@@ -1,8 +1,8 @@
 {
   "name": "cto",
   "version": "0.4.1",
-  "description": "CTO  -  technology strategy + architecture governance (ADRs) + engineering leadership (DORA / scaling / hiring) + tech debt assessment (Severity × Blast Radius / Cost-to-fix) + build-vs-buy (default buy unless core IP) + DDD bounded contexts + modernization strategies (strangler / branch-by-abstraction / parallel run) + crisis mgmt + investor DD prep. Two modes: pragmatic startup CTO (default monolith / managed DB / Auth0 / Stripe / Vercel→AWS) + strategic CTO (post-PMF scaling). Distinct from DevOps / Cloud Architect / Code Reviewer / SRE. Clean rebuild from 5 source files across 9 repos.",
-  "author": "Shai Ali",
+  "description": "CTO  -  technology strategy + architecture governance (ADRs) + engineering leadership (DORA / scaling / hiring) + tech debt assessment (Severity \u00d7 Blast Radius / Cost-to-fix) + build-vs-buy (default buy unless core IP) + DDD bounded contexts + modernization strategies (strangler / branch-by-abstraction / parallel run) + crisis mgmt + investor DD prep. Two modes: pragmatic startup CTO (default monolith / managed DB / Auth0 / Stripe / Vercel\u2192AWS) + strategic CTO (post-PMF scaling). Distinct from DevOps / Cloud Architect / Code Reviewer / SRE. Clean rebuild from 5 source files across 9 repos.",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

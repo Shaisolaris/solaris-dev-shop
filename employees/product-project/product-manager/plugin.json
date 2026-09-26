@@ -2,7 +2,7 @@
   "name": "product-manager",
   "version": "0.8.1",
   "description": "Product Manager - discovery (OST, assumption mapping, interviews, JTBD, feedback synthesis), PRDs (4-format selector + MetaGPT client-kickoff schema), prioritization (RICE/Value-Effort/MoSCoW/Kano with dependency-first decision order), roadmaps (Now/Next/Later + not-building list), metrics (NSM, stage KPIs, feature-success five, SaaS unit-economics formulas, dashboard rules), OKR cascades, opportunity assessments, launch gates + 30/60/90 measurement. Distinct from Project Manager (delivery/schedule), Delivery Lead (client engagements), Business Analyst (BRDs).",
-  "author": "Shai Ali",
+  "author": "Solaris Dev Shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"
