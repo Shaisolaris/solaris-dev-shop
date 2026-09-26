@@ -6,4 +6,4 @@ If you find a real secret in this tree, open an issue that names the **path only
 
 ## Reporting a vulnerability
 
-Do not open a public issue for a suspected vulnerability. This repository has no dedicated private inbox; report it privately by contacting the maintainer through their GitHub profile ([@Shaisolaris](https://github.com/Shaisolaris)). Include the affected path, a description, and steps to reproduce. You will get a response within 7 days.
+Do not open a public issue for a suspected vulnerability. Report it privately through [GitHub's private vulnerability reporting](https://github.com/Shaisolaris/solaris-dev-shop/security/advisories/new): go to the **Security** tab, then **Advisories**, then **Report a vulnerability**. Include the affected path, a description, and steps to reproduce. You will get a response within 7 days.

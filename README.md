@@ -55,6 +55,7 @@ Details: [`docs/install.md`](docs/install.md). How a request moves: [`docs/archi
 - Found a routing miss? Open a [bug](.github/ISSUE_TEMPLATE/bug.md) with the command and the expected specialist.
 - Want a new specialist? Open a [new employee proposal](.github/ISSUE_TEMPLATE/new-employee.md).
 - Improving the router? `python3 tests/test_router.py` must stay green. CI runs it on every push.
+- See the public [roadmap](ROADMAP.md) and the 20 open issues: claim one, propose an upgrade, or [show what you built](https://github.com/Shaisolaris/solaris-dev-shop/issues/18).
 
 ## Contributors
 
