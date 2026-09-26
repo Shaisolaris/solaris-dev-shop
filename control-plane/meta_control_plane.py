@@ -183,19 +183,15 @@ def out_of_authority(
     for d in domains:
         if d in forbidden:
             return f"domain '{d}' is outside authority of {coordinator}"
-    # Cross-app: Solaris CoS must not touch personal health/finance content.
-    # There is no alfred.* in this tree; personal signals escalate to the owner.
+    # Solaris CoS must not touch personal health/finance/travel content.
+    # Personal signals escalate to the owner.
     if coordinator == "meta.chief-of-staff":
-        for phrase in policy.get("alfred_personal_signals", []):
+        for phrase in policy.get("personal_signals", []):
             if phrase.lower() in text.lower():
                 return (
                     f"Personal signal '{phrase}' is out of scope for this tree, "
                     "escalate to the owner"
                 )
-    if coordinator == "alfred.coordinator":
-        for phrase in policy.get("solaris_work_signals", []):
-            if phrase.lower() in text.lower():
-                return f"Solaris work signal '{phrase}', redirect to meta.chief-of-staff"
     return None
 
 
@@ -522,15 +518,18 @@ def intake(
     supporting_truncated = len(supporting) > max_supporting
     supporting = supporting[:max_supporting]
     # Multi-domain: still ONE assignment packet with one accountable specialist.
-    # The accountable is the first domain's accountable agent; it is never the
-    # coordinator. Falls back to the primary capability if the mapped value is
+    # The accountable is always the best-matched primary capability; it is never
+    # the coordinator. Domain defaults are a fallback only when the primary is
     # not an active roster capability.
     active_ids = {
         c["id"] for c in roster.get("capabilities", []) if c.get("status") == "active"
     }
-    accountable = policy.get("domain_accountable", {}).get(domains[0], primary)
-    if accountable not in active_ids:
+    if primary in active_ids:
         accountable = primary
+    else:
+        accountable = policy.get("domain_accountable", {}).get(domains[0], primary)
+    if accountable not in active_ids:
+        accountable = policy.get("default_capability", primary)
 
     assignment = Assignment(
         assignment_id=f"asg-{uuid.uuid4().hex[:12]}",
@@ -556,7 +555,7 @@ def intake(
                     "coordinator_performs_specialist_work",
                     "phantom_credit_without_invocation",
                     "autonomous_scope_expansion",
-                    "alfred_personal_data_in_solaris_packet",
+                    "personal_data_in_solaris_packet",
                     "credentials_in_handoff",
                 ],
             )
@@ -690,16 +689,35 @@ def self_test() -> int:
                 f"out-of-authority/health expected escalation, got {d2.decision}"
             )
 
-    d2b = intake(
-        "Draft the client Upwork proposal for the mobile app",
-        coordinator="alfred.coordinator",
-    )
-    if d2b.decision != ESCALATE or (
-        d2b.escalation and d2b.escalation.reason != OUT_OF_AUTHORITY
+    d2c = intake("How do I interpret my blood test results")
+    if d2c.decision != ESCALATE or (
+        d2c.escalation and d2c.escalation.reason != OUT_OF_AUTHORITY
     ):
         failures.append(
-            f"alfred on solaris work expected out_of_authority, got "
-            f"{d2b.decision}/{d2b.escalation}"
+            "personal health signal must escalate out-of-authority to the owner"
+        )
+    d2d = intake("Should I move my Roth IRA into index funds")
+    if d2d.decision != ESCALATE or (
+        d2d.escalation and d2d.escalation.reason != OUT_OF_AUTHORITY
+    ):
+        failures.append(
+            "personal finance signal must escalate out-of-authority to the owner"
+        )
+    d3 = intake("Design a logo for my coffee brand")
+    if d3.decision != ASSIGN or (
+        d3.assignment and d3.assignment.accountable != "solaris.image-generator"
+    ):
+        failures.append(
+            "logo design must be accountable to solaris.image-generator, "
+            f"got {d3.assignment.accountable if d3.assignment else None}"
+        )
+    d4 = intake("review this code")
+    if d4.decision != ASSIGN or (
+        d4.assignment and d4.assignment.accountable != "solaris.code-reviewer"
+    ):
+        failures.append(
+            "review this code must be accountable to solaris.code-reviewer, "
+            f"got {d4.assignment.accountable if d4.assignment else None}"
         )
 
     # Ambiguous
@@ -823,7 +841,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p_in.add_argument(
         "--coordinator",
         default="meta.chief-of-staff",
-        choices=["meta.chief-of-staff", "alfred.coordinator"],
+        choices=["meta.chief-of-staff"],
     )
     p_in.add_argument("--json", action="store_true", help="Print full JSON decision")
 
@@ -850,7 +868,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             decision, fixture = run_fixture(args.fixture)
             errs = check_fixture_expectations(decision, fixture)
             out = decision.as_dict()
-            if args.json or True:
+            if args.json:
                 print(json.dumps(out, indent=2))
             if errs:
                 print("FIXTURE EXPECTATION FAILURES:", file=sys.stderr)
