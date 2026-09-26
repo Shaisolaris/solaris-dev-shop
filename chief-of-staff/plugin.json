@@ -3,7 +3,7 @@
   "version": "0.7.0",
   "description": "Top-level request dispatcher. Parses intent, assembles the right team, enforces session-end learnings capture.",
   "author": "Shai Ali",
-  "homepage": "https://github.com/shaisolaris/solaris-employees",
+  "homepage": "https://github.com/Shaisolaris/solaris-dev-shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

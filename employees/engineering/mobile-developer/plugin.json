@@ -3,7 +3,7 @@
   "version": "0.10.0",
   "description": "⚠️ ALWAYS load mobile-mcp-operator.md FIRST in any mobile session - it's the most-forgotten file and contains canonical mobile-next/mobile-mcp + Android-Ui-MCP usage. Mobile developer for Solaris. Covers native iOS (Swift/SwiftUI), native Android (Kotlin/Jetpack Compose), React Native (New Architecture), Flutter, Expo SDK 55+, Ionic/Capacitor, offline-first sync, push, deep linking, biometric auth, ASO, mobile CI/CD, OWASP MASVS, AR + on-device ML + wearables. v0.3.0 absorbs (1) mobile-next/mobile-mcp - cross-platform iOS+Android MCP for real devices + simulators + emulators with full app lifecycle + accessibility-first interaction; (2) infiniV/Android-Ui-MCP - Android screenshot fallback; (3) dpconde/the coding agent-android-skill - NowInAndroid + Google official architecture (Clean Arch + Compose + MVVM + UDF + Hilt + Room + multi-module + offline-first). v0.8.0 deepens the testing + release pillars (Maestro, Detox, Patrol, Paparazzi, fastlane) into mobile-test-and-release.md with operationalized gates + a small-task/prototype lane. v0.10.0 (2026-07-24): Expo SDK 55+ / RN 0.83 pin + toolchain mismatch preflight.",
   "author": "Shai Ali",
-  "homepage": "https://github.com/shaisolaris/solaris-employees",
+  "homepage": "https://github.com/Shaisolaris/solaris-dev-shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

@@ -485,7 +485,7 @@
       "skill-runtime-contract",
       "skill-wave-data-ai-20260724 evaluation + synthetic fixtures"
     ],
-    "publisher": "ShaiSolaris/ai-org",
+    "publisher": "Solaris Dev Shop",
     "upgrade_wave": "20260724/data-ai",
     "idempotency_key": "skills/upstream-wave-20260724/data-ai/v1"
   },

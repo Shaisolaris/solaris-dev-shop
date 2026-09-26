@@ -3,7 +3,7 @@
   "version": "0.9.1",
   "description": "QA Engineer - E2E testing (Playwright primary, Cypress, Detox, Maestro, Patrol, Selenium), unit + integration, accessibility testing (AxeCore + manual screen-reader sweeps), visual regression, API contract testing (Pact), load / stress / chaos (k6, Artillery, Gremlin), flaky test triage, cross-browser testing, mobile device farms. v0.6.0 (2026-06-04): Shai's playwright-pro laptop skill absorbed (delta) - 6 primary workflows (init/generate/review/fix/migrate/coverage), flaky-test root-cause catalog, Cypress->Playwright translation map, risk-tiered coverage gaps, baseline playwright.config.ts. v0.8.0 (2026-06-13): depth/quality pass - phantom references removed (7 non-existent references/*.md files), test-effort lanes added (prototype/small-task/full), and three net-new testing layers absorbed (METHODOLOGY) into references/api-fuzz-mutation-integration.md: Schemathesis (API fuzz), Stryker (mutation testing), Testcontainers (real-dependency integration); Vitest + faker-js folded as methodology notes. v0.9.0 (2026-06-20): ELITE delivery tier - visual-regression baseline discipline (CI/Docker baselines + masking + update governance), WCAG 2.2 conformance audit + VPAT-style report, deterministic/hermetic flake elimination, client-ready bug-report standard (new reference elite-manual-qa-2026.md).",
   "author": "Shai Ali",
-  "homepage": "https://github.com/shaisolaris/solaris-employees",
+  "homepage": "https://github.com/Shaisolaris/solaris-dev-shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

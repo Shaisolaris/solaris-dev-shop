@@ -477,7 +477,7 @@
       "skill-runtime-contract",
       "skill-wave-specialist-engineering-20260724 (skill-je0) SPECIALIST-ENGINEERING-STANDARD"
     ],
-    "publisher": "ShaiSolaris/ai-org",
+    "publisher": "Solaris Dev Shop",
     "upgrade_wave": "20260724/specialist-engineering",
     "idempotency_key": "skills/upstream-wave-20260724/specialist-engineering/v1"
   },

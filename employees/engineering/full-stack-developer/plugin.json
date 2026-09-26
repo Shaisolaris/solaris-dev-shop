@@ -3,7 +3,7 @@
   "version": "1.4.0",
   "description": "GENERALIST - end-to-end builder who owns frontend AND backend on smaller projects. Coordinates cross-stack work + handoffs to frontend-developer and backend-developer specialists when work goes deep on one side. React/Vite/TS/Tailwind + PHP(WP)/Node/Python + MySQL 8+. 6 scaffold templates, minimal-change mode for inherited work. Split happened 2026-05-18: frontend-only work routes to frontend-developer, backend-only to backend-developer, true cross-stack stays here. v1.4.0 (2026-07-24): engineering-core upstream pins (Next 16, Laravel 13, Node 24) + toolchain preflight.",
   "author": "Shai Ali",
-  "homepage": "https://github.com/shaisolaris/solaris-employees",
+  "homepage": "https://github.com/Shaisolaris/solaris-dev-shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

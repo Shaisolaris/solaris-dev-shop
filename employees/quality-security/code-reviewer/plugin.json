@@ -3,7 +3,7 @@
   "version": "0.8.2",
   "description": "⚠️ ALWAYS load `code-context-operator.md` FIRST when reviewing or auditing a codebase larger than ~2,000 files. Without semantic indexing, audits fall back to grep. Code Reviewer - exhaustive code review, security audit, PR review, debug mode, dependency audit, CVE scanning, first-principles (Karpathy) + adversarial + architecture review modes. v0.3.0 adds: zilliztech/code-context (semantic code search MCP via Milvus + Voyage/OpenAI/Gemini/Ollama embeddings + Merkle-tree incremental indexing - turns the entire codebase into context for review/audit/debug). Languages: JS/TS, Python, PHP, Ruby, Go, Rust, Java, C#, Swift, Kotlin, SQL. (Shai's code-review + api-design-reviewer + codebase-onboarding stay standalone",
   "author": "Shai Ali",
-  "homepage": "https://github.com/shaisolaris/solaris-employees",
+  "homepage": "https://github.com/Shaisolaris/solaris-dev-shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

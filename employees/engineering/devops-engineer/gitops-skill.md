@@ -51,7 +51,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/shaisolaris/kellbell-deploy.git
+    repoURL: https://github.com/example-org/kellbell-deploy.git
     targetRevision: main            # pin a tag/sha for prod; main only if branch-protected
     path: envs/prod                 # per-env directory (matches terraform envs/ pattern)
   destination:

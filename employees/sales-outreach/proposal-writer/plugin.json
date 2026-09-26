@@ -3,7 +3,7 @@
   "version": "0.6.1",
   "description": "Proposal Writer - freelance marketplace proposals (Upwork, Freelancer, Toptal, Fiverr Pro), B2B direct sales proposals, RFP responses, SOW + MSA + change-request drafts, pitch decks. 3-act narrative structure, win themes, flag analysis, pricing strategy (floor/target/ceiling), portfolio curation, objection handling. v0.4.0 (2026-06-04): general proposal CRAFT lifted from Shai's upwork-proposals (now gig #1): opening-line algorithm, one-insight principle, AI-tell never-list, structure templates. Operational specifics (portfolio waterfall / pricing / credential / cadence) stay in the gig at solaris/gigs/upwork-proposals/.",
   "author": "Shai Ali",
-  "homepage": "https://github.com/shaisolaris/solaris-employees",
+  "homepage": "https://github.com/Shaisolaris/solaris-dev-shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

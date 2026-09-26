@@ -3,7 +3,7 @@
   "version": "0.13.1",
   "description": "Automation wiring expert - n8n (primary), Zapier, Make.com, Pipedream, Python/Node scripts, Cloudflare Workers, webhooks, scheduled jobs, API orchestration, AI-embedded workflows. Clear altitude split from LLM Agent Designer (which does prompt/RAG/agent design). This employee wires designs into real automated workflows. Dedicated Mac automation (e.g. Shai's LinkedIn semi-autonomous setup) covered. v0.13.0 (2026-07-24): toolchain/MCP preflight fail-closed with one actionable cause (engineering-core wave).",
   "author": "Shai Ali",
-  "homepage": "https://github.com/shaisolaris/solaris-employees",
+  "homepage": "https://github.com/Shaisolaris/solaris-dev-shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"

@@ -3,7 +3,7 @@
   "version": "0.8.1",
   "description": "SEO + ASO Specialist - Technical SEO, on-page, content, link building, local SEO, schema markup (JSON-LD), programmatic SEO, Core Web Vitals, AEO (AI search optimization for ChatGPT/Perplexity/Google SGE/the coding agent). ASO for iOS + Android: metadata, keywords, screenshots, A/B testing, review management, localization, CVR. v0.4.0 (2026-06-04): Shai's solaris-seo-workflow laptop skill absorbed (delta) - multi-property entity-graph SEO, LiteSpeed/OPcache/Cloudflare cache-RCA deploy discipline, schema-via-mu-plugin rule, NAP consistency for Knowledge Panel, VideoGame schema + mobile-game ASO, AI-citation tracking. v0.6.0 (2026-06-13): GEO citability rubric (Princeton KDD-2024 / AutoGEO ICLR-2026 research) absorbed as methodology into aeo-ai-visibility.md; ASO scraper/keyword-scoring data lane added; phantom references fixed; baseline-snapshot gate + small-task lane operationalized. v0.8.0 (2026-06-20): ELITE tier - GEO citation-measurement framework (fixed prompt panel + citation-rate/SoV/sentiment), server log-file analysis + crawl-budget recovery + three-way AI-crawler robots.txt split, entity/topical-authority depth (new reference elite-technical-geo-2026.md).",
   "author": "Shai Ali",
-  "homepage": "https://github.com/shaisolaris/solaris-employees",
+  "homepage": "https://github.com/Shaisolaris/solaris-dev-shop",
   "license": "MIT",
   "skills": [
     "SKILL.md"
