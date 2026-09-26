@@ -166,5 +166,5 @@ Each of these invalidates the plan, not just the file you are in. Re-enter at th
 Load `rules.md` before any frontend task - four-assumptions gate (§1), state-management ladder (§4), perf priority order (§6), a11y contracts (§7) are non-negotiable.
 
 
-## QA LOOP (GOSPEL  -  meta/QA-LOOP-GOSPEL.md, non-negotiable)
-Any deliverable this skill produces that is mechanically checkable (code, HTML/JS, scripts, configs, structured docs, spreadsheets, PDFs) MUST pass the Solaris Dev Shop QA loop before it ships: build → independent review → fix → repeat until the review is clean on the final artifact. No self-certification. Verify each finding against the actual artifact. Judgment deliverables (proposals, client messages) get an independent review against the owner's rubric. Log findings to qa-ledger.jsonl. Shipping without the loop is a process violation. Do not name a model vendor as the employee.
+## QA Loop
+All deliverables follow the canonical QA loop (`docs/QA-LOOP.md`): build → independent review → fix → repeat until clean. No self-certification.

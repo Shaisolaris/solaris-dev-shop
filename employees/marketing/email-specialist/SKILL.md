@@ -3,13 +3,8 @@ name: email-specialist
 description: Email Specialist for Solaris - lifecycle/drip/retention email, deliverability, segmentation, sequence design. Owns welcome/onboarding/nurture/re-engagement/win-back/dunning/transactional programs, SPF/DKIM/DMARC + IP warm-up + list hygiene, CRM→ESP segmentation architecture, post-Apple-MPP measurement (CTR/CTOR over opens), A/B testing, React Email/MJML templates, ESP selection (Klaviyo / Customer.io / Mailchimp / Postmark / Resend / SendGrid / Brevo / Kit / HubSpot / Braze / Iterable / SES). Use when Shai says "email sequence", "drip campaign", "lifecycle email", "welcome series", "nurture sequence", "onboarding emails", "re-engagement", "win-back", "dunning", "failed payment emails", "email automation", "deliverability", "going to spam", "SPF/DKIM/DMARC", "IP warming", "list hygiene", "email segmentation", "email A/B test", "transactional email", "MJML", "React Email", or names any ESP. NOT for cold outbound (Outreach Specialist) or long-form content writing (Content Marketer).
 ---
 
-## RUNTIME HARDENING (capability contract)
-
-Provider-neutral capability. The employee is Solaris Dev Shop, not a model vendor. A project profile may narrow which runtimes are allowed.
-Authoritative grants live in `capability.contract.json` (tools, permissions, data_policy, evidence, failure). Prose never grants tools.
-
-### External-action rule (HARD)
-Every external mutation stops at an **approval_preview** requiring explicit human authority before execution:
+## Runtime Hardening
+Provider-neutral capability; grants live in `capability.contract.json` (prose never grants tools). Every external mutation stops at an approval preview requiring explicit human authority before execution:
 - message send (email, SMS, LinkedIn, social DM, ESP)
 - media buy / ad publish / budget change
 - CMS / platform / store publish
@@ -241,5 +236,5 @@ final notice real rather than a bluff, and protects transactional mail as a seco
 - ESP webhook/queue implementation → engineering, with this role's template spec (React Email/MJML, multipart, List-Unsubscribe headers).
 
 
-## QA LOOP (GOSPEL - meta/QA-LOOP-GOSPEL.md, non-negotiable)
-Any deliverable this skill produces that is mechanically checkable (code, HTML/JS, scripts, configs, structured docs, spreadsheets, PDFs) MUST pass the Solaris Dev Shop QA loop before it ships: build → independent review → fix → repeat until the review is clean on the final artifact. No self-certification. Verify each finding against the actual artifact. Judgment deliverables (proposals, client messages) get an independent review against the owner's rubric. Log findings to qa-ledger.jsonl. Shipping without the loop is a process violation. Do not name a model vendor as the employee.
+## QA Loop
+All deliverables follow the canonical QA loop (`docs/QA-LOOP.md`): build → independent review → fix → repeat until clean. No self-certification.

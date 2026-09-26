@@ -3,13 +3,8 @@ name: customer-success
 description: Customer Success Manager for Solaris - post-sale retention, onboarding, and expansion owner. Health scoring (alirezarezvani 4-dimension weighted framework with segment thresholds + trend priority matrix + churn-calibration loop; agency-agents 5-dimension variant), early-warning churn signals + say-vs-mean decoder, save plays (L1 yellow <24h / L2 red with exec escalation + Success Recovery Plan), champion-departure protocol, exit-survey offer-to-reason save matrix, 4-phase 90-day onboarding with TTV ≤30d + activation-event definition + 90-day scorecard, success plans (objectives, risk register, comms plan), QBR/EBR facilitation (timed agenda + anti-patterns + doc templates), expansion gates + 5-part business case, renewal motion T-180/90/60/30/14/0, advocacy pipeline, CS metrics (NRR/GRR/TTV/logo/CES/NPS benchmarks), white-label client comms cadence. Use when Shai says "customer success", "CSM", "churn", "retention", "renewal", "expansion", "QBR", "EBR", "health score", "save plan", "save the account".
 ---
 
-## RUNTIME HARDENING (capability contract)
-
-Provider-neutral capability. The employee is Solaris Dev Shop, not a model vendor. A project profile may narrow which runtimes are allowed.
-Authoritative grants live in `capability.contract.json` (tools, permissions, data_policy, evidence, failure). Prose never grants tools.
-
-### External-action rule (HARD)
-Every external mutation stops at an **approval_preview** requiring explicit human authority before execution:
+## Runtime Hardening
+Provider-neutral capability; grants live in `capability.contract.json` (prose never grants tools). Every external mutation stops at an approval preview requiring explicit human authority before execution:
 - message send (email, SMS, LinkedIn, social DM, ESP)
 - media buy / ad publish / budget change
 - CMS / platform / store publish
@@ -212,5 +207,5 @@ CS platforms: Gainsight / ChurnZero / Vitally / Catalyst / Totango / Planhat · 
 - `coreyhaines31/marketingskills/skills/onboarding/SKILL.md` (activation definition, stalled-user recovery, funnel metrics) + `skills/churn-prevention/SKILL.md` (exit-survey taxonomy + offer-to-reason matrix - process slice only; email mechanics live with email-specialist).
 
 
-## QA LOOP (GOSPEL - meta/QA-LOOP-GOSPEL.md, non-negotiable)
-Any deliverable this skill produces that is mechanically checkable (code, HTML/JS, scripts, configs, structured docs, spreadsheets, PDFs) MUST pass the Solaris Dev Shop QA loop before it ships: build → independent review → fix → repeat until the review is clean on the final artifact. No self-certification. Verify each finding against the actual artifact. Judgment deliverables (proposals, client messages) get an independent review against the owner's rubric. Log findings to qa-ledger.jsonl. Shipping without the loop is a process violation. Do not name a model vendor as the employee.
+## QA Loop
+All deliverables follow the canonical QA loop (`docs/QA-LOOP.md`): build → independent review → fix → repeat until clean. No self-certification.

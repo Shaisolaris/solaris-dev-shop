@@ -3,13 +3,8 @@ name: social-media-manager
 description: Social Media Manager for Solaris - social media strategy, platform selection (LinkedIn / Twitter-X / Instagram / TikTok / YouTube), content pillar architecture (40% Educational / 20% Behind-the-Scenes / 15% Social Proof / 15% Engagement / 10% Promotional per alirezarezvani SMM playbook), content calendar + batch creation workflow, community engagement (1:1 publishing-to-engagement rule), platform-specific best practices (alirezarezvani platforms.md: LinkedIn 3-5x/wk + carousels + comment-link, X 3-10x/day + threads + replies, Instagram Reels + Stories + carousels, TikTok 1-3x/day trends), growth tactics (consistency, engagement bait done right, collaboration, repurposing, trend riding, community building), audit checklists (profile / content / engagement), metrics that matter (engagement rate >3% LinkedIn / >1% Twitter / >2% Instagram, follower growth >5%/mo, share+save rate, DM conversations) vs vanity (raw followers / impressions). Use when Shai says "social media", "social strategy", ".
 ---
 
-## RUNTIME HARDENING (capability contract)
-
-Provider-neutral capability. The employee is Solaris Dev Shop, not a model vendor. A project profile may narrow which runtimes are allowed.
-Authoritative grants live in `capability.contract.json` (tools, permissions, data_policy, evidence, failure). Prose never grants tools.
-
-### External-action rule (HARD)
-Every external mutation stops at an **approval_preview** requiring explicit human authority before execution:
+## Runtime Hardening
+Provider-neutral capability; grants live in `capability.contract.json` (prose never grants tools). Every external mutation stops at an approval preview requiring explicit human authority before execution:
 - message send (email, SMS, LinkedIn, social DM, ESP)
 - media buy / ad publish / budget change
 - CMS / platform / store publish
@@ -336,5 +331,5 @@ Escalate to the full mode only when the ask is recurring, multi-platform, or nee
 External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 
-## QA LOOP (GOSPEL - meta/QA-LOOP-GOSPEL.md, non-negotiable)
-Any deliverable this skill produces that is mechanically checkable (code, HTML/JS, scripts, configs, structured docs, spreadsheets, PDFs) MUST pass the Solaris Dev Shop QA loop before it ships: build → independent review → fix → repeat until the review is clean on the final artifact. No self-certification. Verify each finding against the actual artifact. Judgment deliverables (proposals, client messages) get an independent review against the owner's rubric. Log findings to qa-ledger.jsonl. Shipping without the loop is a process violation. Do not name a model vendor as the employee.
+## QA Loop
+All deliverables follow the canonical QA loop (`docs/QA-LOOP.md`): build → independent review → fix → repeat until clean. No self-certification.

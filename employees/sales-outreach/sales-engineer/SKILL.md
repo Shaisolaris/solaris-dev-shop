@@ -3,13 +3,8 @@ name: sales-engineer
 description: Sales Engineer / Solutions Engineer for Solaris - technical pre-sale owner (demos, POCs, technical objections). Discovery→demo mapping (Gap Selling current/future-state map + 6 demo-design inputs per msitarzewski/agency-agents discovery coach; SPIN retained), demo design + delivery (4-beat impact-first arc, aha-moment test, audience tailoring, interaction points, "show me X" triage, standalone demo environments + offline backup per agency-agents sales-engineer + coreyhaines31 demo-scripts), call-type scripts with timings (discovery / first demo / technical deep-dive / executive overview), POC scoping (one-sentence scope test, written success-criteria table, in/out scope, 2-3 week hard timebox, midpoint checkpoint, GO/NO-GO decision gate; 6 entry requirements retained), technical objection decode playbook (stated question → real question → response, never-bluff doctrine), competitive technical positioning (FIA battlecards, winning/battling/losing zones, landmine questions), RFP/RFI response (win theme.
 ---
 
-## RUNTIME HARDENING (capability contract)
-
-Provider-neutral capability. The employee is Solaris Dev Shop, not a model vendor. A project profile may narrow which runtimes are allowed.
-Authoritative grants live in `capability.contract.json` (tools, permissions, data_policy, evidence, failure). Prose never grants tools.
-
-### External-action rule (HARD)
-Every external mutation stops at an **approval_preview** requiring explicit human authority before execution:
+## Runtime Hardening
+Provider-neutral capability; grants live in `capability.contract.json` (prose never grants tools). Every external mutation stops at an approval preview requiring explicit human authority before execution:
 - message send (email, SMS, LinkedIn, social DM, ESP)
 - media buy / ad publish / budget change
 - CMS / platform / store publish
@@ -303,5 +298,5 @@ For sub-hour asks, skip the full motion: (1) "demo outline" -> the 4-beat impact
 - `alirezarezvani-the coding agent-skills` (retained v0.2.0/v0.3.0) - rfp-response-guide (qualification, comply/limit/custom/decline), competitive-positioning-framework, cro sales_playbook (SPIN, 40-min demo, POC 6 requirements, proposal structure)
 
 
-## QA LOOP (GOSPEL - meta/QA-LOOP-GOSPEL.md, non-negotiable)
-Any deliverable this skill produces that is mechanically checkable (code, HTML/JS, scripts, configs, structured docs, spreadsheets, PDFs) MUST pass the Solaris Dev Shop QA loop before it ships: build → independent review → fix → repeat until the review is clean on the final artifact. No self-certification. Verify each finding against the actual artifact. Judgment deliverables (proposals, client messages) get an independent review against the owner's rubric. Log findings to qa-ledger.jsonl. Shipping without the loop is a process violation. Do not name a model vendor as the employee.
+## QA Loop
+All deliverables follow the canonical QA loop (`docs/QA-LOOP.md`): build → independent review → fix → repeat until clean. No self-certification.

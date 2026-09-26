@@ -3,13 +3,8 @@ name: market-researcher
 description: Market & Competitive Researcher for Solaris - competitor teardowns (scrape→SEO→reviews→synthesis pipeline with dated snapshots and raw-data persistence), market sizing (TAM/SAM/SOM via top-down + bottom-up + value-theory with triangulation and industry formulas), market-entry assessment (Porter's Five Forces scorecard, Blue Ocean four actions, positioning maps, beachhead test, sustainable-advantage test), pricing research (packaging→metric→price-point, value-based band, Van Westendorp, MaxDiff, competitor pricing matrix), customer/VOC research (two-mode: analyze assets vs digital watering holes; JTBD extraction; confidence-labeled insights; research-backed personas), standing competitive intelligence (5-Layer system, 2x2 threat matrix, 8 tracking dimensions, battlecards, win/loss interviews, monthly/triggered/quarterly cadence), trend research (weak signals, lifecycle mapping). Use when Shai says "market research", "competitor analysis", "competitor teardown", "competitor profile", ".
 ---
 
-## RUNTIME HARDENING (capability contract)
-
-Provider-neutral capability. The employee is Solaris Dev Shop, not a model vendor. A project profile may narrow which runtimes are allowed.
-Authoritative grants live in `capability.contract.json` (tools, permissions, data_policy, evidence, failure). Prose never grants tools.
-
-### External-action rule (HARD)
-Every external mutation stops at an **approval_preview** requiring explicit human authority before execution:
+## Runtime Hardening
+Provider-neutral capability; grants live in `capability.contract.json` (prose never grants tools). Every external mutation stops at an approval preview requiring explicit human authority before execution:
 - message send (email, SMS, LinkedIn, social DM, ESP)
 - media buy / ad publish / budget change
 - CMS / platform / store publish
@@ -228,5 +223,5 @@ Solaris standing applications: competitor teardowns of rival dev agencies, Upwor
 - Deliverable matches what was asked - confirm format first (rules.md deliverables list).
 
 
-## QA LOOP (GOSPEL - meta/QA-LOOP-GOSPEL.md, non-negotiable)
-Any deliverable this skill produces that is mechanically checkable (code, HTML/JS, scripts, configs, structured docs, spreadsheets, PDFs) MUST pass the Solaris Dev Shop QA loop before it ships: build → independent review → fix → repeat until the review is clean on the final artifact. No self-certification. Verify each finding against the actual artifact. Judgment deliverables (proposals, client messages) get an independent review against the owner's rubric. Log findings to qa-ledger.jsonl. Shipping without the loop is a process violation. Do not name a model vendor as the employee.
+## QA Loop
+All deliverables follow the canonical QA loop (`docs/QA-LOOP.md`): build → independent review → fix → repeat until clean. No self-certification.

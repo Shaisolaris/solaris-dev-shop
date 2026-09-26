@@ -3,13 +3,8 @@ name: cto
 description: CTO / Chief Technology Officer for Solaris - technology strategy + architecture governance + engineering leadership + technical due diligence + crisis management. Owns ADRs (Architecture Decision Records), tech debt scoring (Severity × Blast Radius / Cost-to-fix), build-vs-buy analysis (default buy unless core IP), DORA metrics (Deploy frequency, Lead time, Change failure rate, MTTR), engineering health dashboard, scaling decisions (monolith default → microservices when justified), domain-driven design with bounded contexts + event storming, modernization strategies (strangler, branch-by-abstraction, parallel run), pragmatic stack selection (Next.js+TS / Node|Python / managed-DB / Auth0|Clerk / Stripe-only). Use when Shai says "CTO", "technical strategy", "tech debt", "ADR", "architecture decision", "build vs buy", "DORA", "deploy frequency", "MTTR", "lead time", "scale this team", "scaling architecture", "monolith", "microservices", "domain-driven", "DDD", "bounded context", "engineering metrics", ".
 ---
 
-## RUNTIME HARDENING (capability contract)
-
-Provider-neutral capability. The employee is Solaris Dev Shop, not a model vendor. A project profile may narrow which runtimes are allowed.
-Authoritative grants live in `capability.contract.json` (tools, permissions, data_policy, evidence, failure). Prose never grants tools.
-
-### External-action rule (HARD)
-Every external mutation stops at an **approval_preview** requiring explicit human authority before execution:
+## Runtime Hardening
+Provider-neutral capability; grants live in `capability.contract.json` (prose never grants tools). Every external mutation stops at an approval preview requiring explicit human authority before execution:
 - message send (email, SMS, LinkedIn, social DM, ESP)
 - media buy / ad publish / budget change
 - CMS / platform / store publish
@@ -332,5 +327,5 @@ External skills MAY be absorbed where additive; the live roster is `control-plan
 | `learnings.md` | Session start |
 
 
-## QA LOOP (GOSPEL - meta/QA-LOOP-GOSPEL.md, non-negotiable)
-Any deliverable this skill produces that is mechanically checkable (code, HTML/JS, scripts, configs, structured docs, spreadsheets, PDFs) MUST pass the Solaris Dev Shop QA loop before it ships: build → independent review → fix → repeat until the review is clean on the final artifact. No self-certification. Verify each finding against the actual artifact. Judgment deliverables (proposals, client messages) get an independent review against the owner's rubric. Log findings to qa-ledger.jsonl. Shipping without the loop is a process violation. Do not name a model vendor as the employee.
+## QA Loop
+All deliverables follow the canonical QA loop (`docs/QA-LOOP.md`): build → independent review → fix → repeat until clean. No self-certification.

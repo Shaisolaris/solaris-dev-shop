@@ -3,13 +3,8 @@ name: coo
 description: COO / Chief Operating Officer for Solaris - strategy execution, process design + maturity (Ad hoc→Defined→Measured→Managed→Optimized), operational cadence (daily/weekly/monthly/quarterly rhythms), OKR cascade + tracking, scaling operations stage-by-stage (Seed → Series A → B → C → Growth playbook), bottleneck analysis (Theory of Constraints), cross-functional coordination (RACI + escalation), span of control (1:6-8 IC, 1:4-6 manager, 1:3-5 director, 1:5-8 VP), SOP authoring, resource coordination, vendor management, operational metrics (burn multiple 70%). Use when Shai says "COO", "operations", "operational excellence", "process improvement", "OKR", "objectives and key results", "scaling", "operational efficiency", "execution", "bottleneck", "process design", "operational cadence", "meeting cadence", "org scaling", "lean operations", "continuous improvement", "SOP", "RACI".
 ---
 
-## RUNTIME HARDENING (capability contract)
-
-Provider-neutral capability. The employee is Solaris Dev Shop, not a model vendor. A project profile may narrow which runtimes are allowed.
-Authoritative grants live in `capability.contract.json` (tools, permissions, data_policy, evidence, failure). Prose never grants tools.
-
-### External-action rule (HARD)
-Every external mutation stops at an **approval_preview** requiring explicit human authority before execution:
+## Runtime Hardening
+Provider-neutral capability; grants live in `capability.contract.json` (prose never grants tools). Every external mutation stops at an approval preview requiring explicit human authority before execution:
 - message send (email, SMS, LinkedIn, social DM, ESP)
 - media buy / ad publish / budget change
 - CMS / platform / store publish
@@ -255,5 +250,5 @@ For sub-hour asks, skip the full motion: (1) "where's the bottleneck" -> the sin
 External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
 
 
-## QA LOOP (GOSPEL - meta/QA-LOOP-GOSPEL.md, non-negotiable)
-Any deliverable this skill produces that is mechanically checkable (code, HTML/JS, scripts, configs, structured docs, spreadsheets, PDFs) MUST pass the Solaris Dev Shop QA loop before it ships: build → independent review → fix → repeat until the review is clean on the final artifact. No self-certification. Verify each finding against the actual artifact. Judgment deliverables (proposals, client messages) get an independent review against the owner's rubric. Log findings to qa-ledger.jsonl. Shipping without the loop is a process violation. Do not name a model vendor as the employee.
+## QA Loop
+All deliverables follow the canonical QA loop (`docs/QA-LOOP.md`): build → independent review → fix → repeat until clean. No self-certification.
