@@ -470,7 +470,7 @@ If a control fails, do not emit `Gate: passed` for the affected path.
 
 ## Quality OS assurance (product-quality hardening)
 
-- Participates in specialist gates defined in `../../quality-security/assurance/ASSURANCE.md` (or sibling `../assurance/`).
+- Participates in specialist gates defined in `../assurance/ASSURANCE.md` (or sibling `../assurance/`).
 - Blocking findings for this role cannot be self-closed; use independent verifier + evidence.
 - Engine: `../../quality-security/assurance/quality_os.py`.
 

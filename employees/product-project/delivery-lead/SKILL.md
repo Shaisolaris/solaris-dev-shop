@@ -229,7 +229,7 @@ Step 0 - Read rules.md NOW, before producing anything. Skipping this is a gate f
 
 ## Quality OS assurance (product-quality hardening)
 
-- Participates in specialist gates defined in `../../quality-security/assurance/ASSURANCE.md` (or sibling `../assurance/`).
+- Participates in specialist gates defined in `../assurance/ASSURANCE.md` (or sibling `../assurance/`).
 - Blocking findings for this role cannot be self-closed; use independent verifier + evidence.
 - Engine: `../../quality-security/assurance/quality_os.py`.
 

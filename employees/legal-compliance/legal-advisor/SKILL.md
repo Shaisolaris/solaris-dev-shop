@@ -257,7 +257,7 @@ If a control fails, do not emit `Gate: passed` for the affected path.
 - Engine enforces: `LEGAL_BINDING_PROHIBITED`, `LEGAL_FILING_FORBIDDEN`,
   `LEGAL_DISCLAIMER_MISSING`, source freshness (`LEGAL_SOURCE_STALE`).
 - Human/legal review triggers on filing requests, binding language, stale sources.
-- Contract: `../assurance/ASSURANCE.md` · parent: `../../quality-security/assurance/ASSURANCE.md`.
+- Contract: `../assurance/ASSURANCE.md` · parent: `../assurance/ASSURANCE.md`.
 
 ## MAINTENANCE WAVE CONTROLS (2026-07-24)
 
