@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  router:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Control-plane self-test
+        run: python3 control-plane/meta_control_plane.py self-test
+      - name: Routing regression suite (61 probes + edges)
+        run: python3 tests/test_router.py
+      - name: Fixture expectations
+        run: |
+          for f in fixtures/control-plane/*.json; do
+            echo "== $f"
+            python3 control-plane/meta_control_plane.py intake --fixture "$f" || exit 1
+          done
+      - name: Control-plane JSON validity
+        run: |
+          python3 -c "
+          import json
+          for f in ['control-plane/roster.json','control-plane/policy.json','control-plane/budgets.json']:
+              json.load(open(f)); print('OK', f)
+          "
+
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Quality OS audit (61 employees, 0 gaps)
+        run: |
+          python3 employees/quality-security/assurance/quality_os.py audit > /tmp/audit.json
+          python3 -c "
+          import json, sys
+          d = json.load(open('/tmp/audit.json'))
+          scanned, gaps = d['counts']['skills_scanned'], d['counts']['gaps']
+          print(f'scanned={scanned} gaps={gaps}')
+          assert scanned == 61, f'expected 61 employees scanned, got {scanned}'
+          assert gaps == 0, f'expected 0 gaps, got {gaps}: {d[\"gaps\"][:5]}'
+          "
+
+  manifests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: All plugin.json / capability.contract.json parse
+        run: |
+          python3 -c "
+          import json, glob, sys
+          bad = []
+          for f in glob.glob('employees/*/*/plugin.json') + glob.glob('employees/*/*/capability.contract.json') + glob.glob('chief-of-staff/capability.contract.json'):
+              try:
+                  d = json.load(open(f))
+                  if f.endswith('plugin.json'):
+                      for k in ('name','version','description'):
+                          if k not in d: bad.append(f'{f}: missing {k}')
+              except Exception as e:
+                  bad.append(f'{f}: {e}')
+          assert not bad, '\n'.join(bad)
+          print('all manifests parse OK')
+          "

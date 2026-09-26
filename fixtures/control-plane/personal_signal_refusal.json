@@ -1,0 +1,9 @@
+{
+  "request": "How do I interpret my blood test results",
+  "expectations": {
+    "decision": "escalate",
+    "escalation_reason": "out_of_authority",
+    "has_assignment": false,
+    "performed_work": false
+  }
+}

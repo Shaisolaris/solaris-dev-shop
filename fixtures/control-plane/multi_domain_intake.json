@@ -1,0 +1,10 @@
+{
+  "request": "Build a REST API and a marketing landing page for the client portal",
+  "expectations": {
+    "decision": "assign",
+    "has_assignment": true,
+    "single_assignment": true,
+    "performed_work": false,
+    "min_domains": 2
+  }
+}

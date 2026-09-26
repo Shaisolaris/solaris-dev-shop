@@ -1,0 +1,9 @@
+{
+  "request": "Production is down and customers cannot check out",
+  "expectations": {
+    "decision": "escalate",
+    "escalation_reason": "high_risk",
+    "has_assignment": false,
+    "performed_work": false
+  }
+}

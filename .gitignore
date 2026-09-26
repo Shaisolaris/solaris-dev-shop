@@ -8,3 +8,5 @@ __pycache__/
 secrets/
 
 OWNER-NOTE.md
+.venv/
+qa-ledger.jsonl
