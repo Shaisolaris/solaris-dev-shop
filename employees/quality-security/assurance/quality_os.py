@@ -994,10 +994,18 @@ def run_suite(root: Path) -> Dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 DOMAIN_ROOTS = {
-    "product-project": "product-project",
+    "creative-media": "creative-media",
+    "data": "data",
     "design": "design",
-    "quality-security": "quality-security",
+    "engineering": "engineering",
+    "infrastructure": "infrastructure",
+    "leadership": "leadership",
     "legal-compliance": "legal-compliance",
+    "marketing": "marketing",
+    "product-project": "product-project",
+    "quality-security": "quality-security",
+    "sales-outreach": "sales-outreach",
+    "specialized": "specialized",
 }
 
 
@@ -1015,8 +1023,11 @@ def audit_existing_capabilities(employees_root: Path) -> Dict[str, Any]:
             gaps.append(f"missing domain root: {rel}")
             continue
         for skill_md in sorted(root.rglob("SKILL.md")):
-            # skip nested assurance packages if any
+            # skip nested assurance packages and diagnostic sub-skill trees;
+            # sub-skills are covered by their parent employee's audit surface
             rel_skill = skill_md.relative_to(employees_root)
+            if "diagnostics" in rel_skill.parts or "assurance" in rel_skill.parts[1:]:
+                continue
             text = skill_md.read_text(encoding="utf-8", errors="replace")
             name = skill_md.parent.name
             has_output = "OUTPUT CONTRACT" in text
@@ -1079,8 +1090,8 @@ def audit_existing_capabilities(employees_root: Path) -> Dict[str, Any]:
 
 
 def _repo_root() -> Path:
-    # .../solaris/employees/quality-security/assurance/quality_os.py → repo root
-    return Path(__file__).resolve().parents[4]
+    # .../employees/quality-security/assurance/quality_os.py → repo root
+    return Path(__file__).resolve().parents[3]
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
@@ -1126,7 +1137,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         return 0 if report["ok"] else 1
 
     if args.cmd == "audit":
-        employees = args.employees or (root / "solaris" / "employees")
+        employees = args.employees or (root / "employees")
         report = audit_existing_capabilities(employees)
         print(json.dumps(report, indent=2))
         return 0

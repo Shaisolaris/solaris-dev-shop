@@ -23,6 +23,16 @@ If the workspace has a project doctrine file (e.g. `project/FLEET.md`, `project/
 4. PLAN SKELETON: `Scope/` gets a `ROUND-PLAN.md` header + the project brief; write the DEPLOY-MODEL into the project notes.
 5. Report in 5 lines: folder path, deploy model recorded, credential rows added, repo+workflows state, what is missing and needs a human (only genuinely-human items).
 
+## OUTPUT CONTRACT
+
+Every activation deliverable uses this shape:
+
+1. **Intake record** - the 4 answers (or defaults accepted) as given.
+2. **Folder tree** - project root + Scope/Development/Delivery/Assets + STATUS.md with DEPLOY-MODEL.
+3. **Credential sheet** - rows added, count confirmed, zero secret values.
+4. **Repo state** - repo URL, integration branch, CI workflows installed (code projects).
+5. **5-line report** - path, deploy model, credential rows, repo state, human-owned gaps.
+
 ## SELF-QA GATE (before replying - mandatory)
 1. Intake asked in plain chat, defaults honored, no MCQ widget?
 2. All four folders + STATUS with DEPLOY-MODEL exist on disk (listed)?
