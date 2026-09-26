@@ -1,5 +1,5 @@
 ---
-name: unity
+name: unity-developer
 description: ⚠️ ALWAYS load the Unity MCP operator references FIRST when ANY Unity work begins - `coplaydev-unity-mcp.md` (PRIMARY bridge) and `unity-mcp-operator.md` (IvanMurzak fallback + Tier-0 verify loop). Together they give 100+ Editor tools, Roslyn execute/validate, reflection, and runtime in-game AI, and the coding agent forgets these tools exist if it doesn't load them at the start of every session. Master skill for any Unity game project Shai is building. Use this whenever the session involves Unity, C# game scripts, GameObjects, scenes, prefabs, scene flow, UI/Canvas, shaders, physics, animation, input, builds for iOS/Android/PC/WebGL, testing on device, game design, player flow, MDA framework, screen navigation, game state logic, game feel, or anything involving a .unity file.
 ---
 
