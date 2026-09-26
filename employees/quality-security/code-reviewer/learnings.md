@@ -8,8 +8,8 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 
 ## Pending observations
 
-- **2026-04-24 - Code Reviewer clean rebuild**: First build absorbed Shai's code-review skill wholesale (scanner.py + 20 angles + 7 phases + 4 modes + vuln pattern DB). Clean rebuild from 6 repos produces a strong mode-based review employee (PR + Full Audit + Security + Dependency + Karpathy + Adversarial + Debug). Shai's skill layers in later as v0.3.0 with its scanner + pattern DB.
-  *Proposed rule: Mode-based reviewers (distinct review patterns per context) are a better design than a monolithic review skill. Shai's skill had the mode-architecture; the 6-repo absorption preserved it independently.*
+- **2026-04-24 - Code Reviewer clean rebuild**: First build absorbed the code-review skill wholesale (scanner.py + 20 angles + 7 phases + 4 modes + vuln pattern DB). Clean rebuild from 6 repos produces a strong mode-based review employee (PR + Full Audit + Security + Dependency + Karpathy + Adversarial + Debug). The skill layers in later as v0.3.0 with its scanner + pattern DB.
+  *Proposed rule: Mode-based reviewers (distinct review patterns per context) are a better design than a monolithic review skill. the owner's skill had the mode-architecture; the 6-repo absorption preserved it independently.*
   Tags: [#mode-architecture], [#promoted?]
 
 - **2026-04-24 - Code Reviewer clean rebuild**: sickn33 had 10+ code-review-specific skills - by far the most fine-grained of the 6 repos. Includes requesting-review, receiving-review, AI-on-AI review, vibers peer-style - all useful facets. Rolled into a single employee with mode-switching.

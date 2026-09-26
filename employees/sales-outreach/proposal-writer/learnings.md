@@ -8,8 +8,8 @@ Format: - **<YYYY-MM-DD> - <context>**: <what> *Proposed rule: <takeaway>* Tags:
 
 ## Pending observations
 
-- **2026-04-24 - Proposal Writer clean rebuild**: First build had Shai's upwork-proposals wholesale (753 lines: SKILL + strategy + portfolio-links + lessons with his actual win-rate data). Clean rebuild from 6 repos produces strong base on 3-act narrative + flag analysis + pricing + objection handling. Shai's upwork-proposals is now GIG number 1 (solaris/gigs/upwork-proposals/); general craft lifted into rules.md 2026-06-04, operational specifics (portfolio waterfall, pricing, credentials, cadence) stay in the gig (doctrine retired 2026-06-04).
-  *Proposed rule: Proposal writing is highly personal to the writer's niche + voice. External sources give the framework; Shai's skill provides the niche-specific proof. Both layers needed.*
+- **2026-04-24 - Proposal Writer clean rebuild**: First build had the upwork-proposals skill wholesale (753 lines: SKILL + strategy + portfolio-links + lessons with his actual win-rate data). Clean rebuild from 6 repos produces strong base on 3-act narrative + flag analysis + pricing + objection handling. The upwork-proposals skill is now GIG number 1 (solaris/gigs/upwork-proposals/); general craft lifted into rules.md 2026-06-04, operational specifics (portfolio waterfall, pricing, credentials, cadence) stay in the gig (doctrine retired 2026-06-04).
+  *Proposed rule: Proposal writing is highly personal to the writer's niche + voice. External sources give the framework; The owner's skill provides the niche-specific proof. Both layers needed.*
   Tags: [#framework-plus-personal]
 
 - **2026-04-24 - Proposal Writer clean rebuild**: msitarzewski's sales-proposal-strategist (3-act narrative + win themes) is the strongest standalone source. 3-act structure (Hook + Solution + Close) is universal across Upwork, B2B, RFP.

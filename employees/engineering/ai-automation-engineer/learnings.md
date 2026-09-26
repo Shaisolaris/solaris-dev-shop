@@ -16,7 +16,7 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
   *Proposed rule: High-risk, high-specific-requirement automations get dedicated playbooks. Generic automation advice fails them.*
   Tags: [#dedicated-playbooks], [#linkedin]
 
-- **2026-04-24 - AI Automation Engineer rebuild**: Solaris's OWN infrastructure (Talent Scout weekly scan + Knowledge Synthesizer Sunday sweep) ARE scheduled-task automations. Self-referential canonical examples.
+- **2026-04-24 - AI Automation Engineer rebuild**: Solaris's OWN infrastructure (weekly skill scan + Sunday knowledge sweep) ARE scheduled-task automations. Self-referential canonical examples.
   *Proposed rule: Solaris's meta-layer automations are the canonical examples this employee points to when teaching patterns. Use them first.*
   Tags: [#solaris-as-reference]
 

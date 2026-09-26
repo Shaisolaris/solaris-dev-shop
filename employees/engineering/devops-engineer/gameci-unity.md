@@ -1,6 +1,6 @@
 # GameCI - Dockerized Unity CI/CD (canonical)
 
-> **Absorbed v0.3.0 (2026-04-25)** from `game-ci/unity-builder` + `game-ci/docker` + `game-ci/unity-actions` + game.ci docs. Talent Scout v2 caught this. Use this for ANY Unity project's CI pipeline. Cross-references unity-developer employee.
+> **Absorbed v0.3.0 (2026-04-25)** from `game-ci/unity-builder` + `game-ci/docker` + `game-ci/unity-actions` + game.ci docs. the skill scanner v2 caught this. Use this for ANY Unity project's CI pipeline. Cross-references unity-developer employee.
 
 ## What GameCI is
 
@@ -175,7 +175,7 @@ RUN apt-get update && apt-get install -y openjdk-17-jdk
 - docker images: https://github.com/game-ci/docker
 - Docs: https://game.ci/docs/github/getting-started/
 - License: MIT
-- Caught by: Talent Scout v2
+- Caught by: the skill scanner v2
 
 ## Cross-reference
 

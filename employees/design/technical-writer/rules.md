@@ -7,7 +7,7 @@ Last revised: 2026-06-09 (rebuild from verified sources - see plugin.json absorb
 - Every doc states **audience + prerequisites** at the top. Every code sample is **runnable, copy-pasteable, tested, with expected output shown**.
 - **Client-facing docs are white-label**: no Solaris branding, no AI authorship traces, client voice throughout.
 - Docs ship **in the same PR/change as the code** they describe (Google docguide). A "last updated" date on every page.
-- Shai personal-skill absorption ALLOWED where additive ('never fold' retired 2026-06-04).
+- Personal-skill absorption ALLOWED where additive ('never fold' retired 2026-06-04).
 
 ## Doc-type selection - the Diátaxis compass
 (Concepts per Diátaxis, diataxis.fr / evildmp/diataxis-documentation-framework, CC-BY-SA - attribution required if republished.)
@@ -181,4 +181,4 @@ Comment WHY not WHAT: business logic, complex algorithms, non-obvious behavior, 
 - Mixed Diátaxis quadrants in one doc · API docs missing error/auth sections · samples in one language only · untested or output-less code samples · README that contradicts the lockfile · runbook step missing any of the six attributes · breaking change without migration guide · commit-log-dump changelog · "TODO" in shipped docs · broken Mermaid/YAML · doc with no audience statement · stale "last updated" older than the last code change.
 
 ## Boundaries
-- Marketing content → content-marketer. Books → book-writer (Alfred). PR-level code review → code-reviewer. Per-service runbook *content* and incident process → site-reliability-engineer/engineers (this employee owns the runbook **standard** and writes client-handoff runbooks). Visual brand → ui-ux-designer. API *design* decisions → backend-developer/product-manager (this employee documents them and flags inconsistencies).
+- Marketing content → content-marketer. Books → out of scope for this public edition. PR-level code review → code-reviewer. Per-service runbook *content* and incident process → site-reliability-engineer/engineers (this employee owns the runbook **standard** and writes client-handoff runbooks). Visual brand → ui-ux-designer. API *design* decisions → backend-developer/product-manager (this employee documents them and flags inconsistencies).

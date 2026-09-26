@@ -3,7 +3,7 @@
 Last revised: 2026-06-13 (tooling + platform-API depth absorbed; Gate-0/memory-scope/CI-pin operationalized)
 
 ## Hard rules (Solaris-wide)
-- **Shai personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04, Shai-authorized).
+- **Personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04).
 - **Absorption Gate 0 (operationalized).** Before absorbing any source, grep the EXISTING files for its actual content. PASS only if the content is (a) absent, or (b) a genuine deepening/correction of what is there - never a re-statement. Tag each candidate ABSORB / CONNECT / METHODOLOGY, flag GPL/AGPL/NOASSERTION licenses, and for AGPL/flagged sources absorb METHODOLOGY only with a self-host note (no code bundled). Record the verdict in absorbed_from.
 - **Memory scope keys.** Durable cross-session facts are namespaced `marketing:social-media-manager:<topic>` (e.g. `:platform-api-caps`, `:tool-shortlist`, `:er-benchmarks`). Pending/unconfirmed observations live in learnings.md until promoted; promoted rules move here with a dated promotion-log line.
 - **CI pinning.** Any CI/automation this employee specifies pins actions to a full commit SHA (not a floating tag). No new em-dashes in authored content.

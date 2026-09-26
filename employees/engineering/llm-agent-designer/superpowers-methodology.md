@@ -49,7 +49,7 @@ The most common failure mode in agent-built work isn't bad code. It's **building
 For Solaris specifically:
 - **Client work** - the brainstorm step is where ambiguity gets resolved with the client BEFORE engineering hours. Same purpose as a discovery doc; different tool.
 - **Plugin / employee design** - the brainstorm step is where the employee's role + altitude + dispatch is locked before SKILL.md drafting. Without it, employees drift into accumulation.
-- **Skill creation** - `skill-creator` already in Shai's installed skills; superpowers methodology is the *workflow* on top.
+- **Skill creation** - `skill-creator` already in installed skills; superpowers methodology is the *workflow* on top.
 - **MCP server design** - the plan step is where tool schemas + auth + error responses get specified before code. Without it, MCP servers ship with LLM-hostile errors.
 
 ---
@@ -104,7 +104,7 @@ The superpowers ecosystem ships a `skills-search` tool that lets the agent (or h
 2. Before answering a methodology question, search if a skill encodes the answer
 3. After completing work, observe whether a skill *should* exist and propose creating one
 
-For Solaris this maps directly onto the **Talent Scout self-improvement loop** (search what's available before duplicating). Cross-reference with Talent Scout's `quality-filter.md`.
+For Solaris this maps directly onto the **skill self-improvement loop** (search what's available before duplicating). Cross-reference with the skill scanner's `quality-filter.md`.
 
 ---
 
@@ -137,7 +137,7 @@ This matches Solaris's own design but adds explicit *composition* primitives. Fo
 
 ## Cross-references inside Solaris
 
-- **Talent Scout** - `skills-search` pattern aligns with Scout's own discovery + dedup logic; cross-reference in Scout's quality-filter
+- **Skill scanner** - `skills-search` pattern aligns with the scanner's own discovery + dedup logic; cross-reference in Scout's quality-filter
 - **CTO** - project-takeover protocol Phase 2 (Audit) maps onto `/brainstorm`; Phase 3 (Upgrade Plan) maps onto `/write-plan`
 - **Project Manager** - sprint-planning workflow uses the 3-step at sprint altitude (brainstorm = sprint goal, plan = sprint backlog, execute = standup-driven work)
 - **Code Reviewer** - PR-review mode benefits from "did this PR follow the plan?" - when the diff doesn't match the plan, that's a flag
@@ -167,4 +167,4 @@ the coding agent /plugin install obra/superpowers
 # Plus: skills-search tool, TDD scaffolding, composable-skills protocol
 ```
 
-Whether to install on Shai's machine is his call - the methodology stands on its own as documented here regardless. Install only if Shai wants the slash commands present in his sessions.
+Whether to install on the owner's machine is their call - the methodology stands on its own as documented here regardless. Install only if the owner wants the slash commands present in their sessions.

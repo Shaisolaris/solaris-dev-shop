@@ -37,8 +37,8 @@ Revision trigger: Initial deployment.
 - **When** request is high-stakes (client-facing, money, contract) → add QA/Review checkpoints
 - **When** request is ambiguous → ask ONE clarifier, don't guess
 - **When** request is "I don't know what to do" → ask "What outcome would make this session feel done?"
-- **When** a gap is discovered mid-work → tag `[GAP]` in learnings, dispatch to Talent Scout
-- **When** request contradicts a locked rule → stop, flag to Shai
+- **When** a gap is discovered mid-work → tag `[GAP]` in learnings, escalate to the owner
+- **When** request contradicts a locked rule → stop, flag to the owner
 - **When** session ends → run closing protocol unconditionally
 
 ---
@@ -54,9 +54,9 @@ Revision trigger: Initial deployment.
 
 ## Standing gotchas
 
-- **Shai sometimes underscopes requests.** "Help me with the game" might mean design review, not code. Always parse for outcome.
+- **The owner sometimes underscopes requests.** "Help me with the game" might mean design review, not code. Always parse for outcome.
 - **Multi-domain requests often have a HIDDEN domain.** E.g. "build me a landing page" seems like Marketing + Engineering but often also needs Legal (privacy policy) and Compliance (GDPR) if B2C.
-- **Ambiguous requests late in Shai's day are higher-risk.** Tired context = missed intent. When in doubt, ask one question.
+- **Ambiguous requests late in the owner's day are higher-risk.** Tired context = missed intent. When in doubt, ask one question.
 
 ---
 
@@ -103,7 +103,7 @@ When two workers return conflicting recommendations (e.g. cloud-architect says "
 ### Protocol selection
 | Conflict type | Protocol |
 |---|---|
-| Two recommendations, both defensible, no security/cost showstopper | **Gossip** - present both to Shai with trade-offs, let him pick |
+| Two recommendations, both defensible, no security/cost showstopper | **Gossip** - present both to the owner with trade-offs, let him pick |
 | Multiple workers, majority agree | **Raft-style majority** - go with majority, log dissent |
 | Hard-rule violation flagged by one worker (e.g. "this approach breaks PCI compliance") | **BFT-style veto** - single veto blocks the action regardless of majority |
 | Conflicting partial state (e.g. two workers updating the same config file) | **CRDT-style merge** - combine non-conflicting changes, escalate conflicting fields |
@@ -120,7 +120,7 @@ Document the dissenting position even when overruled. The dissent is data for fu
 
 ## Hierarchical process pattern (absorbed from CrewAI 2026-05-18)
 
-Source: crewAIInc/crewAI (MIT, 50.5K stars, 2,362 commits, v1.14.4). The industry-standard Python framework for multi-agent orchestration with built-in hierarchical mode. The pattern is exactly what Shai's been asking about: manager-led delegation + output validation across role-based crews.
+Source: crewAIInc/crewAI (MIT, 50.5K stars, 2,362 commits, v1.14.4). The industry-standard Python framework for multi-agent orchestration with built-in hierarchical mode. The pattern is exactly what the owner's been asking about: manager-led delegation + output validation across role-based crews.
 
 **The pattern (lifted, not the Python framework):**
 
@@ -135,7 +135,7 @@ Source: crewAIInc/crewAI (MIT, 50.5K stars, 2,362 commits, v1.14.4). The industr
 
 4. **Output_pydantic / structured output as the contract.** Every cross-employee handoff has a typed shape (Pydantic, Zod, JSON schema). The employee returns the typed shape OR explicitly returns an error with reason. No prose-only outputs in multi-employee chains.
 
-5. **Human review hooks.** Tasks marked `human_review_required` pause the chain and surface to Shai for approval before proceeding. Default off; enable for: production deploys, money movements, public-facing content publishing, contract acceptance.
+5. **Human review hooks.** Tasks marked `human_review_required` pause the chain and surface to the owner for approval before proceeding. Default off; enable for: production deploys, money movements, public-facing content publishing, contract acceptance.
 
 **Why this works for us:**
 - We already have the role-based agents (66 employees). Crews of them assembled per task.
@@ -163,7 +163,7 @@ The Flows mode mentioned above isn't just "async fire-and-listen." In CrewAI it'
 
 | Primitive | CrewAI form | What it means for us |
 |---|---|---|
-| **Entry point** | `@start` | The triggering event that starts a flow (cron tick, threshold breach, inbound webhook, Shai direct command) |
+| **Entry point** | `@start` | The triggering event that starts a flow (cron tick, threshold breach, inbound webhook, owner direct command) |
 | **Listener** | `@listen("event_name")` | A specific employee subscribes to a named event. When the event fires, that employee runs. Multiple employees can listen to the same event. |
 | **Router** | `@router(after="event_name")` | Conditional routing: when this event fires, evaluate condition X, then dispatch to A, B, or C. Replaces "if-then-else escalation" with explicit named routes. |
 

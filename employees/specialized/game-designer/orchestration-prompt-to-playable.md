@@ -3,7 +3,7 @@
 > Deepened 2026-06-13 from **leigest519/OpenGame** (2.5k★, Apache-2.0, CUHK MMLab) - the first open-source agentic framework for end-to-end web game creation from a prompt. ABSORB the METHODOLOGY (it's transferable to Unity + Unreal, not just web). This is the orchestration brain that turns "give a command → it designs, creates assets, and executes" from a wish into a repeatable loop.
 
 ## The core problem OpenGame names (and why it matters to Solaris)
-LLMs solve isolated coding tasks easily but **collapse when asked to produce a fully playable game from a high-level design** - they fail on **cross-file inconsistencies, broken scene wiring, and logical incoherence**. Patching isolated syntax bugs doesn't fix this; you need an agent that **scaffolds stable architecture** and **systematically repairs integration errors**. This is exactly Shai's "took a month to republish 6 games" pain, generalized.
+LLMs solve isolated coding tasks easily but **collapse when asked to produce a fully playable game from a high-level design** - they fail on **cross-file inconsistencies, broken scene wiring, and logical incoherence**. Patching isolated syntax bugs doesn't fix this; you need an agent that **scaffolds stable architecture** and **systematically repairs integration errors**. This is exactly the owner's "took a month to republish 6 games" pain, generalized.
 
 ## Game Skill - the two-part reusable capability
 OpenGame bootstraps its agent with **Game Skill**, split in two. This is the pattern to run for any Solaris game build, regardless of engine:

@@ -30,7 +30,7 @@ UGenthe coding agentChat::SendChatRequest(ChatSettings, FOnthe coding agentChatC
 ### 2. MCP handshake (edit-time editor control via a desktop agent app / a coding agent / Cursor)
 A **FastMCP**-based Python MCP server (`Content/Python/mcp_server.py`) that lets an AI client drive the editor: spawn objects + transform/scale/rotate, change materials/color, generate blueprints (+ functions/variables/components), **run Python scripts**, **run console commands**, create/edit project files. This overlaps the ChiR24 bridge - **prefer ChiR24 for structured engine control; use UnrealGenAISupport's MCP mainly for its Python-script-execute escape hatch and its asset-gen tools.**
 
-> ⚠️ **Upstream honesty (carried, do not hide from Shai):** UnrealGenAISupport's MCP is **"not actively developed"** per its maintainer, and Epic is building an official UE 5.8+ MCP. Known MCP issues: nodes fail to connect properly; no undo/redo over MCP; no streaming for DeepSeek reasoning; create-material tool can't do complex materials; some valid LLM-generated Python fails; Blueprint compile errors aren't surfaced cleanly; getter/setter node spawning is flaky; editor windows don't always dock/focus right. Treat MCP-driven Blueprint graph work as best-effort + verify.
+> ⚠️ **Upstream honesty (carried, do not hide from the owner):** UnrealGenAISupport's MCP is **"not actively developed"** per its maintainer, and Epic is building an official UE 5.8+ MCP. Known MCP issues: nodes fail to connect properly; no undo/redo over MCP; no streaming for DeepSeek reasoning; create-material tool can't do complex materials; some valid LLM-generated Python fails; Blueprint compile errors aren't surfaced cleanly; getter/setter node spawning is flaky; editor windows don't always dock/focus right. Treat MCP-driven Blueprint graph work as best-effort + verify.
 
 ---
 
@@ -56,7 +56,7 @@ These are **CONNECT** items - the host wires the MCP/API once; all three game em
 - **elevenlabs/elevenlabs-mcp** (MIT, free tier; commercial API behind) - SFX + music + voice for both engines.
 - **VAST-AI-Research/tripo-mcp** (MIT, official) + **meshy-dev/meshy-mcp-server** (MIT, official) - text/image → 3D with PBR; pipe into Blender or import directly.
 - **Commercial 3D/2D/audio gen (CONNECT, never absorb):** Meshy, Tripo, Rodin (3D + auto-rig), Scenario.com (style-trained 2D sprites + PBR), Layer.ai (textures), Suno/Udio (music).
-- **Known OSS gaps (commercial-only as of 2026-06):** OSS rigging/animation gen, OSS 2D sprite gen, OSS music MCP. Flag to Shai when a task needs these; don't pretend an OSS option exists.
+- **Known OSS gaps (commercial-only as of 2026-06):** OSS rigging/animation gen, OSS 2D sprite gen, OSS music MCP. Flag to the owner when a task needs these; don't pretend an OSS option exists.
 
 **Flow:** design intent (game-designer) → generate raw asset (Tripo/Meshy/blender-mcp/ElevenLabs) → refine in Blender (blender-mcp) → import + place + wire in-engine (ChiR24 bridge for UE / CoplayDev for Unity) → PIE/play-mode verify → iterate.
 

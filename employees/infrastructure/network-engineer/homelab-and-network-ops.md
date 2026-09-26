@@ -62,7 +62,7 @@ VLAN  Name        Subnet            Gateway        Purpose
 99    management  192.168.99.0/24   192.168.99.1   Network gear web UIs
 ```
 
-For Shai's dev shop + game studio, consider extending with a Dev/Build VLAN (client code, build agents - isolated from general Trusted) and a Game-Test VLAN (console dev kits, test rigs).
+For the owner's dev shop + game studio, consider extending with a Dev/Build VLAN (client code, build agents - isolated from general Trusted) and a Game-Test VLAN (console dev kits, test rigs).
 
 SSID -> VLAN: one SSID per zone, separate passwords. Switch ports: trunk to router/APs (tagged), access to end devices (untagged). AP ports are trunks because the AP tags per-SSID traffic.
 

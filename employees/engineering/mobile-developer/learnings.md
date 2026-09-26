@@ -13,7 +13,7 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
   Tags: [#source-selection], [#promoted?]
 
 - **2026-04-24 - Mobile Developer rebuild**: Cross-platform vs native is the highest-leverage mobile decision. Built explicit decision tree with default (RN + Expo + TS) to prevent endless debate.
-  *Proposed rule: When a decision repeats across projects, codify a default path; Shai still overrides, but starts from a sane baseline.*
+  *Proposed rule: When a decision repeats across projects, codify a default path; the owner still overrides, but starts from a sane baseline.*
   Tags: [#default-decision-tree]
 
 - **2026-04-24 - Mobile Developer rebuild**: Cross-referenced UI/UX Designer's Design Review Protocol as a hard gate BEFORE implementation. Mobile especially suffers from "build first, figure out flow later" - the 4 questions catch flow gaps.
@@ -28,7 +28,7 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 |------|-------------------|----------|
 | | | |
 
-## 2026-04-25 - v0.3.0 absorption (Talent Scout v2 catches)
+## 2026-04-25 - v0.3.0 absorption (skill scanner v2 catches)
 - **mobile-next/mobile-mcp is the unified mobile MCP** - works on iOS + Android, real devices + emulators + simulators. Single npm package, single config, all major MCP clients supported. No reason to use anything else as primary.
 - **Accessibility tree > screenshot coordinates.** mobile-mcp's `mobile_list_elements_on_screen` returns labelled elements with coords. ALWAYS use a11y labels first; coord-based clicks break with any UI change.
 - **Cross-app workflows are the killer use case.** LLM can chain Substack → WhatsApp → Calendar in a single prompt. None of the prior mobile MCPs supported this end-to-end.

@@ -164,7 +164,7 @@ Boundary with AI Automation Engineer: LLM Agent Designer does the *design + arch
 - Filesystem structure: SKILL.md (always-loaded) + references/ (progressive disclosure) + scripts/
 - YAML frontmatter: `name` + `description` (with trigger keywords for auto-invocation)
 - Progressive disclosure - load references only when the specific sub-task triggers
-- Skill vs. agent vs. plugin distinction (Shai's own Solaris architecture is canonical)
+- Skill vs. agent vs. plugin distinction (the owner's own Solaris architecture is canonical)
 - Self-learning patterns (learnings.md → rules.md promotion lifecycle)
 
 ### an agent SDK
@@ -291,11 +291,11 @@ Cross-reference `mcp-builder` + `skill-creator` skills. In summary:
 
 **wshobson** - ai-engineer (multi-model, RAG, production patterns)
 
-**mcp-builder skill** (from Shai's installed skills - MCP server methodology)
+**mcp-builder skill** (from installed skills - MCP server methodology)
 
-**skill-creator skill** (from Shai's installed skills - skill-writing methodology)
+**skill-creator skill** (from installed skills - skill-writing methodology)
 
-**Solaris's own an agent SDK experience** - Solaris IS a the coding agent-agent-SDK product; the 59 employee-plugins ARE agent designs; Shai is the canonical user for this employee
+**Solaris's own an agent SDK experience** - Solaris IS a the coding agent-agent-SDK product; the 59 employee-plugins ARE agent designs; the owner is the canonical user for this employee
 
 **msitarzewski + lodetomasi + sickn33** - AI/LLM patterns across repos
 
@@ -311,7 +311,7 @@ After every LLM-design session:
    - Model choices that paid off or didn't
    - RAG retrieval gotchas
    - Agent loop / cost / latency surprises
-   - MCP / skill design patterns Shai reused
+   - MCP / skill design patterns the owner reused
 3. Promotion: 2-3 occurrences → `rules.md`
 
 ---

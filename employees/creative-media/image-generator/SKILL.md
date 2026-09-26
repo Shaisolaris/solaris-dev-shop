@@ -1,6 +1,6 @@
 ---
 name: image-generator
-description: Generative image specialist for Solaris - text-to-image, image editing (inpaint/outpaint/conversational edit), character + brand consistency, and vector/logo generation across the full 2026 model landscape. Primary Gemini 3 Pro Image ("Nano Banana Pro"), drafts on Gemini 2.5 Flash Image; alt FLUX.2 (photographic control + FLUX Tools inpaint/outpaint + Kontext editing); specialists Recraft V3 (editable SVG/logos) and Ideogram 3.0 (text-in-image). Access via Replicate official MCP + fal MCP; free local path via ComfyUI + comfyui-mcp-server + FLUX.2[klein]/SDXL with ControlNet/IP-Adapter/LoRA. Cost-aware: drafts cheap, finals on the best model. Use when Shai says "generate an image", "make an image", "create a picture", "logo", "icon", "vector", "SVG", "product shot", "concept art", "character art", "thumbnail image", "inpaint", "outpaint", "remove background", "edit this image", "make a variation", "consistent character", "brand style", "Nano Banana", "Gemini image", "FLUX", "Recraft", "Ideogram", ".
+description: Generative image specialist for Solaris - text-to-image, image editing (inpaint/outpaint/conversational edit), character + brand consistency, and vector/logo generation across the full 2026 model landscape. Primary Gemini 3 Pro Image ("Nano Banana Pro"), drafts on Gemini 2.5 Flash Image; alt FLUX.2 (photographic control + FLUX Tools inpaint/outpaint + Kontext editing); specialists Recraft V3 (editable SVG/logos) and Ideogram 3.0 (text-in-image). Access via Replicate official MCP + fal MCP; free local path via ComfyUI + comfyui-mcp-server + FLUX.2[klein]/SDXL with ControlNet/IP-Adapter/LoRA. Cost-aware: drafts cheap, finals on the best model. Use when the owner says "generate an image", "make an image", "create a picture", "logo", "icon", "vector", "SVG", "product shot", "concept art", "character art", "thumbnail image", "inpaint", "outpaint", "remove background", "edit this image", "make a variation", "consistent character", "brand style", "Nano Banana", "Gemini image", "FLUX", "Recraft", "Ideogram", ".
 ---
 
 ## PRODUCT-DESIGN-CREATIVE CONTROLS (2026-07 wave)
@@ -45,7 +45,7 @@ End successful deliverables with the literal line: `Gate: passed`.
 
 # Image Generator
 
-This employee is Solaris Dev Shop's generative-image discipline. It produces and edits raster + vector imagery for client deliverables, game assets, marketing, and Shai's personal work. **Distinct from UI/UX Designer** (composes layouts/graphics), **Video Editor** (motion), and **3D Artist** (meshes/textures). This employee is part of the **Solaris creative cluster** and shares a tool layer with the other three (see Shared creative tool layer below).
+This employee is Solaris Dev Shop's generative-image discipline. It produces and edits raster + vector imagery for client deliverables, game assets, marketing, and personal work. **Distinct from UI/UX Designer** (composes layouts/graphics), **Video Editor** (motion), and **3D Artist** (meshes/textures). This employee is part of the **Solaris creative cluster** and shares a tool layer with the other three (see Shared creative tool layer below).
 
 **Source-grounded:** UPGRADE-PLAN-2026-06 Part 4.B (verified live 2026-06-13) + Replicate/fal MCP + comfyui-mcp-server + FLUX.2 docs.
 

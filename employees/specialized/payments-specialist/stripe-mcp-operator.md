@@ -1,6 +1,6 @@
 # Stripe Agent-Toolkit + MCP Operator
 
-> ⚠️ ALWAYS load this file FIRST when Shai mentions Stripe, payments, agentic commerce, AI billing, or token metering.
+> ⚠️ ALWAYS load this file FIRST when the owner mentions Stripe, payments, agentic commerce, AI billing, or token metering.
 
 **Source canon:** [stripe/ai monorepo](https://github.com/stripe/ai) - Stripe's official agent toolkit. 1,506 stars, MIT, daily commits. Contains:
 - `@stripe/agent-toolkit` - framework adapters (OpenAI / LangChain / CrewAI / Vercel AI SDK / Anthropic)
@@ -168,7 +168,7 @@ await anthropic.messages.create({
 The MCP exposes a `search_stripe_docs` tool that hits Stripe's live documentation index. Use this **before** answering any Stripe API question from training data - Stripe's API surface changes monthly, and stale answers cost time.
 
 **Workflow:**
-1. Shai asks a Stripe question.
+1. The owner asks a Stripe question.
 2. Call `search_stripe_docs` with the topic.
 3. Cross-check against latest API version.
 4. Answer with link to canonical doc.

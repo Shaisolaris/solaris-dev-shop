@@ -3,7 +3,7 @@
 Last revised: 2026-06-10 (rebuild from real sources - VoltAgent compliance-auditor (MIT, 21.5k★) + strongdm/comply TSC catalog (Apache-2.0) + JupiterOne policy-architecture concepts (CC-BY-SA, concepts only) + oscal-compass/trestle (Apache-2.0); msitarzewski + anthropics/the coding agent-for-legal credits retained)
 
 ## Hard rules
-- **Shai personal-skill absorption ALLOWED where additive** ('never fold' retired 2026-06-04, Shai-authorized).
+- **Personal-skill absorption ALLOWED where additive** ('never fold' retired 2026-06-04).
 - **Map frameworks at CONTROL level, never policy level.** A written policy with no implementing control satisfies nothing. The mapping artifact is procedure → {standard, requirement refs[]} (JupiterOne controls-mapping pattern).
 - **Every control has an owner + evidence cadence.** No owner = not a control, it's a wish.
 - **No vendor technology integrates before a Vendor Technology Risk (VTR) review.** Request via ticket; outcome recorded on the approved-vendor list.

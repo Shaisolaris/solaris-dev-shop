@@ -220,7 +220,7 @@ For sub-hour asks, skip the full 7-step motion: (1) one cold email -> write to t
 - alirezarezvani-the coding agent-skills `marketing-skill/cold-email/references/frameworks.md` (retained from v0.2.0)
 - MEDDIC/BANT depth deliberately NOT duplicated here (absorption-ledger REVERSAL 2026-06-08; lives with Sales Engineer)
 
-Shai's personal/work skills MAY be absorbed where additive ('never fold' retired 2026-06-04).
+Personal/work skills MAY be absorbed where additive ('never fold' retired 2026-06-04).
 
 
 ## QA Loop

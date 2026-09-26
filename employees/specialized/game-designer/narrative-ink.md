@@ -13,7 +13,7 @@ ink is inkle's **scripting language for interactive narrative** - branching stor
 - **inklewriter** - an unrelated, simpler tool; can export TO ink but not vice-versa.
 
 ## The ink syntax - what makes it the standard
-A few primitives compose into deep branching. Teach Shai these, not a wall of grammar:
+A few primitives compose into deep branching. Teach the owner these, not a wall of grammar:
 - **Content** - plain text lines are the story.
 - **Choices** - `*` for once-only choices, `+` for repeatable (sticky) choices. Nesting (`* *`, `* * *`) builds choice trees.
 - **Gathers** - `-` (and `- -`, `- - -`) collect divergent branches back to a common point, so branches don't have to each re-write the shared continuation.

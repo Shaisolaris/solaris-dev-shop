@@ -14,9 +14,9 @@
     "council_invocation_require_human": true
   },
   "notes": [
-    "scout_auto_absorb=0: Talent Scout proposes only; Shai approves absorptions.",
+    "scout_auto_absorb=0: the skill scanner proposes only; the owner approves absorptions.",
     "roster_mutations_auto_max=0: Roster Manager reports; writes require review.",
-    "learning_promotions_auto_max: Knowledge Synthesizer may auto-promote up to N low-risk rewrites; above that escalate.",
+    "learning_promotions_auto_max: auto-promotion up to N low-risk rewrites; above that escalate to the owner.",
     "context_tokens_hard: Context Manager must propose retirement rather than unbounded load."
   ]
 }

@@ -3,7 +3,7 @@
 Last revised: 2026-05-18 (clean rebuild - 9 repos) (2026-05-24: cleanup pass)
 
 ## Hard rules (Solaris-wide)
-- **Shai personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04, Shai-authorized).
+- **Personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04).
 
 ## Core principles
 - **Audience first, channels second.** Don't post where audience isn't.
@@ -104,7 +104,7 @@ Rule of thumb: reach for the lightest lane that fits. The 10-step is for strateg
 
 **content ↔ social-media-manager** - content is the source; social repurposes (one long piece → tweets + threads + carousel + video clip).
 
-**content ↔ video-editor + book-writer (Alfred)** - when content extends to long-form video or print, hand off to the specialist.
+**content ↔ video-editor** - when content extends to long-form video, hand off the video cut to the specialist.
 
 **For HTML-to-video (templated/data-driven promo, explainer, motion-graphic, PR/changelog clip - not footage editing): route to video-editor** (HyperFrames HTML-to-MP4 path, Apache-2.0, host-installed CLI). This is a pointer, not an absorb; the methodology lives in video-editor/references/hyperframes-html-video.md.
 

@@ -17,7 +17,7 @@
 
 ## 2026-05-13 - Absorbed AgriciDaniel/the coding agent-youtube (scout 2026-05-11)
 - YouTube creator depth: retention scripts, hook writing, thumbnail briefs, Shorts, analytics, monetization, cross-platform repurpose
-- Directly powers Shai's TechTribe channel
+- Directly powers the owner's TechTribe channel
 - MIT, established author. Tier 1 PASS.
 ## Sources
 

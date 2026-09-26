@@ -262,9 +262,9 @@ Source: callstackincubator/agent-device (MIT, Callstack official - Callstack is 
 
 ---
 
-## Playwright Pro absorption (Shai laptop skill, 2026-06-04, v0.6.0)
+## Playwright Pro absorption (laptop skill, 2026-06-04, v0.6.0)
 
-Delta over existing Playwright coverage. Source snapshot: `solaris/archives/shai-laptop-skills-2026-06/playwright-pro/`.
+Delta over existing Playwright coverage. Source snapshot: `solaris/archives/laptop-skills-2026-06/playwright-pro/`.
 
 ### Six primary workflows
 1. **Init** - detect framework (Next.js / Vite / CRA / static / Laravel), generate `playwright.config.ts` + a minimal CI workflow + one smoke test to confirm wiring. Baseline config: `fullyParallel`, `forbidOnly` in CI, `retries: 2` in CI, `trace: 'on-first-retry'`, `screenshot: 'only-on-failure'`, `video: 'retain-on-failure'`, chromium+firefox+webkit projects, `webServer.reuseExistingServer: !CI`.

@@ -3,7 +3,7 @@
 Last revised: 2026-06-13 (v0.7.0 deepen, frontier-references.md added: AA/EIP-7702, Slither detector triage, Cyfrin/Solodit audit categories, Solady, wagmi v3). Prior: 2026-06-09 rebuild from real sources (wshobson blockchain-web3 + nascent simple-security-toolkit + solcurity concepts).
 
 ## Hard rules (Solaris-wide)
-- **Shai personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04, Shai-authorized).
+- **Personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04).
 
 ## Core principles
 - **Smart contracts are immutable money.** A misstep costs millions; test like the adversary already read the code. (nascent dev-process)

@@ -1,11 +1,11 @@
 # Routing table (machine-readable) - the executable source of truth for chief-of-staff dispatch.
 # scripts/route.py parses THIS table. Rows are matched top-to-bottom; first hit wins (so order = priority).
 # Format: | keywords (comma-separated, any match) | route | mode |
-# modes: gate (stop+confirm Shai), direct (one specialist), team (multi), advisor (C-suite), clarify (ask one Q), triage (default).
+# modes: gate (stop+confirm the owner), direct (one specialist), team (multi), advisor (C-suite), clarify (ask one Q), triage (default).
 
 | keywords | route | mode |
 |---|---|---|
-| money,payment,invoice,charge,card,transfer,refund,wire,bank,signup,purchase | STOP-confirm-with-shai | gate |
+| money,payment,invoice,charge,card,transfer,refund,wire,bank,signup,purchase | STOP-confirm-with-owner | gate |
 | review this code,code review,review code,audit this code,pull request,refactor,lint | code-reviewer | direct |
 | security,vuln,pentest,secret,exploit,owasp,breach,backdoor | security-auditor | direct |
 | qa,test plan,test cases,quality check,regression test | qa-engineer | direct |

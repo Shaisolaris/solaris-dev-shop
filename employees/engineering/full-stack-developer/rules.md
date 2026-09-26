@@ -271,7 +271,7 @@ If specialists ship work that violates this contract, full-stack-developer is th
 
 ## Project-takeover chain (codebase-onboarding + migration-architect) - 2026-06-04
 
-When engaged on an INHERITED codebase, full-stack-developer executes the takeover chain that **delivery-lead orchestrates** (delivery-lead sequences/gates; engineering performs). Source skills snapshotted at `solaris/archives/shai-laptop-skills-2026-06/{codebase-onboarding,migration-architect}/`.
+When engaged on an INHERITED codebase, full-stack-developer executes the takeover chain that **delivery-lead orchestrates** (delivery-lead sequences/gates; engineering performs). Source skills snapshotted at `solaris/archives/laptop-skills-2026-06/{codebase-onboarding,migration-architect}/`.
 
 - **Stage 1 - Onboarding** (`codebase-onboarding`): build the map first. Architecture + stack discovery from repo signals; `{Project}_Getting_Started.md` + `{Project}_Architecture.md`. No fixes yet - reviewing before understanding produces hallucinated criticism of idiomatic patterns. Done when the codebase is explainable to a stranger in 10 minutes.
 - **Stage 2 - Audit** (code-reviewer employee, full 7-phase + dependency-audit): every finding gets severity + owner + effort.

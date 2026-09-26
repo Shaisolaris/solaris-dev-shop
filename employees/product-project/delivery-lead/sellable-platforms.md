@@ -1,6 +1,6 @@
 # Sellable / productizable OSS platforms (client-deliverable stack)
 
-Added 2026-06-14. A short index of the open-source platforms Solaris can deliver to clients or productize (host/resell/white-label), each with a one-line "what we could sell or host" and the license-for-resale note. Productization (turning any of these into a paid managed/white-label line) is **Shai's business decision** - this file is the menu, not the commitment.
+Added 2026-06-14. A short index of the open-source platforms Solaris can deliver to clients or productize (host/resell/white-label), each with a one-line "what we could sell or host" and the license-for-resale note. Productization (turning any of these into a paid managed/white-label line) is **the owner's business decision** - this file is the menu, not the commitment.
 
 Per-platform ownership: each tool's operational/methodology home is the named employee; delivery-lead carries this consolidated sellable view because productization and client delivery are delivery/business decisions.
 
@@ -24,4 +24,4 @@ Per-platform ownership: each tool's operational/methodology home is the named em
 
 - During scoping, when a client need maps to one of these (publishing/newsletter, commerce, hosting, scheduling, analytics), reach for the OSS platform instead of putting them on a paid SaaS - it can become a recurring managed/hosted line for Solaris.
 - Confirm the per-platform CONNECT note in the owner employee's rules.md for the operational detail; this file is the business/menu view.
-- Any decision to productize (price it, host it at scale, white-label it as a Solaris product) is escalated to Shai. Note the n8n caveat held by ai-automation-engineer: n8n is fair-code and its RESALE/hosting-to-clients is restricted, so it is deliberately NOT on this sellable list.
+- Any decision to productize (price it, host it at scale, white-label it as a Solaris product) is escalated to the owner. Note the n8n caveat held by ai-automation-engineer: n8n is fair-code and its RESALE/hosting-to-clients is restricted, so it is deliberately NOT on this sellable list.

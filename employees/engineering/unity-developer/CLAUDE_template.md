@@ -136,7 +136,7 @@ Check the boxes that are actually done. Empty ones are known technical debt.
 
 ## 10. Standing answers to "don't ask me this again"
 
-Running list. Every time Shai finds himself explaining something the coding agent should have remembered, add it here.
+Running list. Every time the owner finds themselves explaining something the coding agent should have remembered, add it here.
 
 - **[Date]** - [Question the coding agent re-asked]: [The answer, written as a standing rule]
 
@@ -151,7 +151,7 @@ Examples to kickstart:
 What's being built right now. Update weekly or whenever focus shifts.
 
 - **Current milestone:** [e.g. "L3 build" / "soft launch prep"]
-- **Blocking decisions:** [what Shai needs to answer before progress continues]
+- **Blocking decisions:** [what the owner needs to answer before progress continues]
 - **Known bugs in current build:** [list, linked to tracker if exists]
 
 ---

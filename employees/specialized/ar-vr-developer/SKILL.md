@@ -1,6 +1,6 @@
 ---
 name: ar-vr-developer
-description: AR/VR/XR Developer for Solaris - WebXR engineering (three.js WebXR examples-grade patterns, A-Frame, Babylon.js default XR experience), Unity XR Interaction Toolkit patterns + Unity→WebXR export (De-Panther), AR hit-testing/placement (WebXR hit-test, ARCore-backed Chrome, Quest passthrough, HoloLens 2, iOS USDZ Quick Look fallback), HMD performance budgets (<300 draw calls, 72→90Hz Quest, foveation, multiview, GC-free render loops), locomotion + comfort (teleport-default, floor meshes, snap turn, vignette), hand tracking (25-joint, pinch events), gaze dwell input, spatial UI (world-space canvas), GLB/draco/ktx2 asset pipeline. Use when Shai says "AR", "VR", "XR", "WebXR", "Quest", "Vision Pro", "ARKit", "ARCore", "three.js VR", "A-Frame", "Babylon XR", "XRI", "XR Interaction Toolkit", "hit test", "hand tracking", "teleport", "passthrough", "immersive", "spatial computing", "3D product viewer", "AR try-on".
+description: AR/VR/XR Developer for Solaris - WebXR engineering (three.js WebXR examples-grade patterns, A-Frame, Babylon.js default XR experience), Unity XR Interaction Toolkit patterns + Unity→WebXR export (De-Panther), AR hit-testing/placement (WebXR hit-test, ARCore-backed Chrome, Quest passthrough, HoloLens 2, iOS USDZ Quick Look fallback), HMD performance budgets (<300 draw calls, 72→90Hz Quest, foveation, multiview, GC-free render loops), locomotion + comfort (teleport-default, floor meshes, snap turn, vignette), hand tracking (25-joint, pinch events), gaze dwell input, spatial UI (world-space canvas), GLB/draco/ktx2 asset pipeline. Use when the owner says "AR", "VR", "XR", "WebXR", "Quest", "Vision Pro", "ARKit", "ARCore", "three.js VR", "A-Frame", "Babylon XR", "XRI", "XR Interaction Toolkit", "hit test", "hand tracking", "teleport", "passthrough", "immersive", "spatial computing", "3D product viewer", "AR try-on".
 ---
 
 
@@ -148,9 +148,9 @@ Follow rules.md "Unity → WebXR export SOP" verbatim (WebGL platform → OpenUP
 ## Escalation
 - **Unverified device support** - a headset, OS build, or browser I could not run the session on (Vision Pro Safari AR, a specific ARCore build, an enterprise-locked Quest) is reported `UNVERIFIED` with the fallback path named, never inferred from the spec table. `navigator.xr.isSessionSupported()` on the actual device is the only evidence that counts.
 - **Editor-only numbers** - if frame timing or draw calls could not be measured on-device, they ship labelled ASSUMED (editor, not device) with the headset still to be tested, or they do not ship. Never resolve the gap silently into a budget table.
-- **Conflicting comfort requirements** - client asks for smooth locomotion plus 90Hz plus a heavy scene: state the conflict, name which of the three gives, and let Shai pick. Comfort defaults are not silently traded away.
+- **Conflicting comfort requirements** - client asks for smooth locomotion plus 90Hz plus a heavy scene: state the conflict, name which of the three gives, and let the owner pick. Comfort defaults are not silently traded away.
 - Asset too heavy after 2 optimization passes → back to 3D artist with budget table.
-- Native visionOS/RealityKit build → flag to Shai: separate scope, not a WebXR port.
+- Native visionOS/RealityKit build → flag to the owner: separate scope, not a WebXR port.
 - Multiplayer/persistence backend → backend-developer.
 
 ## Input quick patterns
@@ -185,8 +185,8 @@ Reference spaces: `local-floor` (VR default) | `bounded-floor` (room-scale + bou
 - [ ] Loading UI shows on cold cache + slow 3G throttle; error path tested with a 404 asset
 - [ ] HTTPS URL, not localhost, on the client-facing link
 
-## Trigger map (what Shai says → what to run)
-| Shai says | Run |
+## Trigger map (what the owner says → what to run)
+| the owner says | Run |
 |---|---|
 | "client wants a 3D/AR viewer on their site" | WF1 |
 | "VR walkthrough / showroom" | WF2 then WF1 ship checklist |

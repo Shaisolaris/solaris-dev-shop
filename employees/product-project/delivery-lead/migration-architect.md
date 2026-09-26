@@ -1,6 +1,6 @@
 # Takeover Stage 3 - Migration Architect (reference)
 
-Delivery Lead ORCHESTRATES this stage; it does not perform it. The capability is Shai's `migration-architect` skill (full source: `solaris/archives/shai-laptop-skills-2026-06/migration-architect/`). In Solaris, engineering (full-stack-developer / backend-developer) executes it.
+Delivery Lead ORCHESTRATES this stage; it does not perform it. The capability is the `migration-architect` skill (full source: `solaris/archives/laptop-skills-2026-06/migration-architect/`). In Solaris, engineering (full-stack-developer / backend-developer) executes it.
 
 ## When it fires
 ONLY for major-version jumps / framework swaps / engine migrations surfaced in Stage 2 - NOT for the bug-fix backlog (different risk profile, different rollback, different testing). Examples: PHP 7.x→8.x, Laravel 8→11, Node 14→20, AngularJS→Vue, jQuery→React, CodeIgniter→Laravel, MySQL 5.7→8, Postgres bumps.

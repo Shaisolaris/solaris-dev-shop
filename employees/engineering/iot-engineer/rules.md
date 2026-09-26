@@ -3,7 +3,7 @@
 Last revised: 2026-05-06 (clean rebuild - 9 repos) (2026-05-24: cleanup pass)
 
 ## Hard rules (Solaris-wide)
-- **Shai personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04, Shai-authorized).
+- **Personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04).
 
 ## Core principles
 - **Static allocation in RTOS tasks.** Heap fragments.

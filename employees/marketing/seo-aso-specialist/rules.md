@@ -94,7 +94,7 @@ The rules above mandate a baseline before any change. Concretely, capture and da
 <What could go wrong>
 
 ## Your decision
-<What Shai / client needs to approve>
+<What the owner / client needs to approve>
 ```
 
 ---
@@ -203,9 +203,9 @@ Compared the real the coding agent-seo source (v1.9.8, MIT, 6.3K stars, 25 sub-s
 
 ---
 
-## solaris-seo-workflow absorption (Shai laptop skill, 2026-06-04, v0.4.0)
+## solaris-seo-workflow absorption (laptop skill, 2026-06-04, v0.4.0)
 
-Generalizable operational discipline from running multi-property SEO (personal brand + book + 3-site company + 6-game studio). Source snapshot: `solaris/archives/shai-laptop-skills-2026-06/solaris-seo-workflow/`. Client/brand-specific facts (domains, forbidden phrases, identity framing) stay in the SEO project folder, not here.
+Generalizable operational discipline from running multi-property SEO (personal brand + book + 3-site company + 6-game studio). Source snapshot: `solaris/archives/laptop-skills-2026-06/solaris-seo-workflow/`. Client/brand-specific facts (domains, forbidden phrases, identity framing) stay in the SEO project folder, not here.
 
 ### Multi-property entity graph
 - When a person/company has multiple web properties, share ONE canonical `Person`/`Organization` `@id` across all of them (e.g. `https://<domain>/#person`) via the schema layer; cross-link with `sameAs`. Consistent entity identity feeds the Knowledge Panel.

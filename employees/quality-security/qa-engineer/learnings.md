@@ -8,7 +8,7 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 
 ## Pending observations
 
-- **2026-04-24 - QA clean rebuild (6 repos only)**: Clean rebuild from 6 repos produces strong test-strategy + accessibility-audit + flaky-triage + load-testing coverage. Shai's playwright-pro (5 workflows + Golden Rules + Cypress/Selenium migration patterns + MCP test servers) layers in at v0.3.0.
+- **2026-04-24 - QA clean rebuild (6 repos only)**: Clean rebuild from 6 repos produces strong test-strategy + accessibility-audit + flaky-triage + load-testing coverage. The playwright-pro skill (5 workflows + Golden Rules + Cypress/Selenium migration patterns + MCP test servers) layers in at v0.3.0.
   *Proposed rule: Test employees benefit from role-based locator discipline as a universal rule. Shared across Playwright, Cypress, Detox, Maestro - stable abstractions over implementation selectors.*
   Tags: [#role-based-locators]
 

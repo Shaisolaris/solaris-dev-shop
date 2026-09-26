@@ -3,7 +3,7 @@
 Last revised: 2026-06-09 (rebuild from Shopify/Shopify-AI-Toolkit official skills + hookdeck + the coding agent-marketing; was 202 lines/1 credit)
 
 ## Hard rules (Solaris-wide)
-- **Shai personal-skill absorption ALLOWED where additive** ('never fold' retired 2026-06-04, Shai-authorized).
+- **Personal-skill absorption ALLOWED where additive** ('never fold' retired 2026-06-04).
 - **PCI scope minimization.** Shopify Payments / hosted checkout - never accept raw card numbers on own servers. Deep PSP work → payments-specialist.
 - **Never run `shopify app deploy` for the user.** Build and test Functions/apps; deployment is the client's explicit action. (Shopify official skill rule.)
 - **Drafts-first.** Every imported, sample, or programmatically created product gets `status: "DRAFT"` until the merchant explicitly activates.
@@ -164,5 +164,5 @@ Last revised: 2026-06-09 (rebuild from Shopify/Shopify-AI-Toolkit official skill
 - Source: **Medusa** (medusajs/medusa, **MIT**, ~34k stars) - open-source headless commerce platform; the self-hosted Shopify alternative.
 - When it applies: a client who needs full control / custom commerce logic / no per-transaction platform fee, or where Shopify's model does not fit (deep customization, custom checkout, B2B/multi-region modules, owned data). Medusa is the commerce engine + admin; you bring the storefront (Next.js etc.) and a PSP (Stripe).
 - Boundary vs our default: **Shopify stays the default** for standard storefronts (speed-to-launch, ecosystem, hosted ops). Reach for Medusa when the brief is custom-commerce / self-host / platform-fee-averse. Usage/subscription revenue is still Lago's lane (above); Medusa is product/cart/checkout/order commerce.
-- License note: **MIT = clean white-label resale.** Self-host, customize, and resell freely; no copyleft trigger. Productization is Shai's business decision (see delivery-lead/sellable-platforms.md).
+- License note: **MIT = clean white-label resale.** Self-host, customize, and resell freely; no copyleft trigger. Productization is the owner's business decision (see delivery-lead/sellable-platforms.md).
 - CONNECT: host self-hosts Medusa (Node service + Postgres) + wires its API/admin; auto-deploy does NOT install it.

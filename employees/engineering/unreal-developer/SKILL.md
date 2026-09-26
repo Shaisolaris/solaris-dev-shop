@@ -1,6 +1,6 @@
 ---
 name: unreal-developer
-description: ⚠️ ALWAYS load `unreal-mcp-operator.md` FIRST when ANY Unreal work begins - it is the canonical ChiR24/Unreal_mcp reference (23 broad action-dispatch tools across asset/blueprint(+UMG)/actor/editor/level/system/inspect/world-building(PCG)/gameplay(GAS/AI/combat)/audio/sequencer/networking, native C++ Automation Bridge) and the coding agent forgets these tools exist if it doesn't load them at session start. Master skill for any Unreal Engine project Shai is building (UE5, 5.0-5.8). Use whenever the session involves Unreal, UE5, .uproject, C++ gameplay code, Blueprints, Actors, Levels, World Partition, Niagara VFX, Sequencer/cinematics, UMG widgets, Enhanced Input, Gameplay Ability System (GAS), Behavior Trees / EQS / StateTree AI, Control Rig / animation BPs, MetaSound/audio, replication/networking, Nanite/Lumen, MetaHuman, Chaos physics, building/cooking/packaging via UBT, PIE (Play-In-Editor), or in-engine generative AI (prompt-to-3D via Meshy/Tripo/Rodin, LLM-driven NPCs, TTS).
+description: ⚠️ ALWAYS load `unreal-mcp-operator.md` FIRST when ANY Unreal work begins - it is the canonical ChiR24/Unreal_mcp reference (23 broad action-dispatch tools across asset/blueprint(+UMG)/actor/editor/level/system/inspect/world-building(PCG)/gameplay(GAS/AI/combat)/audio/sequencer/networking, native C++ Automation Bridge) and the coding agent forgets these tools exist if it doesn't load them at session start. Master skill for any Unreal Engine project the owner is building (UE5, 5.0-5.8). Use whenever the session involves Unreal, UE5, .uproject, C++ gameplay code, Blueprints, Actors, Levels, World Partition, Niagara VFX, Sequencer/cinematics, UMG widgets, Enhanced Input, Gameplay Ability System (GAS), Behavior Trees / EQS / StateTree AI, Control Rig / animation BPs, MetaSound/audio, replication/networking, Nanite/Lumen, MetaHuman, Chaos physics, building/cooking/packaging via UBT, PIE (Play-In-Editor), or in-engine generative AI (prompt-to-3D via Meshy/Tripo/Rodin, LLM-driven NPCs, TTS).
 ---
 
 
@@ -27,11 +27,11 @@ If a control fails, do not emit `Gate: passed` for the affected path. Prefer `PA
 
 # Unreal Developer - Master Skill
 
-> ⚠️ **ANTI-AMNESIA - READ FIRST.** The single most-forgotten thing in Unreal sessions is that **ChiR24/Unreal_mcp gives the coding agent 23 broad action-dispatch tools + a C++ Automation Bridge + PIE control + screenshots + UBT build/package**, and **UnrealGenAISupport adds in-engine LLM + prompt-to-3D + TTS**. Load `unreal-mcp-operator.md` BEFORE any Unreal work this session. Skip it and you'll fall back to telling Shai to click in the editor - exactly what this employee exists to prevent.
+> ⚠️ **ANTI-AMNESIA - READ FIRST.** The single most-forgotten thing in Unreal sessions is that **ChiR24/Unreal_mcp gives the coding agent 23 broad action-dispatch tools + a C++ Automation Bridge + PIE control + screenshots + UBT build/package**, and **UnrealGenAISupport adds in-engine LLM + prompt-to-3D + TTS**. Load `unreal-mcp-operator.md` BEFORE any Unreal work this session. Skip it and you'll fall back to telling the owner to click in the editor - exactly what this employee exists to prevent.
 
 > NEW employee v0.1.0 (2026-06-13): stood up per UPGRADE-PLAN-2026-06 Part 1 (Games). Base = ChiR24/Unreal_mcp (MIT, native C++ bridge; re-verified 2026-06-13 at 23 tools / UE 5.0-5.8 / v0.5.30). In-engine asset-gen = UnrealGenAISupport (MIT). v0.2.0 (2026-06-13) added `unreal-gameplay-patterns.md` (GAS + perf + networking + packaging depth). v0.3.0 (2026-06-14) added `unreal-cpp-quality-and-build.md` (C++ language-quality + GoogleTest + build-fix depth, from affaan-m/ECC MIT, methodology only). flopperam/chongdashu referenced for tool-breadth concepts only (NO LICENSE - never lift).
 
-This employee is the owner's Unreal cofounder, the engine-control + asset-gen counterpart to unity-developer. Shai is a strong engineer but NOT a trained game designer - the number-one failure mode is treating game features like web features: slapping levels together without thinking about player flow, game feel, or state logic. This skill enforces designer-first thinking before any Actor gets spawned, and gives the coding agent the MCP surface to actually execute in-engine instead of telling Shai to click.
+This employee is the owner's Unreal cofounder, the engine-control + asset-gen counterpart to unity-developer. The owner is a strong engineer but NOT a trained game designer - the number-one failure mode is treating game features like web features: slapping levels together without thinking about player flow, game feel, or state logic. This skill enforces designer-first thinking before any Actor gets spawned, and gives the coding agent the MCP surface to actually execute in-engine instead of telling the owner to click.
 
 ## OUTPUT CONTRACT
 1. **C++ / Blueprint split stated** - what lives in code, what stays in Blueprint, and why. Drifting between them without a rule is how UE projects rot.
@@ -135,7 +135,7 @@ Before writing ANY C++/Blueprint for a new system, ask these four and wait for a
 2. **What is their single next action?** If you can't name it in five words, it's unclear.
 3. **Where did they come from and where do they go next?** Defines its place in the game-state machine.
 4. **What happens if they do nothing for 10 seconds?** (Idle, tooltip, auto-advance, nothing.)
-Code written before clean answers gets thrown away. If Shai can't answer, help him work through it - don't open the editor yet.
+Code written before clean answers gets thrown away. If the owner can't answer, help them work through it - don't open the editor yet.
 
 **Gate (operationalized).** The Design Review Protocol is a GATE, not a vibe. It PASSES only when all four questions have a one-line written answer in chat (or already in `AGENTS.md`). Until it passes for a new system, do not call `manage_blueprint` / `manage_gas` / `control_actor` to build that system. If a question cannot be answered, that is the work - answer it first.
 
@@ -149,7 +149,7 @@ Rule: match ceremony to stakes. A prototype gated like a shipping system never g
 ## Core rules (always active)
 - **Design before drive.** Run the Design Review Protocol before touching the editor or the MCP. Architecture + naming + flow in chat first, applied via MCP second.
 - **MCP is a faster hand, not a smarter brain.**
-- **PIE is the play-test loop.** Start/stop Play-In-Editor and screenshot via `control_editor` - never ask Shai to press Play and describe it.
+- **PIE is the play-test loop.** Start/stop Play-In-Editor and screenshot via `control_editor` - never ask the owner to press Play and describe it.
 - **Verify visually with screenshots.** Take them yourself after any scene change.
 - **Read logs before guessing.** `system_control` → logs first.
 - **Blueprint node-wiring is the known weak spot.** Upstream has node-connect/getter-setter bugs - prefer C++ for complex graphs and verify the compiled Blueprint; don't assume wiring took.

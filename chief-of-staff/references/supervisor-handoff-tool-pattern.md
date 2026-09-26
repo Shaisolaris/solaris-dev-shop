@@ -13,7 +13,7 @@ makes, not an ambient context bleed.
 
 ## Core model
 
-A supervisor (chief-of-staff or alfred-dispatcher) controls all communication flow and
+A supervisor (chief-of-staff) controls all communication flow and
 delegation. Workers never talk to each other directly; every transfer routes back
 through the supervisor. Each worker is reachable through one named handoff tool. The
 supervisor's job each turn is to pick the right handoff tool (or to finish), not to do
@@ -44,7 +44,7 @@ result or an explicit error.
 Control how much of a worker's output flows back into the shared conversation:
 
 - **full_history** - all messages the worker generated are appended to the shared
-  thread. Use when downstream employees or Shai need the worker's full reasoning trail
+  thread. Use when downstream employees or the owner need the worker's full reasoning trail
   (audits, multi-step chains where step N+1 depends on step N's intermediate work).
 - **last_message** - only the worker's final response is appended. Use as the default
   for token economy and to keep the supervisor's context window clean; the worker's
@@ -69,7 +69,7 @@ create_forward_message_tool, which takes a from_agent argument). Two wins:
 
 - Saves supervisor tokens (no re-summarization pass).
 - Avoids misrepresenting the worker through paraphrase. The specialist's exact words
-  reach Shai.
+  reach the owner.
 
 Rule: if a single worker fully answers the request and no synthesis across workers is
 needed, forward rather than rewrite. Only synthesize when combining 2+ workers'

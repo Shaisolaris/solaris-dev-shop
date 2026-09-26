@@ -40,7 +40,7 @@ Outputs to Mac:
 
 **Time box:** 2-4 hours for a small project, 1-2 days for a medium one, up to a week for a monolith.
 
-**Stage-1 done signal:** Shai could explain the codebase to a stranger in 10 minutes using only these two docs.
+**Stage-1 done signal:** The owner could explain the codebase to a stranger in 10 minutes using only these two docs.
 
 ### Stage 2: Audit (skill: `code-review`)
 

@@ -8,12 +8,12 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 
 ## Pending observations
 
-- **2026-04-24 - SEO+ASO clean rebuild**: First build had Shai's seo-audit wholesale (640 lines: SKILL + audit methodology + AEO + lessons). Clean rebuild from 6 repos produces strong base covering web SEO + ASO + AEO. Shai's solaris-seo-workflow ABSORBED 2026-06-04 (v0.4.0). The generic Anthropic seo-audit remains a vendor-keep (Layer A).
+- **2026-04-24 - SEO+ASO clean rebuild**: First build had the seo-audit skill wholesale (640 lines: SKILL + audit methodology + AEO + lessons). Clean rebuild from 6 repos produces strong base covering web SEO + ASO + AEO. The solaris-seo-workflow skill ABSORBED 2026-06-04 (v0.4.0). The generic Anthropic seo-audit remains a vendor-keep (Layer A).
   *Proposed rule: Combined SEO+ASO in one employee works because audit discipline + keyword research + CVR methodology generalize. Keep them together.*
   Tags: [#combined-employee], [#promoted?]
 
 - **2026-04-24 - SEO+ASO clean rebuild**: ASO content had to be built largely from first-principles + wshobson ui-design mobile accessibility references - none of the 6 repos had a deep, standalone ASO skill. Documented gap.
-  *Proposed rule: ASO is a documented coverage gap in the 6-repo set. When Shai web-searches for 2-3 additional repos, prioritize "ASO" / "app-store-optimization" a skill file repositories.*
+  *Proposed rule: ASO is a documented coverage gap in the 6-repo set. When the owner web-searches for 2-3 additional repos, prioritize "ASO" / "app-store-optimization" a skill file repositories.*
   Tags: [#coverage-gap], [#web-search-target]
 
 - **2026-04-24 - SEO+ASO clean rebuild**: AEO (Answer Engine Optimization) is emerging but every source had partial coverage. Unified here as a dedicated reference.

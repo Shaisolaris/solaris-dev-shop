@@ -8,15 +8,15 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 
 ## Pending observations
 
-- **2026-04-24 - DevOps clean rebuild (6 repos only)**: First build had Shai's ftp-deploy skill wholesale-absorbed in first pass, violating master plan. This rebuild is clean - 6 repos only. Shai's ftp-deploy now lives as GIG #2 (solaris/gigs/ftp-deploy/) with its version tagging + post-deploy verification; devops-engineer cross-references it for the deploy run (doctrine retired 2026-06-04).
-  *Proposed rule: Respect the master plan order. 6 repos → clean base. Shai skills → deliberate v0.3 upgrade later. Keeps provenance + rollback traceable.*
+- **2026-04-24 - DevOps clean rebuild (6 repos only)**: First build had the ftp-deploy skill wholesale-absorbed in first pass, violating master plan. This rebuild is clean - 6 repos only. The ftp-deploy skill now lives as GIG #2 (solaris/gigs/ftp-deploy/) with its version tagging + post-deploy verification; devops-engineer cross-references it for the deploy run (doctrine retired 2026-06-04).
+  *Proposed rule: Respect the master plan order. 6 repos → clean base. owner skills → deliberate v0.3 upgrade later. Keeps provenance + rollback traceable.*
   Tags: [#master-plan-discipline]
 
 - **2026-04-24 - DevOps clean rebuild**: sickn33 has the richest deployment-skill inventory in the 6-repo set - 10+ per-platform deployment skills (expo, vercel, kubernetes, azd, makepad, odoo-docker, appdeploy, etc.) plus deployment-validation + deployment-procedures + deployment-pipeline-design. Treats deployment as a first-class domain with per-platform nuance.
   *Proposed rule: For specialized ops domains, prefer a platform-specific reference over a generic one. "Deploy to Vercel" ≠ "Deploy to AWS ECS" - don't collapse them.*
   Tags: [#platform-specific-depth]
 
-- **2026-04-24 - DevOps clean rebuild**: Kept a legacy-FTP section in SKILL even without Shai's ftp-deploy absorbed - because legacy PHP/WordPress clients on shared hosts are a real Solaris client segment. Built from first principles (lftp + rsync + exclude patterns + version tagging) so it's independent-reference-able.
+- **2026-04-24 - DevOps clean rebuild**: Kept a legacy-FTP section in SKILL even without the ftp-deploy skill absorbed - because legacy PHP/WordPress clients on shared hosts are a real Solaris client segment. Built from first principles (lftp + rsync + exclude patterns + version tagging) so it's independent-reference-able.
   *Proposed rule: When a domain has legitimate use cases (legacy clients), build from first principles even without a strong source. Don't let source-availability dictate scope coverage.*
   Tags: [#coverage-completeness]
 
@@ -28,15 +28,15 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 |------|-------------------|----------|
 | | | |
 
-## 2026-04-25 - v0.3.0 absorption (Talent Scout v2 catches)
+## 2026-04-25 - v0.3.0 absorption (skill scanner v2 catches)
 - **wrsmith108/docker-the coding agent-skill** turned a vague "use containers" guideline into a single enforceable rule: never run language tools on the host. Reduces the "works on my machine" failure mode to near-zero.
 - **Alpine vs slim decision** is non-obvious and burns hours when wrong. Native modules (sqlite, sharp, bcrypt, node-canvas) need glibc → use slim. Pure JS/TS → alpine for size. Default to slim when unsure.
 - **RchGrav/the coding agentbox** solves the multi-client parallel-work problem cleanly. Each client = own image + auth + firewall + venv. Three Cursor/the coding agent tabs running on Kellbell + CTT + Turnpike simultaneously without conflict.
-- **15+ a per-project agent box profiles** mean Shai never has to remember stack setup. `the coding agentbox profile python ml database` and the container has Python + Jupyter + uv + DB clients. Saves hours per project bootstrap.
+- **15+ a per-project agent box profiles** mean the owner never has to remember stack setup. `the coding agentbox profile python ml database` and the container has Python + Jupyter + uv + DB clients. Saves hours per project bootstrap.
 - **GameCI is the only sane way to do Unity CI.** Without it: license activation hell, manual editor installs in CI, 10x slower builds without Library/ cache. With it: declarative GitHub Action handles all three.
 - **Library/ cache restore-key hierarchy** is the difference between 2-min and 20-min Unity builds. Key on hash of Assets/Packages/ProjectSettings, fall back to platform-specific, fall back to any.
 - **iOS Unity builds need macos-latest runner.** Other platforms (WebGL, Android, Standalone Win/Linux/Mac) build on ubuntu-latest. Split into separate jobs to avoid wasting macOS minutes.
-- **Anti-amnesia signal.** Banner added to SKILL.md description because the coding agent historically tells Shai to "just install Node on your Mac" instead of using docker exec. Reinforced in rules.md red flags.
+- **Anti-amnesia signal.** Banner added to SKILL.md description because the coding agent historically tells the owner to "just install Node on the Mac" instead of using docker exec. Reinforced in rules.md red flags.
 - **Quarterly re-scan targets:** Anthropic-official a coding agent Docker images (when published), devcontainers/cli (alternate per-project pattern), AndreiMaksimovich/Unity-Build-and-Test-Automation (alternate Unity CI).
 
 ## 2026-05-01 - M4 absorption: MetaGPT Engineer spec→code handoff (v0.4.0)

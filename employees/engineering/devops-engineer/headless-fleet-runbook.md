@@ -1,17 +1,17 @@
 # Headless Fleet Runbook - Mac Mini a coding agent Build Machines
 
 INTERNAL Solaris ops doctrine. Fleet = headless Mac minis running a coding agent as build workers.
-Shai dispatches from HQ. Load per SKILL.md reference table when running multi-machine builds.
+The owner dispatches from HQ. Load per SKILL.md reference table when running multi-machine builds.
 > ⚠️ SOURCE OF TRUTH = `Control/FLEET.md` DISPATCH PROCEDURE (field-proven). If this runbook and FLEET.md ever disagree, FLEET.md wins. Key field corrections (2026-07-15) baked in below.
 >
-> **SSH CHANNEL (critical):** Do NOT use tailscaled's built-in SSH on macOS - its pure-Go build cannot map macOS user accounts and every login fails "no such local user". Use plain OpenSSH to the machine's `.local` name (e.g. `ssh <YOUR_USER>@<YOUR_HOST>.local`) with HQ's key in the worker's `authorized_keys`. Tailscale provides the network reachability off-LAN; it does NOT provide the SSH login. Never ask Shai to approve a Tailscale SSH-check link.
+> **SSH CHANNEL (critical):** Do NOT use tailscaled's built-in SSH on macOS - its pure-Go build cannot map macOS user accounts and every login fails "no such local user". Use plain OpenSSH to the machine's `.local` name (e.g. `ssh <YOUR_USER>@<YOUR_HOST>.local`) with HQ's key in the worker's `authorized_keys`. Tailscale provides the network reachability off-LAN; it does NOT provide the SSH login. Never ask the owner to approve a Tailscale SSH-check link.
 > **the coding agent auth (critical):** GUI `the coding agent /login` stores creds in the macOS Keychain, which SSH-spawned streams CANNOT read. Use `the coding agent setup-token` once, save to machine-local `~/.solaris/the coding agent.token` (600), and have every stream launcher `export CLAUDE_CODE_OAUTH_TOKEN=$(cat ~/.solaris/the coding agent.token)`. Verify in stream context with `the coding agent -p "reply AUTH-OK"`.
-> **Git white-label:** author = `Shai` + GitHub noreply address (never the coding agent, never real email); `includeCoAuthoredBy:false` in `<agent-config>/settings.json`. Reviewer greps `git log --format=%B` for the coding agent/co-authored/generated → must be empty before merge.
+> **Git white-label:** author = `the owner` + GitHub noreply address (never the coding agent, never real email); `includeCoAuthoredBy:false` in `<agent-config>/settings.json`. Reviewer greps `git log --format=%B` for the coding agent/co-authored/generated → must be empty before merge.
 
 
 ## 1. Machine provisioning (headless Mac mini)
 
-1. Create a dedicated standard user `solaris-worker`. NOT admin. NOT Shai's personal account. No iCloud login.
+1. Create a dedicated standard user `solaris-worker`. NOT admin. NOT the owner's personal account. No iCloud login.
 2. Enable auto-login for that user: System Settings → Users & Groups → "Automatically log in as" → `solaris-worker`.
    Required so the machine comes back working after a power cut with no monitor attached.
 3. Enable Remote Login (SSH): System Settings → General → Sharing → Remote Login → restrict to `solaris-worker`.
@@ -29,7 +29,7 @@ Shai dispatches from HQ. Load per SKILL.md reference table when running multi-ma
 
 1. Install Node via the official pkg installer. (Fleet exception to host-clean: minis ARE the build hosts.)
 2. `npm install -g @anthropic-ai/the coding agent-code`
-3. Auth: run `the coding agent setup-token` in the GUI session (Shai approves in browser once), save the printed token to `~/.solaris/the coding agent.token` (600, machine-local - never iCloud/.zshenv literals). Streams read it via the launcher export. GUI /login alone does NOT authenticate SSH streams (Keychain unreadable over SSH).
+3. Auth: run `the coding agent setup-token` in the GUI session (the owner approves in browser once), save the printed token to `~/.solaris/the coding agent.token` (600, machine-local - never iCloud/.zshenv literals). Streams read it via the launcher export. GUI /login alone does NOT authenticate SSH streams (Keychain unreadable over SSH).
 4. Set git identity per machine so commits are traceable:
    `git config --global user.name "mini-01"` / `user.email` = the Solaris bot address.
 5. Git credentials: `gh auth login` (repo scope only) OR a per-machine SSH key:
@@ -62,7 +62,7 @@ Shai dispatches from HQ. Load per SKILL.md reference table when running multi-ma
 
 ## 4. Review flow
 
-1. All PRs are reviewed from HQ: Shai (human) + the code-reviewer employee run the review pass.
+1. All PRs are reviewed from HQ: the owner (human) + the code-reviewer employee run the review pass.
 2. Merge only after the review itself ends `Gate: passed`. No gate line, no merge.
 3. The ONE-HUMAN-REVIEW CEILING is the fleet's throughput limit: streams produce PRs faster than one
    human can review them, so review-queue depth - not machine count - caps parallelism.
@@ -75,7 +75,7 @@ Shai dispatches from HQ. Load per SKILL.md reference table when running multi-ma
 
 1. Minis hold ONLY: the assigned repo's code + the deploy key scoped to that repo. Nothing else.
 2. NEVER on a mini: client credentials, brain repo access, payment/store keys
-   (App Store Connect, Play Console, Stripe), Solaris-wide secrets, Shai's personal accounts.
+   (App Store Connect, Play Console, Stripe), Solaris-wide secrets, personal accounts.
 3. Deploys that need real credentials run from HQ or CI. The mini's job ends at the PR.
 4. Untrusted or inherited codebases (client handoffs, unknown provenance) run ONLY on the designated
    sandbox machine (`mini-sandbox`).

@@ -27,7 +27,7 @@
 - Vectorized/solady (MIT): gas building blocks (SafeTransferLib, LibClone, ReentrancyGuard, ERC4337/7821/7579, P256/WebAuthn) + ZKsync caveat. CONNECT + METHODOLOGY.
 - wevm/wagmi (MIT): v3 hooks workflow (simulate then write then waitForReceipt). Retired Workflow 6 list-level note.
 - Part B same pass: removed phantom phase_artifacts (sources/_analysis/ dir absent), added small-task/prototype lane, fixed stale wagmi/AA reference rows, tightened cross-refs. TOP5-CANDIDATES.md written.
-- FLAGS for Shai: GPL (eth-infinitism), AGPL (slither), no-license (Cyfrin), all handled methodology/self-host only, no code bundled.
+- FLAGS for the owner: GPL (eth-infinitism), AGPL (slither), no-license (Cyfrin), all handled methodology/self-host only, no code bundled.
 ## Sources
 
 - Upstream: eth (license not recorded); Vectorized/solady (license not recorded); Cyfrin/audit (license not recorded); crytic/slither (license not recorded); wevm/wagmi (license not recorded)

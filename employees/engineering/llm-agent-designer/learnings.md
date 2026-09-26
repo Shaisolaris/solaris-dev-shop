@@ -8,12 +8,12 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 
 ## Pending observations
 
-- **2026-04-24 - LLM Agent Designer rebuild**: Solaris IS a an agent SDK product. The 59 employee-plugins are agent designs an agent SDK was made for. The canonical example of "how to design a Solaris-quality agent" is Solaris's own Talent Scout / Knowledge Synthesizer / Roster Manager. Self-referential but correct.
+- **2026-04-24 - LLM Agent Designer rebuild**: Solaris IS a an agent SDK product. The 59 employee-plugins are agent designs an agent SDK was made for. The canonical example of "how to design a Solaris-quality agent" is Solaris's own skill scanner / knowledge sweep / roster manager. Self-referential but correct.
   *Proposed rule: When this employee designs an agent or skill, reach for Solaris's own employee-plugin structure as the default template - SKILL + rules + learnings + plugin.json with progressive disclosure + self-learning loop.*
   Tags: [#solaris-as-reference], [#promoted?]
 
 - **2026-04-24 - LLM Agent Designer rebuild**: Clear altitude split between this employee and AI Automation Engineer is critical. LLM Agent Designer does ARCHITECTURE / DESIGN. AI Automation Engineer does NO-CODE WIRING (n8n, Zapier, Make). Collaboration happens but they don't overlap.
-  *Proposed rule: When Shai mentions n8n / Zapier / Make by name → route to AI Automation Engineer. When Shai says "design an agent", "prompt engineering", "RAG", "MCP" → this employee.*
+  *Proposed rule: When the owner mentions n8n / Zapier / Make by name → route to AI Automation Engineer. When the owner says "design an agent", "prompt engineering", "RAG", "MCP" → this employee.*
   Tags: [#altitude-split], [#routing]
 
 - **2026-04-24 - LLM Agent Designer rebuild**: "Simplest that works" is the single most-violated principle in LLM design. Every new stack addition (agent when single prompt works, multi-agent when single agent works, Opus when Sonnet works) costs cost + latency + complexity debt. Codified as core principle.

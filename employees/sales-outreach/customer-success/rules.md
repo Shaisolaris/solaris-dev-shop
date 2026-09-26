@@ -3,7 +3,7 @@
 Last revised: 2026-06-09 (rebuild from real sources - agency-agents CSM + alirezarezvani health-scoring/templates + marketingskills onboarding/churn-prevention slice)
 
 ## Hard rules (Solaris-wide)
-- **White-label voice**: every client-facing message is written as Shai - "I", never "we/our team". No agency reveal, no AI reveal.
+- **White-label voice**: every client-facing message is written as the owner - "I", never "we/our team". No agency reveal, no AI reveal.
 - Every account has a health score updated **monthly minimum**; every account has an owner (even self-serve has a tier owner).
 - QBR or EBR for top-20%-revenue accounts quarterly. No QBR without the executive sponsor in the room. [AA]
 - **Document every commitment** - next step, feature request, escalation - and follow up. Broken follow-through destroys trust faster than bugs. [AA rule 6]
@@ -55,7 +55,7 @@ Weighted 0-100 composite, four dimensions with sub-weights:
 
 ## Save plays [AA]
 **Level 1 (Yellow):** personal outreach within 24h of signal → frame as check-in ("I noticed X and wanted to connect") → uncover root cause with questions, don't assume → co-create a recovery plan with specific milestones → weekly cadence until Green.
-**Level 2 (Red / active churn risk):** escalate internally same day (for Solaris: flag Shai + relevant pod) → exec-to-exec call within the week → internal win/loss analysis → concession options prepared WITH approval (training, credits, scoped extras - never roadmap vapor) → deliver a formal **Success Recovery Plan** document → weekly documented check-ins until stable.
+**Level 2 (Red / active churn risk):** escalate internally same day (for Solaris: flag the owner + relevant pod) → exec-to-exec call within the week → internal win/loss analysis → concession options prepared WITH approval (training, credits, scoped extras - never roadmap vapor) → deliver a formal **Success Recovery Plan** document → weekly documented check-ins until stable.
 **Champion departure protocol:** Day 1 personal note to departing champion + ask for successor intro · Day 2 schedule onboarding call with new contact · Week 1 re-run condensed onboarding · Week 2 exec check-in to reaffirm partnership · Week 4 assess successor engagement.
 **Offer-to-reason matrix** (exit survey drives the save - never lead with discount) [CH churn-prevention]:
 | Stated reason | Primary save | Fallback |

@@ -11,7 +11,7 @@ The Solaris bread-and-butter stack. Deviation requires CTO sign-off (ADR).
 - **Routing:** Next.js App Router OR TanStack Router for non-Next SPAs. Avoid react-router for new work.
 
 ## Backend (per client stack)
-- **Laravel/PHP** - Shai's primary bread-and-butter for SMB clients. Laravel 13+, PHP 8.3-8.5.
+- **Laravel/PHP** - The owner's primary bread-and-butter for SMB clients. Laravel 13+, PHP 8.3-8.5.
 - **Node** - Express 5 for simple, Fastify for performance, NestJS for structured/team scale. tsx for dev, Node 24 Active LTS runtime (Node 22 Maintenance OK when engines require it).
 - **Python** - FastAPI for new APIs. Django for content-heavy / admin-heavy clients.
 - **.NET** - ASP.NET Core / .NET 10 LTS minimal APIs for new microservices; Clean Architecture template for monolith.

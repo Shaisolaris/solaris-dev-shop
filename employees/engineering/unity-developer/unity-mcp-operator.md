@@ -2,7 +2,7 @@
 
 > **Absorbed v0.3.0 (2026-04-25)** from `IvanMurzak/Unity-MCP` - a powerful Unity MCP bridge (Apache-2.0, ~2.6-3k stars as of the 2026-05 audit, 100+ native tools, runtime + editor support, Roslyn-powered C# execution, full reflection access). **Status (2026-06-08+): SECONDARY/fallback. The PRIMARY bridge is now CoplayDev/unity-mcp - see `coplaydev-unity-mcp.md`.** IvanMurzak is retained because it owns the Tier-0 autonomous play/edit-mode verify loop, reflection-method-call on private/DLL methods, and 3-line `[McpPluginTool]` custom tools.
 
-Load this file when Shai is doing **anything Unity-Editor-driven** - not just "MCP setup". The point of this skill is that Unity-MCP is now the default Unity automation surface for every Solaris session.
+Load this file when the owner is doing **anything Unity-Editor-driven** - not just "MCP setup". The point of this skill is that Unity-MCP is now the default Unity automation surface for every Solaris session.
 
 ---
 
@@ -268,6 +268,6 @@ Unity.exe -batchmode -nographics \
 - Package: `com.ivanmurzak.unity.mcp` (OpenUPM)
 - Docker: `ivanmurzakdev/unity-mcp-server`
 - License: Apache 2.0
-- Caught by: Talent Scout v2 (after v1 missed it for ~6 weeks; see the absorption note in `learnings.md` dated 2026-04-25)
+- Caught by: the skill scanner v2 (after v1 missed it for ~6 weeks; see the absorption note in `learnings.md` dated 2026-04-25)
 
 > PRIMARY Unity MCP is now CoplayDev/unity-mcp - see coplaydev-unity-mcp.md. IvanMurzak content below is the secondary/alternative bridge.

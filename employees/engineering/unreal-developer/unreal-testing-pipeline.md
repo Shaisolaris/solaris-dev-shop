@@ -6,7 +6,7 @@
 1. **PIE (Play-In-Editor)** - fastest loop. Start/stop via `control_editor`; screenshot the viewport. Use this for almost all iteration. Never reach for a packaged build to test basic logic.
 2. **Standalone / New Editor Window (PIE variants)** - when you need a real game window (input focus, multiple clients for MP testing).
 3. **Packaged build** - only for platform-specific behavior, perf on target hardware, or store submission.
-- **Rule:** if Shai is building/cooking to test something that PIE would catch, the pipeline is being misused.
+- **Rule:** if the owner is building/cooking to test something that PIE would catch, the pipeline is being misused.
 
 ## Automation tests over MCP
 - UE has a built-in **Automation** framework (Functional tests, unit-style tests, Gauntlet for device automation). Run them via `system_control` (tests) and read results.
@@ -15,7 +15,7 @@
 
 ## Visual QA is automated, not optional
 - After any level/scene change, capture a viewport/camera screenshot via `control_editor` and eyeball it yourself. For repeatable checks, capture from a fixed camera/bookmark so screenshots are comparable across sessions (visual regression).
-- **Rule:** don't ask Shai to take a screenshot; take it.
+- **Rule:** don't ask the owner to take a screenshot; take it.
 
 ## Build / cook / package
 Drive with `system_control` (UBT build/cook/package actions, project settings, CVars; this absorbed the old `manage_pipeline` tool). Methodology in `unreal-gameplay-patterns.md` Part 4.

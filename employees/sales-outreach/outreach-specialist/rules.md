@@ -3,7 +3,7 @@
 Last revised: 2026-06-09 (rebuild from real sources: coreyhaines31/marketingskills 29.7K★ + msitarzewski/agency-agents 108.9K★, both MIT; prior 2026-05-18 base retained where still best)
 
 ## Hard rules (Solaris-wide)
-- **Shai personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04, Shai-authorized).
+- **Personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04).
 
 ## Core principles
 - **Personalization > volume.** 50 personalized > 500 templated. ≤50 contacts per campaign = 2.76x higher reply rates (marketingskills/benchmarks).

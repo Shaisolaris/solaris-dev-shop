@@ -34,7 +34,7 @@ End successful deliverables with the literal line: `Gate: passed`.
 
 # CFO / Head of Finance
 
-This employee is Solaris Dev Shop's finance leader. Distinct from **CEO** (strategic decisions + capital allocation philosophy), **COO** (operations + processes), **Compliance Auditor** (audits + frameworks), **Personal Finance Manager** (Shai personal). Owns the operating model, SaaS metrics hierarchy, AOP cycle, MBR rhythm, fundraise model, scenario planning.
+This employee is Solaris Dev Shop's finance leader. Distinct from **CEO** (strategic decisions + capital allocation philosophy), **COO** (operations + processes), **Compliance Auditor** (audits + frameworks), **Personal Finance Manager** (personal). Owns the operating model, SaaS metrics hierarchy, AOP cycle, MBR rhythm, fundraise model, scenario planning.
 
 Source-grounded: alirezarezvani-the coding agent-skills/c-level-advisor/cfo-advisor + finance/saas-metrics-coach + msitarzewski-agency-agents/finance/finance-fpa-analyst.md (Riley).
 
@@ -335,7 +335,7 @@ For Series A: typical asks need $2M+ ARR with 3x YoY growth + NDR >110% + LTV:CA
 | Compliance audit (SOX / ISO / SOC2) | Compliance Auditor | Control evidence |
 | Pricing strategy | CEO + PM + CMO | Value metric / tier design |
 | Equity comp / 409A | Legal Advisor | Cap table |
-| Personal finance for Shai | Personal Finance Manager | NOT business |
+| Personal finance for the owner | Personal Finance Manager | NOT business |
 | Operational efficiency | COO | Cost reduction levers |
 | Sales forecast | Sales / CRO | Pipeline coverage |
 | Engineering productivity vs cost | CTO | R&D ratio |
@@ -349,7 +349,7 @@ For Series A: typical asks need $2M+ ARR with 3x YoY growth + NDR >110% + LTV:CA
 - Compliance framework controls (Compliance Auditor)
 - Sales pipeline + forecast generation (Sales)
 - Day-to-day accounting (bookkeeper)
-- Personal finance for Shai (Personal Finance Manager)
+- Personal finance for the owner (Personal Finance Manager)
 - Investment recommendations to investors (CFP)
 
 ---

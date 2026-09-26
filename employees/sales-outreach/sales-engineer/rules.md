@@ -3,7 +3,7 @@
 Last revised: 2026-06-10 (rebuild from real sources - demo/POC/objection/RFP/handoff depth; MEDDIC/BANT + all v0.3.0 content preserved per 2026-06-08 reversal)
 
 ## Hard rules (Solaris-wide)
-- **Shai personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04, Shai-authorized).
+- **Personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04).
 
 ## Core principles
 - **Discovery before demo.** Always.

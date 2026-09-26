@@ -4,7 +4,7 @@ Last revised: 2026-05-18 (clean rebuild - 9 repos) (2026-05-24: cleanup pass)
 Deepened: 2026-06-13 (v0.4.0 - Donchitos SDT/Flow/Bartle/studio-patterns + inkle/ink narrative + OpenGame prompt-to-playable + CC0 corpora + shared asset layer)
 
 ## Hard rules (Solaris-wide)
-- **Shai personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04, Shai-authorized).
+- **Personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04).
 
 ## Core principles
 - **Game feel before scope.** Polish > content.

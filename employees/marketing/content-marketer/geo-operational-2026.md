@@ -55,7 +55,7 @@ AI engines retrieve CHUNKS, not pages. Structure so each section is independentl
 
 ## 5. Monitored (stage 4 - the loop most teams skip)
 - **Snapshot, don't guess.** Periodically capture how target AI engines answer your priority queries and whether you/competitors are cited. A single check is noise; the trend is the signal.
-- **Regression-gate it.** Treat GEO score like a test: save history, alert when a deploy drops you below a threshold (e.g. a schema change that breaks FAQPage). The geo-optimizer CLI is MIT and exposes JSON / SARIF / JUnit output + a GitHub Action - if Shai wires CI, pin the action to a commit SHA, not a floating tag.
+- **Regression-gate it.** Treat GEO score like a test: save history, alert when a deploy drops you below a threshold (e.g. a schema change that breaks FAQPage). The geo-optimizer CLI is MIT and exposes JSON / SARIF / JUnit output + a GitHub Action - if the owner wires CI, pin the action to a commit SHA, not a floating tag.
 - **Measure citation presence, not volume.** Per-platform citation profile (ChatGPT vs Perplexity vs Google AI) + share-of-citation vs competitors > raw mentions. Honest caveat: crawler-log evidence proves you were FETCHED, not CITED - keep the two metrics separate.
 - **Content decay.** Flag temporal/statistical/version/price decay; evergreen pages need a dated refresh or they stale out of answers (ties to the existing content-decay gotcha in rules.md).
 

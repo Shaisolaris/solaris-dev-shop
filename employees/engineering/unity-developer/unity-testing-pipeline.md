@@ -2,11 +2,11 @@
 
 Load this file for: testing on device, emulating a phone, build errors, Unity Remote, Device Simulator, AltTester, visual QA, screenshots, iOS/Android/WebGL targets, or the "why do I need my phone to test this basic thing" problem.
 
-The entire goal of this file is to reclaim the hours Shai has lost to slow test loops.
+The entire goal of this file is to reclaim the hours the owner has lost to slow test loops.
 
 ## Tier 0 - MCP-driven autonomous execute-AND-verify loop (net-new, IvanMurzak/Unity-MCP, deepened 2026-06-13)
 
-Before the human-in-the-loop tiers below, there is a tier where **the coding agent tests its own work without Shai touching the Editor at all.** CoplayDev/unity-mcp (the primary bridge) is comparatively weak on automated play/edit-mode testing; IvanMurzak/Unity-MCP closes the execute-and-verify loop. The individual tools live in `unity-mcp-operator.md` - this is the *methodology* that strings them into a self-correcting loop.
+Before the human-in-the-loop tiers below, there is a tier where **the coding agent tests its own work without the owner touching the Editor at all.** CoplayDev/unity-mcp (the primary bridge) is comparatively weak on automated play/edit-mode testing; IvanMurzak/Unity-MCP closes the execute-and-verify loop. The individual tools live in `unity-mcp-operator.md` - this is the *methodology* that strings them into a self-correcting loop.
 
 **The loop (run it as a loop, not one-shot):**
 1. **Make the change** - `script-update-or-create` / `gameobject-*` / `assets-*` to apply the edit.

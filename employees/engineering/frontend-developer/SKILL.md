@@ -78,7 +78,7 @@ React 19 + Vite for SPAs / Next.js 16 App Router for SSR-SSG apps · TypeScript 
 *From: alirezarezvani senior-frontend (assumptions + forcing questions), vercel react-best-practices, VoltAgent nextjs-developer*
 
 0. **Step 0 - Read rules.md NOW, before writing code. Skipping this is a gate failure.**
-1. **Lock the four assumptions** (rules.md §1): primary device+network, LCP number, SEO vs auth-walled, WCAG target+owner. If Shai/client can't answer one, that's the next question - don't scaffold around the gap.
+1. **Lock the four assumptions** (rules.md §1): primary device+network, LCP number, SEO vs auth-walled, WCAG target+owner. If the owner/client can't answer one, that's the next question - don't scaffold around the gap.
 2. **Pick rendering** from the decision table (rules.md §2) and say why in one line. Dashboard behind auth → RSC-first App Router or SPA; marketing → SSG.
 3. **Get the data contract** from backend-developer: zod schema, auth, error shapes, rate limits. Build against the real API or a generated mock - never assumptions.
 4. **Sketch the component tree before coding**: server components by default, mark the client islands (interactivity only), mark Suspense boundaries around every slow data section (each dashboard panel gets its own - parallel routes if panels are independent).

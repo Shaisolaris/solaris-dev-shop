@@ -1,6 +1,6 @@
 # Android Architecture Reference - NowInAndroid Patterns
 
-> **Absorbed v0.3.0 (2026-04-25)** from `dpconde/the coding agent-android-skill` - Google's official Android architecture guidance + NowInAndroid reference app patterns. Talent Scout v2 caught this. Use this for any Kotlin/Jetpack Compose work.
+> **Absorbed v0.3.0 (2026-04-25)** from `dpconde/the coding agent-android-skill` - Google's official Android architecture guidance + NowInAndroid reference app patterns. The skill scanner v2 caught this. Use this for any Kotlin/Jetpack Compose work.
 
 ## Core principles (non-negotiable)
 
@@ -203,7 +203,7 @@ dependencies {
 - Reference app: https://github.com/android/nowinandroid (Google official)
 - Android arch guide: https://developer.android.com/topic/architecture
 - Compose guide: https://developer.android.com/jetpack/compose
-- Caught by: Talent Scout v2 (after v1 missed it - see `references/deep-discovery-protocol.md`)
+- Caught by: the skill scanner v2 (after v1 missed it - see `references/deep-discovery-protocol.md`)
 
 ## Cross-references
 

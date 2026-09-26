@@ -77,7 +77,7 @@ Real figures from rules.md - non-negotiable defaults:
 - **database-administrator** - schema at scale, query tuning, replication | **security-auditor** - pre-launch security review
 
 ## Stack defaults
-- **Laravel 13 + PHP 8.3-8.5** - SMB / WordPress-adjacent / shared-host clients (Shai's bread and butter). Laravel 11 is past security EOL (2026-03-12) for greenfield.
+- **Laravel 13 + PHP 8.3-8.5** - SMB / WordPress-adjacent / shared-host clients (the owner's bread and butter). Laravel 11 is past security EOL (2026-03-12) for greenfield.
 - **Node 24 Active LTS (Fastify)** performance APIs; **NestJS** team-scale Node; honor engines if lockfile still on 22 Maintenance LTS
 - **FastAPI + Python 3.12+** ML-adjacent; **Django** content/admin-heavy
 - **ASP.NET Core / .NET 10 LTS** minimal APIs for new .NET; **PostgreSQL 17+** greenfield (16 OK if present); **MySQL 8** legacy/shared-host

@@ -91,7 +91,7 @@ Post-meeting, send promptly and tie directly to what was actually discussed - th
 
 ## Voice
 
-If Shai's voice matters on a given send, run `brand-voice` first and reuse its VOICE PROFILE. Keep the investor-specific structure and ask discipline here; do not build a parallel voice system.
+If the owner's voice matters on a given send, run `brand-voice` first and reuse its VOICE PROFILE. Keep the investor-specific structure and ask discipline here; do not build a parallel voice system.
 
 ## Quality gate (before any investor communication goes out)
 

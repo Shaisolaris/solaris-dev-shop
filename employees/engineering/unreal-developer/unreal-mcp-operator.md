@@ -1,6 +1,6 @@
 # Unreal MCP Operator - ChiR24/Unreal_mcp (canonical)
 
-> **BASE absorption v0.1.0 (2026-06-13)** from `ChiR24/Unreal_mcp` - MIT, the only well-licensed, actively-maintained, native-C++ Unreal Engine MCP bridge in the ecosystem. **Load this file FIRST when ANY Unreal-Editor-driven work begins.** It is the equivalent of unity-developer's `unity-mcp-operator.md`: the canonical reference for the engine-control surface. the coding agent forgets these tools exist if it doesn't load them at the start of every Unreal session - and falls back to telling Shai to click in the editor, which is exactly what this employee exists to prevent.
+> **BASE absorption v0.1.0 (2026-06-13)** from `ChiR24/Unreal_mcp` - MIT, the only well-licensed, actively-maintained, native-C++ Unreal Engine MCP bridge in the ecosystem. **Load this file FIRST when ANY Unreal-Editor-driven work begins.** It is the equivalent of unity-developer's `unity-mcp-operator.md`: the canonical reference for the engine-control surface. the coding agent forgets these tools exist if it doesn't load them at the start of every Unreal session - and falls back to telling the owner to click in the editor, which is exactly what this employee exists to prevent.
 
 Supports **Unreal Engine 5.0-5.8** (5.8 preview validated upstream). Operations route through the **MCP Automation Bridge** C++ plugin running inside the editor. As of v0.5.30 there are TWO transports: a **Native MCP HTTP/SSE server built into the plugin** (recommended - no Node, no bridge; connect the client directly to http://localhost:3000/mcp) OR the classic **TypeScript stdio bridge** (Node 18+). Re-verified against ChiR24/Unreal_mcp on 2026-06-13: 681 stars, MIT, v0.5.30 (Jun 5 2026).
 
@@ -31,7 +31,7 @@ cd Unreal_mcp && npm install && npm run build && node dist/cli.js
 - **Method 1 (copy):** copy `Unreal_mcp/plugins/McpAutomationBridge/` → `YourUnrealProject/Plugins/McpAutomationBridge/`, then regenerate project files.
 - **Method 2 (editor):** Edit → Plugins → Add → browse to `Unreal_mcp/plugins/` → select `McpAutomationBridge`.
 
-> ⚠️ **First-open gotcha (carried verbatim from upstream):** when opening the `.uproject` for the first time UE prompts to rebuild missing modules - click **Yes**. After the rebuild you may still see "Plugin 'McpAutomationBridge' failed to load because module could not be loaded." This is expected: UE rebuilds successfully but doesn't reload the plugin in the same session. **Close and reopen the project** and it loads correctly. (Or build via Visual Studio first to avoid it.) Tell Shai this before he panics.
+> ⚠️ **First-open gotcha (carried verbatim from upstream):** when opening the `.uproject` for the first time UE prompts to rebuild missing modules - click **Yes**. After the rebuild you may still see "Plugin 'McpAutomationBridge' failed to load because module could not be loaded." This is expected: UE rebuilds successfully but doesn't reload the plugin in the same session. **Close and reopen the project** and it loads correctly. (Or build via Visual Studio first to avoid it.) Tell the owner this before they panic.
 
 **Step 3 - enable required + optional plugins** (Edit → Plugins, then restart):
 - **Required:** MCP Automation Bridge · Editor Scripting Utilities (asset/actor subsystems) · Niagara (VFX).
@@ -123,13 +123,13 @@ ChiR24/Unreal_mcp exposes **23 broad MCP tools** in all-tools mode using **actio
 
 ## How to operate (the Unity-parity rules, translated to UE)
 
-- **PIE is your play-test loop.** Use `control_editor` to start/stop Play-In-Editor and take screenshots - never ask Shai to press Play and describe what he sees.
+- **PIE is your play-test loop.** Use `control_editor` to start/stop Play-In-Editor and take screenshots - never ask the owner to press Play and describe what they see.
 - **Verify visually with screenshots.** `control_editor` captures viewport/camera screenshots. Take them yourself after any scene change.
 - **Read logs before guessing.** `system_control` → logs first, then form a hypothesis. Same discipline as `console-get-logs` in Unity.
 - **`inspect` is your reflection.** Where Unity has `reflection-method-find/call`, UE here has `inspect` for UObject introspection + the Python escape hatch (see the GenAI/asset-gen file) for arbitrary editor scripting. Never say "I can't see inside that asset" - inspect it.
 - **Blueprint node-wiring is the weak spot.** Upstream flags node connect/getter-setter bugs (see learnings + GenAI file's known-issues). For complex graphs, prefer C++ where practical and verify the compiled Blueprint, don't assume the wiring took.
 - **Build/package via `system_control` (UBT build actions).** (The old `manage_pipeline` tool was consolidated into `system_control`.) Long-running, so make sure `MCP_AUTOMATION_REQUEST_TIMEOUT_MS` is raised before kicking off a cook/package. Methodology: see `unreal-gameplay-patterns.md` Part 4.
-- **Respect the safety rails.** Don't try to disable dangerous-command blocking or flip `ALLOW_NON_LOOPBACK` without an explicit reason from Shai.
+- **Respect the safety rails.** Don't try to disable dangerous-command blocking or flip `ALLOW_NON_LOOPBACK` without an explicit reason from the owner.
 
 ## Optional GraphQL surface
 For complex multi-entity queries, enable the GraphQL endpoint (`GRAPHQL_ENABLED=true`, port 4000). Use it for read-heavy introspection across many actors/assets in one query instead of chaining many `inspect` calls.

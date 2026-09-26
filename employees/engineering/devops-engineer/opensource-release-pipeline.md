@@ -1,7 +1,7 @@
 # Open-Source Release Pipeline (depth reference)
 
 > Load this file when ANY work turns private/client/internal code into a public
-> repository: open-sourcing a tool, publishing one of Shai's own projects, or shipping
+> repository: open-sourcing a tool, publishing one of the owner's own projects, or shipping
 > a sanitized client deliverable. This is a release/sanitization pipeline, NOT the
 > deploy pipeline (CI/CD lives in SKILL.md) and NOT GitOps (`gitops-skill.md`). Those
 > ship code to running environments; this one strips code clean and publishes it.
@@ -16,7 +16,7 @@ shape of a safe public-release pipeline, re-expressed for Solaris.
 ## When to reach for it
 
 - A private repo, client deliverable, or internal tool needs to go public.
-- Shai wants to open-source one of his own projects (the dev shop's tooling, a game
+- The owner wants to open-source one of their own projects (the dev shop's tooling, a game
   utility, a CLI).
 - Anyone is about to `gh repo create --public` from a codebase that has ever held a
   secret, an internal hostname, or a client name.
@@ -186,7 +186,7 @@ Never auto-publish. Walk this before `gh repo create --public`:
 - [ ] A CI workflow exists and pins every third-party action to a full commit SHA, not
       a floating tag (see SKILL.md CI template + `gitops-skill.md` section 6 on the 2026
       action-compromise pattern). A public repo's CI is itself a supply-chain surface.
-- [ ] Owner (Shai for his own projects; the client's named approver for client code)
+- [ ] Owner (for own projects; the client's named approver for client code)
       has explicitly approved making it public.
 - [ ] Repo created `--public` only on that approval; push; verify the live repo shows
       no `.env`, no secrets in the Actions logs, no internal hostnames.

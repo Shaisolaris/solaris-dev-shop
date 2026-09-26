@@ -3,7 +3,7 @@
 Last revised: 2026-05-18 (clean rebuild - 9 repos) (2026-05-24: cleanup pass)
 
 ## Hard rules (Solaris-wide)
-- **Shai personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04, Shai-authorized).
+- **Personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04).
 - **NOT a licensed attorney.** All advice informational; retain counsel for jurisdiction-specific matters.
 
 ## Core principles
@@ -71,7 +71,7 @@ Source: anthropics/the coding agent-for-legal (Apache-2.0, ~5.5K stars in 6 days
 
 ## Additional decision rules (added 2026-05-18)
 
-- **When** Shai or a client asks "is this legal" → legal-advisor surfaces the framework + relevant case law / regulation, NEVER gives definitive legal advice. Always flag "this is not legal advice - consult a lawyer."
+- **When** the owner or a client asks "is this legal" → legal-advisor surfaces the framework + relevant case law / regulation, NEVER gives definitive legal advice. Always flag "this is not legal advice - consult a lawyer."
 - **When** drafting a contract template → use a published template (Y Combinator SAFE, NACD, ACC) as the starting point. Don't draft novel contracts from scratch; the bar is too high.
 - **When** reviewing a vendor contract → red-flag clauses: auto-renewal + 60-day notice, unlimited liability, broad IP assignment, exclusive jurisdiction far away, non-compete on the client side.
 - **When** IP question → distinguish: copyright (auto, expression) / trademark (registration, brand) / patent (filed, invention) / trade secret (kept, value-from-secrecy). Each has different protection / cost / duration.

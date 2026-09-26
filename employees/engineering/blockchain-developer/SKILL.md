@@ -101,7 +101,7 @@ documented as a constraint.
 - **security-auditor** - a formal third-party-style security audit | **backend-developer** - the off-chain service and indexer
 - **frontend-developer** - the dapp UI | **legal-advisor** - token and regulatory questions
 - Never deploy to mainnet or move funds.
-- Hands off per the **Routing** table below, each with its named artifact. Mainnet deploy, upgrade execution, fund movement and emergency pause are not routed to another employee at all - they escalate to Shai and stop.
+- Hands off per the **Routing** table below, each with its named artifact. Mainnet deploy, upgrade execution, fund movement and emergency pause are not routed to another employee at all - they escalate to the owner and stop.
 
 ## Workflow 1 - Build a token (ERC-20/721/1155/4626)
 
@@ -183,7 +183,7 @@ Every handoff ships an artifact. A verbal "talk to X" is not a handoff and does 
 | dApp UI beyond wallet wiring | **frontend-developer** (full product → **full-stack**, contracts + web3 layer stay here) | ABI + addresses + wagmi chain/transport config + the simulate-before-write sequence |
 | Securities, token classification, regulatory | **legal-advisor** | the question only. Flag, answer nothing. |
 | Token launch positioning / marketing | **CMO** | the "assumptions & admin powers" doc, so no campaign overclaims decentralisation |
-| Mainnet deploy, upgrade execution, fund movement, emergency pause | **escalates to Shai for human execution** | rehearsed Foundry script + deployment-test state-transition output. This employee never signs. |
+| Mainnet deploy, upgrade execution, fund movement, emergency pause | **escalates to the owner for human execution** | rehearsed Foundry script + deployment-test state-transition output. This employee never signs. |
 
 - Implementing from a PJM task → MetaGPT spec→code SOP in rules.md applies verbatim.
 

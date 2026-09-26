@@ -3,14 +3,14 @@
 Last revised: 2026-06-13 (depth pass: mobile-test-and-release.md added with Maestro/Detox/Patrol/Paparazzi/fastlane methodology + release gates; lane selection added. Prior 2026-05-18 agent-device + expo/skills absorptions stand)
 
 ## Hard rules (Solaris-wide)
-- **Shai personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04, Shai-authorized).
+- **Personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04).
 - **Load `mobile-mcp-operator.md` FIRST** in every mobile session - most-forgotten file, contains canonical mobile-next/mobile-mcp tools.
 - **Load `android-architecture.md`** when ANY Kotlin/Jetpack Compose work is happening - dpconde NowInAndroid patterns are the default architecture.
 - **Load `mobile-test-and-release.md`** before any test work, CI wiring, or store submission. It holds the test-layer selection table, Maestro/Detox/Patrol/Paparazzi/fastlane methodology, and the numeric release gates.
 - **Load `native-mobile-language-packs.md`** for ANY native Kotlin/Android, Swift/iOS, or Dart/Flutter language work. It holds idiomatic-language depth grouped by platform: Pack A (Kotlin idioms + coroutines/Flow + Kotest + Ktor/Exposed + Compose/CMP), Pack B (Dart/Flutter patterns + the 15-section review checklist), Pack C (SwiftUI @Observable, Swift 6.2 Approachable Concurrency, actor persistence, protocol DI + Swift Testing, iOS 26 Liquid Glass, on-device FoundationModels). Load it alongside `android-architecture.md` for Kotlin (the architecture file is the module skeleton; this is the language depth).
 
 ## Core principles
-- **Use mobile-mcp, don't tell Shai to click.** mobile-next/mobile-mcp gives the coding agent real-device automation across iOS + Android. Use `mobile_list_available_devices` → `mobile_launch_app` → `mobile_list_elements_on_screen` → interact. Never instruct Shai to manually click in Android Studio / Xcode.
+- **Use mobile-mcp, don't tell the owner to click.** mobile-next/mobile-mcp gives the coding agent real-device automation across iOS + Android. Use `mobile_list_available_devices` → `mobile_launch_app` → `mobile_list_elements_on_screen` → interact. Never instruct the owner to manually click in Android Studio / Xcode.
 - **Accessibility-first interaction.** Always try `mobile_list_elements_on_screen` BEFORE coordinate clicks. Use a11y labels, not pixels.
 - **Offline-first for new Android work.** Local DB (Room) is source of truth. UI never depends on network state directly.
 - **Unidirectional data flow.** Events down, data up. No two-way binding shortcuts.
@@ -22,7 +22,7 @@ Last revised: 2026-06-13 (depth pass: mobile-test-and-release.md added with Maes
 ## Decision rules
 - **When** picking a stack → default React Native + Expo; Flutter for multi-platform; Native iOS/Android only for hardware-specific features
 - **When** writing new Android code → dpconde NowInAndroid patterns (Clean Arch + Compose + MVVM/UDF + Hilt + Room + multi-module)
-- **When** verifying mobile UI looks right → use `mobile_take_screenshot`, never ask Shai for one
+- **When** verifying mobile UI looks right → use `mobile_take_screenshot`, never ask the owner for one
 - **When** testing a multi-step flow → use mobile-mcp cross-app workflow (launch → interact → screenshot → switch app → repeat)
 - **When** debugging an Android-only Expo/RN/Flutter dev loop and mobile-mcp won't run → fall back to infiniV/Android-Ui-MCP
 - **When** building a feature module → use the canonical structure: `api/` (navigation contracts) + `impl/` (Screen + ViewModel + UiState)
@@ -48,7 +48,7 @@ Last revised: 2026-06-13 (depth pass: mobile-test-and-release.md added with Maes
 - **When** the task is a throwaway spike or a one-screen fix → pick the prototype or small-task lane in SKILL.md, do not run the full pre-development checklist; escalate a lane up when unsure, never down.
 
 ## Red flags
-- Telling Shai to manually click in Android Studio / Xcode → use mobile-mcp
+- Telling the owner to manually click in Android Studio / Xcode → use mobile-mcp
 - Coordinate clicks before trying `mobile_list_elements_on_screen` → break with any UI change
 - Two-way data binding in Compose → violates UDF
 - RxJava in new code → use Coroutines + Flow
@@ -58,7 +58,7 @@ Last revised: 2026-06-13 (depth pass: mobile-test-and-release.md added with Maes
 - Network call from inside a Composable → must go through ViewModel → Repository
 - Mockito/MockK in new code → write a Fake instead
 - Inline Gradle config in module `build.gradle.kts` instead of convention plugin
-- Asking Shai to take a screenshot → take it yourself with `mobile_take_screenshot`
+- Asking the owner to take a screenshot → take it yourself with `mobile_take_screenshot`
 - Manual `sleep` in a Maestro / Detox flow → rely on built-in smart-wait / runloop sync instead
 - E2E element addressed by raw coordinates instead of a11y id / testID → breaks on any layout change
 - Auto-accepting a changed Paparazzi golden in a PR → review drift like code, never rubber-stamp
@@ -111,7 +111,7 @@ Read the real source (MIT, Paul Hudson / Hacking with Swift, 84 stars, 2 commits
 So there is nothing to consolidate into this employee's methodology. The prior 2026-05-13 entry listed "patterns absorbed" from sub-skills that were never actually fetched or read - that was a description-based guess, not an absorption.
 
 **Correct disposition (per the Absorption Doctrine - logical analysis, not dogma):**
-- twostraws/Swift-Agent-Skills → **Talent Scout watchlist source.** It is a human-vetted index of Swift skills - exactly what the scout should mine. Moved to `available_sources_for_scout`.
+- twostraws/Swift-Agent-Skills → **Maintainer watchlist source.** It is a human-vetted index of Swift skills - exactly what the maintainer should mine. Moved to `available_sources_for_scout`.
 - The individual linked repos (SwiftUI-Agent-Skill, Swift-Concurrency-Agent-Skill, SwiftData-Agent-Skill, Swift-Testing-Agent-Skill) are real, absorbable skills - but each must be fetched and run through the real 5-step protocol individually. That is a future scout pass, not this one. Listed as scout candidates.
 - This employee already carries native iOS/Swift/SwiftUI coverage (wshobson native iOS/Android matrix). No methodology change was warranted from this source.
 
@@ -136,7 +136,7 @@ Source: expo/skills (Expo official - the React Native + EAS company). Skills aut
 - **For Expo + EAS workflows, prefer the official Expo skill patterns over generic React Native patterns.** Things like config-plugin idioms, EAS Build/Submit/Update flow, OTA update strategy, dev-client vs Expo Go choice - the official version is more current than what VoltAgent or generic RN sources document.
 - **Skills are fine-tuned for Opus.** When using these patterns on Sonnet/Haiku, expect more hand-holding; the original skill prompts assume Opus reasoning.
 
-**Rejected:** Installing the official `expo/skills` package wholesale via `bunx skills add expo/skills`. Per absorb-don't-replace doctrine, patterns lift into this employee. The Expo repo is a watchlist source - when Expo ships SDK 53/54 patterns, Talent Scout re-evaluates.
+**Rejected:** Installing the official `expo/skills` package wholesale via `bunx skills add expo/skills`. Per absorb-don't-replace doctrine, patterns lift into this employee. The Expo repo is a watchlist source - when Expo ships SDK 53/54 patterns, the maintainer re-evaluates.
 
 ---
 

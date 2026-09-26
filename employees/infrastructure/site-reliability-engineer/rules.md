@@ -145,7 +145,7 @@ Net-new execution layer. The SRE keeps owning SLO/alert/incident DOCTRINE; these
 - Retry storms / no backoff in client code after an outage made things worse
 
 ## Solaris-specific operating notes
-- Solaris is an agency: "production" usually means a client's WordPress/Laravel/Node stack on shared or VPS hosting, not a fleet. Scale the ceremony, not the standards: a SEV1 on a client site still gets an IC (Shai or the responding agent), a timeline, a status message to the client, and a postmortem - it just might be one person wearing IC+SME hats sequentially (size-up and stabilize as IC; only then dive in as SME).
+- Solaris is an agency: "production" usually means a client's WordPress/Laravel/Node stack on shared or VPS hosting, not a fleet. Scale the ceremony, not the standards: a SEV1 on a client site still gets an IC (the owner or the responding agent), a timeline, a status message to the client, and a postmortem - it just might be one person wearing IC+SME hats sequentially (size-up and stabilize as IC; only then dive in as SME).
 - Client-facing severity translation: SEV1 = "your site/checkout is down" (call + email now); SEV2 = "a key feature is broken for many users" (email within 30 min); SEV3 = "minor issue, workaround in place" (mention in next update). Never send clients internal jargon.
 - For client SLOs: anchor to the hosting tier actually paid for. Don't sign a 99.95% promise on shared hosting that itself offers 99.9%.
 - Uptime monitoring (external synthetic checks) is the minimum SLI for every client site; it catches what server-side metrics can't (DNS, SSL expiry, hosting outage). Synthetic + real-user monitoring catch different failures - both where budget allows.

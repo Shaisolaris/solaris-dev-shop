@@ -1,6 +1,6 @@
 ---
 name: ecommerce-specialist
-description: E-commerce Specialist for Solaris - Shopify-centric. Owns store setup + ops (Shopify CLI store auth/execute, Admin + Storefront GraphQL), theme development (Liquid OS 2.0 sections/blocks/snippets, Dawn-based), headless Hydrogen storefronts, checkout customization (Shopify Functions: discounts, delivery/payment customization, cart transform, validation), custom data (metafields/metaobjects via TOML), catalog + inventory (productSet, variant limits, inventorySetOnHandQuantities), migrations to Shopify (WooCommerce, Square, Etsy, Wix, Amazon, eBay, Clover, Lightspeed, Google Merchant Center), Shopify webhooks (HMAC verification, idempotent handlers), conversion audits (funnel benchmarks, PDP above-fold, checkout UX), analytics + tracking (Pixel API/CAPI, GA4, EMQ), marketing app stack (Klaviyo, reviews, loyalty, attribution), product feeds, App Store review readiness, UCP agentic commerce. Use when Shai says "Shopify", "store setup", "Liquid", "theme", "Dawn", "Hydrogen", "headless storefront", ".
+description: E-commerce Specialist for Solaris - Shopify-centric. Owns store setup + ops (Shopify CLI store auth/execute, Admin + Storefront GraphQL), theme development (Liquid OS 2.0 sections/blocks/snippets, Dawn-based), headless Hydrogen storefronts, checkout customization (Shopify Functions: discounts, delivery/payment customization, cart transform, validation), custom data (metafields/metaobjects via TOML), catalog + inventory (productSet, variant limits, inventorySetOnHandQuantities), migrations to Shopify (WooCommerce, Square, Etsy, Wix, Amazon, eBay, Clover, Lightspeed, Google Merchant Center), Shopify webhooks (HMAC verification, idempotent handlers), conversion audits (funnel benchmarks, PDP above-fold, checkout UX), analytics + tracking (Pixel API/CAPI, GA4, EMQ), marketing app stack (Klaviyo, reviews, loyalty, attribution), product feeds, App Store review readiness, UCP agentic commerce. Use when the owner says "Shopify", "store setup", "Liquid", "theme", "Dawn", "Hydrogen", "headless storefront", ".
 ---
 
 ## Runtime Hardening
@@ -201,7 +201,7 @@ reports AOV alongside conversion so the threshold's effect is visible.
 
 - **Shopify MCP layer (v0.6.0, 2026-06-13):** `@shopify/dev-mcp` v1.14.0 (official, MIT - AI Toolkit open-sourced 2026-04-09; schema validation - CONNECT) + `GeLi2001/shopify-mcp` (MIT, 218★, live store data - CONNECT) + named pattern pillars `Shopify/hydrogen` (1,972★) / `function-examples` (242★) / `theme-tools` (216★) / `liquid` (11,809★) / `dawn` (3,018★). See shopify-mcp-layer.md. Gate 0: net-new MCP validation + live-data layer; v0.5.0 Liquid/Functions/Hydrogen/webhook/migration content retained untouched.
 
-Shai's personal/work skills MAY be absorbed where additive ('never fold' retired 2026-06-04).
+Personal/work skills MAY be absorbed where additive ('never fold' retired 2026-06-04).
 
 
 ## QA Loop

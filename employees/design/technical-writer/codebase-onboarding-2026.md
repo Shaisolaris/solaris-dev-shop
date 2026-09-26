@@ -53,7 +53,7 @@ A codebase onboarding pack is a MULTI-QUADRANT deliverable, and the elite move i
 
 - **The cardinal onboarding sin is the mega-README** that mixes a tutorial, an architecture essay, and a config reference on one page. Split it: a getting-started tutorial that GUARANTEES a running app, separate how-tos per common task, a reference section for the architecture facts and config, and an explanation page for the mental model and ownership.
 - **Getting Started is a tutorial, so it is gated on first success**: another engineer clones into a clean environment and reaches a running app following ONLY that doc, before it ships (same gate as the README/handoff workflows). Every command run, every gap flagged TODO(owner) - never invent an env var or a setup step.
-- **Ship an llms.txt + llms-full.txt with the pack** so the new contributor's coding agent (and Shai's) can consume the onboarding docs directly - the architecture map, the getting-started, the how-tos - indexed for agent fetch (see depth-2026-06.md).
+- **Ship an llms.txt + llms-full.txt with the pack** so the new contributor's coding agent (and the owner's) can consume the onboarding docs directly - the architecture map, the getting-started, the how-tos - indexed for agent fetch (see depth-2026-06.md).
 
 ---
 

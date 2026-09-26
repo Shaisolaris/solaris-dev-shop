@@ -1,6 +1,6 @@
 # Mobile MCP Operator - mobile-next/mobile-mcp (canonical) + Android-Ui-MCP (fallback)
 
-> **Absorbed v0.3.0 (2026-04-25)** from `mobile-next/mobile-mcp` (PRIMARY) + `infiniV/Android-Ui-MCP` (fallback). Talent Scout v2 caught both. mobile-next/mobile-mcp is the most powerful mobile MCP - works on iOS + Android, real devices + simulators, full app management + UI interaction. Use this every mobile session.
+> **Absorbed v0.3.0 (2026-04-25)** from `mobile-next/mobile-mcp` (PRIMARY) + `infiniV/Android-Ui-MCP` (fallback). The skill scanner v2 caught both. mobile-next/mobile-mcp is the most powerful mobile MCP - works on iOS + Android, real devices + simulators, full app management + UI interaction. Use this every mobile session.
 
 ## Why mobile-next/mobile-mcp is the canonical choice
 
@@ -175,7 +175,7 @@ cd docker && docker-compose up --build -d
 - mobile-mcp npm: https://www.npmjs.com/package/@mobilenext/mobile-mcp
 - Android-Ui-MCP repo: https://github.com/infiniV/Android-Ui-MCP
 - Android-Ui-MCP npm: https://www.npmjs.com/package/android-ui-assist-mcp
-- Caught by: Talent Scout v2 (both missed by v1 - see `references/deep-discovery-protocol.md`)
+- Caught by: the skill scanner v2 (both missed by v1 - see `references/deep-discovery-protocol.md`)
 
 ## Comparator queue (Scout to re-evaluate quarterly)
 

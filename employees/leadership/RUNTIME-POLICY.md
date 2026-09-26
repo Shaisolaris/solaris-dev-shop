@@ -2,7 +2,7 @@
 
 Status: hardening shared policy for leadership / marketing / sales-outreach / creative-media  
 Bead: skill-solaris-business-hardening  
-Synthetic / professional only - no private Alfred personal data.
+Synthetic / professional only - no private personal data.
 
 ## Permission model
 

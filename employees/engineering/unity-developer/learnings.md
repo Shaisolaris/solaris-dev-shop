@@ -1,6 +1,6 @@
 # Unity Game Dev - Lessons Log
 
-Self-updating log of Unity mistakes, design failures, and repeat patterns across Shai's games. Read at the start of every Unity session.
+Self-updating log of Unity mistakes, design failures, and repeat patterns across the owner's games. Read at the start of every Unity session.
 
 **Format per entry:**
 - **Project / date - specific thing that happened**
@@ -38,12 +38,12 @@ When a lesson has been observed 2+ times across different projects, it gets prom
 
 *(none yet)*
 
-## 2026-04-25 - Unity-MCP absorption (v0.3.0, via Talent Scout v2)
-- **Root cause of v1 miss**: Talent Scout v1 only grepped 9 cloned source repos. Unity-MCP wasn't in any of them. v2's 7-tier source registry (GitHub trending, MCP registries, per-domain queries, community signals) caught it on the first run.
+## 2026-04-25 - Unity-MCP absorption (v0.3.0, via skill scanner v2)
+- **Root cause of v1 miss**: the skill scanner v1 only grepped 9 cloned source repos. Unity-MCP wasn't in any of them. v2's 7-tier source registry (GitHub trending, MCP registries, per-domain queries, community signals) caught it on the first run.
 - **Highest-leverage Unity-MCP capability**: `script-execute` (Roslyn) + `reflection-method-call`. Together they remove the save-reload-test cycle AND give visibility into compiled DLLs. This is the biggest workflow change.
 - **Unique vs. early competitors**: Runtime (in-game) MCP. IvanMurzak/Unity-MCP enables AI-driven NPCs, dynamic content, and in-game debugging at runtime, not just Editor automation. (Note 2026-06: CoplayDev/unity-mcp is now the PRIMARY bridge for breadth; IvanMurzak is kept for the runtime layer + the Tier-0 autonomous verify loop.)
-- **Anti-amnesia signal**: The phrase "ALWAYS load `unity-mcp-operator.md` FIRST" was added to the SKILL.md description because the coding agent historically forgets MCP tools exist mid-session and falls back to telling Shai to click manually.
-- **Add-on packs to absorb later if Shai's projects need them**: AI Animation, AI ParticleSystem, AI ProBuilder.
+- **Anti-amnesia signal**: The phrase "ALWAYS load `unity-mcp-operator.md` FIRST" was added to the SKILL.md description because the coding agent historically forgets MCP tools exist mid-session and falls back to telling the owner to click manually.
+- **Add-on packs to absorb later if the owner's projects need them**: AI Animation, AI ParticleSystem, AI ProBuilder.
 - **Quarterly re-scan target**: MiAO-AI-Lab/MiAO-MCP-for-Unity (alternate Unity MCP) - compare and decide if dual-install is worth it.
 
 ## 2026-05-01 - M4 absorption: MetaGPT Engineer spec→code handoff (v0.4.0)

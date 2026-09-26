@@ -1,6 +1,6 @@
 ---
 name: performance-engineer
-description: Performance Engineer for Solaris - profiling (Node.js, Python, Go, Rust, Java, PHP, web frontend, mobile), bundle analysis, load / stress / soak testing, PageSpeed + Lighthouse + Web Vitals optimization, capacity planning, APM interpretation (Datadog, New Relic, AppDynamics, Dynatrace), database query optimization, caching strategy (Redis, CDN, browser), memory profiling (heap dumps, leak detection), CPU profiling (flame graphs), mobile perf (frame time, jank, battery), cold-start optimization (serverless), network optimization (HTTP/2, HTTP/3, QUIC, compression). Use whenever Shai says "performance", "slow", "latency", "throughput", "bundle size", "PageSpeed", "Lighthouse", "Web Vitals", "LCP", "CLS", "INP", "FID", "TTFB", "load test", "stress test", "profile", "flame graph", "heap dump", "memory leak", "CPU usage", "cold start", "bundle analysis", "optimize", "cache", "CDN".
+description: Performance Engineer for Solaris - profiling (Node.js, Python, Go, Rust, Java, PHP, web frontend, mobile), bundle analysis, load / stress / soak testing, PageSpeed + Lighthouse + Web Vitals optimization, capacity planning, APM interpretation (Datadog, New Relic, AppDynamics, Dynatrace), database query optimization, caching strategy (Redis, CDN, browser), memory profiling (heap dumps, leak detection), CPU profiling (flame graphs), mobile perf (frame time, jank, battery), cold-start optimization (serverless), network optimization (HTTP/2, HTTP/3, QUIC, compression). Use whenever the owner says "performance", "slow", "latency", "throughput", "bundle size", "PageSpeed", "Lighthouse", "Web Vitals", "LCP", "CLS", "INP", "FID", "TTFB", "load test", "stress test", "profile", "flame graph", "heap dump", "memory leak", "CPU usage", "cold start", "bundle analysis", "optimize", "cache", "CDN".
 ---
 
 ## RUNTIME HARDENING (platform-reliability wave 2026-07-24)
@@ -225,7 +225,7 @@ Escalate to a human, do not proceed, when the only remaining measurement require
 ---
 
 ## Absorbed from (base repos)
-_Base 7-repo absorption below. Later deltas (Shai performance-profiler, grafana/mcp-k6, prometheus CONNECT, and the 2026-06-13 deepen pass: Locust, Pyroscope, OTel Collector, Unlighthouse, pgBadger) are recorded in `plugin.json` `absorbed_from`, `rules.md`, and `references/`._
+_Base 7-repo absorption below. Later deltas (the performance-profiler, grafana/mcp-k6, prometheus CONNECT, and the 2026-06-13 deepen pass: Locust, Pyroscope, OTel Collector, Unlighthouse, pgBadger) are recorded in `plugin.json` `absorbed_from`, `rules.md`, and `references/`._
 - alirezarezvani engineering-team (perf-related skills)
 - wshobson developer-essentials + incident-response
 - VoltAgent perf-related agents

@@ -1,6 +1,6 @@
 # Docker Skill - Containerized Development (wrsmith108) + a per-project agent box Per-Project Isolation (RchGrav)
 
-> **Absorbed v0.3.0 (2026-04-25)** from `wrsmith108/docker-the coding agent-skill` (PRIMARY - host-cleanliness enforcement) + `RchGrav/the coding agentbox` (per-project isolation + 15+ pre-configured language profiles). Talent Scout v2 caught both. Use this for ANY container work.
+> **Absorbed v0.3.0 (2026-04-25)** from `wrsmith108/docker-the coding agent-skill` (PRIMARY - host-cleanliness enforcement) + `RchGrav/the coding agentbox` (per-project isolation + 15+ pre-configured language profiles). the skill scanner v2 caught both. Use this for ANY container work.
 
 ## The two complementary patterns
 
@@ -82,7 +82,7 @@ docker ps --filter name=kellbell-dev-1
 ```
 
 ### Why this matters
-- **Clean host.** No `node_modules` pollution on Shai's Mac.
+- **Clean host.** No `node_modules` pollution on the owner's Mac.
 - **Reproducible.** Same Node 20 / Python 3.12 / PHP 8.3 across all collaborators.
 - **No global packages.** No version conflicts between projects.
 - **CI-safe.** Same container in dev = same container in GitHub Actions.
@@ -185,7 +185,7 @@ the coding agentbox tmux                  # Mounts host tmux socket inside conta
 - wrsmith108 docker-the coding agent-skill: https://github.com/wrsmith108/docker-the coding agent-skill
 - RchGrav the coding agentbox: https://github.com/RchGrav/the coding agentbox
 - License: Both MIT
-- Caught by: Talent Scout v2 (after v1 missed both)
+- Caught by: the skill scanner v2 (after v1 missed both)
 
 ## Comparator queue (Scout to re-evaluate quarterly)
 

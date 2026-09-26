@@ -74,7 +74,7 @@ Last revised: 2026-05-14 (financial-services-plugins absorption consolidated int
 - SOX / ISO / SOC 2 control framework (Compliance Auditor)
 - Sales pipeline + forecast generation (Sales)
 - Day-to-day bookkeeping (bookkeeper)
-- Personal finance for Shai (Personal Finance Manager)
+- Personal finance for the owner (Personal Finance Manager)
 
 ---
 
@@ -90,7 +90,7 @@ Compared the real source (Apache-2.0, anthropics official, 6.7K stars; 5 plugins
 - IC-memo structure for capital-allocation decisions → Decision rules
 
 **Rejected (not absorbed - out of scope for this role):**
-- investment-banking, equity-research, private-equity, wealth-management plugins - these are financial-SERVICES practitioner roles (CIMs, coverage initiation, deal sourcing, client wealth plans), not the job of an internal company CFO. If Shai ever builds a finance-services arm, they belong to new employees, not here.
+- investment-banking, equity-research, private-equity, wealth-management plugins - these are financial-SERVICES practitioner roles (CIMs, coverage initiation, deal sourcing, client wealth plans), not the job of an internal company CFO. If the owner ever builds a finance-services arm, they belong to new employees, not here.
 - The 11 enterprise data connectors (Daloopa, FactSet, S&P, Moody's, PitchBook, etc.) - paid terminals not in a startup CFO's stack. Logged as available_sources, not absorbed.
 
 **Correction:** the prior 2026-05-13 entry listed "14.2K stars" and "10 named workflow agents" (pitch-builder, kyc-screener, etc.). Those agent names were not in the real repo - they were inferred from a description, not read from source. Removed.

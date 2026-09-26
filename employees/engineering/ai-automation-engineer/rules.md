@@ -25,7 +25,7 @@ Absorbed from:
 
 ## Decision rules
 
-- **When** Shai asks "automate X" → ask: trigger? steps? failure modes? cost cap?
+- **When** the owner asks "automate X" → ask: trigger? steps? failure modes? cost cap?
 - **When** user names a platform (n8n/Zapier/Make) → respect it; don't re-litigate
 - **When** platform unnamed → default n8n self-hosted (Solaris has infra); Zapier only if n8n lacks an integration
 - **When** logic gets complex (> 5 conditional branches) → consider moving to custom script instead of visual builder
@@ -34,10 +34,10 @@ Absorbed from:
 - **When** webhook incoming → verify signature, queue, respond 200 fast, process in background
 - **When** cron / schedule → use UTC internally; define behavior on missed runs
 - **When** cross-system sync → one source of truth; no two-way without conflict resolution
-- **When** automation costs rising → alert Shai before hitting budget ceiling
+- **When** automation costs rising → alert the owner before hitting budget ceiling
 - **When** LinkedIn / high-risk platform → never exceed conservative volume thresholds; kill switch mandatory
 - **When** adding credential → use secret store; set rotation policy; scope minimally
-- **When** building Mac-native (Shai's LinkedIn) → dedicated machine, not Shai's main laptop; monitoring essential
+- **When** building Mac-native (the owner's LinkedIn) → dedicated machine, not the owner's main laptop; monitoring essential
 
 ---
 
@@ -60,7 +60,7 @@ Absorbed from:
 <Logs, alerts, dashboards>
 
 ## Kill switch
-<How Shai stops this if it misbehaves>
+<How the owner stops this if it misbehaves>
 
 ## ToS check
 <Platforms touched + compliance notes>
@@ -91,7 +91,7 @@ budget_cap   = expected monthly_cost × 1.5            # headroom
 alert_at     = 0.8 × budget_cap                       # alert before the ceiling, not at it
 ```
 
-Set the alert in the platform (n8n error/usage workflow, or provider billing alert). For paid tools (Browserbase, Apify, AI APIs) the per-run credit/token term dominates - estimate it explicitly and flag the number to Shai before any large or recurring run, per doctrine on paid tools.
+Set the alert in the platform (n8n error/usage workflow, or provider billing alert). For paid tools (Browserbase, Apify, AI APIs) the per-run credit/token term dominates - estimate it explicitly and flag the number to the owner before any large or recurring run, per doctrine on paid tools.
 
 ---
 
@@ -103,7 +103,7 @@ Set the alert in the platform (n8n error/usage workflow, or provider billing ale
 - Webhook handler doing long work inline (should queue)
 - No failure alerts (silent breakage = disaster)
 - No cost budget or monitoring
-- Automation running on Shai's main laptop (dedicated machine needed for 24/7)
+- Automation running on the owner's main laptop (dedicated machine needed for 24/7)
 - LinkedIn / Instagram automation without humanized pacing
 - Scheduled job timezone unclear / drifting
 - OAuth tokens not refreshing (will silently fail in 60 days)
@@ -194,7 +194,7 @@ When implementing from a Project Manager task, ALWAYS follow this sequence. Sour
 ## n8n workflows (updated 2026-06-08)
 Build n8n workflows via the n8n-mcp node catalog (see n8n-mcp.md): look up real node schemas, construct with exact parameter names, validate before deploy. Do not hand-write node config from memory.
 
-**CONNECT + LICENSE FLAG (confirmed 2026-06-14): n8n is fair-code, NOT OSI open-source.** n8n-io/n8n is licensed under the **Sustainable Use License + n8n Enterprise License (GitHub reports NOASSERTION / fair-code).** What this means for us: **internal use is fine** (Solaris runs n8n self-hosted as its default orchestrator). **Resale and hosting-n8n-as-a-service to clients are RESTRICTED** by the Sustainable Use License - offering n8n itself as a hosted/white-label product to clients, or reselling it, requires a commercial/embed license from n8n. Building client automations that RUN ON our or the client's own n8n instance is internal use; productizing n8n-the-platform is not. Flag any client-facing n8n hosting/resale to Shai/legal before committing. (License-clean self-host alternative if resale is the goal: see activepieces in orchestration-patterns.md, though verify per-piece license.)
+**CONNECT + LICENSE FLAG (confirmed 2026-06-14): n8n is fair-code, NOT OSI open-source.** n8n-io/n8n is licensed under the **Sustainable Use License + n8n Enterprise License (GitHub reports NOASSERTION / fair-code).** What this means for us: **internal use is fine** (Solaris runs n8n self-hosted as its default orchestrator). **Resale and hosting-n8n-as-a-service to clients are RESTRICTED** by the Sustainable Use License - offering n8n itself as a hosted/white-label product to clients, or reselling it, requires a commercial/embed license from n8n. Building client automations that RUN ON our or the client's own n8n instance is internal use; productizing n8n-the-platform is not. Flag any client-facing n8n hosting/resale to the owner/legal before committing. (License-clean self-host alternative if resale is the goal: see activepieces in orchestration-patterns.md, though verify per-piece license.)
 
 ---
 
@@ -205,7 +205,7 @@ A managed cloud browser this employee can drive to automate real web UIs that ha
 - **What it does:** spins up cloud Chrome sessions and drives them - navigate, click, type, extract, multi-step flows - with **Stagehand** natural-language actions (`act` / `extract` / `observe`) on top of raw Playwright control. Sessions run on Browserbase's infra (stealth, captcha handling, proxies, session replay) rather than a local browser.
 - **When to call it:** automating a site/portal with no API (form submission, dashboard scraping, login-gated workflows, repetitive UI ops), or when a job needs a fleet of parallel browsers / IP rotation that local Chrome can't give. This is the heavier sibling to the org's local Web Operator (browser-use) - reach for Browserbase when you need scale, stealth, or persistent cloud sessions; use the local operator for one-off interactive runs.
 - **When NOT to:** anything with a clean API (call the API), or scraping that violates a site's ToS.
-- **Commercial - flag the key + cost.** Host installs `browserbase/mcp-server-browserbase` and supplies a **BROWSERBASE_API_KEY + project ID** (plus a model key for Stagehand). Paid per session/usage - flag cost before a large run. Per doctrine, paid tools require explicit Shai approval.
+- **Commercial - flag the key + cost.** Host installs `browserbase/mcp-server-browserbase` and supplies a **BROWSERBASE_API_KEY + project ID** (plus a model key for Stagehand). Paid per session/usage - flag cost before a large run. Per doctrine, paid tools require explicit owner approval.
 
 ### Apify MCP - managed scraping / Actors (CONNECT: apify/actors-mcp-server, MIT, ~1.3k★)
 - **What it does:** discover and run from 5,000+ pre-built Apify Actors (scrapers, crawlers, site automations) and pull structured dataset results - managed cloud, nothing to build or host.

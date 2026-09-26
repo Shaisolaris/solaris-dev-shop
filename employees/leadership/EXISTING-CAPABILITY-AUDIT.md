@@ -2,7 +2,7 @@
 
 Date: 2026-07-23  
 Scope: `solaris/employees/{leadership,marketing,sales-outreach,creative-media}/**`  
-Architecture: Alfred/Solaris capability and quality architecture
+Architecture: Solaris capability and quality architecture
 
 ## Adopted
 

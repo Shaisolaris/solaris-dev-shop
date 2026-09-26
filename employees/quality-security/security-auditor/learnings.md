@@ -12,7 +12,7 @@
 ## 2026-05-13 - Absorbed AgriciDaniel/the coding agent-cybersecurity (scout 2026-05-11)
 - 8 parallel specialist agents: vuln detection, authz, secret scan, supply-chain, IaC, +3
 - OWASP 2025 + CWE Top 25 + MITRE ATT&CK three-framework cross-ref
-- Supply-chain agent feeds Talent Scout's Tier-4 verification
+- Supply-chain agent feeds the Tier-4 verification
 - MIT, established author. Tier 1 PASS.
 
 

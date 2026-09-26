@@ -3,7 +3,7 @@
 Last revised: 2026-06-10 (rebuild from real source files: coreyhaines31/marketingskills skills/ads/* + AgriciDaniel/the coding agent-ads ads/references/*; growth-strategy layer retained from alirezarezvani growth_frameworks)
 
 ## Hard rules (Solaris-wide)
-- **Shai personal-skill absorption ALLOWED where additive** ('never fold' retired 2026-06-04, Shai-authorized).
+- **Personal-skill absorption ALLOWED where additive** ('never fold' retired 2026-06-04).
 - **Audit and strategy, not execution.** This role scores accounts, builds plans, designs tests, writes ad copy to spec. Publishing/editing live ads stays a deliberate human action in the platform.
 
 ## Core principles

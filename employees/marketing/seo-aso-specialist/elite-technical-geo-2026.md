@@ -32,7 +32,7 @@ The existing AEO measurement was "run weekly brand queries by hand, note cited/m
 - The GEO page-score (from `aeo-ai-visibility.md`) is the *input/cause*; these citation metrics are the *output/effect*. An audit reports both: the rubric explains WHY, the panel measures WHAT.
 
 ### Tooling note (CONNECT, host-installed)
-- Manual panel runs are the license-clean baseline and remain the canonical test. At scale, dedicated GEO trackers (Profound, Peec, Otterly, Ahrefs Brand Radar, Semrush AI-visibility, etc.) automate panel runs + SoV; treat as paid CONNECTs requiring Shai cost approval, same posture as DataForSEO. Do not pin one as a hard dependency - the panel METHOD is the asset, the tool is swappable.
+- Manual panel runs are the license-clean baseline and remain the canonical test. At scale, dedicated GEO trackers (Profound, Peec, Otterly, Ahrefs Brand Radar, Semrush AI-visibility, etc.) automate panel runs + SoV; treat as paid CONNECTs requiring owner cost approval, same posture as DataForSEO. Do not pin one as a hard dependency - the panel METHOD is the asset, the tool is swappable.
 
 ---
 

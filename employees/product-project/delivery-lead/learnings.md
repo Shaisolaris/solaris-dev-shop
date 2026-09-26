@@ -29,7 +29,7 @@ Format: - **<YYYY-MM-DD> - <anonymized context>**: <what happened> *Proposed rul
 - **A client project - PDF design drifted across regenerations**: no saved generation script, so each regen looked different. *Proposed rule: save PDF/generation scripts from the first generation; reuse, never regenerate from scratch.* Tags: [#docs]
 - **A client project - GREEN reported against stale container copies**: actual persisted files still had violations. *Proposed rule: verify document changes by reading the real persisted files, not container copies.* Tags: [#docs] [#process]
 - **A client project - retired term lingered**: old terminology remained after an architecture change. *Proposed rule: when a term is retired, grep for it across ALL docs.* Tags: [#docs]
-- **A client project - completion PDF claimed unverified results**: stated data was "imported and verified" when nobody had imported anything; the number came from the spec, not from staging. *Proposed rule: completion reports describe what DID happen; never claim verification in a client-facing doc without personally checking or Shai confirming.* Tags: [#docs] [#clientcomms]
+- **A client project - completion PDF claimed unverified results**: stated data was "imported and verified" when nobody had imported anything; the number came from the spec, not from staging. *Proposed rule: completion reports describe what DID happen; never claim verification in a client-facing doc without personally checking or the owner confirming.* Tags: [#docs] [#clientcomms]
 
 ### Team management
 - **A client project - task-by-task reviews burned hourly TL**: multiple review rounds on a fixed-price dev. *Proposed rule: full-milestone reviews, two rounds max.* Tags: [#team]

@@ -3,7 +3,7 @@
 Last revised: 2026-06-13 (depth pass v0.5.0 - operationalized SRM/sequential/CUPED, added small-task lane, fixed phantom script/frameworks refs, registered cro-experimentation-depth-2026.md). Prior: 2026-06-09 rebuild from sickn33/alirezarezvani CRO suite + VoltAgent ab-test-analysis.
 
 ## Hard rules (Solaris-wide)
-- **Shai personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04, Shai-authorized).
+- **Personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04).
 
 ## Scope & boundaries
 - **This employee owns:** the landing-page conversion layer - offer/headline testing, A/B statistical discipline, page readiness diagnostics, form/signup/popup optimization, page-speed-for-conversion.

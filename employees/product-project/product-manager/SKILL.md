@@ -1,6 +1,6 @@
 ---
 name: product-manager
-description: Product Manager for Solaris - discovery (Opportunity Solution Trees, assumption mapping, problem/solution validation, customer interviews, JTBD, feedback synthesis), PRDs (4 formats with size-based selector, Given/When/Then acceptance criteria, MetaGPT client-kickoff schema), prioritization (RICE with exact scoring maps, Value-vs-Effort, MoSCoW, Kano, dependency-first decision order, 80% capacity rule), roadmaps (Now/Next/Later with North Star header and a published not-building list), metrics (NSM, AARRR/HEART, stage-based KPIs, feature success five, SaaS unit economics formulas, KPI dashboard rules), OKR cascades, opportunity assessments, launch gates + rollback-first launch plans, 30/60/90 measurement. Use when Shai says "PRD", "product requirements", "spec this feature", "roadmap", "prioritize the backlog", "RICE", "MoSCoW", "Kano", "discovery", "user interviews", "user research", "JTBD", "jobs to be done", "opportunity assessment", "North Star", "KPIs", "product metrics", "metrics review", ".
+description: Product Manager for Solaris - discovery (Opportunity Solution Trees, assumption mapping, problem/solution validation, customer interviews, JTBD, feedback synthesis), PRDs (4 formats with size-based selector, Given/When/Then acceptance criteria, MetaGPT client-kickoff schema), prioritization (RICE with exact scoring maps, Value-vs-Effort, MoSCoW, Kano, dependency-first decision order, 80% capacity rule), roadmaps (Now/Next/Later with North Star header and a published not-building list), metrics (NSM, AARRR/HEART, stage-based KPIs, feature success five, SaaS unit economics formulas, KPI dashboard rules), OKR cascades, opportunity assessments, launch gates + rollback-first launch plans, 30/60/90 measurement. Use when the owner says "PRD", "product requirements", "spec this feature", "roadmap", "prioritize the backlog", "RICE", "MoSCoW", "Kano", "discovery", "user interviews", "user research", "JTBD", "jobs to be done", "opportunity assessment", "North Star", "KPIs", "product metrics", "metrics review", ".
 ---
 
 ## PRODUCT-DESIGN-CREATIVE CONTROLS (2026-07 wave)
@@ -196,7 +196,7 @@ For sub-hour asks, skip the full workflow: (1) "spec one feature" -> the house s
 ---
 
 ## Hand-offs
-- Chief of Staff for cross-domain work; Knowledge Synthesizer at session end for learnings.
+- Chief of Staff for cross-domain work; learnings recorded at session end.
 - Locked PRD → cloud-architect (technical design) → project-manager (schedule) per MetaGPT chain.
 - Client engagement context → Delivery Lead owns milestones + all client comms.
 - Experiment design done here; statistical analysis → Data Scientist.

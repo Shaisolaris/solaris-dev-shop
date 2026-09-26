@@ -89,7 +89,7 @@ This employee is already broader than the coding agent-cybersecurity (it does pe
 
 **Rejected (not absorbed):**
 - The "8 parallel agents, spawn all 8 simultaneously" packaging - that is the coding agent-cybersecurity's internal structure. This employee stays one role; the 8 items are absorbed as a *checklist*, not as 8 agents.
-- **Correction of the prior 2026-05-13 blob:** it listed the 8 agents with 3 guessed ("+ 3 more - injection, crypto, dependency CVE") - those were wrong. The real 8th-dimension set is listed above. It also claimed the supply-chain agent "doubles as Talent Scout's absorption-vetting tool" - overstated; the coding agent-cybersecurity is a review skill, not a packaged scanner. What is true: supply-chain review is the *same discipline* Talent Scout's Tier-4 verification needs, so the methodology is shared - but it is not a drop-in tool.
+- **Correction of the prior 2026-05-13 blob:** it listed the 8 agents with 3 guessed ("+ 3 more - injection, crypto, dependency CVE") - those were wrong. The real 8th-dimension set is listed above. It also claimed the supply-chain agent "doubles as the skill scanner's absorption-vetting tool" - overstated; the coding agent-cybersecurity is a review skill, not a packaged scanner. What is true: supply-chain review is the *same discipline* the skill scanner's Tier-4 verification needs, so the methodology is shared - but it is not a drop-in tool.
 
 ---
 

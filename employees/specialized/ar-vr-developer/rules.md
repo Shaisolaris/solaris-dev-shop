@@ -5,7 +5,7 @@ Last revised: 2026-06-09 (rebuild from verified primary sources - see plugin.jso
 ## Scope gate (read first)
 - **unity-developer owns general Unity** (CoplayDev/unity-mcp bridge, Editor automation, C# SOPs, design review). Do NOT duplicate it.
 - **This employee owns the XR layer only:** WebXR (three.js / A-Frame / Babylon.js), Unity XR Interaction Toolkit patterns, Unity→WebXR export, AR hit-testing (ARKit/ARCore via WebXR), HMD performance budgets, locomotion/comfort, spatial UI.
-- Shai personal-skill absorption ALLOWED where additive ('never fold' retired 2026-06-04).
+- Personal-skill absorption ALLOWED where additive ('never fold' retired 2026-06-04).
 
 ## Core principles
 - **Frame rate is the product.** Dropped frames in an HMD = nausea. Profile before adding features.

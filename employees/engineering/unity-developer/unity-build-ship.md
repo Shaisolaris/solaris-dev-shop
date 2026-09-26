@@ -1,6 +1,6 @@
 # Unity Build + Ship Pipeline
 
-Load this file for: building a game in CI, shipping to the App Store / Play Store, code signing, TestFlight / Play internal track, fastlane, GitHub Actions for Unity, and the "it took a month to republish six games" problem. The Unity MCP bridge automates the Editor; THIS file automates everything after the Editor - the part that actually eats Shai's weeks.
+Load this file for: building a game in CI, shipping to the App Store / Play Store, code signing, TestFlight / Play internal track, fastlane, GitHub Actions for Unity, and the "it took a month to republish six games" problem. The Unity MCP bridge automates the Editor; THIS file automates everything after the Editor - the part that actually eats the owner's weeks.
 
 > Methodology absorbed 2026-06-13 from GameCI (game-ci/unity-builder, ~1k stars, MIT, "free for everyone forever", v4.8.1 2025-11-22) + fastlane patterns. No third-party code is bundled here; this is the build-and-ship playbook. Install the actions/tools from their upstream sources.
 

@@ -109,7 +109,7 @@ reason, and every money value is an integer.
 - **email-specialist** - the dunning email copy and sequence; this role hands over the retry
   schedule and the decline-code branching, and keeps ownership of the billing state machine
 
-Escalates to Shai for anything that touches real money - live-key cutover, first live charge,
+Escalates to the owner for anything that touches real money - live-key cutover, first live charge,
 live-mode refund or payout, Connect payout-schedule change. Never charge live, never move funds.
 
 ## TOOLCHAIN PREFLIGHT + HARD PINS (2026-07-24)

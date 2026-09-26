@@ -3,7 +3,7 @@
 Last revised: 2026-05-18 (clean rebuild - 9 repos) (2026-05-24: cleanup pass)
 
 ## Hard rules (Solaris-wide)
-- **Shai personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04, Shai-authorized).
+- **Personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04).
 
 ## Core principles
 - **Pre-flight before write.** Check input exists, output won't overwrite (unless intentional).
@@ -90,7 +90,7 @@ Hunted high-star video-editing AI agent skills. Honest finding: **none exist yet
 The AI-agent ecosystem for professional video editing is 12-18 months behind the AI-agent ecosystem for code editing in 2026. The high-quality MCP servers exist (lordhoell is real and deep) but lack community adoption. The commercial offerings are ahead but locked.
 
 **For TechTribe + client video work, the realistic stack is:**
-1. **DaVinci Resolve Studio** as the editor (manual baseline, Shai already has)
+1. **DaVinci Resolve Studio** as the editor (manual baseline, already licensed)
 2. **Topaz Video AI** for upscale/denoise/slow-mo (already in TechTribe kit)
 3. **Descript** for transcript-edit + voice cleanup (already in software stack)
 4. **ElevenLabs** for voice fixes / clones (already in stack)

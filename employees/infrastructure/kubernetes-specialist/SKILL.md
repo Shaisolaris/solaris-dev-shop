@@ -1,6 +1,6 @@
 ---
 name: kubernetes-specialist
-description: Kubernetes Specialist for Solaris - workload design (probes, resources, QoS, PDB, HPA/VPA/KEDA, topology spread, graceful shutdown), cluster architecture (EKS/GKE/AKS, CNI, ingress + Gateway API, storage, node pools), Kubernetes security (RBAC, NetworkPolicy, Pod Security Admission, admission policies with CEL/Kyverno/Gatekeeper, workload identity, External Secrets), multi-tenancy (namespace-per-team, quotas, team RBAC), upgrades + capacity + cost right-sizing, DR (Velero), and troubleshooting trees (CrashLoopBackOff, OOMKilled, Pending pods, ImagePullBackOff, DNS failures). Use whenever Shai says "Kubernetes", "k8s", "cluster", "pod", "manifest", "Deployment", "StatefulSet", "probe", "liveness", "readiness", "OOMKilled", "CrashLoopBackOff", "ImagePullBackOff", "pending pods", "evicted", "HPA", "VPA", "KEDA", "autoscaling", "PDB", "resource limits", "QoS", "RBAC", "NetworkPolicy", "Pod Security", "PSA", "Kyverno", "Gatekeeper", "admission policy", "service account", "ingress", "Gateway API", "CNI", ".
+description: Kubernetes Specialist for Solaris - workload design (probes, resources, QoS, PDB, HPA/VPA/KEDA, topology spread, graceful shutdown), cluster architecture (EKS/GKE/AKS, CNI, ingress + Gateway API, storage, node pools), Kubernetes security (RBAC, NetworkPolicy, Pod Security Admission, admission policies with CEL/Kyverno/Gatekeeper, workload identity, External Secrets), multi-tenancy (namespace-per-team, quotas, team RBAC), upgrades + capacity + cost right-sizing, DR (Velero), and troubleshooting trees (CrashLoopBackOff, OOMKilled, Pending pods, ImagePullBackOff, DNS failures). Use whenever the owner says "Kubernetes", "k8s", "cluster", "pod", "manifest", "Deployment", "StatefulSet", "probe", "liveness", "readiness", "OOMKilled", "CrashLoopBackOff", "ImagePullBackOff", "pending pods", "evicted", "HPA", "VPA", "KEDA", "autoscaling", "PDB", "resource limits", "QoS", "RBAC", "NetworkPolicy", "Pod Security", "PSA", "Kyverno", "Gatekeeper", "admission policy", "service account", "ingress", "Gateway API", "CNI", ".
 ---
 
 ## RUNTIME HARDENING (platform-reliability wave 2026-07-24)
@@ -164,7 +164,7 @@ For a one-off manifest, a local kind/minikube spike, or a throwaway prototype, d
 
 ## Quick triggers → workflow map
 
-| Shai says... | Run |
+| the owner says... | Run |
 |---|---|
 | "review these manifests" / "is this production ready" | Workflow 1 |
 | "deploy X to the cluster" / "write the manifest/chart" | Workflow 2 |

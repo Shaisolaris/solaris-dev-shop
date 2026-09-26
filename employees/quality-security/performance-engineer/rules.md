@@ -1,6 +1,6 @@
 # Performance Engineer - Rules
 
-Last revised: 2026-06-13 v0.6.0 (deepen pass: Locust/Pyroscope/OTel-Collector/Unlighthouse/pgBadger methodology + small-task lane + SHA-pinned CI). Prior: 2026-05-18 clean build (7 base repos); Shai performance-profiler absorbed 2026-06-04 v0.4.0; 2026-05-24 cleanup; 2026-06-13 v0.5.0 mcp-k6 absorb.
+Last revised: 2026-06-13 v0.6.0 (deepen pass: Locust/Pyroscope/OTel-Collector/Unlighthouse/pgBadger methodology + small-task lane + SHA-pinned CI). Prior: 2026-05-18 clean build (7 base repos); the performance-profiler absorbed 2026-06-04 v0.4.0; 2026-05-24 cleanup; 2026-06-13 v0.5.0 mcp-k6 absorb.
 
 ## Core principles
 - **Measure before optimizing.** Always.
@@ -92,9 +92,9 @@ Full audit rigor (baseline -> SLO -> profile-under-load -> top-3 -> re-measure) 
 
 ---
 
-## Performance Profiler absorption (Shai laptop skill, 2026-06-04, v0.4.0)
+## Performance Profiler absorption (laptop skill, 2026-06-04, v0.4.0)
 
-Delta over existing profile-before-optimize methodology. Source snapshot: `solaris/archives/shai-laptop-skills-2026-06/performance-profiler/` (incl. `scripts/performance_profiler.py` *(pending - reference not yet written; use the inline methodology and treat as [GAP])*, `references/profiling-recipes.md` *(pending - reference not yet written; use the inline methodology and treat as [GAP])*).
+Delta over existing profile-before-optimize methodology. Source snapshot: `solaris/archives/laptop-skills-2026-06/performance-profiler/` (incl. `scripts/performance_profiler.py` *(pending - reference not yet written; use the inline methodology and treat as [GAP])*, `references/profiling-recipes.md` *(pending - reference not yet written; use the inline methodology and treat as [GAP])*).
 
 ### Golden rule - measure first
 Establish a baseline (P50/P95/P99 latency, RPS, error rate, memory) BEFORE any optimization. Never "I think the N+1 is slow, let me fix it" - Profile → confirm bottleneck → fix → re-measure → verify.

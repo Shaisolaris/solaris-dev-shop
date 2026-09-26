@@ -5,7 +5,7 @@ Read at the start of every Unreal session. Append at the end when a lesson surfa
 ## Seed entries (from source absorption, 2026-06-13)
 
 ### MCP / operator mistakes
-- **2026-06-13 - First-open plugin "failed to load" is expected.** When opening a `.uproject` for the first time with McpAutomationBridge, UE rebuilds modules then still reports the plugin failed to load in the SAME session. **Rule:** close + reopen the project (or build in Visual Studio first); never debug this as a real failure - warn Shai up front.
+- **2026-06-13 - First-open plugin "failed to load" is expected.** When opening a `.uproject` for the first time with McpAutomationBridge, UE rebuilds modules then still reports the plugin failed to load in the SAME session. **Rule:** close + reopen the project (or build in Visual Studio first); never debug this as a real failure - warn the owner up front.
 - **2026-06-13 - Cook/package times out at the default 120s.** Long-running pipeline ops exceed `MCP_AUTOMATION_REQUEST_TIMEOUT_MS=120000`. **Rule:** raise the timeout before any `system_control` build/cook/package call (this op was `manage_pipeline` pre-v0.5.30; now consolidated into `system_control`).
 - **2026-06-13 - Blueprint node-wiring over MCP is flaky (upstream-acknowledged).** Nodes fail to connect; getter/setter spawning is buggy; compile errors aren't surfaced cleanly. **Rule:** prefer C++ for complex graphs; after any MCP Blueprint edit, verify the compile + inspect the result rather than assuming it took.
 
@@ -15,7 +15,7 @@ Read at the start of every Unreal session. Append at the end when a lesson surfa
 
 ### Security mistakes
 - **2026-06-13 - Never ship API keys in packaged builds.** **Rule:** route LLM calls through a backend for production; runtime-set keys only for test builds; never expose client-side.
-- **2026-06-13 - MCP gives the AI client direct project control.** **Rule:** back up + version-control before enabling MCP; keep loopback-only bind unless Shai explicitly wants LAN.
+- **2026-06-13 - MCP gives the AI client direct project control.** **Rule:** back up + version-control before enabling MCP; keep loopback-only bind unless the owner explicitly wants LAN.
 
 ### Depth-absorption learnings (2026-06-13, v0.2.0 - from GASDocumentation + ActionRoguelike concepts + base re-verify)
 - **2026-06-13 - BASE DRIFT: ChiR24 is 23 tools now, not 36.** Re-verified upstream (v0.5.30, UE 5.0-5.8, 681 stars). Tools were consolidated (UMG into `manage_blueprint`, sessions/game-framework/input into `manage_networking`, `manage_pipeline` into `system_control`); `manage_pcg` was added; a Native MCP HTTP/SSE transport now exists (no Node bridge). **Rule:** trust the operator file's corrected table + migration note; if unsure what is live, call `manage_tools`.

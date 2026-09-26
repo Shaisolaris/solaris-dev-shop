@@ -1,6 +1,6 @@
 # Game Design Mentor
 
-Load this file when the task involves a new screen, new feature, new mechanic, or the question "how should this work?" This is the highest-leverage reference in the stack - it's what protects Shai from his coder instincts.
+Load this file when the task involves a new screen, new feature, new mechanic, or the question "how should this work?" This is the highest-leverage reference in the stack - it's what protects the owner from their coder instincts.
 
 ## The core mental model: MDA
 
@@ -10,7 +10,7 @@ Every game can be decomposed into three layers. Coders default to thinking only 
 2. **Dynamics** - what emerges when a player interacts with the mechanics. "When I shoot, the enemy dodges, so I have to lead my shot" is dynamics, not mechanics. Dynamics emerge.
 3. **Aesthetics** - how it feels. Tension, mastery, delight, frustration, surprise. Players remember this; they don't remember your mechanics.
 
-**Rule of thumb: start from aesthetics, design backwards to mechanics.** Ask "what should the player FEEL here?" before asking "what should the code DO?" A tutorial screen should feel reassuring. A boss fight should feel tense. A menu screen should feel inviting. If Shai can't name the feeling, the screen isn't designed - it's just wired.
+**Rule of thumb: start from aesthetics, design backwards to mechanics.** Ask "what should the player FEEL here?" before asking "what should the code DO?" A tutorial screen should feel reassuring. A boss fight should feel tense. A menu screen should feel inviting. If the owner can't name the feeling, the screen isn't designed - it's just wired.
 
 ## The player loop - the single most important question in game design
 
@@ -21,7 +21,7 @@ Every single screen, every single mechanic, every single button must answer:
 This is the core game loop. If any part is missing, the screen is broken. Examples:
 
 - **Good loop (a combat screen):** Player attacks → enemy reacts with juice (hit flash, sound, screen shake) → player sees HP drop → player feels progress → player attacks again, more confidently. Loop closes.
-- **Broken loop (Shai's failure mode):** Player taps a button → something happens → screen just sits there → player doesn't know if it worked → player taps again out of confusion. No feedback = no loop = no game.
+- **Broken loop (the owner's failure mode):** Player taps a button → something happens → screen just sits there → player doesn't know if it worked → player taps again out of confusion. No feedback = no loop = no game.
 
 **The fix:** Every interaction needs immediate, unambiguous feedback. Visual (flash, scale, color), audio (click, whoosh), or both. If you can't afford polish art yet, a simple scale-pulse + a tone is enough. Silence is death.
 
@@ -39,7 +39,7 @@ Player states to consider:
 - **Stuck / confused** - looking for help. Needs a visible way out or forward.
 - **Browsing / sandbox** - relaxed. Tolerates more options.
 
-If Shai can't place the player in one of these, the screen's audience isn't defined. Ask him.
+If the owner can't place the player in one of these, the screen's audience isn't defined. Ask them.
 
 ### Q2: What is their single next action?
 
@@ -53,7 +53,7 @@ Name the single primary action in five words. If it takes more than five words, 
 
 ### Q3: Where did they come from and where do they go next?
 
-This is the screen's place in the state machine. No screen is an island. If Shai doesn't know where this screen sits in the flow, stop - we fix the screen flow map before touching Unity.
+This is the screen's place in the state machine. No screen is an island. If the owner doesn't know where this screen sits in the flow, stop - we fix the screen flow map before touching Unity.
 
 Format:
 ```

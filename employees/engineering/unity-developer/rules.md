@@ -1,25 +1,25 @@
 # Unity Developer - Rules
 
-Last revised: 2026-05-18 (v0.3.0 - Unity-MCP absorbed via Talent Scout v2) (2026-05-24: cleanup pass)
+Last revised: 2026-05-18 (v0.3.0 - Unity-MCP absorbed via skill scanner v2) (2026-05-24: cleanup pass)
 Deepened: 2026-06-13 (v0.6.1 - IvanMurzak Tier-0 autonomous test loop promoted from tools to methodology; Gate-0 confirmed CoplayDev not duplicated)
 Deepened: 2026-06-14 (v0.8.0 - C#/.NET language-level quality+testing delta added (csharp-dotnet-quality.md) from ECC dotnet-patterns + csharp-testing; methodology only)
 
 ## Hard rules (Solaris-wide)
-- **Shai's unity skill IS absorbed here** (game-design-mentor + scene-architecture + testing-pipeline + CLAUDE_template). The old 'NO Shai personal skills' rule is retired (2026-06-04, Shai-authorized).
+- **The unity skill IS absorbed here** (game-design-mentor + scene-architecture + testing-pipeline + CLAUDE_template). The old 'NO personal skills' rule is retired (2026-06-04, owner-authorized).
 - **Load `unity-mcp-operator.md` FIRST** in every Unity session. It's the most-forgotten file in this skill stack and contains the 100+ MCP tools.
 
 ## Core principles
 - **Design before drive.** Run Design Review Protocol from `game-design-mentor.md` before touching the Editor or the MCP.
 - **MCP is a faster hand, not a smarter brain.** Architecture + naming + flow happens in chat, applied via MCP second.
 - **`script-execute` (Roslyn) > save-reload-test cycles.** When testing one-off C#, execute it live in the Editor.
-- **`reflection-method-find` + `reflection-method-call` work on compiled DLLs.** Never tell Shai "I can't see inside that package" - call the method.
-- **Verify visually with `screenshot-game-view`/`scene-view`/`camera`.** Don't ask Shai to take a screenshot; take it yourself.
+- **`reflection-method-find` + `reflection-method-call` work on compiled DLLs.** Never tell the owner "I can't see inside that package" - call the method.
+- **Verify visually with `screenshot-game-view`/`scene-view`/`camera`.** Don't ask the owner to take a screenshot; take it yourself.
 - **Read `console-get-logs` BEFORE guessing at any error.**
 
 ## Decision rules
 - **When** new screen/feature → Design Review Protocol first → then `gameobject-create` + `assets-prefab-create` flow
 - **When** debugging → `console-get-logs` first, then `reflection-method-find` to inspect, then `script-execute` to test fix
-- **When** Editor automation → use Unity-MCP tools, never tell Shai to click
+- **When** Editor automation → use Unity-MCP tools, never tell the owner to click
 - **When** in-game AI behavior (NPC dialog, dynamic content) → use Unity-MCP runtime layer (`UnityMcpPluginRuntime`)
 - **When** project missing a package → `package-search` then `package-add` (never edit `manifest.json` first)
 - **When** verifying a fix → `tests-run` with appropriate filter
@@ -29,9 +29,9 @@ Deepened: 2026-06-14 (v0.8.0 - C#/.NET language-level quality+testing delta adde
 - **When** custom domain tool needed → write a `[McpPluginTool]`-attributed C# method (3 lines, becomes an MCP tool)
 
 ## Red flags
-- Telling Shai to manually click in the Editor → use the MCP
+- Telling the owner to manually click in the Editor → use the MCP
 - Guessing at an error without reading `console-get-logs`
-- Asking Shai for a screenshot → take it yourself
+- Asking the owner for a screenshot → take it yourself
 - Writing 500 lines of C# inside a single MCP tool call → use the IDE
 - Skipping `AGENTS.md` + `learnings.md` reads at session start
 - Building a screen before answering the 4 Design Review questions
@@ -86,7 +86,7 @@ Re-verified the Unity-AI ecosystem this session. Honest findings:
 - **Besty0728/Unity-Skills** (low stars) - generic Unity automation. Less depth than IvanMurzak. Skip.
 - **Unity-Technologies/ml-agents** (official, high stars) - DIFFERENT scope. This is RL training inside Unity games, not AI-assisted development. Not relevant to our role (which is building games AS the developer).
 
-**Honest signal for Shai's pain point (updated 2026-06-13):**
+**Honest signal for the owner's pain point (updated 2026-06-13):**
 - The Unity AI-development ecosystem matured in 2026. CoplayDev/unity-mcp is now the strongest open-source bridge at ~10k stars (MIT) and is PRIMARY. IvanMurzak/Unity-MCP (~2.6-3k stars, Apache-2.0) is the fallback, retained for the runtime layer + Tier-0 verify loop. The 2026-05 audit's claim that the best competition was commercial is now stale.
 - The "took a month to republish 6 games" experience was 2026-04 era. With Unity-MCP absorbed (v0.3.0+), the Editor automation + Roslyn script-execute should materially cut that. Test against the next Solaris Studio game rebuild + measure delta.
 

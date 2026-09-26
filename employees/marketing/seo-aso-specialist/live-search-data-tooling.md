@@ -26,7 +26,7 @@ Source: AminForou/mcp-gsc (MIT, v0.3.2). Package: `mcp-search-console`. Lifted a
 
 ## 2. DataForSEO - SERP + keyword volume data (CONNECT, paid API)
 
-Source: dataforseo/mcp (Apache-2.0). **Paid API - usage-metered. Requires explicit Shai cost approval + API key before any run.**
+Source: dataforseo/mcp (Apache-2.0). **Paid API - usage-metered. Requires explicit owner cost approval + API key before any run.**
 - Use for: SERP scraping at scale, keyword search-volume + difficulty, competitor SERP overlap, rank tracking - the data Ahrefs/SEMrush provide, via API, pay-per-call.
 - When: only when client lacks an Ahrefs/SEMrush seat and the job needs hard volume/difficulty numbers. For owned-property performance, GSC (free, first-party) is always preferred over paid SERP estimates.
 - Flag the per-call cost in the proposal; do not run speculative bulk pulls.

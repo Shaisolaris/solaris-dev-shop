@@ -1,6 +1,6 @@
 # Code Reviewer - Rules (Active Methodology)
 
-Last revised: 2026-05-18 (clean rebuild - 6 repos only, no Shai skill absorbed) (2026-05-24: cleanup pass)
+Last revised: 2026-05-18 (clean rebuild - 6 repos only, no owner skill absorbed) (2026-05-24: cleanup pass)
 
 Absorbed from:
 - alirezarezvani/engineering-team/code-reviewer (PRIMARY)

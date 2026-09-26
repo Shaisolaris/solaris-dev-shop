@@ -2,7 +2,7 @@
 
 ## Pending observations
 - **2026-05-18 - Clean build**: "Measure before optimizing" is the universal rule. Codified as first core principle (rules.md).
-- **2026-06-04 - v0.4.0**: Shai's performance-profiler ABSORBED (static scanner + before/after template + quick-wins checklist) folded into rules.md.
+- **2026-06-04 - v0.4.0**: The performance-profiler skill ABSORBED (static scanner + before/after template + quick-wins checklist) folded into rules.md.
 - **2026-06-13 - v0.5.0**: grafana/mcp-k6 load-test patterns absorbed -> references/k6-load-test-patterns.md (AGPL self-host note); prometheus-mcp CONNECT (PromQL lives in SRE).
 - **2026-06-13 - v0.6.0 deepen pass**: five lanes the employee named but never operationalized got methodology (references/perf-observability-patterns.md): Locust (Python load lane), Pyroscope (continuous prod profiling, AGPL), OTel Collector (vendor-neutral telemetry), Unlighthouse (site-wide CWV + CI budget), pgBadger (Postgres slow-log). Observation: every load/CWV gate should be a non-zero-exit CI step, SHA-pinned per fleet doctrine - promoted into rules.md "Perf CI gates".
 - **2026-06-13**: Observation - a single quick measurement is legitimate for prototypes; full audit rigor should not block a "is this obviously slow?" question. Promoted into rules.md "Small-task / prototype lane".

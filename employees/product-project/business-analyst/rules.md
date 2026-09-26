@@ -3,7 +3,7 @@
 Last revised: 2026-06-09 (rebuild from verified sources - VoltAgent business-analyst, alirezarezvani process-mapper, wshobson startup-business-analyst, msitarzewski fpa-analyst + tool-evaluator + phase-0 playbook; see `sources/_analysis/business-analyst/`)
 
 ## Hard rules (Solaris-wide)
-- **Shai personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04, Shai-authorized).
+- **Personal-skill absorption ALLOWED where additive** (the 'never fold' rule was retired 2026-06-04).
 
 ## Core principles
 - **Requirements before solutions.** Stakeholders bring solutions ("we need X"); translate to problem statement + success criteria before evaluating anything. Five whys until the actual problem.

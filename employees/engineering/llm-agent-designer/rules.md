@@ -6,7 +6,7 @@ Absorbed from:
 - VoltAgent llm-architect (PRIMARY)
 - alirezarezvani senior-prompt-engineer + senior-ml-engineer
 - wshobson ai-engineer
-- mcp-builder + skill-creator (Shai's installed)
+- mcp-builder + skill-creator (installed)
 - Solaris's own an agent SDK experience
 
 ---
@@ -175,7 +175,7 @@ Source: obra/superpowers (MIT, ~174K stars, Jesse Vincent / Prime Radiant, ~7 mo
 - **Skills as composable markdown, not a framework.** 14 SKILL.md files, no fine-tuned model, no SDK, no agent platform - just markdown the host agent loads. This validates the Solaris approach (employees as markdown) at 174K-star scale. Doctrine alignment confirmed.
 
 **Rejected (not absorbed):**
-- Installing the obra/superpowers plugin wholesale. Per absorb-don't-replace doctrine, the patterns layer into llm-agent-designer's methodology. The repo stays as a watchlist source - when Jesse ships new skills (the lab repo at obra/superpowers-lab is the experimental edge), Talent Scout re-evaluates.
+- Installing the obra/superpowers plugin wholesale. Per absorb-don't-replace doctrine, the patterns layer into llm-agent-designer's methodology. The repo stays as a watchlist source - when Jesse ships new skills (the lab repo at obra/superpowers-lab is the experimental edge), the maintainer re-evaluates.
 - The Anthropic marketplace install path. Solaris employees live in ai-org/, not as installed a coding agent plugins - installing superpowers as a plugin alongside would create two competing skill-loading mechanisms.
 
 ---

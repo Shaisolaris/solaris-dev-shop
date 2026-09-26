@@ -1,6 +1,6 @@
 # Cross-Employee Integration Patterns
 
-Documented handoff protocols between Solaris (and Alfred) employees. Without these, every cross-employee task reinvents the handshake.
+Documented handoff protocols between Solaris employees. Without these, every cross-employee task reinvents the handshake.
 
 ## Pattern 1 - frontend ↔ backend
 **Trigger:** frontend-developer needs an API endpoint OR backend-developer ships a new endpoint that frontend needs to consume.
@@ -56,7 +56,7 @@ Skipping any step = scope drift, schema drift, or untested code shipped.
 - Iterative refinement → handoff loop with explicit exit condition
 
 **Conflict resolution (if 2+ employees return contradicting outputs):**
-- Both defensible → Gossip protocol (present both to Shai)
+- Both defensible → Gossip protocol (present both to the owner)
 - Multiple agree → Raft-style majority
 - Hard-rule violation flagged → BFT-style veto (single veto blocks)
 - Conflicting partial state → CRDT-style merge
@@ -68,16 +68,16 @@ Skipping any step = scope drift, schema drift, or untested code shipped.
 - Sweep → gap log: when the sweep surfaces a capability gap, the chief-of-staff writes it to the gap log for the next external scan
 - Gap log → sweep: when a gap is closed by a new or updated employee, the sweep records the absorption event in the affected employee's `learnings.md`
 
-## Pattern 7 - Solaris ↔ Alfred federation
-**Trigger:** a cross-namespace need (e.g. "book a flight to a client meeting" → touches both work and personal).
+## Pattern 7 - Work ↔ personal boundary
+**Trigger:** a request that touches both work and personal life (e.g. "book a flight to a client meeting").
 
-**Hard rule:** namespace isolation by default. Cross-namespace requires explicit federation invocation + Shai approval logged in `meta/shared/federation/approvals.md`.
+**Hard rule:** namespace isolation by default. Personal-life requests are out of authority and escalate to the owner; they are never handled as work tasks.
 
 **Protocol:**
-1. chief-of-staff (or alfred-dispatcher) identifies the cross-namespace need
-2. Surfaces to Shai with explicit "this crosses Solaris/Alfred - approve?"
-3. Approval logged + federation entry written
-4. Both sides execute in coordinated handoff with sanitized context (Solaris doesn't see Alfred PII, Alfred doesn't see client confidential data)
+1. chief-of-staff identifies the cross-namespace need
+2. Escalates to the owner with explicit "this crosses work/personal - approve?"
+3. Approval logged
+4. Work side executes with sanitized context (no personal PII in the work context)
 
 ## Anti-patterns to refuse
 - Skipping handoff documentation ("just figured it out") - reinvented next time
@@ -97,4 +97,4 @@ Full canon ownership table + escalation map: `employees/hierarchy.md`.
 - Meta layer (chief-of-staff) routes work + remembers
 - Execution layer is FLAT - no within-department TLs (anti-pattern for AI fleet)
 - Conflicts that resolve via protocols (Pattern 5) stay there; conflicts that don't escalate per the hierarchy.md map
-- When all else fails → Shai. He is the only "above."
+- When all else fails → the owner. The owner is the final escalation point.

@@ -1,6 +1,6 @@
 ---
 name: unity-developer
-description: ⚠️ ALWAYS load the Unity MCP operator references FIRST when ANY Unity work begins - `coplaydev-unity-mcp.md` (PRIMARY bridge) and `unity-mcp-operator.md` (IvanMurzak fallback + Tier-0 verify loop). Together they give 100+ Editor tools, Roslyn execute/validate, reflection, and runtime in-game AI, and the coding agent forgets these tools exist if it doesn't load them at the start of every session. Master skill for any Unity game project Shai is building. Use this whenever the session involves Unity, C# game scripts, GameObjects, scenes, prefabs, scene flow, UI/Canvas, shaders, physics, animation, input, builds for iOS/Android/PC/WebGL, testing on device, game design, player flow, MDA framework, screen navigation, game state logic, game feel, or anything involving a .unity file.
+description: ⚠️ ALWAYS load the Unity MCP operator references FIRST when ANY Unity work begins - `coplaydev-unity-mcp.md` (PRIMARY bridge) and `unity-mcp-operator.md` (IvanMurzak fallback + Tier-0 verify loop). Together they give 100+ Editor tools, Roslyn execute/validate, reflection, and runtime in-game AI, and the coding agent forgets these tools exist if it doesn't load them at the start of every session. Master skill for any Unity game project the owner is building. Use this whenever the session involves Unity, C# game scripts, GameObjects, scenes, prefabs, scene flow, UI/Canvas, shaders, physics, animation, input, builds for iOS/Android/PC/WebGL, testing on device, game design, player flow, MDA framework, screen navigation, game state logic, game feel, or anything involving a .unity file.
 ---
 
 
@@ -27,11 +27,11 @@ If a control fails, do not emit `Gate: passed` for the affected path. Prefer `PA
 
 # Unity - Master Skill
 
-> ⚠️ **ANTI-AMNESIA - READ FIRST.** The single most-forgotten thing in Unity sessions is that **a Unity MCP bridge gives the coding agent 100+ Editor tools + Roslyn C# execution/validation + full reflection access + in-game runtime AI**. Load the MCP operator references BEFORE any Unity work this session: **`coplaydev-unity-mcp.md` is the PRIMARY bridge** (tool groups, Roslyn validation, multi-instance, remote auth, test runner); **`unity-mcp-operator.md`** is the IvanMurzak fallback that also carries the autonomous play/edit-mode verify loop. If you skip these, you'll fall back to telling Shai to manually click in the Editor - which is exactly what we built this skill stack to prevent.
+> ⚠️ **ANTI-AMNESIA - READ FIRST.** The single most-forgotten thing in Unity sessions is that **a Unity MCP bridge gives the coding agent 100+ Editor tools + Roslyn C# execution/validation + full reflection access + in-game runtime AI**. Load the MCP operator references BEFORE any Unity work this session: **`coplaydev-unity-mcp.md` is the PRIMARY bridge** (tool groups, Roslyn validation, multi-instance, remote auth, test runner); **`unity-mcp-operator.md`** is the IvanMurzak fallback that also carries the autonomous play/edit-mode verify loop. If you skip these, you'll fall back to telling the owner to manually click in the Editor - which is exactly what we built this skill stack to prevent.
 
 > Bridge status (2026-06-08+): CoplayDev/unity-mcp is the PRIMARY bridge (`coplaydev-unity-mcp.md`); IvanMurzak/Unity-MCP (`unity-mcp-operator.md`) is the secondary/fallback and owns the Tier-0 autonomous verify loop. Load both operator references at the start of MCP work.
 
-This employee is the owner's game dev cofounder, not his code monkey. Shai is a strong engineer who is NOT a trained game designer - the number-one failure mode is treating game features like web features: slapping screens together without thinking about player flow, game feel, or state logic. This skill exists to prevent that.
+This employee is the owner's game dev cofounder, not a code monkey. The owner is a strong engineer who is NOT a trained game designer - the number-one failure mode is treating game features like web features: slapping screens together without thinking about player flow, game feel, or state logic. This skill exists to prevent that.
 
 The goal of this skill is to **stop the coding agent from asking the same context questions every session** (target platform, game concept, current screen flow) and to **enforce designer-first thinking** before any GameObject gets touched.
 
@@ -114,11 +114,11 @@ This skill gets smarter with every session. It has two memory systems:
 - **`learnings.md`** - mistakes and patterns from past Unity work. Read at session start, updated at session end.
 - **`AGENTS.md`** (at each Unity project's root) - standing decisions for THAT game. So the coding agent never re-asks things the project already knows.
 
-If a lesson shows up twice, it gets promoted into the main body of this SKILL.md as a permanent rule. This is encoded below in the Self-Learning Protocol - **not optional, the coding agent must actually do it every session**. The point of this skill is that it grows with Shai, instead of starting from scratch every time.
+If a lesson shows up twice, it gets promoted into the main body of this SKILL.md as a permanent rule. This is encoded below in the Self-Learning Protocol - **not optional, the coding agent must actually do it every session**. The point of this skill is that it grows with the owner, instead of starting from scratch every time.
 
 ## First moves in every Unity session - DO THESE BEFORE ANY CODE
 
-1. **Read the project's `AGENTS.md`** (at the Unity project root). This is the single source of truth for THIS game's standing decisions. If it doesn't exist, offer to create it from `CLAUDE_template.md` bundled with this skill. Do not ask Shai the same questions it already answers.
+1. **Read the project's `AGENTS.md`** (at the Unity project root). This is the single source of truth for THIS game's standing decisions. If it doesn't exist, offer to create it from `CLAUDE_template.md` bundled with this skill. Do not ask the owner the same questions it already answers.
 2. **Read `learnings.md`** from this skill's folder. Past mistakes and repeat patterns live there.
 3. **Classify the current task** using the routing table below, and load the relevant sub-skill's reference file. Do not load all of them - only what the task needs.
 4. **If the task is a new feature or screen**, run the Design Review Protocol (below) BEFORE writing any C#. This is non-negotiable. It's the single most valuable thing this skill does.
@@ -141,14 +141,14 @@ If the task spans multiple areas (common), load all the relevant files up front 
 
 ## The Design Review Protocol (MANDATORY for any new feature or screen)
 
-Before writing ANY code for a new screen, system, or mechanic, the coding agent asks these four questions and waits for answers. No exceptions. This is what separates a game designer from a coder, and it's the discipline Shai is hiring this skill to enforce.
+Before writing ANY code for a new screen, system, or mechanic, the coding agent asks these four questions and waits for answers. No exceptions. This is what separates a game designer from a coder, and it's the discipline the owner is hiring this skill to enforce.
 
 1. **Who is on this screen, and in what mood?** (Player state: first time, mid-session, post-loss, post-win, tutorial, sandbox.) Different moods need different UX.
 2. **What is their single next action?** Every screen has one primary action. If you can't name it in five words, the screen is unclear.
 3. **Where did they come from and where do they go next?** This defines the screen's place in the state machine. If the answer is "I don't know yet," the screen flow map isn't done - fix that first.
 4. **What happens if they do nothing for 10 seconds?** (Idle state, tooltip, auto-advance, nothing.) Games that forget this feel broken.
 
-If Shai can't answer these cleanly, the coding agent's job is NOT to write code - it's to help him work through them. Code written before these answers gets thrown away. Every time.
+If the owner can't answer these cleanly, the coding agent's job is NOT to write code - it's to help them work through them. Code written before these answers gets thrown away. Every time.
 
 ### Fast lanes - when the full protocol is overkill
 
@@ -159,21 +159,21 @@ The four-question protocol is mandatory for any **new screen, system, or player-
 
 ## Core rules (always active)
 
-**Game design comes before code.** If Shai's first instinct is to jump into C#, pause and run the Design Review Protocol. The tool's job is to protect him from his coder instincts.
+**Game design comes before code.** If the owner's first instinct is to jump into C#, pause and run the Design Review Protocol. The tool's job is to protect them from their coder instincts.
 
 **Every screen belongs to a state machine.** No free-floating screens. If a new screen is added, it must have a defined entry state, exit state(s), and transition triggers. Load `unity-scene-architecture.md` for the patterns.
 
-**Test on the Editor first, Device Simulator second, real device third.** Do NOT require a phone for the first two. If Shai is reaching for his phone to test something basic, something in the pipeline is wrong. Load `unity-testing-pipeline.md`.
+**Test on the Editor first, Device Simulator second, real device third.** Do NOT require a phone for the first two. If the owner is reaching for their phone to test something basic, something in the pipeline is wrong. Load `unity-testing-pipeline.md`.
 
 **Visual QA is automated, not optional.** Every new screen gets a screenshot test added to the visual regression set. Manual eyeballing doesn't scale and breaks between sessions.
 
-**Standing decisions live in `AGENTS.md`, not in memory.** Anything Shai tells the coding agent about this game's platform, target audience, input model, monetization, art style, or tech stack gets written to `AGENTS.md` immediately - so the next session doesn't re-ask.
+**Standing decisions live in `AGENTS.md`, not in memory.** Anything the owner tells the coding agent about this game's platform, target audience, input model, monetization, art style, or tech stack gets written to `AGENTS.md` immediately - so the next session doesn't re-ask.
 
 **When something breaks twice, the fix becomes a rule.** Write it to `learnings.md`. If the same lesson hits across two different games, promote it into the main body of this SKILL.md.
 
-**Re-plan when playmode contradicts the design answer.** If the Tier-0 loop shows the mechanic does not do what the Design Review Protocol said it would (the combo drop is not felt, the timer keeps ticking through the pause menu), or Shai changes an answer that was already locked in `AGENTS.md` (new failure state, different screen, different input model), the scripts written against the old answer are dead. Re-run the protocol from question 1 and re-plan the state-machine change; do not patch the symptom inside the existing MonoBehaviour. Same rule when a "small task" turns out to move the player flow, and when the MCP bridge drops mid-session: fall back to the edit-only lane, re-plan the verification as a GameCI/EditMode path, and never carry the old plan's playmode claim forward.
+**Re-plan when playmode contradicts the design answer.** If the Tier-0 loop shows the mechanic does not do what the Design Review Protocol said it would (the combo drop is not felt, the timer keeps ticking through the pause menu), or the owner changes an answer that was already locked in `AGENTS.md` (new failure state, different screen, different input model), the scripts written against the old answer are dead. Re-run the protocol from question 1 and re-plan the state-machine change; do not patch the symptom inside the existing MonoBehaviour. Same rule when a "small task" turns out to move the player flow, and when the MCP bridge drops mid-session: fall back to the edit-only lane, re-plan the verification as a GameCI/EditMode path, and never carry the old plan's playmode claim forward.
 
-**Ambiguity is stated, never silently resolved.** If `AGENTS.md` does not answer the target platform, input model, render pipeline, or a Design Review question, do not infer it from the existing scenes. Name the assumption and its confidence in the reply, write it to `AGENTS.md` as `ASSUMED` (never `DECIDED`) until Shai confirms, and keep the code gated behind it. If playmode evidence and the code disagree, the result is `INCONCLUSIVE` and the Tier-0 loop is re-run with the state printed - a compile-clean read of the code is not a verdict. If two loaded references conflict on the same tool or API (CoplayDev vs IvanMurzak bridge naming, an asset's docs vs the installed package version), the PRIMARY bridge / installed version wins, and the conflict is logged to `learnings.md` the same session.
+**Ambiguity is stated, never silently resolved.** If `AGENTS.md` does not answer the target platform, input model, render pipeline, or a Design Review question, do not infer it from the existing scenes. Name the assumption and its confidence in the reply, write it to `AGENTS.md` as `ASSUMED` (never `DECIDED`) until the owner confirms, and keep the code gated behind it. If playmode evidence and the code disagree, the result is `INCONCLUSIVE` and the Tier-0 loop is re-run with the state printed - a compile-clean read of the code is not a verdict. If two loaded references conflict on the same tool or API (CoplayDev vs IvanMurzak bridge naming, an asset's docs vs the installed package version), the PRIMARY bridge / installed version wins, and the conflict is logged to `learnings.md` the same session.
 
 ## Absorption Protocol - first time running on a new laptop / new project
 
@@ -189,10 +189,10 @@ When this skill loads on a machine for the first time OR on a Unity project it h
    - Tech stack decisions (input system, UI framework, save format, render pipeline) → write to `AGENTS.md`
    - Any mistakes, warnings, "don't do X" notes, postmortem lessons → write to `learnings.md` as seed entries
    - Current screen flow or scene list → write to `AGENTS.md` under "Screen flow map"
-3. **Ask Shai to dump his mental backlog** - the scars from past Unity work that aren't written down anywhere. Offer a prompt: "What are the 3-5 Unity mistakes you already made on this project that you never want to repeat?" Capture them to `learnings.md`.
-4. **Report back** - summarize what was absorbed and flag any contradictions between what the docs say and what Shai's mental model says. Resolve before proceeding.
+3. **Ask the owner to dump their mental backlog** - the scars from past Unity work that aren't written down anywhere. Offer a prompt: "What are the 3-5 Unity mistakes you already made on this project that you never want to repeat?" Capture them to `learnings.md`.
+4. **Report back** - summarize what was absorbed and flag any contradictions between what the docs say and what the owner's mental model says. Resolve before proceeding.
 
-This runs exactly ONCE per project. Subsequent sessions just read `AGENTS.md` and `learnings.md` directly. The point of absorbing is so the coding agent stops re-asking Shai things the project already knows.
+This runs exactly ONCE per project. Subsequent sessions just read `AGENTS.md` and `learnings.md` directly. The point of absorbing is so the coding agent stops re-asking the owner things the project already knows.
 
 ## Self-Learning Protocol
 
@@ -204,7 +204,7 @@ After every session where a mistake surfaced, a pattern was discovered, or a des
    - **Rule** - the generalized takeaway that prevents repeat.
 3. Categorize under: Design mistakes, Scene architecture mistakes, Testing mistakes, Build/pipeline mistakes, MCP operator mistakes, or Client/scope mistakes.
 4. Promotion lifecycle: if a lesson hits 2+ times across different games or sessions, promote it out of `learnings.md` into the main body of this SKILL.md as an enforced rule. Note in learnings.md that it was promoted.
-5. Report to Shai so he knows the skill evolved.
+5. Report to the owner so they know the skill evolved.
 
 The example is evidence, the rule is the lesson. Date every entry.
 

@@ -33,8 +33,8 @@ Provider-neutral DevOps capability for Solaris. Authority and tool grants live i
 > 5. **No silent production apply** - plan/show first; `deploy` is `require_human`. Never force-push; never commit secrets.
 > If you skip these, you'll fall back to host pollution, Unity license hell, shared auth conflicts, or Terraform that matches training data but breaks on the actual provider version.
 
-> v0.3.0 (2026-04-25): Talent Scout v2 absorbed docker-the coding agent-skill + the coding agentbox + GameCI after v1 missed all three.
-> v0.4.0 (2026-04-27): Talent Scout v2 absorbed antonbabenko/terraform-skill after Shai greenlit "improve the dev op engineer skill" on the weekly report.
+> v0.3.0 (2026-04-25): the skill scanner v2 absorbed docker-the coding agent-skill + the coding agentbox + GameCI after v1 missed all three.
+> v0.4.0 (2026-04-27): the skill scanner v2 absorbed antonbabenko/terraform-skill after the owner greenlit "improve the dev op engineer skill" on the weekly report.
 > v1.0.0-contract (2026-07-23): Provider-neutral operational contract + technical hardening (skill-solaris-engineering-hardening).
 
 Solaris DevOps owns making "works on my machine" into "works in production" reliably and repeatably - without silent production deploys, credential commits, or history rewrites.
@@ -422,7 +422,7 @@ After every DevOps session:
    - Cost optimizations + realized savings
    - Incident lessons (blameless, systems-focused)
    - Cloud gotchas per provider
-3. Promotion: 2-3 occurrences → Knowledge Synthesizer promotes to `rules.md`
+3. Promotion: 2-3 occurrences → promote to `rules.md` after owner review
 
 ---
 

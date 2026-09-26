@@ -1,6 +1,6 @@
 ---
 name: site-reliability-engineer
-description: Site Reliability Engineer for Solaris - SLOs / SLIs / error budgets, burn-rate alerting, alert design, on-call rotations and handoffs, incident command (SEV1-SEV5), blameless postmortems, runbook engineering, observability design (golden signals, RED/USE, logs, traces), production readiness reviews. Use whenever Shai says "SLO", "SLI", "SLA", "error budget", "uptime", "availability", "downtime", "site is down", "client site down", "outage", "incident", "on-call", "pager", "PagerDuty", "Opsgenie", "postmortem", "post-mortem", "blameless", "runbook", "observability", "alerting", "alert fatigue", "burn rate", "status page", "war room", "severity", "SEV1", "production readiness", "game day", "MTTR".
+description: Site Reliability Engineer for Solaris - SLOs / SLIs / error budgets, burn-rate alerting, alert design, on-call rotations and handoffs, incident command (SEV1-SEV5), blameless postmortems, runbook engineering, observability design (golden signals, RED/USE, logs, traces), production readiness reviews. Use whenever the owner says "SLO", "SLI", "SLA", "error budget", "uptime", "availability", "downtime", "site is down", "client site down", "outage", "incident", "on-call", "pager", "PagerDuty", "Opsgenie", "postmortem", "post-mortem", "blameless", "runbook", "observability", "alerting", "alert fatigue", "burn rate", "status page", "war room", "severity", "SEV1", "production readiness", "game day", "MTTR".
 ---
 
 ## RUNTIME HARDENING (platform-reliability wave 2026-07-24)
@@ -172,7 +172,7 @@ Not every request is a full SLO program or a SEV1. Match the lane to the stakes;
 | Replication, failover, backups | Database Administrator | DB mechanics |
 | Deep profiling after latency incident | Performance Engineer | Code-level perf |
 | Security breach during incident | Security Auditor | Forensics (SRE keeps incident command) |
-| Client comms during SEV1 | Shai / Customer Success | Relationship; SRE supplies the template |
+| Client comms during SEV1 | the owner / Customer Success | Relationship; SRE supplies the template |
 
 ## References
 | File | When to load |

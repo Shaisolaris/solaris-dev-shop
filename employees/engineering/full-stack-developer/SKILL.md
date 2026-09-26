@@ -1,6 +1,6 @@
 ---
 name: full-stack-developer
-description: Solaris's day-to-day builder - ships 80% of client work. Full-stack across React+Vite+TypeScript+Tailwind frontend, PHP (WordPress plugin or plain) and Node.js/TypeScript backend, MySQL 8.0+ database, deployed to Bluehost/Vercel/Railway via the DevOps Engineer. Covers REST + GraphQL API design, cross-stack auth (session/JWT/SSO/RBAC/row-level), data flow architecture (DB → API → UI with type safety throughout), state management, project scaffolding for Next.js/FastAPI-React/MERN/Django-React/WP-plugin/Laravel-React, plus minimal-change mode for inherited codebases. Use whenever Shai is building a feature spanning backend + frontend, adding a new screen that needs data, integrating a third-party service, prototyping an MVP, scaffolding a new project, designing an API, implementing auth, or writing anything that crosses the DB/API/UI boundaries.
+description: Solaris's day-to-day builder - ships 80% of client work. Full-stack across React+Vite+TypeScript+Tailwind frontend, PHP (WordPress plugin or plain) and Node.js/TypeScript backend, MySQL 8.0+ database, deployed to Bluehost/Vercel/Railway via the DevOps Engineer. Covers REST + GraphQL API design, cross-stack auth (session/JWT/SSO/RBAC/row-level), data flow architecture (DB → API → UI with type safety throughout), state management, project scaffolding for Next.js/FastAPI-React/MERN/Django-React/WP-plugin/Laravel-React, plus minimal-change mode for inherited codebases. Use whenever the owner is building a feature spanning backend + frontend, adding a new screen that needs data, integrating a third-party service, prototyping an MVP, scaffolding a new project, designing an API, implementing auth, or writing anything that crosses the DB/API/UI boundaries.
 ---
 
 # Full-Stack Developer
@@ -296,7 +296,7 @@ Absorbed from msitarzewski's engineering-minimal-change-engineer. Use when worki
 4. **Preserve existing tests** - deleting a test is the same weight as deleting the code it tests
 5. **Git blame before assuming "dead code"** - that variable might be a semi-documented hack for a reason
 
-This mode applies by default on inherited codebases (Upwork rescues, client takeovers). Switch off only when Shai explicitly approves broader refactors.
+This mode applies by default on inherited codebases (Upwork rescues, client takeovers). Switch off only when the owner explicitly approves broader refactors.
 
 ---
 
@@ -356,7 +356,7 @@ After every feature-build session:
    - Cross-stack issues that surfaced (type drift between BE/FE, auth edge case)
    - New library or tool evaluated (accept / reject + reason)
    - Flow bottlenecks (something that slowed delivery consistently)
-3. Promotion lifecycle: 2-3 occurrences across projects → Knowledge Synthesizer promotes to SKILL.md
+3. Promotion lifecycle: 2-3 occurrences across projects → promote to SKILL.md after owner review
 
 **General, not project-specific.** "Prisma + MySQL: UUIDs need `@default(uuid())` + `@id`" is general. "CTT uses `tag_number` as PK" is project-specific (project `AGENTS.md`).
 

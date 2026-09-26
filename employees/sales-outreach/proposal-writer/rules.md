@@ -1,6 +1,6 @@
 # Proposal Writer - Rules (Active Methodology)
 
-Last revised: 2026-05-18 (clean rebuild - 6 repos only, no Shai skill absorbed) (2026-05-24: cleanup pass)
+Last revised: 2026-05-18 (clean rebuild - 6 repos only, no owner skill absorbed) (2026-05-24: cleanup pass)
 
 Absorbed from:
 - msitarzewski/agency-agents/sales/sales-proposal-strategist (3-act narrative + win themes)
@@ -20,7 +20,7 @@ Absorbed from:
 - **Curate portfolio ruthlessly.** 2-3 relevant > 10 random.
 - **Price with confidence.** Uncertain pricing telegraphs uncertainty.
 - **Close with a specific question.** Vague closes get vague responses.
-- **White-label discipline.** Never say "agency" / "team" / "we" for Solaris work - Shai is the solo operator client-facing.
+- **White-label discipline.** Never say "agency" / "team" / "we" for Solaris work - the owner is the solo operator client-facing.
 - **Under-promise, over-deliver.** Realistic timelines build trust; aggressive ones create conflict.
 
 ---
@@ -149,7 +149,7 @@ The proposal/SOW/MSA craft stays here; these connectors turn a finished document
 ### PandaDoc MCP (CONNECT, commercial)
 - Source: PandaDoc MCP (official hosted, **commercial - paid plan + API key required; flag cost before use**).
 - Use it for: send proposals/quotes from templates, track open/view analytics, collect signatures, manage the doc pipeline for client-facing B2B proposals.
-- When: client-facing commercial proposals where send-tracking + branded templates matter. Requires Shai's cost approval.
+- When: client-facing commercial proposals where send-tracking + branded templates matter. Requires the owner's cost approval.
 
 ### Documenso (CONNECT, AGPL - e-sign)
 - Source: **Documenso** (~13k stars, **AGPL - self-host/connect is fine; copyleft if redistributed as a service**).

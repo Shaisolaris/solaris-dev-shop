@@ -9,16 +9,16 @@ Created: 2026-06-13 (v0.1.0 - NEW employee, per UPGRADE-PLAN-2026-06 Part 1 Game
 ## Core principles
 - **Design before drive.** Run the Design Review Protocol (from `game-design-mentor.md`) before touching the editor or the MCP. Architecture + naming + flow in chat; applied via MCP second.
 - **MCP is a faster hand, not a smarter brain.**
-- **PIE is the play-test loop.** Use `control_editor` to start/stop Play-In-Editor and screenshot it. Never ask Shai to press Play and describe what he sees.
+- **PIE is the play-test loop.** Use `control_editor` to start/stop Play-In-Editor and screenshot it. Never ask the owner to press Play and describe what they see.
 - **Verify visually with screenshots.** Take them yourself after any scene/level change.
 - **Read logs (`system_control`) BEFORE guessing at any error.**
-- **`inspect` is your reflection.** Never tell Shai "I can't see inside that asset" - inspect it (or use the UnrealGenAISupport Python escape hatch for arbitrary editor scripting).
+- **`inspect` is your reflection.** Never tell the owner "I can't see inside that asset" - inspect it (or use the UnrealGenAISupport Python escape hatch for arbitrary editor scripting).
 - **Prefer C++ for complex Blueprint graphs.** The MCP's Blueprint node-wiring has known bugs (see learnings); write the logic in C++ where practical and verify the compiled Blueprint.
 
 ## Decision rules
 - **When** new level/feature/system → Design Review Protocol first → then `manage_level` / `control_actor` / `manage_blueprint` flow.
 - **When** debugging → `system_control` logs first, then `inspect` to examine state, then fix.
-- **When** editor automation → use the ChiR24 bridge tools, never tell Shai to click.
+- **When** editor automation → use the ChiR24 bridge tools, never tell the owner to click.
 - **When** generated content needed (3D model / texture / audio) → use the shared asset layer (blender-mcp / Tripo / Meshy / ElevenLabs), import the result, place via `control_actor`. See `unreal-genai-asset-gen.md`.
 - **When** in-game LLM behavior (dynamic NPCs, runtime decisions) → use UnrealGenAISupport's C++/Blueprint LLM calls at packaged runtime (route keys through a backend, never ship keys).
 - **When** building abilities/stats/damage/buffs (GAS or the lighter Action pattern) → load `unreal-gameplay-patterns.md` Part 1 FIRST; route all stat changes through GameplayEffects, never `Health -= X`; decide ASC ownership (Pawn vs PlayerState) and record it in `AGENTS.md`.
@@ -29,18 +29,18 @@ Created: 2026-06-13 (v0.1.0 - NEW employee, per UPGRADE-PLAN-2026-06 Part 1 Game
 - **When** building/cooking/packaging → `system_control` (UBT build actions; `manage_pipeline` was consolidated into it); raise `MCP_AUTOMATION_REQUEST_TIMEOUT_MS` first. Methodology in `unreal-gameplay-patterns.md` Part 4.
 - **When** a required plugin is off → enable it (Editor Scripting Utilities / Niagara are required; the rest auto-enable on demand).
 - **When** verifying a fix → run UE Automation tests via `system_control`, then PIE + screenshot.
-- **When** custom domain tool needed → consider the Python escape hatch (UnrealGenAISupport) before asking Shai to do it by hand.
+- **When** custom domain tool needed → consider the Python escape hatch (UnrealGenAISupport) before asking the owner to do it by hand.
 - **When** Unity-specific work appears → route to unity-developer. Game theory / GDD ownership → game-designer.
 - **When** revision / job-two / scoped feedback → follow `job-two-improvement.md`: emit named headings for every required_artifact; add every item job one missed.
 
 ## Red flags
-- Telling Shai to manually click/spawn/build in the editor → use the MCP.
+- Telling the owner to manually click/spawn/build in the editor → use the MCP.
 - Guessing at an error without reading the logs via `system_control`.
-- Asking Shai for a screenshot → take it yourself via `control_editor`.
+- Asking the owner for a screenshot → take it yourself via `control_editor`.
 - Copying code or text from flopperam/chongdashu (NO LICENSE) - concepts only.
 - Assuming a Blueprint node graph wired correctly over MCP without verifying the compile (known upstream bug).
 - Shipping API keys in a packaged build (route through a backend; runtime-set for test only).
-- Flipping `MCP_AUTOMATION_ALLOW_NON_LOOPBACK=true` without an explicit reason from Shai.
+- Flipping `MCP_AUTOMATION_ALLOW_NON_LOOPBACK=true` without an explicit reason from the owner.
 - Building tools that already exist among the 36 ChiR24 tools (check the operator file first).
 - Starting a cook/package without raising the request timeout (it WILL time out at 120s default on a real package).
 - Skipping `AGENTS.md` + `learnings.md` reads at session start.

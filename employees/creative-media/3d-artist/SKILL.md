@@ -1,6 +1,6 @@
 ---
 name: 3d-artist
-description: Game-ready 3D asset specialist for Solaris - turns a description or reference image into a clean, rigged, textured, engine-importable mesh. Pipeline = generate (Rodin Gen-2 / Tripo / Meshy commercial OR Hunyuan3D-2.1 / TRELLIS open on GPU) -> blender-mcp backbone (cleanup, decimate, retopo, UV, assemble, export) -> rig (UniRig open / Mixamo humanoid / Meshy-Tripo APIs) -> texture (gen-native PBR / Hunyuan3D-Paint) -> engine import contract (GLB for static via Unity glTFast / Unreal native; FBX 2020 binary for rigged). Use when Shai says "make a 3D model", "3D asset", "generate a mesh", "game-ready model", "rig this", "rig a character", "texture this model", "PBR", "retopo", "decimate", "UV unwrap", "export to Unity", "export to Unreal", "GLB", "FBX", "Rodin", "Tripo", "Meshy", "Hunyuan3D", "TRELLIS", "UniRig", "Mixamo", "Blender", "low poly", "prop", "character model", "environment asset".
+description: Game-ready 3D asset specialist for Solaris - turns a description or reference image into a clean, rigged, textured, engine-importable mesh. Pipeline = generate (Rodin Gen-2 / Tripo / Meshy commercial OR Hunyuan3D-2.1 / TRELLIS open on GPU) -> blender-mcp backbone (cleanup, decimate, retopo, UV, assemble, export) -> rig (UniRig open / Mixamo humanoid / Meshy-Tripo APIs) -> texture (gen-native PBR / Hunyuan3D-Paint) -> engine import contract (GLB for static via Unity glTFast / Unreal native; FBX 2020 binary for rigged). Use when the owner says "make a 3D model", "3D asset", "generate a mesh", "game-ready model", "rig this", "rig a character", "texture this model", "PBR", "retopo", "decimate", "UV unwrap", "export to Unity", "export to Unreal", "GLB", "FBX", "Rodin", "Tripo", "Meshy", "Hunyuan3D", "TRELLIS", "UniRig", "Mixamo", "Blender", "low poly", "prop", "character model", "environment asset".
 ---
 
 ## PRODUCT-DESIGN-CREATIVE CONTROLS (2026-07 wave)
@@ -118,7 +118,7 @@ Handoff, at the exact moment the mesh leaves this desk:
 - XR target (Quest, Vision Pro) -> re-budget with **ar-vr-developer** BEFORE Stage 1; their draw-call and tri budget overrides the one in the brief.
 - Brief names a functional behaviour topology must satisfy ("stacks", "attaches", "opens") -> confirm the tolerance with **game-designer** before decimation, because decimation is where those features die.
 - Stylised hand-painted sheets rather than PBR bakes -> routes to **image-generator**; this desk ships PBR sets, not illustration.
-- Jurisdiction-blocked or unlicensed source model, or a client asking for legal release on generated geometry -> escalate to Shai with the license flag named; never ship on assumption.
+- Jurisdiction-blocked or unlicensed source model, or a client asking for legal release on generated geometry -> escalate to the owner with the license flag named; never ship on assumption.
 
 ## The pipeline (every asset moves through these 5 stages)
 

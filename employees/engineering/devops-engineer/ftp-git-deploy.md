@@ -1,11 +1,11 @@
 # FTP/FTPS git-to-live deploy (folded from the former ftp-deploy gig, 2026-06-14)
 
-Reclassified per Shai: this is a DEPLOY SKILL, not a gig. Methodology preserved here under devops-engineer (which owns deployment). The deploy runs via GitHub Actions (SamKirkland/FTP-Deploy-Action) from GitHub servers - SHA-pin the action per fleet doctrine.
+Reclassified per the owner: this is a DEPLOY SKILL, not a gig. Methodology preserved here under devops-engineer (which owns deployment). The deploy runs via GitHub Actions (SamKirkland/FTP-Deploy-Action) from GitHub servers - SHA-pin the action per fleet doctrine.
 
 ## Skill (verbatim methodology)
 ---
 name: ftp-deploy
-description: "Deploy project code from GitHub to a live hosting server via FTP/FTPS. Use this skill whenever Shai says 'deploy to live', 'push to live', 'deploy kellbell', 'deploy to production', 'deploy to server', 'push to hosting', 'FTP deploy', 'go live', or any variation of deploying a project's code to its hosting server. Also trigger when Shai asks to 'set up deployment' or 'configure FTP' for a project, or when discussing version tagging after deployment. This skill handles the full deploy pipeline - pre-deploy checks, FTP sync, version tagging, and post-deploy verification. Only activated on projects where Shai has explicitly requested it. Trigger aggressively on any mention of deploying, going live, pushing to production, or FTP in a project context."
+description: "Deploy project code from GitHub to a live hosting server via FTP/FTPS. Use this skill whenever the owner says 'deploy to live', 'push to live', 'deploy kellbell', 'deploy to production', 'deploy to server', 'push to hosting', 'FTP deploy', 'go live', or any variation of deploying a project's code to its hosting server. Also trigger when the owner asks to 'set up deployment' or 'configure FTP' for a project, or when discussing version tagging after deployment. This skill handles the full deploy pipeline - pre-deploy checks, FTP sync, version tagging, and post-deploy verification. Only activated on projects where the owner has explicitly requested it. Trigger aggressively on any mention of deploying, going live, pushing to production, or FTP in a project context."
 ---
 
 # FTP Deploy Skill
@@ -34,7 +34,7 @@ After EVERY deploy session (setup, pull, dry-run, live deploy, or troubleshootin
    - GitHub Actions configuration gotchas
    - Repo setup mistakes
 3. Use the format: specific mistake/discovery → *Rule: what prevents repeat*
-4. Report to Shai what was added so he knows the skill evolved
+4. Report to the owner what was added so they know the skill evolved
 
 **General, not project-specific.** "SiteGround requires FTPS with loose TLS" is general. "Kellbell FTP root is /home/user/kellbell" is project-specific - that belongs in the project's Handoff, not this skill.
 
@@ -49,7 +49,7 @@ SamKirkland FTP-Deploy-Action SYNCS local to remote. If repo has 3 files and ser
 Every new project deploy.yml uses workflow_dispatch (manual trigger). NEVER use push trigger on a new repo. Only switch to push trigger after full codebase is verified and a dry-run deploy succeeds.
 
 ### Rule 3: ALWAYS DRY-RUN FIRST
-Before any new deploy config goes live, run with dry-run: true. Review what WOULD be uploaded/deleted. Only proceed if changes look correct. Get explicit approval from Shai.
+Before any new deploy config goes live, run with dry-run: true. Review what WOULD be uploaded/deleted. Only proceed if changes look correct. Get explicit approval from the owner.
 
 ### Rule 4: VERIFY SERVER PATH BEFORE SETTING IT
 Run a directory exploration workflow to LIST the FTP structure. Confirm the exact path. FTP accounts may have different root paths. Never guess. Wrong path = deploying to wrong location = wiping files.
@@ -61,7 +61,7 @@ Sequence for every new project:
 3. Pull codebase FROM server INTO repo
 4. Verify codebase is complete (check key dirs, file count)
 5. Dry-run deploy
-6. Manual deploy with Shai approval
+6. Manual deploy with owner approval
 7. THEN enable auto-deploy
 
 ### Rule 6: NEVER DEPLOY CREDENTIALS
@@ -70,7 +70,7 @@ Sequence for every new project:
 ### Rule 7: EXCLUDE LARGE NON-CODE FILES
 Never pull or push: vendor/, node_modules/, storage/, uploaded media (user images/documents), .env, .git/. Check GitHub limits: 5GB soft limit per repo, 100MB hard limit per file. Code-only repos should be under 500MB.
 
-### Rule 8: WHEN IN DOUBT, DON'T DEPLOY. ASK SHAI.
+### Rule 8: WHEN IN DOUBT, DON'T DEPLOY. ASK THE OWNER.
 
 ### Rule 9: VERIFY AFTER EVERY DEPLOY
 Check the live site loads. Check changed functionality works. If anything breaks, identify the file and revert immediately.
@@ -94,7 +94,7 @@ ALL client repos MUST be private. No exceptions.
 ### Step 2: Add Secrets
 FTP_SERVER, FTP_USERNAME, FTP_PASSWORD, GH_PAT as GitHub Actions secrets.
 
-### Step 3: Ask Shai for CORRECT FTP credentials
+### Step 3: Ask the owner for CORRECT FTP credentials
 Do not guess. Do not try multiple combinations. Ask once, get the right ones.
 
 ### Step 4: Explore FTP Directory
@@ -107,7 +107,7 @@ Mirror from server to repo. Exclude vendor, node_modules, .env, storage, uploads
 For Laravel: app/, routes/, config/, database/, resources/, composer.json, artisan must exist. File count should be hundreds/thousands.
 
 ### Step 7: Dry-Run Deploy
-Set dry-run: true. Trigger manually. Review output. Confirm with Shai.
+Set dry-run: true. Trigger manually. Review output. Confirm with the owner.
 
 ### Step 8: First Real Deploy (Manual)
 Remove dry-run. Trigger manually. Verify live site works.
@@ -154,7 +154,7 @@ When onboarding a new project from an existing server, always audit the server f
 - **public/assets/, public/admin/, public/customer/** - Frontend assets the app needs
 
 ### Ask Before Deleting
-- **storage/app/public/** or **public/uploads/** - May contain user-uploaded content (photos, documents). Check with Shai.
+- **storage/app/public/** or **public/uploads/** - May contain user-uploaded content (photos, documents). Check with the owner.
 - **public/admin/**, **public/customer/** - Could be static assets or uploaded content
 - Any folder you're not sure about - screenshot it and ask
 
@@ -201,7 +201,7 @@ Used `public_html/` path when the app was actually at FTP root. Deploy would hav
 
 **Wrong FTP credentials - tried 3 sets before asking**
 Wasted session time guessing at FTP username/password combinations.
-*Rule: Ask Shai for the exact FTP credentials immediately. Do not guess. Do not try combinations.*
+*Rule: Ask the owner for the exact FTP credentials immediately. Do not guess. Do not try combinations.*
 
 **Tried direct FTP from agent container**
 Container egress proxy only allows HTTP/HTTPS - cannot make FTP connections directly.
@@ -229,7 +229,7 @@ A sub-FTP account might chroot into a subdirectory, not the main hosting root.
 
 **SiteGround has data-center IP CAPTCHA blocking**
 GitHub Actions runners can't fetch the site for post-deploy verification because SiteGround serves a CAPTCHA page to known data-center IPs.
-*Rule: Post-deploy verification from GitHub Actions is unreliable on SiteGround. Verify manually or from Shai's IP.*
+*Rule: Post-deploy verification from GitHub Actions is unreliable on SiteGround. Verify manually or from the owner's IP.*
 
 **PHP version managed in SiteGround Site Tools, not via deploy**
 Changing PHP version requires dashboard action, not a file push.

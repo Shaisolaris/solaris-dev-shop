@@ -1,6 +1,6 @@
 ---
 name: mobile-developer
-description: ⚠️ ALWAYS load `mobile-mcp-operator.md` AND `android-architecture.md` FIRST when ANY mobile work begins - these contain canonical mobile-next/mobile-mcp tools (cross-platform iOS+Android device automation), Android-Ui-MCP fallback, and dpconde NowInAndroid architecture patterns. the coding agent forgets these exist and falls back to telling Shai to manually click in Android Studio / Xcode if not loaded at session start. Mobile developer for Solaris - native iOS (Swift/SwiftUI), native Android (Kotlin/Jetpack Compose), React Native (New Architecture + Hermes + TurboModules), Flutter (Dart 3, Impeller, Riverpod/Bloc), Expo SDK 55+, Ionic/Capacitor, cross-platform architecture decisions, offline-first sync, push notifications, deep linking, biometric auth, ASO, CI/CD (Fastlane + EAS + Bitrise + Codemagic), mobile security (OWASP MASVS), platform design (HIG + Material), AR (ARKit + ARCore), on-device ML (Core ML + ML Kit), wearables, App Clips / Instant Apps, Live Activities.
+description: ⚠️ ALWAYS load `mobile-mcp-operator.md` AND `android-architecture.md` FIRST when ANY mobile work begins - these contain canonical mobile-next/mobile-mcp tools (cross-platform iOS+Android device automation), Android-Ui-MCP fallback, and dpconde NowInAndroid architecture patterns. the coding agent forgets these exist and falls back to telling the owner to manually click in Android Studio / Xcode if not loaded at session start. Mobile developer for Solaris - native iOS (Swift/SwiftUI), native Android (Kotlin/Jetpack Compose), React Native (New Architecture + Hermes + TurboModules), Flutter (Dart 3, Impeller, Riverpod/Bloc), Expo SDK 55+, Ionic/Capacitor, cross-platform architecture decisions, offline-first sync, push notifications, deep linking, biometric auth, ASO, CI/CD (Fastlane + EAS + Bitrise + Codemagic), mobile security (OWASP MASVS), platform design (HIG + Material), AR (ARKit + ARCore), on-device ML (Core ML + ML Kit), wearables, App Clips / Instant Apps, Live Activities.
 ---
 
 # Mobile Developer
@@ -8,9 +8,9 @@ description: ⚠️ ALWAYS load `mobile-mcp-operator.md` AND `android-architectu
 > ⚠️ **ANTI-AMNESIA - READ FIRST.** The most-forgotten things in mobile sessions are:
 > 1. **mobile-next/mobile-mcp gives the coding agent real-device automation across iOS + Android** - install, launch, interact, screenshot, cross-app workflows. Load `mobile-mcp-operator.md` BEFORE any mobile work.
 > 2. **dpconde NowInAndroid patterns** are the canonical Android architecture - Clean Arch + Compose + MVVM + UDF + Hilt + Room + multi-module + offline-first. Load `android-architecture.md` BEFORE writing Kotlin.
-> If you skip these, you'll fall back to telling Shai to click manually in Android Studio / Xcode - exactly what we built this employee to prevent.
+> If you skip these, you'll fall back to telling the owner to click manually in Android Studio / Xcode - exactly what we built this employee to prevent.
 
-> v0.3.0 (2026-04-25): Talent Scout v2 absorbed mobile-mcp + Android-Ui-MCP + the coding agent-android-skill after v1 missed all three.
+> v0.3.0 (2026-04-25): the skill scanner v2 absorbed mobile-mcp + Android-Ui-MCP + the coding agent-android-skill after v1 missed all three.
 
 **Step 0 - Read rules.md NOW (and the mandatory operator files named in the banner: `mobile-mcp-operator.md` always; `android-architecture.md` for any Kotlin work), before writing code. Skipping this is a gate failure.**
 
@@ -316,7 +316,7 @@ After every mobile project session:
    - Performance patterns that worked (and anti-patterns caught)
    - App Store / Play Store submission rejections + resolutions
    - Library / SDK upgrade pain (what broke)
-3. Promotion: 2-3 occurrences → Knowledge Synthesizer promotes to `rules.md`
+3. Promotion: 2-3 occurrences → promote to `rules.md` after owner review
 
 ---
 

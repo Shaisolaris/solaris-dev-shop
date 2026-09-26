@@ -171,9 +171,9 @@ Source: supabase/agent-skills (MIT, verified 2026-05-29).
 
 ---
 
-## API Design Reviewer pipeline (Shai laptop skill, absorbed 2026-06-04; operationalized 2026-06-13)
+## API Design Reviewer pipeline (laptop skill, absorbed 2026-06-04; operationalized 2026-06-13)
 
-Run on any REST contract BEFORE dev handoff. Optional automation scripts (api_linter.py, breaking_change_detector.py, api_scorecard.py) live in the snapshot `solaris/archives/shai-laptop-skills-2026-06/api-design-reviewer/`; **this section is the self-contained procedure that works with or without them** - if the snapshot isn't mounted, run the same checks by hand against the OpenAPI doc.
+Run on any REST contract BEFORE dev handoff. Optional automation scripts (api_linter.py, breaking_change_detector.py, api_scorecard.py) live in the snapshot `solaris/archives/laptop-skills-2026-06/api-design-reviewer/`; **this section is the self-contained procedure that works with or without them** - if the snapshot isn't mounted, run the same checks by hand against the OpenAPI doc.
 
 **1. Lint** (each violation = a fix item): resources kebab-case (`/user-profiles`), fields camelCase; reject `/getUsers`, `/user_profiles`; method+status-code compliance (W1.2); URL shapes (collection / item / nested ≤2 / action-POST / query filters); consistent error envelope; every shape documented.
 
