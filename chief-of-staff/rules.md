@@ -64,8 +64,8 @@ Revision trigger: Initial deployment.
 
 - Load `references/cross-employee-integration-patterns.md` when uncertain about team assembly or cross-employee handoffs
 - Load `references/supervisor-handoff-tool-pattern.md` when dispatching: how to shape a handoff (injected task_description brief), choose full vs last-message history, forward a worker's answer instead of paraphrasing, and when to route through a mid-level domain supervisor
-- Consult `../knowledge-synthesizer/SKILL.md` when deciding if a sweep is needed this session
-- Consult `../talent-scout/SKILL.md` when a gap needs external hunting
+- Run a learnings sweep when deciding if one is needed this session (scan employees/*/learnings.md for repeated patterns)
+- Log gap-requests for external hunting (external scouting is a private-edition role, not in this tree)
 
 ---
 
@@ -109,7 +109,7 @@ When two workers return conflicting recommendations (e.g. cloud-architect says "
 | Conflicting partial state (e.g. two workers updating the same config file) | **CRDT-style merge** - combine non-conflicting changes, escalate conflicting fields |
 
 ### Dissent preservation
-Document the dissenting position even when overruled. The dissent is data for future learning - knowledge-synthesizer should pick it up next sweep.
+Document the dissenting position even when overruled. The dissent is data for future learning - it should be picked up in the next learnings sweep.
 
 ### Anti-patterns
 - **Don't auto-veto.** A single worker raising a flag triggers human review, not automatic block.
@@ -141,7 +141,7 @@ Source: crewAIInc/crewAI (MIT, 50.5K stars, 2,362 commits, v1.14.4). The industr
 - We already have the role-based agents (66 employees). Crews of them assembled per task.
 - We have the MetaGPT spec→code chain (PM → Architect → PJM → Engineer → QA). That's the sequential mode.
 - We need the hierarchical mode for ambiguous tasks where chief-of-staff actively validates each step.
-- Flows mode is what talent-scout already runs weekly on a schedule.
+- Flows mode is what the weekly external scan already runs on: a schedule.
 
 **Rejected (not absorbed):**
 - CrewAI as a runtime framework - we're not running Python crews. Solaris employees are markdown SOPs loaded by the coding agent. The PATTERNS lift; the framework does not.
@@ -174,12 +174,12 @@ The Flows mode mentioned above isn't just "async fire-and-listen." In CrewAI it'
 - Static table = documentation. Flows = contract that can be enforced.
 
 **When to use Flows mode over Sequential or Hierarchical:**
-- **Scheduled work** (talent-scout's weekly sweep, knowledge-synthesizer's reflective pass) - `@start` is a cron tick.
+- **Scheduled work** (weekly external scan, session-end learnings sweep) - `@start` is a cron tick.
 - **Threshold breach escalation** (CFO sees Burn Multiple >2 → emits `financial-risk-spike` event → CEO listens) - `@listen` model.
 - **Conditional handoff** (security-auditor finds CVSS ≥9.0 → `@router` decides: stop ship vs. patch-and-ship vs. document-and-track based on exploit-in-wild status).
 - **Multi-listener fanout** (PR opened → frontend, backend, security, qa all listen and weigh in async, results merge at the validation gate).
 
-**Mapping to our hierarchy.md escalation table:** every row of that table now corresponds to a named event. See `meta/shared/hierarchy.md` → "Escalation triggers (event-driven model)" section for the canonical event names.
+**Mapping to our hierarchy.md escalation table:** every row of that table now corresponds to a named event. See `employees/hierarchy.md` → "Escalation triggers (event-driven model)" section for the canonical event names.
 
 **Anti-patterns to refuse:**
 - **Unnamed events.** "When something bad happens" is not an event. Events have names. If you can't name it, you can't listen for it.

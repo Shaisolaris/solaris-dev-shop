@@ -413,7 +413,7 @@
   "channel": "dev",
   "rollback_target": "2.0.0",
   "previous_version": "2.0.0",
-  "learning_promotion": "via meta.knowledge-synthesizer with budgets and review"
+  "learning_promotion": "via learnings.md sweep with owner review"
  },
  "validation": {
   "deterministic_checks": [

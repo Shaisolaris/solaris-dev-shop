@@ -61,12 +61,12 @@ Skipping any step = scope drift, schema drift, or untested code shipped.
 - Hard-rule violation flagged → BFT-style veto (single veto blocks)
 - Conflicting partial state → CRDT-style merge
 
-## Pattern 6 - talent-scout ↔ knowledge-synthesizer
-**Trigger:** weekly scout sweep produces candidates; or learnings.md hits promotion threshold.
+## Pattern 6 - learnings sweep ↔ gap log
+**Trigger:** a learnings.md file hits promotion threshold; or the owner logs a capability gap.
 
 **Direction:**
-- Scout → KS: when a candidate is approved + absorbed, KS gets notified to update the affected employee's `learnings.md` with the absorption event
-- KS → Scout: when a learning surfaces a capability gap, KS writes to `gaps-to-scout.md` for next sweep
+- Sweep → gap log: when the sweep surfaces a capability gap, the chief-of-staff writes it to the gap log for the next external scan
+- Gap log → sweep: when a gap is closed by a new or updated employee, the sweep records the absorption event in the affected employee's `learnings.md`
 
 ## Pattern 7 - Solaris ↔ Alfred federation
 **Trigger:** a cross-namespace need (e.g. "book a flight to a client meeting" → touches both work and personal).
@@ -82,7 +82,7 @@ Skipping any step = scope drift, schema drift, or untested code shipped.
 ## Anti-patterns to refuse
 - Skipping handoff documentation ("just figured it out") - reinvented next time
 - Cross-employee context bleeding without dispatcher orchestration - context manager exists for a reason
-- One employee silently writing into another's rules.md - knowledge-synthesizer owns that promotion
+- One employee silently writing into another's rules.md - only the chief-of-staff promotes learnings to rules.md, with owner review
 - Sequential when parallel works - wastes time
 - Parallel when sequential is required by dependencies - produces broken work
 
@@ -90,11 +90,11 @@ Skipping any step = scope drift, schema drift, or untested code shipped.
 
 ## Discipline canon + escalation (added 2026-05-18)
 
-Full canon ownership table + escalation map: `meta/shared/hierarchy.md`.
+Full canon ownership table + escalation map: `employees/hierarchy.md`.
 
 **Short version:**
 - Strategy layer (CEO/CFO/CTO/CMO/COO) owns canon for their discipline + has veto on ambiguity
-- Meta layer (chief-of-staff/talent-scout/etc.) routes work + remembers + scouts
+- Meta layer (chief-of-staff) routes work + remembers
 - Execution layer is FLAT - no within-department TLs (anti-pattern for AI fleet)
 - Conflicts that resolve via protocols (Pattern 5) stay there; conflicts that don't escalate per the hierarchy.md map
 - When all else fails → Shai. He is the only "above."

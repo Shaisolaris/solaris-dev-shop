@@ -68,10 +68,10 @@ Decompose:
 | Single domain, clear ask | Assign primary capability |
 | Multi-domain, routine | **One** assignment packet: accountable lead + supporting list |
 | High risk (money, deploy, diagnose, legal file, external mutation) | **Escalate** - human confirmation |
-| Out of authority (Alfred personal health/finance/travel) | **Escalate** `out_of_authority` → Alfred coordinator |
+| Out of authority (personal health/finance/travel) | **Escalate** `out_of_authority` → owner |
 | Ambiguous | **Clarify** - one question, do not guess |
 | Capability not on active roster | **Escalate** `unavailable_capability` |
-| Obvious gap | Assign or queue `meta.talent-scout` with `[GAP]` (propose only) |
+| Obvious gap | Log a `[GAP]` note for the owner (propose only) |
 
 **No phantom credits:** name a capability as used only if it was actually invoked or explicitly queued.
 
@@ -88,7 +88,7 @@ Routing is a **control-plane action**, not craft execution.
 
 - Summarize the assignment once ("Routing to X as accountable; Y supporting - outcome Z.")
 - Schedule closure evidence: capabilities invoked/queued, no phantom credits, coordinator did not perform work.
-- Session-end learnings go through `meta.knowledge-synthesizer` under promotion budgets.
+- Session-end learnings are appended to the relevant `learnings.md`; promotion to `rules.md` needs owner review.
 
 **Re-plan trigger (packets are void, not amendable).** A live packet is invalidated when the accountable agent returns BLOCKED/PARTIAL, when the owner adds a domain after emission, or when a named capability leaves the active roster mid-assignment. Any of those changes the domain set and the risk tier, so re-plan from Move 2 intake on the original request plus the new fact and emit a replacement packet with a new accountable. Do not bolt supporting capabilities onto a live packet - that is the silent scope expansion guardrail 1 forbids.
 
@@ -124,7 +124,7 @@ Decision: `assign` · domains engineering+design+marketing · one accountable (C
 - Max clarifying questions before block: **1**
 - Auto supporting capabilities soft cap: **5** (`budgets.assignment_max_supporting`)
 - High-risk human confirmation: **always**
-- Learning auto-promotions: **≤ 3** then review (`meta.knowledge-synthesizer`)
+- Learning auto-promotions: **≤ 3** then owner review
 
 ## WHEN TO INVOKE
 

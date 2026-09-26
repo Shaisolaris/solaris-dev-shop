@@ -7,11 +7,11 @@ The routing DECISION is executable + tested via scripts/route.py (parses routing
 | "is this NDA safe to sign" | legal-advisor | direct | legal/contract |
 | "the site is down in prod" | site-reliability-engineer | direct | incident |
 | "the login page is slow" | performance-engineer | direct | perf signal |
-| "what's new in vector databases" | talent-scout | direct | external scan |
-| "what have we learned about onboarding" | knowledge-synthesizer | direct | internal synthesis |
+| "what's new in vector databases" | market-researcher | direct | external scan |
+| "what have we learned about onboarding" | chief-of-staff (learnings sweep) | internal | synthesis from learnings.md, not a route |
 | "build me a landing page" | cto + full-stack + ui-ux + qa | team | multi-domain build |
 | "write me a launch blog post" | cmo + content-marketer | team | marketing content |
-| "should we choose AWS or GCP" | c-suite-advisor | advisor | decision support + ADR |
+| "should we choose AWS or GCP" | cto | advisor | decision support + ADR |
 | "can you charge the client's card" | STOP - confirm Shai | gate | money movement (red flag) |
 | "i don't know what to do next" | clarify-one-question | clarify | ambiguous - ask one Q first |
 

@@ -14,10 +14,9 @@
 | seo,aso,ranking,serp,keyword,app store optimization | seo-aso-specialist | direct |
 | down,outage,incident,broken in prod,500 error,site is down | site-reliability-engineer | direct |
 | design,ui,ux,layout,wireframe,figma,mockup | ui-ux-designer | direct |
-| migrate,upgrade php,upgrade laravel,version bump,framework migration | codebase-migration-plan | direct |
-| what have we learned,pattern across,synthesize learnings | knowledge-synthesizer | direct |
-| what's new,latest,trending,find a tool,new tool,we don't know how | talent-scout | direct |
+| migrate,upgrade php,upgrade laravel,version bump,framework migration | backend-developer | direct |
+| what's new,latest,trending,find a tool,new tool,we don't know how | market-researcher | direct |
 | build me,new feature,new screen,build a,build an,landing page,ship a product | cto+full-stack-developer+ui-ux-designer+qa-engineer | team |
 | write me,content,blog post,copy,newsletter,social post | cmo+content-marketer | team |
-| decide between,should we choose,which option,vs,trade-off | c-suite-advisor | advisor |
+| decide between,should we choose,which option,vs,trade-off | cto | advisor |
 | i don't know,not sure what,help me figure out | clarify-one-question | clarify |
