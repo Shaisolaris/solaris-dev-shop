@@ -4,6 +4,7 @@
 ![Version](https://img.shields.io/badge/version-0.53-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Employees](https://img.shields.io/badge/employees-61-orange)
+[![Featured on AI Agents Directory](https://aiagentsdirectory.com/featured-badge.svg)](https://aiagentsdirectory.com)
 
 61 specialist employees and one chief of staff. Free. MIT.
 
