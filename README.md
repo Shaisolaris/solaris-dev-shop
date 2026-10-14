@@ -4,6 +4,7 @@
 ![Version](https://img.shields.io/badge/version-0.53-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Employees](https://img.shields.io/badge/employees-61-orange)
+[![Featured on DevShelf](https://img.shields.io/badge/Featured%20on-DevShelf-7928CA?style=for-the-badge&logo=googlechrome&logoColor=white)](https://devshelf.ritualdev.in/tools/solaris-dev-shop.html)
 [![Featured on AI Agents Directory](https://aiagentsdirectory.com/featured-badge.svg)](https://aiagentsdirectory.com)
 
 61 specialist employees and one chief of staff. Free. MIT.
@@ -50,6 +51,10 @@ One command:
 ```
 
 Details: [`docs/install.md`](docs/install.md). How a request moves: [`docs/architecture.md`](docs/architecture.md). How to copy a single skill: same doc, step 3.
+
+## Around the community
+
+Solaris Dev Shop is listed on [DevShelf](https://devshelf.ritualdev.in/tools/solaris-dev-shop.html), [SilentStars](https://capuz.github.io/silentstars/projects/shaisolaris--solaris-dev-shop/) and other community directories. See [verified public listings](docs/public-listings.md) for the current entries and their evidence. Directory inclusion does not imply an endorsement.
 
 ## Contribute
 
