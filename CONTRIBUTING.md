@@ -21,3 +21,15 @@ Open an issue with the command you ran, what you expected, and what you observed
 After editing a skill identity, summary or tags, run
 `python3 tools/build_skill_catalog.py` and commit the updated catalog.
 CI checks source paths and roster IDs to prevent stale discovery results.
+
+Validate `SKILL.md` discovery metadata after changing a skill:
+
+```bash
+python3 -m pip install -r requirements-dev.txt
+python3 tools/validate_skill_metadata.py
+```
+
+This developer check parses YAML and checks names and descriptions for all 61
+specialists plus the coordinator. Quote descriptions containing colons. Keep
+descriptions within 1024 characters and use words for comparisons. Detailed
+procedures belong in the body. The intake runtime remains standard-library only.

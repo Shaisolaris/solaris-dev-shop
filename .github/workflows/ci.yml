@@ -106,3 +106,7 @@ jobs:
           "
       - name: Search catalog matches existing skills and roster
         run: python tools/build_skill_catalog.py --check
+      - name: Validate specialist and coordinator discovery metadata
+        run: |
+          python -m pip install --disable-pip-version-check -r requirements-dev.txt
+          python tools/validate_skill_metadata.py

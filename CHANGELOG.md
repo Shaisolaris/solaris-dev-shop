@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.57 (2026-10-15)
+
+- Repair 14 malformed YAML descriptions and 22 discovery-metadata compatibility failures in total, including overlong fields and bracket comparisons. Skill names and detailed bodies remain unchanged.
+- Add a safe YAML/name/description gate for all 61 specialists plus the coordinator. PyYAML is a developer-only dependency; the intake runtime remains standard-library only.
+- Retain engine 1.2.1 and the existing roster. No provider, tool permission or specialist is added.
+
 ## 0.56 (2026-10-15)
 
 - Recognize production action and target words even when an application name separates them; run the human-review risk gate before ambiguity or context routing.

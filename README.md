@@ -1,7 +1,7 @@
 # Solaris Dev Shop
 
 ![CI](https://github.com/Shaisolaris/solaris-dev-shop/actions/workflows/ci.yml/badge.svg)
-![Version](https://img.shields.io/badge/version-0.56-blue)
+![Version](https://img.shields.io/badge/version-0.57-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Skills](https://img.shields.io/badge/specialist_skills-61-orange)
 [![Featured on DevShelf](https://img.shields.io/badge/Featured%20on-DevShelf-7928CA?style=for-the-badge&logo=googlechrome&logoColor=white)](https://devshelf.ritualdev.in/tools/solaris-dev-shop.html)
@@ -84,7 +84,7 @@ Provider-neutral means the skill text and routing packet do not require a partic
 - [Known limits and FAQ](docs/faq.md)
 - Structural audit: `python3 employees/quality-security/assurance/quality_os.py audit --html report.html`
 
-CI checks routing, CLI behavior, safety gates, packaging and the 61-skill catalog on Linux, macOS and Windows. The structural audit checks documented output contracts and QA gates; it does not certify real-world skill outputs. The routing benchmark measures local Python routing, not model quality or autonomous task completion.
+CI checks routing, CLI behavior, safety gates, packaging and the 61-skill catalog on Linux, macOS and Windows. A separate YAML gate validates discovery metadata for all 61 specialists plus the coordinator. The structural audit checks documented output contracts and QA gates; it does not certify real-world skill outputs. The routing benchmark measures local Python routing, not model quality or autonomous task completion.
 
 ## Around the community
 
