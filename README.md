@@ -64,6 +64,11 @@ is its required verification backlink; it is not a confirmed placement:
 
 [![AI Agents Directory verification pending](https://aiagentsdirectory.com/featured-badge.svg)](https://aiagentsdirectory.com)
 
+Postmake's free listing route also requires its badge. This backlink is in place
+for that application; a Postmake listing has not yet been confirmed:
+
+[![Postmake free-listing application backlink, placement not yet confirmed](https://postmake.io/postmake_badge_light.png)](https://postmake.io)
+
 ## Quality and evidence
 
 - [Routing architecture and privacy boundaries](docs/architecture.md)
