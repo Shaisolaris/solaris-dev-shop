@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Solaris Dev Shop one-command install (0.53).
+# Solaris Dev Shop one-command install (0.54).
 #
 # From a checkout:   ./install.sh
 # From anywhere:     curl -fsSL https://raw.githubusercontent.com/Shaisolaris/solaris-dev-shop/main/install.sh | bash
@@ -11,17 +11,38 @@ set -euo pipefail
 
 REPO="https://github.com/Shaisolaris/solaris-dev-shop.git"
 TARGET="$HOME/.solaris-dev-shop"
+INSTALL_BIN_DIR="$HOME/.local/bin"
+UNINSTALL=false
+PYTHON_BIN="${SOLARIS_PYTHON:-python3}"
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --uninstall) UNINSTALL=true; shift ;;
+    --bin-dir)
+      [ "$#" -ge 2 ] || { echo "--bin-dir requires a directory" >&2; exit 2; }
+      INSTALL_BIN_DIR="$2"; shift 2 ;;
+    *) echo "unknown option: $1" >&2; exit 2 ;;
+  esac
+done
 
-if [ "${1:-}" = "--uninstall" ]; then
-  rm -f "$HOME/.local/bin/solaris-intake"
-  if [ -d "$TARGET" ]; then
-    rm -rf "$TARGET"
-    echo "Removed $TARGET and the solaris-intake shim."
+if [ "$UNINSTALL" = true ]; then
+  if [ -f "$INSTALL_BIN_DIR/solaris-intake" ] && grep -Fq '# Solaris Dev Shop managed command' "$INSTALL_BIN_DIR/solaris-intake"; then
+    rm -f "$INSTALL_BIN_DIR/solaris-intake"
+    echo "Removed the Solaris Dev Shop command."
+  elif [ -e "$INSTALL_BIN_DIR/solaris-intake" ]; then
+    echo "Kept an unrecognized command at $INSTALL_BIN_DIR/solaris-intake; inspect it before removing it."
   else
-    echo "Removed the solaris-intake shim. (No $TARGET checkout found.)"
+    echo "No managed command found."
   fi
+  echo "Checkout retained at $TARGET to preserve local changes and files."
   exit 0
 fi
+
+if [ -L "$INSTALL_BIN_DIR/solaris-intake" ] || { [ -e "$INSTALL_BIN_DIR/solaris-intake" ] && ! grep -Fq '# Solaris Dev Shop managed command' "$INSTALL_BIN_DIR/solaris-intake"; }; then
+  echo "Refusing to overwrite an unrecognized command at $INSTALL_BIN_DIR/solaris-intake" >&2
+  exit 1
+fi
+
+"$PYTHON_BIN" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else "Solaris Dev Shop requires Python 3.10 or newer. Set SOLARIS_PYTHON to its executable.")'
 
 # When piped via curl there is no checkout; clone one first.
 if [ ! -f "control-plane/meta_control_plane.py" ]; then
@@ -38,7 +59,7 @@ fi
 ROOT="$(pwd)"
 cd "$ROOT"
 
-echo "== Solaris Dev Shop 0.53 =="
+echo "== Solaris Dev Shop 0.54 =="
 echo "-- checking tree"
 for f in control-plane/meta_control_plane.py control-plane/roster.json control-plane/policy.json chief-of-staff/SKILL.md; do
   [ -f "$f" ] || { echo "missing: $f"; exit 1; }
@@ -47,26 +68,26 @@ count=$(find employees -maxdepth 3 -name SKILL.md | wc -l | tr -d ' ')
 echo "   employee skills: $count"
 
 echo "-- control-plane self-test"
-python3 control-plane/meta_control_plane.py self-test
+"$PYTHON_BIN" control-plane/meta_control_plane.py self-test
 
 echo "-- routing probes"
-python3 tests/test_router.py 2>&1 | tail -3
+"$PYTHON_BIN" -m unittest discover -s tests -v 2>&1 | tail -4
 
 echo "-- installing solaris-intake"
-BIN_DIR="$HOME/.local/bin"
-mkdir -p "$BIN_DIR"
-cat > "$BIN_DIR/solaris-intake" <<EOF
-#!/usr/bin/env bash
-exec python3 "$ROOT/control-plane/meta_control_plane.py" "\$@"
-EOF
-chmod +x "$BIN_DIR/solaris-intake"
+mkdir -p "$INSTALL_BIN_DIR"
+{
+  printf '#!/usr/bin/env bash\n# Solaris Dev Shop managed command\nexec '
+  printf '%q ' "$PYTHON_BIN" "$ROOT/control-plane/meta_control_plane.py"
+  printf '"$@"\n'
+} > "$INSTALL_BIN_DIR/solaris-intake"
+chmod +x "$INSTALL_BIN_DIR/solaris-intake"
 
 echo ""
 echo "Done. Try:"
 echo "  solaris-intake intake \"Write a test plan for the client portal login regression\""
 case ":$PATH:" in
-  *":$BIN_DIR:"*) ;;
-  *) echo "  (add $BIN_DIR to your PATH to use solaris-intake anywhere)" ;;
+  *":$INSTALL_BIN_DIR:"*) ;;
+  *) echo "  (add $INSTALL_BIN_DIR to your PATH to use solaris-intake anywhere)" ;;
 esac
 echo ""
 echo "Per-agent skill paths (copy any employees/<dept>/<name>/ folder there):"

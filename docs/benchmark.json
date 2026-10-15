@@ -1,0 +1,17 @@
+{
+  "engine": "1.1.0",
+  "python": "3.12.14",
+  "system": "Darwin",
+  "architecture": "arm64",
+  "distinct_requests": 100,
+  "samples": 500,
+  "mean_ms": 0.4273,
+  "p95_ms": 0.5483,
+  "failures": [],
+  "method": "warm engine; policy/roster preloaded; no model/network calls; CLI startup excluded",
+  "source_sha256": {
+    "control-plane/meta_control_plane.py": "e8ea9cec3ea3b68caa6fd9f2cfe6ca431d0fc2b8348ce49a935d6e7733bf917d",
+    "control-plane/policy.json": "dd64e0b7474bd135f88d44490846783da98ee96846f6abb789ea9d37626879f5",
+    "control-plane/routing-probes.md": "1b097590caae887f983aa6f77da66928de4f4fdb600faeb94834fcb132389f9c"
+  }
+}

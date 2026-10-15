@@ -1,0 +1,12 @@
+{
+  "request": "Write a test plan for the client portal login regression",
+  "budget_usage": {
+    "roster_mutations": 1
+  },
+  "expectations": {
+    "decision": "escalate",
+    "escalation_reason": "permission_required",
+    "has_assignment": false,
+    "performed_work": false
+  }
+}

@@ -16,23 +16,27 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import tempfile
+import unicodedata
 import re
 import sys
 import uuid
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
-ROOT = Path(__file__).resolve().parents[2]
 CONTROL_PLANE_DIR = Path(__file__).resolve().parent
+ROOT = CONTROL_PLANE_DIR.parent
 POLICY_PATH = CONTROL_PLANE_DIR / "policy.json"
 ROSTER_PATH = CONTROL_PLANE_DIR / "roster.json"
 BUDGETS_PATH = CONTROL_PLANE_DIR / "budgets.json"
-FIXTURE_ROOT = ROOT / "fixtures" / "meta"
+FIXTURE_ROOT = ROOT / "fixtures" / "control-plane"
 
-SCHEMA_VERSION = "1.0.0"
-ENGINE_VERSION = "1.0.0"
+SCHEMA_VERSION = "1.1.0"
+ENGINE_VERSION = "1.1.0"
 
 # Decision codes
 ASSIGN = "assign"
@@ -66,6 +70,8 @@ class Assignment:
     evidence_required: List[str]
     domains: List[str]
     risk: str
+    confidence: float = 0.0
+    runner_up: Optional[str] = None
 
     def as_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -98,6 +104,7 @@ class Decision:
     provider_invariants: List[str]
     performed_work: bool  # always False for control-plane
     ts: str
+    explanation: Optional[Dict[str, Any]] = None
 
     def as_dict(self) -> Dict[str, Any]:
         d = asdict(self)
@@ -115,8 +122,8 @@ class InputError(Exception):
 def _load_json(path: Path) -> Dict[str, Any]:
     try:
         return json.loads(path.read_text(encoding="utf-8"))
-    except FileNotFoundError:
-        raise InputError(f"file not found: {path}")
+    except OSError as e:
+        raise InputError(f"cannot read {path}: {e.strerror}")
     except json.JSONDecodeError as e:
         raise InputError(f"invalid JSON in {path}: {e}")
 
@@ -133,14 +140,14 @@ def load_budgets() -> Dict[str, Any]:
     return _load_json(BUDGETS_PATH)
 
 
+@lru_cache(maxsize=2048)
+def _keyword_pattern(keyword: str) -> re.Pattern:
+    # Cache public policy patterns only. Never retain requests or context text.
+    return re.compile(r"(?<!\w)" + re.escape(unicodedata.normalize("NFC", keyword).casefold()) + r"(?!\w)")
+
+
 def _word_boundary_hit(keyword: str, text: str) -> bool:
-    return (
-        re.search(
-            r"(?<![a-z0-9])" + re.escape(keyword.lower()) + r"(?![a-z0-9])",
-            text.lower(),
-        )
-        is not None
-    )
+    return _keyword_pattern(keyword).search(unicodedata.normalize("NFC", text).casefold()) is not None
 
 
 def detect_domains(text: str, policy: Dict[str, Any]) -> List[str]:
@@ -225,77 +232,99 @@ def _override_phrase_hit(text: str, policy: Dict[str, Any]) -> bool:
     return False
 
 
-def resolve_capability(
-    domains: List[str],
-    text: str,
-    roster: Dict[str, Any],
-    policy: Dict[str, Any],
-) -> Tuple[Optional[str], List[str], Optional[str]]:
-    """Return (primary, supporting, unavailable_reason).
-
-    Scoring router: every route_override rule and every capability_keywords
-    entry is scored by word-boundary keyword hits (sum of matched keyword
-    lengths). Highest score wins; ties break by route_overrides listed order,
-    then by longest single matched keyword. With no keyword hits at all, falls
-    back to domain_to_capability, then the default capability.
-    """
-    candidates: List[Tuple[int, int, int, int, List[str]]] = []
-    # (score, source_order, rule_index, longest_keyword, capabilities)
+def explain_routing(domains: List[str], text: str, policy: Dict[str, Any]) -> Dict[str, Any]:
+    """Expose deterministic evidence, not a calibrated probability of correctness."""
+    candidates: List[Dict[str, Any]] = []
     for idx, rule in enumerate(policy.get("route_overrides", [])):
         kws = list(rule.get("keywords", []))
         all_kws = list(rule.get("keywords_all", []))
-        score_any, longest_any = _rule_score(kws, text)
-        if all_kws:
-            if all(_word_boundary_hit(k, text) for k in all_kws):
-                s_all, l_all = _rule_score(all_kws, text)
-                score_any += s_all
-                longest_any = max(longest_any, l_all)
-            else:
-                score_any, longest_any = 0, 0
-        if score_any > 0:
-            candidates.append(
-                (score_any, 0, idx, longest_any, list(rule.get("capabilities", [])))
-            )
-
-    for cap_id, kws in policy.get("capability_keywords", {}).items():
-        score, longest = _rule_score(list(kws), text)
-        if score > 0:
-            candidates.append((score, 1, 0, longest, [cap_id]))
-
-    caps: List[str] = []
+        if all_kws and not all(_word_boundary_hit(k, text) for k in all_kws):
+            continue
+        hits = [k for k in kws + all_kws if _word_boundary_hit(k, text)]
+        if hits and rule.get("capabilities"):
+            candidates.append({"score": sum(map(len, hits)), "source": "route_override",
+                               "order": (0, idx), "keywords": hits,
+                               "capabilities": list(rule["capabilities"])})
+    for cap, kws in policy.get("capability_keywords", {}).items():
+        hits = [k for k in kws if _word_boundary_hit(k, text)]
+        if hits:
+            candidates.append({"score": sum(map(len, hits)), "source": "capability_keywords",
+                               "order": (1, 0), "keywords": hits, "capabilities": [cap]})
+    candidates.sort(key=lambda c: (-c["score"], c["order"], -max(map(len, c["keywords"]))))
     if candidates:
-        candidates.sort(key=lambda c: (-c[0], c[1], c[2], -c[3]))
-        caps = list(candidates[0][4])
+        winner = candidates[0]
+        caps = list(winner["capabilities"])
+        runner = next((c for c in candidates if c["capabilities"][0] != caps[0]), None)
+        runner_score = runner["score"] if runner else 0
+        confidence = round(winner["score"] / (winner["score"] + runner_score), 4)
+        source = winner["source"]
+        matched = winner["keywords"]
     else:
-        route_map = policy.get("domain_to_capability", {})
-        for d in domains:
-            cap = route_map.get(d)
-            if cap:
-                caps.append(cap)
+        caps = [policy["domain_to_capability"][d] for d in domains
+                if d in policy.get("domain_to_capability", {})]
+        source = "domain_fallback" if caps else "default_fallback"
+        caps = caps or [policy.get("default_capability", "solaris.backend-developer")]
+        runner, confidence, matched = None, 0.0, []
+    return {"domains": domains, "source": source, "matched_keywords": matched,
+            "override_hits": [{"rule": c["order"][1], "keywords": c["keywords"],
+                               "capabilities": c["capabilities"]}
+                              for c in candidates if c["source"] == "route_override"],
+            "capabilities": list(dict.fromkeys(caps)), "confidence": confidence,
+            "confidence_meaning": "relative keyword evidence; not a probability of correctness",
+            "runner_up": runner["capabilities"][0] if runner else None}
 
-    if not caps:
-        caps = [policy.get("default_capability", "solaris.backend-developer")]
 
-    # Dedupe preserving order
-    seen = set()
-    ordered: List[str] = []
-    for c in caps:
-        if c not in seen:
-            seen.add(c)
-            ordered.append(c)
-
-    active = {
-        c["id"]
-        for c in roster.get("capabilities", [])
-        if c.get("status") == "active"
-    }
+def resolve_capability(domains: List[str], text: str, roster: Dict[str, Any],
+                       policy: Dict[str, Any], *, analysis: Optional[Dict[str, Any]] = None
+                       ) -> Tuple[Optional[str], List[str], Optional[str]]:
+    ordered = (analysis or explain_routing(domains, text, policy))["capabilities"]
+    active = {c["id"] for c in roster.get("capabilities", []) if c.get("status") == "active"}
     unavailable = [c for c in ordered if c not in active]
     if unavailable:
         return None, [], f"unavailable: {', '.join(unavailable)}"
+    return ordered[0], ordered[1:], None
 
-    primary = ordered[0]
-    supporting = ordered[1:]
-    return primary, supporting, None
+
+def _read_context(path: Path) -> Dict[str, Any]:
+    if path.is_symlink():
+        raise InputError("context path must not be a symlink")
+    data = _load_json(path)
+    if (not isinstance(data, dict) or data.get("kind") != "solaris-routing-context"
+            or data.get("version") != 1 or not isinstance(data.get("primary_capability"), str)
+            or not isinstance(data.get("domains"), list)
+            or not all(isinstance(d, str) for d in data["domains"])):
+        raise InputError("invalid Solaris routing context")
+    return data
+
+
+def _save_context(path: Path, decision: Decision) -> None:
+    if not decision.assignment:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    data = {"kind": "solaris-routing-context", "version": 1,
+            "primary_capability": decision.assignment.primary_capability,
+            "domains": decision.domains}
+    # Atomic replacement; the temporary file and resulting context are owner-only.
+    with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent,
+                                     prefix=".solaris-context-", delete=False) as stream:
+        tmp = Path(stream.name)
+        json.dump(data, stream, indent=2)
+        stream.write("\n")
+    try:
+        os.replace(tmp, path)
+    finally:
+        tmp.unlink(missing_ok=True)
+
+
+def _follow_up(text: str, context: Optional[Dict[str, Any]], roster: Dict[str, Any]) -> bool:
+    if not context or not re.match(
+        r"^(?:(?:and|also|then|now)\s+)?(?:make|change|update|revise|adjust|resize|rewrite)\s+(?:it|this|that)\b",
+        text.strip(), re.I,
+    ):
+        return False
+    return context.get("primary_capability") in {
+        c["id"] for c in roster.get("capabilities", []) if c.get("status") == "active"
+    }
 
 
 def _closure_evidence(risk: str, policy: Dict[str, Any]) -> Dict[str, Any]:
@@ -324,6 +353,8 @@ def intake(
     roster: Optional[Dict[str, Any]] = None,
     budgets: Optional[Dict[str, Any]] = None,
     budget_usage: Optional[Dict[str, Any]] = None,
+    explain: bool = False,
+    context: Optional[Dict[str, Any]] = None,
 ) -> Decision:
     """Run deterministic intake → assignment or genuine escalation.
 
@@ -334,7 +365,9 @@ def intake(
     budgets = budgets or load_budgets()
     budget_usage = budget_usage or {}
 
-    text = (request or "").strip()
+    if not isinstance(request, str):
+        raise InputError("request must be a string")
+    text = unicodedata.normalize("NFC", request).strip()
     summary = text if len(text) <= 200 else text[:197] + "..."
     domains = detect_domains(text, policy)
     risk = detect_risk(text, policy)
@@ -415,8 +448,17 @@ def intake(
             ts=_now(),
         )
 
-    # Ambiguous (canonical route_override phrasings bypass the min-words check)
-    if not _override_phrase_hit(text, policy) and is_ambiguous(text, policy):
+    # Only an explicit opt-in context can resolve a referential follow-up.
+    follow_up = _follow_up(text, context, roster)
+    analysis = explain_routing(domains, text, policy)
+    if follow_up and analysis["source"] in ("domain_fallback", "default_fallback"):
+        domains = list(context["domains"])
+        analysis.update(domains=domains, source="explicit_context", matched_keywords=[],
+                        capabilities=[context["primary_capability"]], confidence=0.0, runner_up=None)
+    else:
+        follow_up = False
+    # Authority and high-risk gates above always run on the new request first.
+    if not follow_up and not _override_phrase_hit(text, policy) and is_ambiguous(text, policy):
         return Decision(
             schema_version=SCHEMA_VERSION,
             engine_version=ENGINE_VERSION,
@@ -497,7 +539,7 @@ def intake(
             ts=_now(),
         )
 
-    primary, supporting, unavail = resolve_capability(domains, text, roster, policy)
+    primary, supporting, unavail = resolve_capability(domains, text, roster, policy, analysis=analysis)
     if unavail:
         return Decision(
             schema_version=SCHEMA_VERSION,
@@ -574,6 +616,8 @@ def intake(
         ),
         domains=domains,
         risk=risk,
+        confidence=analysis["confidence"],
+        runner_up=analysis["runner_up"],
     )
 
     budgets_applied = dict(defaults)
@@ -595,14 +639,21 @@ def intake(
         provider_invariants=list(policy.get("provider_invariants", [])),
         performed_work=False,
         ts=_now(),
+        explanation=analysis if explain else None,
     )
 
 
 def run_fixture(path: Path) -> Tuple[Decision, Dict[str, Any]]:
     data = _load_json(path)
+    if not isinstance(data, dict) or not isinstance(data.get("request"), str):
+        raise InputError("fixture must be an object with a string request")
+    if not isinstance(data.get("expectations", {}), dict):
+        raise InputError("fixture expectations must be an object")
     policy = load_policy()
     roster = load_roster()
     overrides = data.get("test_overrides") or {}
+    if not isinstance(overrides, dict) or not isinstance(data.get("budget_usage", {}), dict):
+        raise InputError("fixture test_overrides and budget_usage must be objects")
     if overrides.get("remove_from_roster"):
         remove = set(overrides["remove_from_roster"])
         roster = {
@@ -654,6 +705,10 @@ def check_fixture_expectations(
             errors.append("assignment missing accountable")
         if not decision.assignment.primary_capability:
             errors.append("assignment missing primary_capability")
+    if "primary_capability" in exp:
+        got = decision.assignment.primary_capability if decision.assignment else None
+        if got != exp["primary_capability"]:
+            errors.append(f"primary_capability: got {got!r} expected {exp['primary_capability']!r}")
     if "min_domains" in exp:
         if len(decision.domains) < int(exp["min_domains"]):
             errors.append(
@@ -853,6 +908,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         choices=["meta.chief-of-staff"],
     )
     p_in.add_argument("--json", action="store_true", help="Print full JSON decision")
+    p_in.add_argument("--explain", action="store_true", help="Include matched keywords, overrides and runner-up")
+    p_in.add_argument("--context", type=Path, help="Opt-in local routing context; no request text is stored")
+    p_context = sub.add_parser("context", help="Clear an opt-in local routing context")
+    p_context.add_argument("action", choices=["clear"])
+    p_context.add_argument("path", type=Path)
 
     sub.add_parser("self-test", help="Run built-in behavioral asserts")
     sub.add_parser("roster", help="Print active roster JSON")
@@ -861,6 +921,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     args = parser.parse_args(argv)
 
+    if args.cmd == "context":
+        if args.path.exists() or args.path.is_symlink():
+            _read_context(args.path)
+            args.path.unlink()
+        print("Routing context cleared")
+        return 0
     if args.cmd == "self-test":
         return self_test()
     if args.cmd == "roster":
@@ -874,6 +940,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         return 0
     if args.cmd == "intake":
         if args.fixture:
+            if args.context:
+                parser.error("--context cannot be combined with --fixture")
             try:
                 decision, fixture = run_fixture(args.fixture)
             except InputError as e:
@@ -891,8 +959,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             return 0
         req = " ".join(args.request).strip()
         try:
-            decision = intake(req, coordinator=args.coordinator)
-        except InputError as e:
+            context = _read_context(args.context) if args.context and (args.context.exists() or args.context.is_symlink()) else None
+            decision = intake(req, coordinator=args.coordinator, explain=args.explain, context=context)
+            if args.context:
+                _save_context(args.context, decision)
+            if args.explain and decision.explanation is None:
+                decision.explanation = {"domains": decision.domains, "risk": decision.risk,
+                                        "gate": decision.escalation.reason if decision.escalation else decision.decision}
+        except (InputError, OSError) as e:
             print(f"error: {e}", file=sys.stderr)
             return 2
         print(json.dumps(decision.as_dict(), indent=2))
@@ -904,6 +978,6 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 if __name__ == "__main__":
     try:
         sys.exit(main())
-    except InputError as e:
+    except (InputError, OSError) as e:
         print(f"error: {e}", file=sys.stderr)
         sys.exit(2)
