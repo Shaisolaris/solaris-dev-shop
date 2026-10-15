@@ -10,13 +10,13 @@ are paced into scenes; paths are shortened and JSON is excerpted. It is not a
 real-time recording or a demonstration of a model performing specialist work.
 The router performs no specialist work and makes no model calls.
 
-The MP4 is 2560 by1440, H.264 with AAC audio, about2.4MB. It was decoded in a
+The MP4 is 2560 by 1440, H.264 with AAC audio, about 2.4 MB. It was decoded in a
 browser and checked for layout overflow and non-silent audio. Its SHA256 is
 `66f9965c25a3361cd782e9bd23385247e0d91b3bcb27e627cd2ed46d6ae8f23d`.
 
 ## Reproduce the source and install
 
-Requires Git and Python3.10+. On macOS or Linux:
+Requires Git and Python 3.10+. On macOS or Linux:
 
 ```bash
 git clone --branch v0.56 --depth 1 https://github.com/Shaisolaris/solaris-dev-shop.git
@@ -40,12 +40,12 @@ The captured source is commit
 
 ### 0:00 · From a task to the right skill
 
-Solaris Dev Shop gives your agent61 specialist skills. Find one and route a task
+Solaris Dev Shop gives your agent 61 specialist skills. Find one and route a task
 without a model key.
 
 ### 0:07 · Start with the released project
 
-Clone the tagged source and use Python3.10 or newer. Install the router wheel
+Clone the tagged source and use Python 3.10 or newer. Install the router wheel
 from the project's GitHub release into an isolated environment. The skills remain
 in the checkout.
 
