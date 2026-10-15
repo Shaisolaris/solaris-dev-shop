@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Solaris Dev Shop one-command install (0.54).
+# Solaris Dev Shop one-command install.
 #
 # From a checkout:   ./install.sh
 # From anywhere:     curl -fsSL https://raw.githubusercontent.com/Shaisolaris/solaris-dev-shop/main/install.sh | bash
@@ -59,7 +59,7 @@ fi
 ROOT="$(pwd)"
 cd "$ROOT"
 
-echo "== Solaris Dev Shop 0.54 =="
+echo "== Solaris Dev Shop =="
 echo "-- checking tree"
 for f in control-plane/meta_control_plane.py control-plane/roster.json control-plane/policy.json chief-of-staff/SKILL.md; do
   [ -f "$f" ] || { echo "missing: $f"; exit 1; }
@@ -90,9 +90,9 @@ case ":$PATH:" in
   *) echo "  (add $INSTALL_BIN_DIR to your PATH to use solaris-intake anywhere)" ;;
 esac
 echo ""
-echo "Per-agent skill paths (copy any employees/<dept>/<name>/ folder there):"
+echo "Per-agent skill paths (preserve companion files and shared-standard references):"
 echo "  Claude Code:  ~/.claude/skills/"
 echo "  Cursor:       .cursor/skills/  (project) or ~/.cursor/skills/ (global)"
-echo "  Windsurf:     .windsurf/skills/"
-echo "  Codex CLI:    ~/.codex/skills/"
+echo "  Windsurf/Devin: .devin/skills/ (.windsurf/skills/ remains a legacy path)"
+echo "  Codex:        .agents/skills/ (project) or ~/.agents/skills/ (user)"
 echo "  Aider:        copy anywhere, point Aider at the SKILL.md"
