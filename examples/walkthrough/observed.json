@@ -1,0 +1,240 @@
+{
+  "version": "0.56",
+  "source_commit": "60b97b7b6333a7b6110af82b33da9cddcbed6a5a",
+  "selftest": "meta control-plane selftest: OK (engine 1.2.1, providers claude,codex,grok,kimi)\n",
+  "qa_skill": {
+    "id": "solaris.qa-engineer",
+    "name": "qa-engineer",
+    "department": "quality-security",
+    "summary": "Test strategy, E2E/integration/unit suites, accessibility (WCAG), flaky triage, and evidence-backed run results.",
+    "tags": [
+      "a11y",
+      "accessibility",
+      "contract-testing",
+      "cypress",
+      "detox",
+      "e2e",
+      "flaky-tests",
+      "load-testing",
+      "maestro",
+      "playwright",
+      "qa",
+      "quality-security",
+      "quality-security-wave",
+      "test-strategy",
+      "testing",
+      "visual-regression",
+      "wcag"
+    ],
+    "path": "employees/quality-security/qa-engineer/SKILL.md",
+    "source_url": "https://github.com/Shaisolaris/solaris-dev-shop/blob/main/employees/quality-security/qa-engineer/SKILL.md"
+  },
+  "assignment": {
+    "schema_version": "1.2.0",
+    "engine_version": "1.2.1",
+    "decision": "assign",
+    "coordinator": "meta.chief-of-staff",
+    "request_summary": "Write a test plan for the client portal login regression",
+    "domains": [
+      "qa"
+    ],
+    "risk": "low",
+    "assignment": {
+      "assignment_id": "asg-632304398128",
+      "outcome": "Bounded delivery for: Write a test plan for the client portal login regression",
+      "accountable": "solaris.qa-engineer",
+      "primary_capability": "solaris.qa-engineer",
+      "supporting": [],
+      "scope": "Domains=qa; risk=low; coordinator=meta.chief-of-staff does not perform specialist work.",
+      "authority_bound": [
+        "stay within declared capability authority",
+        "no production deploy without human",
+        "no spend / message_send / external mutation without human",
+        "no autonomous scope expansion"
+      ],
+      "must_not": [
+        "coordinator_performs_specialist_work",
+        "phantom_credit_without_invocation",
+        "autonomous_scope_expansion",
+        "alfred_personal_data_in_solaris_packet",
+        "credentials_in_handoff"
+      ],
+      "evidence_required": [
+        "routing_decision_with_named_roles",
+        "assignment_packet_with_task_description",
+        "list_of_capabilities_invoked_or_queued",
+        "coordinator_did_not_perform_work"
+      ],
+      "domains": [
+        "qa"
+      ],
+      "risk": "low",
+      "confidence": 1.0,
+      "runner_up": null,
+      "skill_path": "employees/quality-security/qa-engineer/SKILL.md",
+      "skill_source_url": "https://github.com/Shaisolaris/solaris-dev-shop/blob/main/employees/quality-security/qa-engineer/SKILL.md"
+    },
+    "escalation": null,
+    "closure_evidence": {
+      "required_artifacts": [
+        "routing_decision_with_named_roles",
+        "assignment_packet_with_task_description",
+        "list_of_capabilities_invoked_or_queued",
+        "coordinator_did_not_perform_work"
+      ],
+      "acceptance": "Every named capability was invoked or explicitly queued; no phantom credits; coordinator did not perform specialist work; material decisions escalated.",
+      "redaction": "Strip credentials, tokens, private health/finance/personal content, raw connector data from packets, logs, and evidence."
+    },
+    "budgets_applied": {
+      "context_tokens_soft": 15000,
+      "context_tokens_hard": 100000,
+      "scout_external_queries": 20,
+      "scout_auto_absorb": 0,
+      "learning_promotions_auto_max": 3,
+      "learning_promotions_require_review_above": 3,
+      "roster_mutations_require_review": true,
+      "roster_mutations_auto_max": 0,
+      "assignment_max_supporting": 5,
+      "council_invocation_require_human": true
+    },
+    "provider_invariants": [
+      "authority",
+      "permissions",
+      "acceptance",
+      "data_policy",
+      "tools",
+      "failure",
+      "evidence"
+    ],
+    "performed_work": false,
+    "ts": "2026-10-15T14:43:41Z",
+    "explanation": {
+      "domains": [
+        "qa"
+      ],
+      "source": "capability_keywords",
+      "matched_keywords": [
+        "test plan"
+      ],
+      "override_hits": [],
+      "capabilities": [
+        "solaris.qa-engineer"
+      ],
+      "confidence": 1.0,
+      "confidence_meaning": "relative keyword evidence; not a probability of correctness",
+      "runner_up": null
+    }
+  },
+  "clarify": {
+    "schema_version": "1.2.0",
+    "engine_version": "1.2.1",
+    "decision": "clarify",
+    "coordinator": "meta.chief-of-staff",
+    "request_summary": "There are several things here and I cannot describe any outcome",
+    "domains": [
+      "general"
+    ],
+    "risk": "low",
+    "assignment": null,
+    "escalation": {
+      "reason": "ambiguous",
+      "message": "Ambiguous request, ask ONE clarifying question for the desired outcome; do not guess.",
+      "required_actor": "user",
+      "evidence": [
+        "ambiguous_phrases_or_underspecified_goal"
+      ]
+    },
+    "closure_evidence": {
+      "required_artifacts": [
+        "routing_decision_with_named_roles",
+        "assignment_packet_with_task_description",
+        "list_of_capabilities_invoked_or_queued",
+        "coordinator_did_not_perform_work"
+      ],
+      "acceptance": "Every named capability was invoked or explicitly queued; no phantom credits; coordinator did not perform specialist work; material decisions escalated.",
+      "redaction": "Strip credentials, tokens, private health/finance/personal content, raw connector data from packets, logs, and evidence."
+    },
+    "budgets_applied": {
+      "context_tokens_soft": 15000,
+      "context_tokens_hard": 100000,
+      "scout_external_queries": 20,
+      "scout_auto_absorb": 0,
+      "learning_promotions_auto_max": 3,
+      "learning_promotions_require_review_above": 3,
+      "roster_mutations_require_review": true,
+      "roster_mutations_auto_max": 0,
+      "assignment_max_supporting": 5,
+      "council_invocation_require_human": true
+    },
+    "provider_invariants": [
+      "authority",
+      "permissions",
+      "acceptance",
+      "data_policy",
+      "tools",
+      "failure",
+      "evidence"
+    ],
+    "performed_work": false,
+    "ts": "2026-10-15T14:43:41Z",
+    "explanation": null
+  },
+  "high_risk": {
+    "schema_version": "1.2.0",
+    "engine_version": "1.2.1",
+    "decision": "escalate",
+    "coordinator": "meta.chief-of-staff",
+    "request_summary": "Deploy the application to production now",
+    "domains": [
+      "infrastructure"
+    ],
+    "risk": "high",
+    "assignment": null,
+    "escalation": {
+      "reason": "high_risk",
+      "message": "High-risk request (money, external mutation, deploy, diagnosis, legal filing) requires explicit human confirmation before any assignment.",
+      "required_actor": "owner",
+      "evidence": [
+        "high_risk_keywords_or_combinations",
+        "permission_policy"
+      ]
+    },
+    "closure_evidence": {
+      "required_artifacts": [
+        "routing_decision_with_named_roles",
+        "assignment_packet_with_task_description",
+        "list_of_capabilities_invoked_or_queued",
+        "coordinator_did_not_perform_work",
+        "human_confirmation_record",
+        "permission_scope_snapshot"
+      ],
+      "acceptance": "Every named capability was invoked or explicitly queued; no phantom credits; coordinator did not perform specialist work; material decisions escalated.",
+      "redaction": "Strip credentials, tokens, private health/finance/personal content, raw connector data from packets, logs, and evidence."
+    },
+    "budgets_applied": {
+      "context_tokens_soft": 15000,
+      "context_tokens_hard": 100000,
+      "scout_external_queries": 20,
+      "scout_auto_absorb": 0,
+      "learning_promotions_auto_max": 3,
+      "learning_promotions_require_review_above": 3,
+      "roster_mutations_require_review": true,
+      "roster_mutations_auto_max": 0,
+      "assignment_max_supporting": 5,
+      "council_invocation_require_human": true
+    },
+    "provider_invariants": [
+      "authority",
+      "permissions",
+      "acceptance",
+      "data_policy",
+      "tools",
+      "failure",
+      "evidence"
+    ],
+    "performed_work": false,
+    "ts": "2026-10-15T14:43:41Z",
+    "explanation": null
+  },
+  "wheel_sha256": "883929ca784f4c808c71a80135d1463d84916cb90ec0c8284e66b983b9a2de8b"
+}
