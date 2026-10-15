@@ -5,6 +5,7 @@ import importlib
 import io
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -102,6 +103,15 @@ class IntakeFeatures(unittest.TestCase):
         self.assertEqual(d.assignment.skill_path, "employees/quality-security/qa-engineer/SKILL.md")
         self.assertEqual(d.assignment.skill_source_url, mcp.SOURCE_URL + d.assignment.skill_path)
         self.assertFalse(d.performed_work)
+
+    def test_shared_standards_resolve_from_skill_folders(self):
+        checked = 0
+        for skill in (ROOT / "employees").glob("*/*/SKILL.md"):
+            for target in re.findall(r"Full standard: `([^`]+)`", skill.read_text(encoding="utf-8")):
+                checked += 1
+                with self.subTest(skill=str(skill.relative_to(ROOT)), target=target):
+                    self.assertTrue((skill.parent / target).is_file())
+        self.assertGreater(checked, 0)
 
     def test_localized_authority_and_risk_are_not_bypassed(self):
         for request, reason in [("revisa este código y despliega en producción", "high_risk"),

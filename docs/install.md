@@ -58,9 +58,9 @@ That command uses only the Python standard library. It was run from this folder 
 
 To use one employee in a coding agent:
 
-1. Copy the employee directory, for example `employees/quality-security/qa-engineer/`, into the place your agent loads project skills.
+1. Keep the full checkout available and open the employee there, for example `employees/quality-security/qa-engineer/SKILL.md`. If you copy a folder into your host skill directory, preserve every referenced shared standard as well as its companion files.
 2. Point the agent at `SKILL.md` in that directory.
-3. If the skill says to load `rules.md` or a reference next to it, copy those files too. They sit beside the skill on purpose. Every employee ships `SKILL.md`, `rules.md`, `plugin.json`, `capability.contract.json`, and `learnings.md`.
+3. If the skill says to load `rules.md` or a reference next to it, copy those files too. Some skills also reference shared department standards outside their own folder. Preserve those relative paths or supply the original checkout as context. Every employee ships `SKILL.md`, `rules.md`, `plugin.json`, `capability.contract.json`, and `learnings.md`.
 
 The chief of staff is `chief-of-staff/SKILL.md`. Routing uses `control-plane/`. Keep those two folders together if you want the intake command to keep working.
 
@@ -74,4 +74,4 @@ Do not copy a personal Desktop path into the skill. Do not commit `.env` files.
 - **Codex CLI**: copy the employee folder into `~/.codex/skills/`.
 - **Aider**: copy the employee folder anywhere, then point Aider at the `SKILL.md` with `--read` or add it to your conventions file.
 
-In every case, keep the five files together (`SKILL.md`, `rules.md`, `plugin.json`, `capability.contract.json`, `learnings.md`) and point the agent at `SKILL.md`.
+In every case, keep companion files together and preserve the shared standards referenced by the skill. Opening a skill in the full checkout avoids breaking those relative paths. A copied folder alone is not a complete bundle when it references a department standard.

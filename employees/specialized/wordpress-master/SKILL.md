@@ -6,7 +6,7 @@ description: ⚠️ ALWAYS load wp-modern-engineering-methodology.md FIRST for a
 
 ## SPECIALIST-ENGINEERING CONTROLS (2026-07 wave)
 
-Wave: skill-wave-specialist-engineering-20260724 (skill-je0). Full standard: `solaris/employees/specialized/SPECIALIST-ENGINEERING-STANDARD.md`.
+Wave: skill-wave-specialist-engineering-20260724 (skill-je0). Full standard: `../SPECIALIST-ENGINEERING-STANDARD.md`.
 
 Platform, engine, SDK, and license truth first. Unavailable tools fail closed.
 Security, build/test evidence, and artifact paths are required before Gate: passed.

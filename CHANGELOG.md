@@ -6,6 +6,7 @@
 - Add offline skill search by terms and department, plus source paths and links in assignment packets. Validate the catalog against all 61 active skills in CI.
 - Align the 3D Artist contract ID with its existing roster and route. No roster additions.
 - Provide a complete clone-to-handoff quickstart, a worked first-task guide and verifiable project facts. Clarify host execution and benchmark limits.
+- Repair 34 shared-standard paths so they resolve from the skill folder, with a source-file regression check. Document shared dependencies when copying skills.
 - Refresh repository preview assets with matching editable source and 2:1 output.
 
 ## 0.54 (2026-10-15)

@@ -39,7 +39,9 @@ If its tools are unavailable, report that limit instead of inventing test result
 ## 3. Invoke in your host agent
 
 Open the returned file in your existing agent, or copy its entire folder into
-your host's skill directory. Keep its rules and references together. Give the
+your host's skill directory. Keep its rules and references together. If it references
+a shared department standard, preserve that path or provide the full checkout;
+a folder alone is not always a complete bundle. Give the
 agent a concrete request, for example:
 
 > Use the QA Engineer skill at employees/quality-security/qa-engineer/SKILL.md.

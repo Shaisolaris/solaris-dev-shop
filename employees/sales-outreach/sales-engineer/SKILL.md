@@ -28,7 +28,7 @@ End successful deliverables with the literal line: `Gate: passed`.
 
 ## GROWTH-REVENUE CONTROLS (2026-07 wave)
 
-Wave: skill-wave-growth-revenue-20260724 (skill-7fw). Full standard: `solaris/employees/marketing/GROWTH-REVENUE-STANDARD.md`.
+Wave: skill-wave-growth-revenue-20260724 (skill-7fw). Full standard: `../../marketing/GROWTH-REVENUE-STANDARD.md`.
 
 Demo plans and proof are non-binding. No unapproved SLAs or security attestations. Environment access stays least-privilege. Customer data in demos is synthetic or redacted.
 

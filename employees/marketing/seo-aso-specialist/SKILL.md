@@ -28,7 +28,7 @@ End successful deliverables with the literal line: `Gate: passed`.
 
 ## GROWTH-REVENUE CONTROLS (2026-07 wave)
 
-Wave: skill-wave-growth-revenue-20260724 (skill-7fw). Full standard: `solaris/employees/marketing/GROWTH-REVENUE-STANDARD.md`.
+Wave: skill-wave-growth-revenue-20260724 (skill-7fw). Full standard: `../GROWTH-REVENUE-STANDARD.md`.
 
 No doorway pages, spun content, or link schemes. Store ranking claims need dated evidence. ASO respects App Store / Play policies. Experiments on snippets stay policy-safe.
 
