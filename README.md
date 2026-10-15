@@ -42,7 +42,9 @@ This is an excerpt; the full packet includes authority bounds, required evidence
 
 **Next:** open the returned `SKILL.md` in your agent, keep its companion files together, and supply the task and workspace. Follow [one complete handoff](docs/first-task.md), browse the [61 skills](docs/employees.md), or use the [Actions playground](docs/playground.md) without a local install.
 
-![Demo: one intake command routes to the accountable specialist](assets/demo.gif)
+[![Watch the narrated walkthrough: actual routing output, with no specialist work performed](assets/walkthrough-preview.png)](https://github.com/Shaisolaris/solaris-dev-shop/releases/download/v0.56/solaris-dev-shop-0.56-walkthrough.mp4)
+
+[Watch the 65-second narrated walkthrough](https://github.com/Shaisolaris/solaris-dev-shop/releases/download/v0.56/solaris-dev-shop-0.56-walkthrough.mp4) · [Transcript, captions and reproducible commands](docs/walkthrough.md)
 
 ## Choose a skill
 
