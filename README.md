@@ -90,9 +90,9 @@ CI checks routing, CLI behavior, safety gates, packaging and the 61-skill catalo
 
 Solaris Dev Shop is listed on [DevShelf](https://devshelf.ritualdev.in/tools/solaris-dev-shop.html), [SilentStars](https://silentstars.dev/projects/shaisolaris--solaris-dev-shop/) and other community directories. See [verified public listings](docs/public-listings.md) for entries and their evidence. Directory inclusion does not imply an endorsement. [Project facts and media](docs/project-facts.md) provide reusable, evidence-backed descriptions.
 
-AI Agents Directory is still verifying a submitted listing. This is its required verification backlink, not a confirmed placement:
+[AI Agents Directory now has a live Solaris Dev Shop listing](https://aiagentsdirectory.com/agent/solaris-dev-shop), verified October 15, 2026. Its status is Standard / New. The publisher backlink below does not imply an editorial award:
 
-[![AI Agents Directory verification pending](https://aiagentsdirectory.com/featured-badge.svg)](https://aiagentsdirectory.com)
+[![Listed on AI Agents Directory](https://aiagentsdirectory.com/featured-badge.svg)](https://aiagentsdirectory.com)
 
 Postmake's free listing route requires its badge. This backlink is in place for that application; a Postmake listing has not yet been confirmed:
 
