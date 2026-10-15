@@ -42,7 +42,10 @@ jobs:
           wheel = next((outside / 'wheels').glob('*.whl'))
           with zipfile.ZipFile(wheel) as package:
               assert not any(name.endswith('.pyc') for name in package.namelist())
-              assert 'solaris_intake/control-plane/policy.json' in package.namelist()
+              assert not any('/control-plane/' in name for name in package.namelist())
+              assert 'solaris_intake/control_plane/policy.json' in package.namelist()
+              source = pathlib.Path('control-plane/meta_control_plane.py').read_bytes()
+              assert package.read('solaris_intake/control_plane/meta_control_plane.py') == source
           subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--no-deps', str(wheel)])
           subprocess.check_call(['solaris-intake', 'self-test'], cwd=outside)
           subprocess.check_call(['solaris-intake', 'intake', '--explain', 'review this code'], cwd=outside)
@@ -106,6 +109,15 @@ jobs:
           "
       - name: Search catalog matches existing skills and roster
         run: python tools/build_skill_catalog.py --check
+      - name: Public source contains no symbolic links
+        run: |
+          python - <<'PY'
+          import subprocess
+          files = subprocess.check_output(['git', 'ls-files', '-s'], text=True).splitlines()
+          links = [line.split('\t', 1)[1] for line in files if line.startswith('120000 ')]
+          assert not links, f'Public source discovery rejects symbolic links: {links}'
+          print('Public source contains no symbolic links')
+          PY
       - name: Validate specialist and coordinator discovery metadata
         run: |
           python -m pip install --disable-pip-version-check -r requirements-dev.txt
