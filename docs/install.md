@@ -1,5 +1,10 @@
 # Install
 
+Source archives and wheels are built from the same canonical `control-plane/`
+files. The installed wheel places those files under
+`solaris_intake/control_plane/`; the source checkout keeps the documented script
+path. No repository symlink is required for packaging or source discovery.
+
 One command, from anywhere:
 
 ```bash

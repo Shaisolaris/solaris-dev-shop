@@ -101,7 +101,7 @@ the single accountable specialist. These procedures are not 38 extra employees.
 The self-test checks the actual `fixtures/control-plane/` directory in a checkout.
 The test suite also verifies those fixture expectations and all 61 specialist
 routes. A packaged wheel runs the built-in smoke checks; checkout fixtures and
-employee skill directories remain source-distribution material.
+employee skill directories belong to the Git checkout and GitHub source archives.
 
 ## Discoverable handoff
 

@@ -8,7 +8,12 @@ import runpy
 import sys
 from pathlib import Path
 
-CONTROL_PLANE = Path(__file__).resolve().parent / "control-plane" / "meta_control_plane.py"
+PACKAGE_DIR = Path(__file__).resolve().parent
+CONTROL_PLANE = PACKAGE_DIR / "control_plane" / "meta_control_plane.py"
+if not CONTROL_PLANE.is_file():
+    # A source checkout keeps the public script in control-plane/. Setuptools
+    # maps that same directory into control_plane/ in the installed package.
+    CONTROL_PLANE = PACKAGE_DIR.parent / "control-plane" / "meta_control_plane.py"
 
 
 def main() -> int:
