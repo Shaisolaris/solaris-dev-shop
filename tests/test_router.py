@@ -104,6 +104,73 @@ class TestRouting(unittest.TestCase):
         self.assertNotEqual(d.assignment.accountable, "meta.chief-of-staff")
         self.assertTrue(d.assignment.accountable.startswith("solaris."))
 
+    def test_compound_requests_keep_each_requested_specialist(self):
+        cases = [
+            ("Review this code and write API documentation for the integration",
+             {"solaris.code-reviewer", "solaris.technical-writer"}),
+            ("Build a REST API; design Figma wireframes; write a Playwright test plan",
+             {"solaris.backend-developer", "solaris.ui-ux-designer", "solaris.qa-engineer"}),
+            ("Build a REST API and a marketing landing page for the client portal",
+             {"solaris.full-stack-developer", "solaris.ui-ux-designer",
+              "solaris.qa-engineer", "solaris.backend-developer"}),
+            ("Review this code\nWrite API documentation for the integration",
+             {"solaris.code-reviewer", "solaris.technical-writer"}),
+        ]
+        for request, expected in cases:
+            with self.subTest(request=request):
+                d = mcp.intake(request, explain=True)
+                self.assertEqual(d.decision, "assign")
+                a = d.assignment
+                self.assertEqual({a.primary_capability, *a.supporting}, expected)
+                self.assertEqual(a.accountable, a.primary_capability)
+                self.assertEqual(len(a.supporting), len(set(a.supporting)))
+                self.assertFalse(d.performed_work)
+                self.assertEqual({h["capability"] for h in a.supporting_handoffs}, set(a.supporting))
+                for handoff in a.supporting_handoffs:
+                    self.assertTrue((ROOT / handoff["skill_path"]).is_file())
+                    self.assertEqual(handoff["skill_source_url"], mcp.SOURCE_URL + handoff["skill_path"])
+
+    def test_alternatives_overlaps_and_constraints_do_not_add_a_team(self):
+        for request, primary in [
+            ("Review this code or write API documentation", "solaris.code-reviewer"),
+            ("Review this code and find bugs", "solaris.code-reviewer"),
+            ("Review this code and make it better", "solaris.code-reviewer"),
+            ("Build a REST API and do not write API documentation", "solaris.backend-developer"),
+            ("Build a REST API and don't design Figma wireframes", "solaris.backend-developer"),
+        ]:
+            with self.subTest(request=request):
+                d = mcp.intake(request)
+                self.assertEqual(d.assignment.primary_capability, primary)
+                self.assertEqual(d.assignment.supporting, [])
+        for request in ["Do not write API documentation", "Please never review this code",
+                        "Do not build a REST API and don't write API documentation"]:
+            with self.subTest(request=request):
+                d = mcp.intake(request)
+                self.assertEqual(d.decision, "clarify")
+                self.assertIsNone(d.assignment)
+
+    def test_compound_requests_preserve_safety_and_roster_gates(self):
+        d = mcp.intake("Build a REST API and deploy the application to production")
+        self.assertEqual(d.decision, "escalate")
+        self.assertEqual(d.escalation.reason, "high_risk")
+        self.assertIsNone(d.assignment)
+        roster = {"capabilities": [c for c in self.roster["capabilities"]
+                                   if c["id"] != "solaris.technical-writer"]}
+        d = mcp.intake("Review this code and write API documentation", roster=roster)
+        self.assertEqual(d.decision, "escalate")
+        self.assertEqual(d.escalation.reason, "unavailable_capability")
+        self.assertIsNone(d.assignment)
+
+    def test_compound_requests_apply_the_supporting_budget(self):
+        request = ("Build a REST API; design Figma wireframes; write a Playwright test plan; "
+                   "write API documentation; build a data pipeline; create a financial model; "
+                   "plan a social media calendar")
+        d = mcp.intake(request)
+        self.assertEqual(d.decision, "assign")
+        self.assertEqual(len(d.assignment.supporting), 5)
+        self.assertEqual(len(d.assignment.supporting_handoffs), 5)
+        self.assertTrue(d.budgets_applied.get("supporting_truncated_to_max"))
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

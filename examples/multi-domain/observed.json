@@ -1,25 +1,25 @@
 {
-  "schema_version": "1.1.0",
-  "engine_version": "1.1.0",
+  "schema_version": "1.3.0",
+  "engine_version": "1.3.0",
   "decision": "assign",
   "coordinator": "meta.chief-of-staff",
-  "request_summary": "Build a REST API and a marketing landing page for the client portal",
+  "request_summary": "Build a FastAPI REST API backend; design Figma wireframes; write a Playwright test plan",
   "domains": [
     "engineering",
     "design",
-    "marketing"
+    "qa"
   ],
   "risk": "low",
   "assignment": {
-    "assignment_id": "asg-e6913a57e164",
-    "outcome": "Bounded delivery for: Build a REST API and a marketing landing page for the client portal",
-    "accountable": "solaris.full-stack-developer",
-    "primary_capability": "solaris.full-stack-developer",
+    "assignment_id": "asg-36cc59577ad2",
+    "outcome": "Bounded delivery for: Build a FastAPI REST API backend; design Figma wireframes; write a Playwright test plan",
+    "accountable": "solaris.backend-developer",
+    "primary_capability": "solaris.backend-developer",
     "supporting": [
       "solaris.ui-ux-designer",
       "solaris.qa-engineer"
     ],
-    "scope": "Domains=engineering,design,marketing; risk=low; coordinator=meta.chief-of-staff does not perform specialist work.",
+    "scope": "Domains=engineering,design,qa; risk=low; coordinator=meta.chief-of-staff does not perform specialist work.",
     "authority_bound": [
       "stay within declared capability authority",
       "no production deploy without human",
@@ -42,11 +42,25 @@
     "domains": [
       "engineering",
       "design",
-      "marketing"
+      "qa"
     ],
     "risk": "low",
-    "confidence": 0.5,
-    "runner_up": "solaris.cro-landing-designer"
+    "confidence": 0.5366,
+    "runner_up": "solaris.qa-engineer",
+    "skill_path": "employees/engineering/backend-developer/SKILL.md",
+    "skill_source_url": "https://github.com/Shaisolaris/solaris-dev-shop/blob/main/employees/engineering/backend-developer/SKILL.md",
+    "supporting_handoffs": [
+      {
+        "capability": "solaris.ui-ux-designer",
+        "skill_path": "employees/design/ui-ux-designer/SKILL.md",
+        "skill_source_url": "https://github.com/Shaisolaris/solaris-dev-shop/blob/main/employees/design/ui-ux-designer/SKILL.md"
+      },
+      {
+        "capability": "solaris.qa-engineer",
+        "skill_path": "employees/quality-security/qa-engineer/SKILL.md",
+        "skill_source_url": "https://github.com/Shaisolaris/solaris-dev-shop/blob/main/employees/quality-security/qa-engineer/SKILL.md"
+      }
+    ]
   },
   "escalation": null,
   "closure_evidence": {
@@ -81,6 +95,46 @@
     "evidence"
   ],
   "performed_work": false,
-  "ts": "2026-10-15T13:03:16Z",
-  "explanation": null
+  "ts": "2026-10-15T15:59:17Z",
+  "explanation": {
+    "domains": [
+      "engineering",
+      "design",
+      "qa"
+    ],
+    "source": "capability_keywords",
+    "matched_keywords": [
+      "rest api",
+      "backend",
+      "fastapi"
+    ],
+    "override_hits": [],
+    "capabilities": [
+      "solaris.backend-developer",
+      "solaris.ui-ux-designer",
+      "solaris.qa-engineer"
+    ],
+    "confidence": 0.5366,
+    "supporting_matches": [
+      {
+        "capability": "solaris.ui-ux-designer",
+        "task_index": 1,
+        "source": "capability_keywords",
+        "matched_keywords": [
+          "figma"
+        ]
+      },
+      {
+        "capability": "solaris.qa-engineer",
+        "task_index": 2,
+        "source": "capability_keywords",
+        "matched_keywords": [
+          "test plan",
+          "playwright"
+        ]
+      }
+    ],
+    "confidence_meaning": "relative keyword evidence; not a probability of correctness",
+    "runner_up": "solaris.qa-engineer"
+  }
 }

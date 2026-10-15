@@ -5,8 +5,8 @@
 Three parts.
 
 1. You send one request.
-2. The chief of staff (`chief-of-staff/SKILL.md`) runs intake and emits one assignment. It does not do the specialist job.
-3. One of the 61 employees does that job. You still confirm anything that spends money, deploys, or sends a message.
+2. The chief of staff (`chief-of-staff/SKILL.md`) runs intake and emits one assignment packet, with an accountable lead and any supporting specialists. It does not do their work.
+3. Your host agent or agents use the selected skills to do the work, in parallel or in sequence as the task permits. Multiple specialists can collaborate. You still confirm anything that spends money, deploys, or sends a message.
 
 The intake command is:
 
@@ -33,6 +33,33 @@ The policy includes explicit Spanish and French code-review phrases and a small
 set of corresponding risk and personal-data signals. This is bounded phrase
 support, not general translation. English remains the main routing vocabulary;
 unsupported or underspecified requests may need clarification.
+
+## Multiple specialists, one accountable outcome
+
+The highest-ranked keyword evidence selects the lead. Explicit policy overrides
+can also name supporting roles, such as design and QA for a landing page. For a
+compound request, the router additionally selects the best match for each task
+clause and deduplicates those capabilities into `supporting`. This preserves a
+requested documentation or API task that would otherwise lose to the overall
+winning keyword score. `supporting_handoffs` supplies each selected supporter's
+source path and URL; the existing primary handoff fields remain unchanged
+(additive schema 1.3).
+
+Task separators are bounded English `and`, `plus`, `then`, `as well as`, a spaced
+`+`, semicolons and newlines. `or` disables automatic clause-based team expansion.
+Clauses beginning with `do not`, `don't`, `never`, `avoid` or `skip` are excluded
+from routing. This does not understand arbitrary alternatives, nested conditions
+or negation. Write positive task clauses and inspect the packet before use.
+Authority and risk checks always inspect the complete original request first,
+including excluded clauses; a negative production instruction can still escalate.
+
+The supporting-role budget defaults to five. A larger result is capped and marked
+`supporting_truncated_to_max`; review or split that request before execution.
+Unavailable requested capabilities escalate rather than becoming invented agents.
+Keyword confidence and the runner-up still describe lead selection, not a team
+quality score. The packet grants no extra permissions and records no executed
+work. The opt-in context file remembers only the primary role, not a team or its
+task history. See the [reproducible example](../examples/multi-domain/README.md).
 
 ## Opt-in follow-up context
 

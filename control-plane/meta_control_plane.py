@@ -37,8 +37,8 @@ SKILLS_PATH = CONTROL_PLANE_DIR / "skills.json"
 SOURCE_URL = "https://github.com/Shaisolaris/solaris-dev-shop/blob/main/"
 FIXTURE_ROOT = ROOT / "fixtures" / "control-plane"
 
-SCHEMA_VERSION = "1.2.0"
-ENGINE_VERSION = "1.2.1"
+SCHEMA_VERSION = "1.3.0"
+ENGINE_VERSION = "1.3.0"
 
 # Decision codes
 ASSIGN = "assign"
@@ -76,6 +76,7 @@ class Assignment:
     runner_up: Optional[str] = None
     skill_path: Optional[str] = None
     skill_source_url: Optional[str] = None
+    supporting_handoffs: List[Dict[str, str]] = field(default_factory=list)
 
     def as_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -266,8 +267,8 @@ def _override_phrase_hit(text: str, policy: Dict[str, Any]) -> bool:
     return False
 
 
-def explain_routing(domains: List[str], text: str, policy: Dict[str, Any]) -> Dict[str, Any]:
-    """Expose deterministic evidence, not a calibrated probability of correctness."""
+def _routing_candidates(text: str, policy: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Rank matching policy rules without turning competitors into a team."""
     candidates: List[Dict[str, Any]] = []
     for idx, rule in enumerate(policy.get("route_overrides", [])):
         kws = list(rule.get("keywords", []))
@@ -285,6 +286,30 @@ def explain_routing(domains: List[str], text: str, policy: Dict[str, Any]) -> Di
             candidates.append({"score": sum(map(len, hits)), "source": "capability_keywords",
                                "order": (1, 0), "keywords": hits, "capabilities": [cap]})
     candidates.sort(key=lambda c: (-c["score"], c["order"], -max(map(len, c["keywords"]))))
+    return candidates
+
+
+def _task_clauses(text: str) -> List[str]:
+    """Bounded English task separators; alternatives do not imply collaboration.
+
+    A leading negative clause is a constraint, not an additional assignment.
+    Safety and authority checks still inspect the complete original request.
+    This is lexical routing, not a general language or negation parser.
+    """
+    clauses = re.split(r"\b(?:and|plus|then|as well as)\b|;|\n|(?<!\S)\+(?!\S)",
+                       text, flags=re.IGNORECASE)
+    positive = [c.strip() for c in clauses if c.strip() and not re.match(
+        r"^(?:please\s+)?(?:do\s+not|don't|don’t|never|avoid|skip)\b", c.strip(), re.IGNORECASE)]
+    if _word_boundary_hit("or", text) and positive:
+        return [" ".join(positive)]
+    return positive
+
+
+def explain_routing(domains: List[str], text: str, policy: Dict[str, Any]) -> Dict[str, Any]:
+    """Expose deterministic evidence, not a calibrated probability of correctness."""
+    clauses = _task_clauses(text)
+    routing_text = " ".join(clauses)
+    candidates = _routing_candidates(routing_text, policy)
     if candidates:
         winner = candidates[0]
         caps = list(winner["capabilities"])
@@ -294,16 +319,36 @@ def explain_routing(domains: List[str], text: str, policy: Dict[str, Any]) -> Di
         source = winner["source"]
         matched = winner["keywords"]
     else:
-        caps = [policy["domain_to_capability"][d] for d in domains
+        caps = [policy["domain_to_capability"][d] for d in detect_domains(routing_text, policy)
                 if d in policy.get("domain_to_capability", {})]
         source = "domain_fallback" if caps else "default_fallback"
         caps = caps or [policy.get("default_capability", "solaris.backend-developer")]
         runner, confidence, matched = None, 0.0, []
+    supporting_matches = []
+    if len(clauses) > 1:
+        for index, clause in enumerate(clauses):
+            clause_candidates = _routing_candidates(clause, policy)
+            if clause_candidates:
+                chosen = clause_candidates[0]
+                clause_caps = chosen["capabilities"]
+                clause_source, keywords = chosen["source"], chosen["keywords"]
+            else:
+                # Unknown fragments must not introduce the generic backend default.
+                clause_caps = [policy["domain_to_capability"][d]
+                               for d in detect_domains(clause, policy)
+                               if d != "general" and d in policy.get("domain_to_capability", {})]
+                clause_source, keywords = "domain_fallback", []
+            for cap in clause_caps:
+                if cap not in caps:
+                    caps.append(cap)
+                    supporting_matches.append({"capability": cap, "task_index": index,
+                                               "source": clause_source, "matched_keywords": keywords})
     return {"domains": domains, "source": source, "matched_keywords": matched,
             "override_hits": [{"rule": c["order"][1], "keywords": c["keywords"],
                                "capabilities": c["capabilities"]}
                               for c in candidates if c["source"] == "route_override"],
             "capabilities": list(dict.fromkeys(caps)), "confidence": confidence,
+            "supporting_matches": supporting_matches,
             "confidence_meaning": "relative keyword evidence; not a probability of correctness",
             "runner_up": runner["capabilities"][0] if runner else None}
 
@@ -492,7 +537,9 @@ def intake(
     else:
         follow_up = False
     # Authority and high-risk gates above always run on the new request first.
-    if not follow_up and not _override_phrase_hit(text, policy) and is_ambiguous(text, policy):
+    routing_text = " ".join(_task_clauses(text))
+    if not routing_text or (not follow_up and not _override_phrase_hit(routing_text, policy)
+                            and is_ambiguous(routing_text, policy)):
         return Decision(
             schema_version=SCHEMA_VERSION,
             engine_version=ENGINE_VERSION,
@@ -598,7 +645,8 @@ def intake(
         )
 
     assert primary is not None
-    skill = next((item for item in find_skills() if item["id"] == primary), None)
+    catalog = {item["id"]: item for item in find_skills()}
+    skill = catalog.get(primary)
     # Enforce assignment_max_supporting from budgets.json (CODE-08).
     max_supporting = int(defaults.get("assignment_max_supporting", 5))
     supporting_truncated = len(supporting) > max_supporting
@@ -655,6 +703,9 @@ def intake(
         runner_up=analysis["runner_up"],
         skill_path=skill["path"] if skill else None,
         skill_source_url=skill["source_url"] if skill else None,
+        supporting_handoffs=[{"capability": cap, "skill_path": catalog[cap]["path"],
+                              "skill_source_url": catalog[cap]["source_url"]}
+                             for cap in supporting if cap in catalog],
     )
 
     budgets_applied = dict(defaults)
