@@ -1,11 +1,10 @@
 # Solaris Dev Shop
 
 ![CI](https://github.com/Shaisolaris/solaris-dev-shop/actions/workflows/ci.yml/badge.svg)
-![Version](https://img.shields.io/badge/version-0.53-blue)
+![Version](https://img.shields.io/badge/version-0.54-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Employees](https://img.shields.io/badge/employees-61-orange)
 [![Featured on DevShelf](https://img.shields.io/badge/Featured%20on-DevShelf-7928CA?style=for-the-badge&logo=googlechrome&logoColor=white)](https://devshelf.ritualdev.in/tools/solaris-dev-shop.html)
-[![Featured on AI Agents Directory](https://aiagentsdirectory.com/featured-badge.svg)](https://aiagentsdirectory.com)
 
 61 specialist employees and one chief of staff. Free. MIT.
 
@@ -20,6 +19,10 @@ solaris-intake intake "Write a test plan for the client portal login regression"
 
 That command routes the request. It names `solaris.qa-engineer` as accountable and performs no work of its own. The test plan itself is written by the qa-engineer, but only after you invoke that skill in your own agent. Routing is deterministic: the same request always lands on the same specialist. A saved run is in [`examples/route-a-task/`](examples/route-a-task/).
 
+Add `--explain` to see matched keywords, routing evidence and the runner-up.
+Try it without a local install using the [Actions playground](docs/playground.md).
+Follow-up routing is [explicitly opt-in and local](docs/architecture.md#opt-in-follow-up-context).
+
 ![Demo: one intake command routes to the accountable specialist](assets/demo.gif)
 
 ## What you get
@@ -28,7 +31,7 @@ That command routes the request. It names `solaris.qa-engineer` as accountable a
 |---|---|
 | 61 employees | 12 departments: engineering, design, data, marketing, sales, leadership, and more. Full list: [`docs/employees.md`](docs/employees.md) |
 | 1 chief of staff | Reads your request, emits one typed assignment packet: accountable owner, primary specialist, supporting list, authority bounds, evidence required |
-| Deterministic router | Stdlib-only Python. 66 routing probes green in CI. No model calls, no API keys, no cost |
+| Deterministic router | Stdlib-only Python. All 61 specialists plus safety, CLI, context and fixture checks in CI. No model calls or API keys |
 | Copy-paste skills | Each employee is a `SKILL.md` + `rules.md` + `plugin.json` + `capability.contract.json` + `learnings.md`. Drop one into any coding agent |
 | QA loop built in | Every deliverable follows [`docs/QA-LOOP.md`](docs/QA-LOOP.md): build, independent review, fix, repeat until clean |
 
@@ -55,6 +58,21 @@ Details: [`docs/install.md`](docs/install.md). How a request moves: [`docs/archi
 ## Around the community
 
 Solaris Dev Shop is listed on [DevShelf](https://devshelf.ritualdev.in/tools/solaris-dev-shop.html), [SilentStars](https://capuz.github.io/silentstars/projects/shaisolaris--solaris-dev-shop/) and other community directories. See [verified public listings](docs/public-listings.md) for the current entries and their evidence. Directory inclusion does not imply an endorsement.
+
+AI Agents Directory is still verifying a submitted listing. The following badge
+is its required verification backlink; it is not a confirmed placement:
+
+[![AI Agents Directory verification pending](https://aiagentsdirectory.com/featured-badge.svg)](https://aiagentsdirectory.com)
+
+## Quality and evidence
+
+- [Routing architecture and privacy boundaries](docs/architecture.md)
+- [Reproducible 100-request benchmark](docs/performance.md)
+- [Multi-domain example](examples/multi-domain/README.md) and [safe escalation example](examples/escalation/README.md)
+- Structural audit: `python employees/quality-security/assurance/quality_os.py audit --html report.html`
+
+The audit checks documented output contracts and QA gates across the 61 employee
+skills. It does not certify their real-world results or guarantee autonomous work.
 
 ## Contribute
 

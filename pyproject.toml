@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "solaris-dev-shop"
-version = "0.53"
+version = "0.54"
 description = "61 specialist employees plus a chief of staff: a deterministic intake router that assigns every task to one accountable specialist."
 readme = "README.md"
 license = { text = "MIT" }
@@ -14,6 +14,9 @@ keywords = ["agents", "skills", "routing", "chief-of-staff"]
 [project.scripts]
 solaris-intake = "solaris_intake:main"
 
+[tool.setuptools]
+include-package-data = false
+
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["solaris_intake*"]
@@ -21,4 +24,4 @@ include = ["solaris_intake*"]
 # control-plane/ is symlinked into the package (solaris_intake/control-plane
 # -> ../control-plane) so the wheel ships the router the entry point needs.
 [tool.setuptools.package-data]
-solaris_intake = ["control-plane/**/*"]
+solaris_intake = ["control-plane/*.py", "control-plane/*.json", "control-plane/*.md"]

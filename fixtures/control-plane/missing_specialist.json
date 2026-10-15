@@ -1,0 +1,14 @@
+{
+  "request": "Write a test plan for the client portal login regression",
+  "test_overrides": {
+    "remove_from_roster": [
+      "solaris.qa-engineer"
+    ]
+  },
+  "expectations": {
+    "decision": "escalate",
+    "escalation_reason": "unavailable_capability",
+    "has_assignment": false,
+    "performed_work": false
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "request": "révise ce code et mon bilan sanguin",
+  "expectations": {
+    "decision": "escalate",
+    "escalation_reason": "out_of_authority",
+    "has_assignment": false,
+    "performed_work": false
+  }
+}

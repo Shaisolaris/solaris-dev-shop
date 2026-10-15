@@ -1,0 +1,8 @@
+{
+  "request": "revisa este código",
+  "expectations": {
+    "decision": "assign",
+    "primary_capability": "solaris.code-reviewer",
+    "performed_work": false
+  }
+}

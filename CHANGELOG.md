@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.54 (2026-10-15)
+
+- Fixed self-test fixture discovery: checkout fixtures are now executed and their expectations enforced.
+- Added `intake --explain`, relative keyword confidence and distinct runner-up evidence.
+- Added bounded Spanish/French review phrases, matching risk signals and Unicode word boundaries.
+- Added opt-in local follow-up routing context with no stored request text; safety gates run on every request.
+- Added escaped, offline Quality OS HTML reports.
+- Expanded adversarial fixtures from 3 to 14 and added CLI, privacy, Unicode and installer regressions.
+- Added actual multi-domain/escalation examples and a reproducible 100-request benchmark.
+- Added a read-only Actions routing playground and Windows manual installation checks.
+- CI now checks Python 3.10/3.12/3.13 and Linux/macOS/Windows, including an installed wheel outside the checkout.
+- The Bash uninstaller preserves checkouts and unrecognized commands; install refuses overwriting an unrelated command.
+- Clarified that the AI Agents Directory backlink supports a pending verification.
+
 ## 0.53
 
 Elite QA pass: every claim verified, every path live.

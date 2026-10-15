@@ -67,7 +67,15 @@
     "production outage",
     "outage",
     "site is down",
-    "production is down"
+    "production is down",
+    "despliega en producción",
+    "despliega en produccion",
+    "transferir dinero",
+    "envía al cliente",
+    "déploie en production",
+    "deploie en production",
+    "virement bancaire",
+    "envoyer au client"
   ],
   "medium_risk_keywords": [
     "client-facing",
@@ -278,6 +286,18 @@
   },
   "default_capability": "solaris.backend-developer",
   "route_overrides": [
+    {
+      "keywords": [
+        "revisa este código",
+        "revisa este codigo",
+        "révise ce code",
+        "revise ce code"
+      ],
+      "keywords_all": [],
+      "capabilities": [
+        "solaris.code-reviewer"
+      ]
+    },
     {
       "keywords": [
         "code review",
@@ -949,6 +969,12 @@
     "oura",
     "fitbit",
     "apple health",
-    "my sleep data"
+    "my sleep data",
+    "mis resultados de sangre",
+    "mi presión arterial",
+    "mi cuenta bancaria",
+    "mon bilan sanguin",
+    "ma tension artérielle",
+    "mon compte bancaire"
   ]
 }

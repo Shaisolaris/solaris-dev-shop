@@ -1,0 +1,9 @@
+{
+  "request": "",
+  "expectations": {
+    "decision": "block",
+    "escalation_reason": "ambiguous",
+    "has_assignment": false,
+    "performed_work": false
+  }
+}

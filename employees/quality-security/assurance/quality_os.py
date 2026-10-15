@@ -17,6 +17,7 @@ This module is stdlib-only. Synthetic fixtures only, no private data.
 from __future__ import annotations
 
 import argparse
+import html
 import copy
 import hashlib
 import json
@@ -1084,6 +1085,29 @@ def audit_existing_capabilities(employees_root: Path) -> Dict[str, Any]:
     }
 
 
+def render_audit_html(report: Dict[str, Any]) -> str:
+    """Standalone, escaped report with no remote assets or executable content."""
+    esc = lambda value: html.escape(str(value), quote=True)
+    counts = report["counts"]
+    items = lambda values: "".join("<li>" + esc(v) + "</li>" for v in values) or "<li>None</li>"
+    rows = "".join(
+        "<tr><td>" + esc(row["id"]) + "</td><td>" + esc(row["domain"]) +
+        "</td><td>" + esc(row["path"]) + "</td><td>" +
+        ("Present" if row["has_output_contract"] else "Missing") + "</td><td>" +
+        ("Present" if row["has_self_qa_gate"] else "Missing") + "</td></tr>"
+        for row in report["inventory"]
+    )
+    return """<!doctype html><html lang="en"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Solaris Dev Shop capability audit</title>
+<style>body{font:16px/1.5 system-ui,sans-serif;max-width:1200px;margin:40px auto;padding:0 24px;color:#182130;background:#f7f8fa}h1{line-height:1.15}section{background:white;border:1px solid #d5dbe3;border-radius:12px;padding:20px;margin:20px 0}.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{text-align:left;border-bottom:1px solid #ddd;padding:12px;vertical-align:top}td:nth-child(3){overflow-wrap:anywhere}th{background:#eef1f5}code{font-size:.9em}</style>
+<h1>Solaris Dev Shop capability audit</h1>
+<p>Checks for documented contracts and self-QA gates. This is a structural audit, not evidence that a skill has completed real work.</p>
+<section><h2>Summary</h2><p>Skills scanned: """ + esc(counts["skills_scanned"]) + " · Gaps: " + esc(counts["gaps"]) + " · Corrections: " + esc(counts["corrected"]) + """</p></section>
+<section><h2>Gaps</h2><ul>""" + items(report["gaps"]) + """</ul><h2>Corrections</h2><ul>""" + items(report["corrected"]) + """</ul></section>
+<section><h2>Employee inventory</h2><div class="scroll"><table><thead><tr><th>Employee</th><th>Department</th><th>Skill path</th><th>Output contract</th><th>Self-QA gate</th></tr></thead><tbody>""" + rows + "</tbody></table></div></section></html>"
+
+
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
@@ -1117,6 +1141,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Path to solaris/employees",
     )
 
+    p_audit.add_argument("--html", type=Path, help="Also save a standalone human-readable report")
+
     p_route = sub.add_parser("route", help="Show gate route for a defect kind")
     p_route.add_argument("defect_kind")
 
@@ -1139,6 +1165,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if args.cmd == "audit":
         employees = args.employees or (root / "employees")
         report = audit_existing_capabilities(employees)
+        if args.html:
+            args.html.write_text(render_audit_html(report), encoding="utf-8")
         print(json.dumps(report, indent=2))
         return 0
 

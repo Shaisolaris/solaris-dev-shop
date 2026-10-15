@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.1.0",
+  "engine_version": "1.1.0",
+  "decision": "escalate",
+  "coordinator": "meta.chief-of-staff",
+  "request_summary": "Production is down and customers cannot check out",
+  "domains": [
+    "infrastructure"
+  ],
+  "risk": "high",
+  "assignment": null,
+  "escalation": {
+    "reason": "high_risk",
+    "message": "High-risk request (money, external mutation, deploy, diagnosis, legal filing) requires explicit human confirmation before any assignment.",
+    "required_actor": "owner",
+    "evidence": [
+      "high_risk_keywords",
+      "permission_policy"
+    ]
+  },
+  "closure_evidence": {
+    "required_artifacts": [
+      "routing_decision_with_named_roles",
+      "assignment_packet_with_task_description",
+      "list_of_capabilities_invoked_or_queued",
+      "coordinator_did_not_perform_work",
+      "human_confirmation_record",
+      "permission_scope_snapshot"
+    ],
+    "acceptance": "Every named capability was invoked or explicitly queued; no phantom credits; coordinator did not perform specialist work; material decisions escalated.",
+    "redaction": "Strip credentials, tokens, private health/finance/personal content, raw connector data from packets, logs, and evidence."
+  },
+  "budgets_applied": {
+    "context_tokens_soft": 15000,
+    "context_tokens_hard": 100000,
+    "scout_external_queries": 20,
+    "scout_auto_absorb": 0,
+    "learning_promotions_auto_max": 3,
+    "learning_promotions_require_review_above": 3,
+    "roster_mutations_require_review": true,
+    "roster_mutations_auto_max": 0,
+    "assignment_max_supporting": 5,
+    "council_invocation_require_human": true
+  },
+  "provider_invariants": [
+    "authority",
+    "permissions",
+    "acceptance",
+    "data_policy",
+    "tools",
+    "failure",
+    "evidence"
+  ],
+  "performed_work": false,
+  "ts": "2026-10-15T13:03:16Z",
+  "explanation": null
+}

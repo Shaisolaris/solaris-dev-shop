@@ -1,0 +1,12 @@
+{
+  "request": "Review this Python code for security issues",
+  "budget_usage": {
+    "scout_external_queries": 21
+  },
+  "expectations": {
+    "decision": "escalate",
+    "escalation_reason": "budget_exceeded",
+    "has_assignment": false,
+    "performed_work": false
+  }
+}

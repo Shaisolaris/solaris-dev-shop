@@ -1,0 +1,9 @@
+{
+  "request": "Review this code and interpret my blood test results",
+  "expectations": {
+    "decision": "escalate",
+    "escalation_reason": "out_of_authority",
+    "has_assignment": false,
+    "performed_work": false
+  }
+}

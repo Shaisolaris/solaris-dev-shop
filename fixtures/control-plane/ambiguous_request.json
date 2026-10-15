@@ -1,0 +1,9 @@
+{
+  "request": "help me figure out what to do",
+  "expectations": {
+    "decision": "clarify",
+    "escalation_reason": "ambiguous",
+    "has_assignment": false,
+    "performed_work": false
+  }
+}

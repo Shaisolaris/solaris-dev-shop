@@ -1,0 +1,32 @@
+name: Try the intake router
+on:
+  workflow_dispatch:
+    inputs:
+      request:
+        description: Task to route (routing only; no specialist work is performed)
+        required: true
+        default: Write a test plan for the client portal login regression
+permissions:
+  contents: read
+jobs:
+  route:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Route and show the evidence
+        env:
+          REQUEST: ${{ inputs.request }}
+        run: |
+          python3 - <<'PY'
+          import html, json, os, pathlib, sys
+          sys.path.insert(0, 'control-plane')
+          import meta_control_plane as mcp
+          packet = mcp.intake(os.environ['REQUEST'], explain=True).as_dict()
+          text = json.dumps(packet, indent=2)
+          print(text)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write('<h1>Solaris routing result</h1><p>No model calls or specialist work were performed.</p><pre>' + html.escape(text) + '</pre>')
+          PY
