@@ -191,7 +191,7 @@ Verified 2026-06-09 (stars/license/recency via api.github.com): wshobson/agents 
 
 ## QUALITY-SECURITY CONTROLS (2026-07 wave)
 
-Wave: skill-wave-quality-security-20260724 (skill-lkl). Full standard: `solaris/employees/quality-security/QUALITY-SECURITY-STANDARD.md`.
+Wave: skill-wave-quality-security-20260724 (skill-lkl). Full standard: `../../quality-security/QUALITY-SECURITY-STANDARD.md`.
 
 Documentation is Diataxis-typed, zero-hallucination, and severity-aware when documenting security/QA findings. Invented endpoints or unverified claims fail the rubric.
 

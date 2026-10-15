@@ -454,7 +454,7 @@ Canonical sickn33 code-review suite (external upstream; absorbed into this skill
 
 ## QUALITY-SECURITY CONTROLS (2026-07 wave)
 
-Wave: skill-wave-quality-security-20260724 (skill-lkl). Full standard: `solaris/employees/quality-security/QUALITY-SECURITY-STANDARD.md`.
+Wave: skill-wave-quality-security-20260724 (skill-lkl). Full standard: `../QUALITY-SECURITY-STANDARD.md`.
 
 Reviews emit severity-calibrated findings with file:line evidence. Scanner hits stay leads until reachability is checked. Planted defects in synthetic fixtures must be detected; clean fixtures must not produce material S0-S2 false positives.
 

@@ -205,7 +205,7 @@ Vendor · data touched · attestations verified (type/scope/period/auditor) · r
 
 ## QUALITY-SECURITY CONTROLS (2026-07 wave)
 
-Wave: skill-wave-quality-security-20260724 (skill-lkl). Full standard: `solaris/employees/quality-security/QUALITY-SECURITY-STANDARD.md`.
+Wave: skill-wave-quality-security-20260724 (skill-lkl). Full standard: `../../quality-security/QUALITY-SECURITY-STANDARD.md`.
 
 Compliance outputs are informational readiness, not audit opinions. Every material claim cites jurisdiction, source date, uncertainty, and whether human counsel or certified auditor is required.
 

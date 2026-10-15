@@ -1,0 +1,9 @@
+{
+  "request": "Je souhaite obtenir quelque chose mais je ne donne aucun résultat précis.",
+  "expectations": {
+    "decision": "clarify",
+    "escalation_reason": "ambiguous",
+    "has_assignment": false,
+    "performed_work": false
+  }
+}

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.55 (2026-10-15)
+
+- Ask for clarification on long unknown requests instead of silently assigning a backend specialist. Retain specific keyword and multi-domain routes.
+- Add offline skill search by terms and department, plus source paths and links in assignment packets. Validate the catalog against all 61 active skills in CI.
+- Align the 3D Artist contract ID with its existing roster and route. No roster additions.
+- Provide a complete clone-to-handoff quickstart, a worked first-task guide and verifiable project facts. Clarify host execution and benchmark limits.
+- Repair 34 shared-standard paths so they resolve from the skill folder, with a source-file regression check. Document shared dependencies when copying skills.
+- Refresh repository preview assets with matching editable source and 2:1 output.
+
 ## 0.54 (2026-10-15)
 
 - Fixed self-test fixture discovery: checkout fixtures are now executed and their expectations enforced.

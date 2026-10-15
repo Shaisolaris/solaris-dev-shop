@@ -1,0 +1,9 @@
+{
+  "request": "There are several things here and I cannot describe any outcome",
+  "expectations": {
+    "decision": "clarify",
+    "escalation_reason": "ambiguous",
+    "has_assignment": false,
+    "performed_work": false
+  }
+}

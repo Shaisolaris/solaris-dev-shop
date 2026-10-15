@@ -33,10 +33,12 @@ ROOT = CONTROL_PLANE_DIR.parent
 POLICY_PATH = CONTROL_PLANE_DIR / "policy.json"
 ROSTER_PATH = CONTROL_PLANE_DIR / "roster.json"
 BUDGETS_PATH = CONTROL_PLANE_DIR / "budgets.json"
+SKILLS_PATH = CONTROL_PLANE_DIR / "skills.json"
+SOURCE_URL = "https://github.com/Shaisolaris/solaris-dev-shop/blob/main/"
 FIXTURE_ROOT = ROOT / "fixtures" / "control-plane"
 
-SCHEMA_VERSION = "1.1.0"
-ENGINE_VERSION = "1.1.0"
+SCHEMA_VERSION = "1.2.0"
+ENGINE_VERSION = "1.2.0"
 
 # Decision codes
 ASSIGN = "assign"
@@ -72,6 +74,8 @@ class Assignment:
     risk: str
     confidence: float = 0.0
     runner_up: Optional[str] = None
+    skill_path: Optional[str] = None
+    skill_source_url: Optional[str] = None
 
     def as_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -140,6 +144,27 @@ def load_budgets() -> Dict[str, Any]:
     return _load_json(BUDGETS_PATH)
 
 
+@lru_cache(maxsize=1)
+def _skill_catalog() -> List[Dict[str, Any]]:
+    # Only immutable release metadata is cached, never a query or user request.
+    return _load_json(SKILLS_PATH)["skills"]
+
+
+def find_skills(query: str = "", department: Optional[str] = None) -> List[Dict[str, Any]]:
+    """Search shipped public metadata. Never fetch, install or execute a skill."""
+    skills = _skill_catalog()
+    terms = unicodedata.normalize("NFC", query).casefold().split()
+    matches = []
+    for skill in skills:
+        if department and skill["department"] != department:
+            continue
+        fields = [skill["id"], skill["name"], skill["summary"], *skill["tags"]]
+        searchable = unicodedata.normalize("NFC", " ".join(fields)).casefold()
+        if all(term in searchable for term in terms):
+            matches.append(dict(skill, source_url=SOURCE_URL + skill["path"]))
+    return sorted(matches, key=lambda item: (item["department"], item["name"]))
+
+
 @lru_cache(maxsize=2048)
 def _keyword_pattern(keyword: str) -> re.Pattern:
     # Cache public policy patterns only. Never retain requests or context text.
@@ -180,11 +205,14 @@ def is_ambiguous(text: str, policy: Dict[str, Any]) -> bool:
         "outcome_verbs",
         ["build", "review", "write", "fix", "deploy", "design", "plan", "audit", "route"],
     )
-    if not any(_word_boundary_hit(v, t) for v in outcome_verbs) and not any(
-        c in t for c in ("?",)
-    ):
-        # still allow if domains are multi and has substance
-        if len(t.split()) < 8:
+    if not any(_word_boundary_hit(v, t) for v in outcome_verbs):
+        # A long unknown request is still underspecified. A specific keyword
+        # route or multiple concrete domains can supply meaningful task context.
+        domains = detect_domains(t, policy)
+        specific_route = explain_routing(domains, t, policy)["source"] in (
+            "route_override", "capability_keywords"
+        )
+        if len(t.split()) < 8 or (len(domains) < 2 and not specific_route):
             return True
     return False
 
@@ -564,6 +592,7 @@ def intake(
         )
 
     assert primary is not None
+    skill = next((item for item in find_skills() if item["id"] == primary), None)
     # Enforce assignment_max_supporting from budgets.json (CODE-08).
     max_supporting = int(defaults.get("assignment_max_supporting", 5))
     supporting_truncated = len(supporting) > max_supporting
@@ -618,6 +647,8 @@ def intake(
         risk=risk,
         confidence=analysis["confidence"],
         runner_up=analysis["runner_up"],
+        skill_path=skill["path"] if skill else None,
+        skill_source_url=skill["source_url"] if skill else None,
     )
 
     budgets_applied = dict(defaults)
@@ -918,8 +949,22 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     sub.add_parser("roster", help="Print active roster JSON")
     sub.add_parser("budgets", help="Print budgets JSON")
     sub.add_parser("policy", help="Print policy JSON")
+    p_skills = sub.add_parser("skills", help="Find a skill by name, summary or tags; does not install it")
+    p_skills.add_argument("query", nargs="*", help="All search terms must match")
+    p_skills.add_argument("--department", help="Filter by exact department slug")
+    p_skills.add_argument("--json", action="store_true", help="Print public skill metadata as JSON")
 
     args = parser.parse_args(argv)
+
+    if args.cmd == "skills":
+        skills = find_skills(" ".join(args.query), args.department)
+        if args.json:
+            print(json.dumps({"count": len(skills), "skills": skills}, indent=2))
+        else:
+            print(f"{len(skills)} matching skills (source-tree paths; not installed or executed)")
+            for skill in skills:
+                print(f"\n{skill['id']} [{skill['department']}]\n  {skill['summary']}\n  {skill['path']}\n  {skill['source_url']}")
+        return 0
 
     if args.cmd == "context":
         if args.path.exists() or args.path.is_symlink():

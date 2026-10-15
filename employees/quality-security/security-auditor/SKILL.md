@@ -260,7 +260,7 @@ For a quick check, a prototype, an early-stage repo, or a time-boxed spot-review
 
 ## QUALITY-SECURITY CONTROLS (2026-07 wave)
 
-Wave: skill-wave-quality-security-20260724 (skill-lkl). Full standard: `solaris/employees/quality-security/QUALITY-SECURITY-STANDARD.md`.
+Wave: skill-wave-quality-security-20260724 (skill-lkl). Full standard: `../QUALITY-SECURITY-STANDARD.md`.
 
 Audits order findings by severity with CVSS/CWE when available, evidence, reproduction, and remediation. Planted vulnerabilities in synthetic fixtures must be confirmed with correct severity; clean fixtures avoid material false positives.
 

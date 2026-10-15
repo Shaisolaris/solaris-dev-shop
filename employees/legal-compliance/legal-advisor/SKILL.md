@@ -236,7 +236,7 @@ External skills MAY be absorbed where additive; the live roster is `control-plan
 
 ## QUALITY-SECURITY CONTROLS (2026-07 wave)
 
-Wave: skill-wave-quality-security-20260724 (skill-lkl). Full standard: `solaris/employees/quality-security/QUALITY-SECURITY-STANDARD.md`.
+Wave: skill-wave-quality-security-20260724 (skill-lkl). Full standard: `../../quality-security/QUALITY-SECURITY-STANDARD.md`.
 
 Legal outputs are informational research only. Every deliverable states jurisdiction, source date, uncertainty, and required human counsel. No filing, no representation, no binding advice.
 

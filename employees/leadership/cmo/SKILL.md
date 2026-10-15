@@ -28,7 +28,7 @@ End successful deliverables with the literal line: `Gate: passed`.
 
 ## GROWTH-REVENUE CONTROLS (2026-07 wave)
 
-Wave: skill-wave-growth-revenue-20260724 (skill-7fw). Full standard: `solaris/employees/marketing/GROWTH-REVENUE-STANDARD.md`.
+Wave: skill-wave-growth-revenue-20260724 (skill-7fw). Full standard: `../../marketing/GROWTH-REVENUE-STANDARD.md`.
 
 Channel mix, pipeline targets, brand claims, and budget proposals stay measurable and approval-gated. Attribution models and limits are stated; no invented ROAS or vanity KPIs as strategy truth.
 

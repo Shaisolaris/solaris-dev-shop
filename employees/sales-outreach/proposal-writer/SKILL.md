@@ -28,7 +28,7 @@ End successful deliverables with the literal line: `Gate: passed`.
 
 ## GROWTH-REVENUE CONTROLS (2026-07 wave)
 
-Wave: skill-wave-growth-revenue-20260724 (skill-7fw). Full standard: `solaris/employees/marketing/GROWTH-REVENUE-STANDARD.md`.
+Wave: skill-wave-growth-revenue-20260724 (skill-7fw). Full standard: `../../marketing/GROWTH-REVENUE-STANDARD.md`.
 
 Proposals remain drafts. Pricing and commitments need authority. No auto-send or e-sign. Claims in case studies sourced or UNVERIFIED. Synthetic client data in fixtures.
 

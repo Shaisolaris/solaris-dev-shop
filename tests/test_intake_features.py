@@ -5,6 +5,7 @@ import importlib
 import io
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -56,6 +57,61 @@ class IntakeFeatures(unittest.TestCase):
                 d = mcp.intake(request)
                 self.assertEqual(d.decision, "assign")
                 self.assertEqual(d.assignment.primary_capability, "solaris.code-reviewer")
+
+    def test_long_unknown_requests_need_a_goal(self):
+        for request in [
+            "There are several things here and I cannot describe any outcome",
+            "Necesito varias ideas nuevas para una actividad que todavía no he explicado.",
+            "Je souhaite obtenir quelque chose mais je ne donne aucun résultat précis.",
+            "What should happen for this thing that has no clear task?",
+        ]:
+            with self.subTest(request=request):
+                d = mcp.intake(request)
+                self.assertEqual(d.decision, "clarify")
+                self.assertIsNone(d.assignment)
+                self.assertFalse(d.performed_work)
+
+    def test_substantive_multidomain_request_without_verb_still_routes(self):
+        d = mcp.intake("A REST API and a marketing landing page for the client portal")
+        self.assertEqual(d.decision, "assign")
+        self.assertGreaterEqual(len(d.domains), 2)
+
+    def test_skill_discovery_filters_and_no_match(self):
+        result = self.cli("skills", "playwright", "--department", "quality-security", "--json")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        data = json.loads(result.stdout)
+        self.assertGreater(data["count"], 0)
+        ids = {item["id"] for item in data["skills"]}
+        self.assertIn("solaris.qa-engineer", ids)
+        self.assertTrue(all(item["department"] == "quality-security" for item in data["skills"]))
+        empty = json.loads(self.cli("skills", "no-such-capability-xyz", "--json").stdout)
+        self.assertEqual(empty, {"count": 0, "skills": []})
+
+    def test_catalog_is_complete_and_matches_contracts(self):
+        result = subprocess.run([sys.executable, str(ROOT / "tools/build_skill_catalog.py"), "--check"],
+                                capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        catalog = json.loads(self.cli("skills", "--json").stdout)
+        self.assertEqual(catalog["count"], 61)
+        self.assertEqual(len({item["id"] for item in catalog["skills"]}), 61)
+        for item in catalog["skills"]:
+            self.assertTrue((ROOT / item["path"]).is_file())
+            self.assertEqual(item["source_url"], mcp.SOURCE_URL + item["path"])
+
+    def test_assignment_exposes_the_correct_skill_handoff(self):
+        d = mcp.intake("Write a test plan for the login regression")
+        self.assertEqual(d.assignment.skill_path, "employees/quality-security/qa-engineer/SKILL.md")
+        self.assertEqual(d.assignment.skill_source_url, mcp.SOURCE_URL + d.assignment.skill_path)
+        self.assertFalse(d.performed_work)
+
+    def test_shared_standards_resolve_from_skill_folders(self):
+        checked = 0
+        for skill in (ROOT / "employees").glob("*/*/SKILL.md"):
+            for target in re.findall(r"Full standard: `([^`]+)`", skill.read_text(encoding="utf-8")):
+                checked += 1
+                with self.subTest(skill=str(skill.relative_to(ROOT)), target=target):
+                    self.assertTrue((skill.parent / target).is_file())
+        self.assertGreater(checked, 0)
 
     def test_localized_authority_and_risk_are_not_bypassed(self):
         for request, reason in [("revisa este código y despliega en producción", "high_risk"),

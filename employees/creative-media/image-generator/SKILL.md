@@ -5,7 +5,7 @@ description: Generative image specialist for Solaris - text-to-image, image edit
 
 ## PRODUCT-DESIGN-CREATIVE CONTROLS (2026-07 wave)
 
-Wave: skill-wave-product-design-creative-20260724 (skill-5sg). Full standard: `solaris/employees/design/PRODUCT-DESIGN-CREATIVE-STANDARD.md`.
+Wave: skill-wave-product-design-creative-20260724 (skill-5sg). Full standard: `../../design/PRODUCT-DESIGN-CREATIVE-STANDARD.md`.
 
 ### Mandatory checks for this role
 1. **Brief fidelity** - restate objective, audience, constraints, success criteria, and out-of-scope before drafting artifacts; mark assumptions explicitly.

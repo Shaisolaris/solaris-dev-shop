@@ -350,7 +350,7 @@ Canonical wshobson accessibility-compliance (external upstream; absorbed into ru
 
 ## QUALITY-SECURITY CONTROLS (2026-07 wave)
 
-Wave: skill-wave-quality-security-20260724 (skill-lkl). Full standard: `employees/quality-security/QUALITY-SECURITY-STANDARD.md`.
+Wave: skill-wave-quality-security-20260724 (skill-lkl). Full standard: `../QUALITY-SECURITY-STANDARD.md`.
 
 QA reports use severity + numbered repro + expected-vs-actual + evidence paths. Accessibility and planted functional defects are first-class. Clean runs do not invent S0-S2 failures.
 

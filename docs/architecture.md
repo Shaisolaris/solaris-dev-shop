@@ -16,7 +16,7 @@ python3 control-plane/meta_control_plane.py intake "Write a test plan for the cl
 
 On the run saved in `examples/route-a-task/`, that request was assigned to `solaris.qa-engineer`. The packet says `performed_work: false`.
 
-The four files in `control-plane/` are companions so that command still runs. They are not a four-employee product.
+The files in `control-plane/` are companions for routing, policy, budgets and skill discovery. They do not represent additional specialists.
 
 Alfred stays out of this tree. A request the policy treats as personal health, personal finance, or travel escalates. It does not invent an Alfred employee here.
 
@@ -75,3 +75,14 @@ The self-test checks the actual `fixtures/control-plane/` directory in a checkou
 The test suite also verifies those fixture expectations and all 61 specialist
 routes. A packaged wheel runs the built-in smoke checks; checkout fixtures and
 employee skill directories remain source-distribution material.
+
+## Discoverable handoff
+
+`solaris-intake skills` searches a bundled catalog derived from the 61 existing
+skill contracts and manifest tags. `--department` filters an exact department;
+`--json` emits structured public metadata. All search terms must match. CI checks
+the catalog against the source and active roster. Assignment packets include
+`skill_path` and `skill_source_url` (additive schema 1.2 fields). Paths refer to
+the source checkout, and links refer to the current default branch. The wheel
+does not contain or execute employee folders. Record a checkout commit when a
+handoff needs an immutable source. See [the first-task walkthrough](first-task.md).
