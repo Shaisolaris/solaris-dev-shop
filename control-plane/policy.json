@@ -976,5 +976,28 @@
     "mon bilan sanguin",
     "ma tension artérielle",
     "mon compte bancaire"
+  ],
+  "high_risk_combinations": [
+    {
+      "actions": [
+        "deploy",
+        "deploys",
+        "deploying",
+        "deployment",
+        "deployments",
+        "release",
+        "releasing",
+        "rollout",
+        "roll out",
+        "publish",
+        "publishing",
+        "push"
+      ],
+      "targets": [
+        "production",
+        "prod",
+        "live"
+      ]
+    }
   ]
 }
