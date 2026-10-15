@@ -50,7 +50,7 @@ def main():
               "failures": failures, "method": "warm engine; policy/roster preloaded; no model/network calls; CLI startup excluded",
               "source_sha256": {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
                                 for name in ["control-plane/meta_control_plane.py", "control-plane/policy.json",
-                                             "control-plane/routing-probes.md"]}}
+                                             "control-plane/skills.json", "control-plane/routing-probes.md"]}}
     encoded = json.dumps(report, indent=2) + "\n"
     if args.output:
         args.output.write_text(encoded)

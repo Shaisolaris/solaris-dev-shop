@@ -1,0 +1,9 @@
+{
+  "request": "Necesito varias ideas nuevas para una actividad que todavía no he explicado.",
+  "expectations": {
+    "decision": "clarify",
+    "escalation_reason": "ambiguous",
+    "has_assignment": false,
+    "performed_work": false
+  }
+}

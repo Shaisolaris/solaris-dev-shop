@@ -41,6 +41,9 @@ jobs:
           subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--no-deps', str(wheel)])
           subprocess.check_call(['solaris-intake', 'self-test'], cwd=outside)
           subprocess.check_call(['solaris-intake', 'intake', '--explain', 'review this code'], cwd=outside)
+          result = subprocess.check_output(['solaris-intake', 'skills', 'playwright', '--json'], cwd=outside, text=True)
+          import json
+          assert 'solaris.qa-engineer' in {item['id'] for item in json.loads(result)['skills']}
           PY
       - name: Control-plane JSON validity
         run: |
@@ -92,3 +95,5 @@ jobs:
           assert not bad, '\n'.join(bad)
           print('all manifests parse OK')
           "
+      - name: Search catalog matches existing skills and roster
+        run: python tools/build_skill_catalog.py --check

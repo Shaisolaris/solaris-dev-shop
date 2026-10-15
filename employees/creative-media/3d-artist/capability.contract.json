@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "kind": "capability",
   "identity": {
-    "id": "solaris.threed-artist",
+    "id": "solaris.3d-artist",
     "name": "3d-artist",
     "version": "1.1.0",
     "namespace": "solaris",
