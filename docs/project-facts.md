@@ -23,7 +23,7 @@ in your own agent. The router needs no model key and performs no specialist work
 | Current releases and artifacts | [Releases](https://github.com/Shaisolaris/solaris-dev-shop/releases) |
 | How to try it | [First-task handoff](first-task.md), [Actions playground](playground.md) |
 | Confirmed community placements | [Public listing evidence](public-listings.md) |
-| Preview image | [PNG](../assets/social-preview.png), [editable SVG source](../assets/social-preview.svg) |
+| Preview image | [Existing project artwork](../assets/social-preview.png) |
 
 ## Claims to avoid
 

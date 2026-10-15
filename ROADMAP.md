@@ -19,7 +19,7 @@ issue. Completed work is retained with its evidence; open items welcome contribu
 | [#10](https://github.com/Shaisolaris/solaris-dev-shop/issues/10) | New employee proposal: data-privacy officer | Open; proposal, external proof or publishing access still needed |
 | [#11](https://github.com/Shaisolaris/solaris-dev-shop/issues/11) | quality_os: HTML report output | Implemented in 0.54; see the closing PR for CI evidence |
 | [#12](https://github.com/Shaisolaris/solaris-dev-shop/issues/12) | Fixtures: expand edge-case coverage | Implemented in 0.54; see the closing PR for CI evidence |
-| [#13](https://github.com/Shaisolaris/solaris-dev-shop/issues/13) | Verify the social preview card renders | 1280 by 640 image prepared; separate GitHub upload and validator/unfurl evidence still pending |
+| [#13](https://github.com/Shaisolaris/solaris-dev-shop/issues/13) | Verify the social preview card renders | Existing branded artwork retained; verify the current link card before proposing any image change |
 | [#14](https://github.com/Shaisolaris/solaris-dev-shop/issues/14) | Examples: multi-domain and escalation walkthroughs | Implemented in 0.54; see the closing PR for CI evidence |
 | [#15](https://github.com/Shaisolaris/solaris-dev-shop/issues/15) | Benchmark intake latency | Implemented in 0.54; see the closing PR for CI evidence |
 | [#16](https://github.com/Shaisolaris/solaris-dev-shop/issues/16) | Call for contributors: claim an open issue | Open; proposal, external proof or publishing access still needed |

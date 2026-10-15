@@ -1,27 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
-  <title id="title">Solaris Dev Shop</title>
-  <desc id="desc">61 portable specialist skills. Find a skill, route a task, and hand it to your agent. Free under MIT.</desc>
-  <defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#28282b" stroke-width="1"/></pattern></defs>
-  <rect width="1280" height="640" fill="#121214"/>
-  <rect width="1280" height="640" fill="url(#grid)"/>
-  <path d="M0 592H1280" stroke="#ef473b" stroke-width="4"/>
-  <rect x="64" y="64" width="34" height="34" rx="17" fill="#ef473b"/>
-  <text x="114" y="88" fill="#bdbdbf" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" letter-spacing="2">SKILLS FOR YOUR AGENT</text>
-  <text x="64" y="196" fill="#faf6ed" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="66" font-weight="700" letter-spacing="-3">SOLARIS</text>
-  <text x="64" y="272" fill="#faf6ed" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="66" font-weight="700" letter-spacing="-3">DEV SHOP</text>
-  <text x="66" y="332" fill="#c4c2bd" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="22">Find a skill. Route a task.</text>
-  <text x="66" y="370" fill="#c4c2bd" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="22">Hand it to your agent.</text>
-  <g transform="translate(686 142)">
-    <rect width="530" height="316" rx="12" fill="#19191c" stroke="#565259"/>
-    <path d="M0 52H530" stroke="#565259"/>
-    <circle cx="25" cy="26" r="5" fill="#ef473b"/><circle cx="44" cy="26" r="5" fill="#66636a"/><circle cx="63" cy="26" r="5" fill="#66636a"/>
-    <text x="88" y="32" fill="#bdbdbf" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">solaris-intake</text>
-    <text x="28" y="111" fill="#faf6ed" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="25">61 specialist skills</text>
-    <text x="28" y="154" fill="#c4c2bd" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20">12 departments</text>
-    <path d="M28 181H500" stroke="#39363d"/>
-    <text x="28" y="224" fill="#ef766b" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="19">&gt; one accountable assignment</text>
-    <text x="28" y="269" fill="#c4c2bd" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="17">Explainable. Local. No model key.</text>
-  </g>
-  <text x="66" y="526" fill="#ef766b" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="21">OPEN SOURCE / MIT / PYTHON 3.10+</text>
-  <text x="66" y="624" fill="#bdbdbf" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16">github.com/Shaisolaris/solaris-dev-shop</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+  <rect width="1280" height="640" fill="#102033"/>
+  <rect x="0" y="0" width="16" height="640" fill="#e8a54b"/>
+  <text x="72" y="168" fill="#e8a54b" font-family="Georgia, 'Times New Roman', serif" font-size="28" letter-spacing="1.5">SOLARIS DEV SHOP</text>
+  <text x="72" y="268" fill="#f4f1ea" font-family="Georgia, 'Times New Roman', serif" font-size="64">61 employees.</text>
+  <text x="72" y="344" fill="#f4f1ea" font-family="Georgia, 'Times New Roman', serif" font-size="64">One chief of staff.</text>
+  <text x="72" y="430" fill="#d7deea" font-family="Georgia, 'Times New Roman', serif" font-size="28">You ask. It assigns. A specialist does the work.</text>
+  <text x="72" y="548" fill="#9aabc4" font-family="Georgia, 'Times New Roman', serif" font-size="22">Free skill library. Version 0.52. MIT.</text>
 </svg>
