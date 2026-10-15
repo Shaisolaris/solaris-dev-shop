@@ -86,3 +86,16 @@ the catalog against the source and active roster. Assignment packets include
 the source checkout, and links refer to the current default branch. The wheel
 does not contain or execute employee folders. Record a checkout commit when a
 handoff needs an immutable source. See [the first-task walkthrough](first-task.md).
+
+## Risk matching and production actions
+
+Risk checks run before ambiguity or saved-context routing. Alongside explicit
+phrases, the policy pairs a production target (`production`, `prod`, `live`)
+with an action such as deploy, deployment, release or publish, even when an
+application name separates them. Matching uses whole words, so `product` does
+not match `prod`. Staging alone does not trigger this combination.
+
+This is conservative lexical matching. A plan or negated sentence that includes
+both signals can still request human review. Unrecognized wording can be missed;
+a low-risk label is not authorization or a substitute for the host agent's
+permission checks. The router never executes an action.

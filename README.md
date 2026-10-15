@@ -1,7 +1,7 @@
 # Solaris Dev Shop
 
 ![CI](https://github.com/Shaisolaris/solaris-dev-shop/actions/workflows/ci.yml/badge.svg)
-![Version](https://img.shields.io/badge/version-0.55-blue)
+![Version](https://img.shields.io/badge/version-0.56-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Skills](https://img.shields.io/badge/specialist_skills-61-orange)
 [![Featured on DevShelf](https://img.shields.io/badge/Featured%20on-DevShelf-7928CA?style=for-the-badge&logo=googlechrome&logoColor=white)](https://devshelf.ritualdev.in/tools/solaris-dev-shop.html)
@@ -38,7 +38,7 @@ The intake selects `solaris.qa-engineer` and returns:
 }
 ```
 
-This is an excerpt; the full packet includes authority bounds, required evidence, confidence and runner-up. Confidence measures keyword evidence, not the probability that a result is correct. An unclear goal asks for clarification. A high-risk task requires human review.
+This is an excerpt; the full packet includes authority bounds, required evidence, confidence and runner-up. Confidence measures keyword evidence, not the probability that a result is correct. An unclear goal asks for clarification. Recognized high-risk wording triggers a human-review gate. Risk matching is lexical and does not grant permission for actions that are not flagged.
 
 **Next:** open the returned `SKILL.md` in your agent, keep its companion files together, and supply the task and workspace. Follow [one complete handoff](docs/first-task.md), browse the [61 skills](docs/employees.md), or use the [Actions playground](docs/playground.md) without a local install.
 

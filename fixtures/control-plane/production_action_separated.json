@@ -1,0 +1,9 @@
+{
+  "request": "Deploy the application to production now",
+  "expectations": {
+    "decision": "escalate",
+    "escalation_reason": "high_risk",
+    "has_assignment": false,
+    "performed_work": false
+  }
+}

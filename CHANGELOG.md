@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.56 (2026-10-15)
+
+- Recognize production action and target words even when an application name separates them; run the human-review risk gate before ambiguity or context routing.
+- Cover ordinary deployment/release wording and non-production/whole-word boundaries with regressions. Document conservative lexical matching and host permission limits.
+
 ## 0.55 (2026-10-15)
 
 - Ask for clarification on long unknown requests instead of silently assigning a backend specialist. Retain specific keyword and multi-domain routes.

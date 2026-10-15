@@ -121,6 +121,30 @@ class IntakeFeatures(unittest.TestCase):
             self.assertEqual(d.escalation.reason, reason)
             self.assertIsNone(d.assignment)
 
+    def test_production_action_and_target_do_not_need_to_be_adjacent(self):
+        for request in [
+            "Deploy the application to production now",
+            "Build a rolling deployment of the API into our prod environment",
+            "Publish the updated application to the live environment",
+            "Review the production deployment plan before making any changes",
+        ]:
+            with self.subTest(request=request):
+                d = mcp.intake(request)
+                self.assertEqual(d.decision, "escalate")
+                self.assertEqual(d.risk, "high")
+                self.assertEqual(d.escalation.reason, "high_risk")
+                self.assertIsNone(d.assignment)
+                self.assertFalse(d.performed_work)
+
+    def test_production_risk_combination_requires_both_whole_word_signals(self):
+        for request in [
+            "Build a deployment plan for the local staging environment",
+            "Review the product release documentation for the staging build",
+            "Write an inventory of production logs for offline analysis",
+        ]:
+            with self.subTest(request=request):
+                self.assertNotEqual(mcp.detect_risk(request, mcp.load_policy()), "high")
+
     def test_unicode_keyword_boundaries(self):
         self.assertFalse(mcp._word_boundary_hit("code", "decode"))
         self.assertFalse(mcp._word_boundary_hit("code", "codeé"))

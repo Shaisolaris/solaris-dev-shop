@@ -38,7 +38,7 @@ SOURCE_URL = "https://github.com/Shaisolaris/solaris-dev-shop/blob/main/"
 FIXTURE_ROOT = ROOT / "fixtures" / "control-plane"
 
 SCHEMA_VERSION = "1.2.0"
-ENGINE_VERSION = "1.2.0"
+ENGINE_VERSION = "1.2.1"
 
 # Decision codes
 ASSIGN = "assign"
@@ -187,6 +187,12 @@ def detect_risk(text: str, policy: Dict[str, Any]) -> str:
     high = policy.get("high_risk_keywords", [])
     if any(_word_boundary_hit(k, text) for k in high):
         return "high"
+    for combination in policy.get("high_risk_combinations", []):
+        actions = combination.get("actions", [])
+        targets = combination.get("targets", [])
+        if (any(_word_boundary_hit(k, text) for k in actions)
+                and any(_word_boundary_hit(k, text) for k in targets)):
+            return "high"
     med = policy.get("medium_risk_keywords", [])
     if any(_word_boundary_hit(k, text) for k in med):
         return "medium"
@@ -467,7 +473,7 @@ def intake(
                 message="High-risk request (money, external mutation, deploy, diagnosis, legal filing) "
                 "requires explicit human confirmation before any assignment.",
                 required_actor="owner",
-                evidence=["high_risk_keywords", "permission_policy"],
+                evidence=["high_risk_keywords_or_combinations", "permission_policy"],
             ),
             closure_evidence=_closure_evidence(risk, policy),
             budgets_applied=budgets.get("defaults", {}),
