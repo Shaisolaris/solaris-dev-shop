@@ -1,1 +1,1 @@
-Build a REST API and a marketing landing page for the client portal
+Build a FastAPI REST API backend; design Figma wireframes; write a Playwright test plan

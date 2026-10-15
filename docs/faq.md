@@ -12,6 +12,20 @@ Those numbers come from older catalogs and prose on the private pin. The count u
 
 No. The chief of staff lives at `chief-of-staff/`. It assigns work. It is not listed as a specialist.
 
+## Can several specialists work together?
+
+Yes. A packet has one accountable lead and can include several supporting
+specialists, each with a handoff path. Your host agent or agents perform and
+coordinate the work. The router itself makes no model calls or worker launches.
+See the [multi-specialist example](../examples/multi-domain/README.md).
+
+## Can the library grow beyond 61 skills?
+
+Yes. 61 is the current roster, not a permanent limit. Propose a missing specialist
+with a distinct use case, output contract, routing examples and boundaries.
+The maintainer reviews the proposal before the skill and roster changes are built.
+See the [contributor quickstart](contributor-quickstart.md).
+
 ## Can I publish this fork with my own secrets?
 
 No. Do not commit passwords, API keys, tokens, or real accounts. Put a placeholder and keep the value outside the repository.

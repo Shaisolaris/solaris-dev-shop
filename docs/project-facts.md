@@ -9,8 +9,10 @@ reviewers and directory editors; it does not prove that a listing is accepted.
 
 **Expanded:** Solaris Dev Shop is an MIT-licensed library of 61 specialist skills
 across 12 departments, plus a chief-of-staff skill and an optional Python intake
-router. Search for a skill, route a bounded request, and open the selected skill
-in your own agent. The router needs no model key and performs no specialist work.
+router. Search for a skill, route a bounded request to an accountable lead and
+supporting specialists, and use those skills in your own agent or agents. Several
+specialists can collaborate; the host performs the execution. The router needs
+no model key and performs no specialist work.
 
 ## Verifiable facts
 

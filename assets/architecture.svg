@@ -9,8 +9,8 @@
   <text x="484" y="152" text-anchor="middle" fill="#d7deea" font-family="Georgia, serif" font-size="15">Assigns. Does not do the job.</text>
   <polygon points="634,134 684,134 684,122 716,144 684,166 684,154 634,154" fill="#e8a54b"/>
   <rect x="728" y="80" width="320" height="108" rx="8" fill="#245c45"/>
-  <text x="888" y="124" text-anchor="middle" fill="#f4f1ea" font-family="Georgia, serif" font-size="20">One of 61 specialists</text>
-  <text x="888" y="152" text-anchor="middle" fill="#d7deea" font-family="Georgia, serif" font-size="15">Example: QA engineer</text>
+  <text x="888" y="124" text-anchor="middle" fill="#f4f1ea" font-family="Georgia, serif" font-size="20">Lead + supporting roles</text>
+  <text x="888" y="152" text-anchor="middle" fill="#d7deea" font-family="Georgia, serif" font-size="15">From 61 skills; run in your host</text>
   <text x="40" y="250" fill="#102033" font-family="Georgia, serif" font-size="18">Observed</text>
   <text x="40" y="286" fill="#333" font-family="Georgia, serif" font-size="18">Write a test plan for the client portal login regression.</text>
   <text x="40" y="318" fill="#333" font-family="Georgia, serif" font-size="18">Result: assign, qa, solaris.qa-engineer. performed_work is false.</text>
