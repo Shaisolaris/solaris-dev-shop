@@ -68,10 +68,13 @@ Do not copy a personal Desktop path into the skill. Do not commit `.env` files.
 
 ## Per-agent install notes
 
-- **Claude Code**: copy the employee folder into `~/.claude/skills/`. It is picked up automatically.
-- **Cursor**: copy the employee folder into `.cursor/skills/` in your project, or `~/.cursor/skills/` for global use.
-- **Windsurf**: copy the employee folder into `.windsurf/skills/` in your project.
-- **Codex CLI**: copy the employee folder into `~/.codex/skills/`.
-- **Aider**: copy the employee folder anywhere, then point Aider at the `SKILL.md` with `--read` or add it to your conventions file.
+- **Claude Code**: project skills use `.claude/skills/`; personal skills use `~/.claude/skills/`. See [official skill locations](https://code.claude.com/docs/en/skills#choose-where-skills-load).
+- **Cursor**: project skills use `.cursor/skills/` or `.agents/skills/`; user skills use their corresponding home directories. Local user skills do not automatically reach cloud sessions. See [official skill directories](https://cursor.com/docs/skills#skill-directories).
+- **Windsurf / Devin Desktop**: current workspace skills use `.devin/skills/`; `.windsurf/skills/` remains a legacy location. See [official skill scopes](https://docs.devin.ai/desktop/cascade/skills#skill-scopes).
+- **Codex**: project skills use `.agents/skills/`; user skills use `~/.agents/skills/`. Codex supports symlinks to skill folders, which can keep shared references in the original checkout. See [official local discovery guidance](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills).
+- **Aider**: load `SKILL.md` as read-only context with `--read`, then include the supporting files the task requires. This is manual context loading, not automatic skill discovery. See [official conventions guidance](https://aider.chat/docs/usage/conventions.html).
+
+Locations above were checked against the linked official documentation on
+2026-10-15. A discovery path is not a cross-provider output-quality guarantee.
 
 In every case, keep companion files together and preserve the shared standards referenced by the skill. Opening a skill in the full checkout avoids breaking those relative paths. A copied folder alone is not a complete bundle when it references a department standard.
