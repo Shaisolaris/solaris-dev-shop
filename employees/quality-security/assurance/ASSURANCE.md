@@ -3,8 +3,9 @@
 Status: L4-oriented evidence and gate contract  
 Roadmap: `skill-solaris-product-quality-hardening`  
 Engine: `quality_os.py` (this directory)  
-Fixtures: `fixtures/solaris/assurance/**`  
-Tests: `tests/solaris/assurance/**`  
+Engine version: `1.0.1`
+
+Tests: `tests/test_assurance_packets.py`
 Upstream standard (2026-07 wave skill-lkl): `../QUALITY-SECURITY-STANDARD.md`
 
 ## Purpose
@@ -63,6 +64,26 @@ Every completed gate must attach an evidence object:
 Release packets must list `completed_gates[]` and `evidence{kind: …}` for each
 required specialist dimension.
 
+Version 1.0.1 enforces this documented shape: exact gate/key agreement, nonblank
+role and summary, and a nonempty array of nonblank artifact references.
+`blocking_open`, when supplied, must be a nonnegative integer; a positive value
+blocks. Malformed packets return `INVALID_PACKET`; malformed gate receipts return
+`INVALID_GATE_EVIDENCE`. Missing evidence retains `MISSING_GATE_EVIDENCE`.
+Legacy summary-only, string, or artifact-only receipts must be corrected.
+
+A `pass` is a check of declared receipts against declared risk and dimensions.
+It does **not** authenticate the role, inspect referenced artifacts, prove tests
+ran, bind a receipt to the current revision, or authorize an external action.
+The host must assess actual risk, execute the specialist work, inspect its output,
+and obtain the owner's approval where required. No files, URLs or commands named
+in a receipt are opened or executed by this validator. Omitted blockers and false
+risk declarations cannot be detected from syntax alone.
+
+`run` and `suite` are fixture commands: `expectations.outcome="fail_gate"` can
+make a negative fixture succeed when the expected gate fires. That suite success
+is test evidence, never permission to release. Call `evaluate_artifact_packet`
+for the underlying packet decision; it does not apply fixture expectations.
+
 ## Findings → orders
 
 - Findings carry severity (S0-S4/info), defect kind, evidence, accountable role,
@@ -107,10 +128,10 @@ there is at least one CONFIRMED and zero dissent.
 ## Commands
 
 ```bash
-python3 solaris/employees/quality-security/assurance/quality_os.py self-test
-python3 solaris/employees/quality-security/assurance/quality_os.py suite fixtures/solaris/assurance
-python3 solaris/employees/quality-security/assurance/quality_os.py audit
-python3 solaris/employees/quality-security/assurance/quality_os.py route security
+python3 employees/quality-security/assurance/quality_os.py self-test
+python3 employees/quality-security/assurance/quality_os.py run packet.json
+python3 employees/quality-security/assurance/quality_os.py audit
+python3 employees/quality-security/assurance/quality_os.py route security
 python3 -m unittest discover -s tests -v
 ```
 
