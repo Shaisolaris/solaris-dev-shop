@@ -29,7 +29,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
-ASSURANCE_VERSION = "1.0.0"
+ASSURANCE_VERSION = "1.0.1"
 SCHEMA_VERSION = "1.0.0"
 
 # ---------------------------------------------------------------------------
@@ -328,7 +328,7 @@ def required_specialist_gates(
     """Return ordered unique defect kinds that must run at this risk level."""
     required: List[str] = []
     for dim in dimensions:
-        kinds = SPECIALIST_TRIGGERS.get(dim, ())
+        kinds = SPECIALIST_TRIGGERS.get(dim, (dim,) if dim in ACCOUNTABLE_GATES else ())
         for kind in kinds:
             threshold = GATE_THRESHOLDS.get(kind, "elevated")
             if risk_at_least(risk_level, threshold) and kind not in required:
@@ -740,8 +740,76 @@ def evaluate_planted_defect(defect: Dict[str, Any]) -> AssuranceResult:
     )
 
 
+def _invalid_packet(message: str) -> AssuranceResult:
+    return AssuranceResult(ok=False, status="blocked", gate_codes=["INVALID_PACKET"],
+                           messages=[message])
+
+
+def _string_list(value: Any) -> bool:
+    return isinstance(value, list) and all(
+        isinstance(item, str) and bool(item.strip()) for item in value
+    )
+
+
 def evaluate_artifact_packet(packet: Dict[str, Any]) -> AssuranceResult:
-    """Evaluate a requirements/design/test/security/privacy/legal evidence packet."""
+    """Validate declared gate receipts; does not verify execution or grant authority."""
+    if not isinstance(packet, dict):
+        return _invalid_packet("Packet must be an object")
+    for key in ("dimensions", "completed_gates"):
+        if key in packet and not _string_list(packet[key]):
+            return _invalid_packet(f"{key} must be an array of nonblank strings")
+    if "evidence" in packet and not isinstance(packet["evidence"], dict):
+        return _invalid_packet("evidence must be an object keyed by gate")
+    for key in ("user_facing", "mutates_external", "regulatory", "release_candidate"):
+        if key in packet and not isinstance(packet[key], bool):
+            return _invalid_packet(f"{key} must be a boolean")
+    enum_fields = {
+        "risk_level": RISK_LEVELS,
+        "blast_radius": ("local", "project", "fleet", "external"),
+        "data_sensitivity": ("none", "internal", "pii", "financial", "health", "legal"),
+    }
+    for key, allowed in enum_fields.items():
+        if key in packet and packet[key] not in allowed:
+            return _invalid_packet(f"{key} must be one of {', '.join(allowed)}")
+    dimensions = packet.get("dimensions", [])
+    if any(dim not in SPECIALIST_TRIGGERS and dim not in ACCOUNTABLE_GATES for dim in dimensions):
+        return _invalid_packet("dimensions contains an unknown specialist dimension")
+    # Validate nested inputs before passing them to their existing evaluators.
+    if "planted_defects" in packet and (
+        not isinstance(packet["planted_defects"], list)
+        or any(not isinstance(item, dict) for item in packet["planted_defects"])
+    ):
+        return _invalid_packet("planted_defects must be an array of objects")
+    if "legal_text" in packet and not isinstance(packet["legal_text"], str):
+        return _invalid_packet("legal_text must be a string")
+    if "requested_actions" in packet and not _string_list(packet["requested_actions"]):
+        return _invalid_packet("requested_actions must be an array of nonblank strings")
+    if "sources" in packet and (
+        not isinstance(packet["sources"], list)
+        or any(not isinstance(item, dict) for item in packet["sources"])
+    ):
+        return _invalid_packet("sources must be an array of objects")
+    if any(g not in packet.get("completed_gates", []) for g in packet.get("evidence", {})):
+        return _invalid_packet("Every evidence key must appear in completed_gates")
+    for defect in packet.get("planted_defects", []):
+        for key in ("defect_kind", "kind", "severity", "title", "reporter_role",
+                    "closure_criteria", "finding_id", "expected_accountable_role", "expected_gate"):
+            if key in defect and not isinstance(defect[key], str):
+                return _invalid_packet(f"planted_defects.{key} must be a string")
+        if "severity" in defect and defect["severity"] not in SEVERITY_TO_RISK:
+            return _invalid_packet("planted_defects.severity must be a known severity")
+        if "evidence" in defect and not _string_list(defect["evidence"]):
+            return _invalid_packet("planted_defects.evidence must be an array of strings")
+        if "attempt_self_close" in defect and not isinstance(defect["attempt_self_close"], bool):
+            return _invalid_packet("planted_defects.attempt_self_close must be a boolean")
+    for source in packet.get("sources", []):
+        for key in ("retrieved_at", "published_at"):
+            if key in source and not isinstance(source[key], str):
+                return _invalid_packet(f"sources.{key} must be a date string")
+        if "max_age_days" in source and (
+            type(source["max_age_days"]) is not int or source["max_age_days"] < 0
+        ):
+            return _invalid_packet("sources.max_age_days must be a nonnegative integer")
     risk = classify_risk(
         blast_radius=packet.get("blast_radius", "local"),
         data_sensitivity=packet.get("data_sensitivity", "none"),
@@ -776,7 +844,8 @@ def evaluate_artifact_packet(packet: Dict[str, Any]) -> AssuranceResult:
         )
 
     # Evidence schema checks for present gates
-    for g in present_gates:
+    reported_blocking = 0
+    for g in sorted(present_gates):
         if g not in ACCOUNTABLE_GATES:
             codes.append("UNKNOWN_GATE")
             messages.append(f"Unknown gate in completed_gates: {g}")
@@ -794,10 +863,34 @@ def evaluate_artifact_packet(packet: Dict[str, Any]) -> AssuranceResult:
                     reporter_role="quality-os",
                 )
             )
-        elif isinstance(art, dict):
-            if not art.get("artifacts") and not art.get("summary"):
-                codes.append("MISSING_GATE_EVIDENCE")
-                messages.append(f"Gate {g} evidence empty")
+        else:
+            errors = []
+            if not isinstance(art, dict):
+                errors.append("must be an object")
+            else:
+                if art.get("gate") != g:
+                    errors.append("gate must match its evidence key")
+                for key in ("role", "summary"):
+                    if not isinstance(art.get(key), str) or not art[key].strip():
+                        errors.append(f"{key} must be a nonblank string")
+                artifacts = art.get("artifacts")
+                if not _string_list(artifacts) or not artifacts:
+                    errors.append("artifacts must be a nonempty array of nonblank strings")
+                count = art.get("blocking_open", 0)
+                if type(count) is not int or count < 0:
+                    errors.append("blocking_open must be a nonnegative integer")
+                else:
+                    reported_blocking += count
+                if "schema_version" in art and art["schema_version"] != SCHEMA_VERSION:
+                    errors.append(f"schema_version must be {SCHEMA_VERSION}")
+                if "timestamp" in art and not isinstance(art["timestamp"], str):
+                    errors.append("timestamp must be a string")
+            if errors:
+                codes.append("INVALID_GATE_EVIDENCE")
+                messages.append(f"Gate {g} evidence: {'; '.join(errors)}")
+    if reported_blocking:
+        codes.append("OPEN_BLOCKING_FINDINGS")
+        messages.append(f"Gate receipts report {reported_blocking} open blocking finding(s)")
 
     # Planted defects inside packet
     for planted in packet.get("planted_defects") or []:
@@ -829,26 +922,10 @@ def evaluate_artifact_packet(packet: Dict[str, Any]) -> AssuranceResult:
         messages.append(f"{len(open_blocking)} open blocking finding(s)")
 
     orders = convert_findings_to_orders(findings)
-    ok = len([c for c in codes if c not in ("SELF_APPROVAL_FORBIDDEN",)]) == 0 and not open_blocking
-    # refine: if only informational issues
-    hard = {
-        "MISSING_SPECIALIST_GATE",
-        "MISSING_GATE_EVIDENCE",
-        "OPEN_BLOCKING_FINDINGS",
-        "LEGAL_BINDING_PROHIBITED",
-        "LEGAL_FILING_FORBIDDEN",
-        "HIGH_STAKES_REQUIRES_HUMAN",
-        "GATE_MISROUTE",
-        "SELF_APPROVAL_NOT_ENFORCED",
-        "UNKNOWN_GATE",
-        "LEGAL_DISCLAIMER_MISSING",
-        "LEGAL_SOURCE_REQUIRED",
-        "LEGAL_SOURCE_STALE",
-        "LEGAL_SOURCE_DATE_MISSING",
-        "LEGAL_SOURCE_DATE_INVALID",
-    }
-    hard_hit = [c for c in codes if c in hard]
-    ok = len(hard_hit) == 0
+    # Fail closed on every error code, including future nested-validator codes.
+    # SELF_APPROVAL_FORBIDDEN is expected proof in planted negative fixtures;
+    # their still-open blocking findings independently block the packet.
+    ok = not any(code != "SELF_APPROVAL_FORBIDDEN" for code in codes) and not open_blocking
 
     return AssuranceResult(
         ok=ok,
@@ -862,7 +939,7 @@ def evaluate_artifact_packet(packet: Dict[str, Any]) -> AssuranceResult:
         evidence={
             "completed_gates": sorted(present_gates),
             "missing_gates": missing,
-            "blocking_open": len(open_blocking),
+            "blocking_open": len(open_blocking) + reported_blocking,
         },
     )
 
@@ -908,9 +985,18 @@ def _apply_expectations(result: AssuranceResult, expected: Dict[str, Any]) -> As
 
 
 def evaluate_path(path: Path) -> AssuranceResult:
-    data = load_json(path)
+    try:
+        data = load_json(path)
+    except (OSError, ValueError) as exc:
+        return _invalid_packet(f"Cannot read JSON packet: {exc}")
+    if not isinstance(data, dict):
+        return _invalid_packet("Fixture must be an object")
     kind = data.get("fixture_kind") or data.get("kind") or "packet"
-    expected = data.get("expectations") or {}
+    expected = data.get("expectations", {})
+    if not isinstance(expected, dict):
+        return _invalid_packet("expectations must be an object")
+    if "gate_codes" in expected and not _string_list(expected["gate_codes"]):
+        return _invalid_packet("expectations.gate_codes must be an array of strings")
 
     if kind in ("planted_defect", "defect"):
         result = evaluate_planted_defect(data.get("defect") or data)
@@ -953,7 +1039,7 @@ def evaluate_path(path: Path) -> AssuranceResult:
         return _apply_expectations(result, expected)
 
     # default: artifact packet
-    packet = data.get("packet") or data
+    packet = data["packet"] if "packet" in data else data
     result = evaluate_artifact_packet(packet)
     return _apply_expectations(result, expected)
 

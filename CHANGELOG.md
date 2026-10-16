@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.60 (2026-10-16)
+
+- Enforce typed, nonblank Quality OS gate evidence and block receipts reporting open findings. Malformed packet containers now yield diagnostics instead of false passes or tracebacks.
+- Reject unknown gate/dimension inputs and nested validation failures; document receipt validation versus actual execution and owner approval.
+- Add independent regression coverage for valid and malformed handoffs. Assurance engine is 1.0.1; intake engine/schema remain 1.3.0 and the roster remains 61.
+
+## 0.59 (2026-10-15)
+
+- Package the canonical router directly without source symlinks or duplicate package layout, including source-to-wheel validation.
+
+## 0.58 (2026-10-15)
+
+- Preserve requested supporting specialists and source handoffs in compound assignments; add contributor quickstart and corrected new-skill instructions.
+
 ## 0.57 (2026-10-15)
 
 - Repair 14 malformed YAML descriptions and 22 discovery-metadata compatibility failures in total, including overlong fields and bracket comparisons. Skill names and detailed bodies remain unchanged.

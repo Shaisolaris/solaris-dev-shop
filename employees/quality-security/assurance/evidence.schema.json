@@ -4,9 +4,16 @@
   "title": "Quality OS gate evidence",
   "schema_version": "1.0.0",
   "type": "object",
-  "required": ["gate", "role", "summary", "artifacts"],
+  "required": [
+    "gate",
+    "role",
+    "summary",
+    "artifacts"
+  ],
   "properties": {
-    "schema_version": { "const": "1.0.0" },
+    "schema_version": {
+      "const": "1.0.0"
+    },
     "gate": {
       "type": "string",
       "enum": [
@@ -23,15 +30,32 @@
         "release"
       ]
     },
-    "role": { "type": "string", "minLength": 1 },
-    "summary": { "type": "string", "minLength": 1 },
+    "role": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
     "artifacts": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
       "minItems": 1
     },
-    "blocking_open": { "type": "integer", "minimum": 0 },
-    "timestamp": { "type": "string" }
+    "blocking_open": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "timestamp": {
+      "type": "string"
+    }
   },
   "additionalProperties": true
 }
