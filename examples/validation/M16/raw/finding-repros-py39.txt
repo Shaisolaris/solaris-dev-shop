@@ -1,0 +1,113 @@
+# M16 finding repros on /usr/bin/python3 2026-10-18 14:00:41 PDT
+
+### N1 meaning-reversing or dumped citations graded correct_supported
+question n1a: When may plot holders light bonfires?  expect {'answerable': True, 'facts': ['April'], 'support_docs': ['plots.md']}
+  answer: 'Plot holders may light bonfires between April and September.'  abstain=False
+  cites plots.md[114:179] = 'Plot holders must not light bonfires between April and September.'
+question n1b: Are hosepipes allowed on the Eastside site?  expect {'answerable': True, 'facts': ['Eastside'], 'support_docs': ['plots.md']}
+  answer: 'Hosepipes are allowed on the Eastside site.'  abstain=False
+  cites plots.md[180:193] = 'Hosepipes are'
+  cites plots.md[198:227] = 'allowed on the Eastside site.'
+question n1c: How much does a full plot cost per season?  expect {'answerable': True, 'facts': ['64 pounds'], 'support_docs': ['plots.md']}
+  answer: '# Plot fees (Brackwater Société)\n\nA full plot costs 64 pounds per season. A half plot costs 38 pounds per season.\nPlot holders must not light bonfires between April and September.\nHosepipes are not allowed on the Eastside site.\nEach plot holder may keep up to 6 hens.\n'  abstain=False
+  cites plots.md[0:268] = '# Plot fees (Brackwater Société)\n\nA full plot costs 64 pounds per season. A half plot costs 38 pounds per season.\nPlot holders must not light bonfires between April and September.\nHosepipes are not allowed on the Eastside site.\nEach plot holder may keep up to 6 hens.\n'
+question n1d: How much does a half plot cost per season?  expect {'answerable': True, 'facts': ['38 pounds'], 'support_docs': ['plots.md']}
+  answer: 'A half plot costs 64 pounds per season (a full plot is 38 pounds).'  abstain=False
+  cites plots.md[34:113] = 'A full plot costs 64 pounds per season. A half plot costs 38 pounds per season.'
+  -> n1a: correct_supported citations=['valid'] support={'content_coverage': 1.0, 'numbers_not_in_quotes': []}
+  -> n1b: correct_supported citations=['valid', 'valid'] support={'content_coverage': 1.0, 'numbers_not_in_quotes': []}
+  -> n1c: correct_supported citations=['valid'] support={'content_coverage': 1.0, 'numbers_not_in_quotes': []}
+  -> n1d: correct_supported citations=['valid'] support={'content_coverage': 1.0, 'numbers_not_in_quotes': []}
+
+### N2 numbers and facts not bound to the claim
+question n2a: How long is the Eastside waiting list?  expect {'answerable': True, 'facts': ['18 months'], 'support_docs': ['waiting.md']}
+  answer: 'The Eastside waiting list is about 18 months long, or 12 months at Westfield.'  abstain=False
+  cites waiting.md[16:76] = 'The Eastside waiting list is currently about 18 months long.'
+  cites water.md[64:98] = 'The Westfield site has 12 troughs.'
+question n2b: How much do rainwater butts cost?  expect {'answerable': True, 'facts': ['22 pounds'], 'support_docs': ['water.md']}
+  answer: 'Rainwater butts cost 122 pounds from the society shop.'  abstain=False
+  cites water.md[99:152] = 'Rainwater butts cost 22 pounds from the society shop.'
+  cites shop.md[8:59] = 'Compost bins cost 122 pounds from the society shop.'
+  -> n2a: correct_supported citations=['valid', 'valid'] support={'content_coverage': 1.0, 'numbers_not_in_quotes': []}
+  -> n2b: correct_supported citations=['valid', 'valid'] support={'content_coverage': 1.0, 'numbers_not_in_quotes': []}
+
+### N6 abstain:true with an asserted, cited answer counts as correct_abstain
+question n6: What is the phone number of the society shop?  expect {'answerable': False}
+  answer: 'The society shop number is 0161 22 318.'  abstain=True
+  cites water.md[99:152] = 'Rainwater butts cost 22 pounds from the society shop.'
+  -> n6: correct_abstain citations=[] support=None
+
+### N7 fabricated quote with a made-up doc_sha256 reported as stale, not invalid
+question n7: How much does a full plot cost per season?  expect {'answerable': True, 'facts': ['64 pounds'], 'support_docs': ['plots.md']}
+  answer: 'A full plot costs 64 pounds per season.'  abstain=False
+  cites plots.md[34:73] = 'A full plot costs 64 pounds per season, water included.'
+  -> n7: stale_citation citations=['stale'] support=None
+
+### N3 conflicting sources (shed-2025.md says 15, shed-2026.md says 20) answered unless phrased 'how much'
+$ grounded_eval.py answer --corpus snap --questions q3.jsonl --out a3.jsonl
+answered 3, abstained 1 of 4
+[exit 0]
+  n30 'How much does a shed permit cost?' -> abstain (conflicting_sources)
+  n31 'What does a shed permit cost?' -> ANSWER 'A shed permit costs 15 pounds a year.' from shed-2025.md
+  n32 'Shed permit cost per year?' -> ANSWER 'A shed permit costs 15 pounds a year.' from shed-2025.md
+  n33 'A shed permit costs how much?' -> ANSWER 'A shed permit costs 15 pounds a year.' from shed-2025.md
+
+### N4 near-miss question answered with a sibling fact (min_coverage 0.75 lets one missing modifier through)
+$ grounded_eval.py answer --corpus snap --questions q4.jsonl --out a4.jsonl
+answered 1, abstained 0 of 1
+[exit 0]
+  n4 -> ANSWER 'A full plot costs 64 pounds per season.' coverage=0.75
+
+### N5 evaluate --out overwrites a snapshot source document
+  before: snap/plots.md starts '# Plot fees (Brackwater Sociét'
+$ grounded_eval.py evaluate --corpus snap --questions q5.jsonl --answers a5.jsonl --out snap/plots.md
+grounded eval: pass  (12/12 questions pass)
+  grounded accuracy 8/8, abstention recall 4/4, abstention precision 4/4, citation validity 8/8
+  correct_supported 8, correct_abstain 4
+  evidence: deterministic fixture behaviour (extractive baseline, no model; re-run here and matched)
+  evaluator: deterministic lexical checks; no model, judge or network was used
+[exit 0]
+  after:  snap/plots.md starts '{\n  "counts": {\n    "answered_'
+
+### N8 journal: a hand-edited done record is resumed into the output; concurrent resumes poison the journal
+$ grounded_eval.py answer --corpus snap --questions q5.jsonl --out a8.jsonl --journal j8.jsonl --fault-plan fp.json
+tool step failed: retrieval tool failed for b05 (attempt 1, injected by fault plan)
+11/12 questions done; journal kept, rerun with --resume
+[exit 3]
+  edited the b01 done record in j8.jsonl to answer 'A full plot is free.'
+$ grounded_eval.py answer --corpus snap --questions q5.jsonl --out a8.jsonl --journal j8.jsonl --resume
+answered 8, abstained 4 of 12; resumed with 11 from the journal
+[exit 0]
+  output meta producer: deterministic_baseline executed_here True | b01 answer: ['A full plot is free.']
+$ grounded_eval.py evaluate --corpus snap --questions q5.jsonl --answers a8.jsonl
+grounded eval: fail  (11/12 questions pass)
+  grounded accuracy 7/8, abstention recall 4/4, abstention precision 4/4, citation validity 8/8
+  correct_supported 7, correct_abstain 4, incorrect 1
+  evidence: claims to be the deterministic baseline but does not match a re-run here; unverified, treat as imported
+  evaluator: deterministic lexical checks; no model, judge or network was used
+  FAIL b01: incorrect missing ['64 pounds']
+[exit 1]
+  4 concurrent `answer --resume` on j9.jsonl exit [0, 0, 2, 2]
+$ grounded_eval.py answer --corpus snap --questions q5.jsonl --out a10.jsonl --journal j9.jsonl --resume
+invalid: journal: duplicate or malformed done entry
+nothing written
+[exit 2]
+
+### N9 input edges
+  fault plan {"b01": 1e400}: exit 1: OverflowError: cannot convert float infinity to integer
+  fault plan {"b01": -1}: exit 0: answered 8, abstained 4 of 12
+  fault plan {"b01": true}: exit 3: 11/12 questions done; no journal: rerun from the start
+$ grounded_eval.py answer --corpus snap --questions q5.jsonl --out same.jsonl --journal same.jsonl
+answered 8, abstained 4 of 12
+[exit 0]
+  same.jsonl first line now: {"corpus_sha256": "8d56276bf6c11b64137b5742277347eb6a19310d5 (answers file; journal gone)
+
+### N10 report echoes file claims
+  provenance: {"baseline_reproduced": null, "evaluator": "deterministic lexical checks; no model, judge or network was used", "evidence": "imported output from deterministic fixture behaviour (extractive baseline, no model; re-run here and matched) (claimed by the file; not executed or verified by this evaluator)", "producer": {"executed_here": true, "kind": "deterministic fixture behaviour (extractive baseline, no model; re-run here and matched)", "verified": true}}
+
+### N11 instruction text in a source turns an answerable question into an abstention
+$ grounded_eval.py answer --corpus snapi --questions q13.jsonl --out a13.jsonl
+answered 0, abstained 1 of 1
+[exit 0]
+  n11 -> abstain=True reason=conflicting_sources cites=['plots.md', 'notices.md']
+[repros exit 0]

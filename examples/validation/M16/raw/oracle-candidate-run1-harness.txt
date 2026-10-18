@@ -1,0 +1,11 @@
+# REJECTED RUN (oracle construction errors), 2026-10-18 about 13:52 PT, Python 3.12.14, candidate 1f2d0b9.
+# Transcribed from the console (the run was not redirected to a file). Only k3 failed; every other line
+# matched the final run in oracle-candidate.txt.
+FAIL k3_forgery_verdicts: verdicts differ (got, expected): {'b06': ('incorrect', 'wrong_source'), 'b08': ('stale_citation', 'invalid_citation')}
+# Both expectations were mine and wrong:
+# - b06 answered with a valid sentence from its own support document but without the fact: `incorrect` is the
+#   documented verdict; wrong_source needs a citation outside support_docs.
+# - b08 cited a document that is not in the snapshot but carried a doc_sha256; the documented rule makes that
+#   `stale`. The fabricated-quote-with-forged-sha variant is kept as adversarial check x7 instead.
+# k3 was rewritten with one question id per forged record (f01..f14) and citation statuses checked too.
+SUMMARY core 9/10 pass; oracle REJECTS candidate; adversarial 0/17 rejected the attack (17 findings)

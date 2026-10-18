@@ -1,0 +1,2 @@
+Preparing worktree (detached HEAD 1f2d0b9)
+HEAD is now at 1f2d0b9 G16: offline grounded-answer evals over a supplied snapshot (review only)

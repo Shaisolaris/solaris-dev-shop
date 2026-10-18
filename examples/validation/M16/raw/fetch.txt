@@ -1,0 +1,3 @@
+From https://github.com/Shaisolaris/solaris-dev-shop
+ * branch            review/grok-g16-grounded-evals -> FETCH_HEAD
+FETCH_HEAD 1f2d0b91e18690b577b64eff1c6ccb2ea4e9ad77

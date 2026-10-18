@@ -1,0 +1,29 @@
+candidate: rc=0 Ran 16 tests in 7.215s OK 
+mutant-abstain_truthy: rc=0 Ran 16 tests in 7.220s OK 
+mutant-any_answer_on_unanswerable_ok: rc=1 Ran 16 tests in 2.841s FAILED (failures=3) 
+mutant-baseline_label_trusted: rc=1 Ran 16 tests in 2.715s FAILED (failures=2) 
+mutant-cite_corpus_sha: rc=1 Ran 16 tests in 7.281s FAILED (failures=1) 
+mutant-cite_offset_shift: rc=1 Ran 16 tests in 2.753s FAILED (failures=3) 
+mutant-conflict_check_off: rc=1 Ran 16 tests in 7.184s FAILED (errors=1) 
+mutant-coverage_not_checked: rc=0 Ran 16 tests in 7.263s OK 
+mutant-fabricated_quote_accepted: rc=1 Ran 16 tests in 2.775s FAILED (failures=3, errors=1) 
+mutant-facts_not_in_quote_ok: rc=0 Ran 16 tests in 7.322s OK 
+mutant-failure_still_writes: rc=1 Ran 16 tests in 2.838s FAILED (failures=2) 
+mutant-fault_plan_ignored: rc=1 Ran 16 tests in 2.732s FAILED (failures=2) 
+mutant-identifiers_not_exact: rc=1 Ran 16 tests in 2.741s FAILED (failures=1) 
+mutant-imported_called_verified: rc=1 Ran 16 tests in 2.828s FAILED (failures=2) 
+mutant-invalid_input_writes: rc=0 Ran 16 tests in 7.240s OK 
+mutant-journal_header_unchecked: rc=1 Ran 16 tests in 2.710s FAILED (failures=2) 
+mutant-min_coverage_ignored: rc=1 Ran 16 tests in 2.715s FAILED (failures=6) 
+mutant-missed_answer_passes: rc=1 Ran 16 tests in 2.841s FAILED (failures=3) 
+mutant-missing_record_ignored: rc=1 Ran 16 tests in 7.239s FAILED (failures=1) 
+mutant-need_number_ignored: rc=1 Ran 16 tests in 7.189s FAILED (failures=1) 
+mutant-numbers_not_checked: rc=1 Ran 16 tests in 2.725s FAILED (failures=3) 
+mutant-order_dependent_output: rc=1 Ran 16 tests in 7.102s FAILED (failures=1) 
+mutant-overwrite_input_allowed: rc=1 Ran 16 tests in 2.650s FAILED (failures=2) 
+mutant-relocation_not_allowed: rc=1 Ran 16 tests in 2.733s FAILED (failures=2) 
+mutant-resume_redoes_all: rc=1 Ran 16 tests in 2.840s FAILED (failures=2) 
+mutant-stale_reported_invalid: rc=1 Ran 16 tests in 2.651s FAILED (failures=2) 
+mutant-symlink_doc_followed: rc=0 Ran 16 tests in 7.263s OK 
+mutant-torn_tail_parsed: rc=1 Ran 16 tests in 2.819s FAILED (failures=2) 
+mutant-wrong_source_off: rc=1 Ran 16 tests in 2.890s FAILED (failures=2) 

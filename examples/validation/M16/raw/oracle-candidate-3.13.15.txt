@@ -1,0 +1,32 @@
+# m16_oracle v2 on 3.13.15 2026-10-18 14:06:55 PDT
+# m16_oracle candidate: <UV>/python/cpython-3.13.15-macos-aarch64-none/bin/python3 /tmp/m16-eval/employees/engineering/llm-agent-designer/grounded_eval.py
+PASS k1_clean_control (0.1s): 8 exact cited answers (doc sha and code-point spans checked here), 4 traps abstained, evaluate 12/12, baseline_reproduced
+PASS k2_unseen_seeds (0.3s): seeded bus worlds (sibling-route and wrong-stop traps) exact and evaluator agrees: 11:160q, 2026:160q, 90210:160q
+PASS k3_forgery_verdicts (0.0s): 16 hand-forged records got the exact verdict and citation status: fabricated quote, altered number, number outside the quote, uncited, missed, fact missing, relocated (passes), unknown doc, hallucinated, wrong source, ambiguous offsets, abstain, clean, missing record; imported label 'not executed or verified'
+PASS k4_conflict_and_traps (0.1s): two disagreeing sources abstain; unknown site and no-key-term questions abstain; one source alone is answered
+PASS k5_source_change (0.1s): changed sentence and deleted doc -> stale_citation; moved lines relocated; unchanged valid; note names the snapshot change; re-answer 12/12
+PASS k6_provenance (0.2s): genuine baseline reproduced; edited record / other-snapshot baseline unverified; imported 'executed_here/verified' claims labelled not verified; unlabelled named
+PASS k7_resume (0.5s): fault x1 and x2 at 1 and 4 workers: exit 3, no answers, resume byte-identical to a clean run, each step done once; torn tail recovered; corrupt journal, changed snapshot, changed questions refused
+PASS k8_invalid_inputs (0.2s): 7 invalid inputs refused with exit 2 and nothing written; inputs byte-identical; no temp files
+PASS k9_determinism_scale (42.3s): 1500 docs x 6000 questions: answer 8.0s, evaluate 8.2s, 1 vs 4 workers identical, order-invariant, 4 parallel evaluates identical
+PASS k10_abstain_edges (0.0s): abstain must be the boolean true; empty cited answer not supported; missing records counted
+FINDING x1_negation_flip: answer reversing 'must not' with the exact full sentence quoted is correct_supported {'content_coverage': 1.0, 'numbers_not_in_quotes': []}
+FINDING x2_fragment_drops_not: two quote fragments that skip the word 'not' give correct_supported
+FINDING x3_whole_document_quote: answering with the whole document quoted in full gives correct_supported
+FINDING x4_cross_sentence_swap: quote spanning two sentences, numbers swapped between subjects: correct_supported
+FINDING x5_pooled_number: number taken from an unrelated second quote (12 troughs -> 12 months): correct_supported
+FINDING x6_fact_substring: answer '122 pounds' satisfies fact '22 pounds': correct_supported
+FINDING x7_forged_sha_relabels_fabrication: fabricated quote with a made-up doc_sha256 is reported as stale_citation ([{'detail': 'plots.md changed since the answer was made and the quote is gone', 'doc': 'plots.md', 'status': 'stale'}])
+FINDING x8_abstain_flag_with_claim: abstain:true with an asserted, cited answer counts as correct_abstain
+FINDING x9_conflict_phrasing: conflicting sources answered when the question is not phrased 'how much': 'What does a shed permit cost?' -> 'A shed permit costs 15 pounds a year.' (shed-2025.md); 'Shed permit cost per year?' -> 'A shed permit costs 15 pounds a year.' (shed-2025.md); 'A shed permit costs how much?' -> 'A shed permit costs 15 pounds a year.' (shed-2025.md)
+FINDING x10_near_miss_modifier: near-miss question answered: 'How much does a quarter plot cost per season?' -> 'A full plot costs 64 pounds per season.'
+FINDING x11_evaluate_out_onto_source: evaluate --out <snapshot>/plots.md rc=0; source document overwritten=True (now starts b'{\n  "counts": {\n    "answered_')
+FINDING x12_tampered_journal: a hand-edited journal record was resumed into the output (rc=0) under producer 'deterministic_baseline' executed_here=True
+FINDING x13_concurrent_resume: 4 concurrent resumes exit [0, 0, 2, 2]; journal now has 3 ids done twice; a later resume rc=2: invalid: journal: duplicate or malformed done entry
+nothing written
+FINDING x14_fault_plan_values: fault plan values (value, rc, traceback): [('1e400', 1, True), ('"x"', 2, False), ('-1', 0, False), ('true', 3, False)]
+FINDING x15_out_equals_journal: --out and --journal naming the same new file: rc=0; the journal is replaced by the answers file
+FINDING x16_instruction_in_source: instruction text in a source: baseline abstained (conflicting_sources)
+FINDING x17_report_echoes_claims: report evidence string contains the verified phrase: 'imported output from deterministic fixture behaviour (extractive baseline, no model; re-run here and matched) (claimed by the file; not executed or verified by this evaluator)'; provenance.producer echoes verified=True, executed_here=True (baseline_reproduced=None)
+SUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversarial 0/17 rejected the attack (17 findings)
+[exit 0]

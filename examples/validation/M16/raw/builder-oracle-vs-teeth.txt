@@ -1,0 +1,476 @@
+=== candidate
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+11/11 checks passed
+
+=== stub-noop
+FAIL o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+FAIL o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+FAIL o3 unseen seeds: answers exact and evaluator agrees
+FAIL o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+FAIL o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+FAIL o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+FAIL o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+FAIL o8 deterministic and order-invariant
+FAIL o9 invalid input refused with nothing written; inputs never overwritten
+FAIL o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+FAIL o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+0/11 checks passed
+
+=== stub-always_abstain
+FAIL o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+FAIL o3 unseen seeds: answers exact and evaluator agrees
+FAIL o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+FAIL o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+FAIL o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+FAIL o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+FAIL o8 deterministic and order-invariant
+FAIL o9 invalid input refused with nothing written; inputs never overwritten
+FAIL o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+FAIL o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+1/11 checks passed
+
+=== stub-copy_question
+FAIL o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+FAIL o3 unseen seeds: answers exact and evaluator agrees
+FAIL o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+FAIL o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+FAIL o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+FAIL o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+FAIL o9 invalid input refused with nothing written; inputs never overwritten
+FAIL o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+FAIL o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+2/11 checks passed
+
+=== builder-noop_stub
+FAIL o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+FAIL o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+FAIL o3 unseen seeds: answers exact and evaluator agrees
+FAIL o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+FAIL o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+FAIL o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+FAIL o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+FAIL o8 deterministic and order-invariant
+FAIL o9 invalid input refused with nothing written; inputs never overwritten
+FAIL o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+FAIL o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+0/11 checks passed
+
+=== builder-naive_stub
+FAIL o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+FAIL o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+FAIL o3 unseen seeds: answers exact and evaluator agrees
+FAIL o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+FAIL o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+FAIL o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+FAIL o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+FAIL o9 invalid input refused with nothing written; inputs never overwritten
+FAIL o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+FAIL o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+1/11 checks passed
+
+=== mutant-abstain_truthy
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+11/11 checks passed
+
+=== mutant-any_answer_on_unanswerable_ok
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+FAIL o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+FAIL o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+9/11 checks passed
+
+=== mutant-baseline_label_trusted
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+FAIL o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+10/11 checks passed
+
+=== mutant-cite_corpus_sha
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+11/11 checks passed
+
+=== mutant-cite_offset_shift
+FAIL o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+FAIL o3 unseen seeds: answers exact and evaluator agrees
+FAIL o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+FAIL o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+7/11 checks passed
+
+=== mutant-conflict_check_off
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+11/11 checks passed
+
+=== mutant-coverage_not_checked
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+11/11 checks passed
+
+=== mutant-fabricated_quote_accepted
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+FAIL o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+FAIL o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+9/11 checks passed
+
+=== mutant-facts_not_in_quote_ok
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+11/11 checks passed
+
+=== mutant-failure_still_writes
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+FAIL o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+FAIL o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+9/11 checks passed
+
+=== mutant-fault_plan_ignored
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+FAIL o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+FAIL o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+9/11 checks passed
+
+=== mutant-identifiers_not_exact
+FAIL o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+FAIL o3 unseen seeds: answers exact and evaluator agrees
+FAIL o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+FAIL o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+7/11 checks passed
+
+=== mutant-imported_called_verified
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+FAIL o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+10/11 checks passed
+
+=== mutant-invalid_input_writes
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+11/11 checks passed
+
+=== mutant-journal_header_unchecked
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+FAIL o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+10/11 checks passed
+
+=== mutant-min_coverage_ignored
+FAIL o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+FAIL o3 unseen seeds: answers exact and evaluator agrees
+FAIL o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+FAIL o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+7/11 checks passed
+
+=== mutant-missed_answer_passes
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+FAIL o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+10/11 checks passed
+
+=== mutant-missing_record_ignored
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+11/11 checks passed
+
+=== mutant-need_number_ignored
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+11/11 checks passed
+
+=== mutant-numbers_not_checked
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+FAIL o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+10/11 checks passed
+
+=== mutant-order_dependent_output
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+11/11 checks passed
+
+=== mutant-overwrite_input_allowed
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+FAIL o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+FAIL o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+9/11 checks passed
+
+=== mutant-relocation_not_allowed
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+FAIL o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+FAIL o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+9/11 checks passed
+
+=== mutant-resume_redoes_all
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+FAIL o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+10/11 checks passed
+
+=== mutant-stale_reported_invalid
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+FAIL o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+10/11 checks passed
+
+=== mutant-symlink_doc_followed
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+11/11 checks passed
+
+=== mutant-torn_tail_parsed
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+PASS o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+FAIL o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+10/11 checks passed
+
+=== mutant-wrong_source_off
+PASS o1 clean control: baseline answers are exact quotes, abstains on traps, evaluator passes them
+FAIL o2 grader names every injected defect exactly (fabricated quote, altered number, uncited, missed, wrong source, hallucinated answer)
+PASS o3 unseen seeds: answers exact and evaluator agrees
+PASS o4 source change: stale citations named exactly, moved lines relocated, deleted docs make answers unsupported, re-answer passes
+PASS o5 recoverable tool failure: exit 3 with journal, resume completes byte-identical, no duplicate steps
+PASS o6 unsafe resume refused (corrupted journal, changed snapshot); torn tail recovered
+PASS o7 provenance: deterministic baseline vs imported vs unlabelled answers are distinguished
+PASS o8 deterministic and order-invariant
+PASS o9 invalid input refused with nothing written; inputs never overwritten
+PASS o10 scale: thousands of documents and questions, 1 vs 4 workers byte-identical, within budget
+PASS o11 concurrency: parallel answer and evaluate runs agree byte for byte, no temp files left
+10/11 checks passed
+

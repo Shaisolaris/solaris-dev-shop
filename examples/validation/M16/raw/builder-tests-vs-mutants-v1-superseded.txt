@@ -1,0 +1,31 @@
+# SUPERSEDED: teeth run 1 with m16_oracle v1 (before f15/f16, c5 and the order check). Builder oracle and builder tests
+# results are unaffected by the oracle change and are kept here as run 1; the final run is builder-tests-vs-mutants.txt
+candidate: rc=0 Ran 16 tests in 7.215s OK 
+mutant-abstain_truthy: rc=0 Ran 16 tests in 7.356s OK 
+mutant-any_answer_on_unanswerable_ok: rc=1 Ran 16 tests in 2.835s FAILED (failures=3) 
+mutant-baseline_label_trusted: rc=1 Ran 16 tests in 2.683s FAILED (failures=2) 
+mutant-cite_corpus_sha: rc=1 Ran 16 tests in 7.514s FAILED (failures=1) 
+mutant-cite_offset_shift: rc=1 Ran 16 tests in 2.845s FAILED (failures=3) 
+mutant-conflict_check_off: rc=1 Ran 16 tests in 7.563s FAILED (errors=1) 
+mutant-coverage_not_checked: rc=0 Ran 16 tests in 8.031s OK 
+mutant-fabricated_quote_accepted: rc=1 Ran 16 tests in 2.765s FAILED (failures=3, errors=1) 
+mutant-facts_not_in_quote_ok: rc=0 Ran 16 tests in 7.347s OK 
+mutant-failure_still_writes: rc=1 Ran 16 tests in 2.864s FAILED (failures=2) 
+mutant-fault_plan_ignored: rc=1 Ran 16 tests in 2.871s FAILED (failures=2) 
+mutant-identifiers_not_exact: rc=1 Ran 16 tests in 2.911s FAILED (failures=1) 
+mutant-imported_called_verified: rc=1 Ran 16 tests in 3.124s FAILED (failures=2) 
+mutant-invalid_input_writes: rc=0 Ran 16 tests in 7.541s OK 
+mutant-journal_header_unchecked: rc=1 Ran 16 tests in 2.814s FAILED (failures=2) 
+mutant-min_coverage_ignored: rc=1 Ran 16 tests in 2.801s FAILED (failures=6) 
+mutant-missed_answer_passes: rc=1 Ran 16 tests in 2.874s FAILED (failures=3) 
+mutant-missing_record_ignored: rc=1 Ran 16 tests in 7.262s FAILED (failures=1) 
+mutant-need_number_ignored: rc=1 Ran 16 tests in 7.704s FAILED (failures=1) 
+mutant-numbers_not_checked: rc=1 Ran 16 tests in 2.959s FAILED (failures=3) 
+mutant-order_dependent_output: rc=1 Ran 16 tests in 7.430s FAILED (failures=1) 
+mutant-overwrite_input_allowed: rc=1 Ran 16 tests in 2.834s FAILED (failures=2) 
+mutant-relocation_not_allowed: rc=1 Ran 16 tests in 2.753s FAILED (failures=2) 
+mutant-resume_redoes_all: rc=1 Ran 16 tests in 2.944s FAILED (failures=2) 
+mutant-stale_reported_invalid: rc=1 Ran 16 tests in 2.821s FAILED (failures=2) 
+mutant-symlink_doc_followed: rc=0 Ran 16 tests in 8.377s OK 
+mutant-torn_tail_parsed: rc=1 Ran 16 tests in 2.860s FAILED (failures=2) 
+mutant-wrong_source_off: rc=1 Ran 16 tests in 2.875s FAILED (failures=2) 
