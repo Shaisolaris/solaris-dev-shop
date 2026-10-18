@@ -1,0 +1,81 @@
+### candidate 6af7849
+OK       bare exact                                       expected covered; mismatch=False verdict=localized
+OK       DNS: upper                                       expected covered; mismatch=False verdict=localized
+OK       dns: lower                                       expected covered; mismatch=False verdict=localized
+OK       Dns : spaced                                     expected covered; mismatch=False verdict=localized
+OK       DNS: wildcard                                    expected covered; mismatch=False verdict=localized
+OK       upper value                                      expected covered; mismatch=False verdict=localized
+OK       san trailing dot                                 expected covered; mismatch=False verdict=localized
+OK       host trailing dot                                expected covered; mismatch=False verdict=localized
+OK       punycode A-label both                            expected covered; mismatch=False verdict=localized
+OK       punycode wildcard                                expected covered; mismatch=False verdict=localized
+OK       IP target, IP:                                   expected covered; mismatch=False verdict=localized
+OK       IP target, IP Address:                           expected covered; mismatch=False verdict=localized
+OK       IP target, bare ip                               expected covered; mismatch=False verdict=localized
+OK       IPv6 target, openssl long form                   expected covered; mismatch=False verdict=localized
+OK       other name                                       expected NOT covered; mismatch=True verdict=localized
+OK       wildcard two labels deep                         expected NOT covered; mismatch=True verdict=localized
+OK       wildcard does not cover apex                     expected NOT covered; mismatch=True verdict=localized
+OK       partial-label w*                                 expected NOT covered; mismatch=True verdict=localized
+OK       partial-label *eb                                expected NOT covered; mismatch=True verdict=localized
+OK       partial-label xn--*                              expected NOT covered; mismatch=True verdict=localized
+OK       double wildcard                                  expected NOT covered; mismatch=True verdict=localized
+WRONG    wildcard over TLD *.example                      expected NOT covered; mismatch=False verdict=localized
+WRONG    wildcard over TLD *.com                          expected NOT covered; mismatch=False verdict=localized
+WRONG    wildcard over public suffix *.co.uk              expected NOT covered; mismatch=False verdict=localized
+OK       bare * only                                      expected NOT covered; mismatch=True verdict=localized
+OK       DNS:<ip> for IP target                           expected NOT covered; mismatch=True verdict=localized
+OK       IP: entry for a name                             expected NOT covered; mismatch=True verdict=localized
+OK       IPv4-mapped v6 vs v4                             expected NOT covered; mismatch=True verdict=localized
+OK       U-label SAN vs A-label host                      expected NOT covered; mismatch=True verdict=localized
+WRONG    KELVIN SIGN homoglyph SAN                        expected NOT covered; mismatch=False verdict=localized
+INFO     CN only (san empty) wrong name                   mismatch=False verdict=localized layer=tls
+WRONG    double trailing dot SAN                          expected NOT covered; mismatch=False verdict=localized
+WRONG    SNI differs from target, SAN covers SNI only     expected NOT covered; mismatch=False verdict=localized
+WRONG    keytool DNSName:                                 expected covered; mismatch=True verdict=localized
+WRONG    keytool IPAddress:                               expected covered; mismatch=True verdict=localized
+WRONG    Windows 'DNS Name='                              expected covered; mismatch=True verdict=localized
+WRONG    openssl one-line list                            expected covered; mismatch=True verdict=localized
+OK       CN matches, SAN does not (no CN fallback)        mismatch=True rc=1
+SUMMARY wrong=10
+
+### earlier 3ebbe73
+OK       bare exact                                       expected covered; mismatch=False verdict=localized
+WRONG    DNS: upper                                       expected covered; mismatch=True verdict=localized
+WRONG    dns: lower                                       expected covered; mismatch=True verdict=localized
+WRONG    Dns : spaced                                     expected covered; mismatch=True verdict=localized
+WRONG    DNS: wildcard                                    expected covered; mismatch=True verdict=localized
+WRONG    upper value                                      expected covered; mismatch=True verdict=localized
+WRONG    san trailing dot                                 expected covered; mismatch=True verdict=localized
+WRONG    host trailing dot                                expected covered; mismatch=True verdict=localized
+WRONG    punycode A-label both                            expected covered; mismatch=True verdict=localized
+WRONG    punycode wildcard                                expected covered; mismatch=True verdict=localized
+OK       IP target, IP:                                   expected covered; mismatch=False verdict=localized
+WRONG    IP target, IP Address:                           expected covered; mismatch=True verdict=localized
+OK       IP target, bare ip                               expected covered; mismatch=False verdict=localized
+WRONG    IPv6 target, openssl long form                   expected covered; mismatch=True verdict=localized
+OK       other name                                       expected NOT covered; mismatch=True verdict=localized
+OK       wildcard two labels deep                         expected NOT covered; mismatch=True verdict=localized
+OK       wildcard does not cover apex                     expected NOT covered; mismatch=True verdict=localized
+OK       partial-label w*                                 expected NOT covered; mismatch=True verdict=localized
+OK       partial-label *eb                                expected NOT covered; mismatch=True verdict=localized
+OK       partial-label xn--*                              expected NOT covered; mismatch=True verdict=localized
+OK       double wildcard                                  expected NOT covered; mismatch=True verdict=localized
+OK       wildcard over TLD *.example                      expected NOT covered; mismatch=True verdict=localized
+OK       wildcard over TLD *.com                          expected NOT covered; mismatch=True verdict=localized
+OK       wildcard over public suffix *.co.uk              expected NOT covered; mismatch=True verdict=localized
+OK       bare * only                                      expected NOT covered; mismatch=True verdict=localized
+OK       DNS:<ip> for IP target                           expected NOT covered; mismatch=True verdict=localized
+WRONG    IP: entry for a name                             expected NOT covered; mismatch=False verdict=localized
+OK       IPv4-mapped v6 vs v4                             expected NOT covered; mismatch=True verdict=localized
+OK       U-label SAN vs A-label host                      expected NOT covered; mismatch=True verdict=localized
+OK       KELVIN SIGN homoglyph SAN                        expected NOT covered; mismatch=True verdict=localized
+INFO     CN only (san empty) wrong name                   mismatch=False verdict=localized layer=tls
+OK       double trailing dot SAN                          expected NOT covered; mismatch=True verdict=localized
+OK       SNI differs from target, SAN covers SNI only     expected NOT covered; mismatch=True verdict=localized
+WRONG    keytool DNSName:                                 expected covered; mismatch=True verdict=localized
+WRONG    keytool IPAddress:                               expected covered; mismatch=True verdict=localized
+WRONG    Windows 'DNS Name='                              expected covered; mismatch=True verdict=localized
+WRONG    openssl one-line list                            expected covered; mismatch=True verdict=localized
+OK       CN matches, SAN does not (no CN fallback)        mismatch=True rc=1
+SUMMARY wrong=16

@@ -1,0 +1,283 @@
+# SUPERSEDED (oracle v1). o6 mixed documented rules with the sibling rules the candidate fails, so 7 mutants were caught only by a check the candidate also fails. v2 splits o6 into o6a/o6b, checks finding layers in o2 and uses mixed-case SNI/qname in o1.
+=== candidate
+# m10_oracle candidate: <PY312> /tmp/m10-eval/employees/infrastructure/network-engineer/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+PASS o2_localization (0.4s): 11 known failures localized at the right layer with the right code; earlier layers ok
+PASS o3_bounded_uncertainty (0.3s): empty and dns-only traces undetermined; expired cert without lower evidence, unverified name mismatch and handshake reset stay probable with extra candidates; contrary DNS and TCP intermittent; dates judged at captured_at only
+PASS o4_reproducible (3.1s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 196 output lines from 25 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 8/9 pass; oracle REJECTS candidate
+
+=== positive-control-proposed-fix
+# m10_oracle candidate: <PY312> /tmp/m10-fixed/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+PASS o2_localization (0.4s): 11 known failures localized at the right layer with the right code; earlier layers ok
+PASS o3_bounded_uncertainty (0.3s): empty and dns-only traces undetermined; expired cert without lower evidence, unverified name mismatch and handshake reset stay probable with extra candidates; contrary DNS and TCP intermittent; dates judged at captured_at only
+PASS o4_reproducible (3.2s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 196 output lines from 25 reports: every address and name cited appears in the trace; findings point at listed evidence
+PASS o6_san_rules (1.0s): 15 covering and 14 non-covering SAN forms judged correctly
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 9/9 pass; oracle ACCEPTS candidate
+
+=== stub-noop
+# m10_oracle candidate: <PY312> <D>/grok-output/M10/oracle/stubs/noop_echo.py
+FAIL o1_clean_controls: http control: tls state ok
+FAIL o2_localization: dns NXDOMAIN: exit 0, expected 1
+FAIL o3_bounded_uncertainty: empty trace: rc=0 verdict=healthy
+FAIL o4_reproducible: FileNotFoundError: [Errno 2] No such file or directory: '/private<TMPDIR>.json'
+FAIL o5_cites_actual_fields: only 0 lines checked
+FAIL o6_san_rules: other name: ['DNS:other.example'] must not cover api.shop.example; two labels deep: ['DNS:*.shop.example'] must not cover a.api.shop.example; apex: ['DNS:*.shop.example'] must not cover shop.example; partial w*: ['DNS:w*.shop.example'] must not cover web.shop.example; partial *eb: ['DNS:*eb.shop.example'] must not cover web.shop.example; partial xn--*: ['DNS:xn--*.example'] must
+FAIL o7_invalid_input: duplicate key: rc=0 out_written=False traceback=False; NaN: rc=0 out_written=False traceback=False; wrong schema: rc=0 out_written=False traceback=False; no zone: rc=0 out_written=False traceback=False; bad address: rc=0 out_written=False traceback=False; unknown stage: rc=0 out_written=False traceback=False; not an object: rc=0 out_written=False traceback=False; truncated: 
+PASS o8_offline (0.2s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+FAIL o9_no_side_writes: JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+SUMMARY 1/9 pass; oracle REJECTS candidate
+
+=== stub-naive
+# m10_oracle candidate: <PY312> <D>/grok-output/M10/oracle/stubs/naive_first_failure.py
+FAIL o1_clean_controls: http control: tls state ok
+FAIL o2_localization: tls expired: findings ['TLS_ALERT'] lack TLS_CERT_EXPIRED
+FAIL o3_bounded_uncertainty: empty trace: rc=0 verdict=healthy
+FAIL o4_reproducible: FileNotFoundError: [Errno 2] No such file or directory: '/private<TMPDIR>.json'
+FAIL o5_cites_actual_fields: finding DNS_NXDOMAIN evidence 'DNS_NXDOMAIN' is not one of the layer evidence lines
+FAIL o6_san_rules: host trailing dot: ['DNS:api.shop.example'] should cover api.shop.example.; wildcard one label: ['DNS:*.shop.example'] should cover api.shop.example; bare wildcard: ['*.shop.example'] should cover api.shop.example; IPv6 long form: ['IP Address:2001:DB8:0:0:0:0:0:1'] should cover 2001:db8::1; apex: ['DNS:*.shop.example'] must not cover shop.example; DNS:<ip> for IP: ['DNS:198.51.
+FAIL o7_invalid_input: duplicate key: rc=0 out_written=False traceback=False; NaN: rc=0 out_written=False traceback=False; wrong schema: rc=0 out_written=False traceback=False; no zone: rc=0 out_written=False traceback=False; bad address: rc=0 out_written=False traceback=False; unknown stage: rc=0 out_written=False traceback=False; too many observations: rc=0 out_written=False traceback=False; sym
+FAIL o8_offline: batch failed with the network blocked: rc=2
+FAIL o9_no_side_writes: JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+SUMMARY 0/9 pass; oracle REJECTS candidate
+
+=== builder-noop_stub
+# m10_oracle candidate: <PY312> /tmp/m10-eval/examples/capabilities/G10/noop_stub.py
+FAIL o1_clean_controls: https clean control: rc=0 verdict=None
+FAIL o2_localization: dns NXDOMAIN: exit 0, expected 1
+FAIL o3_bounded_uncertainty: empty trace: rc=0 verdict=None
+FAIL o4_reproducible: FileNotFoundError: [Errno 2] No such file or directory: '/private<TMPDIR>.json'
+FAIL o5_cites_actual_fields: only 0 lines checked
+FAIL o6_san_rules: other name: ['DNS:other.example'] must not cover api.shop.example; two labels deep: ['DNS:*.shop.example'] must not cover a.api.shop.example; apex: ['DNS:*.shop.example'] must not cover shop.example; partial w*: ['DNS:w*.shop.example'] must not cover web.shop.example; partial *eb: ['DNS:*eb.shop.example'] must not cover web.shop.example; partial xn--*: ['DNS:xn--*.example'] must
+FAIL o7_invalid_input: duplicate key: rc=0 out_written=False traceback=False; NaN: rc=0 out_written=False traceback=False; wrong schema: rc=0 out_written=False traceback=False; no zone: rc=0 out_written=False traceback=False; bad address: rc=0 out_written=False traceback=False; unknown stage: rc=0 out_written=False traceback=False; not an object: rc=0 out_written=False traceback=False; truncated: 
+PASS o8_offline (0.2s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+FAIL o9_no_side_writes: JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+SUMMARY 1/9 pass; oracle REJECTS candidate
+
+=== builder-naive_stub
+# m10_oracle candidate: <PY312> /tmp/m10-eval/examples/capabilities/G10/naive_stub.py
+FAIL o1_clean_controls: http control: tls state ok
+FAIL o2_localization: dns NXDOMAIN: findings [] lack DNS_NXDOMAIN
+FAIL o3_bounded_uncertainty: empty trace: rc=0 verdict=healthy
+FAIL o4_reproducible: trace 2: reordered observations/keys changed the report
+FAIL o5_cites_actual_fields: only 0 lines checked
+FAIL o6_san_rules: other name: ['DNS:other.example'] must not cover api.shop.example; two labels deep: ['DNS:*.shop.example'] must not cover a.api.shop.example; apex: ['DNS:*.shop.example'] must not cover shop.example; partial w*: ['DNS:w*.shop.example'] must not cover web.shop.example; partial *eb: ['DNS:*eb.shop.example'] must not cover web.shop.example; partial xn--*: ['DNS:xn--*.example'] must
+FAIL o7_invalid_input: duplicate key: rc=0 out_written=True traceback=False; NaN: rc=0 out_written=True traceback=False; wrong schema: rc=0 out_written=True traceback=False; no zone: rc=0 out_written=True traceback=False; bad address: rc=0 out_written=True traceback=False; unknown stage: rc=0 out_written=True traceback=False; too many observations: rc=0 out_written=True traceback=False; symlinked 
+FAIL o8_offline: candidate attempted network calls: 27666 socket.getaddrinfo (443,)
+27667 socket.getaddrinfo (443,)
+27669 socket.getaddrinfo (443,)
+27671 socket.getaddrinfo (443,)
+27672 socket.getaddrinfo (443,)
+27674 socket.getaddrinfo (443,)
+27675 socket.getaddrinfo (443,)
+27677 socket.getaddrinfo (443,)
+27679 socket.getaddrinfo (443,)
+27680 socket
+FAIL o9_no_side_writes: --out pointing at the input trace was not refused
+SUMMARY 0/9 pass; oracle REJECTS candidate
+
+=== mutant-answers_unsorted
+# m10_oracle candidate: <PY312> /tmp/m10-mutants/answers_unsorted/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+PASS o2_localization (0.4s): 11 known failures localized at the right layer with the right code; earlier layers ok
+PASS o3_bounded_uncertainty (0.3s): empty and dns-only traces undetermined; expired cert without lower evidence, unverified name mismatch and handshake reset stay probable with extra candidates; contrary DNS and TCP intermittent; dates judged at captured_at only
+FAIL o4_reproducible: trace 3: 3 different outputs across PYTHONHASHSEED/TZ
+PASS o5_cites_actual_fields (0.0s): 196 output lines from 25 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 7/9 pass; oracle REJECTS candidate
+
+=== mutant-chain_ignored
+# m10_oracle candidate: <PY312> /tmp/m10-mutants/chain_ignored/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+FAIL o2_localization: tls untrusted chain: findings ['TLS_ALERT'] lack TLS_UNTRUSTED_CHAIN
+PASS o3_bounded_uncertainty (0.3s): empty and dns-only traces undetermined; expired cert without lower evidence, unverified name mismatch and handshake reset stay probable with extra candidates; contrary DNS and TCP intermittent; dates judged at captured_at only
+PASS o4_reproducible (3.1s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 157 output lines from 21 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 7/9 pass; oracle REJECTS candidate
+
+=== mutant-dns_entry_covers_ip
+# m10_oracle candidate: <PY312> /tmp/m10-mutants/dns_entry_covers_ip/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+PASS o2_localization (0.4s): 11 known failures localized at the right layer with the right code; earlier layers ok
+PASS o3_bounded_uncertainty (0.3s): empty and dns-only traces undetermined; expired cert without lower evidence, unverified name mismatch and handshake reset stay probable with extra candidates; contrary DNS and TCP intermittent; dates judged at captured_at only
+PASS o4_reproducible (3.0s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 196 output lines from 25 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; DNS:<ip> for IP: ['DNS:198.51.100.77'] must not cover 198.51.100.77; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 8/9 pass; oracle REJECTS candidate
+
+=== mutant-expiry_ignored
+# m10_oracle candidate: <PY312> /tmp/m10-mutants/expiry_ignored/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+FAIL o2_localization: tls expired: findings ['TLS_ALERT'] lack TLS_CERT_EXPIRED
+FAIL o3_bounded_uncertainty: cert expired at captured_at (2041) not reported
+PASS o4_reproducible (3.1s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 112 output lines from 16 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 6/9 pass; oracle REJECTS candidate
+
+=== mutant-host_not_lowercased
+# m10_oracle candidate: <PY312> /tmp/m10-mutants/host_not_lowercased/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+PASS o2_localization (0.4s): 11 known failures localized at the right layer with the right code; earlier layers ok
+PASS o3_bounded_uncertainty (0.3s): empty and dns-only traces undetermined; expired cert without lower evidence, unverified name mismatch and handshake reset stay probable with extra candidates; contrary DNS and TCP intermittent; dates judged at captured_at only
+PASS o4_reproducible (3.1s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 195 output lines from 25 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 8/9 pass; oracle REJECTS candidate
+
+=== mutant-ip_compared_as_text
+# m10_oracle candidate: <PY312> /tmp/m10-mutants/ip_compared_as_text/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+PASS o2_localization (0.4s): 11 known failures localized at the right layer with the right code; earlier layers ok
+PASS o3_bounded_uncertainty (0.3s): empty and dns-only traces undetermined; expired cert without lower evidence, unverified name mismatch and handshake reset stay probable with extra candidates; contrary DNS and TCP intermittent; dates judged at captured_at only
+PASS o4_reproducible (3.1s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 196 output lines from 25 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: IPv6 long form: ['IP Address:2001:DB8:0:0:0:0:0:1'] should cover 2001:db8::1; wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 8/9 pass; oracle REJECTS candidate
+
+=== mutant-ip_entry_covers_names
+# m10_oracle candidate: <PY312> /tmp/m10-mutants/ip_entry_covers_names/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+PASS o2_localization (0.3s): 11 known failures localized at the right layer with the right code; earlier layers ok
+PASS o3_bounded_uncertainty (0.3s): empty and dns-only traces undetermined; expired cert without lower evidence, unverified name mismatch and handshake reset stay probable with extra candidates; contrary DNS and TCP intermittent; dates judged at captured_at only
+PASS o4_reproducible (3.1s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 196 output lines from 25 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; IP: for a name: ['IP:api.shop.example'] must not cover api.shop.example; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 8/9 pass; oracle REJECTS candidate
+
+=== mutant-no_dns_ambiguity_on_mismatch
+# m10_oracle candidate: <PY312> /tmp/m10-mutants/no_dns_ambiguity_on_mismatch/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+PASS o2_localization (0.4s): 11 known failures localized at the right layer with the right code; earlier layers ok
+FAIL o3_bounded_uncertainty: name mismatch with unverified DNS: verdict=localized candidates=['tls']
+PASS o4_reproducible (3.2s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 140 output lines from 19 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 7/9 pass; oracle REJECTS candidate
+
+=== mutant-no_middlebox_ambiguity
+# m10_oracle candidate: <PY312> /tmp/m10-mutants/no_middlebox_ambiguity/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+PASS o2_localization (0.4s): 11 known failures localized at the right layer with the right code; earlier layers ok
+FAIL o3_bounded_uncertainty: handshake reset (middlebox possible): verdict=localized candidates=['tls']
+PASS o4_reproducible (3.1s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 147 output lines from 20 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 7/9 pass; oracle REJECTS candidate
+
+=== mutant-prefix_strip3
+# m10_oracle candidate: <PY312> /tmp/m10-mutants/prefix_strip3/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+PASS o2_localization (0.4s): 11 known failures localized at the right layer with the right code; earlier layers ok
+PASS o3_bounded_uncertainty (0.3s): empty and dns-only traces undetermined; expired cert without lower evidence, unverified name mismatch and handshake reset stay probable with extra candidates; contrary DNS and TCP intermittent; dates judged at captured_at only
+PASS o4_reproducible (3.1s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 196 output lines from 25 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: DNS:: ['DNS:api.shop.example'] should cover api.shop.example; dns: lower: ['dns:api.shop.example'] should cover api.shop.example; spaced: ['Dns : api.shop.example'] should cover api.shop.example; upper value: ['DNS:API.SHOP.EXAMPLE'] should cover api.shop.example; san trailing dot: ['DNS:api.shop.example.'] should cover api.shop.example; host trailing dot: ['DNS:api.shop.example
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 8/9 pass; oracle REJECTS candidate
+
+=== mutant-probable_promoted
+# m10_oracle candidate: <PY312> /tmp/m10-mutants/probable_promoted/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+PASS o2_localization (0.4s): 11 known failures localized at the right layer with the right code; earlier layers ok
+FAIL o3_bounded_uncertainty: expired cert with no dns/tcp evidence: verdict=localized candidates=['dns', 'tls']
+PASS o4_reproducible (3.4s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 132 output lines from 18 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 7/9 pass; oracle REJECTS candidate
+
+=== mutant-refused_not_app
+# m10_oracle candidate: <PY312> /tmp/m10-mutants/refused_not_app/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+PASS o2_localization (0.4s): 11 known failures localized at the right layer with the right code; earlier layers ok
+PASS o3_bounded_uncertainty (0.3s): empty and dns-only traces undetermined; expired cert without lower evidence, unverified name mismatch and handshake reset stay probable with extra candidates; contrary DNS and TCP intermittent; dates judged at captured_at only
+PASS o4_reproducible (3.2s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 196 output lines from 25 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 8/9 pass; oracle REJECTS candidate
+
+=== mutant-unknown_counts_healthy
+# m10_oracle candidate: <PY312> /tmp/m10-mutants/unknown_counts_healthy/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+PASS o2_localization (0.4s): 11 known failures localized at the right layer with the right code; earlier layers ok
+FAIL o3_bounded_uncertainty: empty trace: rc=0 verdict=healthy
+PASS o4_reproducible (3.2s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 121 output lines from 16 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 7/9 pass; oracle REJECTS candidate
+
+=== mutant-wall_clock_dates
+# m10_oracle candidate: <PY312> /tmp/m10-mutants/wall_clock_dates/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+PASS o2_localization (0.4s): 11 known failures localized at the right layer with the right code; earlier layers ok
+FAIL o3_bounded_uncertainty: cert valid at captured_at (2019) but called expired: wall clock used
+PASS o4_reproducible (3.1s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 169 output lines from 22 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 7/9 pass; oracle REJECTS candidate
+
+=== mutant-wildcard_any_depth
+# m10_oracle candidate: <PY312> /tmp/m10-mutants/wildcard_any_depth/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+PASS o2_localization (0.3s): 11 known failures localized at the right layer with the right code; earlier layers ok
+PASS o3_bounded_uncertainty (0.3s): empty and dns-only traces undetermined; expired cert without lower evidence, unverified name mismatch and handshake reset stay probable with extra candidates; contrary DNS and TCP intermittent; dates judged at captured_at only
+PASS o4_reproducible (3.0s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 196 output lines from 25 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: two labels deep: ['DNS:*.shop.example'] must not cover a.api.shop.example; wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+PASS o7_invalid_input (0.4s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.2s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 8/9 pass; oracle REJECTS candidate
+

@@ -1,0 +1,17 @@
+candidate: rc=0 Ran 29 tests in 1.209s OK 
+positive-control-proposed-fix: rc=0 Ran 29 tests in 1.223s OK 
+mutant-answers_unsorted: rc=0 Ran 29 tests in 1.191s OK 
+mutant-chain_ignored: rc=0 Ran 29 tests in 1.197s OK 
+mutant-dns_entry_covers_ip: rc=1 Ran 29 tests in 1.205s FAILED (failures=1) 
+mutant-expiry_ignored: rc=1 Ran 29 tests in 1.202s FAILED (failures=1) 
+mutant-host_not_lowercased: rc=0 Ran 29 tests in 1.235s OK 
+mutant-ip_compared_as_text: rc=0 Ran 29 tests in 1.280s OK 
+mutant-ip_entry_covers_names: rc=1 Ran 29 tests in 1.234s FAILED (failures=1) 
+mutant-no_dns_ambiguity_on_mismatch: rc=1 Ran 29 tests in 1.164s FAILED (failures=3) 
+mutant-no_middlebox_ambiguity: rc=1 Ran 29 tests in 1.176s FAILED (failures=1) 
+mutant-prefix_strip3: rc=1 Ran 29 tests in 1.195s FAILED (failures=6) 
+mutant-probable_promoted: rc=1 Ran 29 tests in 1.300s FAILED (failures=7) 
+mutant-refused_not_app: rc=0 Ran 29 tests in 1.315s OK 
+mutant-unknown_counts_healthy: rc=1 Ran 29 tests in 1.222s FAILED (failures=4) 
+mutant-wall_clock_dates: rc=1 Ran 29 tests in 1.463s FAILED (failures=1) 
+mutant-wildcard_any_depth: rc=1 Ran 29 tests in 1.387s FAILED (failures=2) 

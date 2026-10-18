@@ -1,0 +1,4 @@
+Preparing worktree (detached HEAD 6af7849)
+HEAD is now at 6af7849 G10 rework: typed SAN entries no longer misread as a name mismatch (review only)
+Preparing worktree (detached HEAD 3ebbe73)
+HEAD is now at 3ebbe73 G10: offline network diagnosis from inspectable evidence (review only)

@@ -1,0 +1,12 @@
+== oracle under Python 3.9.6
+FAIL o6b_san_strict: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+SUMMARY 9/10 pass; oracle REJECTS candidate
+== oracle under Python 3.11.16
+FAIL o6b_san_strict: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+SUMMARY 9/10 pass; oracle REJECTS candidate
+== oracle under Python 3.13.15
+FAIL o6b_san_strict: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+SUMMARY 9/10 pass; oracle REJECTS candidate
+== oracle under Python 3.12.14
+FAIL o6b_san_strict: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+SUMMARY 9/10 pass; oracle REJECTS candidate

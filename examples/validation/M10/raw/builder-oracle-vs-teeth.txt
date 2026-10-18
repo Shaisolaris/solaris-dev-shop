@@ -1,0 +1,315 @@
+=== candidate
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+PASS o3_bounded_uncertainty: incomplete traces stay bounded candidate sets; confidence ['low', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+SUMMARY 12/12 pass; candidate ACCEPTED by oracle
+
+=== positive-control-proposed-fix
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+PASS o3_bounded_uncertainty: incomplete traces stay bounded candidate sets; confidence ['low', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+SUMMARY 12/12 pass; candidate ACCEPTED by oracle
+
+=== stub-noop
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+FAIL o2_known_faults_localized: dns_servfail(verdict=healthy layer=None candidates=[]); dns_nxdomain(verdict=healthy layer=None candidates=[]); route_noroute(verdict=healthy layer=None candidates=[]); route_unreach(verdict=healthy layer=None candidates=[]); tls_untrusted(verdict=healthy layer=None c
+FAIL o3_bounded_uncertainty: incomplete_dns_only(verdict=healthy layer=None candidates=[]); tls_reset_no_dns(verdict=healthy layer=None candidates=[]); confidence ['high', 'high']
+FAIL o4_cross_layer_ambiguity: wrong_answer(verdict=healthy layer=None candidates=[])
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+FAIL o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=healthy layer=None candidates=[]
+PASS o7_no_secret_echo: header values never echoed
+FAIL o8_invalid_input_safe: exit codes {'garbage': 0, 'schema': 0, 'dupkey': 0, 'badip': 0, 'symlink': 0}; previous report intact=True
+FAIL o9_recovery_after_bad_run: next good run rewrote the report: False
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+FAIL o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.0s, 600 wrong; 6 parallel runs gave 1 distinct output(s)
+FAIL o12_san_forms: other_name: ['DNS:other-vthrcnn.svc.example'] must still be a name mismatch, got []; ip_only: ['IP Address:198.51.100.125'] must still be a name mismatch, got []
+SUMMARY 4/12 pass; candidate REJECTED
+
+=== stub-naive
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+FAIL o2_known_faults_localized: route_unreach(verdict=healthy layer=None candidates=[])
+FAIL o3_bounded_uncertainty: incomplete_dns_only(verdict=healthy layer=None candidates=[]); tls_reset_no_dns(verdict=localized layer=tls candidates=['tls']); confidence ['high', 'high']
+FAIL o4_cross_layer_ambiguity: wrong_answer(verdict=localized layer=tls candidates=['tls'])
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+FAIL o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 0, 'badip': 0, 'symlink': 0}; previous report intact=True
+FAIL o9_recovery_after_bad_run: next good run rewrote the report: False
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+FAIL o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.0s, 600 wrong; 6 parallel runs gave 1 distinct output(s)
+FAIL o12_san_forms: other_name: ['DNS:other-vthrcnn.svc.example'] must still be a name mismatch, got ['TLS_ALERT']
+SUMMARY 5/12 pass; candidate REJECTED
+
+=== builder-noop_stub
+FAIL o1_clean_control: verdict=None layer=None candidates=[]; every layer ok=False; exit 0
+FAIL o2_known_faults_localized: dns_servfail(verdict=None layer=None candidates=[]); dns_nxdomain(verdict=None layer=None candidates=[]); route_noroute(verdict=None layer=None candidates=[]); route_unreach(verdict=None layer=None candidates=[]); tls_untrusted(verdict=None layer=None candidates=[]); 
+FAIL o3_bounded_uncertainty: incomplete_dns_only(verdict=None layer=None candidates=[]); tls_reset_no_dns(verdict=None layer=None candidates=[]); confidence [None, None]
+FAIL o4_cross_layer_ambiguity: wrong_answer(verdict=None layer=None candidates=[])
+FAIL o5_reproducible: output differs between runs or orderings
+FAIL o6_no_false_blame: icmp filtered: verdict=None layer=None candidates=[]; cert valid at capture: verdict=None layer=None candidates=[]; expired at capture: verdict=None layer=None candidates=[]
+FAIL o7_no_secret_echo: no real report to inspect
+FAIL o8_invalid_input_safe: exit codes {'garbage': 0, 'schema': 0, 'dupkey': 0, 'badip': 0, 'symlink': 0}; previous report intact=True
+FAIL o9_recovery_after_bad_run: next good run rewrote the report: False
+FAIL o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged; no real report produced
+FAIL o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.0s, 600 wrong; 6 parallel runs gave 1 distinct output(s)
+FAIL o12_san_forms: dns_upper: ['DNS:vthrcnn.svc.example'] should cover vthrcnn.svc.example, got None []; dns_lower: ['dns:vthrcnn.svc.example'] should cover vthrcnn.svc.example, got None []; dns_wild: ['DNS:*.svc.example'] should cover vthrcnn.svc.example, got None []
+SUMMARY 0/12 pass; candidate REJECTED
+
+=== builder-naive_stub
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+FAIL o2_known_faults_localized: app_refused(verdict=localized layer=route candidates=['route'])
+FAIL o3_bounded_uncertainty: incomplete_dns_only(verdict=healthy layer=None candidates=[]); tls_reset_no_dns(verdict=localized layer=tls candidates=['tls']); confidence ['high', 'high']
+FAIL o4_cross_layer_ambiguity: wrong_answer(verdict=localized layer=tls candidates=['tls'])
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+FAIL o6_no_false_blame: icmp filtered: verdict=localized layer=route candidates=['route']; cert valid at capture: verdict=localized layer=tls candidates=['tls']; expired at capture: verdict=localized layer=tls candidates=['tls']
+FAIL o7_no_secret_echo: header values echoed in ['app_500']
+FAIL o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 0, 'badip': 0, 'symlink': 0}; previous report intact=False
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+FAIL o10_offline_read_only: network attempted: 21 calls
+FAIL o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.0s, 100 wrong; 6 parallel runs gave 1 distinct output(s)
+FAIL o12_san_forms: other_name: ['DNS:other-vthrcnn.svc.example'] must still be a name mismatch, got []; ip_only: ['IP Address:198.51.100.125'] must still be a name mismatch, got []
+SUMMARY 3/12 pass; candidate REJECTED
+
+=== mutant-answers_unsorted
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+PASS o3_bounded_uncertainty: incomplete traces stay bounded candidate sets; confidence ['low', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+SUMMARY 12/12 pass; candidate ACCEPTED by oracle
+
+=== mutant-chain_ignored
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+PASS o3_bounded_uncertainty: incomplete traces stay bounded candidate sets; confidence ['low', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+SUMMARY 12/12 pass; candidate ACCEPTED by oracle
+
+=== mutant-dns_entry_covers_ip
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+PASS o3_bounded_uncertainty: incomplete traces stay bounded candidate sets; confidence ['low', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+SUMMARY 12/12 pass; candidate ACCEPTED by oracle
+
+=== mutant-expiry_ignored
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+PASS o3_bounded_uncertainty: incomplete traces stay bounded candidate sets; confidence ['low', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+SUMMARY 12/12 pass; candidate ACCEPTED by oracle
+
+=== mutant-host_not_lowercased
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+PASS o3_bounded_uncertainty: incomplete traces stay bounded candidate sets; confidence ['low', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+SUMMARY 12/12 pass; candidate ACCEPTED by oracle
+
+=== mutant-ip_compared_as_text
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+PASS o3_bounded_uncertainty: incomplete traces stay bounded candidate sets; confidence ['low', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+SUMMARY 12/12 pass; candidate ACCEPTED by oracle
+
+=== mutant-ip_entry_covers_names
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+PASS o3_bounded_uncertainty: incomplete traces stay bounded candidate sets; confidence ['low', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+SUMMARY 12/12 pass; candidate ACCEPTED by oracle
+
+=== mutant-no_dns_ambiguity_on_mismatch
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+PASS o3_bounded_uncertainty: incomplete traces stay bounded candidate sets; confidence ['low', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+SUMMARY 12/12 pass; candidate ACCEPTED by oracle
+
+=== mutant-no_middlebox_ambiguity
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+PASS o3_bounded_uncertainty: incomplete traces stay bounded candidate sets; confidence ['low', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+SUMMARY 12/12 pass; candidate ACCEPTED by oracle
+
+=== mutant-prefix_strip3
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+PASS o3_bounded_uncertainty: incomplete traces stay bounded candidate sets; confidence ['low', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+FAIL o12_san_forms: dns_upper: ['DNS:vthrcnn.svc.example'] should cover vthrcnn.svc.example, got probable ['TLS_NAME_MISMATCH']; dns_lower: ['dns:vthrcnn.svc.example'] should cover vthrcnn.svc.example, got probable ['TLS_NAME_MISMATCH']; dns_wild: ['DNS:*.svc.example'] should cover vthrcnn.svc.examp
+SUMMARY 11/12 pass; candidate REJECTED
+
+=== mutant-probable_promoted
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+FAIL o3_bounded_uncertainty: tls_reset_no_dns(verdict=localized layer=tls candidates=['dns', 'route', 'tls']); confidence ['low', 'high']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+SUMMARY 11/12 pass; candidate REJECTED
+
+=== mutant-refused_not_app
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+PASS o3_bounded_uncertainty: incomplete traces stay bounded candidate sets; confidence ['low', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+SUMMARY 12/12 pass; candidate ACCEPTED by oracle
+
+=== mutant-unknown_counts_healthy
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+FAIL o3_bounded_uncertainty: incomplete_dns_only(verdict=healthy layer=None candidates=[]); confidence ['high', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+FAIL o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 100 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+SUMMARY 10/12 pass; candidate REJECTED
+
+=== mutant-wall_clock_dates
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+PASS o3_bounded_uncertainty: incomplete traces stay bounded candidate sets; confidence ['low', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+FAIL o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=probable layer=tls candidates=['tls']; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+SUMMARY 11/12 pass; candidate REJECTED
+
+=== mutant-wildcard_any_depth
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+PASS o3_bounded_uncertainty: incomplete traces stay bounded candidate sets; confidence ['low', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.1s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+SUMMARY 12/12 pass; candidate ACCEPTED by oracle
+

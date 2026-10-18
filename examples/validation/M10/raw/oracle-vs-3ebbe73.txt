@@ -1,0 +1,4 @@
+# m10_oracle v2 vs earlier commit 3ebbe73100c565392e9da4433b5a51a6b67bd7e8
+FAIL o6a_san_documented: DNS:: ['DNS:api.shop.example'] should cover api.shop.example; dns: lower: ['dns:api.shop.example'] should cover api.shop.example; spaced: ['Dns : api.shop.example'] should cover api.shop.example; upper value: ['DNS:API.SHOP.EXAMPLE'] should cover api.shop.example; san trailing dot: ['DNS:api.shop.example.'] should cover api.shop.example; host trailing dot: ['DNS:api.shop.e
+FAIL o6b_san_strict: wildcard over .com: ['*.com'] must not cover shop.com
+SUMMARY 8/10 pass; oracle REJECTS candidate

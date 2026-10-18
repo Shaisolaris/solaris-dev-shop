@@ -1,0 +1,12 @@
+# REJECTED oracle run v1: o2 wrongly required tls=ok for a refused TCP connection (tls is correctly not_reached).
+# m10_oracle candidate: <PY312> employees/infrastructure/network-engineer/netdiag.py
+PASS o1_clean_controls (0.1s): https, http, IP-literal and mixed-case targets: healthy, exit 0, every layer ok, no findings
+FAIL o2_localization: tcp refused: earlier layer tls is not_reached, not ok
+PASS o3_bounded_uncertainty (0.3s): empty and dns-only traces undetermined; expired cert without lower evidence, unverified name mismatch and handshake reset stay probable with extra candidates; contrary DNS and TCP intermittent; dates judged at captured_at only
+PASS o4_reproducible (3.1s): same bytes across 3 hash seeds x 3 TZ; reordered observations, answers, SANs and keys give the same report; --out equals stdout; batch workers 1 = 4 = diagnose
+PASS o5_cites_actual_fields (0.0s): 163 output lines from 22 reports: every address and name cited appears in the trace; findings point at listed evidence
+FAIL o6_san_rules: wildcard over TLD: ['DNS:*.example'] must not cover web.example; wildcard over .com: ['*.com'] must not cover shop.com; KELVIN SIGN homoglyph: ['DNS:Kelvin.example'] must not cover kelvin.example
+PASS o7_invalid_input (0.3s): 11 invalid traces: exit 2, no traceback, --out never written
+PASS o8_offline (0.5s): 11 diagnoses and a 2-worker batch with sockets and DNS blocked: zero network attempts
+PASS o9_no_side_writes (0.1s): no files written without --out; --out replaces atomically with no temp leftovers; --out onto the input refused
+SUMMARY 7/9 pass; oracle REJECTS candidate

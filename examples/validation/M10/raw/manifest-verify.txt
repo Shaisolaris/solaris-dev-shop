@@ -1,0 +1,28 @@
+# manifest <D>/grok-output/G10/MANIFEST.sha256 vs /tmp/m10-eval at 6af7849eab0df33d024739023dbceb7827764c21
+employees/infrastructure/network-engineer/SKILL.md: OK
+employees/infrastructure/network-engineer/capability.contract.json: OK
+employees/infrastructure/network-engineer/learnings.md: OK
+employees/infrastructure/network-engineer/plugin.json: OK
+employees/infrastructure/cloud-architect/SKILL.md: OK
+employees/infrastructure/cloud-architect/learnings.md: OK
+employees/infrastructure/network-engineer/netdiag.py: OK
+employees/infrastructure/network-engineer/offline-trace-diagnosis.md: OK
+examples/capabilities/G10/README.md: OK
+examples/capabilities/G10/diagnosis_oracle.py: OK
+examples/capabilities/G10/noop_stub.py: OK
+examples/capabilities/G10/naive_stub.py: OK
+examples/capabilities/G10/fixtures/01-clean-control.json: OK
+examples/capabilities/G10/fixtures/02-dns-nxdomain.json: OK
+examples/capabilities/G10/fixtures/03-dns-timeout-no-route-to-resolver.json: OK
+examples/capabilities/G10/fixtures/04-route-blackhole.json: OK
+examples/capabilities/G10/fixtures/05-route-path-loss.json: OK
+examples/capabilities/G10/fixtures/06-tls-expired.json: OK
+examples/capabilities/G10/fixtures/07-tls-name-mismatch-unverified-dns.json: OK
+examples/capabilities/G10/fixtures/08-app-not-listening.json: OK
+examples/capabilities/G10/fixtures/09-app-upstream-503.json: OK
+examples/capabilities/G10/fixtures/10-incomplete-dns-only.json: OK
+examples/capabilities/G10/fixtures/11-traceroute-filtered-but-healthy.json: OK
+examples/capabilities/G10/fixtures/12-tls-fail-no-dns-evidence.json: OK
+tests/test_g10_capability.py: OK
+OK: 25 / 25
+MANIFEST_FILESET_EQUALS_DIFF_FILESET_vs_02ba9c5

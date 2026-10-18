@@ -1,0 +1,59 @@
+# fresh caller 2026-10-18 12:41:24 PDT; env -i HOME=/tmp/m10-fc/home PATH=/tmp/m10-fc/bin:/usr/bin:/bin; python3 shim -> install-env 3.12; offline guard on (M10_NET_LOG)
+$ T=employees/infrastructure/network-engineer/netdiag.py; python3 $T diagnose examples/capabilities/G10/fixtures/06-tls-expired.json
+diagnosis: localized at tls (confidence high)
+  target https://api.shop.example:443/health; 3 observations; input sha256 0bfe477c01f0b536
+  candidate layers: tls
+  layers: dns=ok, route=ok, tls=failed, application=not_reached
+  finding TLS_CERT_EXPIRED (tls): certificate expired 2026-10-01T00:00:00+00:00 (trace captured 2026-10-18T16:00:00+00:00)
+  next (read-only, not run): openssl s_client -connect api.shop.example:443 -servername api.shop.example </dev/null | openssl x509 -noout -dates
+  next (read-only, not run): renew the certificate through the owner's normal process
+rc_note: see above
+$ T=employees/infrastructure/network-engineer/netdiag.py; python3 $T diagnose trace.json --json --out report.json
+{
+  "candidates": [
+    "route"
+  ],
+  "confidence": "medium",
+  "findings": [
+    {
+      "code": "ROUTE_NO_MATCH",
+      "detail": "no route in the supplied config covers 10.99.0.53 (the resolver)",
+      "evidence": "dns api.shop.example @10.99.0.53 -> TIMEOUT",
+      "layer": "route"
+    }
+  ],
+  "input_sha256": "9fdfa95dacd42bfb8b260f14bf47efff5047c5fd43141856fe62ac41e7bc1214",
+  "layer": "route",
+  "layers": {
+    "application": {
+      "evidence": [],
+      "state": "not_reached"
+    },
+    "dns": {
+      "evidence": [
+        "dns api.shop.example @10.99.0.53 -> TIMEOUT"
+      ],
+      "state": "failed"
+    },
+    "route": {
+      "evidence": [
+        "config: no route in the supplied config covers 10.99.0.53"
+      ],
+      "state": "failed"
+    },
+    "tls": {
+      "evidence": [],
+      "state": "not_reached"
+    }
+  },
+  "missing_evidence": [],
+  "next_actions": [
+    "ip route get 10.99.0.53  # read-only: confirm the missing route",
+rc_note: see above
+$ T=employees/infrastructure/network-engineer/netdiag.py; python3 $T batch traces/ --workers 4
+batch: 12 traces; healthy=2, localized:application=2, localized:dns=1, localized:route=3, localized:tls=1, probable:tls=2, undetermined=1
+rc_note: see above
+report.json exists: yes bytes=    1403
+net attempts:        0
+stray files:
+./report.json
