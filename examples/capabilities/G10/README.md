@@ -37,5 +37,10 @@ o7 header values never echoed; o8 invalid input exits 2 and leaves the previous 
 o9 the next good run recovers; o10 no socket use under a socket-denying guard and the trace
 folder unchanged; o11 600 shuffled traces with 4 workers plus 6 parallel runs; o12 (rework)
 `DNS:`/`IP:`-typed SAN entries in any case cover the host while other names still mismatch.
+o13 (r3) chain and expiry codes, refused port at the application layer, IP and DNS entry
+types, wildcard depth, ambiguity kept, host case, IPv6 forms and answer order across hash seeds;
+o14 (r3) keytool, Windows and one-line SAN spellings cover, unknown types are noted not judged,
+suffix wildcards, non-ASCII and double-dot entries do not cover, SNI mismatch is flagged, deep
+JSON and non-RFC 3339 times exit 2.
 The naive stub blames the first bad-looking observation, is always certain, uses the wall
 clock for certificates, does a live lookup and copies headers.

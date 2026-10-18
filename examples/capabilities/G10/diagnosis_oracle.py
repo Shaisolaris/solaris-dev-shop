@@ -209,6 +209,125 @@ def main():
             elif not covers and "TLS_NAME_MISMATCH" not in codes:
                 bad.append(f"{n}: {san} must still be a name mismatch, got {codes}")
         check("o12_san_forms", not bad, "prefixed SAN entries cover the host; other names still mismatch" if not bad else "; ".join(bad[:3]))
+        # o13 (G10 r3, from M10 self-validation): the specific cause, not just the layer
+        clean = traces["clean"]; ip = clean["observations"][1]["dst"]
+        def variant(name, edit, drop_http=True, alert="bad_certificate", target=None):
+            d = json.loads(json.dumps(clean))
+            if target:
+                d["target"]["host"] = target
+            for o in d["observations"]:
+                if o["stage"] == "tls":
+                    edit(o)
+                    if alert:
+                        o.update(result="alert", alert=alert)
+            if drop_http:
+                d["observations"] = [o for o in d["observations"] if o["stage"] != "http"]
+            (sdir / f"{name}.json").write_text(json.dumps(d))
+            rc, j, out = run("diagnose", str(sdir / f"{name}.json"), "--json")
+            return j if isinstance(j, dict) else {}
+        codes = lambda j: [f.get("code") for f in j.get("findings", [])]
+        bad = []
+        want_code = {"tls_untrusted": "TLS_UNTRUSTED_CHAIN", "tls_expired_by_capture": "TLS_CERT_EXPIRED"}
+        for n, c in want_code.items():
+            if c not in codes(reps[n][1] or {}):
+                bad.append(f"{n}: expected {c}, got {codes(reps[n][1] or {})}")
+        lay = [(f.get("code"), f.get("layer")) for f in (reps["app_refused"][1] or {}).get("findings", [])]
+        if lay != [("APP_NOT_LISTENING", "application")]:
+            bad.append(f"refused port: findings {lay}, expected APP_NOT_LISTENING at application")
+        j = variant("ipname", lambda o: o["cert"].update(san=[f"IP:{host}"]))
+        if "TLS_NAME_MISMATCH" not in codes(j):
+            bad.append(f"an IP: entry holding the host name covered it: {codes(j)}")
+        j = variant("deep", lambda o: o["cert"].update(san=["DNS:*.example"]))
+        if "TLS_NAME_MISMATCH" not in codes(j):
+            bad.append(f"DNS:*.example covered {host}: {codes(j)}")
+        nocfg = json.loads(json.dumps(clean)); nocfg["config"]["expected_addresses"] = []
+        for o in nocfg["observations"]:
+            if o["stage"] == "tls":
+                o.update(result="alert", alert="bad_certificate"); o["cert"]["san"] = ["DNS:elsewhere.example"]
+        nocfg["observations"] = [o for o in nocfg["observations"] if o["stage"] != "http"]
+        (sdir / "unverified.json").write_text(json.dumps(nocfg))
+        j = run("diagnose", str(sdir / "unverified.json"), "--json")[1] or {}
+        if "dns" not in (j.get("candidates") or []):
+            bad.append(f"unverified name mismatch: candidates {j.get('candidates')}, dns must stay a candidate")
+        reset = json.loads(json.dumps(clean))
+        for o in reset["observations"]:
+            if o["stage"] == "tls":
+                o.update(result="reset", cert=None)
+        reset["observations"] = [o for o in reset["observations"] if o["stage"] != "http"]
+        (sdir / "reset.json").write_text(json.dumps(reset))
+        j = run("diagnose", str(sdir / "reset.json"), "--json")[1] or {}
+        if "route" not in (j.get("candidates") or []):
+            bad.append(f"handshake reset: candidates {j.get('candidates')}, a middlebox (route) must stay a candidate")
+        mixed = json.loads(json.dumps(clean)); mixed["target"]["host"] = host.upper()
+        (sdir / "mixed.json").write_text(json.dumps(mixed))
+        j = run("diagnose", str(sdir / "mixed.json"), "--json")[1] or {}
+        if j.get("verdict") != "healthy":
+            bad.append(f"upper-case target host: {j.get('verdict')} {codes(j)}")
+        v6 = "2001:db8::7"
+        d6 = json.loads(json.dumps(clean)); d6["target"]["host"] = v6
+        d6["observations"] = [dict(o, dst=v6) for o in d6["observations"] if o["stage"] in ("tcp", "tls")] + [o for o in d6["observations"] if o["stage"] == "http"]
+        for o in d6["observations"]:
+            if o["stage"] == "tls":
+                o["sni"] = None; o["cert"]["san"] = ["IP:2001:db8:0:0:0:0:0:7"]
+        (sdir / "v6.json").write_text(json.dumps(d6))
+        j = run("diagnose", str(sdir / "v6.json"), "--json")[1] or {}
+        if j.get("verdict") != "healthy":
+            bad.append(f"IPv6 target with a long-form IP entry: {j.get('verdict')} {codes(j)}")
+        d6b = json.loads(json.dumps(d6))
+        for o in d6b["observations"]:
+            if o["stage"] == "tls":
+                o["cert"]["san"] = [f"DNS:{v6}"]; o.update(result="alert", alert="bad_certificate")
+        d6b["observations"] = [o for o in d6b["observations"] if o["stage"] != "http"]
+        (sdir / "v6dns.json").write_text(json.dumps(d6b))
+        j = run("diagnose", str(sdir / "v6dns.json"), "--json")[1] or {}
+        if "TLS_NAME_MISMATCH" not in codes(j):
+            bad.append(f"a DNS: entry holding the address covered the IPv6 target: {codes(j)}")
+        many = json.loads(json.dumps(clean))
+        many["observations"][0]["answers"] = [ip, "198.51.100.3", "198.51.100.250", "198.51.100.17"]
+        (sdir / "many.json").write_text(json.dumps(many))
+        outs = set()
+        for seed_ in range(5):
+            p = subprocess.run(cmd + ["diagnose", str(sdir / "many.json"), "--json"], capture_output=True, text=True,
+                               env=dict(env, PYTHONHASHSEED=str(seed_)), timeout=120)
+            outs.add(p.stdout)
+        if len(outs) != 1:
+            bad.append(f"{len(outs)} different reports for one trace across hash seeds")
+        check("o13_specific_causes", not bad, "chain, expiry, refused port, IP/DNS entry types, wildcard depth, ambiguity, case, IPv6, order" if not bad else "; ".join(bad[:3]))
+        # o14 (G10 r3, from M10 self-validation): other SAN spellings, public-suffix wildcards, non-ASCII,
+        # SNI, deep JSON and strict times
+        bad = []
+        dom = host.split(".", 1)[1]
+        for n, san in (("keytool", [f"DNSName: {host}"]), ("windows", [f"DNS Name={host}"]),
+                       ("oneline", [f"DNS:other.example, DNS:{host}, IP Address:{ip}"])):
+            j = variant("sp-" + n, lambda o, san=san: o["cert"].update(san=san))
+            if codes(j) != ["TLS_ALERT"]:
+                bad.append(f"{n} spelling {san} covering {host}: {codes(j)}, expected only TLS_ALERT")
+            if any("not understood" in x for x in j.get("notes", [])):
+                bad.append(f"{n} spelling {san} reported as not understood; it is a known spelling")
+        j = variant("sp-unknown", lambda o: o["cert"].update(san=[f"othername:{host}"]))
+        if "TLS_NAME_MISMATCH" in codes(j) or not any("not understood" in x for x in j.get("notes", [])):
+            bad.append(f"unknown SAN type othername: must be noted as not understood, not judged a mismatch: {codes(j)}")
+        for n, tgt, san in (("tld", "shop.example", "DNS:*.example"), ("psl", "shop.co.uk", "DNS:*.co.uk"),
+                            ("kelvin", "kelvin.example", "DNS:\u212aelvin.example"), ("dots", host, f"DNS:{host}..")):
+            def ed(o, san=san, tgt=tgt):
+                o["cert"]["san"] = [san]; o["sni"] = tgt
+            j = variant("ns-" + n, ed, target=tgt)
+            if "TLS_NAME_MISMATCH" not in codes(j):
+                bad.append(f"{san} must not cover {tgt}: {codes(j)}")
+        j = variant("sni", lambda o: o.update(sni=f"www.other-{dom}") or o["cert"].update(san=[f"DNS:www.other-{dom}"]))
+        if "TLS_SNI_MISMATCH" not in codes(j):
+            bad.append(f"SNI different from the target not flagged: {codes(j)}")
+        (sdir / "deep.json").write_text("[" * 100000 + "]" * 100000)
+        rc = run("diagnose", str(sdir / "deep.json"), "--json")[0]
+        if rc != 2:
+            bad.append(f"deeply nested JSON exit {rc}, expected 2")
+        for ts, ok in (("2026-09-01T12:00:00.5Z", 0), ("2026-09-01T12:00:00+0000", 2), ("20260901T120000Z", 2)):
+            d = dict(clean, captured_at=ts)
+            (sdir / "ts.json").write_text(json.dumps(d))
+            rc = run("diagnose", str(sdir / "ts.json"), "--json")[0]
+            if rc != ok:
+                bad.append(f"captured_at {ts}: exit {rc}, expected {ok} (RFC 3339 only, same on every Python)")
+        check("o14_san_spellings_and_inputs", not bad, "keytool/Windows/one-line SANs cover; suffix wildcards, non-ASCII, double dot refused; SNI flagged; deep JSON and non-RFC 3339 times exit 2" if not bad else "; ".join(bad[:3]))
     n = sum(results)
     print(f"SUMMARY {n}/{len(results)} pass; candidate {'ACCEPTED by oracle' if n == len(results) else 'REJECTED'}")
     return 0 if n == len(results) else 1

@@ -105,9 +105,18 @@ def _choice(value: Any, where: str, options: Tuple[str, ...]) -> str:
     return value
 
 
+RFC3339_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})[Tt ](\d{2}:\d{2}:\d{2})(?:\.(\d{1,6}))?([Zz]|[+-]\d{2}:\d{2})$")
+
+
 def _iso(s: str) -> dt.datetime:
-    # Python 3.9/3.10 fromisoformat() rejects a trailing "Z"; treat it as +00:00 everywhere.
-    return dt.datetime.fromisoformat(s[:-1] + "+00:00" if s[-1:] in ("Z", "z") else s)
+    """RFC 3339 only, parsed the same way on Python 3.9 to 3.13 (3.11+ fromisoformat accepts more
+    forms, such as +0000, basic or week dates, that 3.9 refuses, so they are refused everywhere)."""
+    m = RFC3339_RE.match(s)
+    if not m:
+        raise ValueError(s)
+    day, clock, frac, zone = m.groups()
+    zone = "+00:00" if zone in ("Z", "z") else zone
+    return dt.datetime.fromisoformat(f"{day}T{clock}" + (f".{frac.ljust(6, '0')}" if frac else "") + zone)
 
 
 def _time(value: Any, where: str) -> dt.datetime:
@@ -115,7 +124,7 @@ def _time(value: Any, where: str) -> dt.datetime:
     try:
         t = _iso(s)
     except ValueError:
-        raise Invalid(f"{where}: {s!r} is not an ISO 8601 time") from None
+        raise Invalid(f"{where}: {s!r} is not an RFC 3339 time (YYYY-MM-DDTHH:MM:SS[.ffffff] with Z or +HH:MM)") from None
     if t.tzinfo is None:
         raise Invalid(f"{where}: time must carry a zone (for example Z or +00:00)")
     return t.astimezone(dt.timezone.utc)
@@ -166,6 +175,8 @@ def load_trace(path: Path) -> Tuple[Dict[str, Any], str]:
         doc = json.loads(raw.decode("utf-8"), object_pairs_hook=_no_dupes, parse_constant=_reject_const)
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise Invalid(f"{path.name}: not UTF-8 JSON ({exc.__class__.__name__})") from None
+    except RecursionError:
+        raise Invalid(f"{path.name}: JSON nested too deeply") from None
     return normalise(doc), hashlib.sha256(raw).hexdigest()
 
 
@@ -245,7 +256,7 @@ def _observation(o: Any, i: int) -> Dict[str, Any]:
         if o.get("cert") is not None:
             c = _obj(o["cert"], f"{w}.cert")
             out["cert"] = {
-                "san": sorted({_str(s, f"{w}.cert.san", 253).lower() for s in _list(c.get("san", []), f"{w}.cert.san")}),
+                "san": sorted({_san_text(_str(s, f"{w}.cert.san", 1024)) for s in _list(c.get("san", []), f"{w}.cert.san")}),
                 "not_before": _time(c["not_before"], f"{w}.cert.not_before").isoformat() if c.get("not_before") is not None else None,
                 "not_after": _time(c["not_after"], f"{w}.cert.not_after").isoformat() if c.get("not_after") is not None else None,
                 "chain_trusted": c.get("chain_trusted") if isinstance(c.get("chain_trusted"), bool) else None}
@@ -264,17 +275,61 @@ def _observation(o: Any, i: int) -> Dict[str, Any]:
 
 # -- analysis -------------------------------------------------------------------------
 
-SAN_PREFIX_RE = re.compile(r"^\s*(dns|ip address|ip)\s*:\s*", re.I)
+# Typed SAN spellings: openssl "DNS:", "IP:", "IP Address:"; keytool "DNSName:", "IPAddress:";
+# Windows certutil "DNS Name=", "IP Address=". Anything else typed is not understood.
+SAN_PREFIX_RE = re.compile(r"^\s*(dns ?name|dns|ip ?address|ip)\s*[:=]\s*", re.I)
+OTHER_TYPE_RE = re.compile(r"^\s*[A-Za-z][A-Za-z0-9 ._-]{0,30}\s*[:=]")
+# Multi-label public suffixes a wildcard may not sit on (a short list, not the full PSL).
+PUBLIC_SUFFIXES = frozenset("""co.uk org.uk ac.uk gov.uk ltd.uk plc.uk me.uk net.uk sch.uk nhs.uk
+com.au net.au org.au edu.au gov.au co.nz org.nz net.nz govt.nz co.jp ne.jp or.jp ac.jp go.jp
+com.br net.br org.br gov.br co.in net.in org.in gov.in com.cn net.cn org.cn gov.cn com.mx org.mx
+co.za org.za gov.za com.tr com.tw org.tw com.hk org.hk com.sg org.sg com.my co.kr or.kr co.il
+org.il ac.il com.ar com.co com.pe com.ua co.id or.id ac.id github.io herokuapp.com
+cloudfront.net amazonaws.com azurewebsites.net appspot.com blogspot.com""".split())
+
+
+def _san_text(raw: str) -> str:
+    """Normalise case for ASCII text only. str.lower() folds some non-ASCII letters into ASCII
+    (U+212A KELVIN SIGN becomes k), which would let a non-ASCII entry match an ASCII host."""
+    return raw.lower() if raw.isascii() else raw
+
+
+def _san_parts(raw: str) -> List[str]:
+    """One SAN item may be the one-line openssl list 'DNS:a, DNS:b, IP Address:192.0.2.1'."""
+    return [p for p in (x.strip() for x in raw.split(",")) if p] if "," in raw else [raw]
 
 
 def _san_entry(raw: str) -> Tuple[Optional[str], str]:
-    """Split a SAN entry into (kind, value): 'DNS:a.example' -> ('dns', 'a.example'),
-    'IP:192.0.2.1' and openssl's 'IP Address:192.0.2.1' -> ('ip', '192.0.2.1'), bare 'a.example' -> (None, ...)."""
+    """Split one SAN entry into (kind, value): kind 'dns', 'ip', None for a bare entry, 'invalid' for
+    text that can never be a certificate name (non-ASCII: dNSName is IA5String; a double trailing
+    dot), or 'unknown' for another type spelling the tool does not understand. Neither covers
+    anything; an unknown entry is reported and blocks a confident mismatch verdict."""
+    if not raw.isascii():
+        return "invalid", raw
     m = SAN_PREFIX_RE.match(raw)
-    if not m:
-        return None, raw.strip().rstrip(".").lower()
-    kind = "dns" if m.group(1).lower() == "dns" else "ip"
-    return kind, raw[m.end():].strip().rstrip(".").lower()
+    if m:
+        kind, value = ("dns" if m.group(1).lower().startswith("dns") else "ip"), raw[m.end():].strip()
+    elif OTHER_TYPE_RE.match(raw) and not _is_ip(raw.strip()):
+        return "unknown", raw.strip()
+    else:
+        kind, value = None, raw.strip()
+    if value.endswith("..") or not value:
+        return "invalid", raw.strip()
+    value = value[:-1] if value.endswith(".") else value
+    return kind, value.lower()
+
+
+def _san_entries(san: List[str]) -> List[Tuple[Optional[str], str]]:
+    return [_san_entry(p) for raw in san for p in _san_parts(raw)]
+
+
+def _wildcard_covers(name: str, host: str) -> bool:
+    """One leftmost '*' label only, over at least two labels that are not a public suffix."""
+    base = name[2:]
+    if "*" in base or "." not in base or base in PUBLIC_SUFFIXES:
+        return False
+    head, _, rest = host.partition(".")
+    return bool(head) and rest == base
 
 
 def _san_matches(host: str, san: List[str]) -> bool:
@@ -282,8 +337,9 @@ def _san_matches(host: str, san: List[str]) -> bool:
         host_ip = ipaddress.ip_address(host)
     except ValueError:
         host_ip = None
-    for raw in san:
-        kind, name = _san_entry(raw)
+    for kind, name in _san_entries(san):
+        if kind in ("unknown", "invalid"):
+            continue
         if host_ip is not None:
             # an address target is covered only by an address entry (bare or IP:), compared as addresses
             if kind == "dns":
@@ -299,7 +355,7 @@ def _san_matches(host: str, san: List[str]) -> bool:
         if name == host:
             return True
         if name.startswith("*.") and "." in host:
-            if host.split(".", 1)[1] == name[2:] and host.split(".", 1)[0]:
+            if _wildcard_covers(name, host):
                 return True
     return False
 
@@ -448,6 +504,8 @@ def analyse(trace: Dict[str, Any], input_sha256: str) -> Dict[str, Any]:
                 continue
             ev = f"tls {o['dst'] or host} sni={o['sni'] or '-'} -> {o['result']}" + (f" ({o['alert']})" if o["alert"] else "")
             problems = []
+            if o["sni"] and not is_ip and o["sni"] != host:
+                problems.append(("TLS_SNI_MISMATCH", f"the client sent SNI {o['sni']} but the target is {host}"))
             c = o["cert"]
             if c is not None:
                 if trace["captured_at"]:
@@ -458,7 +516,11 @@ def analyse(trace: Dict[str, Any], input_sha256: str) -> Dict[str, Any]:
                         problems.append(("TLS_CERT_NOT_YET_VALID", f"certificate valid only from {c['not_before']}"))
                 elif c["not_after"]:
                     notes.append("certificate dates not judged: the trace has no captured_at")
-                if c["san"] and not _san_matches(o["sni"] or host, c["san"]):
+                unknown = [n for k, n in _san_entries(c["san"]) if k == "unknown"]
+                if unknown:
+                    notes.append(f"certificate SAN entries not understood and not used: {sorted(unknown)[:4]}; "
+                                 "paste them as DNS:<name> or IP:<address>")
+                if c["san"] and not unknown and not _san_matches(o["sni"] or host, c["san"]):
                     problems.append(("TLS_NAME_MISMATCH", f"certificate names {c['san'][:4]} do not cover {o['sni'] or host}"))
                     verified = bool(cfg["expected_addresses"]) and bool(set(answers) & set(cfg["expected_addresses"]))
                     if not is_ip and not verified:
@@ -477,7 +539,7 @@ def analyse(trace: Dict[str, Any], input_sha256: str) -> Dict[str, Any]:
             L["tls"].failed.append(ev)
             for code, detail in problems:
                 find(code, "tls", detail, ev)
-            if o["result"] == "ok" and problems:
+            if o["result"] == "ok" and any(code != "TLS_SNI_MISMATCH" for code, _ in problems):
                 notes.append("the client completed the handshake despite certificate problems; was verification disabled?")
             if not problems:
                 if o["result"] == "alert":
@@ -653,6 +715,7 @@ _ACTIONS = {
     "TLS_CERT_EXPIRED": ["openssl s_client -connect {host}:{port} -servername {host} </dev/null | openssl x509 -noout -dates", "renew the certificate through the owner's normal process"],
     "TLS_CERT_NOT_YET_VALID": ["check the client clock and the certificate notBefore"],
     "TLS_NAME_MISMATCH": ["openssl s_client -connect {host}:{port} -servername {host} </dev/null | openssl x509 -noout -ext subjectAltName", "confirm DNS points {host} at the server that owns this certificate"],
+    "TLS_SNI_MISMATCH": ["check the client's server name setting: it must send {host} (openssl s_client -connect {host}:{port} -servername {host} </dev/null)"],
     "TLS_UNTRUSTED_CHAIN": ["openssl s_client -connect {host}:{port} -servername {host} -showcerts </dev/null  # missing intermediate?"],
     "TLS_PROTOCOL_MISMATCH": ["testssl.sh --protocols {host}:{port}  # read-only scan of supported versions"],
     "TLS_ALERT": ["openssl s_client -connect {host}:{port} -servername {host} -state </dev/null"],

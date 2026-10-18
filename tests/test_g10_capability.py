@@ -378,5 +378,102 @@ class Cli(Base):
         self.assertEqual(cli('batch', self.tmp, '--workers', '99')[0], 2)
 
 
+class M10Rework(Base):
+    """G10 r3 (M10 Grok self-validation, FAIL at 6af7849): SAN spellings, suffix wildcards, non-ASCII
+    folding, SNI, deep JSON, double trailing dot, timestamps, and the mutants M10 showed survive."""
+
+    def codes(self, r):
+        return [f['code'] for f in r['findings']]
+
+    def alert(self, san, sni=H, host=H):
+        tls = dict(TLS, sni=sni, cert=dict(CERT, san=san), result='alert', alert='bad_certificate')
+        return self.diag(trace([dict(DNS, qname=host), TCP, tls], host=host))
+
+    def test_f1_keytool_windows_and_one_line_openssl_spellings_cover(self):
+        for san in (['DNSName: web.lab.example'], ['DNS Name=web.lab.example'], ['dns name = WEB.lab.example'],
+                    ['DNS:other.example, DNS:web.lab.example, IP Address:192.0.2.40'],
+                    ['IPAddress: 192.0.2.7', 'DNSName: *.lab.example']):
+            with self.subTest(san=san):
+                r = self.alert(san)
+                self.assertEqual(self.codes(r), ['TLS_ALERT'], r['findings'])
+        for san in (['IPAddress: 192.0.2.40'], ['IP Address=192.0.2.40'], ['DNS:a.example, IP Address:192.0.2.40']):
+            with self.subTest(san=san):
+                obs = [dict(TCP), dict(TLS, sni=None, cert=dict(CERT, san=san), result='alert', alert='bad_certificate')]
+                self.assertEqual(self.codes(self.diag(trace(obs, host=IP))), ['TLS_ALERT'])
+        r = self.alert(['DNSName: other.example', 'DNS Name=b.example'])
+        self.assertIn('TLS_NAME_MISMATCH', self.codes(r))
+
+    def test_f1_an_unknown_san_type_is_noted_not_turned_into_a_mismatch(self):
+        r = self.alert(['URI:https://web.lab.example/', 'otherName:web.lab.example'])
+        self.assertNotIn('TLS_NAME_MISMATCH', self.codes(r))
+        self.assertTrue(any('not understood' in n for n in r['notes']), r['notes'])
+        r = self.alert(['URI:https://web.lab.example/', 'DNS:web.lab.example'])
+        self.assertEqual(self.codes(r), ['TLS_ALERT'])
+
+    def test_f2_no_wildcard_over_a_tld_or_public_suffix(self):
+        for host, san in (('shop.example', '*.example'), ('shop.com', 'DNS:*.com'), ('shop.co.uk', 'DNS:*.co.uk'),
+                          ('a.github.io', '*.github.io')):
+            with self.subTest(san=san):
+                self.assertIn('TLS_NAME_MISMATCH', self.codes(self.alert([san], sni=host, host=host)))
+        for host, san in (('www.shop.co.uk', '*.shop.co.uk'), ('a.lab.example', 'DNS:*.lab.example')):
+            with self.subTest(san=san):
+                self.assertEqual(self.codes(self.alert([san], sni=host, host=host)), ['TLS_ALERT'])
+
+    def test_f3_non_ascii_text_is_never_folded_into_ascii(self):
+        r = self.alert(['DNS:\u212aelvin.example'], sni='kelvin.example', host='kelvin.example')
+        self.assertIn('TLS_NAME_MISMATCH', self.codes(r))
+        self.assertEqual(self.diag(trace([TLS])), self.diag(trace([TLS])))
+        t = nd.normalise(trace([dict(TLS, cert=dict(CERT, san=['DNS:\u212aelvin.example', 'DNS:ABC.example']))]))
+        self.assertEqual(t['observations'][0]['cert']['san'], ['DNS:\u212aelvin.example', 'dns:abc.example'])
+
+    def test_f4_sni_that_differs_from_the_target_is_flagged(self):
+        r = self.alert(['DNS:www.other.example'], sni='www.other.example')
+        self.assertIn('TLS_SNI_MISMATCH', self.codes(r))
+        self.assertEqual(r['layer'], 'tls')
+        ok = self.diag(trace([DNS, TCP, dict(TLS, sni='WEB.lab.example.'), HTTP]))
+        self.assertEqual(ok['verdict'], 'healthy')
+
+    def test_f5_deep_json_is_invalid_and_a_batch_continues(self):
+        deep = '[' * 100000 + ']' * 100000
+        self.write('a-deep.json', deep)
+        rc, out = cli('diagnose', self.tmp / 'a-deep.json')
+        self.assertEqual(rc, 2)
+        self.write('b-good.json', trace([DNS, TCP, TLS, HTTP]))
+        rc, out = cli('batch', self.tmp, '--json')
+        rep = json.loads(out)
+        self.assertEqual((rep['traces'], list(rep['reports']), list(rep['invalid'])), (2, ['b-good.json'], ['a-deep.json']))
+
+    def test_f6_double_trailing_dot_never_covers(self):
+        self.assertIn('TLS_NAME_MISMATCH', self.codes(self.alert(['DNS:web.lab.example..'])))
+        self.assertEqual(self.codes(self.alert(['DNS:web.lab.example.'])), ['TLS_ALERT'])
+
+    def test_f7_rfc3339_times_parse_the_same_on_every_interpreter(self):
+        for ok in ('2026-10-18T12:00:00Z', '2026-10-18t12:00:00z', '2026-10-18 12:00:00+02:00', '2026-10-18T12:00:00.5Z',
+                   '2026-10-18T12:00:00.123456-07:00'):
+            with self.subTest(ok=ok):
+                self.assertEqual(self.diag(trace([DNS, TCP, TLS, HTTP], captured=ok))['verdict'], 'healthy')
+        self.assertEqual(nd._iso('2026-10-18T12:00:00.5Z'), nd._iso('2026-10-18T12:00:00.500000+00:00'))
+        for bad in ('2026-10-18T12:00:00+0000', '2026-10-18T12:00:00+00', '20261018T120000Z', '2026-W42-7T12:00:00Z',
+                    '2026-10-18T12:00:00.1234567Z', '2026-10-18T12:00Z', '2026-10-18'):
+            with self.subTest(bad=bad):
+                self.assertEqual(cli('diagnose', self.write('t.json', trace([DNS], captured=bad)))[0], 2)
+
+    def test_mutant_gaps_chain_case_ipv6_refused_and_answer_order(self):
+        r = self.diag(trace([DNS, TCP, dict(TLS, cert=dict(CERT, chain_trusted=False), result='alert', alert='unknown_ca')]))
+        self.assertIn('TLS_UNTRUSTED_CHAIN', self.codes(r))
+        mixed = self.diag(trace([dict(DNS, qname='WEB.Lab.Example'), TCP, dict(TLS, sni='Web.LAB.example'), HTTP], host='Web.Lab.EXAMPLE'))
+        self.assertEqual((mixed['verdict'], mixed['findings']), ('healthy', []))
+        v6 = '2001:db8::1'
+        obs = [dict(TCP, dst=v6), dict(TLS, dst=v6, sni=None, cert=dict(CERT, san=['IP:2001:db8:0:0:0:0:0:1'])), HTTP]
+        self.assertEqual(self.diag(trace(obs, host=v6))['verdict'], 'healthy')
+        r = self.diag(trace([DNS, dict(TCP, result='refused')]))
+        self.assertEqual([(f['code'], f['layer']) for f in r['findings']], [('APP_NOT_LISTENING', 'application')])
+        doc = trace([dict(DNS, answers=['192.0.2.9', '192.0.2.40', '192.0.2.1', '192.0.2.200']), TCP, TLS, HTTP])
+        p = self.write('t.json', doc)
+        outs = {cli('diagnose', p, '--json', env=dict(ENV, PYTHONHASHSEED=str(seed)))[1] for seed in range(6)}
+        self.assertEqual(len(outs), 1)
+        self.assertIn('NOERROR 192.0.2.1,192.0.2.200,192.0.2.40,192.0.2.9', outs.pop())
+
+
 if __name__ == '__main__':
     unittest.main()
