@@ -185,6 +185,9 @@ def _open_live(path: Path, timeout: float = DEFAULT_LOCK_TIMEOUT) -> sqlite3.Con
     macOS) refuse a read-only open of a WAL database whose -shm file does not exist yet
     (SQLITE_CANTOPEN). Only then this falls back to a normal connection with query_only=ON:
     the database file is not written, but SQLite may create an empty -wal and a -shm.
+    That fallback is never taken while a restore journal exists in the folder: sidecars
+    created next to a half-swapped database would stop `recover` from telling how far the
+    swap got (M03 r2 R-A).
     """
     con = None
     try:
@@ -197,6 +200,9 @@ def _open_live(path: Path, timeout: float = DEFAULT_LOCK_TIMEOUT) -> sqlite3.Con
         shm = path.parent / (path.name + "-shm")
         if "unable to open" not in str(exc) or _lkind(shm) != "missing" or not _wal_header(path):
             raise
+        if _lkind(path.parent / JOURNAL) != "missing":
+            raise sqlite3.OperationalError(f"unable to open {path.name} read-only, and a restore journal exists; "
+                                           "not using the fallback that would create -wal/-shm files") from None
     con = sqlite3.connect(str(path), timeout=timeout, isolation_level=None)
     con.execute("PRAGMA query_only = ON")
     return con
@@ -323,6 +329,8 @@ def snapshot(dataset_arg: str, out_arg: str, dbs: Optional[List[str]] = None,
              lock_timeout: float = DEFAULT_LOCK_TIMEOUT) -> Dict[str, Any]:
     try:
         dataset = _dataset_dir(dataset_arg)
+        if _lkind(dataset / JOURNAL) != "missing":  # before the lock file is touched, so nothing changes
+            raise Refused("refused", _SNAPSHOT_MID_SWAP.format(JOURNAL))
         out = Path(out_arg).expanduser()
         out = out if out.is_absolute() else Path.cwd() / out
         if _lkind(out) != "missing":
@@ -344,9 +352,7 @@ def snapshot(dataset_arg: str, out_arg: str, dbs: Optional[List[str]] = None,
                 raise Refused("invalid", f"{n!r} is not a plain database file name")
             if _lkind(dataset / n) != "file":
                 raise Refused("refused", f"{n}: {_says(_lkind(dataset / n))}; expected a regular file")
-        if make_parent:
-            os.mkdir(out.parent, 0o755)
-        return _locked(dataset, lambda: _snapshot_locked(dataset, out, names, lock_timeout))
+        return _locked(dataset, lambda: _snapshot_with_parent(dataset, out, names, lock_timeout, make_parent))
     except Refused as exc:
         return _result(exc.status, messages=[str(exc)])
     except OSError as exc:
@@ -365,6 +371,33 @@ def _drop_copy_sidecars(tmp: Path, n: str) -> None:
         if kind != "file" or (suf != "-shm" and side.stat().st_size):
             raise Refused("failed", f"{n}: the snapshot copy kept a {suf} file with data; no snapshot written")
         os.unlink(side)
+
+
+_SNAPSHOT_MID_SWAP = "an interrupted restore is recorded in {}; run `recover` first; no snapshot written"
+
+
+def _snapshot_with_parent(dataset: Path, out: Path, names: List[str], lock_timeout: float, make_parent: bool) -> Dict[str, Any]:
+    """Runs under the dataset lock, so a refused (busy) snapshot creates nothing at all. A parent
+    folder created here is removed again if the snapshot does not complete."""
+    if _lkind(dataset / JOURNAL) != "missing":  # re-checked under the lock
+        raise Refused("refused", _SNAPSHOT_MID_SWAP.format(JOURNAL))
+    if make_parent:
+        os.mkdir(out.parent, 0o755)
+    try:
+        res = _snapshot_locked(dataset, out, names, lock_timeout)
+    except BaseException:
+        if make_parent:
+            try:
+                os.rmdir(out.parent)
+            except OSError:
+                pass
+        raise
+    if make_parent and res.get("status") != "ok":  # pragma: no cover - failures raise
+        try:
+            os.rmdir(out.parent)
+        except OSError:
+            pass
+    return res
 
 
 def _snapshot_locked(dataset: Path, out: Path, names: List[str], lock_timeout: float) -> Dict[str, Any]:
@@ -520,8 +553,10 @@ def health(dataset_arg: str, expect: List[str], snap_arg: Optional[str] = None,
     if not names:
         return _result("invalid", messages=["name the databases that must exist (--expect NAME) or give --snapshot"])
     problems, report = [], {}
-    if _lkind(dataset / JOURNAL) != "missing":
-        problems.append(f"{JOURNAL}: a restore is in progress or was interrupted; run `recover`")
+    mid_swap = _lkind(dataset / JOURNAL) != "missing"
+    if mid_swap:
+        problems.append(f"{JOURNAL}: a restore is in progress or was interrupted; run `recover`. "
+                        "Databases were not opened, so nothing (not even a -wal/-shm file) was created")
     for n in names:
         if not _is_db_name(n):
             problems.append(f"{n!r} is not a plain database file name")
@@ -533,6 +568,8 @@ def health(dataset_arg: str, expect: List[str], snap_arg: Optional[str] = None,
         if (dataset / n).stat().st_size == 0:
             problems.append(f"{n}: empty file (0 bytes), not a database")
             continue
+        if mid_swap:
+            continue  # mid-swap: opening could create sidecars that block `recover` (R-A)
         try:
             con = _open_live(dataset / n, timeout=lock_timeout)
             try:

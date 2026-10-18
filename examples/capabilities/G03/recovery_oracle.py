@@ -386,6 +386,93 @@ class Oracle:
         need(p.returncode == 0 and got == ([("GOOD",)], 4), f"after restore sqlitedata/user_version are {got}")
         return "changes to table sqlitedata, user_version and application_id each fail health; restore brings them back"
 
+    # C16 (rework r3, from M03 r2 R-B/R-C): a second run while this tool holds the dataset lock.
+    # Needs a Python candidate: an injected pause right after the lock file is claimed (os.ftruncate).
+    def c16_lock_held_by_a_running_restore(self):
+        root, ds = self.fresh("held", dbs=("app.db", "audit.db"))
+        snap, sid = self.snap(root, ds)
+        sql(ds / "app.db", "UPDATE items SET v='live';")
+        inj, flag = root / "inject-pause", root / "flags"
+        inj.mkdir()
+        flag.mkdir()
+        (inj / "sitecustomize.py").write_text(
+            "import os, time\n_t = os.ftruncate\n_f = os.environ.get('G03_PAUSE_DIR')\n"
+            "def ftruncate(fd, n):\n"
+            "    r = _t(fd, n)\n"
+            "    if _f and not os.path.exists(os.path.join(_f, 'paused')):\n"
+            "        open(os.path.join(_f, 'paused'), 'w').close()\n"
+            "        for _ in range(600):\n"
+            "            if os.path.exists(os.path.join(_f, 'go')):\n                break\n"
+            "            time.sleep(0.05)\n"
+            "    return r\n"
+            "os.ftruncate = ftruncate\n")
+        a = subprocess.Popen(self.cmd + ["restore", str(ds), "--snapshot", str(snap), "--confirm", sid],
+                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                             env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1", PYTHONPATH=str(inj), G03_PAUSE_DIR=str(flag)))
+        try:
+            for _ in range(400):
+                if (flag / "paused").exists() or a.poll() is not None:
+                    break
+                time.sleep(0.05)
+            need((flag / "paused").exists(), "the injected pause never fired; this check needs a Python candidate "
+                 "that claims its lock file with os.ftruncate")
+            before = tree(ds)
+            p1 = self.run("snapshot", ds, "--out", root / "snapshots" / "x", "--json")
+            p2 = self.run("restore", ds, "--snapshot", snap, "--confirm", sid)
+            p3 = self.run("recover", ds)
+            need(tree(ds) == before, "a second run changed the dataset while the first held the lock")
+            need(p1.returncode != 0 and p2.returncode != 0 and p3.returncode != 0,
+                 f"a second run did not see the held dataset lock: snapshot {p1.returncode}, restore {p2.returncode}, recover {p3.returncode}")
+            need(not (root / "snapshots").exists(), "a refused snapshot still created its parent folder")
+        finally:
+            (flag / "go").touch()
+            rc = a.wait(timeout=120)
+        need(rc == 0 and values(ds / "app.db") == SEED, f"the paused restore did not finish (exit {rc})")
+        return "while one restore holds the lock, snapshot, restore and recover all refuse and create nothing"
+
+    # C17 (rework r3, from M03 r2 R-A): health during an interrupted restore must not open databases
+    def c17_health_mid_swap_opens_nothing(self):
+        root, ds = self.fresh("midswap", dbs=("app.db", "audit.db"))
+        snap, sid = self.snap(root, ds)
+        sql(ds / "app.db", "UPDATE items SET v='live';")
+        (ds / "broken.db").write_bytes(b"not SQLite at all, and not empty")
+        p = self.run("restore", ds, "--snapshot", snap, "--confirm", sid, "--simulate-crash-after", "1")
+        need(p.returncode != 0, "the crash drill did not stop the restore")
+        before = tree(ds)
+        p = self.run("health", ds, "--expect", "app.db", "--expect", "audit.db", "--expect", "broken.db")
+        need(p.returncode != 0, "health passed during an interrupted restore")
+        need("unreadable" not in p.stdout, "health opened databases during an interrupted restore (it judged broken.db)")
+        need(tree(ds) == before, "health created or changed files during an interrupted restore")
+        p = self.run("snapshot", ds, "--out", root / "snapshots" / "mid", "--json")
+        need(p.returncode != 0 and not (root / "snapshots").exists(), "a snapshot was taken (or its folder made) during an interrupted restore")
+        need(tree(ds) == before, "snapshot changed files during an interrupted restore")
+        p = self.run("recover", ds)
+        need(p.returncode == 0 and values(ds / "app.db") == SEED, f"recover after mid-swap health failed (exit {p.returncode})")
+        return "health mid-swap names the journal, opens nothing, creates nothing; snapshot refuses; recover then completes"
+
+    # C18 (rework r3, from M03 r2 R-D): the r2 fixes F4, F5 and F7, which the M03 oracle does not exercise
+    def c18_empty_db_bad_manifest_bad_timeout(self):
+        root, ds = self.fresh("f457")
+        snap, sid = self.snap(root, ds)
+        (ds / "empty.db").write_bytes(b"")
+        need(self.run("health", ds, "--expect", "empty.db").returncode != 0, "a 0-byte database was called healthy")
+        (ds / "empty.db").unlink()
+        sql(ds / "tableless.db", "CREATE TABLE t(x); DROP TABLE t;")
+        need(self.run("health", ds, "--expect", "tableless.db").returncode != 0, "a database with no tables was called healthy")
+        m = json.loads((snap / "manifest.json").read_text())
+        del m["databases"]["app.db"]["tables"]
+        (snap / "manifest.json").write_text(json.dumps(m))
+        p = self.run("health", ds, "--expect", "app.db", "--snapshot", snap)
+        need(p.returncode == 2, f"health with a malformed manifest entry exit {p.returncode}, expected 2")
+        need(self.run("verify", snap).returncode == 1, "verify accepted a manifest entry without tables")
+        (ds / "garbage.db").write_bytes(b"garbage that is not SQLite")
+        p = self.run("snapshot", ds, "--out", root / "snapshots" / "bad", "--json")
+        need(p.returncode != 0 and not (root / "snapshots").exists(), "a failed snapshot left its new parent folder behind")
+        (ds / "garbage.db").unlink()
+        for bad in ("nan", "inf", "-1", "0", "601"):
+            need(self.run("health", ds, "--expect", "app.db", "--lock-timeout", bad).returncode == 2, f"--lock-timeout {bad} accepted")
+        return "0-byte and table-less DBs unhealthy; failed snapshot leaves no folder; malformed manifest refused (2) and not verified; nan/inf/-1/0/601 timeouts exit 2"
+
     # C10
     def c10_concurrent(self):
         root, ds = self.fresh("concurrent", dbs=("app.db", "audit.db"))

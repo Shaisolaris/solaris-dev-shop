@@ -659,5 +659,95 @@ class M03Rework(Base):
         self.assertEqual(rec.snapshot(str(self.ds), str(self.tmp / 'snap-link'))['status'], 'refused')
 
 
+class M03R2Rework(Base):
+    """G03 r3: regression tests for the M03 r2 Grok self-validation findings R-A to R-C (on 9f2fbbc)."""
+
+    def cli(self, *args):
+        p = subprocess.run([sys.executable, str(TOOL), *map(str, args)], capture_output=True, text=True,
+                           env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+        self.assertNotIn('Traceback', p.stderr)
+        return p
+
+    def test_ra_health_during_an_interrupted_restore_opens_no_database(self):
+        snap, sid = self.snap()
+        execute(self.db, "UPDATE orders SET value='live';")
+        (self.ds / 'broken.db').write_bytes(b'not a database, but not empty either')
+        p = self.cli('restore', self.ds, '--snapshot', snap, '--confirm', sid, '--simulate-crash-after', '1')
+        self.assertNotEqual(p.returncode, 0)
+        self.assertTrue((self.ds / rec.JOURNAL).exists())
+        before = tree(self.ds)
+        h = rec.health(str(self.ds), ['service.db', 'broken.db'])
+        self.assertEqual(h['status'], 'unhealthy')
+        self.assertIn('not opened', ' '.join(h['messages']))
+        self.assertFalse(any('unreadable' in m for m in h['messages']), h['messages'])  # broken.db was never opened
+        self.assertEqual(tree(self.ds), before)  # no -wal/-shm or anything else created
+        self.assertEqual(rec.recover(str(self.ds))['status'], 'ok')
+        self.assert_seed_values()
+        h = rec.health(str(self.ds), ['service.db', 'broken.db'])
+        self.assertTrue(any('broken.db' in m and 'unreadable' in m for m in h['messages']), h['messages'])
+
+    def test_ra_sidecar_creating_fallback_is_never_used_while_a_journal_exists(self):
+        from unittest import mock
+        execute(self.db, 'PRAGMA journal_mode=WAL;')
+        for suf in ('-wal', '-shm'):
+            if (self.ds / ('service.db' + suf)).exists():
+                os.unlink(self.ds / ('service.db' + suf))
+        self.assertTrue(rec._wal_header(self.db))
+        cantopen = sqlite3.OperationalError('unable to open database file')
+        with mock.patch.object(rec, '_open_ro', side_effect=cantopen):
+            (self.ds / rec.JOURNAL).write_text('{}')
+            before = sorted(os.listdir(self.ds))
+            with self.assertRaises(sqlite3.OperationalError):
+                rec._open_live(self.db, timeout=1)
+            self.assertEqual(sorted(os.listdir(self.ds)), before)
+            os.unlink(self.ds / rec.JOURNAL)
+            con = rec._open_live(self.db, timeout=1)  # no journal: the documented fallback still works
+            try:
+                self.assertEqual(con.execute('SELECT count(*) FROM orders').fetchone()[0], 3)
+            finally:
+                con.close()
+
+    def test_rb_refused_or_failed_snapshot_creates_no_folder(self):
+        holder = subprocess.Popen([sys.executable, '-c', 'import fcntl,os,sys,time;fd=os.open(sys.argv[1],os.O_RDWR|os.O_CREAT);'
+                                   'fcntl.flock(fd,fcntl.LOCK_EX);print("held",flush=True);time.sleep(60)',
+                                   str(self.ds / rec.LOCK)], stdout=subprocess.PIPE, text=True)
+        try:
+            self.assertEqual(holder.stdout.readline().strip(), 'held')
+            r = rec.snapshot(str(self.ds), str(self.tmp / 'snapshots' / 'x'))
+            self.assertEqual(r['status'], 'busy', r)
+            self.assertFalse((self.tmp / 'snapshots').exists())
+        finally:
+            holder.kill(); holder.wait(); holder.stdout.close()
+        (self.ds / rec.JOURNAL).write_text('{}')
+        r = rec.snapshot(str(self.ds), str(self.tmp / 'snapshots' / 'x'))
+        self.assertEqual(r['status'], 'refused', r)
+        self.assertFalse((self.tmp / 'snapshots').exists())
+        os.unlink(self.ds / rec.JOURNAL)
+        (self.ds / 'bad.db').write_bytes(b'garbage that is not SQLite')
+        r = rec.snapshot(str(self.ds), str(self.tmp / 'snapshots' / 'x'))
+        self.assertNotEqual(r['status'], 'ok', r)
+        self.assertFalse((self.tmp / 'snapshots').exists())
+        os.unlink(self.ds / 'bad.db')
+        self.assertEqual(rec.snapshot(str(self.ds), str(self.tmp / 'snapshots' / 'x'))['status'], 'ok')
+
+    def test_rc_another_tool_run_is_kept_out_while_the_dataset_lock_is_held(self):
+        snap, sid = self.snap()
+        execute(self.db, "UPDATE orders SET value='live';")
+        seen = {}
+
+        def while_locked():
+            before = tree(self.ds)
+            seen['snapshot'] = self.cli('snapshot', self.ds, '--out', self.tmp / 'snapshots' / 'y').returncode
+            seen['restore'] = self.cli('restore', self.ds, '--snapshot', snap, '--confirm', sid).returncode
+            seen['recover'] = self.cli('recover', self.ds).returncode
+            seen['unchanged'] = tree(self.ds) == before
+            return rec._result('ok')
+
+        rec._locked(self.ds, while_locked)
+        self.assertEqual(seen, {'snapshot': 1, 'restore': 1, 'recover': 1, 'unchanged': True})
+        self.assertFalse((self.tmp / 'snapshots').exists())
+        self.assertEqual(rows(self.db, 'orders')[0], (1, 'live'))
+
+
 if __name__ == '__main__':
     unittest.main()

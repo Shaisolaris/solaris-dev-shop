@@ -19,6 +19,7 @@
 | 2026-06-13 | SQL operational layer (diagnostics/DDL/backup/HA) | references/sql-ops-tuning-ha-backup.md |
 | 2026-10-18 | Local SQLite recovery lane (restore-test gate step 6) | SKILL.md + sqlite-recovery.md + sqlite_recovery.py |
 | 2026-10-18 | SQLite recovery r2: escape `_` in internal-table LIKE, compare user_version/application_id, WAL on Apple SQLite, exact health | sqlite-recovery.md + sqlite_recovery.py |
+| 2026-10-18 | SQLite recovery r3: never open databases (or use the sidecar-creating fallback) while a restore journal exists; snapshot makes its folder only under the lock; test a lock with a second real run, not only an external flock | sqlite-recovery.md + sqlite_recovery.py |
 ## 2026-07-24 platform-reliability wave (skill-edl)
 - Contract `1.1.0`: plan-dryrun-rollback step; provenance_ledger + partial_or_blocked_note + bounded_plan outputs.
 - RUNTIME HARDENING: mutation authority only after plan, dry-run evidence, failure notes, cost/security, and rollback.

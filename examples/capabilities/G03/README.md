@@ -26,7 +26,14 @@ database fails health and is not snapshotted, and health fails while a finished 
 has its journal; C13 an external flock on `.solaris-recovery.lock` makes restore and dry run
 refuse with the dataset unchanged; C14 a restore killed after staging is discarded, not
 rolled forward, with no leftover files; C15 a change to a table named `sqlitedata`, to
-`user_version` or to `application_id` each fails health and restore brings it back. C14
+`user_version` or to `application_id` each fails health and restore brings it back. Added in r3 (from M03 r2 self-validation): C16 while a
+restore is paused holding the dataset lock, snapshot (into a missing `snapshots/`), restore and recover
+all refuse, leave the dataset unchanged and create no folder; C17 health during an interrupted
+restore fails without opening any database (a garbage `broken.db` is not judged) and creates no
+file, snapshot refuses, then recover completes; C18 0-byte and table-less databases are unhealthy,
+a failed snapshot leaves no new folder, a manifest entry without `tables` gives health exit 2 and
+verify exit 1, and `--lock-timeout` nan, inf, -1, 0 and 601 exit 2. C16 pauses the candidate inside
+`os.ftruncate` through a `sitecustomize.py`, so like C14 it needs a Python candidate. C14
 patches `os.replace` through a `sitecustomize.py` on `PYTHONPATH`, so it needs a Python
 candidate that writes `.solaris-recovery.json` with `os.replace`; any other candidate fails
 it with a message that says so. POSIX only.
