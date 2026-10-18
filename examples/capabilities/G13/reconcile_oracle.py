@@ -223,10 +223,10 @@ class Case:
         return folder / "contract.json"
 
 
-def run(tool, contract_path, *extra, timeout=600):
+def run(tool, contract_path, *extra, timeout=600, env=None):
     t0 = time.monotonic()
     p = subprocess.run(shlex.split(tool) + ["reconcile", str(contract_path), "--json", *extra],
-                       capture_output=True, text=True, timeout=timeout)
+                       capture_output=True, text=True, timeout=timeout, env=env)
     try:
         rep = json.loads(p.stdout)
     except ValueError:
@@ -464,6 +464,164 @@ def main(argv=None):
             res["parallel"] = {"runs": 4, "data_rows": par.n_rows}
             return e
         check("o11", "concurrency: 4 parallel runs agree byte for byte, no temp files left", o11)
+
+        # o12 and o13 (G13 r2, from M13 Grok self-validation of 7da20d4): small seeded cases, one rule each
+        rnd = random.Random(a.seed + 97)
+        pre = "".join(rnd.choice("BCDFGHJKLMNPQRSTVWXZ") for _ in range(3))
+        cents = [rnd.randint(100, 99999) for _ in range(3)]
+        amts = [f"{c // 100}.{c % 100:02d}" for c in cents]
+        usd = Decimal(amts[0]) + Decimal(amts[1])
+        k = 0
+
+        def r(i, cust="K1", amt="10.00", cur="USD", ev="2026-09-10T12:00:00Z", la="2026-09-10T13:00:00Z", up="2026-09-10T12:00:00Z", st="paid"):
+            return [f"{pre}{i}", cust, amt, cur, st, ev, la, up]
+
+        base = [r(1, "K1", amts[0]), r(2, "K2", amts[1]), r(3, "K1", amts[2], "EUR")]
+
+        def mk(rows, control=None, header=HEADER, **over):
+            nonlocal k
+            k += 1
+            d = tmp / f"m{k:03d}"
+            d.mkdir()
+            buf = io.StringIO()
+            w = csv.writer(buf, lineterminator="\n")
+            w.writerow(header)
+            w.writerows(rows)
+            (d / "orders.csv").write_text(buf.getvalue(), encoding="utf-8")
+            (d / "customers.csv").write_text("customer_id,region\nK1,west\nK2,east\n", encoding="utf-8")
+            c = contract(controls=control is not None)
+            if control is not None:
+                (d / "control.csv").write_text("file,rows,sum\norders.csv,%s,%s\n" % control, encoding="utf-8")
+            for key, v in over.items():
+                node, parts = c, key.split("__")
+                for q in parts[:-1]:
+                    node = node[q]
+                if v is None:
+                    node.pop(parts[-1], None)
+                else:
+                    node[parts[-1]] = v
+            (d / "contract.json").write_text(json.dumps(c), encoding="utf-8")
+            return d / "contract.json"
+
+        def usd_of(rep):
+            v = groups(rep, "revenue").get(("USD",))
+            return None if v is None else Decimal(str(v))
+
+        def rejects(cp):
+            out = cp.parent / "rejects.csv"
+            run(a.tool, cp, "--rejects", str(out))
+            return out.read_text().splitlines()[1:] if out.exists() else []
+
+        def dots(d):
+            return sorted(p.name for p in d.iterdir() if p.name.startswith("."))
+
+        def o12():
+            e = []
+            rows = base + [r(10, amt="1.00", ev=iso(START)), r(11, amt="2.00", ev=iso(END)),
+                           r(12, amt="4.00", la=iso(AS_OF)), r(13, amt="8.00", la=iso(AS_OF + dt.timedelta(seconds=1)))]
+            code, rep, _, _ = run(a.tool, mk(rows))
+            cov = (rep or {}).get("coverage") or {}
+            if usd_of(rep) != usd + 5 or cov.get("outside_window") != 1 or cov.get("late_after_as_of") != 1:
+                e.append(f"half-open window / as_of boundary: USD {usd_of(rep)} (want {usd + 5}), outside {cov.get('outside_window')}, late {cov.get('late_after_as_of')}")
+            ms = [{"name": "buyers", "agg": "count_distinct", "column": "customer_id"}, {"name": "priced", "agg": "count", "column": "amount"},
+                  {"name": "smallest", "agg": "min", "column": "amount"}]
+            code, rep, _, _ = run(a.tool, mk(base + [r(4, "K2", "")], facts__required=["currency", "event_time"], metrics=ms))
+            got = tuple(groups(rep, n).get(()) for n in ("buyers", "priced", "smallest"))
+            want = (2, 3, format(min(Decimal(x) for x in amts), "f"))
+            if got != want or "null_metric_values" not in ((rep or {}).get("gaps") or []):
+                e.append(f"count_distinct/count/min with a null amount: {got}, want {want}, gaps {(rep or {}).get('gaps')}")
+            parsed = sum((Decimal(x) for x in amts), Decimal(0))
+            code, rep, _, _ = run(a.tool, mk(base + [r(5, amt="1.0x")], control=("4", f"{parsed}")))
+            ct = (rep or {}).get("controls") or {}
+            if ct.get("match") is not False or "control_mismatch" not in ((rep or {}).get("gaps") or []):
+                e.append(f"control whose rows and parsed sum agree but a row was rejected: match {ct.get('match')}")
+            # value parsing: an exact copy spelled differently (10.5 / 10.50, usd / USD) collapses; strict thousands
+            # grouping; 21 integer digits refused; a naive time is read in the contract zone, not UTC
+            alt = amts[0] + "0"
+            rows = base + [r(1, "K1", alt, "usd"), r(14, amt="1,234.50"), r(15, amt="1,23.00"), r(16, amt="1" * 21),
+                           r(17, amt="16.00", ev="2026-10-01 03:00:00")]
+            code, rep, _, _ = run(a.tool, mk(rows, facts__thousands_separator=","))
+            cov = (rep or {}).get("coverage") or {}
+            dup = cov.get("duplicates") or {}
+            if (usd_of(rep) != usd + Decimal("1234.50") or dup.get("exact_copies") != 1 or cov.get("rejected") != {"bad_decimal": 2}
+                    or cov.get("outside_window") != 1):
+                e.append(f"value parsing: USD {usd_of(rep)} (want {usd + Decimal('1234.50')}), exact copies {dup.get('exact_copies')}, "
+                         f"rejected {cov.get('rejected')}, outside window {cov.get('outside_window')} (naive 03:00 local on Oct 1 is outside)")
+            cp = mk(base)
+            out = cp.parent / "r.json"
+            out.write_text("OLD\n")
+            os.link(out, cp.parent / "alias.json")
+            code, rep, _, _ = run(a.tool, cp, "--out", str(out))
+            if (cp.parent / "alias.json").read_text() != "OLD\n" or not out.read_text().startswith("{") or dots(cp.parent):
+                e.append("--out rewrote the old report in place (a reader can see a partial file) or left temp files")
+            return e
+        check("o12", "boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output", o12)
+
+        def o13():
+            e = []
+            for tok in ("", "NULL"):
+                cp = mk(base + [r(6, amt="4.00", la=tok)])
+                code, rep, _, _ = run(a.tool, cp)
+                if code != 1 or usd_of(rep) != usd or not (rep or {}).get("gaps") or not ((rep or {}).get("coverage") or {}).get("all_rows_accounted"):
+                    e.append(f"N1 missing loaded_at ({tok!r}) under as_of: exit {code}, USD {usd_of(rep)}, gaps {(rep or {}).get('gaps')}")
+            code, rep, _, _ = run(a.tool, mk(base + [r(2, "K2", "75.00", la="", up="2026-09-20T00:00:00Z")]))
+            if usd_of(rep) != usd or code != 1:
+                e.append(f"N1 a newer version with no loaded_at replaced the on-time one: USD {usd_of(rep)}, exit {code}")
+            good = ["2026-09-10T12:00:00Z", "2026-09-10T12:00:00+00:00", "2026-09-10T12:00:00.5Z", "2026-09-10T12:00Z", "2026-09-10 12:00:00", "2026-09-10"]
+            bad = ["2026-09-10T12:00:00+0000", "2026-09-10T12:00:00+00", "20260910T120000Z", "2026-W37-4T12:00:00Z", "2026-09-10T12:00:00.1234567Z"]
+            code, rep, _, _ = run(a.tool, mk(base + [r(20 + i, amt="1.00", ev=v) for i, v in enumerate(good + bad)]))
+            rej = ((rep or {}).get("coverage") or {}).get("rejected")
+            if rej != {"bad_timestamp": len(bad)} or usd_of(rep) != usd + len(good):
+                e.append(f"N2 timestamp grammar: rejected {rej} (want {len(bad)} bad_timestamp), USD {usd_of(rep)}")
+            cp = mk(base + [r(2, "K2", amts[1], la="2026-09-11T08:00:00Z")])
+            code, rep, _, _ = run(a.tool, cp)
+            if usd_of(rep) != usd or code != 0 or rejects(cp) != ["orders.csv,5,duplicate_exact,order_id"]:
+                e.append(f"N3 re-delivery differing only in loaded_at: USD {usd_of(rep)}, exit {code}, rejects {rejects(cp)}")
+            cp = mk(base + [r(7, amt="x")])
+            ro = cp.parent / "ro"
+            ro.mkdir()
+            os.chmod(ro, 0o500)
+            try:
+                code, _, _, _ = run(a.tool, cp, "--rejects", str(cp.parent / "rej.csv"), "--out", str(ro / "r.json"))
+            finally:
+                os.chmod(ro, 0o700)
+            if code != 2 or (cp.parent / "rej.csv").exists() or dots(cp.parent):
+                e.append(f"N4 --out unwritable: exit {code}, --rejects written anyway {(cp.parent / 'rej.csv').exists()}")
+            (cp.parent / "rej.csv").write_text("OLD\n")
+            (cp.parent / "r.json").write_text("OLD\n")
+            fault = cp.parent / "fault"
+            fault.mkdir()
+            (fault / "sitecustomize.py").write_text(
+                "import os\n_r = os.replace\n"
+                "def _x(s, d, *a, **k):\n"
+                "    if str(d).endswith('r.json') and '.keep' not in str(s):\n        raise PermissionError(13, 'injected')\n"
+                "    return _r(s, d, *a, **k)\nos.replace = _x\n")
+            env = dict(os.environ, PYTHONPATH=str(fault))
+            code, _, _, _ = run(a.tool, cp, "--rejects", str(cp.parent / "rej.csv"), "--out", str(cp.parent / "r.json"), env=env)
+            if code != 2 or (cp.parent / "rej.csv").read_text() != "OLD\n" or (cp.parent / "r.json").read_text() != "OLD\n" or dots(cp.parent):
+                e.append(f"N4 second rename failed: exit {code}; the first output was not put back or temp files were left")
+            deep = tmp / "deep"
+            deep.mkdir()
+            (deep / "contract.json").write_text("[" * 100000 + "]" * 100000)
+            code, rep, _, _ = run(a.tool, deep / "contract.json")
+            if code != 2 or (rep or {}).get("status") != "invalid":
+                e.append(f"N5 deeply nested contract: exit {code}, status {(rep or {}).get('status')}")
+            code, rep, _, _ = run(a.tool, mk(base + [r(8, ev="2026-11-01 01:30:00"), r(9, ev="2026-03-08 02:30:00")]))
+            rej = ((rep or {}).get("coverage") or {}).get("rejected") or {}
+            if sum(rej.values()) != 2 or usd_of(rep) != usd:
+                e.append(f"N6 DST ambiguous / nonexistent local times were guessed: rejected {rej}, USD {usd_of(rep)}")
+            hdr = HEADER + ["rev"]
+            rows = [x + ["1"] for x in base] + [r(2, "K2", "70.00") + ["\u0663"]]
+            code, rep, _, _ = run(a.tool, mk(rows, header=hdr, facts__columns__rev="int", facts__duplicate_policy="latest:rev"))
+            if usd_of(rep) != usd or ((rep or {}).get("coverage") or {}).get("rejected") != {"bad_int": 1}:
+                e.append(f"N7 a non-ASCII digit was read as a number: USD {usd_of(rep)}")
+            x = base + [r(1, "K1", amts[0] + "0")]
+            va = groups(run(a.tool, mk(x))[1], "revenue")
+            vb = groups(run(a.tool, mk([x[-1]] + x[:-1]))[1], "revenue")
+            if va != vb:
+                e.append(f"N8 the spelling of a total depends on row order: {va} vs {vb}")
+            return e
+        check("o13", "as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling", o13)
 
     passed = sum(r["pass"] for r in results)
     summary = {"tool": a.tool, "seed": a.seed, "passed": passed, "total": len(results), "checks": results,

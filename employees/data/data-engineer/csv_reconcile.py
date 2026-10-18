@@ -8,10 +8,12 @@ The tool reads the files locally, never imputes a value, never counts a duplicat
 never fans out a join, and accounts for every row it did not use.
 
 Order of operations (each row lands in exactly one bucket):
-  parse -> rejected (malformed / bad value) | grain column missing
+  parse -> rejected (malformed / bad value / ambiguous or nonexistent local time) | grain column missing
+  -> with as_of: no loaded_at (cannot be judged on time; excluded and named as a gap)
   -> loaded after as_of (late; not part of this as-of view)
   -> duplicates on the grain: exact copies collapsed; differing versions resolved by the
      declared rule (latest by a column, or reject all versions); ties unresolved.
+     Rows that differ only in loaded_at are one record delivered twice (the earliest load is kept).
      This happens BEFORE status and window, so a newer "void" version cancels an order.
   -> the surviving version: missing required value | excluded status | outside window
   -> join to the dimension: matched | unmatched (orphan) | ambiguous key; never fanned out
@@ -36,6 +38,7 @@ import json
 import os
 import re
 import secrets
+import shutil
 import stat
 import sys
 from decimal import Context, Decimal, Inexact, InvalidOperation, localcontext
@@ -51,11 +54,19 @@ CONTRACT_SCHEMA = "solaris.csv-reconcile/1"
 REPORT_SCHEMA = "solaris.csv-reconcile-report/1"
 TYPES = ("str", "decimal", "int", "timestamp")
 AGGS = ("sum", "count", "count_distinct", "min", "max")
-MAX_FILE_BYTES = 512 * 1024 * 1024
-MAX_ROWS = 5_000_000
+# Rows are held in memory (duplicates need every version of a grain). Measured: about 1 KB per row,
+# 1.16 GB peak RSS for 1,139,602 rows (108 MB, about 11x the file). The limits keep a run near 2-3 GB.
+MAX_FILE_BYTES = 256 * 1024 * 1024
+MAX_ROWS = 2_000_000
 MAX_FIELD = 4096
 DEFAULT_NULLS = ("", "NULL", "null")
 DEC_RE = re.compile(r"^[+-]?[0-9]{1,20}(\.[0-9]{1,10})?$")  # bounded so every sum stays exact
+INT_RE = re.compile(r"^[+-]?[0-9]{1,18}$")  # ASCII digits only (\d would accept other scripts' digits)
+# One timestamp grammar on every Python (3.9 fromisoformat and 3.11+ fromisoformat differ):
+# YYYY-MM-DD, or YYYY-MM-DD[T or space]HH:MM[:SS[.ffffff]] with an optional Z or +HH:MM / -HH:MM.
+TIME_RE = re.compile(r"^([0-9]{4})-([0-9]{2})-([0-9]{2})(?:[Tt ]([0-9]{2}):([0-9]{2})(?::([0-9]{2})(?:\.([0-9]{1,6}))?)?"
+                     r"([Zz]|[+-][0-9]{2}:[0-9]{2})?)?$")
+TIME_FORMS = "YYYY-MM-DD, or YYYY-MM-DDTHH:MM[:SS[.ffffff]] with optional Z or +HH:MM"
 NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]{0,63}$")
 UNMATCHED, AMBIGUOUS = "(unmatched)", "(ambiguous)"
 
@@ -88,9 +99,11 @@ def _safe_file(base: Path, rel: Any, where: str) -> Path:
 
 
 def _time_const(v: Any, where: str, tz) -> dt.datetime:
-    _need(isinstance(v, str), f"{where}: expected an ISO 8601 time")
-    t = _parse_time(v, tz)
-    _need(t is not None, f"{where}: {v!r} is not an ISO 8601 time")
+    _need(isinstance(v, str), f"{where}: expected a time ({TIME_FORMS})")
+    t, why = _parse_time_r(v, tz)
+    _need(why != "ambiguous_local_time", f"{where}: {v!r} happens twice in {tz} (DST fall-back); give an offset")
+    _need(why != "nonexistent_local_time", f"{where}: {v!r} does not exist in {tz} (DST spring-forward); give an offset")
+    _need(t is not None, f"{where}: {v!r} is not a time ({TIME_FORMS})")
     return t
 
 
@@ -139,6 +152,8 @@ def load_contract(path: str) -> Dict[str, Any]:
         c = json.loads(p.read_text(encoding="utf-8"), object_pairs_hook=_no_dupes, parse_constant=_no_const)
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise Invalid(f"{p.name}: not UTF-8 JSON ({exc.__class__.__name__})") from None
+    except RecursionError:
+        raise Invalid(f"{p.name}: JSON nested too deeply") from None
     _need(isinstance(c, dict) and c.get("schema") == CONTRACT_SCHEMA, f"contract: schema must be {CONTRACT_SCHEMA!r}")
     tzname = c.get("timezone")
     _need(isinstance(tzname, str) and tzname, "contract.timezone: required (the zone assumed for timestamps without an offset)")
@@ -223,21 +238,35 @@ def _no_const(name):
 # -- parsing ------------------------------------------------------------------------
 
 def _parse_time(s: str, tz) -> Optional[dt.datetime]:
-    s = s.strip()
+    return _parse_time_r(s, tz)[0]
+
+
+def _parse_time_r(s: str, tz) -> Tuple[Optional[dt.datetime], Optional[str]]:
+    """(UTC time, None), or (None, reason). Same answer on every Python version."""
+    m = TIME_RE.match(s.strip())
+    if not m:
+        return None, "bad_timestamp"
+    y, mo, d, hh, mi, ss, frac, off = m.groups()
     try:
-        if len(s) == 10:
-            d = dt.date.fromisoformat(s)
-            t = dt.datetime(d.year, d.month, d.day)
-        else:
-            iso = s.replace(" ", "T", 1) if "T" not in s else s
-            if iso.endswith(("Z", "z")):
-                iso = iso[:-1] + "+00:00"  # Python 3.9/3.10 fromisoformat does not accept Z
-            t = dt.datetime.fromisoformat(iso)
+        t = dt.datetime(int(y), int(mo), int(d), int(hh or 0), int(mi or 0), int(ss or 0), int((frac or "0").ljust(6, "0")))
+        if off and off not in ("Z", "z"):
+            sign = 1 if off[0] == "+" else -1
+            if int(off[4:6]) > 59:
+                return None, "bad_timestamp"
+            t = t.replace(tzinfo=dt.timezone(sign * dt.timedelta(hours=int(off[1:3]), minutes=int(off[4:6]))))
+        elif off:
+            t = t.replace(tzinfo=dt.timezone.utc)
     except ValueError:
-        return None
+        return None, "bad_timestamp"
     if t.tzinfo is None:
-        t = t.replace(tzinfo=tz)
-    return t.astimezone(dt.timezone.utc)
+        a, b = t.replace(tzinfo=tz, fold=0), t.replace(tzinfo=tz, fold=1)
+        if a.utcoffset() != b.utcoffset():
+            # DST edge: the wall time either happens twice or never; do not guess which instant was meant
+            if a.astimezone(dt.timezone.utc).astimezone(tz).replace(tzinfo=None) != t:
+                return None, "nonexistent_local_time"
+            return None, "ambiguous_local_time"
+        t = a
+    return t.astimezone(dt.timezone.utc), None
 
 
 def _parse_dec(s: str, thousands: Optional[str]) -> Optional[Decimal]:
@@ -259,15 +288,35 @@ def _parse_dec(s: str, thousands: Optional[str]) -> Optional[Decimal]:
 def read_table(t: Dict[str, Any], tz) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], Dict[str, Any]]:
     """Return (good rows, rejected rows, file facts). Raises Invalid for a broken file/header."""
     fd = os.open(t["path"], os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
-    with os.fdopen(fd, "rb") as fh:
+    with os.fdopen(fd, "rb", buffering=0) as fh:
         _need(stat.S_ISREG(os.fstat(fh.fileno()).st_mode), f"{t['file']}: not a regular file")
-        raw = fh.read(MAX_FILE_BYTES + 1)
-    _need(len(raw) <= MAX_FILE_BYTES, f"{t['file']}: larger than {MAX_FILE_BYTES} bytes")
-    try:
-        text = raw.decode("utf-8-sig")
-    except UnicodeDecodeError as exc:
-        raise Invalid(f"{t['file']}: not UTF-8 (byte {exc.start})") from None
-    reader = csv.reader(io.StringIO(text, newline=""), delimiter=t["delimiter"], strict=True)
+        src = _HashingReader(fh, t["file"])
+        text = io.TextIOWrapper(io.BufferedReader(src, 1 << 20), encoding="utf-8-sig", newline="")
+        try:
+            return _read_rows(t, tz, csv.reader(text, delimiter=t["delimiter"], strict=True), src)
+        except UnicodeDecodeError:
+            raise Invalid(f"{t['file']}: not UTF-8 (near byte {src.size})") from None
+
+
+class _HashingReader(io.RawIOBase):
+    """Reads a file once, hashing and size-checking every byte as the CSV parser consumes it."""
+
+    def __init__(self, fh, name: str):
+        self.fh, self.name, self.h, self.size = fh, name, hashlib.sha256(), 0
+
+    def readable(self) -> bool:
+        return True
+
+    def readinto(self, b) -> int:
+        n = self.fh.readinto(b)
+        if n:
+            self.size += n
+            _need(self.size <= MAX_FILE_BYTES, f"{self.name}: larger than {MAX_FILE_BYTES} bytes")
+            self.h.update(memoryview(b)[:n])
+        return n or 0
+
+
+def _read_rows(t: Dict[str, Any], tz, reader, src) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], Dict[str, Any]]:
     try:
         header = next(reader)
     except StopIteration:
@@ -287,8 +336,9 @@ def read_table(t: Dict[str, Any], tz) -> Tuple[List[Dict[str, Any]], List[Dict[s
     idx = {c: names.index(c) for c in t["columns"]}
     extra = sorted(h.strip() for h, n in zip(header, names) if n not in t["columns"])
     good, rejected = [], []
-    blank = 0
+    blank = naive_rows = 0
     line = 1
+    intern = sys.intern  # repeated text values (currency, status, customer) share one object
     while True:
         try:
             rec = next(reader)
@@ -319,7 +369,7 @@ def read_table(t: Dict[str, Any], tz) -> Tuple[List[Dict[str, Any]], List[Dict[s
                 row[c] = None
                 continue
             if ty == "str":
-                row[c] = v.upper() if c in t["upper"] else v
+                row[c] = intern(v.upper() if c in t["upper"] else v)
             elif ty == "decimal":
                 d = _parse_dec(v, t["thousands"])
                 if d is None:
@@ -327,25 +377,26 @@ def read_table(t: Dict[str, Any], tz) -> Tuple[List[Dict[str, Any]], List[Dict[s
                     break
                 row[c] = d
             elif ty == "int":
-                if not re.match(r"^[+-]?\d{1,18}$", v):
+                if not INT_RE.match(v):
                     bad = ("bad_int", c)
                     break
                 row[c] = int(v)
             else:
-                tv = _parse_time(v, tz)
+                tv, why = _parse_time_r(v, tz)
                 if tv is None:
-                    bad = ("bad_timestamp", c)
+                    bad = (why, c)
                     break
                 row[c] = tv
-                if not re.search(r"(Z|[+-]\d\d:?\d\d)$", v):
-                    row.setdefault("_naive", []).append(c)
+                if not TIME_RE.match(v).group(8):
+                    row["_naive"] = True
         if bad:
             rejected.append({"file": t["file"], "line": line, "reason": bad[0], "detail": bad[1]})
             continue
+        naive_rows += 1 if row.pop("_naive", False) else 0
         good.append(row)
-    return good, rejected, {"file": t["file"], "sha256": hashlib.sha256(raw).hexdigest(),
+    return good, rejected, {"file": t["file"], "sha256": src.h.hexdigest(),
                             "data_rows": len(good) + len(rejected), "ignored_columns": extra,
-                            "blank_lines_skipped": blank}
+                            "blank_lines_skipped": blank, "_naive_rows": naive_rows}
 
 
 def _content(row: Dict[str, Any], cols) -> Tuple:
@@ -362,8 +413,22 @@ def _canon(v: Any) -> str:
     return str(v)
 
 
-def _dedup(rows: List[Dict[str, Any]], key_cols: List[str], cols, policy) -> Tuple[Dict[Tuple, Dict[str, Any]], Dict[str, int], List[Dict[str, Any]]]:
-    """Resolve duplicates on key_cols. Returns (kept by key, counts, dropped rows with reasons)."""
+_EARLIEST = dt.datetime.min.replace(tzinfo=dt.timezone.utc)
+
+
+def _spelling(v: Any) -> str:
+    # str(Decimal) keeps the written scale (100.00 vs 100.000), so the representative never depends on row order
+    return "\x00" if v is None else (v.isoformat() if isinstance(v, dt.datetime) else str(v))
+
+
+def _dedup(rows: List[Dict[str, Any]], key_cols: List[str], cols, policy, load_col: Optional[str] = None) -> Tuple[Dict[Tuple, Dict[str, Any]], Dict[str, int], List[Dict[str, Any]]]:
+    """Resolve duplicates on key_cols. Returns (kept by key, counts, dropped rows with reasons).
+    load_col (the loaded_at column) is not part of a record's content: a re-delivery that differs
+    only there is an exact copy, and the earliest load is kept."""
+    sig_cols = [c for c in cols if c != load_col]
+    def order(r):
+        la = r.get(load_col) if load_col else None
+        return (la is None, la or _EARLIEST, tuple(_spelling(r.get(c)) for c in cols), r["_line"])
     groups: Dict[Tuple, List[Dict[str, Any]]] = {}
     for r in rows:
         groups.setdefault(tuple(_canon(r[c]) for c in key_cols), []).append(r)
@@ -372,8 +437,8 @@ def _dedup(rows: List[Dict[str, Any]], key_cols: List[str], cols, policy) -> Tup
     for k in sorted(groups):
         g = groups[k]
         distinct: Dict[Tuple, Dict[str, Any]] = {}
-        for r in sorted(g, key=lambda r: r["_line"]):
-            sig = _content(r, cols)
+        for r in sorted(g, key=order):
+            sig = _content(r, sig_cols)
             if sig in distinct:
                 n["exact_copies"] += 1
                 dropped.append(dict(r, _reason="duplicate_exact"))
@@ -418,7 +483,7 @@ def reconcile(contract_path: str) -> Tuple[Dict[str, Any], List[Dict[str, Any]],
     with localcontext(Context(prec=60, traps=[Inexact, InvalidOperation])):
         try:
             return _reconcile(contract_path)
-        except Inexact:  # pragma: no cover - needs more than 5 million rows at the digit limit
+        except Inexact:  # pragma: no cover - 60 digits cannot be reached within MAX_ROWS at the digit limit
             raise Invalid("a total would need rounding; refusing to report an inexact number") from None
 
 
@@ -427,11 +492,11 @@ def _reconcile(contract_path: str) -> Tuple[Dict[str, Any], List[Dict[str, Any]]
     F, Dm, tz = C["facts"], C["dimension"], C["tz"]
     rows, rejected, ffile = read_table(F, tz)
     excluded: List[Dict[str, Any]] = [dict(r) for r in rejected]
-    cov = {"rows_read": ffile["data_rows"], "rejected": {}, "missing_required": {}, "late_after_as_of": 0,
-           "excluded_status": 0, "outside_window": 0}
+    cov = {"rows_read": ffile["data_rows"], "rejected": {}, "missing_required": {}, "loaded_at_unknown": 0,
+           "late_after_as_of": 0, "excluded_status": 0, "outside_window": 0}
     for r in rejected:
         cov["rejected"][r["reason"]] = cov["rejected"].get(r["reason"], 0) + 1
-    naive_ts = sum(1 for r in rows if r.get("_naive"))
+    naive_ts = ffile.pop("_naive_rows")
     def missing(r, cols):
         miss = [c for c in cols if r.get(c) is None]
         if miss:
@@ -439,19 +504,25 @@ def _reconcile(contract_path: str) -> Tuple[Dict[str, Any], List[Dict[str, Any]]
             excluded.append({"file": F["file"], "line": r["_line"], "reason": "missing_required", "detail": miss[0]})
         return bool(miss)
 
-    # 1) rows without a grain cannot be versioned; rows loaded after as_of are not in this view
+    # 1) rows without a grain cannot be versioned; rows loaded after as_of are not in this view, and a
+    #    row with no loaded_at cannot be judged on time, so it is excluded (never assumed on time) and
+    #    cannot win a duplicate resolution
     known = []
     for r in rows:
         if missing(r, F["grain"]):
             continue
-        if C["as_of"] is not None and r.get(F["loaded_at"]) is not None and r[F["loaded_at"]] > C["as_of"]:
+        if C["as_of"] is not None and r.get(F["loaded_at"]) is None:
+            cov["loaded_at_unknown"] += 1
+            excluded.append({"file": F["file"], "line": r["_line"], "reason": "loaded_at_unknown", "detail": F["loaded_at"]})
+            continue
+        if C["as_of"] is not None and r[F["loaded_at"]] > C["as_of"]:
             cov["late_after_as_of"] += 1
             excluded.append({"file": F["file"], "line": r["_line"], "reason": "late_after_as_of", "detail": F["loaded_at"]})
             continue
         known.append(r)
     # 2) one version per grain, BEFORE status/window: a newer "void" version cancels the order,
     #    and a newer version with a missing value is not papered over by an older one
-    kept, dup, dropped = _dedup(known, F["grain"], list(F["columns"]), F["policy"])
+    kept, dup, dropped = _dedup(known, F["grain"], list(F["columns"]), F["policy"], F["loaded_at"])
     excluded += [{"file": F["file"], "line": r["_line"], "reason": r["_reason"], "detail": ",".join(F["grain"])} for r in dropped]
     # 3) the surviving version must be complete, wanted and inside the window
     stage = []
@@ -472,10 +543,10 @@ def _reconcile(contract_path: str) -> Tuple[Dict[str, Any], List[Dict[str, Any]]
         stage.append(r)
     facts = stage
     cov["duplicates"] = dup
-    cov["loaded_at_missing_included"] = sum(1 for r in facts if F["loaded_at"] and r.get(F["loaded_at"]) is None) if C["as_of"] else 0
     dim_info = None
     if Dm:
         drows, drej, dfile = read_table(Dm, tz)
+        dfile.pop("_naive_rows")
         dmiss = [r for r in drows if any(r.get(c) is None for c in Dm["required"])]
         drows = [r for r in drows if not any(r.get(c) is None for c in Dm["required"])]
         dkept, ddup, ddropped = _dedup(drows, [Dm["key"]], list(Dm["columns"]), Dm["policy"])
@@ -540,17 +611,18 @@ def _reconcile(contract_path: str) -> Tuple[Dict[str, Any], List[Dict[str, Any]]
     controls = None
     if C["controls"]:
         controls = _controls(C, ffile, rows, rejected)
-    accounted = (len(rejected) + sum(cov["missing_required"].values()) + cov["late_after_as_of"] + cov["excluded_status"]
+    accounted = (len(rejected) + sum(cov["missing_required"].values()) + cov["loaded_at_unknown"] + cov["late_after_as_of"] + cov["excluded_status"]
                  + cov["outside_window"] + dup["exact_copies"] + dup["superseded_versions"] + dup["rows_unresolved"] + len(facts))
     cov["included"] = len(facts)
     cov["accounted"] = accounted
     cov["all_rows_accounted"] = accounted == cov["rows_read"]
-    eligible = len(facts) + dup["rows_unresolved"] + sum(cov["missing_required"].values()) + len(rejected)
+    eligible = len(facts) + dup["rows_unresolved"] + sum(cov["missing_required"].values()) + len(rejected) + cov["loaded_at_unknown"]
     cov["quality_coverage"] = f"{len(facts)}/{eligible}" if eligible else "0/0"
     naive = _naive(C, F, Dm, rows, rejected, drows if Dm else None)
     gaps = []
     for name, cond in (("rejected_rows", rejected), ("missing_required", cov["missing_required"]),
-                       ("unresolved_duplicates", dup["rows_unresolved"]), ("late_rows", cov["late_after_as_of"]),
+                       ("unresolved_duplicates", dup["rows_unresolved"]), ("loaded_at_unknown", cov["loaded_at_unknown"]),
+                       ("late_rows", cov["late_after_as_of"]),
                        ("unmatched_or_missing_join_key", dim_info and (dim_info["join"]["unmatched"] or dim_info["join"]["fact_key_missing"])),
                        ("ambiguous_dimension_key", dim_info and dim_info["join"]["ambiguous"]),
                        ("control_mismatch", controls and not controls["match"]),
@@ -561,10 +633,14 @@ def _reconcile(contract_path: str) -> Tuple[Dict[str, Any], List[Dict[str, Any]]
     notes = []
     if naive_ts:
         notes.append(f"{naive_ts} fact rows had timestamps without an offset; read as {C['tzname']} as the contract declares")
+    for why, what in (("ambiguous_local_time", "happen twice (DST fall-back)"), ("nonexistent_local_time", "do not exist (DST spring-forward)")):
+        if cov["rejected"].get(why):
+            notes.append(f"{cov['rejected'][why]} rows rejected ({why}): their local times without an offset {what} in {C['tzname']}; "
+                         "the source must give an offset")
     if ffile["ignored_columns"]:
         notes.append(f"undeclared columns ignored: {ffile['ignored_columns']}")
-    if cov["loaded_at_missing_included"]:
-        notes.append(f"{cov['loaded_at_missing_included']} included rows have no {F['loaded_at']}; lateness could not be judged for them")
+    if cov["loaded_at_unknown"]:
+        notes.append(f"{cov['loaded_at_unknown']} rows have no {F['loaded_at']}; with an as_of cutoff they cannot be judged on time, so they are excluded")
     if not cov["all_rows_accounted"]:  # pragma: no cover - defensive; would be a bug
         notes.append("BUG: some rows are not accounted for")
     report = {
@@ -595,8 +671,10 @@ def _controls(C, ffile, rows, rejected) -> Dict[str, Any]:
     _need(len(mine) == 1, f"{ct['file']}: expected exactly one control row for {C['facts']['file']}")
     r = mine[0]
     try:
-        exp_rows = int((r.get("rows") or "").strip())
-    except ValueError:
+        rows_text = (r.get("rows") or "").strip()
+        _need(bool(INT_RE.match(rows_text)), f"{ct['file']}: rows must be an integer")
+        exp_rows = int(rows_text)
+    except ValueError:  # pragma: no cover - INT_RE already refused it
         raise Invalid(f"{ct['file']}: rows must be an integer") from None
     out = {"file": ct["file"], "expected_rows": exp_rows, "actual_rows": ffile["data_rows"]}
     ok = exp_rows == ffile["data_rows"]
@@ -655,7 +733,7 @@ def render(rep: Dict[str, Any]) -> str:
     lines.append(f"  rows read {c['rows_read']}, included {c['included']}, all accounted: {'yes' if c['all_rows_accounted'] else 'NO'}")
     d = c["duplicates"]
     lines.append(f"  excluded: rejected {sum(c['rejected'].values())} {dict(sorted(c['rejected'].items())) or ''}, missing required {sum(c['missing_required'].values())}, "
-                 f"late {c['late_after_as_of']}, status {c['excluded_status']}, outside window {c['outside_window']}, "
+                 f"loaded_at unknown {c['loaded_at_unknown']}, late {c['late_after_as_of']}, status {c['excluded_status']}, outside window {c['outside_window']}, "
                  f"exact copies {d['exact_copies']}, superseded {d['superseded_versions']}, unresolved {d['rows_unresolved']} rows/{d['keys_unresolved']} keys")
     if rep["dimension"]:
         j = rep["dimension"]["join"]
@@ -684,7 +762,7 @@ def _check_target(out: Path, protect: List[Path]) -> Path:
     return out
 
 
-def _write_atomic(out: Path, data: bytes) -> None:
+def _stage(out: Path, data: bytes) -> Path:
     tmp = out.parent / f".{out.name}.{secrets.token_hex(6)}.tmp"
     fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0), 0o644)
     try:
@@ -692,13 +770,51 @@ def _write_atomic(out: Path, data: bytes) -> None:
             fh.write(data)
             fh.flush()
             os.fsync(fh.fileno())
-        os.replace(tmp, out)
     except BaseException:
-        try:
-            os.unlink(tmp)
-        except FileNotFoundError:
-            pass
+        _unlink(tmp)
         raise
+    return tmp
+
+
+def _unlink(p: Path) -> None:
+    try:
+        os.unlink(p)
+    except FileNotFoundError:
+        pass
+
+
+def _write_all(targets: List[Tuple[Path, bytes]]) -> None:
+    """Write every target or none: stage each as a temp file first, keep a hard link to any file being
+    replaced, then rename; if a later step fails, earlier targets are put back as they were."""
+    staged: List[List[Any]] = []  # [target, temp file, hard link to the old target or None]
+    done: List[Tuple[Path, Optional[Path]]] = []
+    try:
+        for out, data in targets:
+            staged.append([out, _stage(out, data), None])
+            if out.exists():
+                keep = out.parent / f".{out.name}.{secrets.token_hex(6)}.keep"
+                try:
+                    os.link(out, keep)
+                except OSError:  # a filesystem without hard links: keep a byte copy instead
+                    shutil.copyfile(out, keep)
+                staged[-1][2] = keep
+        for out, tmp, keep in staged:
+            os.replace(tmp, out)
+            done.append((out, keep))
+    except BaseException:
+        for out, keep in reversed(done):
+            try:
+                os.replace(keep, out) if keep else _unlink(out)
+            except OSError:  # pragma: no cover - the rollback itself failed; reported by the caller's error
+                pass
+        for _, tmp, keep in staged:
+            _unlink(tmp)
+            if keep:
+                _unlink(keep)
+        raise
+    for _, keep in done:
+        if keep:
+            _unlink(keep)
 
 
 def main(argv: Optional[List[str]] = None) -> int:
@@ -725,8 +841,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         if a.out:
             targets.append((_check_target(Path(a.out), protect), data))
         _need(len({t for t, _ in targets}) == len(targets), "--out and --rejects name the same file")
-        for t, payload in targets:  # every target checked before anything is written
-            _write_atomic(t, payload)
+        _write_all(targets)  # every target checked first; then all of them are written, or none
     except OSError as exc:
         exc = Invalid(f"file error: {exc.strerror or exc.__class__.__name__}")
         sys.stdout.write(json.dumps({"schema": REPORT_SCHEMA, "status": "invalid", "error": str(exc)}, sort_keys=True) + "\n"
@@ -735,6 +850,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     except Invalid as exc:
         sys.stdout.write(json.dumps({"schema": REPORT_SCHEMA, "status": "invalid", "error": str(exc)}, sort_keys=True) + "\n"
                          if a.json else f"invalid: {exc}\nnothing written\n")
+        return 2
+    except RecursionError:  # pragma: no cover - load_contract maps deep JSON to Invalid; defensive
+        sys.stdout.write(json.dumps({"schema": REPORT_SCHEMA, "status": "invalid", "error": "input nested too deeply"}, sort_keys=True) + "\n"
+                         if a.json else "invalid: input nested too deeply\nnothing written\n")
         return 2
     sys.stdout.write(data.decode("utf-8") if a.json else render(rep))
     return 1 if rep["status"] == "reconciled_with_gaps" else 0

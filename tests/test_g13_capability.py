@@ -323,6 +323,184 @@ class Determinism(Base):
         self.assertEqual(json.loads(out)['coverage']['included'], 8)
 
 
+HDR = 'order_id,customer_id,amount,currency,status,event_time,loaded_at,updated_at'
+
+
+def row(i, cust='K1', amt='10.00', cur='USD', st='paid', ev='2026-09-10T12:00:00Z', la='2026-09-10T13:00:00Z', up='2026-09-10T12:00:00Z'):
+    return ','.join([i, cust, amt, cur, st, ev, la, up])
+
+
+BASE_ROWS = [row('A1', 'K1', '10.00'), row('A2', 'K2', '20.00'), row('A3', 'K1', '5.25', 'EUR')]
+REPLACE_FAULT = (
+    'import os, sys\n'
+    '_real = os.replace\n'
+    'def _replace(src, dst, *a, **k):\n'
+    '    if str(dst).endswith(os.environ["G13_FAIL_REPLACE"]) and ".keep" not in str(src):\n'
+    '        raise PermissionError(13, "Permission denied (injected)")\n'
+    '    return _real(src, dst, *a, **k)\n'
+    'os.replace = _replace\n')
+
+
+class M13Rework(Base):
+    """G13 r2: regression tests for the M13 Grok self-validation findings N1-N10 (on 7da20d4)."""
+
+    def case(self, rows, header=HDR, control=None, **changes):
+        f = self.tmp / f'case{len(list(self.tmp.iterdir()))}'
+        shutil.copytree(FIX / 'clean', f)
+        (f / 'orders.csv').write_text(header + '\n' + '\n'.join(rows) + '\n')
+        if control is None:
+            changes.setdefault('controls', None)
+        else:
+            (f / 'control.csv').write_text('file,rows,sum\norders.csv,%s,%s\n' % control)
+        return self.contract(f, **changes)
+
+    def reasons(self, contract):
+        out = contract.parent / 'rejects.csv'
+        cli('reconcile', contract, '--rejects', out)
+        return [line.split(',')[2] for line in out.read_text().splitlines()[1:]]
+
+    def test_n1_missing_loaded_at_under_as_of_is_a_gap_and_never_wins(self):
+        for token in ('', 'NULL'):
+            c = self.case(BASE_ROWS + [row('A4', amt='4.00', la=token)])
+            code, rep = self.run_json(c)
+            self.assertEqual(code, 1)
+            self.assertIn('loaded_at_unknown', rep['gaps'])
+            self.assertEqual(rep['coverage']['loaded_at_unknown'], 1)
+            self.assertEqual(groups(rep, 'revenue')[('USD',)], '30.00')
+            self.assertTrue(rep['coverage']['all_rows_accounted'])
+            self.assertIn('loaded_at_unknown', self.reasons(c))
+        # a newer version with no loaded_at must not replace the on-time version
+        code, rep = self.run_json(self.case(BASE_ROWS + [row('A2', 'K2', '75.00', la='', up='2026-09-20T00:00:00Z')]))
+        self.assertEqual((code, groups(rep, 'revenue')[('USD',)]), (1, '30.00'))
+        self.assertEqual(rep['coverage']['duplicates']['superseded_versions'], 0)
+        # without as_of nothing is judged on time, so a blank loaded_at is fine
+        code, rep = self.run_json(self.case(BASE_ROWS + [row('A4', amt='4.00', la='')], as_of=None))
+        self.assertEqual((code, rep['gaps'], groups(rep, 'revenue')[('USD',)]), (0, [], '34.00'))
+
+    def test_n2_one_timestamp_grammar_on_every_python(self):
+        ok = ['2026-09-10T12:00:00Z', '2026-09-10T12:00:00+00:00', '2026-09-10t12:00:00z', '2026-09-10T12:00:00.5Z',
+              '2026-09-10T12:00Z', '2026-09-10 12:00:00', '2026-09-10', '2026-09-10T05:00:00.123456-07:00']
+        bad = ['2026-09-10T12:00:00+0000', '2026-09-10T12:00:00+00', '20260910T120000Z', '2026-W37-4T12:00:00Z',
+               '2026-09-10T12:00:00.1234567Z', '2026-09-10T12:00:00+00:60', '2026-09-31T12:00:00Z', '\u0662026-09-10T12:00:00Z']
+        rows = BASE_ROWS + [row(f'T{i}', amt='1.00', ev=v) for i, v in enumerate(ok + bad)]
+        code, rep = self.run_json(self.case(rows))
+        self.assertEqual(rep['coverage']['rejected'], {'bad_timestamp': len(bad)}, sys.version)
+        self.assertEqual(groups(rep, 'revenue')[('USD',)], '%d.00' % (30 + len(ok)))
+        code, rep = self.run_json(self.case(BASE_ROWS, as_of='2026-10-02T00:00:00+0000'))
+        self.assertEqual((code, rep['status']), (2, 'invalid'))
+
+    def test_n3_redelivery_differing_only_in_loaded_at_is_one_record(self):
+        rows = BASE_ROWS + [row('A2', 'K2', '20.00', la='2026-09-11T08:00:00Z')]
+        for changes in ({}, {'as_of': None}):
+            c = self.case(rows, **changes)
+            code, rep = self.run_json(c)
+            self.assertEqual((code, groups(rep, 'revenue')[('USD',)], groups(rep, 'orders')[()]), (0, '30.00', 3))
+            self.assertEqual(rep['coverage']['duplicates']['exact_copies'], 1)
+            # the earliest load is kept: the later delivery (line 5) is the dropped copy
+            out = c.parent / 'rejects.csv'
+            cli('reconcile', c, '--rejects', out)
+            self.assertEqual(out.read_text().splitlines()[1:], ['orders.csv,5,duplicate_exact,order_id'])
+        # a real change in another column is still a version, not a copy
+        code, rep = self.run_json(self.case(BASE_ROWS + [row('A2', 'K2', '21.00', la='2026-09-11T08:00:00Z')]))
+        self.assertEqual(rep['coverage']['duplicates']['rows_unresolved'], 2)
+
+    def test_n4_outputs_are_written_together_or_not_at_all(self):
+        c = self.case(BASE_ROWS + [row('A4', amt='x')])
+        ro = self.tmp / 'ro'
+        ro.mkdir()
+        os.chmod(ro, 0o500)
+        try:
+            code, out = cli('reconcile', c, '--json', '--rejects', self.tmp / 'rej.csv', '--out', ro / 'r.json')
+        finally:
+            os.chmod(ro, 0o700)
+        self.assertEqual(code, 2)
+        self.assertFalse((self.tmp / 'rej.csv').exists())
+        self.assertEqual([p.name for p in self.tmp.iterdir() if p.name.startswith('.')], [])
+        # a failure while renaming the second file puts the first back as it was
+        (self.tmp / 'rej.csv').write_text('OLD REJECTS\n')
+        (self.tmp / 'r.json').write_text('OLD REPORT\n')
+        guard = self.tmp / 'fault'
+        guard.mkdir()
+        (guard / 'sitecustomize.py').write_text(REPLACE_FAULT)
+        env = dict(ENV, PYTHONPATH=str(guard), G13_FAIL_REPLACE='r.json')
+        code, out = cli('reconcile', c, '--json', '--rejects', self.tmp / 'rej.csv', '--out', self.tmp / 'r.json', env=env)
+        self.assertEqual(code, 2)
+        self.assertEqual((self.tmp / 'rej.csv').read_text(), 'OLD REJECTS\n')
+        self.assertEqual((self.tmp / 'r.json').read_text(), 'OLD REPORT\n')
+        self.assertEqual(sorted(p.name for p in self.tmp.iterdir() if p.name.startswith('.')), [])
+        # a replaced report is a new file: a reader holding the old one never sees a partial write
+        alias = self.tmp / 'alias.json'
+        os.link(self.tmp / 'r.json', alias)
+        code, out = cli('reconcile', c, '--out', self.tmp / 'r.json', '--rejects', self.tmp / 'rej.csv')
+        self.assertEqual(code, 1)
+        self.assertEqual(alias.read_text(), 'OLD REPORT\n')
+        self.assertEqual(json.loads((self.tmp / 'r.json').read_text())['status'], 'reconciled_with_gaps')
+        self.assertEqual(sorted(p.name for p in self.tmp.iterdir() if p.name.startswith('.')), [])
+
+    def test_n5_deeply_nested_contract_is_invalid_not_a_crash(self):
+        p = self.tmp / 'contract.json'
+        p.write_text('[' * 100000 + ']' * 100000)
+        r = subprocess.run([sys.executable, str(TOOL), 'reconcile', str(p), '--json'], capture_output=True, text=True, env=ENV, timeout=120)
+        self.assertEqual(r.returncode, 2)
+        self.assertNotIn('Traceback', r.stderr)
+        self.assertIn('nested too deeply', json.loads(r.stdout)['error'])
+
+    def test_n6_dst_ambiguous_and_nonexistent_local_times_are_refused(self):
+        rows = BASE_ROWS + [row('D1', ev='2026-11-01 01:30:00'), row('D2', ev='2026-03-08 02:30:00'),
+                            row('D3', amt='1.00', ev='2026-11-01 03:30:00', la='2026-09-30T00:00:00Z')]
+        code, rep = self.run_json(self.case(rows))
+        self.assertEqual(rep['coverage']['rejected'], {'ambiguous_local_time': 1, 'nonexistent_local_time': 1})
+        self.assertEqual(rep['coverage']['outside_window'], 1)  # an ordinary local time on the same day still parses
+        self.assertTrue(any('DST' in n for n in rep['notes']))
+        for v in ('2026-11-01 01:30:00', '2026-03-08 02:30:00'):
+            code, rep = self.run_json(self.case(BASE_ROWS, window={'column': 'event_time', 'start': '2026-01-01', 'end': v}))
+            self.assertEqual(code, 2, v)
+        code, rep = self.run_json(self.case(BASE_ROWS, window={'column': 'event_time', 'start': '2026-09-01', 'end': '2026-11-01 01:30:00-07:00'}))
+        self.assertEqual(code, 0)
+
+    def test_n7_only_ascii_digits_count_as_numbers(self):
+        hdr = HDR + ',rev'
+        rows = [r + ',1' for r in BASE_ROWS] + [row('A2', 'K2', '70.00') + ',\u0663', row('A3', 'K1', '9.00', 'EUR') + ',\uff12']
+        c = self.case(rows, header=hdr, facts__columns__rev='int', facts__duplicate_policy='latest:rev')
+        code, rep = self.run_json(c)
+        self.assertEqual(rep['coverage']['rejected'], {'bad_int': 2})
+        self.assertEqual(groups(rep, 'revenue'), {('USD',): '30.00', ('EUR',): '5.25'})
+        code, rep = self.run_json(self.case(BASE_ROWS + [row('A4', amt='\u0664.00')]))
+        self.assertEqual(rep['coverage']['rejected'], {'bad_decimal': 1})
+        code, rep = self.run_json(self.case(BASE_ROWS, control=('\u0663', '35.25')))
+        self.assertEqual(code, 2)
+
+    def test_n8_total_spelling_does_not_depend_on_row_order(self):
+        a = BASE_ROWS + [row('A1', 'K1', '10.000')]
+        b = [a[-1]] + a[:-1]
+        reps = [self.run_json(self.case(r))[1] for r in (a, b)]
+        self.assertEqual(reps[0]['metrics'], reps[1]['metrics'])
+        self.assertEqual(groups(reps[0], 'revenue')[('USD',)], groups(reps[1], 'revenue')[('USD',)])
+
+    def test_n10_boundaries_controls_and_nulls(self):
+        # window is half-open [start, end) in the contract zone; as_of includes a row loaded exactly at the cutoff
+        rows = BASE_ROWS + [row('W1', amt='1.00', ev='2026-09-01T07:00:00Z'), row('W2', amt='2.00', ev='2026-10-01T07:00:00Z'),
+                            row('L1', amt='4.00', la='2026-10-02T00:00:00Z'), row('L2', amt='8.00', la='2026-10-02T00:00:01Z')]
+        code, rep = self.run_json(self.case(rows))
+        self.assertEqual(groups(rep, 'revenue')[('USD',)], '35.00')
+        self.assertEqual((rep['coverage']['outside_window'], rep['coverage']['late_after_as_of']), (1, 1))
+        # count_distinct counts distinct values, count counts non-null values, min skips nulls
+        c = self.case(BASE_ROWS + [row('A4', 'K2', '')], facts__required=['currency', 'event_time'], metrics=[
+            {'name': 'buyers', 'agg': 'count_distinct', 'column': 'customer_id'},
+            {'name': 'priced', 'agg': 'count', 'column': 'amount'},
+            {'name': 'smallest', 'agg': 'min', 'column': 'amount'}])
+        code, rep = self.run_json(c)
+        self.assertEqual((groups(rep, 'buyers')[()], groups(rep, 'priced')[()], groups(rep, 'smallest')[()]), (2, 3, '5.25'))
+        self.assertIn('null_metric_values', rep['gaps'])
+        # a rejected row makes the control a mismatch even when rows and the parsed sum agree
+        code, rep = self.run_json(self.case(BASE_ROWS + [row('A4', amt='1.0x')], control=('4', '35.25')))
+        self.assertEqual(rep['controls']['actual_sum_of_parsed'], '35.25')
+        self.assertFalse(rep['controls']['match'])
+        self.assertIn('control_mismatch', rep['gaps'])
+        code, rep = self.run_json(self.case(BASE_ROWS, control=('3', '35.25')))
+        self.assertEqual((code, rep['controls']['match']), (0, True))
+
+
 class Oracle(Base):
     def oracle(self, tool):
         p = subprocess.run([sys.executable, str(G13 / 'reconcile_oracle.py'), '--tool', tool, '--json',
@@ -331,7 +509,7 @@ class Oracle(Base):
 
     def test_tool_passes_and_stubs_fail(self):
         py = sys.executable
-        self.assertEqual(self.oracle(f'"{py}" "{TOOL}"')['passed'], 11)
+        self.assertEqual(self.oracle(f'"{py}" "{TOOL}"')['passed'], 13)
         self.assertEqual(self.oracle(f'"{py}" "{G13 / "noop_stub.py"}"')['passed'], 0)
         self.assertEqual(self.oracle(f'"{py}" "{G13 / "naive_stub.py"}"')['passed'], 0)
 
