@@ -1,0 +1,2 @@
+Preparing worktree (detached HEAD 7c63297)
+HEAD is now at 7c63297 G03: bounded local SQLite recovery without data loss (review only)

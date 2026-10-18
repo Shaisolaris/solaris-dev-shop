@@ -1,0 +1,253 @@
+# SUPERSEDED (oracle v1, checks k1..k10). Four mutants were caught only by k10, which the candidate also fails; oracle v2 adds k11, k12 and a recover --dry-run decision check in k4.
+=== candidate
+# m03_oracle candidate: python3.12 employees/infrastructure/database-administrator/sqlite_recovery.py
+PASS k1_restore_values (0.3s): values restored exactly (3 types of change), old values kept, repeat keeps both copies, missing DB recreated
+PASS k2_invalid_backup (0.9s): 13 invalid snapshots refused; dataset byte-identical; verify rejects each
+PASS k3_dry_run (0.3s): dry runs (with and without --confirm), recover --dry-run, verify: dataset (incl. -wal/-shm), snapshot, outside byte-identical, mtimes unchanged; health changes only -shm
+PASS k4_rename_gaps (2.6s): 7 kill points; gaps hit: db-missing 2, installed-unfinished 1; recovered forward 5, back 2; forced roll-back with damaged staged copy x2: originals exact
+PASS k5_recover_killed (1.4s): recover killed at 7 points, second recover consistent each time
+PASS k6_outside_writes (0.2s): snapshot inside dataset refused; symlinked file and database never followed; outside identical
+PASS k7_finite_timeout (7.5s): held exclusive lock: restore 1.1s non-zero unchanged, snapshot 1.1s non-zero no dir, health 5.2s; works after release
+PASS k8_missing_db (0.4s): missing/renamed/dir/symlink/empty/garbage expected DB fail by name; positive controls pass: renamed,via-snapshot,directory,symlink,empty-vs-snapshot,garbage
+PASS k9_concurrency (0.2s): 8 concurrent restores: exit codes [0, 0, 0, 1, 1, 1, 1, 1]; values exact; live values kept
+FAIL k10_value_fidelity: table sqlitedata changed after snapshot; restore rc=0 but values not restored (health before restore rc=0). table sqlitedata: health_rc=0 restore_rc=0 values_restored=False
+SUMMARY 9/10 pass; oracle REJECTS candidate
+
+=== positive-control-proposed-fix
+# m03_oracle candidate: python3.12 /tmp/m03-fixed/sqlite_recovery.py
+PASS k1_restore_values (0.3s): values restored exactly (3 types of change), old values kept, repeat keeps both copies, missing DB recreated
+PASS k2_invalid_backup (1.0s): 13 invalid snapshots refused; dataset byte-identical; verify rejects each
+PASS k3_dry_run (0.3s): dry runs (with and without --confirm), recover --dry-run, verify: dataset (incl. -wal/-shm), snapshot, outside byte-identical, mtimes unchanged; health changes only -shm
+PASS k4_rename_gaps (2.4s): 7 kill points; gaps hit: db-missing 2, installed-unfinished 1; recovered forward 5, back 2; forced roll-back with damaged staged copy x2: originals exact
+PASS k5_recover_killed (1.3s): recover killed at 7 points, second recover consistent each time
+PASS k6_outside_writes (0.2s): snapshot inside dataset refused; symlinked file and database never followed; outside identical
+PASS k7_finite_timeout (7.5s): held exclusive lock: restore 1.1s non-zero unchanged, snapshot 1.1s non-zero no dir, health 5.2s; works after release
+PASS k8_missing_db (0.3s): missing/renamed/dir/symlink/empty/garbage expected DB fail by name; positive controls pass: renamed,via-snapshot,directory,symlink,empty-vs-snapshot,garbage
+PASS k9_concurrency (0.1s): 8 concurrent restores: exit codes [0, 0, 1, 1, 1, 1, 1, 1]; values exact; live values kept
+PASS k10_value_fidelity (0.3s): table sqlitedata: health_rc=1 restore_rc=0 values_restored=True; table SQLiteLog: health_rc=1 restore_rc=0 values_restored=True; user_version: health_rc=1 restore_rc=0 values_restored=True
+SUMMARY 10/10 pass; oracle ACCEPTS candidate
+
+=== stub-noop
+# m03_oracle candidate: python3.12 <programme-dir>/grok-output/M03/oracle/stubs/noop_echo.py
+FAIL k1_restore_values: snapshot directory not created
+FAIL k2_invalid_backup: snapshot directory not created
+FAIL k3_dry_run: snapshot directory not created
+FAIL k4_rename_gaps: snapshot directory not created
+FAIL k5_recover_killed: snapshot directory not created
+FAIL k6_outside_writes: snapshot inside the dataset was not refused
+FAIL k7_finite_timeout: snapshot directory not created
+FAIL k8_missing_db: snapshot directory not created
+FAIL k9_concurrency: snapshot directory not created
+FAIL k10_value_fidelity: snapshot directory not created
+SUMMARY 0/10 pass; oracle REJECTS candidate
+
+=== stub-naive
+# m03_oracle candidate: python3.12 <programme-dir>/grok-output/M03/oracle/stubs/naive_copier.py
+FAIL k1_restore_values: pre-restore live app.db values not kept anywhere
+FAIL k2_invalid_backup: byteflip: invalid snapshot restore exited 0
+PASS k3_dry_run (0.2s): dry runs (with and without --confirm), recover --dry-run, verify: dataset (incl. -wal/-shm), snapshot, outside byte-identical, mtimes unchanged; health changes only -shm
+FAIL k4_rename_gaps: restore made only 0 rename/unlink events: nothing to interrupt
+FAIL k5_recover_killed: killed recover@1: state forward, old values kept=False
+FAIL k6_outside_writes: snapshot inside the dataset was not refused
+FAIL k7_finite_timeout: restore succeeded while another connection held an exclusive lock
+FAIL k8_missing_db: missing audit.db not reported by name
+FAIL k9_concurrency: concurrent restores lost the live values
+FAIL k10_value_fidelity: table sqlitedata: health --snapshot said ok while values differed
+SUMMARY 1/10 pass; oracle REJECTS candidate
+
+=== mutant-delete_recoverable_copies
+# m03_oracle candidate: python3.12 /tmp/m03-mutants/delete_recoverable_copies/sqlite_recovery.py
+FAIL k1_restore_values: pre-restore live app.db values not kept anywhere
+PASS k2_invalid_backup (0.8s): 13 invalid snapshots refused; dataset byte-identical; verify rejects each
+PASS k3_dry_run (0.3s): dry runs (with and without --confirm), recover --dry-run, verify: dataset (incl. -wal/-shm), snapshot, outside byte-identical, mtimes unchanged; health changes only -shm
+FAIL k4_rename_gaps: kill@3: rolled forward but the old live values were not kept
+FAIL k5_recover_killed: killed recover@1: state forward, old values kept=False
+PASS k6_outside_writes (0.2s): snapshot inside dataset refused; symlinked file and database never followed; outside identical
+PASS k7_finite_timeout (7.5s): held exclusive lock: restore 1.1s non-zero unchanged, snapshot 1.1s non-zero no dir, health 5.2s; works after release
+PASS k8_missing_db (0.4s): missing/renamed/dir/symlink/empty/garbage expected DB fail by name; positive controls pass: renamed,via-snapshot,directory,symlink,empty-vs-snapshot,garbage
+FAIL k9_concurrency: concurrent restores lost the live values
+FAIL k10_value_fidelity: table sqlitedata changed after snapshot; restore rc=0 but values not restored (health before restore rc=0). table sqlitedata: health_rc=0 restore_rc=0 values_restored=False
+SUMMARY 5/10 pass; oracle REJECTS candidate
+
+=== mutant-dry_run_restores_when_confirmed
+# m03_oracle candidate: python3.12 /tmp/m03-mutants/dry_run_restores_when_confirmed/sqlite_recovery.py
+PASS k1_restore_values (0.2s): values restored exactly (3 types of change), old values kept, repeat keeps both copies, missing DB recreated
+PASS k2_invalid_backup (0.8s): 13 invalid snapshots refused; dataset byte-identical; verify rejects each
+FAIL k3_dry_run: restore /private/var/folders/vd/dn87bf4x3fl7nylswx7lm1l80000gn/T/m03-oracle-dl_xtpbp/k3-64mkx5l3/snap --dry-run --confirm 002c0f5ac2e1d4b1: dataset bytes or names changed
+PASS k4_rename_gaps (2.5s): 7 kill points; gaps hit: db-missing 2, installed-unfinished 1; recovered forward 5, back 2; forced roll-back with damaged staged copy x2: originals exact
+PASS k5_recover_killed (1.4s): recover killed at 7 points, second recover consistent each time
+PASS k6_outside_writes (0.2s): snapshot inside dataset refused; symlinked file and database never followed; outside identical
+PASS k7_finite_timeout (7.5s): held exclusive lock: restore 1.1s non-zero unchanged, snapshot 1.1s non-zero no dir, health 5.2s; works after release
+PASS k8_missing_db (0.3s): missing/renamed/dir/symlink/empty/garbage expected DB fail by name; positive controls pass: renamed,via-snapshot,directory,symlink,empty-vs-snapshot,garbage
+PASS k9_concurrency (0.1s): 8 concurrent restores: exit codes [0, 0, 1, 1, 1, 1, 1, 1]; values exact; live values kept
+FAIL k10_value_fidelity: table sqlitedata changed after snapshot; restore rc=0 but values not restored (health before restore rc=0). table sqlitedata: health_rc=0 restore_rc=0 values_restored=False
+SUMMARY 8/10 pass; oracle REJECTS candidate
+
+=== mutant-follow_symlinks
+# m03_oracle candidate: python3.12 /tmp/m03-mutants/follow_symlinks/sqlite_recovery.py
+PASS k1_restore_values (0.3s): values restored exactly (3 types of change), old values kept, repeat keeps both copies, missing DB recreated
+PASS k2_invalid_backup (0.8s): 13 invalid snapshots refused; dataset byte-identical; verify rejects each
+PASS k3_dry_run (0.3s): dry runs (with and without --confirm), recover --dry-run, verify: dataset (incl. -wal/-shm), snapshot, outside byte-identical, mtimes unchanged; health changes only -shm
+PASS k4_rename_gaps (2.3s): 7 kill points; gaps hit: db-missing 2, installed-unfinished 1; recovered forward 5, back 2; forced roll-back with damaged staged copy x2: originals exact
+PASS k5_recover_killed (1.3s): recover killed at 7 points, second recover consistent each time
+PASS k6_outside_writes (0.2s): snapshot inside dataset refused; symlinked file and database never followed; outside identical
+PASS k7_finite_timeout (7.5s): held exclusive lock: restore 1.1s non-zero unchanged, snapshot 1.1s non-zero no dir, health 5.2s; works after release
+FAIL k8_missing_db: symlinked audit.db passed as the expected database
+PASS k9_concurrency (0.1s): 8 concurrent restores: exit codes [0, 0, 0, 1, 1, 1, 1, 1]; values exact; live values kept
+FAIL k10_value_fidelity: table sqlitedata changed after snapshot; restore rc=0 but values not restored (health before restore rc=0). table sqlitedata: health_rc=0 restore_rc=0 values_restored=False
+SUMMARY 8/10 pass; oracle REJECTS candidate
+
+=== mutant-health_ignores_journal
+# m03_oracle candidate: python3.12 /tmp/m03-mutants/health_ignores_journal/sqlite_recovery.py
+PASS k1_restore_values (0.2s): values restored exactly (3 types of change), old values kept, repeat keeps both copies, missing DB recreated
+PASS k2_invalid_backup (0.9s): 13 invalid snapshots refused; dataset byte-identical; verify rejects each
+PASS k3_dry_run (0.3s): dry runs (with and without --confirm), recover --dry-run, verify: dataset (incl. -wal/-shm), snapshot, outside byte-identical, mtimes unchanged; health changes only -shm
+FAIL k4_rename_gaps: kill@5: dataset is mid-swap but health says ok
+PASS k5_recover_killed (1.5s): recover killed at 7 points, second recover consistent each time
+PASS k6_outside_writes (0.3s): snapshot inside dataset refused; symlinked file and database never followed; outside identical
+PASS k7_finite_timeout (7.5s): held exclusive lock: restore 1.1s non-zero unchanged, snapshot 1.1s non-zero no dir, health 5.2s; works after release
+PASS k8_missing_db (0.3s): missing/renamed/dir/symlink/empty/garbage expected DB fail by name; positive controls pass: renamed,via-snapshot,directory,symlink,empty-vs-snapshot,garbage
+PASS k9_concurrency (0.1s): 8 concurrent restores: exit codes [0, 0, 1, 1, 1, 1, 1, 1]; values exact; live values kept
+FAIL k10_value_fidelity: table sqlitedata changed after snapshot; restore rc=0 but values not restored (health before restore rc=0). table sqlitedata: health_rc=0 restore_rc=0 values_restored=False
+SUMMARY 8/10 pass; oracle REJECTS candidate
+
+=== mutant-health_missing_ok
+# m03_oracle candidate: python3.12 /tmp/m03-mutants/health_missing_ok/sqlite_recovery.py
+PASS k1_restore_values (0.3s): values restored exactly (3 types of change), old values kept, repeat keeps both copies, missing DB recreated
+PASS k2_invalid_backup (1.0s): 13 invalid snapshots refused; dataset byte-identical; verify rejects each
+PASS k3_dry_run (0.3s): dry runs (with and without --confirm), recover --dry-run, verify: dataset (incl. -wal/-shm), snapshot, outside byte-identical, mtimes unchanged; health changes only -shm
+PASS k4_rename_gaps (2.4s): 7 kill points; gaps hit: db-missing 2, installed-unfinished 1; recovered forward 5, back 2; forced roll-back with damaged staged copy x2: originals exact
+PASS k5_recover_killed (1.3s): recover killed at 7 points, second recover consistent each time
+PASS k6_outside_writes (0.2s): snapshot inside dataset refused; symlinked file and database never followed; outside identical
+PASS k7_finite_timeout (7.5s): held exclusive lock: restore 1.1s non-zero unchanged, snapshot 1.1s non-zero no dir, health 5.2s; works after release
+FAIL k8_missing_db: missing audit.db not reported by name
+PASS k9_concurrency (0.1s): 8 concurrent restores: exit codes [0, 0, 1, 1, 1, 1, 1, 1]; values exact; live values kept
+FAIL k10_value_fidelity: table sqlitedata changed after snapshot; restore rc=0 but values not restored (health before restore rc=0). table sqlitedata: health_rc=0 restore_rc=0 values_restored=False
+SUMMARY 8/10 pass; oracle REJECTS candidate
+
+=== mutant-no_confirm_needed
+# m03_oracle candidate: python3.12 /tmp/m03-mutants/no_confirm_needed/sqlite_recovery.py
+PASS k1_restore_values (0.2s): values restored exactly (3 types of change), old values kept, repeat keeps both copies, missing DB recreated
+FAIL k2_invalid_backup: wrong-confirm: invalid snapshot restore exited 0
+PASS k3_dry_run (0.3s): dry runs (with and without --confirm), recover --dry-run, verify: dataset (incl. -wal/-shm), snapshot, outside byte-identical, mtimes unchanged; health changes only -shm
+PASS k4_rename_gaps (2.3s): 7 kill points; gaps hit: db-missing 2, installed-unfinished 1; recovered forward 5, back 2; forced roll-back with damaged staged copy x2: originals exact
+PASS k5_recover_killed (1.3s): recover killed at 7 points, second recover consistent each time
+PASS k6_outside_writes (0.2s): snapshot inside dataset refused; symlinked file and database never followed; outside identical
+PASS k7_finite_timeout (7.5s): held exclusive lock: restore 1.1s non-zero unchanged, snapshot 1.1s non-zero no dir, health 5.2s; works after release
+PASS k8_missing_db (0.3s): missing/renamed/dir/symlink/empty/garbage expected DB fail by name; positive controls pass: renamed,via-snapshot,directory,symlink,empty-vs-snapshot,garbage
+PASS k9_concurrency (0.2s): 8 concurrent restores: exit codes [0, 0, 1, 1, 1, 1, 1, 1]; values exact; live values kept
+FAIL k10_value_fidelity: table sqlitedata changed after snapshot; restore rc=0 but values not restored (health before restore rc=0). table sqlitedata: health_rc=0 restore_rc=0 values_restored=False
+SUMMARY 8/10 pass; oracle REJECTS candidate
+
+=== mutant-no_dataset_flock
+# m03_oracle candidate: python3.12 /tmp/m03-mutants/no_dataset_flock/sqlite_recovery.py
+PASS k1_restore_values (0.2s): values restored exactly (3 types of change), old values kept, repeat keeps both copies, missing DB recreated
+PASS k2_invalid_backup (1.0s): 13 invalid snapshots refused; dataset byte-identical; verify rejects each
+PASS k3_dry_run (0.3s): dry runs (with and without --confirm), recover --dry-run, verify: dataset (incl. -wal/-shm), snapshot, outside byte-identical, mtimes unchanged; health changes only -shm
+PASS k4_rename_gaps (2.6s): 7 kill points; gaps hit: db-missing 2, installed-unfinished 1; recovered forward 5, back 2; forced roll-back with damaged staged copy x2: originals exact
+PASS k5_recover_killed (1.5s): recover killed at 7 points, second recover consistent each time
+PASS k6_outside_writes (0.2s): snapshot inside dataset refused; symlinked file and database never followed; outside identical
+PASS k7_finite_timeout (7.6s): held exclusive lock: restore 1.1s non-zero unchanged, snapshot 1.1s non-zero no dir, health 5.2s; works after release
+PASS k8_missing_db (0.3s): missing/renamed/dir/symlink/empty/garbage expected DB fail by name; positive controls pass: renamed,via-snapshot,directory,symlink,empty-vs-snapshot,garbage
+PASS k9_concurrency (0.1s): 8 concurrent restores: exit codes [0, 0, 0, 1, 2, 2, 2, 2]; values exact; live values kept
+FAIL k10_value_fidelity: table sqlitedata changed after snapshot; restore rc=0 but values not restored (health before restore rc=0). table sqlitedata: health_rc=0 restore_rc=0 values_restored=False
+SUMMARY 9/10 pass; oracle REJECTS candidate
+
+=== mutant-no_extra_member_check
+# m03_oracle candidate: python3.12 /tmp/m03-mutants/no_extra_member_check/sqlite_recovery.py
+PASS k1_restore_values (0.2s): values restored exactly (3 types of change), old values kept, repeat keeps both copies, missing DB recreated
+FAIL k2_invalid_backup: extra-member: invalid snapshot restore exited 0
+PASS k3_dry_run (0.3s): dry runs (with and without --confirm), recover --dry-run, verify: dataset (incl. -wal/-shm), snapshot, outside byte-identical, mtimes unchanged; health changes only -shm
+PASS k4_rename_gaps (2.3s): 7 kill points; gaps hit: db-missing 2, installed-unfinished 1; recovered forward 5, back 2; forced roll-back with damaged staged copy x2: originals exact
+PASS k5_recover_killed (1.3s): recover killed at 7 points, second recover consistent each time
+PASS k6_outside_writes (0.2s): snapshot inside dataset refused; symlinked file and database never followed; outside identical
+PASS k7_finite_timeout (7.5s): held exclusive lock: restore 1.1s non-zero unchanged, snapshot 1.1s non-zero no dir, health 5.2s; works after release
+PASS k8_missing_db (0.3s): missing/renamed/dir/symlink/empty/garbage expected DB fail by name; positive controls pass: renamed,via-snapshot,directory,symlink,empty-vs-snapshot,garbage
+PASS k9_concurrency (0.1s): 8 concurrent restores: exit codes [0, 0, 1, 1, 1, 1, 1, 1]; values exact; live values kept
+FAIL k10_value_fidelity: table sqlitedata changed after snapshot; restore rc=0 but values not restored (health before restore rc=0). table sqlitedata: health_rc=0 restore_rc=0 values_restored=False
+SUMMARY 8/10 pass; oracle REJECTS candidate
+
+=== mutant-no_staging_journal
+# m03_oracle candidate: python3.12 /tmp/m03-mutants/no_staging_journal/sqlite_recovery.py
+PASS k1_restore_values (0.2s): values restored exactly (3 types of change), old values kept, repeat keeps both copies, missing DB recreated
+PASS k2_invalid_backup (0.8s): 13 invalid snapshots refused; dataset byte-identical; verify rejects each
+PASS k3_dry_run (0.3s): dry runs (with and without --confirm), recover --dry-run, verify: dataset (incl. -wal/-shm), snapshot, outside byte-identical, mtimes unchanged; health changes only -shm
+PASS k4_rename_gaps (2.2s): 7 kill points; gaps hit: db-missing 2, installed-unfinished 1; recovered forward 6, back 1; forced roll-back with damaged staged copy x2: originals exact
+PASS k5_recover_killed (1.3s): recover killed at 7 points, second recover consistent each time
+PASS k6_outside_writes (0.2s): snapshot inside dataset refused; symlinked file and database never followed; outside identical
+PASS k7_finite_timeout (7.5s): held exclusive lock: restore 1.1s non-zero unchanged, snapshot 1.1s non-zero no dir, health 5.2s; works after release
+PASS k8_missing_db (0.3s): missing/renamed/dir/symlink/empty/garbage expected DB fail by name; positive controls pass: renamed,via-snapshot,directory,symlink,empty-vs-snapshot,garbage
+PASS k9_concurrency (0.1s): 8 concurrent restores: exit codes [0, 0, 0, 1, 1, 1, 1, 1]; values exact; live values kept
+FAIL k10_value_fidelity: table sqlitedata changed after snapshot; restore rc=0 but values not restored (health before restore rc=0). table sqlitedata: health_rc=0 restore_rc=0 values_restored=False
+SUMMARY 9/10 pass; oracle REJECTS candidate
+
+=== mutant-recover_always_forward
+# m03_oracle candidate: python3.12 /tmp/m03-mutants/recover_always_forward/sqlite_recovery.py
+PASS k1_restore_values (0.2s): values restored exactly (3 types of change), old values kept, repeat keeps both copies, missing DB recreated
+PASS k2_invalid_backup (0.8s): 13 invalid snapshots refused; dataset byte-identical; verify rejects each
+PASS k3_dry_run (0.3s): dry runs (with and without --confirm), recover --dry-run, verify: dataset (incl. -wal/-shm), snapshot, outside byte-identical, mtimes unchanged; health changes only -shm
+PASS k4_rename_gaps (2.2s): 7 kill points; gaps hit: db-missing 2, installed-unfinished 1; recovered forward 5, back 2; forced roll-back with damaged staged copy x2: originals exact
+PASS k5_recover_killed (1.3s): recover killed at 7 points, second recover consistent each time
+PASS k6_outside_writes (0.2s): snapshot inside dataset refused; symlinked file and database never followed; outside identical
+PASS k7_finite_timeout (7.5s): held exclusive lock: restore 1.1s non-zero unchanged, snapshot 1.1s non-zero no dir, health 5.2s; works after release
+PASS k8_missing_db (0.3s): missing/renamed/dir/symlink/empty/garbage expected DB fail by name; positive controls pass: renamed,via-snapshot,directory,symlink,empty-vs-snapshot,garbage
+PASS k9_concurrency (0.2s): 8 concurrent restores: exit codes [0, 0, 1, 1, 1, 1, 1, 1]; values exact; live values kept
+FAIL k10_value_fidelity: table sqlitedata changed after snapshot; restore rc=0 but values not restored (health before restore rc=0). table sqlitedata: health_rc=0 restore_rc=0 values_restored=False
+SUMMARY 9/10 pass; oracle REJECTS candidate
+
+=== mutant-recover_noop
+# m03_oracle candidate: python3.12 /tmp/m03-mutants/recover_noop/sqlite_recovery.py
+PASS k1_restore_values (0.3s): values restored exactly (3 types of change), old values kept, repeat keeps both copies, missing DB recreated
+PASS k2_invalid_backup (0.8s): 13 invalid snapshots refused; dataset byte-identical; verify rejects each
+PASS k3_dry_run (0.3s): dry runs (with and without --confirm), recover --dry-run, verify: dataset (incl. -wal/-shm), snapshot, outside byte-identical, mtimes unchanged; health changes only -shm
+FAIL k4_rename_gaps: kill@2: health still failing after recover
+FAIL k5_recover_killed: killed recover@1: health failing
+PASS k6_outside_writes (0.2s): snapshot inside dataset refused; symlinked file and database never followed; outside identical
+PASS k7_finite_timeout (7.5s): held exclusive lock: restore 1.1s non-zero unchanged, snapshot 1.1s non-zero no dir, health 5.2s; works after release
+PASS k8_missing_db (0.3s): missing/renamed/dir/symlink/empty/garbage expected DB fail by name; positive controls pass: renamed,via-snapshot,directory,symlink,empty-vs-snapshot,garbage
+PASS k9_concurrency (0.1s): 8 concurrent restores: exit codes [0, 0, 1, 1, 1, 1, 1, 1]; values exact; live values kept
+FAIL k10_value_fidelity: table sqlitedata changed after snapshot; restore rc=0 but values not restored (health before restore rc=0). table sqlitedata: health_rc=0 restore_rc=0 values_restored=False
+SUMMARY 7/10 pass; oracle REJECTS candidate
+
+=== mutant-skip_snapshot_verify
+# m03_oracle candidate: python3.12 /tmp/m03-mutants/skip_snapshot_verify/sqlite_recovery.py
+PASS k1_restore_values (0.2s): values restored exactly (3 types of change), old values kept, repeat keeps both copies, missing DB recreated
+FAIL k2_invalid_backup: hardlink-member: invalid snapshot restore exited 0
+PASS k3_dry_run (0.3s): dry runs (with and without --confirm), recover --dry-run, verify: dataset (incl. -wal/-shm), snapshot, outside byte-identical, mtimes unchanged; health changes only -shm
+PASS k4_rename_gaps (2.3s): 7 kill points; gaps hit: db-missing 2, installed-unfinished 1; recovered forward 5, back 2; forced roll-back with damaged staged copy x2: originals exact
+PASS k5_recover_killed (1.3s): recover killed at 7 points, second recover consistent each time
+PASS k6_outside_writes (0.2s): snapshot inside dataset refused; symlinked file and database never followed; outside identical
+PASS k7_finite_timeout (7.5s): held exclusive lock: restore 1.1s non-zero unchanged, snapshot 1.1s non-zero no dir, health 5.2s; works after release
+PASS k8_missing_db (0.3s): missing/renamed/dir/symlink/empty/garbage expected DB fail by name; positive controls pass: renamed,via-snapshot,directory,symlink,empty-vs-snapshot,garbage
+PASS k9_concurrency (0.1s): 8 concurrent restores: exit codes [0, 0, 1, 1, 1, 1, 1, 1]; values exact; live values kept
+FAIL k10_value_fidelity: table sqlitedata changed after snapshot; restore rc=0 but values not restored (health before restore rc=0). table sqlitedata: health_rc=0 restore_rc=0 values_restored=False
+SUMMARY 8/10 pass; oracle REJECTS candidate
+
+=== mutant-skip_when_counts_match
+# m03_oracle candidate: python3.12 /tmp/m03-mutants/skip_when_counts_match/sqlite_recovery.py
+PASS k1_restore_values (0.2s): values restored exactly (3 types of change), old values kept, repeat keeps both copies, missing DB recreated
+PASS k2_invalid_backup (0.9s): 13 invalid snapshots refused; dataset byte-identical; verify rejects each
+PASS k3_dry_run (0.3s): dry runs (with and without --confirm), recover --dry-run, verify: dataset (incl. -wal/-shm), snapshot, outside byte-identical, mtimes unchanged; health changes only -shm
+PASS k4_rename_gaps (2.3s): 7 kill points; gaps hit: db-missing 2, installed-unfinished 1; recovered forward 5, back 2; forced roll-back with damaged staged copy x2: originals exact
+PASS k5_recover_killed (1.3s): recover killed at 7 points, second recover consistent each time
+PASS k6_outside_writes (0.2s): snapshot inside dataset refused; symlinked file and database never followed; outside identical
+PASS k7_finite_timeout (7.5s): held exclusive lock: restore 1.1s non-zero unchanged, snapshot 1.1s non-zero no dir, health 5.2s; works after release
+PASS k8_missing_db (0.3s): missing/renamed/dir/symlink/empty/garbage expected DB fail by name; positive controls pass: renamed,via-snapshot,directory,symlink,empty-vs-snapshot,garbage
+PASS k9_concurrency (0.1s): 8 concurrent restores: exit codes [0, 0, 0, 1, 1, 1, 1, 1]; values exact; live values kept
+FAIL k10_value_fidelity: table sqlitedata changed after snapshot; restore rc=0 but values not restored (health before restore rc=0). table sqlitedata: health_rc=0 restore_rc=0 values_restored=False
+SUMMARY 9/10 pass; oracle REJECTS candidate
+
+=== mutant-unbounded_lock_wait
+# m03_oracle candidate: python3.12 /tmp/m03-mutants/unbounded_lock_wait/sqlite_recovery.py
+PASS k1_restore_values (0.3s): values restored exactly (3 types of change), old values kept, repeat keeps both copies, missing DB recreated
+PASS k2_invalid_backup (0.9s): 13 invalid snapshots refused; dataset byte-identical; verify rejects each
+PASS k3_dry_run (0.3s): dry runs (with and without --confirm), recover --dry-run, verify: dataset (incl. -wal/-shm), snapshot, outside byte-identical, mtimes unchanged; health changes only -shm
+PASS k4_rename_gaps (2.3s): 7 kill points; gaps hit: db-missing 2, installed-unfinished 1; recovered forward 5, back 2; forced roll-back with damaged staged copy x2: originals exact
+PASS k5_recover_killed (1.3s): recover killed at 7 points, second recover consistent each time
+PASS k6_outside_writes (0.2s): snapshot inside dataset refused; symlinked file and database never followed; outside identical
+FAIL k7_finite_timeout: candidate did not finish within 40s: ('restore',)
+PASS k8_missing_db (0.3s): missing/renamed/dir/symlink/empty/garbage expected DB fail by name; positive controls pass: renamed,via-snapshot,directory,symlink,empty-vs-snapshot,garbage
+PASS k9_concurrency (0.1s): 8 concurrent restores: exit codes [0, 0, 1, 1, 1, 1, 1, 1]; values exact; live values kept
+FAIL k10_value_fidelity: table sqlitedata changed after snapshot; restore rc=0 but values not restored (health before restore rc=0). table sqlitedata: health_rc=0 restore_rc=0 values_restored=False
+SUMMARY 8/10 pass; oracle REJECTS candidate
+

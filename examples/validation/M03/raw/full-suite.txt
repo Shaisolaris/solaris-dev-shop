@@ -1,0 +1,16 @@
+# commit 7c63297d626ab2ac5929080e57c9ae66e7c905bc; python 3.12.14 3.53.1
+## original suite: discover -p 'test_[!g]*.py'
+rc=0
+Ran 84 tests in 1.712s
+
+OK
+## G03 tests
+rc=0
+Ran 30 tests in 3.583s
+
+OK
+## full: discover -s tests
+rc=0
+Ran 114 tests in 5.346s
+
+OK

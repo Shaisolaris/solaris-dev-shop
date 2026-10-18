@@ -1,0 +1,14 @@
+ .../infrastructure/database-administrator/SKILL.md |   2 +
+ .../capability.contract.json                       |  16 +-
+ .../database-administrator/learnings.md            |   3 +
+ .../database-administrator/plugin.json             |   3 +-
+ .../database-administrator/sqlite-recovery.md      |  51 ++
+ .../database-administrator/sqlite_recovery.py      | 875 +++++++++++++++++++++
+ .../site-reliability-engineer/SKILL.md             |   1 +
+ .../site-reliability-engineer/learnings.md         |   2 +
+ examples/capabilities/G03/README.md                |  22 +
+ examples/capabilities/G03/naive_stub.py            |  36 +
+ examples/capabilities/G03/noop_stub.py             |  11 +
+ examples/capabilities/G03/recovery_oracle.py       | 347 ++++++++
+ tests/test_g03_capability.py                       | 476 +++++++++++
+ 13 files changed, 1841 insertions(+), 4 deletions(-)

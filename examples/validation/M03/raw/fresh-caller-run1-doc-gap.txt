@@ -1,0 +1,82 @@
+# run1 kept as evidence: following sqlite-recovery.md literally, the first command fails (snapshots/ parent must exist; doc does not say so). Also my caller bug: x() output redirected into snap.json, fixed in run2.
+python3 = 3.12.14; HOME=/tmp/m03-fresh/home; env vars: 7
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py snapshot data/ --out snapshots/2026-10-18 --json
+{
+  "exit_code": 2,
+  "messages": [
+    "snapshot destination parent must be an existing real directory"
+  ],
+  "status": "refused"
+}
+[exit 2]
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "<python3.12-lib>/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "<python3.12-lib>/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<python3.12-lib>/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<python3.12-lib>/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py verify snapshots/2026-10-18 --expect app.db --expect audit.db
+verify: failed
+  snapshot /private/tmp/m03-fresh/repo/snapshots/2026-10-18: does not exist; expected a real directory
+[exit 1]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py health data/ --expect app.db --expect audit.db --snapshot snapshots/2026-10-18
+health: invalid
+  snapshot /private/tmp/m03-fresh/repo/snapshots/2026-10-18: does not exist; expected a real directory
+[exit 2]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py health data/ --expect app.db --expect audit.db --snapshot snapshots/2026-10-18
+health: invalid
+  snapshot /private/tmp/m03-fresh/repo/snapshots/2026-10-18: does not exist; expected a real directory
+[exit 2]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py restore data/ --snapshot snapshots/2026-10-18 --dry-run
+restore: refused
+  snapshot /private/tmp/m03-fresh/repo/snapshots/2026-10-18: does not exist; expected a real directory
+[exit 2]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py restore data/ --snapshot snapshots/2026-10-18
+restore: refused
+  snapshot /private/tmp/m03-fresh/repo/snapshots/2026-10-18: does not exist; expected a real directory
+[exit 2]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py restore data/ --snapshot snapshots/2026-10-18 --confirm
+usage: sqlite_recovery.py restore [-h] --snapshot SNAPSHOT [--confirm CONFIRM]
+                                  [--dry-run] [--lock-timeout LOCK_TIMEOUT]
+                                  [--simulate-crash-after SIMULATE_CRASH_AFTER]
+                                  [--json]
+                                  dataset
+sqlite_recovery.py restore: error: argument --confirm: expected one argument
+[exit 2]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py health data/ --expect app.db --expect audit.db --snapshot snapshots/2026-10-18
+health: invalid
+  snapshot /private/tmp/m03-fresh/repo/snapshots/2026-10-18: does not exist; expected a real directory
+[exit 2]
+values now: [('apple', 99), ('pear', 2), ('mistake', 0)]
+dataset: app.db audit.db 
+-- drill from the doc
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py restore data/ --snapshot snapshots/2026-10-18 --confirm --simulate-crash-after 1
+usage: sqlite_recovery.py restore [-h] --snapshot SNAPSHOT [--confirm CONFIRM]
+                                  [--dry-run] [--lock-timeout LOCK_TIMEOUT]
+                                  [--simulate-crash-after SIMULATE_CRASH_AFTER]
+                                  [--json]
+                                  dataset
+sqlite_recovery.py restore: error: argument --confirm: expected one argument
+[exit 2]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py health data/ --expect app.db --expect audit.db
+health: ok
+  healthy: app.db, audit.db
+[exit 0]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py recover data/
+recover: nothing_to_do
+  no interrupted restore recorded; nothing changed
+[exit 0]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py health data/ --expect app.db --expect audit.db --snapshot snapshots/2026-10-18
+health: invalid
+  snapshot /private/tmp/m03-fresh/repo/snapshots/2026-10-18: does not exist; expected a real directory
+[exit 2]
+values now: [('apple', 7), ('pear', 7), ('mistake', 7)]
+dataset: app.db audit.db 

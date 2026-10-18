@@ -1,0 +1,89 @@
+python3 = 3.12.14; HOME=/tmp/m03-fresh/home; env vars: 7
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py snapshot data/ --out snapshots/2026-10-18 --json   (literal doc command)
+{
+  "exit_code": 2,
+  "messages": [
+    "snapshot destination parent must be an existing real directory"
+  ],
+  "status": "refused"
+}
+[exit 2]
+DEVIATION: the doc does not say the parent must exist; creating it: mkdir -p snapshots
+[exit 0]
+{
+  "databases": {
+    "app.db": {
+      "tables": {
+        "orders": 2
+      }
+    },
+    "audit.db": {
+      "tables": {
+        "ev": 1
+      }
+    }
+  },
+  "exit_code": 0,
+  "messages": [
+    "snapshot 41fc0c5efbb5e637 written to /private/tmp/m03-fresh/repo/snapshots/2026-10-18"
+  ],
+  "snapshot": "/private/tmp/m03-fresh/repo/snapshots/2026-10-18",
+  "snapshot_id": "41fc0c5efbb5e637",
+  "status": "ok"
+}
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py verify snapshots/2026-10-18 --expect app.db --expect audit.db
+verify: ok
+  snapshot 41fc0c5efbb5e637 verified: 2 databases, sha256, integrity and per-table value digests match
+[exit 0]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py health data/ --expect app.db --expect audit.db --snapshot snapshots/2026-10-18
+health: ok
+  healthy: app.db, audit.db match snapshot 41fc0c5efbb5e637
+[exit 0]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py health data/ --expect app.db --expect audit.db --snapshot snapshots/2026-10-18
+health: unhealthy
+  app.db: values differ from snapshot 41fc0c5efbb5e637 in tables ['orders']
+[exit 1]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py restore data/ --snapshot snapshots/2026-10-18 --dry-run
+restore: planned
+  dry run: would restore 1 of 2 databases from snapshot 41fc0c5efbb5e637; nothing written
+  a real restore needs --confirm 41fc0c5efbb5e637
+  plan app.db: tables differing: ['orders']; rows only in the live database: {'orders': 2}
+  plan audit.db: already matches the snapshot; left in place
+[exit 0]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py restore data/ --snapshot snapshots/2026-10-18
+restore: refused
+  restore needs explicit intent: --confirm 41fc0c5efbb5e637 (the plan below shows what the live files hold that the snapshot does not); nothing changed
+  plan app.db: tables differing: ['orders']; rows only in the live database: {'orders': 2}
+  plan audit.db: already matches the snapshot; left in place
+[exit 2]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py restore data/ --snapshot snapshots/2026-10-18 --confirm 41fc0c5efbb5e637
+restore: ok
+  restored app.db from snapshot 41fc0c5efbb5e637
+  previous files kept: app.db.pre-restore-41fc0c5efbb5e637-f5ef760e
+[exit 0]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py health data/ --expect app.db --expect audit.db --snapshot snapshots/2026-10-18
+health: ok
+  healthy: app.db, audit.db match snapshot 41fc0c5efbb5e637
+[exit 0]
+values now: [('apple', 1), ('pear', 2)]
+dataset: app.db app.db.pre-restore-41fc0c5efbb5e637-f5ef760e audit.db 
+-- drill from the doc
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py restore data/ --snapshot snapshots/2026-10-18 --confirm 41fc0c5efbb5e637 --simulate-crash-after 1
+[exit 137]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py health data/ --expect app.db --expect audit.db
+health: unhealthy
+  .solaris-recovery.json: a restore is in progress or was interrupted; run `recover`
+  app.db: expected database is missing
+[exit 1]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py recover data/
+recover: ok
+  interrupted after 1 of 2 renames; staged copies verify, completing the restore
+  restored app.db from snapshot 41fc0c5efbb5e637
+  previous files kept: app.db.pre-restore-41fc0c5efbb5e637-e975e136
+[exit 0]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py health data/ --expect app.db --expect audit.db --snapshot snapshots/2026-10-18
+health: ok
+  healthy: app.db, audit.db match snapshot 41fc0c5efbb5e637
+[exit 0]
+values now: [('apple', 1), ('pear', 2)]
+dataset: app.db app.db.pre-restore-41fc0c5efbb5e637-e975e136 app.db.pre-restore-41fc0c5efbb5e637-f5ef760e audit.db 

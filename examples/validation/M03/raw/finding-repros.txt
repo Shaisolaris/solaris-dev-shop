@@ -1,0 +1,97 @@
+### F1 user tables whose names match LIKE 'sqlite_%' are invisible to compare/health/restore
+$ python3.12 <candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py health ds --expect app.db --snapshot snap
+health: ok
+  healthy: app.db match snapshot ff1fc99e8434743f
+[exit 0]
+$ python3.12 <candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py restore ds --snapshot snap --confirm ff1fc99e8434743f
+restore: ok
+  every database already matches snapshot ff1fc99e8434743f; nothing changed
+[exit 0]
+sqlitedata after restore: [('plan', 'LIVE-CHANGED')]   SQLiteLog rows: [(0,)]   (snapshot had GOOD / 1)
+
+### F2 user_version / application_id changes are not detected or restored
+$ python3.12 <candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py health ds --expect app.db --snapshot snap
+health: ok
+  healthy: app.db match snapshot 7e2004bb6666afaa
+[exit 0]
+$ python3.12 <candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py restore ds --snapshot snap --confirm 7e2004bb6666afaa
+restore: ok
+  every database already matches snapshot 7e2004bb6666afaa; nothing changed
+[exit 0]
+user_version/application_id after restore: [(9,)] [(77,)]  (snapshot had 0 0)
+
+### F3 stock macOS python3 (links Apple /usr/lib/libsqlite3 3.54.0): WAL databases cannot be snapshotted usably
+interpreter 3.9.6 sqlite 3.54.0
+-- F3a quiescent WAL database (journal_mode=WAL, no open connection, so no -wal/-shm on disk)
+dataset: app.db 
+$ /usr/bin/python3 <candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py snapshot ds --out snapA
+snapshot: refused
+  app.db could not be read as SQLite: unable to open database file
+[exit 2]
+$ /usr/bin/python3 <candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py health ds --expect app.db
+health: unhealthy
+  app.db: unreadable as SQLite (unable to open database file)
+[exit 1]
+-- F3b WAL database with a live writer holding committed rows in -wal (the G03 test test_wal_source_and_sidecars_are_handled)
+snapshot dir: app.db app.db-shm manifest.json 
+$ /usr/bin/python3 <candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py verify snapB
+verify: failed
+  snapshot contains entries not in its manifest: app.db-shm
+[exit 1]
+$ /usr/bin/python3 <candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py restore ds --snapshot snapB --confirm 561d221fbb5bfb1d --dry-run
+restore: refused
+  snapshot contains entries not in its manifest: app.db-shm
+[exit 2]
+-- control: the same two cases on the stated Python 3.12 (bundled SQLite 3.53.1)
+$ python3.12 <candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py snapshot ds --out snapC
+snapshot: ok
+  snapshot 8e5794fc69f89bc3 written to <tmp>/snapC
+[exit 0]
+
+### F4 health without --snapshot calls a 0-byte or emptied expected DB healthy
+$ python3.12 <candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py health ds --expect app.db
+health: ok
+  healthy: app.db
+[exit 0]
+$ python3.12 <candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py health ds --expect app.db
+health: ok
+  healthy: app.db
+[exit 0]
+
+### F5 health --snapshot tracebacks on a manifest entry without 'tables' (verify/restore refuse cleanly)
+$ python3.12 <candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py verify snap
+verify: failed
+  app.db: content does not match manifest (integrity ok; tables ['orders'])
+[exit 1]
+$ python3.12 <candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py health ds --expect app.db --snapshot snap
+Traceback (most recent call last):
+  File "<candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py", line 875, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "<candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py", line 856, in main
+    res = health(a.dataset, a.expect, a.snapshot)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py", line 467, in health
+[exit 1]
+
+### F6 the first documented command fails when snapshots/ does not exist yet
+$ python3.12 <candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py snapshot ds --out snapshots/2026-10-18 --json
+{
+  "exit_code": 2,
+  "messages": [
+    "snapshot destination parent must be an existing real directory"
+  ],
+  "status": "refused"
+}
+[exit 2]
+
+### F7 cosmetic: --lock-timeout nan accepted; health on a locked DB reports 'unreadable as SQLite'
+$ python3.12 <candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py restore ds --snapshot snap --confirm 569a004f1ef77b31 --dry-run --lock-timeout nan
+restore: planned
+  dry run: would restore 0 of 1 databases from snapshot 569a004f1ef77b31; nothing written
+  plan app.db: already matches the snapshot; left in place
+[exit 0]
+$ python3.12 <candidate>/employees/infrastructure/database-administrator/sqlite_recovery.py health ds --expect app.db
+health: unhealthy
+  app.db: unreadable as SQLite (database is locked)
+[exit 1]

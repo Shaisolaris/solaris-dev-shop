@@ -1,0 +1,4 @@
+# run1, before narrowing k3 (health was wrongly held to the dry-run byte-identical rule)
+# m03_oracle candidate: python3.12 employees/infrastructure/database-administrator/sqlite_recovery.py
+FAIL k3_dry_run: health app.db --snapshot /private/var/folders/vd/dn87bf4x3fl7nylswx7lm1l80000gn/T/m03-oracle-mdsr3nyj/k3-ybw831m0/snap: dataset bytes or names changed
+SUMMARY 0/1 pass; oracle REJECTS candidate

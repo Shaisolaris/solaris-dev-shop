@@ -1,0 +1,298 @@
+=== candidate
+PASS c1_values_restored: exact values back; previous file kept; neighbour untouched; health 0
+PASS c2_good_target_survives_invalid_snapshots: refused with target byte-identical: flipped-byte, garbage-manifest, link-member, forged-values, truncated
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+PASS c4_gap_target_absent: target absent + snapshot deleted -> rolled forward; damaged stage -> original back
+PASS c5_gap_after_install: installed-but-unfinished swap completed; second recover stable
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+PASS c7_finite_timeout: locked restore refused in 1.1s, locked snapshot refused in 5.4s, target unchanged
+PASS c8_exact_missing_db: missing expected DB fails health and verify; restore brings it back
+PASS c9_explicit_intent: no or wrong confirm refused unchanged; confirmed restore keeps the newer row in a copy
+PASS c10_concurrent: 6 concurrent restores exit [0, 1, 1, 1, 0, 1]; values exact; live copy kept
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.68s
+SUMMARY 11/11 pass; candidate ACCEPTED by oracle
+
+=== positive-control-proposed-fix
+PASS c1_values_restored: exact values back; previous file kept; neighbour untouched; health 0
+PASS c2_good_target_survives_invalid_snapshots: refused with target byte-identical: flipped-byte, garbage-manifest, link-member, forged-values, truncated
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+PASS c4_gap_target_absent: target absent + snapshot deleted -> rolled forward; damaged stage -> original back
+PASS c5_gap_after_install: installed-but-unfinished swap completed; second recover stable
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+PASS c7_finite_timeout: locked restore refused in 1.1s, locked snapshot refused in 5.4s, target unchanged
+PASS c8_exact_missing_db: missing expected DB fails health and verify; restore brings it back
+PASS c9_explicit_intent: no or wrong confirm refused unchanged; confirmed restore keeps the newer row in a copy
+PASS c10_concurrent: 6 concurrent restores exit [0, 1, 1, 1, 0, 1]; values exact; live copy kept
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.69s
+SUMMARY 11/11 pass; candidate ACCEPTED by oracle
+
+=== builder-noop_stub
+FAIL c1_values_restored: snapshot directory empty or missing
+FAIL c2_good_target_survives_invalid_snapshots: snapshot directory empty or missing
+FAIL c3_dry_run_byte_identical: snapshot directory empty or missing
+FAIL c4_gap_target_absent: snapshot directory empty or missing
+FAIL c5_gap_after_install: snapshot directory empty or missing
+FAIL c6_no_outside_writes: snapshot directory empty or missing
+FAIL c7_finite_timeout: snapshot directory empty or missing
+FAIL c8_exact_missing_db: snapshot directory empty or missing
+FAIL c9_explicit_intent: snapshot directory empty or missing
+FAIL c10_concurrent: snapshot directory empty or missing
+FAIL c11_scale: snapshot directory empty or missing
+SUMMARY 0/11 pass; candidate REJECTED
+
+=== builder-naive_stub
+FAIL c1_values_restored: the replaced live file was not kept as a recoverable copy
+FAIL c2_good_target_survives_invalid_snapshots: flipped-byte: invalid snapshot restored (exit 0)
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+FAIL c4_gap_target_absent: crash drill after rename 1 exited 0
+FAIL c5_gap_after_install: crash drill after rename 2 exited 0
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+FAIL c7_finite_timeout: restore over a locked target exited 0
+FAIL c8_exact_missing_db: snapshot lacking ledger.db verified
+FAIL c9_explicit_intent: restore without the right --confirm changed data ([])
+FAIL c10_concurrent: live data lost in the race
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.02s
+SUMMARY 3/11 pass; candidate REJECTED
+
+=== m03-stub-noop
+FAIL c1_values_restored: snapshot directory empty or missing
+FAIL c2_good_target_survives_invalid_snapshots: snapshot directory empty or missing
+FAIL c3_dry_run_byte_identical: snapshot directory empty or missing
+FAIL c4_gap_target_absent: snapshot directory empty or missing
+FAIL c5_gap_after_install: snapshot directory empty or missing
+FAIL c6_no_outside_writes: snapshot directory empty or missing
+FAIL c7_finite_timeout: snapshot directory empty or missing
+FAIL c8_exact_missing_db: snapshot directory empty or missing
+FAIL c9_explicit_intent: snapshot directory empty or missing
+FAIL c10_concurrent: snapshot directory empty or missing
+FAIL c11_scale: snapshot directory empty or missing
+SUMMARY 0/11 pass; candidate REJECTED
+
+=== m03-stub-naive
+FAIL c1_values_restored: the replaced live file was not kept as a recoverable copy
+FAIL c2_good_target_survives_invalid_snapshots: flipped-byte: invalid snapshot restored (exit 0)
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+FAIL c4_gap_target_absent: after the first rename the target should be set aside
+FAIL c5_gap_after_install: gap 2 not completed
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+FAIL c7_finite_timeout: restore over a locked target exited 0
+FAIL c8_exact_missing_db: snapshot lacking ledger.db verified
+FAIL c9_explicit_intent: restore without the right --confirm changed data ([])
+FAIL c10_concurrent: live data lost in the race
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.02s
+SUMMARY 3/11 pass; candidate REJECTED
+
+=== mutant-delete_recoverable_copies
+FAIL c1_values_restored: the replaced live file was not kept as a recoverable copy
+PASS c2_good_target_survives_invalid_snapshots: refused with target byte-identical: flipped-byte, garbage-manifest, link-member, forged-values, truncated
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+FAIL c4_gap_target_absent: the live file was lost
+PASS c5_gap_after_install: installed-but-unfinished swap completed; second recover stable
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+PASS c7_finite_timeout: locked restore refused in 1.1s, locked snapshot refused in 5.3s, target unchanged
+PASS c8_exact_missing_db: missing expected DB fails health and verify; restore brings it back
+FAIL c9_explicit_intent: newer live row is not kept anywhere
+FAIL c10_concurrent: live data lost in the race
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.67s
+SUMMARY 7/11 pass; candidate REJECTED
+
+=== mutant-dry_run_restores_when_confirmed
+PASS c1_values_restored: exact values back; previous file kept; neighbour untouched; health 0
+PASS c2_good_target_survives_invalid_snapshots: refused with target byte-identical: flipped-byte, garbage-manifest, link-member, forged-values, truncated
+FAIL c3_dry_run_byte_identical: dry run changed bytes or added files
+PASS c4_gap_target_absent: target absent + snapshot deleted -> rolled forward; damaged stage -> original back
+PASS c5_gap_after_install: installed-but-unfinished swap completed; second recover stable
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+PASS c7_finite_timeout: locked restore refused in 1.1s, locked snapshot refused in 5.4s, target unchanged
+PASS c8_exact_missing_db: missing expected DB fails health and verify; restore brings it back
+PASS c9_explicit_intent: no or wrong confirm refused unchanged; confirmed restore keeps the newer row in a copy
+PASS c10_concurrent: 6 concurrent restores exit [0, 1, 1, 1, 0, 1]; values exact; live copy kept
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.68s
+SUMMARY 10/11 pass; candidate REJECTED
+
+=== mutant-follow_symlinks
+PASS c1_values_restored: exact values back; previous file kept; neighbour untouched; health 0
+PASS c2_good_target_survives_invalid_snapshots: refused with target byte-identical: flipped-byte, garbage-manifest, link-member, forged-values, truncated
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+PASS c4_gap_target_absent: target absent + snapshot deleted -> rolled forward; damaged stage -> original back
+PASS c5_gap_after_install: installed-but-unfinished swap completed; second recover stable
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+PASS c7_finite_timeout: locked restore refused in 1.1s, locked snapshot refused in 5.4s, target unchanged
+PASS c8_exact_missing_db: missing expected DB fails health and verify; restore brings it back
+PASS c9_explicit_intent: no or wrong confirm refused unchanged; confirmed restore keeps the newer row in a copy
+PASS c10_concurrent: 6 concurrent restores exit [0, 1, 1, 1, 0, 1]; values exact; live copy kept
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.68s
+SUMMARY 11/11 pass; candidate ACCEPTED by oracle
+
+=== mutant-health_ignores_journal
+PASS c1_values_restored: exact values back; previous file kept; neighbour untouched; health 0
+PASS c2_good_target_survives_invalid_snapshots: refused with target byte-identical: flipped-byte, garbage-manifest, link-member, forged-values, truncated
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+PASS c4_gap_target_absent: target absent + snapshot deleted -> rolled forward; damaged stage -> original back
+PASS c5_gap_after_install: installed-but-unfinished swap completed; second recover stable
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+PASS c7_finite_timeout: locked restore refused in 1.1s, locked snapshot refused in 5.4s, target unchanged
+PASS c8_exact_missing_db: missing expected DB fails health and verify; restore brings it back
+PASS c9_explicit_intent: no or wrong confirm refused unchanged; confirmed restore keeps the newer row in a copy
+PASS c10_concurrent: 6 concurrent restores exit [0, 1, 1, 0, 1, 1]; values exact; live copy kept
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.68s
+SUMMARY 11/11 pass; candidate ACCEPTED by oracle
+
+=== mutant-health_missing_ok
+PASS c1_values_restored: exact values back; previous file kept; neighbour untouched; health 0
+PASS c2_good_target_survives_invalid_snapshots: refused with target byte-identical: flipped-byte, garbage-manifest, link-member, forged-values, truncated
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+PASS c4_gap_target_absent: target absent + snapshot deleted -> rolled forward; damaged stage -> original back
+PASS c5_gap_after_install: installed-but-unfinished swap completed; second recover stable
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+PASS c7_finite_timeout: locked restore refused in 1.1s, locked snapshot refused in 5.4s, target unchanged
+FAIL c8_exact_missing_db: missing audit.db reported healthy
+PASS c9_explicit_intent: no or wrong confirm refused unchanged; confirmed restore keeps the newer row in a copy
+PASS c10_concurrent: 6 concurrent restores exit [0, 1, 1, 1, 1, 1]; values exact; live copy kept
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.68s
+SUMMARY 10/11 pass; candidate REJECTED
+
+=== mutant-no_confirm_needed
+PASS c1_values_restored: exact values back; previous file kept; neighbour untouched; health 0
+PASS c2_good_target_survives_invalid_snapshots: refused with target byte-identical: flipped-byte, garbage-manifest, link-member, forged-values, truncated
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+PASS c4_gap_target_absent: target absent + snapshot deleted -> rolled forward; damaged stage -> original back
+PASS c5_gap_after_install: installed-but-unfinished swap completed; second recover stable
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+PASS c7_finite_timeout: locked restore refused in 1.1s, locked snapshot refused in 5.4s, target unchanged
+PASS c8_exact_missing_db: missing expected DB fails health and verify; restore brings it back
+FAIL c9_explicit_intent: restore without the right --confirm changed data ([])
+PASS c10_concurrent: 6 concurrent restores exit [0, 1, 1, 1, 1, 0]; values exact; live copy kept
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.68s
+SUMMARY 10/11 pass; candidate REJECTED
+
+=== mutant-no_dataset_flock
+PASS c1_values_restored: exact values back; previous file kept; neighbour untouched; health 0
+PASS c2_good_target_survives_invalid_snapshots: refused with target byte-identical: flipped-byte, garbage-manifest, link-member, forged-values, truncated
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+PASS c4_gap_target_absent: target absent + snapshot deleted -> rolled forward; damaged stage -> original back
+PASS c5_gap_after_install: installed-but-unfinished swap completed; second recover stable
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+PASS c7_finite_timeout: locked restore refused in 1.1s, locked snapshot refused in 5.3s, target unchanged
+PASS c8_exact_missing_db: missing expected DB fails health and verify; restore brings it back
+PASS c9_explicit_intent: no or wrong confirm refused unchanged; confirmed restore keeps the newer row in a copy
+FAIL c10_concurrent: leftovers
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.68s
+SUMMARY 10/11 pass; candidate REJECTED
+
+=== mutant-no_dataset_lock_at_all
+PASS c1_values_restored: exact values back; previous file kept; neighbour untouched; health 0
+PASS c2_good_target_survives_invalid_snapshots: refused with target byte-identical: flipped-byte, garbage-manifest, link-member, forged-values, truncated
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+PASS c4_gap_target_absent: target absent + snapshot deleted -> rolled forward; damaged stage -> original back
+PASS c5_gap_after_install: installed-but-unfinished swap completed; second recover stable
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+PASS c7_finite_timeout: locked restore refused in 1.1s, locked snapshot refused in 5.2s, target unchanged
+PASS c8_exact_missing_db: missing expected DB fails health and verify; restore brings it back
+PASS c9_explicit_intent: no or wrong confirm refused unchanged; confirmed restore keeps the newer row in a copy
+PASS c10_concurrent: 6 concurrent restores exit [0, 0, 2, 2, 0, 0]; values exact; live copy kept
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.76s
+SUMMARY 11/11 pass; candidate ACCEPTED by oracle
+
+=== mutant-no_extra_member_check
+PASS c1_values_restored: exact values back; previous file kept; neighbour untouched; health 0
+PASS c2_good_target_survives_invalid_snapshots: refused with target byte-identical: flipped-byte, garbage-manifest, link-member, forged-values, truncated
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+PASS c4_gap_target_absent: target absent + snapshot deleted -> rolled forward; damaged stage -> original back
+PASS c5_gap_after_install: installed-but-unfinished swap completed; second recover stable
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+PASS c7_finite_timeout: locked restore refused in 1.1s, locked snapshot refused in 5.2s, target unchanged
+PASS c8_exact_missing_db: missing expected DB fails health and verify; restore brings it back
+PASS c9_explicit_intent: no or wrong confirm refused unchanged; confirmed restore keeps the newer row in a copy
+PASS c10_concurrent: 6 concurrent restores exit [1, 0, 1, 1, 0, 1]; values exact; live copy kept
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.69s
+SUMMARY 11/11 pass; candidate ACCEPTED by oracle
+
+=== mutant-no_staging_journal
+PASS c1_values_restored: exact values back; previous file kept; neighbour untouched; health 0
+PASS c2_good_target_survives_invalid_snapshots: refused with target byte-identical: flipped-byte, garbage-manifest, link-member, forged-values, truncated
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+PASS c4_gap_target_absent: target absent + snapshot deleted -> rolled forward; damaged stage -> original back
+PASS c5_gap_after_install: installed-but-unfinished swap completed; second recover stable
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+PASS c7_finite_timeout: locked restore refused in 1.1s, locked snapshot refused in 5.2s, target unchanged
+PASS c8_exact_missing_db: missing expected DB fails health and verify; restore brings it back
+PASS c9_explicit_intent: no or wrong confirm refused unchanged; confirmed restore keeps the newer row in a copy
+PASS c10_concurrent: 6 concurrent restores exit [0, 1, 1, 1, 0, 1]; values exact; live copy kept
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.72s
+SUMMARY 11/11 pass; candidate ACCEPTED by oracle
+
+=== mutant-recover_always_forward
+PASS c1_values_restored: exact values back; previous file kept; neighbour untouched; health 0
+PASS c2_good_target_survives_invalid_snapshots: refused with target byte-identical: flipped-byte, garbage-manifest, link-member, forged-values, truncated
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+PASS c4_gap_target_absent: target absent + snapshot deleted -> rolled forward; damaged stage -> original back
+PASS c5_gap_after_install: installed-but-unfinished swap completed; second recover stable
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+PASS c7_finite_timeout: locked restore refused in 1.1s, locked snapshot refused in 5.2s, target unchanged
+PASS c8_exact_missing_db: missing expected DB fails health and verify; restore brings it back
+PASS c9_explicit_intent: no or wrong confirm refused unchanged; confirmed restore keeps the newer row in a copy
+PASS c10_concurrent: 6 concurrent restores exit [1, 0, 1, 1, 1, 0]; values exact; live copy kept
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.74s
+SUMMARY 11/11 pass; candidate ACCEPTED by oracle
+
+=== mutant-recover_noop
+PASS c1_values_restored: exact values back; previous file kept; neighbour untouched; health 0
+PASS c2_good_target_survives_invalid_snapshots: refused with target byte-identical: flipped-byte, garbage-manifest, link-member, forged-values, truncated
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+FAIL c4_gap_target_absent: gap 1 not rolled forward: None
+FAIL c5_gap_after_install: journal, lock or staged file left behind
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+PASS c7_finite_timeout: locked restore refused in 1.1s, locked snapshot refused in 5.2s, target unchanged
+PASS c8_exact_missing_db: missing expected DB fails health and verify; restore brings it back
+PASS c9_explicit_intent: no or wrong confirm refused unchanged; confirmed restore keeps the newer row in a copy
+PASS c10_concurrent: 6 concurrent restores exit [1, 0, 1, 1, 1, 0]; values exact; live copy kept
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.70s
+SUMMARY 9/11 pass; candidate REJECTED
+
+=== mutant-skip_snapshot_verify
+PASS c1_values_restored: exact values back; previous file kept; neighbour untouched; health 0
+FAIL c2_good_target_survives_invalid_snapshots: candidate crashed: ^^^^
+  File "/tmp/m03-mutants/skip_snapshot_verify/sqlite_recovery.py", line 193, in _row_set
+    return {repr(r) for r in con.execute(f"SELECT * FROM {_quote(table)}")}
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.DatabaseError: database disk image is malformed
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+PASS c4_gap_target_absent: target absent + snapshot deleted -> rolled forward; damaged stage -> original back
+PASS c5_gap_after_install: installed-but-unfinished swap completed; second recover stable
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+PASS c7_finite_timeout: locked restore refused in 1.1s, locked snapshot refused in 5.2s, target unchanged
+PASS c8_exact_missing_db: missing expected DB fails health and verify; restore brings it back
+PASS c9_explicit_intent: no or wrong confirm refused unchanged; confirmed restore keeps the newer row in a copy
+PASS c10_concurrent: 6 concurrent restores exit [1, 1, 0, 1, 1, 0]; values exact; live copy kept
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.49s
+SUMMARY 10/11 pass; candidate REJECTED
+
+=== mutant-skip_when_counts_match
+PASS c1_values_restored: exact values back; previous file kept; neighbour untouched; health 0
+PASS c2_good_target_survives_invalid_snapshots: refused with target byte-identical: flipped-byte, garbage-manifest, link-member, forged-values, truncated
+FAIL c3_dry_run_byte_identical: real restore after dry run did not restore
+FAIL c4_gap_target_absent: crash drill after rename 1 exited 0
+FAIL c5_gap_after_install: crash drill after rename 2 exited 0
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+PASS c7_finite_timeout: locked restore refused in 1.1s, locked snapshot refused in 5.2s, target unchanged
+PASS c8_exact_missing_db: missing expected DB fails health and verify; restore brings it back
+PASS c9_explicit_intent: no or wrong confirm refused unchanged; confirmed restore keeps the newer row in a copy
+FAIL c10_concurrent: concurrent restores left wrong values
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.72s
+SUMMARY 7/11 pass; candidate REJECTED
+
+=== mutant-unbounded_lock_wait
+PASS c1_values_restored: exact values back; previous file kept; neighbour untouched; health 0
+PASS c2_good_target_survives_invalid_snapshots: refused with target byte-identical: flipped-byte, garbage-manifest, link-member, forged-values, truncated
+PASS c3_dry_run_byte_identical: dataset and snapshot byte- and mtime-identical; a later real run restores
+PASS c4_gap_target_absent: target absent + snapshot deleted -> rolled forward; damaged stage -> original back
+PASS c5_gap_after_install: installed-but-unfinished swap completed; second recover stable
+PASS c6_no_outside_writes: link member never followed; sentinel and sibling dirs unchanged
+FAIL c7_finite_timeout: restore over a locked target did not finish within 30s
+PASS c8_exact_missing_db: missing expected DB fails health and verify; restore brings it back
+PASS c9_explicit_intent: no or wrong confirm refused unchanged; confirmed restore keeps the newer row in a copy
+PASS c10_concurrent: 6 concurrent restores exit [0, 1, 1, 1, 1, 0]; values exact; live copy kept
+PASS c11_scale: 8 databases x 25000 rows restored exactly in 0.73s
+SUMMARY 10/11 pass; candidate REJECTED
+

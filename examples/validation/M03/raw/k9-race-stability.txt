@@ -1,0 +1,11 @@
+# k9 v3 (6 rounds) stability: candidate x5 runs (30 rounds), proposed fix x2, mutant no_dataset_flock x3
+candidate run1: PASS k9_concurrency (0.9s): 6 rounds x 8 concurrent restores, values exact and live values kept every round; exit codes 00111111; 00111111; 00111111; 00111111; 00111111; 00111111
+candidate run2: PASS k9_concurrency (0.9s): 6 rounds x 8 concurrent restores, values exact and live values kept every round; exit codes 00111111; 00111111; 00011111; 00111111; 00111111; 01111111
+candidate run3: PASS k9_concurrency (0.9s): 6 rounds x 8 concurrent restores, values exact and live values kept every round; exit codes 00111111; 00111111; 00011111; 00111111; 00111111; 00111111
+candidate run4: PASS k9_concurrency (0.9s): 6 rounds x 8 concurrent restores, values exact and live values kept every round; exit codes 00111111; 00111111; 00111111; 00111111; 00111111; 00111111
+candidate run5: PASS k9_concurrency (0.9s): 6 rounds x 8 concurrent restores, values exact and live values kept every round; exit codes 00111111; 00111111; 00111111; 00111111; 00111111; 00111111
+fix run1: PASS k9_concurrency (0.9s): 6 rounds x 8 concurrent restores, values exact and live values kept every round; exit codes 00111111; 00111111; 00111111; 00111111; 00111111; 00111111
+fix run2: PASS k9_concurrency (0.8s): 6 rounds x 8 concurrent restores, values exact and live values kept every round; exit codes 00111111; 00111111; 00111111; 00111111; 00011111; 00111111
+mutant no_dataset_flock run1: FAIL k9_concurrency: round 0: concurrent restores left staging/journal debris
+mutant no_dataset_flock run2: FAIL k9_concurrency: round 2: concurrent restores left staging/journal debris
+mutant no_dataset_flock run3: FAIL k9_concurrency: round 0: health after concurrent restores failed

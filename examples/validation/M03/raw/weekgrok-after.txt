@@ -1,0 +1,12 @@
+date: Sun Oct 18 12:27:01 PDT 2026
+branch: programme/grok-week-20261018
+HEAD: 02ba9c571b10ad1dba792d2ac5534bcad3171e67
+index_sha256: 2d2ae68d86682126ede2c2d70e852f32d43726c8d9c6fad693e2333f781879eb
+status_sha256: 09da9ec952b303dfe4fc79283fca110d422ad519458d781ae8d3f5ffc9a662a0
+status lines: 50
+## attribution
+Branch, HEAD and index sha256 equal the before snapshot. Status differences: (1) builder edits at 12:03-12:26 PT in
+G16/backend-developer/security-auditor paths (the builder is active there); (2) git now reports the untracked
+directory `examples/capabilities/` as one entry because the builder created a new subdirectory (dir mtime 12:22 PT),
+so the individually listed G02/G03/G10/G13/G16 files (mtimes 09:59-11:44 PT, before M03 began at 11:47 PT) dropped
+out of the per-file listing. M03 wrote only under /tmp and grok-output/M03.

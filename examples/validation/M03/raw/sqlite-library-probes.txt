@@ -1,0 +1,16 @@
+python 3.9.6 sqlite 3.54.0 [default]: journal_mode->delete; after pragma ['copy.db', 'copy.db-shm']; after close ['copy.db', 'copy.db-shm']
+python 3.9.6 sqlite 3.54.0 [isolation_none]: journal_mode->delete; after pragma ['copy.db', 'copy.db-shm']; after close ['copy.db', 'copy.db-shm']
+python 3.9.6 sqlite 3.54.0: files before ['app.db']; connect_ro=ok, begin=ok, select_master=ERR(unable to open database file), integrity_check=ERR(unable to open database file); files after ['app.db']
+python 3.11.16 sqlite 3.53.1 [default]: journal_mode->delete; after pragma ['copy.db']; after close ['copy.db']
+python 3.11.16 sqlite 3.53.1 [isolation_none]: journal_mode->delete; after pragma ['copy.db']; after close ['copy.db']
+python 3.11.16 sqlite 3.53.1: files before ['app.db']; connect_ro=ok, begin=ok, select_master=ok, integrity_check=ok; files after ['app.db', 'app.db-shm', 'app.db-wal']
+python 3.12.14 sqlite 3.53.1 [default]: journal_mode->delete; after pragma ['copy.db']; after close ['copy.db']
+python 3.12.14 sqlite 3.53.1 [isolation_none]: journal_mode->delete; after pragma ['copy.db']; after close ['copy.db']
+python 3.12.14 sqlite 3.53.1: files before ['app.db']; connect_ro=ok, begin=ok, select_master=ok, integrity_check=ok; files after ['app.db', 'app.db-shm', 'app.db-wal']
+python 3.13.15 sqlite 3.53.1 [default]: journal_mode->delete; after pragma ['copy.db']; after close ['copy.db']
+python 3.13.15 sqlite 3.53.1 [isolation_none]: journal_mode->delete; after pragma ['copy.db']; after close ['copy.db']
+python 3.13.15 sqlite 3.53.1: files before ['app.db']; connect_ro=ok, begin=ok, select_master=ok, integrity_check=ok; files after ['app.db', 'app.db-shm', 'app.db-wal']
+python 3.12.14 lib /usr/lib/libsqlite3.dylib sqlite 3.54.0: after WAL->DELETE and close: ['x.db', 'x.db-shm']
+python 3.12.14 lib /usr/lib/libsqlite3.dylib sqlite 3.54.0: before ['app.db']; open rc=0, select rc=14 (unable to open database file)
+python 3.9.6 lib /usr/lib/libsqlite3.dylib sqlite 3.54.0: after WAL->DELETE and close: ['x.db', 'x.db-shm']
+python 3.9.6 lib /usr/lib/libsqlite3.dylib sqlite 3.54.0: before ['app.db']; open rc=0, select rc=14 (unable to open database file)

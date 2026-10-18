@@ -1,0 +1,13 @@
+== drill (0.7s): OK
+   N=1: health-before=1 recover=0 -> snap, health-after=0, live kept=True, debris=[]
+   N=2: health-before=1 recover=0 -> snap, health-after=0, live kept=True, debris=[]
+   N=3: health-before=1 recover=0 -> snap, health-after=0, live kept=True, debris=[]
+   N=4: health-before=1 recover=0 -> snap, health-after=0, live kept=True, debris=[]
+   N=5: rc=0 (no rename left to interrupt)
+== kill-restore (9.7s): OK
+   60 rounds, outcomes {'finished->snap': 24, 'killed->live': 28, 'killed->snap': 8}
+== kill-recover (12.0s): OK
+   60 rounds, outcomes {'finished->snap': 22, 'killed->snap': 38}
+== scale (5.4s): OK
+   8 DBs x 50000 rows: snapshot 0.6s, verify rc=0 0.3s, restore rc=0 3.4s, values exact=True
+SUMMARY operational problems=0

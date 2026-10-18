@@ -1,0 +1,16 @@
+..F...........................
+======================================================================
+FAIL: test_wal_source_and_sidecars_are_handled (tests.test_g03_capability.CleanRestore)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<candidate>/tests/test_g03_capability.py", line 107, in test_wal_source_and_sidecars_are_handled
+    self.assertEqual(rec.verify(str(snap))['status'], 'ok')
+AssertionError: 'failed' != 'ok'
+- failed
++ ok
+
+
+----------------------------------------------------------------------
+Ran 30 tests in 3.836s
+
+FAILED (failures=1)

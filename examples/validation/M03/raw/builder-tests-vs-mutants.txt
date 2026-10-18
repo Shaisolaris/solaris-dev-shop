@@ -1,0 +1,17 @@
+candidate: rc=0 Ran 30 tests in 3.628s OK 
+positive-control-proposed-fix: rc=0 Ran 30 tests in 3.910s OK 
+mutant-delete_recoverable_copies: rc=1 Ran 30 tests in 3.748s FAILED (failures=4) 
+mutant-dry_run_restores_when_confirmed: rc=0 Ran 30 tests in 3.799s OK 
+mutant-follow_symlinks: rc=1 Ran 30 tests in 3.752s FAILED (failures=1) 
+mutant-health_ignores_journal: rc=1 Ran 30 tests in 3.728s FAILED (failures=1) 
+mutant-health_missing_ok: rc=1 Ran 30 tests in 3.703s FAILED (failures=1) 
+mutant-no_confirm_needed: rc=1 Ran 30 tests in 3.598s FAILED (failures=2) 
+mutant-no_dataset_flock: rc=1 Ran 30 tests in 3.633s FAILED (failures=2) 
+mutant-no_dataset_lock_at_all: rc=1 Ran 30 tests in 3.716s FAILED (failures=2) 
+mutant-no_extra_member_check: rc=1 Ran 30 tests in 3.802s FAILED (failures=1) 
+mutant-no_staging_journal: rc=0 Ran 30 tests in 3.813s OK 
+mutant-recover_always_forward: rc=1 Ran 30 tests in 3.808s FAILED (failures=1, errors=1) 
+mutant-recover_noop: rc=1 Ran 30 tests in 3.733s FAILED (failures=4, errors=8) 
+mutant-skip_snapshot_verify: rc=1 Ran 30 tests in 3.475s FAILED (failures=2, errors=1) 
+mutant-skip_when_counts_match: rc=1 Ran 30 tests in 3.632s FAILED (failures=13) 
+mutant-unbounded_lock_wait: rc=1 Ran 30 tests in 62.552s FAILED (failures=1) 

@@ -1,0 +1,7 @@
+commit 7c63297d626ab2ac5929080e57c9ae66e7c905bc status-lines 0
+== 3.9.6_sqlite3.54.0  g03 rc=1 Ran 30 tests in 3.836s FAILED (failures=1) | full rc=1 Ran 114 tests in 5.836s FAILED (failures=1) 
+g03-3.9.6_sqlite3.54.0.log:FAIL: test_wal_source_and_sidecars_are_handled (tests.test_g03_capability.CleanRestore)
+full-3.9.6_sqlite3.54.0.log:FAIL: test_wal_source_and_sidecars_are_handled (test_g03_capability.CleanRestore)
+== 3.11.16_sqlite3.53.1  g03 rc=0 Ran 30 tests in 3.489s OK | full rc=0 Ran 114 tests in 4.942s OK 
+== 3.12.14_sqlite3.53.1  g03 rc=0 Ran 30 tests in 3.507s OK | full rc=0 Ran 114 tests in 5.089s OK 
+== 3.13.15_sqlite3.53.1  g03 rc=0 Ran 30 tests in 3.570s OK | full rc=0 Ran 114 tests in 5.255s OK 
