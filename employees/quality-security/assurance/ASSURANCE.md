@@ -3,9 +3,9 @@
 Status: L4-oriented evidence and gate contract  
 Roadmap: `skill-solaris-product-quality-hardening`  
 Engine: `quality_os.py` (this directory)  
-Engine version: `1.0.1`
+Engine version: `1.0.2`
 
-Tests: `tests/test_assurance_packets.py`
+Tests: `tests/test_assurance_packets.py`, `tests/test_closure_hardening.py`
 Upstream standard (2026-07 wave skill-lkl): `../QUALITY-SECURITY-STANDARD.md`
 
 ## Purpose
@@ -103,14 +103,52 @@ for the underlying packet decision; it does not apply fixture expectations.
 - Allowed closers for blocking findings: declared `verifier_role`,
   `human-owner`, or `chief-of-staff` **with** independent evidence.
 
+Version 1.0.2 fails closed on closure input (`can_close_finding`,
+`close_finding`):
+
+- Unknown severity (for example `s1` or `critical`), unknown status, blank
+  `finding_id`/`accountable_role`, or non-array evidence → `INVALID_FINDING`.
+  An unknown severity is no longer silently treated as non-blocking.
+- Blank closer → `INVALID_CLOSER_ROLE`. A blank or self-equal `verifier_role`
+  no longer admits a closer; only `human-owner`/`chief-of-staff` remain.
+- Closure evidence must be an array of nonblank strings; a bare string,
+  object, `None` or blank item → `INVALID_CLOSURE_EVIDENCE` (for every
+  severity). For blocking findings an empty array →
+  `MISSING_CLOSURE_EVIDENCE`, and evidence that only repeats the finding's
+  existing evidence → `NON_INDEPENDENT_CLOSURE_EVIDENCE`.
+- These closer and evidence shape checks run before the status branch, so they
+  also apply to `waived` findings. A valid waived closure needs: a nonblank
+  string closer (any role, including the accountable role, because the
+  human-authorised waiver is the closure basis), evidence that is a list or
+  tuple of nonblank strings (an empty list is allowed), and a waiver that
+  passes `validate_waiver`. No extra fix evidence is required for a waiver.
+- Severity and status are type checked as strings before any lookup, so a
+  list or dict value returns `INVALID_FINDING` instead of raising. Closure
+  fixtures whose finding fields (other than `evidence`) are not strings return
+  `INVALID_PACKET`.
+- Evidence is declared text. It is never opened, fetched or executed, and a
+  pass does not prove the verification actually ran.
+- Optional `as_of` (aware `datetime`) fixes the clock for waiver expiry.
+
 ## Waivers and dissent
 
 Waivers require:
 
 1. Written justification (≥12 chars)
-2. `human_authority: true`
-3. Approver **≠** accountable role
-4. Explicit `expires_at`
+2. `human_authority: true` (strictly the boolean `true`)
+3. Approver **≠** accountable role and approver **≠** requester
+4. Explicit `expires_at` that parses as ISO 8601 and is in the future
+
+`propose_waiver` and `validate_waiver` enforce these at creation and at use.
+A `waived` finding closes only through a waiver that passes `validate_waiver`
+at closure time; otherwise the codes are `WAIVER_REQUIRED`, `INVALID_WAIVER`,
+`WAIVER_FINDING_MISMATCH`, `WAIVER_NOT_ACTIVE`, `HUMAN_AUTHORITY_REQUIRED`,
+`WAIVER_JUSTIFICATION_REQUIRED`, `WAIVER_SELF_APPROVAL_FORBIDDEN`,
+`WAIVER_EXPIRY_INVALID` or `WAIVER_EXPIRED`. Naive timestamps are read as UTC.
+`human_authority` and role names are declared values: the engine cannot
+authenticate who approved, so the host must confirm owner authority.
+Closure fixtures (`run` with `fixture_kind: closure`) with a missing or
+malformed `finding`/`waiver` return `INVALID_PACKET` instead of crashing.
 
 Council dissent: any REFUTED/DISSENT/HOLD vote → outcome `HOLD`. PASS only when
 there is at least one CONFIRMED and zero dissent.
