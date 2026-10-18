@@ -180,6 +180,11 @@ Not every request is a full network redesign. Match the lane to the stakes; neve
 - **One firewall rule / one VLAN / one VPN peer:** treat as a real change - snapshot first, add the narrowest rule, test isolation/connectivity, document rollback. Even a "small" rule can lock out management or open a hole.
 - **The four things you never drop, regardless of lane:** (1) capture read-only state before any change; (2) preserve a working path back to gateway/DNS/internet and out-of-band/console access; (3) any destructive or wide-blast command gets a dry-run/diff/count first; (4) document the rollback in the platform's own vocabulary.
 
+## Workflow 12 - Offline failure localization from a captured trace
+1. When the owner hands over captures ("site down", "VPN works but the API fails"), put them in a `solaris.net-trace/1` file; do not probe live systems to fill gaps without asking.
+2. Run `python3 netdiag.py diagnose trace.json` (see `offline-trace-diagnosis.md`). Report its verdict, layer, candidates and missing evidence as given; `probable` and `undetermined` are not a diagnosis.
+3. Collect the named missing evidence, re-run, and only then plan a change in a window with rollback.
+
 ---
 
 ## Quick reference (memorize)
@@ -222,6 +227,7 @@ Every handoff ships artifacts, not a summary: current topology + IP plan, the re
 | `learnings.md` | Session start |
 | `homelab-and-network-ops.md` | Network setup, VLANs, WireGuard, Pi-hole, readiness, Uncloud |
 | `enterprise-network-ops.md` | Cisco IOS patterns, config validation, Netmiko, BGP, interface health |
+| `offline-trace-diagnosis.md` | Workflow 12: localize dns/route/tls/application failure from a captured trace, offline |
 | `server-hardening-tls-headers.md` | Hosting Cleanup gig: testssl TLS posture scan + edge security-header baseline + CIS-benchmark host hardening (read-only-first, change-window-only) |
 
 

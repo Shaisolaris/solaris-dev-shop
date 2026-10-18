@@ -7,10 +7,12 @@
 - **2026-06-14 - For the owner's setup specifically**: dev-shop client code and game-studio test rigs are different trust zones - flagged a Dev/Build vs Game-Test VLAN split beyond the default 5 zones in SKILL.md Workflow 2 and rules.md. Revisit once the actual machine inventory (build agents, console dev kits, NAS count) is known.
 - **2026-06-14 - Boundary lesson**: the four-way split (network vs devops vs cloud vs sre vs iot) keeps this employee from drifting into pipeline/cloud/reliability/firmware work. Network Engineer owns the packets and the topology; it supplies evidence to SRE during incidents and a VLAN to IoT, but does not run the pager or write firmware.
 
+- **2026-10-18 - Offline diagnosis (G10)**: added `netdiag.py` + `offline-trace-diagnosis.md`. Lessons: a stopped traceroute is not a route fault when TCP or TLS answered (ICMP filtering); a certificate name mismatch is also a DNS question unless the expected address is known; certificate dates must be judged at capture time, not now; a layer with no evidence stays a candidate instead of being assumed fine.
+
 ## Promotion log
 | Date | Rule | Location |
 |------|------|----------|
-| | | |
+| 2026-10-18 | Blame a layer only when every earlier layer has positive evidence; otherwise report candidates and the missing evidence | SKILL.md Workflow 12, offline-trace-diagnosis.md |
 ## 2026-07-24 platform-reliability wave (skill-edl)
 - Contract `1.1.0`: plan-dryrun-rollback step; provenance_ledger + partial_or_blocked_note + bounded_plan outputs.
 - RUNTIME HARDENING: mutation authority only after plan, dry-run evidence, failure notes, cost/security, and rollback.

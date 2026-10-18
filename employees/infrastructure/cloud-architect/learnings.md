@@ -26,6 +26,8 @@
 - RUNTIME HARDENING: mutation authority only after plan, dry-run evidence, failure notes, cost/security, and rollback.
 - Provider adapters retain default_deny + require_human for deploy/spend/mutate_external.
 - Evaluation packet: meta/skill-rotation/evaluations/20260724/platform-reliability/.
+## 2026-10-18 - Offline diagnosis hand-off (G10)
+- Connectivity complaints on a cloud path go to network-engineer with a captured trace first (`netdiag.py`, offline). A redesign is not a fix for an expired certificate or a missing route; get the failing layer before changing architecture.
 ## Sources
 
 - Upstream: awslabs/landing-zone-accelerator-on-aws (Apache-2.0); infracost/infracost (Apache-2.0); aws-samples/sample-well-architected-skills-and-steering (MIT-0); openops-cloud/openops (Apache-2.0); FinOps-Open-Cost-and-Usage-Spec/FOCUS_Spec (FLAG: spec license (Community Spec / CC-BY family, non-OSI; not a code license))
