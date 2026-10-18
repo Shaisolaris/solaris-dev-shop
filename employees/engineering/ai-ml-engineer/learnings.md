@@ -8,6 +8,10 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 
 ## Pending observations
 
+- **2026-10-18 - G16 offline grounded evals**: model or host output handed to LLM Agent Designer's `grounded_eval.py evaluate` is labelled "imported, not executed or verified". That label is correct, because the evaluator never runs the model.
+  *Proposed rule: When a model result is claimed, deliver the answers file and the run's own logs (command, model id, time). Keep the imported label in any summary.*
+  Tags: [#eval], [#mlops]
+
 - **2026-04-24 - AI/ML Engineer rebuild**: Clear altitude split from LLM Agent Designer. Training = this employee. Prompting = LLM Agent Designer. Fine-tuning sits here only when truly required (4-question decision tree usually says no).
   *Proposed rule: "If prompting solves it, don't fine-tune" is a bright-line rule. Ship the prompting solution; come back to fine-tune only if volume + cost math justifies.*
   Tags: [#fine-tune-discipline], [#altitude-split]

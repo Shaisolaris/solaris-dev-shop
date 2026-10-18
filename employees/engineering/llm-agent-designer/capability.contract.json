@@ -240,9 +240,12 @@
       "agent-engineering-craft.md",
       "agentic-build-patterns.md",
       "eval-methodology.md",
-      "superpowers-methodology.md"
+      "superpowers-methodology.md",
+      "grounded-answer-evals.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "grounded_eval.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -310,6 +313,12 @@
           "id": "ref-superpowers-methodology-md",
           "kind": "file_exists",
           "target": "superpowers-methodology.md",
+          "required": false
+        },
+        {
+          "id": "ref-grounded-answer-evals-md",
+          "kind": "file_exists",
+          "target": "grounded-answer-evals.md",
           "required": false
         }
       ],
@@ -545,7 +554,8 @@
       "agent-engineering-craft.md",
       "agentic-build-patterns.md",
       "eval-methodology.md",
-      "superpowers-methodology.md"
+      "superpowers-methodology.md",
+      "grounded-answer-evals.md"
     ]
   }
 }

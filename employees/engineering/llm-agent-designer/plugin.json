@@ -14,7 +14,8 @@
     "superpowers-methodology.md",
     "eval-methodology.md",
     "agent-engineering-craft.md",
-    "agentic-build-patterns.md"
+    "agentic-build-patterns.md",
+    "grounded-answer-evals.md"
   ],
   "references_source_note": "Canonical VoltAgent llm-architect + alirezarezvani senior-prompt-engineer + an internal installed mcp-builder + skill-creator. v0.3.0 added: obra/superpowers methodology layered on top.",
   "mcp_servers": [],

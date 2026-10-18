@@ -8,6 +8,10 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 
 ## Pending observations
 
+- **2026-10-18 - G16 offline grounded evals**: added `grounded_eval.py` and `grounded-answer-evals.md`. A file can claim to come from any producer, so the evaluator re-runs the deterministic baseline before it calls a result "fixture behaviour". An unmatched claim is reported as unverified, and outside output is labelled imported, not executed. The baseline needed an exact-identifier rule: at 0.75 key-term coverage it first answered a question about one product with a sibling product's spec sentence. Line-level offsets, document hashes and a journal bound to the corpus hash made "the source changed" and "resume after a failed step" checkable without a model.
+  *Proposed rule: Grade grounded answers by exact quoted spans and by numbers that appear in the quotes; require abstention on unanswerable items; never report a deterministic baseline or an imported file as model capability.*
+  Tags: [#eval], [#rag], [#safety]
+
 - **2026-04-24 - LLM Agent Designer rebuild**: Solaris IS a an agent SDK product. The 59 employee-plugins are agent designs an agent SDK was made for. The canonical example of "how to design a Solaris-quality agent" is Solaris's own skill scanner / knowledge sweep / roster manager. Self-referential but correct.
   *Proposed rule: When this employee designs an agent or skill, reach for Solaris's own employee-plugin structure as the default template - SKILL + rules + learnings + plugin.json with progressive disclosure + self-learning loop.*
   Tags: [#solaris-as-reference], [#promoted?]
