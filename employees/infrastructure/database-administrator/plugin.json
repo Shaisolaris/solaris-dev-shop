@@ -12,7 +12,8 @@
     "learnings.md",
     "mongodb-nosql-admin.md",
     "sql-ops-tuning-ha-backup.md",
-    "verified-restore-and-baselining.md"
+    "verified-restore-and-baselining.md",
+    "sqlite-recovery.md"
   ],
   "tags": [
     "infrastructure",
