@@ -9,7 +9,7 @@ no archives, so no archive member can alias a path.
 Commands (exit 0 ok, 1 failed/unhealthy/busy, 2 refused or invalid):
   snapshot DATASET --out SNAPDIR [--db NAME ...] [--lock-timeout S]
   verify   SNAPDIR [--expect NAME ...]
-  health   DATASET --expect NAME ... [--snapshot SNAPDIR]
+  health   DATASET --expect NAME ... [--snapshot SNAPDIR] [--lock-timeout S]
   restore  DATASET --snapshot SNAPDIR --confirm SNAPSHOT_ID [--dry-run] [--lock-timeout S]
   recover  DATASET [--dry-run]
 
@@ -27,6 +27,10 @@ Safety model
     verifies, otherwise rolls back to the original files. It never needs the
     snapshot and never deletes an original or a verified copy.
   * SQLite lock waits are bounded by --lock-timeout (default 5 s).
+  * Values compared: every user table (including names like sqlitedata), schema SQL,
+    user_version and application_id. Reads of live files are read-only; on SQLite builds
+    that refuse a read-only open of a WAL database without -shm, a query_only connection
+    is used instead, which may create an empty -wal and a -shm (the database is unchanged).
   * manifest sha256 values detect accidental damage; they do not authenticate.
 """
 from __future__ import annotations
@@ -35,7 +39,9 @@ import argparse
 import fcntl
 import hashlib
 import json
+import math
 import os
+import re
 import secrets
 import shutil
 import socket
@@ -163,6 +169,39 @@ def _open_ro(path: Path, immutable: bool, timeout: float = DEFAULT_LOCK_TIMEOUT)
     return sqlite3.connect(uri, uri=True, timeout=timeout, isolation_level=None)
 
 
+def _wal_header(path: Path) -> bool:
+    try:
+        with open(path, "rb") as fh:
+            head = fh.read(20)
+    except OSError:
+        return False
+    return len(head) == 20 and head.startswith(b"SQLite format 3\x00") and head[18] == 2 and head[19] == 2
+
+
+def _open_live(path: Path, timeout: float = DEFAULT_LOCK_TIMEOUT) -> sqlite3.Connection:
+    """Read a live database (one other processes may use) without writing to it.
+
+    Normally a read-only open. Some SQLite builds (Apple's 3.54.0, the default python3 on
+    macOS) refuse a read-only open of a WAL database whose -shm file does not exist yet
+    (SQLITE_CANTOPEN). Only then this falls back to a normal connection with query_only=ON:
+    the database file is not written, but SQLite may create an empty -wal and a -shm.
+    """
+    con = None
+    try:
+        con = _open_ro(path, immutable=False, timeout=timeout)
+        con.execute("SELECT count(*) FROM sqlite_master").fetchone()
+        return con
+    except sqlite3.OperationalError as exc:
+        if con is not None:
+            con.close()
+        shm = path.parent / (path.name + "-shm")
+        if "unable to open" not in str(exc) or _lkind(shm) != "missing" or not _wal_header(path):
+            raise
+    con = sqlite3.connect(str(path), timeout=timeout, isolation_level=None)
+    con.execute("PRAGMA query_only = ON")
+    return con
+
+
 def _quote(name: str) -> str:
     return '"' + name.replace('"', '""') + '"'
 
@@ -171,9 +210,14 @@ def _digest(con: sqlite3.Connection) -> Dict[str, Any]:
     """Integrity result, schema digest and per-table row count + value digest."""
     integrity = [r[0] for r in con.execute("PRAGMA integrity_check").fetchall()]
     schema = con.execute("SELECT type, name, tbl_name, sql FROM sqlite_master ORDER BY type, name").fetchall()
+    # Header values that migrations and apps set; a restore must bring them back too.
+    schema.append(("header", "user_version", con.execute("PRAGMA user_version").fetchone()[0],
+                   "application_id", con.execute("PRAGMA application_id").fetchone()[0]))
     tables: Dict[str, Dict[str, Any]] = {}
-    for (name,) in con.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' "
-                               "ORDER BY name").fetchall():
+    # Only SQLite's own tables start with "sqlite_" (reserved, case-insensitive). "_" is a LIKE
+    # wildcard, so it is escaped: user tables such as sqlitedata or SQLiteLog are compared too.
+    for (name,) in con.execute("SELECT name FROM sqlite_master WHERE type='table' "
+                               "AND name NOT LIKE 'sqlite\\_%' ESCAPE '\\' ORDER BY name").fetchall():
         try:
             cur = con.execute(f"SELECT * FROM {_quote(name)} ORDER BY rowid")
         except sqlite3.OperationalError:
@@ -283,9 +327,11 @@ def snapshot(dataset_arg: str, out_arg: str, dbs: Optional[List[str]] = None,
         out = out if out.is_absolute() else Path.cwd() / out
         if _lkind(out) != "missing":
             raise Refused("refused", f"snapshot destination {out} already exists; choose a new path")
-        if _lkind(out.parent) != "directory":
-            raise Refused("refused", "snapshot destination parent must be an existing real directory")
-        out = out.parent.resolve() / out.name
+        make_parent = _lkind(out.parent) == "missing" and _lkind(out.parent.parent) == "directory"
+        if _lkind(out.parent) != "directory" and not make_parent:
+            raise Refused("refused", "snapshot destination parent must be a real directory "
+                          "(one missing level such as snapshots/ is created; deeper paths are not)")
+        out = (out.parent.parent.resolve() / out.parent.name if make_parent else out.parent.resolve()) / out.name
         if _inside(out, dataset) or _inside(dataset, out):
             raise Refused("refused", "snapshot destination must be outside the dataset directory")
         names = sorted(dbs) if dbs else sorted(n for n in os.listdir(dataset) if _is_db_name(n))
@@ -298,11 +344,27 @@ def snapshot(dataset_arg: str, out_arg: str, dbs: Optional[List[str]] = None,
                 raise Refused("invalid", f"{n!r} is not a plain database file name")
             if _lkind(dataset / n) != "file":
                 raise Refused("refused", f"{n}: {_says(_lkind(dataset / n))}; expected a regular file")
+        if make_parent:
+            os.mkdir(out.parent, 0o755)
         return _locked(dataset, lambda: _snapshot_locked(dataset, out, names, lock_timeout))
     except Refused as exc:
         return _result(exc.status, messages=[str(exc)])
     except OSError as exc:
         return _result("failed", messages=[f"snapshot failed: {exc.strerror or exc}; no snapshot written"])
+
+
+def _drop_copy_sidecars(tmp: Path, n: str) -> None:
+    """The copy lives in a private .partial directory with no other connection. Some SQLite
+    builds leave a -shm (and an empty -wal) next to it after the switch to DELETE mode; they
+    hold no data, so remove them. A non-empty -wal would hold data, so that is a failure."""
+    for suf in SIDECARS:
+        side = tmp / (n + suf)
+        kind = _lkind(side)
+        if kind == "missing":
+            continue
+        if kind != "file" or (suf != "-shm" and side.stat().st_size):
+            raise Refused("failed", f"{n}: the snapshot copy kept a {suf} file with data; no snapshot written")
+        os.unlink(side)
 
 
 def _snapshot_locked(dataset: Path, out: Path, names: List[str], lock_timeout: float) -> Dict[str, Any]:
@@ -311,7 +373,14 @@ def _snapshot_locked(dataset: Path, out: Path, names: List[str], lock_timeout: f
     try:
         dbinfo: Dict[str, Any] = {}
         for n in names:
-            src = _open_ro(dataset / n, immutable=False, timeout=lock_timeout)
+            try:
+                src = _open_live(dataset / n, timeout=lock_timeout)
+            except sqlite3.OperationalError as exc:
+                if "locked" in str(exc) or "busy" in str(exc):
+                    raise Refused("busy", f"{n} stayed locked for {lock_timeout:g}s; no snapshot written") from None
+                raise Refused("refused", f"{n} could not be read as SQLite: {exc}") from None
+            except sqlite3.DatabaseError as exc:
+                raise Refused("refused", f"{n} could not be read as SQLite: {exc}") from None
             try:
                 try:
                     src.execute("BEGIN")
@@ -329,6 +398,7 @@ def _snapshot_locked(dataset: Path, out: Path, names: List[str], lock_timeout: f
                     dst.execute("PRAGMA journal_mode=DELETE")
                 finally:
                     dst.close()
+                _drop_copy_sidecars(tmp, n)
                 src.execute("ROLLBACK")
             except sqlite3.DatabaseError as exc:
                 raise Refused("refused", f"{n} could not be read as SQLite: {exc}") from None
@@ -377,6 +447,14 @@ def _load_snapshot(snap_arg: str) -> Tuple[Path, Dict[str, Any]]:
         raise Refused("refused", "snapshot manifest lacks a snapshot id or databases")
     if len(dbs) > MAX_DATABASES or not all(_is_db_name(n) for n in dbs):
         raise Refused("refused", "snapshot manifest names a database with an unsafe or non-database name")
+    for n, info in dbs.items():
+        tables = info.get("tables") if isinstance(info, dict) else None
+        if (not isinstance(info, dict) or not all(isinstance(info.get(k), str) for k in ("sha256", "integrity", "schema_digest"))
+                or not isinstance(tables, dict)
+                or not all(isinstance(t, str) and isinstance(v, dict) and isinstance(v.get("rows"), int)
+                           and isinstance(v.get("digest"), str) for t, v in tables.items())):
+            raise Refused("refused", f"snapshot manifest entry for {n} is malformed (needs sha256, integrity, "
+                          "schema_digest and tables)")
     entries = set(os.listdir(snap))
     extra = sorted(entries - set(dbs) - {MANIFEST})
     if extra:
@@ -410,7 +488,8 @@ def _verify_loaded(snap: Path, manifest: Dict[str, Any], expect: Optional[List[s
         if got != want:
             bad = [t for t in set(got["tables"]) | set(want.get("tables") or {})
                    if got["tables"].get(t) != (want.get("tables") or {}).get(t)]
-            problems.append(f"{n}: content does not match manifest (integrity {got['integrity']}; tables {sorted(bad)})")
+            what = f"tables {sorted(bad)}" if bad else "schema or header (user_version, application_id)"
+            problems.append(f"{n}: content does not match manifest (integrity {got['integrity']}; {what})")
     return problems
 
 
@@ -430,7 +509,8 @@ def verify(snap_arg: str, expect: Optional[List[str]] = None) -> Dict[str, Any]:
 
 # -- health ---------------------------------------------------------------------------
 
-def health(dataset_arg: str, expect: List[str], snap_arg: Optional[str] = None) -> Dict[str, Any]:
+def health(dataset_arg: str, expect: List[str], snap_arg: Optional[str] = None,
+           lock_timeout: float = DEFAULT_LOCK_TIMEOUT) -> Dict[str, Any]:
     try:
         dataset = _dataset_dir(dataset_arg)
         manifest = _load_snapshot(snap_arg)[1] if snap_arg else None
@@ -450,24 +530,37 @@ def health(dataset_arg: str, expect: List[str], snap_arg: Optional[str] = None) 
         if kind != "file":
             problems.append(f"{n}: expected database is {kind}")
             continue
+        if (dataset / n).stat().st_size == 0:
+            problems.append(f"{n}: empty file (0 bytes), not a database")
+            continue
         try:
-            con = _open_ro(dataset / n, immutable=False)
+            con = _open_live(dataset / n, timeout=lock_timeout)
             try:
                 got = _digest(con)
             finally:
                 con.close()
+        except sqlite3.OperationalError as exc:
+            if "locked" in str(exc) or "busy" in str(exc):
+                problems.append(f"{n}: busy, another connection held it for {lock_timeout:g}s ({exc}); retry")
+            else:
+                problems.append(f"{n}: unreadable as SQLite ({exc})")
+            continue
         except sqlite3.DatabaseError as exc:
             problems.append(f"{n}: unreadable as SQLite ({exc})")
             continue
         report[n] = {t: v["rows"] for t, v in got["tables"].items()}
         if got["integrity"] != "ok":
             problems.append(f"{n}: integrity_check {got['integrity']}")
+        if not got["tables"] and not (manifest and n in manifest["databases"]):
+            problems.append(f"{n}: has no user tables (an empty or emptied database); "
+                            "give --snapshot to compare against a known good copy")
         if manifest and n in manifest["databases"]:
             want = manifest["databases"][n]
             diff = sorted(t for t in set(got["tables"]) | set(want["tables"])
                           if got["tables"].get(t) != want["tables"].get(t))
             if diff or got["schema_digest"] != want["schema_digest"]:
-                problems.append(f"{n}: values differ from snapshot {manifest['snapshot_id']} in tables {diff or ['(schema)']}")
+                problems.append(f"{n}: values differ from snapshot {manifest['snapshot_id']} in "
+                                + (f"tables {diff}" if diff else "schema or header (user_version, application_id)"))
     if problems:
         return _result("unhealthy", databases=report, messages=problems)
     return _result("ok", databases=report, messages=[f"healthy: {', '.join(names)}"
@@ -767,7 +860,28 @@ def recover(dataset_arg: str, dry_run: bool = False) -> Dict[str, Any]:
                                            "renames happened; fix the cause and run recover again"])
 
 
+JOURNAL_TEMP_RE = re.compile(r"^\." + re.escape(JOURNAL) + r"\.[0-9a-f]{16}\.tmp$")
+
+
+def _journal_temps(dataset: Path) -> List[str]:
+    """Temp files of a journal write that was killed before its rename (only our own pattern)."""
+    return sorted(n for n in os.listdir(dataset) if JOURNAL_TEMP_RE.match(n) and _lkind(dataset / n) == "file")
+
+
 def _recover(dataset: Path, dry_run: bool) -> Dict[str, Any]:
+    temps = _journal_temps(dataset)
+    if temps and not dry_run:
+        for n in temps:
+            os.unlink(dataset / n)
+        _fsync_dir(dataset)
+    res = _recover_journal(dataset, dry_run)
+    if temps:
+        res["removed_temp_files" if not dry_run else "would_remove_temp_files"] = temps
+        res["messages"].append(("removed " if not dry_run else "would remove ") + f"{len(temps)} leftover journal temp file(s)")
+    return res
+
+
+def _recover_journal(dataset: Path, dry_run: bool) -> Dict[str, Any]:
     j = _load_journal(dataset)
     if j is None:
         return _result("nothing_to_do", messages=["no interrupted restore recorded; nothing changed"])
@@ -833,6 +947,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     p.add_argument("dataset")
     p.add_argument("--expect", action="append", default=[])
     p.add_argument("--snapshot")
+    p.add_argument("--lock-timeout", type=float, default=DEFAULT_LOCK_TIMEOUT)
     p = sub.add_parser("restore")
     p.add_argument("dataset")
     p.add_argument("--snapshot", required=True)
@@ -846,14 +961,15 @@ def main(argv: Optional[List[str]] = None) -> int:
     for sp in sub.choices.values():
         sp.add_argument("--json", action="store_true")
     a = ap.parse_args(argv)
-    if getattr(a, "lock_timeout", 1.0) <= 0 or getattr(a, "lock_timeout", 1.0) > 600:
-        ap.error("--lock-timeout must be between 0 and 600 seconds")
+    lt = getattr(a, "lock_timeout", 1.0)
+    if not math.isfinite(lt) or lt <= 0 or lt > 600:
+        ap.error("--lock-timeout must be a number of seconds above 0 and at most 600")
     if a.cmd == "snapshot":
         res = snapshot(a.dataset, a.out, a.db, a.lock_timeout)
     elif a.cmd == "verify":
         res = verify(a.snapshot, a.expect)
     elif a.cmd == "health":
-        res = health(a.dataset, a.expect, a.snapshot)
+        res = health(a.dataset, a.expect, a.snapshot, a.lock_timeout)
     elif a.cmd == "restore":
         res = restore(a.dataset, a.snapshot, a.confirm, a.dry_run, a.lock_timeout, a.simulate_crash_after)
     else:

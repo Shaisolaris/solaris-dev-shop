@@ -472,5 +472,192 @@ class Cli(Base):
         self.assertEqual(self.cli('restore', self.tmp / 'nope', '--snapshot', self.tmp / 'snap').returncode, 2)
 
 
+
+KILL_AT_SECOND_JOURNAL_WRITE = """
+import os, signal
+_replace = os.replace
+_n = [0]
+def replace(a, b, *x, **k):
+    if os.path.basename(os.fspath(b)) == '.solaris-recovery.json':
+        _n[0] += 1
+        if _n[0] == 2:  # staging is complete; the journal is about to say "swapping"
+            os.kill(os.getpid(), signal.SIGKILL)
+    return _replace(a, b, *x, **k)
+os.replace = replace
+"""
+
+
+class M03Rework(Base):
+    """Cases from the M03 self-validation (F1-F7) and the mutants the first tests missed."""
+
+    def cli(self, *args, env=None):
+        p = subprocess.run([sys.executable, str(TOOL), *map(str, args)], capture_output=True, text=True,
+                           env=env or dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+        self.assertNotIn('Traceback', p.stderr)
+        return p
+
+    def test_f1_user_tables_named_like_sqlite_are_compared_and_restored(self):
+        execute(self.db, "CREATE TABLE sqlitedata(k TEXT, v TEXT); INSERT INTO sqlitedata VALUES ('plan','GOOD');"
+                         "CREATE TABLE SQLiteLog(m TEXT); INSERT INTO SQLiteLog VALUES ('x');"
+                         "CREATE TABLE sqlite1(id INTEGER PRIMARY KEY, v TEXT); INSERT INTO sqlite1 VALUES (1, 'one');")
+        snap, sid = self.snap()
+        execute(self.db, "UPDATE sqlitedata SET v='LIVE'; DELETE FROM SQLiteLog; UPDATE sqlite1 SET v='changed';")
+        h = rec.health(str(self.ds), ['service.db'], str(snap))
+        self.assertEqual(h['status'], 'unhealthy', h)
+        self.assertIn('sqlitedata', ' '.join(h['messages']))
+        r = rec.restore(str(self.ds), str(snap), confirm=sid)
+        self.assertEqual(r['restored'], ['service.db'], r)
+        self.assertEqual(rows(self.db, 'sqlite1'), [(1, 'one')])
+        con = sqlite3.connect(self.db)
+        self.assertEqual(con.execute('SELECT * FROM sqlitedata').fetchall(), [('plan', 'GOOD')])
+        self.assertEqual(con.execute('SELECT count(*) FROM SQLiteLog').fetchone(), (1,))
+        con.close()
+
+    def test_f2_user_version_and_application_id_are_compared_and_restored(self):
+        execute(self.db, 'PRAGMA user_version=3; PRAGMA application_id=11;')
+        snap, sid = self.snap()
+        execute(self.db, 'PRAGMA user_version=9; PRAGMA application_id=77;')
+        self.assertEqual(rec.health(str(self.ds), ['service.db'], str(snap))['status'], 'unhealthy')
+        plan = rec.restore(str(self.ds), str(snap), confirm=sid, dry_run=True)['plan']
+        self.assertFalse(plan['databases']['service.db']['changes']['identical'])
+        r = rec.restore(str(self.ds), str(snap), confirm=sid)
+        self.assertEqual(r['restored'], ['service.db'], r)
+        con = sqlite3.connect(self.db)
+        self.assertEqual((con.execute('PRAGMA user_version').fetchone()[0], con.execute('PRAGMA application_id').fetchone()[0]), (3, 11))
+        con.close()
+
+    def test_f3_quiescent_wal_database_snapshots_without_sidecars(self):
+        execute(self.db, 'PRAGMA journal_mode=WAL;')
+        for suf in ('-wal', '-shm'):
+            p = self.ds / ('service.db' + suf)
+            if p.exists():
+                p.unlink()  # a WAL database closed by a build that removes its sidecars
+        before = rec._sha_file(self.db)
+        snap, sid = self.snap()
+        self.assertEqual(sorted(os.listdir(snap)), ['manifest.json', 'service.db'])
+        self.assertEqual(rec.verify(str(snap))['status'], 'ok')
+        self.assertEqual(rec.health(str(self.ds), ['service.db'], str(snap))['status'], 'ok')
+        self.assertEqual(rec._sha_file(self.db), before)
+
+    def test_f3_live_writer_snapshot_keeps_no_sidecar(self):
+        execute(self.db, 'PRAGMA journal_mode=WAL;')
+        holder = sqlite3.connect(self.db)
+        self.addCleanup(holder.close)
+        holder.execute("INSERT INTO customers VALUES (5,'only-in-wal')")
+        holder.commit()
+        snap, sid = self.snap()
+        self.assertEqual(sorted(os.listdir(snap)), ['manifest.json', 'service.db'])
+        self.assertEqual(rec.verify(str(snap))['status'], 'ok')
+        con = sqlite3.connect(snap.resolve().as_uri() + '/service.db?mode=ro&immutable=1', uri=True)
+        self.assertIn((5, 'only-in-wal'), con.execute('SELECT * FROM customers').fetchall())
+        con.close()
+
+    def test_f4_health_without_snapshot_rejects_empty_databases(self):
+        self.db.write_bytes(b'')
+        h = rec.health(str(self.ds), ['service.db'])
+        self.assertEqual(h['status'], 'unhealthy')
+        self.assertIn('0 bytes', h['messages'][0])
+        self.db.unlink()
+        execute(self.db, 'CREATE TABLE t(x); DROP TABLE t;')
+        h = rec.health(str(self.ds), ['service.db'])
+        self.assertEqual(h['status'], 'unhealthy')
+        self.assertIn('no user tables', h['messages'][0])
+
+    def test_f5_manifest_entry_without_tables_is_refused_cleanly(self):
+        snap, sid = self.snap()
+        m = json.loads((snap / 'manifest.json').read_text())
+        del m['databases']['service.db']['tables']
+        (snap / 'manifest.json').write_text(json.dumps(m))
+        p = self.cli('health', self.ds, '--expect', 'service.db', '--snapshot', snap)
+        self.assertEqual(p.returncode, 2)
+        self.assertIn('malformed', p.stdout)
+        self.assertEqual(rec.verify(str(snap))['status'], 'failed')
+
+    def test_f6_one_missing_snapshot_folder_level_is_created(self):
+        r = rec.snapshot(str(self.ds), str(self.tmp / 'snapshots' / '2026-10-18'))
+        self.assertEqual(r['status'], 'ok', r)
+        r = rec.snapshot(str(self.ds), str(self.tmp / 'a' / 'b' / 'c'))
+        self.assertEqual(r['status'], 'refused')
+        self.assertFalse((self.tmp / 'a').exists())
+
+    def test_f7_non_finite_lock_timeouts_are_rejected(self):
+        snap, sid = self.snap()
+        for bad in ('nan', 'inf', '-1', '0', '601'):
+            p = self.cli('restore', self.ds, '--snapshot', snap, '--confirm', sid, '--lock-timeout', bad)
+            self.assertEqual(p.returncode, 2, bad)
+        self.assertEqual(self.cli('health', self.ds, '--expect', 'service.db', '--lock-timeout', '1').returncode, 0)
+
+    def test_dry_run_with_confirm_never_restores(self):
+        snap, sid = self.snap()
+        execute(self.db, "UPDATE orders SET value='live';")
+        before = tree(self.ds)
+        r = rec.restore(str(self.ds), str(snap), confirm=sid, dry_run=True)
+        self.assertEqual(r['status'], 'planned')
+        self.assertEqual(tree(self.ds), before)
+        self.assertEqual(rows(self.db, 'orders')[0], (1, 'live'))
+
+    def test_crash_after_staging_is_discarded_not_rolled_forward(self):
+        snap, sid = self.snap()
+        execute(self.db, "UPDATE orders SET value='live';")
+        inj = self.tmp / 'inject'
+        inj.mkdir()
+        (inj / 'sitecustomize.py').write_text(KILL_AT_SECOND_JOURNAL_WRITE)
+        env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1', PYTHONPATH=str(inj))
+        p = subprocess.run([sys.executable, str(TOOL), 'restore', str(self.ds), '--snapshot', str(snap), '--confirm', sid],
+                           capture_output=True, text=True, env=env)
+        self.assertEqual(p.returncode, -9, p.stderr)
+        self.assertEqual(json.loads((self.ds / rec.JOURNAL).read_text())['state'], 'staging')
+        self.assertEqual(rec.recover(str(self.ds), dry_run=True)['decision'], 'discard_staging')
+        r = rec.recover(str(self.ds))
+        self.assertEqual((r['status'], r['decision']), ('ok', 'discard_staging'), r)
+        self.assertEqual(rows(self.db, 'orders')[0], (1, 'live'))
+        self.assertEqual(sorted(os.listdir(self.ds)), ['config.yaml', 'service.db'])
+
+    def test_recover_previews_roll_back_for_a_damaged_stage(self):
+        snap, sid = self.snap()
+        execute(self.db, "UPDATE orders SET value='live';")
+        p = self.cli('restore', self.ds, '--snapshot', snap, '--confirm', sid, '--simulate-crash-after', '1')
+        self.assertEqual(p.returncode, 137)
+        one(self.ds, '.service.db.restore-*.staged').write_bytes(b'damaged')
+        self.assertEqual(rec.recover(str(self.ds), dry_run=True)['decision'], 'roll_back')
+        self.assertEqual(rec.recover(str(self.ds))['decision'], 'roll_back')
+        self.assertEqual(rows(self.db, 'orders')[0], (1, 'live'))
+
+    def test_health_fails_while_a_finished_swap_still_has_its_journal(self):
+        snap, sid = self.snap()
+        execute(self.db, "UPDATE orders SET value='live';")
+        self.assertEqual(self.cli('restore', self.ds, '--snapshot', snap, '--confirm', sid,
+                                  '--simulate-crash-after', '2').returncode, 137)
+        self.assert_seed_values()  # every rename happened, only the journal is left
+        h = rec.health(str(self.ds), ['service.db'], str(snap))
+        self.assertEqual(h['status'], 'unhealthy')
+        self.assertIn(rec.JOURNAL, h['messages'][0])
+
+    def test_external_dataset_lock_blocks_restore_and_dry_run(self):
+        snap, sid = self.snap()
+        execute(self.db, "UPDATE orders SET value='live';")
+        holder = subprocess.Popen([sys.executable, '-c', 'import fcntl,os,sys,time;fd=os.open(sys.argv[1],os.O_RDWR|os.O_CREAT);'
+                                   'fcntl.flock(fd,fcntl.LOCK_EX);print("held",flush=True);time.sleep(60)',
+                                   str(self.ds / rec.LOCK)], stdout=subprocess.PIPE, text=True)
+        self.addCleanup(lambda: (holder.kill(), holder.wait(), holder.stdout.close()))
+        self.assertEqual(holder.stdout.readline().strip(), 'held')
+        before = tree(self.ds)
+        self.assertEqual(rec.restore(str(self.ds), str(snap), confirm=sid)['status'], 'busy')
+        self.assertEqual(rec.restore(str(self.ds), str(snap), confirm=sid, dry_run=True)['status'], 'busy')
+        self.assertEqual(tree(self.ds), before)
+
+    def test_extra_snapshot_member_and_symlinked_database_are_refused(self):
+        snap, sid = self.snap()
+        (snap / 'stray.txt').write_text('not in the manifest')
+        self.assertEqual(rec.verify(str(snap))['status'], 'failed')
+        self.assertEqual(rec.restore(str(self.ds), str(snap), confirm=sid)['status'], 'refused')
+        real = self.outside / 'real.db'
+        shutil.copy(self.db, real)
+        self.db.unlink()
+        self.db.symlink_to(real)
+        self.assertEqual(rec.health(str(self.ds), ['service.db'])['status'], 'unhealthy')
+        self.assertEqual(rec.snapshot(str(self.ds), str(self.tmp / 'snap-link'))['status'], 'refused')
+
+
 if __name__ == '__main__':
     unittest.main()

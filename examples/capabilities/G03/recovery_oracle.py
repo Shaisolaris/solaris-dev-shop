@@ -133,7 +133,7 @@ class Oracle:
     # C2
     def c2_good_target_survives_invalid_snapshots(self):
         out = []
-        for case in ("flipped-byte", "garbage-manifest", "link-member", "forged-values", "truncated"):
+        for case in ("flipped-byte", "garbage-manifest", "link-member", "forged-values", "truncated", "extra-member"):
             root, ds = self.fresh("bad-" + case)
             snap, sid = self.snap(root, ds)
             sql(ds / "app.db", "UPDATE items SET v='live-good' WHERE id=1;")
@@ -147,6 +147,8 @@ class Oracle:
                         p.write_text("{not json")
             elif case == "link-member":
                 dbfile.unlink(); dbfile.symlink_to(self.outside / "sentinel.db")
+            elif case == "extra-member":
+                (snap / "extra.db").write_bytes(dbfile.read_bytes())
             elif case == "forged-values":
                 sql(dbfile, "UPDATE items SET v='forged' WHERE id=2;")
             else:
@@ -198,6 +200,12 @@ class Oracle:
         for p in ds.iterdir():
             if p.name.startswith(".") and values(p) == SEED:
                 p.write_bytes(b"damaged stage")
+        p = self.run("recover", ds, "--dry-run", "--json")
+        try:
+            preview = json.loads(p.stdout).get("decision")
+        except ValueError:
+            preview = None
+        need(preview == "roll_back", f"recover --dry-run previews {preview!r} for a damaged stage, expected roll_back")
         self.run("recover", ds)
         need(values(ds / "app.db") == [(i, "live") for i in (1, 2, 3)], "damaged stage: original not put back")
         return "target absent + snapshot deleted -> rolled forward; damaged stage -> original back"
@@ -280,6 +288,103 @@ class Oracle:
         need(p.returncode == 0 and values(ds / "app.db") == SEED, "confirmed restore failed")
         need(any_file_holds(ds, (4, "newer-live")), "newer live row is not kept anywhere")
         return "no or wrong confirm refused unchanged; confirmed restore keeps the newer row in a copy"
+
+    # C12 (rework r2, from M03)
+    def c12_links_and_journal(self):
+        root, ds = self.fresh("links")
+        real = self.base / "outside" / "real.db"
+        shutil.copy(ds / "app.db", real)
+        before_out = hashlib.sha256(real.read_bytes()).hexdigest()
+        (ds / "app.db").unlink()
+        (ds / "app.db").symlink_to(real)
+        need(self.run("health", ds, "--expect", "app.db").returncode != 0, "a symlinked expected database was called healthy")
+        need(self.run("snapshot", ds, "--out", root / "snap-link", "--json").returncode != 0 and not (root / "snap-link").exists(),
+             "a symlinked database was snapshotted through the link")
+        need(hashlib.sha256(real.read_bytes()).hexdigest() == before_out, "the link target outside the dataset changed")
+        real.unlink()
+        root, ds, snap, sid = self._crash(2, "journal-open")
+        need(values(ds / "app.db") == SEED, "after the last rename the restored file should be in place")
+        need(self.run("health", ds, "--expect", "app.db", "--snapshot", snap).returncode != 0,
+             "health passed while the restore journal is still open")
+        need(self.run("recover", ds).returncode == 0 and self.run("health", ds, "--expect", "app.db").returncode == 0,
+             "recover did not close the journal")
+        return "symlinked DB refused by health and snapshot, outside untouched; health fails while a journal is open"
+
+    # C13 (rework r2, from M03)
+    def c13_external_dataset_lock(self):
+        root, ds = self.fresh("flock")
+        snap, sid = self.snap(root, ds)
+        sql(ds / "app.db", "UPDATE items SET v='live';")
+        holder = subprocess.Popen([sys.executable, "-c", "import fcntl,os,sys,time;fd=os.open(sys.argv[1],os.O_RDWR|os.O_CREAT);"
+                                   "fcntl.flock(fd,fcntl.LOCK_EX);print('held',flush=True);time.sleep(120)",
+                                   str(ds / ".solaris-recovery.lock")], stdout=subprocess.PIPE, text=True)
+        try:
+            need(holder.stdout.readline().strip() == "held", "could not hold the dataset lock")
+            before = tree(ds)
+            p = self.run("restore", ds, "--snapshot", snap, "--confirm", sid)
+            need(p.returncode != 0 and tree(ds) == before, "restore ran while another process held the dataset lock")
+            p = self.run("restore", ds, "--snapshot", snap, "--dry-run")
+            need(p.returncode != 0, "dry run did not report the held dataset lock")
+        finally:
+            holder.kill(); holder.wait(); holder.stdout.close()
+        p = self.run("restore", ds, "--snapshot", snap, "--confirm", sid)
+        need(p.returncode == 0 and values(ds / "app.db") == SEED, "restore after the lock was released failed")
+        return "external flock holder: restore and dry run refuse, dataset byte-identical; works after release"
+
+    # C14 (rework r2, from M03): needs a Python candidate; the drill patches os.replace in-process
+    def c14_crash_after_staging(self):
+        root, ds = self.fresh("staging")
+        snap, sid = self.snap(root, ds)
+        sql(ds / "app.db", "UPDATE items SET v='live';")
+        inj = root / "inject"
+        inj.mkdir()
+        (inj / "sitecustomize.py").write_text(
+            "import os, signal\n_r = os.replace\n_n = [0]\n"
+            "def replace(a, b, *x, **k):\n"
+            "    if os.path.basename(os.fspath(b)) == '.solaris-recovery.json':\n"
+            "        _n[0] += 1\n"
+            "        if _n[0] == 2:\n"
+            "            os.kill(os.getpid(), signal.SIGKILL)\n"
+            "    return _r(a, b, *x, **k)\n"
+            "os.replace = replace\n")
+        p = subprocess.run(self.cmd + ["restore", str(ds), "--snapshot", str(snap), "--confirm", sid], capture_output=True,
+                           text=True, timeout=60, env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1", PYTHONPATH=str(inj)))
+        need(p.returncode == -9, f"the drill did not stop the restore after staging (exit {p.returncode}); "
+             "this check needs a Python candidate that writes .solaris-recovery.json with os.replace")
+        p = self.run("recover", ds, "--dry-run", "--json")
+        try:
+            preview = json.loads(p.stdout).get("decision")
+        except ValueError:
+            preview = None
+        need(preview == "discard_staging", f"a restore killed before any swap previews {preview!r}, expected discard_staging")
+        p = self.run("recover", ds)
+        need(p.returncode == 0 and values(ds / "app.db") == [(i, "live") for i in (1, 2, 3)],
+             "recover after a staging-only crash changed the live values")
+        left = sorted(x for x in os.listdir(ds) if x not in ("app.db", "notes.txt"))
+        need(not left, f"leftovers after recover: {left}")
+        return "killed after staging: recover discards the staged copies, originals untouched, no leftovers"
+
+    # C15 (rework r2, from M03)
+    def c15_value_fidelity(self):
+        root, ds = self.fresh("fidelity")
+        sql(ds / "app.db", "CREATE TABLE sqlitedata(k TEXT, v TEXT); INSERT INTO sqlitedata VALUES ('plan','GOOD');"
+                           "PRAGMA user_version=4;")
+        snap, sid = self.snap(root, ds)
+        for change, undo, what in (("UPDATE sqlitedata SET v='LIVE';", "UPDATE sqlitedata SET v='GOOD';", "a row in table sqlitedata"),
+                                   ("PRAGMA user_version=9;", "PRAGMA user_version=4;", "user_version"),
+                                   ("PRAGMA application_id=7;", "PRAGMA application_id=0;", "application_id")):
+            sql(ds / "app.db", change)
+            need(self.run("health", ds, "--expect", "app.db", "--snapshot", snap).returncode != 0,
+                 f"health missed a change in {what}")
+            sql(ds / "app.db", undo)
+        need(self.run("health", ds, "--expect", "app.db", "--snapshot", snap).returncode == 0, "health fails on the unchanged database")
+        sql(ds / "app.db", "UPDATE sqlitedata SET v='LIVE'; PRAGMA user_version=9;")
+        p = self.run("restore", ds, "--snapshot", snap, "--confirm", sid)
+        c = sqlite3.connect(ds / "app.db")
+        got = (c.execute("SELECT v FROM sqlitedata").fetchall(), c.execute("PRAGMA user_version").fetchone()[0])
+        c.close()
+        need(p.returncode == 0 and got == ([("GOOD",)], 4), f"after restore sqlitedata/user_version are {got}")
+        return "changes to table sqlitedata, user_version and application_id each fail health; restore brings them back"
 
     # C10
     def c10_concurrent(self):
