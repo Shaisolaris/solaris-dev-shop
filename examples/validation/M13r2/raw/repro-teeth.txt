@@ -1,0 +1,9 @@
+# M13 finding repros vs fix-revert mutants (3.12.14 + 3.9.6) 2026-10-18 15:57:52 PDT: sections that differ from the r2 candidate
+rv_n1_unknown_on_time: differs in [ N1 ] KILLED
+rv_n2_fromisoformat_fallback: differs in [ N2 ] KILLED
+rv_n3_loaded_at_in_content: differs in [ N3 ] KILLED
+rv_n4_write_each_now: differs in [ N4 ] KILLED
+rv_n5_recursion_uncaught: differs in [ ] SURVIVED
+rv_n6_dst_guess: differs in [ N6 ] KILLED
+rv_n7_unicode_int: differs in [ N7 ] KILLED
+rv_n8_line_order: differs in [ N8 ] KILLED

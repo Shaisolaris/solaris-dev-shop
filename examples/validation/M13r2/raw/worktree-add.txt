@@ -1,0 +1,2 @@
+Preparing worktree (detached HEAD 75a4e2b)
+HEAD is now at 75a4e2b G13 rework r2: M13 findings N1-N10 (review only)

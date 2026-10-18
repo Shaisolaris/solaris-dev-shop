@@ -1,0 +1,28 @@
+# M13 finding repros on r2 2026-10-18 15:44:07 PDT
+N1 as_of with missing loaded_at
+  [OK] as_of 2026-10-02T00:00Z with loaded_at missing (0/4 report exit 0 reconciled): one row blank loaded_at: exit 1 status reconciled_with_gaps gaps ['loaded_at_unknown'] USD 150.00 loaded_at_missing_included None; NULL token: exit 1 status reconciled_with_gaps gaps ['loaded_at_unknown'] USD 150.00 loaded_at_missing_included None; every row blank: exit 1 status reconciled_with_gaps gaps ['loaded_at_unknown'] USD None loaded_at_missing_included None; newer version blank, older on time: exit 1 status reconciled_with_gaps gaps ['loaded_at_unknown'] USD 150.00 loaded_at_missing_included None
+
+N1 (oracle k5b)
+  [PASS] missing loaded_at under as_of is not reported clean (exit 1, gaps ['loaded_at_unknown'])
+
+N2 timestamp forms 3.12 vs 3.9
+  [OK] event_time forms where interpreters disagree on the metric (0): []; exit:USD per main/usr: 2026-09-10T12:00:00Z: 0:154.00/0:154.00; 2026-09-10T12:00:00+00:00: 0:154.00/0:154.00; 2026-09-10T12:00:00.5Z: 0:154.00/0:154.00; 2026-09-10T12:00:00+0000: 1:150.00/1:150.00; 2026-09-10T12:00:00+00: 1:150.00/1:150.00; 20260910T120000Z: 1:150.00/1:150.00; 2026-W37-4T12:00:00Z: 1:150.00/1:150.00; 2026-09-10T12:00Z: 0:154.00/0:154.00; 2026-09-10 12:00:00: 0:154.00/0:154.00; 2026-09-10: 0:154.00/0:154.00; 2026-09-10T12:00:00.1234567Z: 1:150.00/1:150.00
+
+N3 re-delivered identical record
+  [OK] O2 re-delivered (identical except loaded_at): USD 150.00 (true 150.00), orders 3, duplicates {'exact_copies': 1, 'keys_unresolved': 0, 'rows_unresolved': 0, 'superseded_versions': 0}, exit 0, gaps []
+
+N4 write failure after checks
+  [OK] --rejects writable, --out in a read-only folder: exit 2 '{"error": "file error: Permission denied", "schema": "solaris.csv-reconcile-report/1", "status": "in'; rejects.csv written anyway=False (doc: exit 2 means nothing written)
+
+N5 deep JSON contract
+  [OK] 100000-deep contract JSON: exit 2, traceback=False 
+
+N6 DST local times
+  [OK] ambiguous local 2026-11-01 01:30 (window end 09:00Z): USD 20.00, exit 1, notes ['1 rows rejected (ambiguous_local_time): their local times without an offset happen twice (DST fall-back) in America/Los_Angeles; the source must give an offset'] (counted as the first occurrence, no ambiguity flagged); nonexistent local 2026-03-08 02:30 accepted: exit 1, outside_window 0, notes ['1 rows rejected (nonexistent_local_time): their local times without an offset do not exist (DST spring-forward) in America/Los_Angeles; the source must give an offset']
+
+N7 Unicode digits in int
+  [OK] USD 150.00, rejected {'bad_int': 1}
+
+N8 total spelling vs row order (oracle k6b)
+  [PASS] revenue spelled ['30.00', '150.00'] in both orders
+

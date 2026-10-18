@@ -1,0 +1,5 @@
+# rv_n5 equivalence check 2026-10-18 15:58:23 PDT: 100000-deep contract
+candidate 3.12.14 rc=2 traceback=0 out=invalid: c.json: JSON nested too deeply nothing written 
+candidate 3.9.6 rc=2 traceback=0 out=invalid: c.json: JSON nested too deeply nothing written 
+mutant 3.12.14 rc=2 traceback=0 out=invalid: input nested too deeply nothing written 
+mutant 3.9.6 rc=2 traceback=0 out=invalid: input nested too deeply nothing written 

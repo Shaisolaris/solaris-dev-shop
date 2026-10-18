@@ -1,0 +1,6 @@
+commit 75a4e2bd05b66a9455b074879966e46f960f4d4b status-lines 0
+== 3.12.14_sqlite3.53.1  g13 rc=0 Ran 35 tests in 5.999s OK | original rc=0 Ran 84 tests in 1.929s OK | full rc=0 Ran 119 tests in 8.149s OK |
+== 3.9.6_sqlite3.54.0  g13 rc=0 Ran 35 tests in 7.476s OK | original rc=0 Ran 84 tests in 2.460s OK | full rc=0 Ran 119 tests in 9.621s OK |
+== 3.11.16_sqlite3.53.1  g13 rc=0 Ran 35 tests in 5.200s OK | original rc=0 Ran 84 tests in 1.655s OK | full rc=0 Ran 119 tests in 6.911s OK |
+== 3.13.15_sqlite3.53.1  g13 rc=0 Ran 35 tests in 5.867s OK | original rc=0 Ran 84 tests in 1.945s OK | full rc=0 Ran 119 tests in 8.109s OK |
+after: status-lines 0

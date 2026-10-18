@@ -1,0 +1,576 @@
+=== candidate
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+13/13 checks passed
+
+=== stub-noop
+FAIL o1 clean control reconciles with exit 0 and naive == correct
+FAIL o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+FAIL o3 every row accounted in exactly one bucket; join counts exact
+FAIL o4 unseen seeds give exact metrics and coverage
+FAIL o5 no silent imputation: nullable amount skipped and counted
+FAIL o6 naive inflation shown next to the correct total
+FAIL o7 deterministic rerun and row-order invariance
+FAIL o8 schema drift exits 2, keeps the previous report; fixing recovers
+FAIL o9 input safety: no escape, no symlink, never overwrite inputs
+FAIL o10 scale: large dirty file exact within the time budget
+FAIL o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+FAIL o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+0/13 checks passed
+
+=== stub-naive
+FAIL o1 clean control reconciles with exit 0 and naive == correct
+FAIL o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+FAIL o3 every row accounted in exactly one bucket; join counts exact
+FAIL o4 unseen seeds give exact metrics and coverage
+FAIL o5 no silent imputation: nullable amount skipped and counted
+FAIL o6 naive inflation shown next to the correct total
+FAIL o7 deterministic rerun and row-order invariance
+FAIL o8 schema drift exits 2, keeps the previous report; fixing recovers
+FAIL o9 input safety: no escape, no symlink, never overwrite inputs
+FAIL o10 scale: large dirty file exact within the time budget
+FAIL o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+FAIL o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+0/13 checks passed
+
+=== builder-noop_stub
+FAIL o1 clean control reconciles with exit 0 and naive == correct
+FAIL o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+FAIL o3 every row accounted in exactly one bucket; join counts exact
+FAIL o4 unseen seeds give exact metrics and coverage
+FAIL o5 no silent imputation: nullable amount skipped and counted
+FAIL o6 naive inflation shown next to the correct total
+FAIL o7 deterministic rerun and row-order invariance
+FAIL o8 schema drift exits 2, keeps the previous report; fixing recovers
+FAIL o9 input safety: no escape, no symlink, never overwrite inputs
+FAIL o10 scale: large dirty file exact within the time budget
+FAIL o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+FAIL o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+0/13 checks passed
+
+=== builder-naive_stub
+FAIL o1 clean control reconciles with exit 0 and naive == correct
+FAIL o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+FAIL o3 every row accounted in exactly one bucket; join counts exact
+FAIL o4 unseen seeds give exact metrics and coverage
+FAIL o5 no silent imputation: nullable amount skipped and counted
+FAIL o6 naive inflation shown next to the correct total
+FAIL o7 deterministic rerun and row-order invariance
+FAIL o8 schema drift exits 2, keeps the previous report; fixing recovers
+FAIL o9 input safety: no escape, no symlink, never overwrite inputs
+FAIL o10 scale: large dirty file exact within the time budget
+FAIL o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+FAIL o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+0/13 checks passed
+
+=== mutant-ambiguous_as_unmatched
+PASS o1 clean control reconciles with exit 0 and naive == correct
+FAIL o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+FAIL o3 every row accounted in exactly one bucket; join counts exact
+FAIL o4 unseen seeds give exact metrics and coverage
+FAIL o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+FAIL o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+FAIL o10 scale: large dirty file exact within the time budget
+FAIL o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+6/13 checks passed
+
+=== mutant-control_ignores_rejects
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+
+=== mutant-count_distinct_as_count
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+
+=== mutant-decimal_not_normalized
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+
+=== mutant-dedup_after_status
+PASS o1 clean control reconciles with exit 0 and naive == correct
+FAIL o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+FAIL o3 every row accounted in exactly one bucket; join counts exact
+FAIL o4 unseen seeds give exact metrics and coverage
+FAIL o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+FAIL o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+FAIL o10 scale: large dirty file exact within the time budget
+FAIL o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+6/13 checks passed
+
+=== mutant-digits_unbounded
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+
+=== mutant-dim_dupes_fan_out
+PASS o1 clean control reconciles with exit 0 and naive == correct
+FAIL o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+FAIL o3 every row accounted in exactly one bucket; join counts exact
+FAIL o4 unseen seeds give exact metrics and coverage
+FAIL o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+FAIL o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+FAIL o10 scale: large dirty file exact within the time budget
+FAIL o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+6/13 checks passed
+
+=== mutant-late_boundary_inclusive
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+
+=== mutant-late_ignored
+PASS o1 clean control reconciles with exit 0 and naive == correct
+FAIL o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+FAIL o3 every row accounted in exactly one bucket; join counts exact
+FAIL o4 unseen seeds give exact metrics and coverage
+FAIL o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+FAIL o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+FAIL o10 scale: large dirty file exact within the time budget
+FAIL o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+5/13 checks passed
+
+=== mutant-naive_as_utc
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+FAIL o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+11/13 checks passed
+
+=== mutant-no_atomic_tmp
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+FAIL o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+11/13 checks passed
+
+=== mutant-no_exact_collapse
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+FAIL o3 every row accounted in exactly one bucket; join counts exact
+FAIL o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+FAIL o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+FAIL o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+8/13 checks passed
+
+=== mutant-null_as_zero
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+
+=== mutant-null_gap_dropped
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+FAIL o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+11/13 checks passed
+
+=== mutant-oldest_wins
+PASS o1 clean control reconciles with exit 0 and naive == correct
+FAIL o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+FAIL o3 every row accounted in exactly one bucket; join counts exact
+FAIL o4 unseen seeds give exact metrics and coverage
+FAIL o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+FAIL o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+FAIL o10 scale: large dirty file exact within the time budget
+FAIL o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+6/13 checks passed
+
+=== mutant-out_over_input
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+FAIL o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+
+=== mutant-rv_n1_unknown_on_time
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+FAIL o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+
+=== mutant-rv_n2_fromisoformat_fallback
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+FAIL o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+
+=== mutant-rv_n3_loaded_at_in_content
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+FAIL o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+
+=== mutant-rv_n4_write_each_now
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+FAIL o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+
+=== mutant-rv_n5_recursion_uncaught
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+13/13 checks passed
+
+=== mutant-rv_n6_dst_guess
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+FAIL o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+
+=== mutant-rv_n7_unicode_int
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+FAIL o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+
+=== mutant-rv_n8_line_order
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+FAIL o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+
+=== mutant-status_ignored
+PASS o1 clean control reconciles with exit 0 and naive == correct
+FAIL o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+FAIL o3 every row accounted in exactly one bucket; join counts exact
+FAIL o4 unseen seeds give exact metrics and coverage
+FAIL o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+FAIL o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+FAIL o10 scale: large dirty file exact within the time budget
+FAIL o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+6/13 checks passed
+
+=== mutant-symlink_allowed
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+13/13 checks passed
+
+=== mutant-thousands_loose
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+
+=== mutant-tie_picks_first
+PASS o1 clean control reconciles with exit 0 and naive == correct
+FAIL o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+FAIL o3 every row accounted in exactly one bucket; join counts exact
+FAIL o4 unseen seeds give exact metrics and coverage
+FAIL o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+FAIL o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+FAIL o10 scale: large dirty file exact within the time budget
+FAIL o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+PASS o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+6/13 checks passed
+
+=== mutant-uppercase_ignored
+PASS o1 clean control reconciles with exit 0 and naive == correct
+FAIL o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+FAIL o4 unseen seeds give exact metrics and coverage
+FAIL o5 no silent imputation: nullable amount skipped and counted
+FAIL o6 naive inflation shown next to the correct total
+FAIL o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+FAIL o10 scale: large dirty file exact within the time budget
+FAIL o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+5/13 checks passed
+
+=== mutant-window_end_inclusive
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+
+=== mutant-window_start_exclusive
+PASS o1 clean control reconciles with exit 0 and naive == correct
+PASS o2 exact totals on dirty data (dedup, latest version, late and test rows out)
+PASS o3 every row accounted in exactly one bucket; join counts exact
+PASS o4 unseen seeds give exact metrics and coverage
+PASS o5 no silent imputation: nullable amount skipped and counted
+PASS o6 naive inflation shown next to the correct total
+PASS o7 deterministic rerun and row-order invariance
+PASS o8 schema drift exits 2, keeps the previous report; fixing recovers
+PASS o9 input safety: no escape, no symlink, never overwrite inputs
+PASS o10 scale: large dirty file exact within the time budget
+PASS o11 concurrency: 4 parallel runs agree byte for byte, no temp files left
+FAIL o12 boundaries, value parsing, null-aware count/min, controls with rejects, replace-not-rewrite output
+PASS o13 as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling
+12/13 checks passed
+

@@ -1,0 +1,39 @@
+Hand answer (written before running): 10 data rows (lines 2-11).
+B1 USD 1,200.00 in (offset -07:00, inside the window); B2 EUR 80.00 in once: line 4 differs only in loaded_at, so it is an
+exact copy and the earliest load (line 3) is kept; B3 blank loaded_at under as_of -> loaded_at_unknown (line 5);
+B4 newer updated_at 65.00 in, 60.00 superseded (line 6); B5 orphan K9 -> USD 10.00 in, segment (unmatched);
+B6 void -> excluded_status (line 9); B7 2026-10-01 00:00 LA = window end -> outside_window (line 10);
+B8 +0000 offset -> bad_timestamp, rejected (line 11).
+Revenue USD 1275.00, EUR 80.00; orders 4 (B1, B2, B4, B5); exit 1, gaps rejected_rows, loaded_at_unknown,
+unmatched_or_missing_join_key, control_mismatch. Control: rows 10/10, parsed sum 1626.00/1626.00, mismatch because a row
+was rejected. Naive-time note: 3 rows (B2 twice, B7).
+# m13r2 fresh caller 2026-10-18 15:49:06 PDT; python3 shim -> 3.12.14; contract = the doc's JSON block verbatim; offline guard on
+$ python3 $T reconcile contract.json; echo "exit=$?"
+reconcile: reconciled_with_gaps  (grain order_id; window 2026-09-01T07:00:00+00:00 .. 2026-10-01T07:00:00+00:00; as of 2026-10-02T00:00:00+00:00)
+  revenue [currency=EUR] = 80.00  (1 rows)
+  revenue [currency=USD] = 1275.00  (3 rows)
+  orders [all] = 4  (4 rows)
+  rows read 10, included 4, all accounted: yes
+  excluded: rejected 1 {'bad_timestamp': 1}, missing required 0, loaded_at unknown 1, late 0, status 1, outside window 1, exact copies 1, superseded 1, unresolved 0 rows/0 keys
+  join: matched 3, unmatched 1, ambiguous 0, key missing 0; dimension copies 0, conflicting keys 0 (no fan-out)
+  control control.csv: rows 10/10, sum 1626.00/1626.00 -> MISMATCH
+  naive SUM(amount) over every parsed row: {'EUR': '160.00', 'USD': '1466.00'} (9 rows) - not a result
+  naive SUM after an inner join: {'EUR': '160.00', 'USD': '1456.00'} (8 rows) - not a result
+  note: 3 fact rows had timestamps without an offset; read as America/Los_Angeles as the contract declares
+  note: 1 rows have no loaded_at; with an as_of cutoff they cannot be judged on time, so they are excluded
+  local stdlib Python over the supplied CSV files; no warehouse, database or network was used
+exit=1
+$ python3 $T reconcile contract.json --json --out report.json --rejects rejects.csv > /dev/null; echo "exit=$?"; cat rejects.csv
+exit=1
+file,line,reason,detail
+orders.csv,4,duplicate_exact,order_id
+orders.csv,5,loaded_at_unknown,loaded_at
+orders.csv,6,duplicate_superseded,order_id
+orders.csv,9,excluded_status,void
+orders.csv,10,outside_window,event_time
+orders.csv,11,bad_timestamp,event_time
+report: ({'EUR': '80.00', 'USD': '1275.00'}, 4, 'reconciled_with_gaps', ['rejected_rows', 'loaded_at_unknown', 'unmatched_or_missing_join_key', 'control_mismatch'], False)
+matches the hand answer: True
+net attempts: 0
+files now: CHANGELOG.md CODE_OF_CONDUCT.md CONTRIBUTING.md MANIFEST.in NOTICE.md ROADMAP.md SECURITY.md SUPPORT.md assets benchmarks chief-of-staff contract.json control-plane control.csv customers.csv fixtures hand-answer.txt install.sh orders.csv rejects.csv report.json requirements-dev.txt solaris_intake tools 
+HOME after: 0 entries; hidden temp files: 0
