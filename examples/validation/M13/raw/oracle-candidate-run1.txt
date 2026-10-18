@@ -1,0 +1,16 @@
+# run1 (oracle v1): k6 compared metric value strings after a shuffle. Kept: the difference is real but only in spelling (85353.56 vs 85353.560); v2 splits k6 into k6a numeric invariance and k6b spelling stability.
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+PASS k2_single_dirt: 20 single-dirt cases: exact totals, buckets, exit codes and gaps
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+FAIL k6_deterministic: shuffled rows change metrics
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 12/14 pass; oracle REJECTS candidate

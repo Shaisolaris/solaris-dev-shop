@@ -1,0 +1,6 @@
+# REJECTED harness run: original tests were invoked as tests.<module>, but they import siblings as top-level modules (test_router), so 1 error is a harness artefact; full used -t . which is not importable. Superseded by pyversions-matrix.txt (discover -s tests).
+commit 7da20d4f315f27cc0c9ca6fd9221cc182ae8b4da status-lines 0
+== 3.9.6_sqlite3.54.0  g13 Ran 26 tests in 3.354s OK | original Ran 84 tests in 1.928s FAILED (errors=1) | full 
+== 3.11.16_sqlite3.53.1  g13 Ran 26 tests in 2.657s OK | original Ran 84 tests in 1.491s FAILED (errors=1) | full 
+== 3.13.15_sqlite3.53.1  g13 Ran 26 tests in 2.757s OK | original Ran 84 tests in 1.682s FAILED (errors=1) | full 
+== 3.12.14_sqlite3.53.1  g13 Ran 26 tests in 2.615s OK | original Ran 84 tests in 1.528s FAILED (errors=1) | full 

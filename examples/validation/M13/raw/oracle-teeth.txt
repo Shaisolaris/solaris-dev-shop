@@ -1,0 +1,522 @@
+=== candidate
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+PASS k2_single_dirt: 20 single-dirt cases: exact totals, buckets, exit codes and gaps
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (5075 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 13/15 pass; oracle REJECTS candidate
+
+=== positive-control-proposed-fix
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+PASS k2_single_dirt: 20 single-dirt cases: exact totals, buckets, exit codes and gaps
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+PASS k5b_as_of_missing_loaded_at: missing loaded_at under as_of is not reported clean (exit 1, gaps ['loaded_at_unknown'])
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+PASS k6b_value_spelling_stable: revenue spelled ['30.00', '150.00'] in both orders
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (5057 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 15/15 pass; oracle ACCEPTS candidate
+
+=== stub-noop
+FAIL k1_clean_control: clean: naive sum None should equal reconciled
+FAIL k2_single_dirt: exact copy (100.0 vs 100.00, usd vs USD): revenue {} (want {'USD': '150.00', 'EUR': '30.00'}); orders None (want 3); coverage.duplicates.exact_copies=None (want 1); superseded version: revenue {} (want {'USD': '155.00', 'EUR': '30.00'}); orders None (want 3); coverage.duplicates.superseded_versions=None (want 1); tie unresolved: exit 0 (want 1) '{\n  "coverage": {\n    "accounted": 0,\n    "all_rows_accounted": true,\n    "included": 0,\n    "rows_read": 0\n  },\n  "exec'; r
+FAIL k3_join: triple dimension copy fanned out: {}
+FAIL k4_seeded_unseen: seed 7: revenue {} want {'USD': '1037261.74', 'EUR': '930147.17'}; orders None want 404; rows_read 0 want 448; seed 1301: revenue {} want {'USD': '1012848.78', 'EUR': '1058694.50'}; orders None want 405; rows_read 0 want 444; seed 90210: revenue {} want {'USD': '995079.74', 'EUR': '1013965.51'}; orders None want 405; rows_read 0 want 455
+FAIL k5a_as_of: as_of with offset: exit 0 (want 1) '{\n  "coverage": {\n    "accounted": 0,\n    "all_rows_accounted": true,\n    "included": 0,\n    "rows_read": 0\n  },\n  "exec'; revenue {} (want {'USD': '154.00', 'EUR': '30.00'}); orders None (want 4); coverage.late_after_as_of=0 (want 1); gap late_rows missing from []
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=False, notes=None
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+PASS k6b_value_spelling_stable: revenue spelled [] in both orders
+FAIL k7_rejects_and_lines: --rejects not written
+FAIL k8_invalid_and_recovery: schema drift: rc 0, changed [], new [], report kept True; duplicate key: rc 0, changed [], new [], report kept True; NaN: rc 0, changed [], new [], report kept True; unknown zone: rc 0, changed [], new [], report kept True; dotdot: rc 0, changed [], new [], report kept True; absolute: rc 0, changed [], new [], report kept True; symlink: rc 0, changed [], new [], report kept True; --out onto an input: rc 0; --out and --rejects same file: rc 0; recovery run did not re
+FAIL k9_controls: matching control: rc 0 None; sum mismatch: rc 0 gaps []
+FAIL k10_composite_grain: composite grain latest:int: revenue {} (want {'USD': '40.00'}); orders None (want 2); by_region {} (want {'west': '35.00', 'east': '5.00'}); coverage.duplicates.superseded_versions=None (want 2); coverage.duplicates.exact_copies=None (want 1)
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+FAIL k12_concurrency: a concurrent reader saw 10 torn or missing reports out of 883 reads (sizes ['0'])
+FAIL k13_scale: 22826 rows: revenue {} want {'USD': '49799054.06', 'EUR': '50153024.15'}, orders None want 20126, rc 0 
+SUMMARY 3/15 pass; oracle REJECTS candidate
+
+=== stub-naive
+FAIL k1_clean_control: clean: naive sum None should equal reconciled
+FAIL k2_single_dirt: exact copy (100.0 vs 100.00, usd vs USD): revenue {'EUR': Decimal('30.00'), 'USD': Decimal('250.00')} (want {'USD': '150.00', 'EUR': '30.00'}); orders 4 (want 3); coverage.duplicates.exact_copies=None (want 1); superseded version: revenue {'EUR': Decimal('30.00'), 'USD': Decimal('205.00')} (want {'USD': '155.00', 'EUR': '30.00'}); orders 4 (want 3); coverage.duplicates.superseded_versions=None (want 1); tie unresolved: exit 0 (want 1) '{\n  "coverage": {\n    "all_rows_accou
+FAIL k3_join: orphan key: exit 0 (want 1) '{\n  "coverage": {\n    "all_rows_accounted": true,\n    "included": 4,\n    "rows_read": 4\n  },\n  "execution": "local; no w'; gap unmatched_or_missing_join_key missing from []; ambiguous dimension key: exit 0 (want 1) '{\n  "coverage": {\n    "all_rows_accounted": true,\n    "included": 3,\n    "rows_read": 3\n  },\n  "execution": "local; no w'; by_region {'north': Decimal('50.00'), 'west': Decimal('130.00')} (want {'west': '130.00', '(ambiguous)': '
+FAIL k4_seeded_unseen: seed 7: revenue {'EUR': Decimal('1022603.66'), 'USD': Decimal('1106153.95')} want {'USD': '1037261.74', 'EUR': '930147.17'}; orders 448 want 404; rows_read 448 want 448; seed 1301: revenue {'EUR': Decimal('1149008.35'), 'USD': Decimal('1081905.55')} want {'USD': '1012848.78', 'EUR': '1058694.50'}; orders 444 want 405; rows_read 444 want 444; seed 90210: revenue {'EUR': Decimal('1108286.33'), 'USD': Decimal('1090464.33')} want {'USD': '995079.74', 'EUR': '1013965.51'}; orde
+FAIL k5a_as_of: as_of with offset: exit 0 (want 1) '{\n  "coverage": {\n    "all_rows_accounted": true,\n    "included": 5,\n    "rows_read": 5\n  },\n  "execution": "local; no w'; revenue {'EUR': Decimal('30.00'), 'USD': Decimal('160.00')} (want {'USD': '154.00', 'EUR': '30.00'}); orders 5 (want 4); coverage.late_after_as_of=0 (want 1); gap late_rows missing from []
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=None
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+PASS k6b_value_spelling_stable: revenue spelled ['30.00', '250.00'] in both orders
+FAIL k7_rejects_and_lines: --rejects not written
+FAIL k8_invalid_and_recovery: schema drift: rc 0, changed ['report.json'], new [], report kept False; duplicate key: rc 0, changed ['report.json'], new [], report kept True; NaN: rc 0, changed [], new [], report kept True; unknown zone: rc 0, changed [], new [], report kept True; dotdot: rc 1, changed [], new [], report kept True; absolute: rc 0, changed [], new [], report kept True; symlink: rc 0, changed [], new [], report kept True; --out onto an input: rc 0; --out and --rejects same file: rc
+FAIL k9_controls: matching control: rc 0 None; sum mismatch: rc 0 gaps []
+FAIL k10_composite_grain: composite grain latest:int: revenue {'USD': Decimal('164.00')} (want {'USD': '40.00'}); orders 6 (want 2); by_region {'east': Decimal('10.00'), 'west': Decimal('154.00')} (want {'west': '35.00', 'east': '5.00'}); coverage.duplicates.superseded_versions=None (want 2); coverage.duplicates.exact_copies=None (want 1)
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+FAIL k12_concurrency: a concurrent reader saw 16 torn or missing reports out of 1645 reads (sizes ['0'])
+FAIL k13_scale: 22826 rows: revenue {'EUR': Decimal('55211731.22'), 'USD': Decimal('54864176.43')} want {'USD': '49799054.06', 'EUR': '50153024.15'}, orders 22826 want 20126, rc 0 
+SUMMARY 3/15 pass; oracle REJECTS candidate
+
+=== builder-noop_stub
+FAIL k1_clean_control: clean: naive sum None should equal reconciled
+FAIL k2_single_dirt: exact copy (100.0 vs 100.00, usd vs USD): revenue {} (want {'USD': '150.00', 'EUR': '30.00'}); orders None (want 3); coverage.duplicates.exact_copies=None (want 1); superseded version: revenue {} (want {'USD': '155.00', 'EUR': '30.00'}); orders None (want 3); coverage.duplicates.superseded_versions=None (want 1); tie unresolved: exit 0 (want 1) '{"schema": "solaris.csv-reconcile-report/1", "status": "reconciled", "metrics": {}, "coverage": {}}\n'; revenue {} (want {'USD': '1
+FAIL k3_join: triple dimension copy fanned out: {}
+FAIL k4_seeded_unseen: seed 7: revenue {} want {'USD': '1037261.74', 'EUR': '930147.17'}; orders None want 404; rows_read None want 448; seed 1301: revenue {} want {'USD': '1012848.78', 'EUR': '1058694.50'}; orders None want 405; rows_read None want 444; seed 90210: revenue {} want {'USD': '995079.74', 'EUR': '1013965.51'}; orders None want 405; rows_read None want 455
+FAIL k5a_as_of: as_of with offset: exit 0 (want 1) '{"schema": "solaris.csv-reconcile-report/1", "status": "reconciled", "metrics": {}, "coverage": {}}\n'; revenue {} (want {'USD': '154.00', 'EUR': '30.00'}); orders None (want 4); coverage.late_after_as_of=0 (want 1); gap late_rows missing from None
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps None, included=False, notes=None
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: oracle could not read candidate output (KeyError: 'revenue')
+FAIL k7_rejects_and_lines: --rejects not written
+FAIL k8_invalid_and_recovery: schema drift: rc 0, changed [], new [], report kept True; duplicate key: rc 0, changed [], new [], report kept True; NaN: rc 0, changed [], new [], report kept True; unknown zone: rc 0, changed [], new [], report kept True; dotdot: rc 0, changed [], new [], report kept True; absolute: rc 0, changed [], new [], report kept True; symlink: rc 0, changed [], new [], report kept True; --out onto an input: rc 0; --out and --rejects same file: rc 0; recovery run did not re
+FAIL k9_controls: matching control: rc 0 None; sum mismatch: rc 0 gaps None
+FAIL k10_composite_grain: composite grain latest:int: revenue {} (want {'USD': '40.00'}); orders None (want 2); by_region {} (want {'west': '35.00', 'east': '5.00'}); coverage.duplicates.superseded_versions=None (want 2); coverage.duplicates.exact_copies=None (want 1)
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+FAIL k12_concurrency: a concurrent reader saw 14 torn or missing reports out of 864 reads (sizes ['0'])
+FAIL k13_scale: 22826 rows: revenue {} want {'USD': '49799054.06', 'EUR': '50153024.15'}, orders None want 20126, rc 0 
+SUMMARY 2/15 pass; oracle REJECTS candidate
+
+=== builder-naive_stub
+FAIL k1_clean_control: clean: execution/imputation statements missing
+FAIL k2_single_dirt: exact copy (100.0 vs 100.00, usd vs USD): revenue {'EUR': Decimal('30.00'), 'USD': Decimal('250.00')} (want {'USD': '150.00', 'EUR': '30.00'}); orders 4 (want 3); coverage.duplicates.exact_copies=None (want 1); segments 0 != total 280.00; superseded version: revenue {'EUR': Decimal('30.00'), 'USD': Decimal('205.00')} (want {'USD': '155.00', 'EUR': '30.00'}); orders 4 (want 3); coverage.duplicates.superseded_versions=None (want 1); segments 0 != total 235.00; tie unresolved: 
+FAIL k3_join: triple dimension copy fanned out: {}
+FAIL k4_seeded_unseen: seed 7: revenue {'EUR': Decimal('1022603.660'), 'USD': Decimal('1106153.950')} want {'USD': '1037261.74', 'EUR': '930147.17'}; orders 448 want 404; rows_read 448 want 448; seed 1301: revenue {'EUR': Decimal('1149008.350'), 'USD': Decimal('1081905.550')} want {'USD': '1012848.78', 'EUR': '1058694.50'}; orders 444 want 405; rows_read 444 want 444; seed 90210: revenue {'EUR': Decimal('1108286.330'), 'USD': Decimal('1090464.330')} want {'USD': '995079.74', 'EUR': '1013965.51'}
+FAIL k5a_as_of: as_of with offset: exit 0 (want 1) '{"schema": "solaris.csv-reconcile-report/1", "status": "reconciled", "gaps": [], "metrics": {"revenue": {"groups": [{"gr'; revenue {'EUR': Decimal('30.00'), 'USD': Decimal('160.00')} (want {'USD': '154.00', 'EUR': '30.00'}); orders 5 (want 4); coverage.late_after_as_of=0 (want 1); gap late_rows missing from []; segments 0 != total 190.00
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=None
+FAIL k6_deterministic: oracle could not read candidate output (KeyError: 'by')
+PASS k6b_value_spelling_stable: revenue spelled ['30.00', '250.000'] in both orders
+FAIL k7_rejects_and_lines: --rejects not written
+FAIL k8_invalid_and_recovery: schema drift: rc 0, changed ['report.json'], new [], report kept False; duplicate key: rc 0, changed ['report.json'], new [], report kept True; NaN: rc 0, changed [], new [], report kept True; unknown zone: rc 0, changed [], new [], report kept True; dotdot: rc 1, changed [], new [], report kept True; absolute: rc 0, changed [], new [], report kept True; symlink: rc 0, changed [], new [], report kept True; --out onto an input: rc 0; --out and --rejects same file: rc
+FAIL k9_controls: matching control: rc 0 None; sum mismatch: rc 0 gaps []
+FAIL k10_composite_grain: composite grain latest:int: revenue {'USD': Decimal('164.00')} (want {'USD': '40.00'}); orders 6 (want 2); by_region {} (want {'west': '35.00', 'east': '5.00'}); coverage.duplicates.superseded_versions=None (want 2); coverage.duplicates.exact_copies=None (want 1); segments 0 != total 164.00
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+FAIL k12_concurrency: a concurrent reader saw 16 torn or missing reports out of 3751 reads (sizes ['0'])
+FAIL k13_scale: 22826 rows: revenue {'EUR': Decimal('55211731.220'), 'USD': Decimal('54864176.430')} want {'USD': '49799054.06', 'EUR': '50153024.15'}, orders 22826 want 20126, rc 0 
+SUMMARY 2/15 pass; oracle REJECTS candidate
+
+=== mutant-ambiguous_as_unmatched
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+PASS k2_single_dirt: 20 single-dirt cases: exact totals, buckets, exit codes and gaps
+FAIL k3_join: ambiguous dimension key: by_region {'(unmatched)': Decimal('50.00'), 'west': Decimal('130.00')} (want {'west': '130.00', '(ambiguous)': '50.00'}); gap ambiguous_dimension_key missing from ['unmatched_or_missing_join_key']
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (4954 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 12/15 pass; oracle REJECTS candidate
+
+=== mutant-control_ignores_rejects
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+PASS k2_single_dirt: 20 single-dirt cases: exact totals, buckets, exit codes and gaps
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+FAIL k9_controls: control matched although a row was rejected
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (4979 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 12/15 pass; oracle REJECTS candidate
+
+=== mutant-count_distinct_as_count
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: count_distinct buyers: buyers 4 (want 3)
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+FAIL k10_composite_grain: composite grain latest:int: orders 3 (want 2)
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (4848 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 11/15 pass; oracle REJECTS candidate
+
+=== mutant-decimal_not_normalized
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: exact copy (100.0 vs 100.00, usd vs USD): exit 1 (want 0) '{\n  "as_of": "2026-10-02T00:00:00+00:00",\n  "contract_sha256": "de4006c4e8bd64d626dce2007af4d09b3324e0871c18a0e19d299856'; revenue {'EUR': Decimal('30.00'), 'USD': Decimal('50.00')} (want {'USD': '150.00', 'EUR': '30.00'}); orders 2 (want 3); coverage.duplicates.exact_copies=0 (want 1); unexpected gaps ['unresolved_duplicates']
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+FAIL k4_seeded_unseen: seed 7: revenue {'EUR': Decimal('869759.94'), 'USD': Decimal('992791.98')} want {'USD': '1037261.74', 'EUR': '930147.17'}; orders 384 want 404; rows_read 448 want 448; seed 1301: revenue {'EUR': Decimal('1008255.29'), 'USD': Decimal('982484.89')} want {'USD': '1012848.78', 'EUR': '1058694.50'}; orders 391 want 405; rows_read 444 want 444; seed 90210: revenue {'EUR': Decimal('965009.31'), 'USD': Decimal('941690.15')} want {'USD': '995079.74', 'EUR': '1013965.51'}; orders 38
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+PASS k6b_value_spelling_stable: revenue spelled ['30.00', '50.00'] in both orders
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (4) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (4892 reads), no temp files
+FAIL k13_scale: 22826 rows: revenue {'EUR': Decimal('47728714.19'), 'USD': Decimal('47319134.90')} want {'USD': '49799054.06', 'EUR': '50153024.15'}, orders 19149 want 20126, rc 1 
+SUMMARY 11/15 pass; oracle REJECTS candidate
+
+=== mutant-dedup_after_status
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: newer void cancels: revenue {'EUR': Decimal('30.00'), 'USD': Decimal('150.00')} (want {'USD': '100.00', 'EUR': '30.00'}); orders 3 (want 2); coverage.duplicates.superseded_versions=0 (want 1)
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (4922 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 12/15 pass; oracle REJECTS candidate
+
+=== mutant-digits_unbounded
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: 21 integer digits refused: exit 0 (want 1) '{\n  "as_of": "2026-10-02T00:00:00+00:00",\n  "contract_sha256": "de4006c4e8bd64d626dce2007af4d09b3324e0871c18a0e19d299856'; revenue {'EUR': Decimal('30.00'), 'USD': Decimal('111111111111111111261.00')} (want {'USD': '150.00', 'EUR': '30.00'}); orders 4 (want 3); coverage.rejected.bad_decimal=0 (want 1); gap rejected_rows missing from []
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (4749 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 12/15 pass; oracle REJECTS candidate
+
+=== mutant-dim_dupes_fan_out
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+PASS k2_single_dirt: 20 single-dirt cases: exact totals, buckets, exit codes and gaps
+FAIL k3_join: ambiguous dimension key: exit 0 (want 1) '{\n  "as_of": "2026-10-02T00:00:00+00:00",\n  "contract_sha256": "de4006c4e8bd64d626dce2007af4d09b3324e0871c18a0e19d299856'; by_region {'east': Decimal('50.00'), 'west': Decimal('130.00')} (want {'west': '130.00', '(ambiguous)': '50.00'}); gap ambiguous_dimension_key missing from []
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (4900 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 12/15 pass; oracle REJECTS candidate
+
+=== mutant-late_boundary_inclusive
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: loaded exactly at as_of is in: exit 1 (want 0) '{\n  "as_of": "2026-10-02T00:00:00+00:00",\n  "contract_sha256": "de4006c4e8bd64d626dce2007af4d09b3324e0871c18a0e19d299856'; revenue {'EUR': Decimal('30.00'), 'USD': Decimal('150.00')} (want {'USD': '155.00', 'EUR': '30.00'}); orders 3 (want 4); coverage.late_after_as_of=1 (want 0); unexpected gaps ['late_rows']
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+FAIL k5a_as_of: as_of with offset: revenue {'EUR': Decimal('30.00'), 'USD': Decimal('150.00')} (want {'USD': '154.00', 'EUR': '30.00'}); orders 3 (want 4); coverage.late_after_as_of=2 (want 1)
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (4808 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 11/15 pass; oracle REJECTS candidate
+
+=== mutant-late_ignored
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: late row: exit 0 (want 1) '{\n  "as_of": "2026-10-02T00:00:00+00:00",\n  "contract_sha256": "de4006c4e8bd64d626dce2007af4d09b3324e0871c18a0e19d299856'; revenue {'EUR': Decimal('30.00'), 'USD': Decimal('154.00')} (want {'USD': '150.00', 'EUR': '30.00'}); orders 4 (want 3); coverage.late_after_as_of=0 (want 1); gap late_rows missing from []; late newer version keeps the older: exit 0 (want 1) '{\n  "as_of": "2026-10-02T00:00:00+00:00",\n  "contract_sha256": "de4006c4e8bd64d626
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+FAIL k4_seeded_unseen: seed 7: revenue {'EUR': Decimal('930147.170'), 'USD': Decimal('1037276.740')} want {'USD': '1037261.74', 'EUR': '930147.17'}; orders 407 want 404; rows_read 448 want 448; seed 1301: revenue {'EUR': Decimal('1058694.500'), 'USD': Decimal('1012858.780')} want {'USD': '1012848.78', 'EUR': '1058694.50'}; orders 407 want 405; rows_read 444 want 444; seed 90210: revenue {'EUR': Decimal('1013965.510'), 'USD': Decimal('995094.740')} want {'USD': '995079.74', 'EUR': '1013965.51'}; 
+FAIL k5a_as_of: as_of with offset: exit 0 (want 1) '{\n  "as_of": "2026-10-02T00:00:00+00:00",\n  "contract_sha256": "671e6e16b98795b9340cef7c1a7f20d1ea89772cf2a5cd7d49fd6aec'; revenue {'EUR': Decimal('30.00'), 'USD': Decimal('160.00')} (want {'USD': '154.00', 'EUR': '30.00'}); orders 5 (want 4); coverage.late_after_as_of=0 (want 1); gap late_rows missing from []
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (4775 reads), no temp files
+FAIL k13_scale: 22826 rows: revenue {'EUR': Decimal('50153024.150'), 'USD': Decimal('49799689.060')} want {'USD': '49799054.06', 'EUR': '50153024.15'}, orders 20253 want 20126, rc 1 
+SUMMARY 9/15 pass; oracle REJECTS candidate
+
+=== mutant-naive_as_utc
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: naive times read in contract zone: revenue {'EUR': Decimal('30.00'), 'USD': Decimal('156.00')} (want {'USD': '153.00', 'EUR': '30.00'})
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (4987 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 12/15 pass; oracle REJECTS candidate
+
+=== mutant-no_atomic_tmp
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+PASS k2_single_dirt: 20 single-dirt cases: exact totals, buckets, exit codes and gaps
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+FAIL k12_concurrency: a concurrent reader saw 6 torn or missing reports out of 4758 reads (sizes ['0'])
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 12/15 pass; oracle REJECTS candidate
+
+=== mutant-no_exact_collapse
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: exact copy (100.0 vs 100.00, usd vs USD): coverage.duplicates.exact_copies=0 (want 1); not all rows accounted
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+FAIL k4_seeded_unseen: seed 7: revenue {'EUR': Decimal('930147.170'), 'USD': Decimal('1037261.740')} want {'USD': '1037261.74', 'EUR': '930147.17'}; orders 404 want 404; rows_read 448 want 448; seed 1301: revenue {'EUR': Decimal('1058694.500'), 'USD': Decimal('1012848.780')} want {'USD': '1012848.78', 'EUR': '1058694.50'}; orders 405 want 405; rows_read 444 want 444; seed 90210: revenue {'EUR': Decimal('1013965.510'), 'USD': Decimal('995079.740')} want {'USD': '995079.74', 'EUR': '1013965.51'}; 
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.000'] vs ['30.00', '150.00']
+FAIL k7_rejects_and_lines: rejects lists 2 fact rows, coverage excludes 3
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+FAIL k10_composite_grain: composite grain latest:int: coverage.duplicates.exact_copies=0 (want 1); not all rows accounted
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (4996 reads), no temp files
+FAIL k13_scale: 22826 rows: revenue {'EUR': Decimal('50153024.150'), 'USD': Decimal('49799054.060')} want {'USD': '49799054.06', 'EUR': '50153024.15'}, orders 20126 want 20126, rc 1 
+SUMMARY 8/15 pass; oracle REJECTS candidate
+
+=== mutant-null_as_zero
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: nullable amount: rc 1 revenue {'EUR': Decimal('30.00'), 'USD': Decimal('150.00')} orders 4 gaps ['null_metric_values'] nulls 1 priced 4 (want 3)
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (5050 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 12/15 pass; oracle REJECTS candidate
+
+=== mutant-null_gap_dropped
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: nullable amount: rc 0 revenue {'EUR': Decimal('30.00'), 'USD': Decimal('150.00')} orders 4 gaps [] nulls 1 priced 3 (want 3)
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (5039 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 12/15 pass; oracle REJECTS candidate
+
+=== mutant-oldest_wins
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: superseded version: revenue {'EUR': Decimal('30.00'), 'USD': Decimal('150.00')} (want {'USD': '155.00', 'EUR': '30.00'}); newer void cancels: revenue {'EUR': Decimal('30.00'), 'USD': Decimal('150.00')} (want {'USD': '100.00', 'EUR': '30.00'}); orders 3 (want 2); coverage.excluded_status=0 (want 1); newer version missing amount not papered: exit 0 (want 1) '{\n  "as_of": "2026-10-02T00:00:00+00:00",\n  "contract_sha256": "de4006c4e8bd64d626dce2007af4d09b3324e0871c18a0e19d2998
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+FAIL k4_seeded_unseen: seed 7: revenue {'EUR': Decimal('930155.170'), 'USD': Decimal('1037265.740')} want {'USD': '1037261.74', 'EUR': '930147.17'}; orders 404 want 404; rows_read 448 want 448; seed 1301: revenue {'EUR': Decimal('1058702.500'), 'USD': Decimal('1012854.780')} want {'USD': '1012848.78', 'EUR': '1058694.50'}; orders 405 want 405; rows_read 444 want 444; seed 90210: revenue {'EUR': Decimal('1013975.510'), 'USD': Decimal('995087.740')} want {'USD': '995079.74', 'EUR': '1013965.51'}; 
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+FAIL k10_composite_grain: composite grain latest:int: revenue {'USD': Decimal('35.00')} (want {'USD': '40.00'}); by_region {'east': Decimal('5.00'), 'west': Decimal('30.00')} (want {'west': '35.00', 'east': '5.00'})
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (5136 reads), no temp files
+FAIL k13_scale: 22826 rows: revenue {'EUR': Decimal('50153561.150'), 'USD': Decimal('49799566.060')} want {'USD': '49799054.06', 'EUR': '50153024.15'}, orders 20126 want 20126, rc 1 
+SUMMARY 9/15 pass; oracle REJECTS candidate
+
+=== mutant-out_over_input
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+PASS k2_single_dirt: 20 single-dirt cases: exact totals, buckets, exit codes and gaps
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+FAIL k8_invalid_and_recovery: --out onto an input: rc 0
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (5248 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 12/15 pass; oracle REJECTS candidate
+
+=== mutant-status_ignored
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: newer void cancels: revenue {'EUR': Decimal('30.00'), 'USD': Decimal('150.00')} (want {'USD': '100.00', 'EUR': '30.00'}); orders 3 (want 2); coverage.excluded_status=0 (want 1); test status: revenue {'EUR': Decimal('30.00'), 'USD': Decimal('154.00')} (want {'USD': '150.00', 'EUR': '30.00'}); orders 4 (want 3); coverage.excluded_status=0 (want 1)
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+FAIL k4_seeded_unseen: seed 7: revenue {'EUR': Decimal('930147.170'), 'USD': Decimal('1037266.740')} want {'USD': '1037261.74', 'EUR': '930147.17'}; orders 405 want 404; rows_read 448 want 448; seed 1301: revenue {'EUR': Decimal('1058694.500'), 'USD': Decimal('1012853.780')} want {'USD': '1012848.78', 'EUR': '1058694.50'}; orders 406 want 405; rows_read 444 want 444; seed 90210: revenue {'EUR': Decimal('1013965.510'), 'USD': Decimal('995089.740')} want {'USD': '995079.74', 'EUR': '1013965.51'}; 
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+FAIL k7_rejects_and_lines: excluded_status at line None, want 7
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (4722 reads), no temp files
+FAIL k13_scale: 22826 rows: revenue {'EUR': Decimal('50153024.150'), 'USD': Decimal('49799659.060')} want {'USD': '49799054.06', 'EUR': '50153024.15'}, orders 20247 want 20126, rc 1 
+SUMMARY 9/15 pass; oracle REJECTS candidate
+
+=== mutant-symlink_allowed
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+PASS k2_single_dirt: 20 single-dirt cases: exact totals, buckets, exit codes and gaps
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (4909 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 13/15 pass; oracle REJECTS candidate
+
+=== mutant-thousands_loose
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: thousands strict: exit 0 (want 1) '{\n  "as_of": "2026-10-02T00:00:00+00:00",\n  "contract_sha256": "de4006c4e8bd64d626dce2007af4d09b3324e0871c18a0e19d299856'; revenue {'EUR': Decimal('30.00'), 'USD': Decimal('1507.50')} (want {'USD': '1384.50', 'EUR': '30.00'}); orders 5 (want 4); coverage.rejected.bad_decimal=0 (want 1); gap rejected_rows missing from []
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (4846 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 12/15 pass; oracle REJECTS candidate
+
+=== mutant-tie_picks_first
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: tie unresolved: exit 0 (want 1) '{\n  "as_of": "2026-10-02T00:00:00+00:00",\n  "contract_sha256": "de4006c4e8bd64d626dce2007af4d09b3324e0871c18a0e19d299856'; revenue {'EUR': Decimal('30.00'), 'USD': Decimal('150.00')} (want {'USD': '100.00', 'EUR': '30.00'}); orders 3 (want 2); coverage.duplicates.rows_unresolved=0 (want 2); coverage.duplicates.keys_unresolved=0 (want 1); gap unresolved_duplicates missing from []
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (5218 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 12/15 pass; oracle REJECTS candidate
+
+=== mutant-uppercase_ignored
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: exact copy (100.0 vs 100.00, usd vs USD): exit 1 (want 0) '{\n  "as_of": "2026-10-02T00:00:00+00:00",\n  "contract_sha256": "de4006c4e8bd64d626dce2007af4d09b3324e0871c18a0e19d299856'; revenue {'EUR': Decimal('30.00'), 'USD': Decimal('50.00')} (want {'USD': '150.00', 'EUR': '30.00'}); orders 2 (want 3); coverage.duplicates.exact_copies=0 (want 1); unexpected gaps ['unresolved_duplicates']
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+FAIL k4_seeded_unseen: seed 7: revenue {'EUR': Decimal('807160.410'), 'USD': Decimal('902528.330'), 'eur': Decimal('122986.760'), 'usd': Decimal('134733.41')} want {'USD': '1037261.74', 'EUR': '930147.17'}; orders 404 want 404; rows_read 448 want 448; seed 1301: revenue {'EUR': Decimal('948155.170'), 'USD': Decimal('914997.940'), 'eur': Decimal('110539.330'), 'usd': Decimal('97850.84')} want {'USD': '1012848.78', 'EUR': '1058694.50'}; orders 405 want 405; rows_read 444 want 444; seed 90210: reve
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (5176 reads), no temp files
+FAIL k13_scale: 22826 rows: revenue {'EUR': Decimal('45252152.370'), 'USD': Decimal('44914381.430'), 'eur': Decimal('4900871.780'), 'usd': Decimal('4884672.630')} want {'USD': '49799054.06', 'EUR': '50153024.15'}, orders 20126 want 20126, rc 1 
+SUMMARY 10/15 pass; oracle REJECTS candidate
+
+=== mutant-window_end_inclusive
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: window half-open in contract zone: revenue {'EUR': Decimal('30.00'), 'USD': Decimal('161.00')} (want {'USD': '157.00', 'EUR': '30.00'}); orders 5 (want 4); coverage.outside_window=0 (want 1)
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (4933 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 12/15 pass; oracle REJECTS candidate
+
+=== mutant-window_start_exclusive
+PASS k1_clean_control: clean control: exit 0, exact totals, naive equals reconciled, execution and imputation stated
+FAIL k2_single_dirt: window half-open in contract zone: revenue {'EUR': Decimal('30.00'), 'USD': Decimal('150.00')} (want {'USD': '157.00', 'EUR': '30.00'}); orders 3 (want 4); coverage.outside_window=2 (want 1)
+PASS k3_join: orphan, ambiguous, exact-copy and missing keys: segments add back, no fan-out
+PASS k4_seeded_unseen: 3 seeded unseen datasets (truth built before dirt) reconcile exactly
+PASS k5a_as_of: as_of compared as an instant on loaded_at
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+PASS k6_deterministic: 3 reruns byte-identical; shuffled rows and dimension give numerically the same metrics and the same coverage
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+PASS k7_rejects_and_lines: --rejects names every excluded fact row (3) with the right line numbers
+PASS k8_invalid_and_recovery: drift, duplicate key, NaN, unknown zone, .., absolute, symlink, --out on input, same targets: exit 2, nothing written; fixed input recovers
+PASS k9_controls: controls: match, sum mismatch and rejected-row mismatch
+PASS k10_composite_grain: composite grain with latest:<int>; line_no 1 and 01 are the same key
+PASS k11_offline: 0 network attempts under the socket/DNS guard
+PASS k12_concurrency: 8 concurrent runs into one --out: same exit, final report equals sequential bytes, a reader saw only whole reports (4592 reads), no temp files
+PASS k13_scale: 22826 rows exact in 0.3s
+SUMMARY 12/15 pass; oracle REJECTS candidate
+

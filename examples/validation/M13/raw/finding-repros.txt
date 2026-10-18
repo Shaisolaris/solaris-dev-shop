@@ -1,0 +1,27 @@
+N1 as_of with missing loaded_at
+  [FINDING] as_of 2026-10-02T00:00Z with loaded_at missing (4/4 report exit 0 reconciled): one row blank loaded_at: exit 0 status reconciled gaps [] USD 154.00 loaded_at_missing_included 1; NULL token: exit 0 status reconciled gaps [] USD 154.00 loaded_at_missing_included 1; every row blank: exit 0 status reconciled gaps [] USD 150.00 loaded_at_missing_included 3; newer version blank, older on time: exit 0 status reconciled gaps [] USD 175.00 loaded_at_missing_included 1
+
+N1 (oracle k5b)
+  [FAIL] row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+
+N2 timestamp forms 3.12 vs 3.9
+  [FINDING] event_time forms where interpreters disagree on the metric (6): ['2026-09-10T12:00:00.5Z', '2026-09-10T12:00:00+0000', '2026-09-10T12:00:00+00', '20260910T120000Z', '2026-W37-4T12:00:00Z', '2026-09-10T12:00:00.1234567Z']; exit:USD per main/usr: 2026-09-10T12:00:00Z: 0:154.00/0:154.00; 2026-09-10T12:00:00+00:00: 0:154.00/0:154.00; 2026-09-10T12:00:00.5Z: 0:154.00/1:150.00; 2026-09-10T12:00:00+0000: 0:154.00/1:150.00; 2026-09-10T12:00:00+00: 0:154.00/1:150.00; 20260910T120000Z: 0:154.00/1:150.00; 2026-W37-4T12:00:00Z: 0:154.00/1:150.00; 2026-09-10T12:00Z: 0:154.00/0:154.00; 2026-09-10 12:00:00: 0:154.00/0:154.00; 2026-09-10: 0:154.00/0:154.00; 2026-09-10T12:00:00.1234567Z: 0:154.00/1:150.00
+
+N3 re-delivered identical record
+  [FINDING] O2 re-delivered (identical except loaded_at): USD 100.00 (true 150.00), orders 2, duplicates {'exact_copies': 0, 'keys_unresolved': 1, 'rows_unresolved': 2, 'superseded_versions': 0}, exit 1, gaps ['unresolved_duplicates']
+
+N4 write failure after checks
+  [FINDING] --rejects writable, --out in a read-only folder: exit 2 '{"error": "file error: Permission denied", "schema": "solaris.csv-reconcile-report/1", "status": "in'; rejects.csv written anyway=True (doc: exit 2 means nothing written)
+
+N5 deep JSON contract
+  [FINDING] 100000-deep contract JSON: exit 1, traceback=True RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string
+
+N6 DST local times
+  [FINDING] ambiguous local 2026-11-01 01:30 (window end 09:00Z): USD 30.00, exit 0, notes ['1 fact rows had timestamps without an offset; read as America/Los_Angeles as the contract declares'] (counted as the first occurrence, no ambiguity flagged); nonexistent local 2026-03-08 02:30 accepted: exit 0, outside_window 1, notes ['1 fact rows had timestamps without an offset; read as America/Los_Angeles as the contract declares']
+
+N7 Unicode digits in int
+  [FINDING] int column value '\u0663' (Arabic-Indic 3): USD 170.00, rejected {}; accepted as 3 and won the version
+
+N8 total spelling vs row order (oracle k6b)
+  [FAIL] same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+

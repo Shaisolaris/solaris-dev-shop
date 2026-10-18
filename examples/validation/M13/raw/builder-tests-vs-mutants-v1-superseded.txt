@@ -1,0 +1,26 @@
+# SUPERSEDED (teeth v1): mutant out_over_input had a paren error (fails everything, not a fair mutant); null_as_zero and no_atomic_tmp survived because the oracle had no count-over-nullable metric and no concurrent reader. v2 fixes the mutant and adds both checks.
+candidate: rc=0 Ran 26 tests in 3.116s OK 
+positive-control-proposed-fix: rc=0 Ran 26 tests in 2.986s OK 
+mutant-ambiguous_as_unmatched: rc=1 Ran 26 tests in 2.334s FAILED (failures=4) 
+mutant-control_ignores_rejects: rc=0 Ran 26 tests in 3.522s OK 
+mutant-count_distinct_as_count: rc=0 Ran 26 tests in 3.355s OK 
+mutant-decimal_not_normalized: rc=1 Ran 26 tests in 3.186s FAILED (failures=13) 
+mutant-dedup_after_status: rc=1 Ran 26 tests in 2.284s FAILED (failures=2) 
+mutant-digits_unbounded: rc=1 Ran 26 tests in 3.514s FAILED (failures=1) 
+mutant-dim_dupes_fan_out: rc=1 Ran 26 tests in 2.330s FAILED (failures=4) 
+mutant-late_boundary_inclusive: rc=0 Ran 26 tests in 3.195s OK 
+mutant-late_ignored: rc=1 Ran 26 tests in 2.102s FAILED (failures=14) 
+mutant-naive_as_utc: rc=1 Ran 26 tests in 3.644s FAILED (failures=1) 
+mutant-no_atomic_tmp: rc=0 Ran 26 tests in 3.589s OK 
+mutant-no_exact_collapse: rc=1 Ran 26 tests in 2.132s FAILED (failures=6) 
+mutant-null_as_zero: rc=0 Ran 26 tests in 3.575s OK 
+mutant-null_gap_dropped: rc=1 Ran 26 tests in 2.536s FAILED (failures=2) 
+mutant-oldest_wins: rc=1 Ran 26 tests in 2.448s FAILED (failures=7) 
+mutant-out_over_input: rc=1 Ran 19 tests in 0.893s FAILED (failures=4, errors=16) 
+mutant-status_ignored: rc=1 Ran 26 tests in 2.491s FAILED (failures=14) 
+mutant-symlink_allowed: rc=1 Ran 26 tests in 3.418s FAILED (failures=1) 
+mutant-thousands_loose: rc=1 Ran 26 tests in 3.053s FAILED (failures=1) 
+mutant-tie_picks_first: rc=1 Ran 26 tests in 2.054s FAILED (failures=10) 
+mutant-uppercase_ignored: rc=1 Ran 26 tests in 2.289s FAILED (failures=15) 
+mutant-window_end_inclusive: rc=0 Ran 26 tests in 3.060s OK 
+mutant-window_start_exclusive: rc=0 Ran 26 tests in 3.074s OK 

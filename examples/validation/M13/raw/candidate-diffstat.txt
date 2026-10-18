@@ -1,0 +1,22 @@
+ employees/data/data-analyst/SKILL.md               |   2 +
+ employees/data/data-analyst/learnings.md           |   1 +
+ employees/data/data-engineer/SKILL.md              |   7 +
+ .../data/data-engineer/capability.contract.json    |  16 +-
+ employees/data/data-engineer/csv-reconciliation.md |  74 ++
+ employees/data/data-engineer/csv_reconcile.py      | 744 +++++++++++++++++++++
+ employees/data/data-engineer/learnings.md          |   1 +
+ employees/data/data-engineer/plugin.json           |   3 +-
+ examples/capabilities/G13/README.md                |  55 ++
+ .../capabilities/G13/fixtures/clean/contract.json  |  88 +++
+ .../capabilities/G13/fixtures/clean/control.csv    |   2 +
+ .../capabilities/G13/fixtures/clean/customers.csv  |   4 +
+ .../capabilities/G13/fixtures/clean/orders.csv     |   6 +
+ .../G13/fixtures/september/contract.json           |  88 +++
+ .../G13/fixtures/september/control.csv             |   2 +
+ .../G13/fixtures/september/customers.csv           |   7 +
+ .../capabilities/G13/fixtures/september/orders.csv |  21 +
+ examples/capabilities/G13/naive_stub.py            |  47 ++
+ examples/capabilities/G13/noop_stub.py             |  12 +
+ examples/capabilities/G13/reconcile_oracle.py      | 485 ++++++++++++++
+ tests/test_g13_capability.py                       | 340 ++++++++++
+ 21 files changed, 2001 insertions(+), 4 deletions(-)

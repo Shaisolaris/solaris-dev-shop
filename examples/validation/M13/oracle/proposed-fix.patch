@@ -1,0 +1,21 @@
+--- a/employees/data/data-engineer/csv_reconcile.py	2026-10-18 12:48:53
++++ b/csv_reconcile.py	2026-10-18 12:54:15
+@@ -372,7 +372,7 @@
+     for k in sorted(groups):
+         g = groups[k]
+         distinct: Dict[Tuple, Dict[str, Any]] = {}
+-        for r in sorted(g, key=lambda r: r["_line"]):
++        for r in sorted(g, key=lambda r: (tuple(repr(r.get(c)) for c in cols), r["_line"])):  # order-independent representative
+             sig = _content(r, cols)
+             if sig in distinct:
+                 n["exact_copies"] += 1
+@@ -554,7 +554,8 @@
+                        ("unmatched_or_missing_join_key", dim_info and (dim_info["join"]["unmatched"] or dim_info["join"]["fact_key_missing"])),
+                        ("ambiguous_dimension_key", dim_info and dim_info["join"]["ambiguous"]),
+                        ("control_mismatch", controls and not controls["match"]),
+-                       ("null_metric_values", any(m["null_values_skipped"] for m in metrics.values()))):
++                       ("null_metric_values", any(m["null_values_skipped"] for m in metrics.values())),
++                       ("loaded_at_unknown", cov["loaded_at_missing_included"])):
+         if cond:
+             gaps.append(name)
+     quality_gaps = bool(gaps)

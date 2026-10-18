@@ -1,0 +1,16 @@
+== oracle with candidate under Python 3.9.6
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+SUMMARY 13/15 pass; oracle REJECTS candidate
+== oracle with candidate under Python 3.11.16
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+SUMMARY 13/15 pass; oracle REJECTS candidate
+== oracle with candidate under Python 3.13.15
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+SUMMARY 13/15 pass; oracle REJECTS candidate
+== oracle with candidate under Python 3.12.14
+FAIL k5b_as_of_missing_loaded_at: row with no loaded_at under as_of: exit 0, status reconciled, gaps [], included=True, notes=['1 included rows have no loaded_at; lateness could not be judged for them']
+FAIL k6b_value_spelling_stable: same data, rows reordered: revenue spelled ['30.00', '150.00'] vs ['30.00', '150.000']
+SUMMARY 13/15 pass; oracle REJECTS candidate

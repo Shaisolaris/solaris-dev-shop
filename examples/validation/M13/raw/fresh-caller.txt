@@ -1,0 +1,32 @@
+# fresh caller 2026-10-18 13:03:36 PDT; env -i HOME=/tmp/m13-fc/home PATH=/tmp/m13-fc/bin:/usr/bin:/bin; python3 shim -> 3.12; contract = the doc's JSON block verbatim; offline guard on
+Hand answer (written before running): 10 data rows.
+A1 USD 2000.00 in; A2 exact copy -> EUR 15.25 once; A3 latest version 44.00 in (40.00 superseded);
+A4 test status out; A5 orphan K9 -> USD 5.00 in, segment (unmatched); A6 loaded 2026-10-04 after as_of -> late;
+A7 missing amount -> missing_required; A8 2026-10-01 00:00 LA = window end -> outside.
+Revenue USD 2049.00, EUR 15.25; orders 4 (A1,A2,A3,A5); exit 1 (gaps: missing_required, late_rows, unmatched_or_missing_join_key);
+control: rows 10 match, sum of parsed 2000+15.25*2+40+44+9.99+5+7+3 = 2139.49 vs control 2133.49 -> mismatch gap too.
+$ T=employees/data/data-engineer/csv_reconcile.py; python3 $T reconcile contract.json; echo "exit=$?"
+reconcile: reconciled_with_gaps  (grain order_id; window 2026-09-01T07:00:00+00:00 .. 2026-10-01T07:00:00+00:00; as of 2026-10-02T00:00:00+00:00)
+  revenue [currency=EUR] = 15.25  (1 rows)
+  revenue [currency=USD] = 2049.00  (3 rows)
+  orders [all] = 4  (4 rows)
+  rows read 10, included 4, all accounted: yes
+  excluded: rejected 0 , missing required 1, late 1, status 1, outside window 1, exact copies 1, superseded 1, unresolved 0 rows/0 keys
+  join: matched 3, unmatched 1, ambiguous 0, key missing 0; dimension copies 0, conflicting keys 0 (no fan-out)
+  control control.csv: rows 10/10, sum 2139.49/2133.49 -> MISMATCH
+  naive SUM(amount) over every parsed row: {'EUR': '30.50', 'USD': '2108.99'} (9 rows) - not a result
+  naive SUM after an inner join: {'EUR': '30.50', 'USD': '2103.99'} (8 rows) - not a result
+  note: 3 fact rows had timestamps without an offset; read as America/Los_Angeles as the contract declares
+  local stdlib Python over the supplied CSV files; no warehouse, database or network was used
+exit=1
+$ T=employees/data/data-engineer/csv_reconcile.py; python3 $T reconcile contract.json --json --out report.json --rejects rejects.csv > /dev/null; echo "exit=$?"; cat rejects.csv
+exit=1
+file,line,reason,detail
+orders.csv,4,duplicate_exact,order_id
+orders.csv,5,duplicate_superseded,order_id
+orders.csv,7,excluded_status,test
+orders.csv,9,late_after_as_of,loaded_at
+orders.csv,10,missing_required,amount
+orders.csv,11,outside_window,event_time
+net attempts: 0
+files now: contract.json control.csv customers.csv employees hand-answer.txt orders.csv rejects.csv report.json 

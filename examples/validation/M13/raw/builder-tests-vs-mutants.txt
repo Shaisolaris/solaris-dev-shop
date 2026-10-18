@@ -1,0 +1,25 @@
+candidate: rc=0 Ran 26 tests in 3.029s OK 
+positive-control-proposed-fix: rc=0 Ran 26 tests in 3.165s OK 
+mutant-ambiguous_as_unmatched: rc=1 Ran 26 tests in 2.011s FAILED (failures=4) 
+mutant-control_ignores_rejects: rc=0 Ran 26 tests in 3.032s OK 
+mutant-count_distinct_as_count: rc=0 Ran 26 tests in 3.013s OK 
+mutant-decimal_not_normalized: rc=1 Ran 26 tests in 3.008s FAILED (failures=13) 
+mutant-dedup_after_status: rc=1 Ran 26 tests in 2.052s FAILED (failures=2) 
+mutant-digits_unbounded: rc=1 Ran 26 tests in 2.941s FAILED (failures=1) 
+mutant-dim_dupes_fan_out: rc=1 Ran 26 tests in 1.961s FAILED (failures=4) 
+mutant-late_boundary_inclusive: rc=0 Ran 26 tests in 2.931s OK 
+mutant-late_ignored: rc=1 Ran 26 tests in 1.939s FAILED (failures=14) 
+mutant-naive_as_utc: rc=1 Ran 26 tests in 2.903s FAILED (failures=1) 
+mutant-no_atomic_tmp: rc=0 Ran 26 tests in 2.919s OK 
+mutant-no_exact_collapse: rc=1 Ran 26 tests in 1.895s FAILED (failures=6) 
+mutant-null_as_zero: rc=0 Ran 26 tests in 2.892s OK 
+mutant-null_gap_dropped: rc=1 Ran 26 tests in 1.918s FAILED (failures=2) 
+mutant-oldest_wins: rc=1 Ran 26 tests in 1.938s FAILED (failures=7) 
+mutant-out_over_input: rc=1 Ran 26 tests in 1.950s FAILED (failures=2) 
+mutant-status_ignored: rc=1 Ran 26 tests in 2.001s FAILED (failures=14) 
+mutant-symlink_allowed: rc=1 Ran 26 tests in 3.022s FAILED (failures=1) 
+mutant-thousands_loose: rc=1 Ran 26 tests in 2.995s FAILED (failures=1) 
+mutant-tie_picks_first: rc=1 Ran 26 tests in 2.011s FAILED (failures=10) 
+mutant-uppercase_ignored: rc=1 Ran 26 tests in 2.090s FAILED (failures=15) 
+mutant-window_end_inclusive: rc=0 Ran 26 tests in 2.926s OK 
+mutant-window_start_exclusive: rc=0 Ran 26 tests in 2.767s OK 

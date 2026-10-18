@@ -1,0 +1,2 @@
+Preparing worktree (detached HEAD 7da20d4)
+HEAD is now at 7da20d4 G13: reconciled metrics from dirty CSV (review only)

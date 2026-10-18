@@ -1,0 +1,5 @@
+commit 7da20d4f315f27cc0c9ca6fd9221cc182ae8b4da status-lines 0
+== 3.9.6_sqlite3.54.0  g13 Ran 26 tests in 4.015s OK | original Ran 84 tests in 2.210s OK | full Ran 110 tests in 5.957s OK 
+== 3.11.16_sqlite3.53.1  g13 Ran 26 tests in 2.667s OK | original Ran 84 tests in 1.476s OK | full Ran 110 tests in 4.338s OK 
+== 3.13.15_sqlite3.53.1  g13 Ran 26 tests in 2.722s OK | original Ran 84 tests in 2.072s OK | full Ran 110 tests in 4.786s OK 
+== 3.12.14_sqlite3.53.1  g13 Ran 26 tests in 2.781s OK | original Ran 84 tests in 1.572s OK | full Ran 110 tests in 4.576s OK 
