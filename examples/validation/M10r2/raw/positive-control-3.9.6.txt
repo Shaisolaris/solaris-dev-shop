@@ -1,0 +1,40 @@
+# positive control (proposed-fix-r2.patch applied to a /tmp copy) on 3.9.6 2026-10-18 15:35:47 PDT
+## builder tests (G10)
+Ran 38 tests in 2.578s
+
+OK
+## builder oracle
+SUMMARY 14/14 pass; candidate ACCEPTED by oracle
+## M10 oracle
+SUMMARY 10/10 pass; oracle ACCEPTS candidate
+## full suite
+Ran 122 tests in 4.916s
+
+OK
+## regressions script (fixed vs r3: 'r3' label = fixed copy, 'r2' label = r3 candidate)
+RG1 real name mismatch on a certificate that also carries a URI, email, othername or DirName entry
+[RG1] URI SPIFFE + DNS:other.example (does not cover api.shop.example)
+    r3 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+[RG1] email + DNS:other.example (does not cover api.shop.example)
+    r3 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+[RG1] othername UPN + DNS:other.example (does not cover api.shop.example)
+    r3 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+[RG1] DirName with comma + DNS:other.example (does not cover api.shop.example)
+    r3 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+[RG1] Registered ID + DNS:other.example (does not cover api.shop.example)
+    r3 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+[RG1] control: DNS:other.example only
+    r3 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+[RG1] covering DNS + URI (must not be a mismatch)
+    r3 rc=1 localized/tls/high [TLS_ALERT]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+RG2 SNI spelling variants that name the same host
+[RG2] sni=API.Shop.Example, handshake ok
+    r3 rc=1 undetermined/None/low []
+    r2 rc=1 undetermined/None/low []

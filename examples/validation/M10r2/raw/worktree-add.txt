@@ -1,0 +1,2 @@
+Preparing worktree (detached HEAD be36f86)
+HEAD is now at be36f86 G10 rework r3: M10 findings F1-F8 (review only)

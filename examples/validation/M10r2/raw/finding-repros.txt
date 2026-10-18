@@ -1,0 +1,81 @@
+F1 typed SAN spellings outside DNS:/IP:/IP Address: (certificate does cover the host)
+  [keytool DNSName:] python rc=1
+     diagnosis: localized at tls (confidence high)
+     candidate layers: tls
+     layers: dns=ok, route=ok, tls=failed, application=not_reached
+     finding TLS_ALERT (tls): server sent alert bad_certificate
+  [windows 'DNS Name='] python rc=1
+     diagnosis: localized at tls (confidence high)
+     candidate layers: tls
+     layers: dns=ok, route=ok, tls=failed, application=not_reached
+     finding TLS_ALERT (tls): server sent alert bad_certificate
+  [openssl -ext subjectAltName one-line] python rc=1
+     diagnosis: localized at tls (confidence high)
+     candidate layers: tls
+     layers: dns=ok, route=ok, tls=failed, application=not_reached
+     finding TLS_ALERT (tls): server sent alert bad_certificate
+  [control DNS:] python rc=1
+     diagnosis: localized at tls (confidence high)
+     candidate layers: tls
+     layers: dns=ok, route=ok, tls=failed, application=not_reached
+     finding TLS_ALERT (tls): server sent alert bad_certificate
+  [keytool IPAddress: for IP target] python rc=1
+     diagnosis: localized at tls (confidence high)
+     candidate layers: tls
+     layers: dns=ok, route=ok, tls=failed, application=not_reached
+     finding TLS_ALERT (tls): server sent alert bad_certificate
+F2 wildcard over a single remaining label (TLD / public suffix) treated as covering
+  [*.example] python rc=1
+     diagnosis: localized at tls (confidence high)
+     candidate layers: tls
+     layers: dns=ok, route=ok, tls=failed, application=not_reached
+     finding TLS_NAME_MISMATCH (tls): certificate names ['dns:*.example'] do not cover shop.example
+  [*.co.uk] python rc=1
+     diagnosis: localized at tls (confidence high)
+     candidate layers: tls
+     layers: dns=ok, route=ok, tls=failed, application=not_reached
+     finding TLS_NAME_MISMATCH (tls): certificate names ['dns:*.co.uk'] do not cover shop.co.uk
+  [control-real-mismatch] python rc=1
+     diagnosis: localized at tls (confidence high)
+     candidate layers: tls
+     layers: dns=ok, route=ok, tls=failed, application=not_reached
+     finding TLS_NAME_MISMATCH (tls): certificate names ['dns:other.example'] do not cover shop.example
+F3 non-ASCII SAN folded to ASCII by str.lower (U+212A KELVIN SIGN)
+  [kelvin] python rc=1
+     diagnosis: localized at tls (confidence high)
+     candidate layers: tls
+     layers: dns=ok, route=ok, tls=failed, application=not_reached
+     finding TLS_NAME_MISMATCH (tls): certificate names ['DNS:Kelvin.example'] do not cover kelvin.example
+  [control-ascii-lookalike] python rc=1
+     diagnosis: localized at tls (confidence high)
+     candidate layers: tls
+     layers: dns=ok, route=ok, tls=failed, application=not_reached
+     finding TLS_NAME_MISMATCH (tls): certificate names ['dns:kelvln.example'] do not cover kelvin.example
+F4 client SNI differs from the target host; certificate covers only the SNI
+  [sni-differs] python rc=1
+     diagnosis: localized at tls (confidence high)
+     candidate layers: tls
+     layers: dns=ok, route=ok, tls=failed, application=not_reached
+     finding TLS_SNI_MISMATCH (tls): the client sent SNI www.other.example but the target is api.shop.example
+F5 deeply nested JSON (100000 levels)
+  [deep diagnose] python rc=2
+  [deep in batch with one good trace] rc=1 stdout='batch: 2 traces; healthy=1; invalid=1\n  invalid a.json: a.json: JSON nested too deeply' stderr_last=''
+F6 SAN with a double trailing dot
+  [double-dot] python rc=1
+     diagnosis: localized at tls (confidence high)
+     candidate layers: tls
+     layers: dns=ok, route=ok, tls=failed, application=not_reached
+     finding TLS_NAME_MISMATCH (tls): certificate names ['dns:api.shop.example..'] do not cover api.shop.example
+F7 captured_at forms: Python 3.9 vs 3.12 (same trace, same candidate)
+  [ts 2026-10-18T16:00:00+0000] python rc=2
+  [ts 2026-10-18T16:00:00+0000] python3 rc=2
+  [ts 2026-10-18T16:00:00.5Z] python rc=0
+     diagnosis: healthy (confidence high)
+  [ts 2026-10-18T16:00:00.5Z] python3 rc=0
+     diagnosis: healthy (confidence high)
+  [ts 20261018T160000Z] python rc=2
+  [ts 20261018T160000Z] python3 rc=2
+  [ts 2026-10-18T16:00:00Z] python rc=0
+     diagnosis: healthy (confidence high)
+  [ts 2026-10-18T16:00:00Z] python3 rc=0
+     diagnosis: healthy (confidence high)

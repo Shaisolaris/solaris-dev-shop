@@ -1,0 +1,26 @@
+ employees/infrastructure/cloud-architect/SKILL.md  |   1 +
+ .../infrastructure/cloud-architect/learnings.md    |   2 +
+ employees/infrastructure/network-engineer/SKILL.md |   6 +
+ .../network-engineer/capability.contract.json      |  16 +-
+ .../infrastructure/network-engineer/learnings.md   |   6 +-
+ .../infrastructure/network-engineer/netdiag.py     | 850 +++++++++++++++++++++
+ .../network-engineer/offline-trace-diagnosis.md    |  53 ++
+ .../infrastructure/network-engineer/plugin.json    |   3 +-
+ examples/capabilities/G10/README.md                |  46 ++
+ examples/capabilities/G10/diagnosis_oracle.py      | 336 ++++++++
+ .../G10/fixtures/01-clean-control.json             |  73 ++
+ .../capabilities/G10/fixtures/02-dns-nxdomain.json |  46 ++
+ .../03-dns-timeout-no-route-to-resolver.json       |  30 +
+ .../G10/fixtures/04-route-blackhole.json           |  53 ++
+ .../G10/fixtures/05-route-path-loss.json           |  72 ++
+ .../capabilities/G10/fixtures/06-tls-expired.json  |  65 ++
+ .../07-tls-name-mismatch-unverified-dns.json       |  62 ++
+ .../G10/fixtures/08-app-not-listening.json         |  49 ++
+ .../G10/fixtures/09-app-upstream-503.json          |  74 ++
+ .../G10/fixtures/10-incomplete-dns-only.json       |  43 ++
+ .../11-traceroute-filtered-but-healthy.json        |  88 +++
+ .../G10/fixtures/12-tls-fail-no-dns-evidence.json  |  46 ++
+ examples/capabilities/G10/naive_stub.py            |  48 ++
+ examples/capabilities/G10/noop_stub.py             |   5 +
+ tests/test_g10_capability.py                       | 479 ++++++++++++
+ 25 files changed, 2547 insertions(+), 5 deletions(-)

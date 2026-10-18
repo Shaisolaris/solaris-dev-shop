@@ -1,0 +1,5 @@
+# week-grok before M10 r2 2026-10-18 15:02:06 PDT
+branch programme/grok-week-20261018
+HEAD 02ba9c571b10ad1dba792d2ac5534bcad3171e67
+index c28a2f586b3e3001
+status 3c1f646dbc8025fc lines 61

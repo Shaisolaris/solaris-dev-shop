@@ -1,0 +1,9 @@
+# m10r2_regressions.py: each fix-revert mutant (as NEW) vs the r3 candidate (as OLD), 3.12.14 2026-10-18 15:36:50 PDT; KILLED = some case answers differently
+rv_f1_no_list_split: 2 cases differ KILLED [RG6] ['DNS:api.shop.example,DNS:www.shop.example'];[RG6] ['api.shop.example, www.shop.example'];
+rv_f1_unknown_bare: 5 cases differ KILLED [RG1] URI SPIFFE + DNS:other.example (does not cover api.shop.example);[RG1] email + DNS:other.example (does not cover api.shop.example);
+rv_f2_one_label: 1 cases differ KILLED [RG5] shop.example vs DNS:*.example;
+rv_f2_public_suffix: 1 cases differ KILLED [RG5] shop.github.io vs DNS:*.github.io;
+rv_f3_fold: 0 cases differ SURVIVED 
+rv_f4_sni: 1 cases differ KILLED [RG2] sni=www.other.example, handshake ok;
+rv_f5_recursion: 0 cases differ SURVIVED 
+rv_f7_fromisoformat: 6 cases differ KILLED [RG3] 2026-10-18T16:00:00.123456789Z;[RG3] 2026-10-18T16:00:00.1234567Z;

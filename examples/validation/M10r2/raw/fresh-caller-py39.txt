@@ -1,0 +1,64 @@
+# m10r2 fresh caller 2026-10-18 15:38:07 PDT; python3 shim -> 3.9.6; offline guard on (M10_NET_LOG); trace.json = fixture 12 fixtures in traces/
+$ python3 $T diagnose examples/capabilities/G10/fixtures/06-tls-expired.json
+diagnosis: localized at tls (confidence high)
+  target https://api.shop.example:443/health; 3 observations; input sha256 0bfe477c01f0b536
+  candidate layers: tls
+  layers: dns=ok, route=ok, tls=failed, application=not_reached
+  finding TLS_CERT_EXPIRED (tls): certificate expired 2026-10-01T00:00:00+00:00 (trace captured 2026-10-18T16:00:00+00:00)
+  next (read-only, not run): openssl s_client -connect api.shop.example:443 -servername api.shop.example </dev/null | openssl x509 -noout -dates
+  next (read-only, not run): renew the certificate through the owner's normal process
+[exit 1]
+$ python3 $T diagnose trace.json --json --out report.json
+{
+  "candidates": [],
+  "confidence": "high",
+  "findings": [],
+  "input_sha256": "652177dd53e131e2efa3eabc4936296179cab6fd080a1173660023bcb6cf9628",
+  "layer": null,
+  "layers": {
+    "application": {
+      "evidence": [
+        "http /health -> 200"
+      ],
+      "state": "ok"
+    },
+    "dns": {
+      "evidence": [
+        "dns api.shop.example @10.20.0.2 -> NOERROR 203.0.113.10",
+        "server presented a valid certificate for api.shop.example (implied)"
+      ],
+      "state": "ok"
+    },
+    "route": {
+      "evidence": [
+        "http /health -> 200 (server answered)",
+        "tcp 203.0.113.10:443 -> connected (host reached)",
+        "tls 203.0.113.10 sni=api.shop.example -> ok (server answered)"
+      ],
+      "state": "ok"
+    },
+    "tls": {
+      "evidence": [
+        "http /health -> 200 (request carried over TLS)",
+        "tls 203.0.113.10 sni=api.shop.example -> ok"
+      ],
+      "state": "ok"
+    }
+  },
+  "missing_evidence": [],
+  "next_actions": [],
+  "notes": [],
+  "observations": 4,
+  "read_only": "offline analysis of the supplied trace; nothing was sent on the network or changed",
+  "schema": "solaris.net-diagnosis/1",
+  "target": "https://api.shop.example:443/health",
+  "verdict": "healthy"
+}
+[exit 0]
+report.json: schema solaris.net-diagnosis/1 verdict healthy layer None []
+$ python3 $T batch traces/ --workers 4
+batch: 12 traces; healthy=2, localized:application=2, localized:dns=1, localized:route=3, localized:tls=1, probable:tls=2, undetermined=1
+[exit 1]
+network attempts logged: 0
+stray files: 
+HOME after: 0 entries

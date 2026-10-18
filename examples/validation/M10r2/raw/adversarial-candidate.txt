@@ -1,0 +1,17 @@
+# m10_adversarial on 3.12.14 with --pythons 3.9.6 3.11.16 3.13.15 2026-10-18 15:38:58 PDT
+OK a01_cross_interpreter_bytes: 43 traces: identical exit code and bytes on 4 interpreters
+OK a02_timestamp_forms_across_interpreters: captured_at forms accepted differently by interpreter (0): []; exit codes main//usr/bin/python3/cpython-3.11.16-macos-aarch64-none/cpython-3.13.15-macos-aarch64-none: 2026-10-18T16:00:00Z: 1/1/1/1; 2026-10-18T16:00:00z: 1/1/1/1; 2026-10-18T16:00:00+00:00: 1/1/1/1; 2026-10-18T16:00:00.5Z: 1/1/1/1; 2026-10-18T16:00:00.123Z: 1/1/1/1; 2026-10-18T16:00:00.123456Z: 1/1/1/1; 2026-10-18T16:00:00.1234567Z: 2/2/2/2; 2026-10-18T16:00:00+0000: 2/2/2/2; 2026-10-18T16:00Z: 2/2/2/2; 2026-10-18 16:00:00Z: 1/1/1/1; 20261018T160000Z: 2/2/2/2; 2026-10-18T16:00:00+00: 2/2/2/2; 2026-W42-7T16:00:00Z: 2/2/2/2; 2026-10-18T16:00:60Z: 2/2/2/2; 2026-10-18T24:00:00Z: 2/2/2/2
+OK a03_other_san_spellings: keytool DNSName:: mismatch=False localized/high; keytool IPAddress:: mismatch=False localized/high; Windows DNS Name=: mismatch=False localized/high; Windows IP Address=: mismatch=False localized/high; openssl -ext one-line list: mismatch=False localized/high; URI SAN only: mismatch=False localized/high
+FINDING a04_sni_differs_from_target: client sent SNI www.other.example for target api.shop.example; certificate covers only the SNI; report localized/tls ['TLS_SNI_MISMATCH'], no mismatch and no note about the SNI
+OK a05_double_trailing_dot_san: SAN 'api.shop.example..' (not a valid name) covers api.shop.example: False; target host 'api.shop.example..' rc=2
+OK a06_deep_nesting: 100000-deep JSON: diagnose rc=2 traceback=False; batch with it plus a good trace rc=1 traceback=False
+NOTE a07_batch_workers_values: batch --workers 0:rc=2, -3:rc=2, 1:rc=0, 64:rc=2, 100000:rc=2
+OK a08_shell_metachar_path: path with quote/$()/backticks in 1 command lines: http 500: safe
+OK a09_header_values_not_echoed: header value echoed: False; verdict localized/application ['APP_UPSTREAM_ERROR']
+NOTE a10_unicode_target: U-label target host bücher.example: rc=2 (A-labels only; no IDNA conversion)
+NOTE a11_ipv6_zone_target: IPv6 target with zone id: rc=1 
+NOTE a12_http_ok_but_tls_failed: handshake reset plus HTTP 200 in one trace: probable/tls tls=intermittent ['TLS_HANDSHAKE_RESET']
+NOTE a13_cert_without_san: certificate with no san (CN only), alert bad_certificate: localized/tls ['TLS_ALERT']; CN is never consulted
+OK a14_scale: 10000 observations: rc=0 0.1s; batch of 2000 traces: 0.3s sequential, 0.2s with 4 workers, identical=True
+OK a15_batch_symlink_and_dotfiles: batch: symlinked trace followed=False, invalid=['link.json'], dotfile skipped=True
+SUMMARY FINDING=1, NOTE=5, OK=9

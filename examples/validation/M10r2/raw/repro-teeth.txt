@@ -1,0 +1,9 @@
+# finding repros vs fix-revert mutants (3.12.14 + 3.9.6) 2026-10-18 15:36:31 PDT: sections that differ from the r3 candidate
+rv_f1_no_list_split: differs in [ F1 ] KILLED
+rv_f1_unknown_bare: differs in [ ] SURVIVED
+rv_f2_one_label: differs in [ F2 ] KILLED
+rv_f2_public_suffix: differs in [ F2 ] KILLED
+rv_f3_fold: differs in [ F3 ] KILLED
+rv_f4_sni: differs in [ F4 ] KILLED
+rv_f5_recursion: differs in [ F5 ] KILLED
+rv_f7_fromisoformat: differs in [ F7 ] KILLED
