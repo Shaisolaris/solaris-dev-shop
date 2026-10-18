@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "solaris-dev-shop"
-version = "0.60"
+version = "0.61"
 description = "61 portable specialist skills with searchable discovery and an explainable deterministic intake router."
 readme = "README.md"
 license = { text = "MIT" }

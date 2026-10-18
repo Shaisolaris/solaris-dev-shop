@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.61 (2026-10-18)
+
+- Harden assurance finding closure and human waivers: reject expired or malformed waivers, malformed severity/status, blank closers and invalid evidence containers before mutation.
+- Preserve legitimate independent closure and valid human-waiver closure, including empty evidence where a valid waiver authorizes it. Authority and evidence remain declared inputs, not authenticated or dereferenced proof.
+- Add 40 focused API and real CLI regression tests; independently verify supported Python 3.12, fixed-clock expiry boundaries and correction/retry behavior.
+
 ## 0.60 (2026-10-16)
 
 - Enforce typed, nonblank Quality OS gate evidence and block receipts reporting open findings. Malformed packet containers now yield diagnostics instead of false passes or tracebacks.

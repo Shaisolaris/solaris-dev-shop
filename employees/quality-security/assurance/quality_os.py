@@ -29,7 +29,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
-ASSURANCE_VERSION = "1.0.1"
+ASSURANCE_VERSION = "1.0.2"
 SCHEMA_VERSION = "1.0.0"
 
 # ---------------------------------------------------------------------------
@@ -416,47 +416,156 @@ def convert_findings_to_orders(findings: Sequence[Finding]) -> List[Order]:
 # ---------------------------------------------------------------------------
 
 
+FINDING_STATUSES = ("open", "in_progress", "waived", "closed")
+HUMAN_CLOSER_ROLES = ("human-owner", "chief-of-staff")
+MIN_WAIVER_JUSTIFICATION = 12
+
+
+def _nonblank(value: Any) -> bool:
+    return isinstance(value, str) and bool(value.strip())
+
+
+def _parse_expiry(value: Any) -> Optional[datetime]:
+    """Parse an ISO 8601 date or datetime. Naive values are read as UTC."""
+    if not _nonblank(value):
+        return None
+    try:
+        dt = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+
+
+def _as_of(as_of: Optional[datetime]) -> datetime:
+    if as_of is None:
+        return datetime.now(timezone.utc)
+    return as_of if as_of.tzinfo else as_of.replace(tzinfo=timezone.utc)
+
+
+def _finding_errors(finding: Any) -> List[str]:
+    if not isinstance(finding, Finding):
+        return ["finding must be a Finding"]
+    errors = []
+    # Type check before the dict/set lookups: a list or dict severity is unhashable.
+    if not isinstance(finding.severity, str) or finding.severity not in SEVERITY_TO_RISK:
+        errors.append("severity must be one of " + ", ".join(SEVERITY_TO_RISK))
+    if not isinstance(finding.status, str) or finding.status not in FINDING_STATUSES:
+        errors.append("status must be one of " + ", ".join(FINDING_STATUSES))
+    for key in ("finding_id", "accountable_role"):
+        if not _nonblank(getattr(finding, key)):
+            errors.append(f"{key} must be a nonblank string")
+    if not isinstance(finding.evidence, list):
+        errors.append("evidence must be an array")
+    return errors
+
+
+def validate_waiver(
+    waiver: Any,
+    finding: Finding,
+    *,
+    as_of: Optional[datetime] = None,
+) -> List[str]:
+    """Return gate codes that make a waiver unusable for this finding (empty = usable).
+
+    Checks the declared waiver record only. `human_authority` is a declared flag;
+    this function cannot authenticate who approved it.
+    """
+    if not isinstance(waiver, Waiver):
+        return ["INVALID_WAIVER"]
+    codes: List[str] = []
+    if waiver.finding_id != finding.finding_id:
+        codes.append("WAIVER_FINDING_MISMATCH")
+    if waiver.status != "active":
+        codes.append("WAIVER_NOT_ACTIVE")
+    if waiver.human_authority is not True:
+        codes.append("HUMAN_AUTHORITY_REQUIRED")
+    if not _nonblank(waiver.justification) or len(waiver.justification.strip()) < MIN_WAIVER_JUSTIFICATION:
+        codes.append("WAIVER_JUSTIFICATION_REQUIRED")
+    if (
+        not _nonblank(waiver.approved_by_role)
+        or waiver.approved_by_role == finding.accountable_role
+        or waiver.approved_by_role == waiver.requested_by_role
+    ):
+        codes.append("WAIVER_SELF_APPROVAL_FORBIDDEN")
+    expiry = _parse_expiry(waiver.expires_at)
+    if expiry is None:
+        codes.append("WAIVER_EXPIRY_INVALID")
+    elif expiry <= _as_of(as_of):
+        codes.append("WAIVER_EXPIRED")
+    return codes
+
+
+def _evidence_shape_ok(evidence: Any) -> bool:
+    """Declared evidence is a list or tuple of nonblank strings (may be empty)."""
+    return isinstance(evidence, (list, tuple)) and all(_nonblank(item) for item in evidence)
+
+
+def _evidence_code(evidence: Any, finding: Finding, blocking: bool) -> Optional[str]:
+    """Shape and independence check for declared closure evidence (never executed)."""
+    if not _evidence_shape_ok(evidence):
+        return "INVALID_CLOSURE_EVIDENCE"
+    if blocking and not evidence:
+        return "MISSING_CLOSURE_EVIDENCE"
+    prior = {e.strip() for e in finding.evidence if isinstance(e, str)}
+    if blocking and all(item.strip() in prior for item in evidence):
+        return "NON_INDEPENDENT_CLOSURE_EVIDENCE"
+    return None
+
+
 def can_close_finding(
     finding: Finding,
     *,
     closer_role: str,
     independent_evidence: Sequence[str],
     waiver: Optional[Waiver] = None,
+    as_of: Optional[datetime] = None,
 ) -> Tuple[bool, List[str]]:
-    """Return (allowed, gate_codes). Blocking findings cannot be self-closed."""
-    codes: List[str] = []
+    """Return (allowed, gate_codes). Blocking findings cannot be self-closed.
+
+    Fails closed on unknown severity or status, blank closer, malformed or
+    non-independent evidence, and unusable waivers. Evidence strings are
+    declared text: nothing they name is opened or executed.
+    """
+    if _finding_errors(finding):
+        return False, ["INVALID_FINDING"]
 
     if finding.status == "closed":
         return False, ["ALREADY_CLOSED"]
 
+    # Shape checks run before any status branch, so a valid waiver cannot carry
+    # a blank closer or malformed evidence into close_finding.
+    if not _nonblank(closer_role):
+        return False, ["INVALID_CLOSER_ROLE"]
+    if not _evidence_shape_ok(independent_evidence):
+        return False, ["INVALID_CLOSURE_EVIDENCE"]
+
     if finding.status == "waived":
-        if waiver and waiver.status == "active" and waiver.finding_id == finding.finding_id:
-            return True, []
-        return False, ["WAIVER_REQUIRED"]
+        # Valid waiver closure: any well-formed closer, evidence may be empty.
+        # The waiver (human authority, expiry, approver) is the closure basis.
+        if waiver is None:
+            return False, ["WAIVER_REQUIRED"]
+        waiver_codes = validate_waiver(waiver, finding, as_of=as_of)
+        return (not waiver_codes), waiver_codes
 
     blocking = finding.severity in BLOCKING_SEVERITIES
 
     # Hard rule: accountable role cannot close its own unresolved blocking finding.
     if blocking and closer_role == finding.accountable_role:
-        codes.append("SELF_APPROVAL_FORBIDDEN")
-        return False, codes
+        return False, ["SELF_APPROVAL_FORBIDDEN"]
 
-    # Reporter also cannot sole-close a blocking finding they opened.
-    if blocking and closer_role == finding.reporter_role and closer_role == finding.accountable_role:
-        codes.append("SELF_APPROVAL_FORBIDDEN")
-        return False, codes
+    if blocking:
+        # Declared verifier counts only when it is a real, distinct role.
+        allowed_closers = set(HUMAN_CLOSER_ROLES)
+        if _nonblank(finding.verifier_role) and finding.verifier_role != finding.accountable_role:
+            allowed_closers.add(finding.verifier_role)
+        if closer_role not in allowed_closers:
+            return False, ["INDEPENDENT_VERIFIER_REQUIRED"]
 
-    if blocking and closer_role != finding.verifier_role:
-        # Allow explicit human authority role override name
-        if closer_role not in ("human-owner", "chief-of-staff", finding.verifier_role):
-            codes.append("INDEPENDENT_VERIFIER_REQUIRED")
-            return False, codes
+    evidence_code = _evidence_code(independent_evidence, finding, blocking)
+    if evidence_code:
+        return False, [evidence_code]
 
-    if blocking and not independent_evidence:
-        codes.append("MISSING_CLOSURE_EVIDENCE")
-        return False, codes
-
-    return True, codes
+    return True, []
 
 
 def close_finding(
@@ -465,12 +574,14 @@ def close_finding(
     closer_role: str,
     independent_evidence: Sequence[str],
     waiver: Optional[Waiver] = None,
+    as_of: Optional[datetime] = None,
 ) -> Tuple[Finding, List[str]]:
     allowed, codes = can_close_finding(
         finding,
         closer_role=closer_role,
         independent_evidence=independent_evidence,
         waiver=waiver,
+        as_of=as_of,
     )
     updated = copy.deepcopy(finding)
     if not allowed:
@@ -495,20 +606,29 @@ def propose_waiver(
     human_authority: bool,
     justification: str,
     expires_at: str,
+    as_of: Optional[datetime] = None,
 ) -> Tuple[Optional[Waiver], List[str]]:
     codes: List[str] = []
-    if not justification or len(justification.strip()) < 12:
+    if not _nonblank(justification) or len(justification.strip()) < MIN_WAIVER_JUSTIFICATION:
         codes.append("WAIVER_JUSTIFICATION_REQUIRED")
-    if not human_authority:
+    if human_authority is not True:
         codes.append("HUMAN_AUTHORITY_REQUIRED")
-    if approved_by_role == finding.accountable_role:
-        codes.append("WAIVER_SELF_APPROVAL_FORBIDDEN")
-    if approved_by_role == requested_by_role and requested_by_role == finding.accountable_role:
+    if (
+        not _nonblank(approved_by_role)
+        or approved_by_role == finding.accountable_role
+        or approved_by_role == requested_by_role
+    ):
         codes.append("WAIVER_SELF_APPROVAL_FORBIDDEN")
     if not expires_at:
         codes.append("WAIVER_EXPIRY_REQUIRED")
+    else:
+        expiry = _parse_expiry(expires_at)
+        if expiry is None:
+            codes.append("WAIVER_EXPIRY_INVALID")
+        elif expiry <= _as_of(as_of):
+            codes.append("WAIVER_EXPIRED")
     if codes:
-        return None, codes
+        return None, list(dict.fromkeys(codes))
     return (
         Waiver(
             waiver_id=new_id("wvr"),
@@ -1016,12 +1136,39 @@ def evaluate_path(path: Path) -> AssuranceResult:
         return _apply_expectations(result, expected)
 
     if kind in ("closure", "self_approval"):
-        finding = Finding.from_dict(data["finding"])
+        finding_data = data.get("finding")
+        finding_fields = set(Finding.__dataclass_fields__)
+        finding_required = {"finding_id", "defect_kind", "severity", "title", "evidence",
+                            "accountable_role", "reporter_role", "status", "verifier_role"}
+        if not isinstance(finding_data, dict):
+            return _invalid_packet("closure fixture requires a finding object")
+        if not finding_required.issubset(finding_data) or not finding_fields.issuperset(finding_data):
+            return _invalid_packet("finding must have exactly the finding schema fields")
+        if not isinstance(finding_data["evidence"], list):
+            return _invalid_packet("finding.evidence must be an array")
+        # finding.schema.json types every other field as a string.
+        bad = sorted(k for k, v in finding_data.items() if k != "evidence" and not isinstance(v, str))
+        if bad:
+            return _invalid_packet("finding fields must be strings: " + ", ".join(bad))
+        finding = Finding.from_dict(finding_data)
+        waiver_data = data.get("waiver")
+        waiver_obj = None
+        if waiver_data is not None:
+            waiver_fields = set(Waiver.__dataclass_fields__)
+            if (not isinstance(waiver_data, dict) or not waiver_fields.issuperset(waiver_data)
+                    or not (waiver_fields - {"status"}).issubset(waiver_data)):
+                return _invalid_packet("waiver must have exactly the waiver fields")
+            waiver_obj = Waiver(**waiver_data)
+        closer_role = data.get("closer_role", finding.accountable_role)
+        if not isinstance(closer_role, str):
+            return _invalid_packet("closer_role must be a string")
+        if "expect_blocked" in data and not isinstance(data["expect_blocked"], bool):
+            return _invalid_packet("expect_blocked must be a boolean")
         allowed, codes = can_close_finding(
             finding,
-            closer_role=data.get("closer_role", finding.accountable_role),
-            independent_evidence=data.get("independent_evidence") or [],
-            waiver=Waiver(**data["waiver"]) if data.get("waiver") else None,
+            closer_role=closer_role,
+            independent_evidence=data.get("independent_evidence", []),
+            waiver=waiver_obj,
         )
         expect_block = bool(data.get("expect_blocked", True))
         ok = (not allowed) if expect_block else allowed
@@ -1289,6 +1436,15 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         )
         if not allowed2:
             failures.append(f"independent close failed: {codes2}")
+        # waiver expiry and evidence shape
+        f.status = "waived"
+        expired = Waiver("wvr-st", f.finding_id, "security-auditor", "human-owner", True,
+                         "synthetic accepted risk", "2000-01-01T00:00:00Z", "active")
+        if can_close_finding(f, closer_role="x", independent_evidence=[], waiver=expired)[0]:
+            failures.append("expired waiver accepted")
+        f.status = "open"
+        if can_close_finding(f, closer_role="code-reviewer", independent_evidence=[" "])[0]:
+            failures.append("blank closure evidence accepted")
         # legal
         legal = check_legal_boundaries(
             "I am your attorney; file this lawsuit now.",
