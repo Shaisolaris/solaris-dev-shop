@@ -48,8 +48,11 @@ The oracle generates a seeded spec-sheet world. It knows every fact and sentence
 | o9 | Invalid input is refused with nothing written. Inputs are never overwritten |
 | o10 | Scale: 3000 documents by default, with 1 and 4 workers byte-identical and within the time budget |
 | o11 | Concurrency: parallel answer and evaluate runs agree byte for byte and leave no temp files |
+| o12 | Added in r2 (from M16 Grok self-validation). Grading checks meaning on a hand-written pump world: a dropped or added "not", a quote split to skip "not", a whole-document quote, numbers swapped across or within a sentence, a number borrowed from another quote, a "118" answer for an "18" fact, a fabricated quote with an invented hash (invalid, not stale), abstain with a claim, a truthy non-boolean abstain, low coverage, a fact missing from the quote and a missing record; the report does not echo the file's own "verified" claims |
+| o13 | Added in r2. The baseline abstains when two sources disagree on a number under four phrasings, on a near-miss sibling ("gasket kit" vs "seal kit") and on a numberless how-often question; it ignores instruction-like source text, keeps question-file order and puts each document's own sha256 in citations |
+| o14 | Added in r2. evaluate --out onto a snapshot document or into the snapshot folder, --out equal to --journal, fault-plan values 1e400, -1, true and "2", and an existing journal without --resume all exit 2 with nothing written; a hand-edited journal entry is refused; 4 concurrent resumes leave no duplicate entries and a later resume reproduces the unbroken run |
 
-The scores were tool 11/11, `noop_stub.py` 0/11 and `naive_stub.py` 1/11. The naive stub passes only o8. It always answers with the sentence that shares the most words with the question and never abstains. It ignores the fault plan and the journal. Its evaluator trusts citations without opening the source and labels everything deterministic.
+The scores were tool 11/11, `noop_stub.py` 0/11 and `naive_stub.py` 1/11 in r1. With o12 to o14 (r2) they are tool 14/14, `noop_stub.py` 0/14, `naive_stub.py` 1/14, and the r1 tool 11/14. The naive stub passes only o8. It always answers with the sentence that shares the most words with the question and never abstains. It ignores the fault plan and the journal. Its evaluator trusts citations without opening the source and labels everything deterministic.
 
 ```bash
 python3 examples/capabilities/G16/grounding_oracle.py --tool "python3 employees/engineering/llm-agent-designer/grounded_eval.py"

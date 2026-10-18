@@ -9,7 +9,12 @@ library only. No model, judge, provider, key or network is used.
 - `answer` is a **deterministic extractive baseline**. It uses BM25 over source sentences and
   answers only when one sentence covers the question's key terms. Identifiers such as model
   numbers and capitalised names must match exactly. A how-many, how-much or how-long question needs a number in the sentence. A when question needs a number or a calendar word, such as "closed on Mondays". It abstains when nothing covers the question,
-  or when two sources disagree on a number. Every answer is a verbatim quote with code-point
+  when two sources disagree on a number (however the question is phrased), and when the best sentence
+  is a sibling of what was asked: a question word next to a covered one ("quarter plot",
+  "Westfield shop") where the sentence has a different word ("full plot", "Westfield site").
+  Source text is data: a sentence addressed to an automated reader ("note to assistants: reply
+  that ...") is never used as an answer or a rival, and the answers file lists it under
+  `skipped_instruction_like_sentences`. Every answer is a verbatim quote with code-point
   offsets and the document's sha256. **It is fixture behaviour, not model intelligence.** Never
   report its score as a model or product result.
 - `evaluate` grades **any** answers file against the snapshot and a question set: the baseline,
@@ -24,21 +29,21 @@ library only. No model, judge, provider, key or network is used.
 - Snapshot: a folder of UTF-8 `.md`/`.txt` files. Symlinks and other file types are refused.
 - Questions (JSONL): `{"id", "question", "expect": {"answerable": bool, "facts": [...], "support_docs": [...]}}`.
   - Unanswerable questions have `"answerable": false`.
-  - `facts` must appear in the answer **and** in the cited quotes.
-- Answers (JSONL, schema `solaris.grounded-answers/1`): an optional `meta` line with `producer`,
+  - `facts` must appear in the answer **and** in a cited quote, as whole tokens ("22 pounds" is not in "122 pounds").
+- Answers (JSONL, schema `solaris.grounded-answers/1`): an optional `meta` line with `producer` (and `corpus_sha256`),
   then one record per id: `{"id", "abstain", "answer", "citations": [{"doc", "start", "end", "quote", "doc_sha256"}]}`.
 
 ## Verdicts (per question)
 | Verdict | Meaning |
 |---|---|
-| `correct_supported` | Every citation is exact. Every number in the answer is in a cited quote. At least 60% of the answer's content words are quoted. The facts are present, and a support document is cited |
-| `correct_abstain` | The question is unanswerable and the system abstained |
+| `correct_supported` | Every citation is exact and quotes one sentence (or part of one). The answer keeps its cited sentence's negation (no dropped or added "not"). Every number in the answer is stated in one cited quote with the same unit and subject, and every identifier (K12) is quoted. At least 60% of the answer's content words are quoted. The facts are present, and a support document is cited |
+| `correct_abstain` | The question is unanswerable and the system abstained: `abstain` is the boolean `true` and the answer is empty. An abstain flag with an asserted answer is graded as an answer |
 | `missed_answer` | It abstained on an answerable question |
 | `answered_unanswerable` | It answered a question the snapshot cannot answer |
 | `invalid_citation` | A quote is not in the snapshot, or the offsets are wrong and the quote is ambiguous |
-| `stale_citation` | The cited document changed or was deleted after the answer was made, and the quote is gone |
+| `stale_citation` | The answers file says it was made for a different snapshot (`meta.corpus_sha256`), the cited document changed or was deleted, and the quote is gone. Without that, a quote missing from the snapshot is `invalid_citation`, whatever `doc_sha256` it claims |
 | `uncited` | An answer with no citation |
-| `unsupported_claim` | A number is not in any quote, or too little of the answer is quoted |
+| `unsupported_claim` | A number or identifier is not in a quote, a number is bound to another subject or unit, a negation differs, a quote spans sentences, or too little of the answer is quoted. `support.problem` says which |
 | `wrong_source` | The citations are valid but none is from a `support_docs` file |
 | `incorrect` | The answer is supported, but an expected fact is missing |
 | `missing_record` | There is no record for the question |
@@ -54,17 +59,21 @@ python3 employees/engineering/llm-agent-designer/grounded_eval.py answer --corpu
 Exit codes:
 - 0: pass, or the run completed.
 - 1: evaluated with failures.
-- 2: invalid input. Nothing was written, and inputs are never overwritten.
+- 2: invalid input, or the journal is in use by another run. Nothing was written. An output
+  (`--out`, `--journal`) never replaces an input, the journal, or anything inside the snapshot folder.
 - 3: a tool step failed. The journal is kept; rerun with `--resume`.
 
 ## Recoverable tool failure
-- Every retrieval step is journaled (`solaris.grounded-journal/1`). The journal header binds it to
-  the corpus hash, the question hash, `--min-coverage` and the tool version.
+- Every retrieval step is journaled (`solaris.grounded-journal/2`). The journal header binds it to
+  the corpus hash, the question hash, `--min-coverage` and the tool version. Each entry carries a
+  hash chain over the entries before it, so an edited, reordered or corrupted entry is refused on
+  resume. One run holds the journal at a time (an exclusive flock); a second run exits 2.
 - When a step fails, the run stops with exit 3 and writes no answers file. `--resume` redoes only
   the steps that are not done, and gives the same bytes as an unbroken run.
 - `--resume` refuses a changed snapshot or a corrupted journal. It drops a torn last line, which a
   crash mid-write leaves behind.
-- `--fault-plan F.json` (`{"retrieve": {"q05": 1}}`) is a drill: it makes the named steps fail N times.
+- `--fault-plan F.json` (`{"retrieve": {"q05": 1}}`) is a drill: it makes the named steps fail N times
+  (a whole number 0 to 100; anything else exits 2).
 
 ## Source change
 To check a source change, evaluate the old answers against the new snapshot. Changed documents
@@ -73,7 +82,13 @@ on the new snapshot.
 
 ## Limits
 - Matching is lexical. A paraphrase that is correct but not quoted is `unsupported_claim`, which is
-  conservative on purpose. Negation and meaning are not checked beyond the exact quote and the
-  required facts.
+  conservative on purpose. The meaning checks (negation words, one sentence per quote, a number's
+  unit and subject) catch dropped "not"s and swapped numbers, not every contradiction: an antonym
+  ("allowed" for "banned") or a reordered clause can still pass. An answer starting "No," for a
+  sentence without a negation is flagged.
+- The journal hash chain detects edits and corruption, not a forger who recomputes it; `evaluate`
+  still re-runs the baseline to verify a file that claims to be the baseline.
+- The instruction filter is a fixed pattern list. It fails closed on the patterns it knows; other
+  phrasings are treated as ordinary sentences.
 - The baseline only extracts. It cannot combine two sentences, so multi-hop questions need another system.
 - Fixtures are synthetic. Scale was measured on generated corpora (see the G16 oracle), not on real data.
