@@ -1,0 +1,2 @@
+Preparing worktree (detached HEAD 02ba9c5)
+HEAD is now at 02ba9c5 Harden assurance closure and waiver validation (#44)

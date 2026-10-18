@@ -1,0 +1,18 @@
+fresh caller: env -i, HOME=/tmp/m01-fc/home, PATH=/tmp/m01-fc/shim:/usr/bin:/bin (python3 -> 3.13.15), offline guard via PYTHONPATH sitecustomize; cwd=/tmp/m01-eval; commands verbatim from ASSURANCE.md ## Commands, with packet.json and the fixture dir given as absolute paths under /tmp/m01-fc/fx
+--- python3 employees/quality-security/assurance/quality_os.py self-test
+rc=0
+{'ok': True}
+--- python3 employees/quality-security/assurance/quality_os.py run /tmp/m01-fc/fx/packet.json
+rc=0
+{'ok': True, 'gate_codes': ['MISSING_SPECIALIST_GATE']}
+--- python3 employees/quality-security/assurance/quality_os.py suite /tmp/m01-fc/fx
+rc=0
+{'ok': True, 'total': 2, 'passed': 2}
+--- python3 employees/quality-security/assurance/quality_os.py audit
+rc=0
+{}
+--- python3 employees/quality-security/assurance/quality_os.py route security
+rc=0
+{}
+--- python3 -m unittest discover -s tests -v
+rc=0 Ran 91 tests in 3.287s OK

@@ -1,0 +1,69 @@
+diff --git a/employees/quality-security/assurance/quality_os.py b/employees/quality-security/assurance/quality_os.py
+index 42fc5b8..b133242 100644
+--- a/employees/quality-security/assurance/quality_os.py
++++ b/employees/quality-security/assurance/quality_os.py
+@@ -19,6 +19,7 @@ from __future__ import annotations
+ import argparse
+ import html
+ import copy
++import difflib
+ import hashlib
+ import json
+ import re
+@@ -1110,6 +1111,46 @@ FIXTURE_KINDS = ("packet", "planted_defect", "defect", "legal", "legal_boundary"
+                  "closure", "self_approval")
+ EXPECTATION_KEYS = ("outcome", "gate_codes", "accountable_role")
+ EXPECTATION_OUTCOMES = ("pass", "fail_gate")
++# The fixture's own top-level keys are part of the contract too: a misspelled
++# fixture_kind, packet or expectations key, or a misspelled field of a closure or
++# legal fixture, must not turn the fixture into a different, passing fixture.
++FIXTURE_CONTRACT_KEYS = ("fixture_kind", "kind", "expectations", "packet")
++FIXTURE_NOTE_KEYS = ("description", "name", "notes")
++FIXTURE_KIND_KEYS = {
++    "closure": ("finding", "waiver", "closer_role", "independent_evidence", "expect_blocked"),
++    "legal": ("text", "legal_text", "requested_actions", "sources", "freshness_days"),
++    "planted_defect": ("defect",),
++}
++NON_PACKET_FIXTURE_KEYS = ("finding", "waiver", "closer_role", "independent_evidence",
++                           "expect_blocked", "defect")
++
++
++def _norm_key(key: str) -> str:
++    return key.lower().replace("_", "").replace("-", "").replace(" ", "")
++
++
++def _fixture_key_problem(data: Dict[str, Any], kind: str) -> Optional[str]:
++    """Why the fixture's top-level keys break the fixture contract, or None."""
++    for key in data:
++        if key in FIXTURE_CONTRACT_KEYS:
++            continue
++        near = [c for c in FIXTURE_CONTRACT_KEYS if _norm_key(key) == _norm_key(c)
++                or difflib.SequenceMatcher(None, key.lower(), c).ratio() >= 0.8]
++        if near:
++            return f"fixture key {key!r} looks like a misspelled {near[0]!r}"
++    group = {"self_approval": "closure", "legal_boundary": "legal",
++             "defect": "planted_defect"}.get(kind, kind)
++    if group == "packet" and "packet" not in data:
++        # Unwrapped packet: packet fields are G05's allowlist; only refuse fields that
++        # belong to another fixture kind, which means its fixture_kind key was lost.
++        stray = [k for k in NON_PACKET_FIXTURE_KEYS if k in data]
++        return ("packet fixture has non-packet fields " + ", ".join(stray)
++                + "; set fixture_kind") if stray else None
++    if group == "planted_defect" and "defect" not in data:
++        return None  # the fixture object itself is the defect
++    allowed = set(FIXTURE_CONTRACT_KEYS) | set(FIXTURE_NOTE_KEYS) | set(FIXTURE_KIND_KEYS.get(group, ()))
++    extra = sorted(k for k in data if k not in allowed)
++    return ("fixture has unknown keys: " + ", ".join(extra)) if extra else None
+ 
+ 
+ def evaluate_path(path: Path) -> AssuranceResult:
+@@ -1126,6 +1167,9 @@ def evaluate_path(path: Path) -> AssuranceResult:
+             f"{kind_key} must be one of {', '.join(FIXTURE_KINDS)}; a planted defect "
+             "fixture uses fixture_kind \"planted_defect\" with defect_kind"
+         )
++    key_problem = _fixture_key_problem(data, kind)
++    if key_problem:
++        return _invalid_packet(key_problem)
+     expected = data.get("expectations", {})
+     if not isinstance(expected, dict):
+         return _invalid_packet("expectations must be an object")

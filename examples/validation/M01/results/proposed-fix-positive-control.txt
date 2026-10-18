@@ -1,0 +1,26 @@
+proposed-fix.patch sha256 2aec9e307685c70206453339a59da710f0d8f0b9d789760b13c7dda61612af79
+git apply --check on candidate tree (/tmp/m01-mut): OK
+== 3.11.16 oracle
+x01 HOLDS misspelled fixture_kind KEY on a closure self-approval fixture is not a pass
+x02 HOLDS misspelled packet WRAPPER key holding a blocked packet is not a pass
+x03 HOLDS misspelled expectations KEY is not silently dropped
+x04 HOLDS misspelled legal text key on a legal fixture is not a vacuous pass
+core: 12 / 12  gaps open: 8 / 14
+== 3.11.16 builder suite rc=0 Ran 91 tests in 3.012s OK
+== 3.12.14 oracle
+x01 HOLDS misspelled fixture_kind KEY on a closure self-approval fixture is not a pass
+x02 HOLDS misspelled packet WRAPPER key holding a blocked packet is not a pass
+x03 HOLDS misspelled expectations KEY is not silently dropped
+x04 HOLDS misspelled legal text key on a legal fixture is not a vacuous pass
+core: 12 / 12  gaps open: 8 / 14
+== 3.12.14 builder suite rc=0 Ran 91 tests in 2.963s OK
+== 3.13.15 oracle
+x01 HOLDS misspelled fixture_kind KEY on a closure self-approval fixture is not a pass
+x02 HOLDS misspelled packet WRAPPER key holding a blocked packet is not a pass
+x03 HOLDS misspelled expectations KEY is not silently dropped
+x04 HOLDS misspelled legal text key on a legal fixture is not a vacuous pass
+core: 12 / 12  gaps open: 8 / 14
+== 3.13.15 builder suite rc=0 Ran 91 tests in 2.986s OK
+checks changed by the patch (3.12): {'x01': (False, True), 'x02': (False, True), 'x03': (False, True), 'x04': (False, True), 'x12': (False, True)}
+== fresh-caller fixture dir with the patch:
+False 2 1 [None]

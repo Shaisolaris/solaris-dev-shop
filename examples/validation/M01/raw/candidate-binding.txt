@@ -1,0 +1,19 @@
+# candidate binding 2026-10-18 16:02:24 PDT
+base 02ba9c571b10ad1dba792d2ac5534bcad3171e67
+G01.patch sha256 85a506e6f3fcc43c15184d3d229c9b4fa34313da1d6555af683b4e407257a6e0
+git apply --check: OK
+applied
+ M docs/install.md
+ M employees/quality-security/assurance/ASSURANCE.md
+ M employees/quality-security/assurance/quality_os.py
+?? tests/test_fixture_runner.py
+## per-file sha256 of the candidate (written by M01; G01 shipped no manifest)
+ee9ea539c632b466b41db4b06f44c83164edc10406904052ddd706e39a93fea9  docs/install.md
+c4ac6f69ec6b7b86410aeb931b0b97c1b6edab9fced3e01ee113143984ca56fb  employees/quality-security/assurance/ASSURANCE.md
+2c55de6069a8f8582f0b3f5e041f7924956225b3046b684a77cf493ce171eff6  employees/quality-security/assurance/quality_os.py
+2d0563cecd6f81b362b1fb656a2c23b7b3a1e36327b7150c05caba552ac28eaa  tests/test_fixture_runner.py
+## week-grok current copies of the same paths (read-only; the builder has continued there)
+docs/install.md: same (week-grok mtime 2026-10-18 09:36:56)
+employees/quality-security/assurance/ASSURANCE.md: same (week-grok mtime 2026-10-18 09:37:06)
+employees/quality-security/assurance/quality_os.py: same (week-grok mtime 2026-10-18 09:35:51)
+tests/test_fixture_runner.py: same (week-grok mtime 2026-10-18 09:36:36)

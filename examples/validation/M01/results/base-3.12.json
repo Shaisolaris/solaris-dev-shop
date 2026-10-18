@@ -1,0 +1,906 @@
+{
+ "engine": "/tmp/m01-base/employees/quality-security/assurance/quality_os.py",
+ "python": "<PY312>",
+ "results": [
+  {
+   "id": "c01",
+   "group": "core",
+   "desc": "unknown fixture_kind values are INVALID_PACKET",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    }
+   ]
+  },
+  {
+   "id": "c02",
+   "group": "core",
+   "desc": "unknown legacy kind values are INVALID_PACKET",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    }
+   ]
+  },
+  {
+   "id": "c03",
+   "group": "core",
+   "desc": "fixture_kind takes precedence over kind; invalid fixture_kind is not rescued by a valid kind",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": [
+      "SELF_APPROVAL_FORBIDDEN"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "c04",
+   "group": "core",
+   "desc": "non-object expectations are INVALID_PACKET",
+   "holds": true,
+   "observed": [
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "c05",
+   "group": "core",
+   "desc": "unknown expectation keys are INVALID_PACKET (wrapped and unwrapped)",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    }
+   ]
+  },
+  {
+   "id": "c06",
+   "group": "core",
+   "desc": "outcome outside {pass, fail_gate} is INVALID_PACKET",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    }
+   ]
+  },
+  {
+   "id": "c07",
+   "group": "core",
+   "desc": "gate_codes not an array of strings is INVALID_PACKET",
+   "holds": true,
+   "observed": [
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "c08",
+   "group": "core",
+   "desc": "accountable_role not a nonblank string is INVALID_PACKET",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    }
+   ]
+  },
+  {
+   "id": "c09",
+   "group": "core",
+   "desc": "unreadable or non-object fixture files are INVALID_PACKET without traceback",
+   "holds": true,
+   "observed": [
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "gate_codes": [
+      "INVALID_PACKET"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "c10",
+   "group": "core",
+   "desc": "valid fixtures keep their outcome",
+   "holds": true,
+   "observed": {
+    "should_pass": [
+     {
+      "rc": 0,
+      "traceback": false,
+      "ok": true,
+      "gate_codes": []
+     },
+     {
+      "rc": 0,
+      "traceback": false,
+      "ok": true,
+      "gate_codes": []
+     },
+     {
+      "rc": 0,
+      "traceback": false,
+      "ok": true,
+      "gate_codes": []
+     },
+     {
+      "rc": 0,
+      "traceback": false,
+      "ok": true,
+      "gate_codes": [
+       "MISSING_SPECIALIST_GATE"
+      ]
+     },
+     {
+      "rc": 0,
+      "traceback": false,
+      "ok": true,
+      "gate_codes": [
+       "SELF_APPROVAL_FORBIDDEN"
+      ]
+     },
+     {
+      "rc": 0,
+      "traceback": false,
+      "ok": true,
+      "gate_codes": [
+       "SELF_APPROVAL_FORBIDDEN"
+      ]
+     },
+     {
+      "rc": 0,
+      "traceback": false,
+      "ok": true,
+      "gate_codes": [
+       "SELF_APPROVAL_FORBIDDEN"
+      ]
+     },
+     {
+      "rc": 0,
+      "traceback": false,
+      "ok": true,
+      "gate_codes": [
+       "LEGAL_BINDING_PROHIBITED",
+       "LEGAL_DISCLAIMER_MISSING"
+      ]
+     }
+    ],
+    "should_fail": [
+     {
+      "rc": 1,
+      "traceback": false,
+      "ok": false,
+      "gate_codes": [
+       "MISSING_SPECIALIST_GATE"
+      ]
+     },
+     {
+      "rc": 1,
+      "traceback": false,
+      "ok": false,
+      "gate_codes": [
+       "EXPECTED_GATE_NOT_FIRED"
+      ]
+     },
+     {
+      "rc": 1,
+      "traceback": false,
+      "ok": false,
+      "gate_codes": [
+       "MISSING_SPECIALIST_GATE"
+      ]
+     },
+     {
+      "rc": 1,
+      "traceback": false,
+      "ok": false,
+      "gate_codes": [
+       "SELF_APPROVAL_FORBIDDEN",
+       "GATE_MISROUTE"
+      ]
+     },
+     {
+      "rc": 1,
+      "traceback": false,
+      "ok": false,
+      "gate_codes": [
+       "LEGAL_BINDING_PROHIBITED",
+       "LEGAL_DISCLAIMER_MISSING"
+      ]
+     },
+     {
+      "rc": 1,
+      "traceback": false,
+      "ok": false,
+      "gate_codes": [
+       "MISSING_SPECIALIST_GATE"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "c11",
+   "group": "core",
+   "desc": "suite: missing dir, empty dir, only _-files, only non-.json files all fail with error",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "total": 0,
+     "passed": 0
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "total": 0,
+     "passed": 0
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "total": 0,
+     "passed": 0
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "total": 0,
+     "passed": 0
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "total": 0,
+     "passed": 0
+    }
+   ]
+  },
+  {
+   "id": "c12",
+   "group": "core",
+   "desc": "suite: one bad fixture among good fails the suite with correct counts; nested dirs are counted",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "total": 3,
+     "passed": 3
+    },
+    {
+     "rc": 1,
+     "traceback": false,
+     "ok": false,
+     "total": 3,
+     "passed": 2
+    }
+   ]
+  },
+  {
+   "id": "x01",
+   "group": "gap",
+   "desc": "misspelled fixture_kind KEY on a closure self-approval fixture is not a pass",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    }
+   ]
+  },
+  {
+   "id": "x02",
+   "group": "gap",
+   "desc": "misspelled packet WRAPPER key holding a blocked packet is not a pass",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    }
+   ]
+  },
+  {
+   "id": "x03",
+   "group": "gap",
+   "desc": "misspelled expectations KEY is not silently dropped",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    }
+   ]
+  },
+  {
+   "id": "x04",
+   "group": "gap",
+   "desc": "misspelled legal text key on a legal fixture is not a vacuous pass",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    }
+   ]
+  },
+  {
+   "id": "x05",
+   "group": "gap",
+   "desc": "accountable_role expectation is enforced when the result has no findings",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": [
+      "LEGAL_BINDING_PROHIBITED",
+      "LEGAL_DISCLAIMER_MISSING"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x06",
+   "group": "gap",
+   "desc": "gate_codes expectation is not silently ignored when outcome is pass or absent",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    }
+   ]
+  },
+  {
+   "id": "x07",
+   "group": "gap",
+   "desc": "fail_gate gate_codes: every listed gate must fire; empty list is not a wildcard",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": [
+      "MISSING_SPECIALIST_GATE"
+     ]
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": [
+      "MISSING_SPECIALIST_GATE"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x08",
+   "group": "gap",
+   "desc": "legal fixture with no expectations is not an unconditional pass",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": [
+      "LEGAL_BINDING_PROHIBITED",
+      "LEGAL_DISCLAIMER_MISSING"
+     ]
+    },
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    }
+   ]
+  },
+  {
+   "id": "x09",
+   "group": "gap",
+   "desc": "malformed field types fail as INVALID_PACKET, not a traceback",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 1,
+     "traceback": true,
+     "no_json": true,
+     "stderr_tail": [
+      "ValueError: invalid literal for int() with base 10: 'abc'"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": true,
+     "no_json": true,
+     "stderr_tail": [
+      "TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": true,
+     "no_json": true,
+     "stderr_tail": [
+      "AttributeError: 'str' object has no attribute 'get'"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": true,
+     "no_json": true,
+     "stderr_tail": [
+      "AttributeError: 'list' object has no attribute 'get'"
+     ]
+    },
+    {
+     "rc": 1,
+     "traceback": true,
+     "no_json": true,
+     "stderr_tail": [
+      "TypeError: expected string or bytes-like object, got 'list'"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x10",
+   "group": "gap",
+   "desc": "deeply nested JSON fails as INVALID_PACKET, not a traceback",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 1,
+     "traceback": true,
+     "no_json": true,
+     "stderr_tail": [
+      "RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x11",
+   "group": "gap",
+   "desc": "one crashing fixture does not destroy the whole suite report",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 1,
+     "traceback": true,
+     "no_json": true,
+     "stderr_tail": [
+      "AttributeError: 'str' object has no attribute 'get'"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x12",
+   "group": "gap",
+   "desc": "duplicate fixture_kind key does not silently change the fixture kind",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "gate_codes": []
+    }
+   ]
+  },
+  {
+   "id": "x13",
+   "group": "gap",
+   "desc": "suite does not silently skip .JSON / .Json fixture files",
+   "holds": false,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "total": 1,
+     "passed": 1
+    }
+   ]
+  },
+  {
+   "id": "x14",
+   "group": "gap",
+   "desc": "suite behaviour on a symlinked fixture subdirectory (reported, not scored as gap)",
+   "holds": true,
+   "observed": [
+    {
+     "rc": 0,
+     "traceback": false,
+     "ok": true,
+     "total": 1,
+     "passed": 1
+    }
+   ]
+  }
+ ]
+}
