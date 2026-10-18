@@ -212,9 +212,12 @@
       "backend-testing-strategy.md",
       "codemod-migration-playbook.md",
       "cursor-rules-scaffolds.md",
-      "jvm-and-nestjs-language-packs.md"
+      "jvm-and-nestjs-language-packs.md",
+      "duplicate-safe-api.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "ledger_api.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -288,6 +291,12 @@
           "id": "ref-jvm-and-nestjs-language-packs-md",
           "kind": "file_exists",
           "target": "jvm-and-nestjs-language-packs.md",
+          "required": false
+        },
+        {
+          "id": "ref-duplicate-safe-api-md",
+          "kind": "file_exists",
+          "target": "duplicate-safe-api.md",
           "required": false
         }
       ],
@@ -488,7 +497,8 @@
       "backend-testing-strategy.md",
       "codemod-migration-playbook.md",
       "cursor-rules-scaffolds.md",
-      "jvm-and-nestjs-language-packs.md"
+      "jvm-and-nestjs-language-packs.md",
+      "duplicate-safe-api.md"
     ]
   }
 }
