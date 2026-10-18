@@ -181,6 +181,34 @@ def main():
         outs = {p.communicate(timeout=120)[0] for p in procs}
         check("o11_scale_concurrency", len(reports) == 600 and not wrong and len(outs) == 1 and bool(next(iter(outs)).strip()),
               f"600 shuffled traces with 4 workers in {el:.1f}s, {len(wrong)} wrong; 6 parallel runs gave {len(outs)} distinct output(s)")
+        # o12 (G10 rework): SAN entries written with a type prefix, in any case, must still cover the host,
+        # while a prefixed entry for another name must still be a mismatch
+        host = traces["clean"]["target"]["host"]
+        sdir = base / "san"; sdir.mkdir()
+        cases = {"dns_upper": ([f"DNS:{host}"], True), "dns_lower": ([f"dns:{host}"], True),
+                 "dns_wild": ([f"DNS:*.{host.split('.', 1)[1]}"], True), "mixed": ([f" Dns : {host.upper()}."], True),
+                 "ip_entry_plus_dns": ([f"IP:{traces['clean']['observations'][1]['dst']}", f"DNS:{host}"], True),
+                 "other_name": ([f"DNS:other-{host}"], False), "ip_only": ([f"IP Address:{traces['clean']['observations'][1]['dst']}"], False)}
+        bad = []
+        for n, (san, covers) in cases.items():
+            d = json.loads(json.dumps(traces["clean"]))
+            for o in d["observations"]:
+                if o["stage"] == "tls":
+                    o["cert"]["san"] = san
+                    if not covers:
+                        o.update(result="alert", alert="bad_certificate")
+            if not covers:
+                d["observations"] = [o for o in d["observations"] if o["stage"] != "http"]
+            (sdir / f"{n}.json").write_text(json.dumps(d))
+            rc, j, _ = run("diagnose", str(sdir / f"{n}.json"), "--json")
+            codes = [f.get("code") for f in (j or {}).get("findings", [])] if isinstance(j, dict) else None
+            if codes is None:
+                bad.append(f"{n}: no JSON report")
+            elif covers and (j.get("verdict") != "healthy" or "TLS_NAME_MISMATCH" in codes):
+                bad.append(f"{n}: {san} should cover {host}, got {j.get('verdict')} {codes}")
+            elif not covers and "TLS_NAME_MISMATCH" not in codes:
+                bad.append(f"{n}: {san} must still be a name mismatch, got {codes}")
+        check("o12_san_forms", not bad, "prefixed SAN entries cover the host; other names still mismatch" if not bad else "; ".join(bad[:3]))
     n = sum(results)
     print(f"SUMMARY {n}/{len(results)} pass; candidate {'ACCEPTED by oracle' if n == len(results) else 'REJECTED'}")
     return 0 if n == len(results) else 1

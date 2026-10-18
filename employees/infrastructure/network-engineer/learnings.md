@@ -8,6 +8,7 @@
 - **2026-06-14 - Boundary lesson**: the four-way split (network vs devops vs cloud vs sre vs iot) keeps this employee from drifting into pipeline/cloud/reliability/firmware work. Network Engineer owns the packets and the topology; it supplies evidence to SRE during incidents and a VLAN to IoT, but does not run the pager or write firmware.
 
 - **2026-10-18 - Offline diagnosis (G10)**: added `netdiag.py` + `offline-trace-diagnosis.md`. Lessons: a stopped traceroute is not a route fault when TCP or TLS answered (ICMP filtering); a certificate name mismatch is also a DNS question unless the expected address is known; certificate dates must be judged at capture time, not now; a layer with no evidence stays a candidate instead of being assumed fine.
+- **2026-10-18 - G10 rework (reviewer finding on 3ebbe73)**: `DNS:`-prefixed SAN entries were cut by 3 characters (the prefix is 4), so a correct certificate was reported as TLS_NAME_MISMATCH. Lesson: parse typed entries with a real prefix match (case-insensitive, including openssl's `IP Address:`), compare addresses as addresses, and keep a regression test plus a clean mismatch control for every parser fix.
 
 ## Promotion log
 | Date | Rule | Location |

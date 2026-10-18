@@ -21,6 +21,7 @@ prohibit}], expected_addresses}; `observations`, each with a `stage`:
 - `route` {dst, hops [{ttl, addr or null}], reached}
 - `tcp` {dst, port, result connected|refused|timeout|unreachable|reset}
 - `tls` {dst, sni, result ok|alert|timeout|reset|eof, alert, version, cert {san, not_before, not_after, chain_trusted}}
+  - `san` entries may be bare (`api.example`, `*.example.org`, `192.0.2.1`) or typed as `DNS:`, `IP:` or openssl's `IP Address:`, in any case. A name target is covered only by name entries (one-label wildcards allowed); an address target only by address entries, compared as addresses.
 - `http` {status or result timeout|reset, headers (only names are read), via_proxy}
 
 Duplicate keys, NaN, symlinks, files over 8 MiB, more than 10000 observations and malformed

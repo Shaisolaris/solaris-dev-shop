@@ -35,6 +35,7 @@ server is blamed on dns; o5 identical bytes on rerun and the same verdict for re
 reformatted input; o6 no false blame (filtered ICMP, certificate dates judged at capture);
 o7 header values never echoed; o8 invalid input exits 2 and leaves the previous report;
 o9 the next good run recovers; o10 no socket use under a socket-denying guard and the trace
-folder unchanged; o11 600 shuffled traces with 4 workers plus 6 parallel runs.
+folder unchanged; o11 600 shuffled traces with 4 workers plus 6 parallel runs; o12 (rework)
+`DNS:`/`IP:`-typed SAN entries in any case cover the host while other names still mismatch.
 The naive stub blames the first bad-looking observation, is always certain, uses the wall
 clock for certificates, does a live lookup and copies headers.

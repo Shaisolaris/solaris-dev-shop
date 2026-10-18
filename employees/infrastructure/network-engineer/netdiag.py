@@ -105,10 +105,15 @@ def _choice(value: Any, where: str, options: Tuple[str, ...]) -> str:
     return value
 
 
+def _iso(s: str) -> dt.datetime:
+    # Python 3.9/3.10 fromisoformat() rejects a trailing "Z"; treat it as +00:00 everywhere.
+    return dt.datetime.fromisoformat(s[:-1] + "+00:00" if s[-1:] in ("Z", "z") else s)
+
+
 def _time(value: Any, where: str) -> dt.datetime:
     s = _str(value, where, 64)
     try:
-        t = dt.datetime.fromisoformat(s)
+        t = _iso(s)
     except ValueError:
         raise Invalid(f"{where}: {s!r} is not an ISO 8601 time") from None
     if t.tzinfo is None:
@@ -259,17 +264,41 @@ def _observation(o: Any, i: int) -> Dict[str, Any]:
 
 # -- analysis -------------------------------------------------------------------------
 
+SAN_PREFIX_RE = re.compile(r"^\s*(dns|ip address|ip)\s*:\s*", re.I)
+
+
+def _san_entry(raw: str) -> Tuple[Optional[str], str]:
+    """Split a SAN entry into (kind, value): 'DNS:a.example' -> ('dns', 'a.example'),
+    'IP:192.0.2.1' and openssl's 'IP Address:192.0.2.1' -> ('ip', '192.0.2.1'), bare 'a.example' -> (None, ...)."""
+    m = SAN_PREFIX_RE.match(raw)
+    if not m:
+        return None, raw.strip().rstrip(".").lower()
+    kind = "dns" if m.group(1).lower() == "dns" else "ip"
+    return kind, raw[m.end():].strip().rstrip(".").lower()
+
+
 def _san_matches(host: str, san: List[str]) -> bool:
-    for name in san:
-        name = name[3:] if name.startswith(("dns:", "ip:")) else name
+    try:
+        host_ip = ipaddress.ip_address(host)
+    except ValueError:
+        host_ip = None
+    for raw in san:
+        kind, name = _san_entry(raw)
+        if host_ip is not None:
+            # an address target is covered only by an address entry (bare or IP:), compared as addresses
+            if kind == "dns":
+                continue
+            try:
+                if ipaddress.ip_address(name) == host_ip:
+                    return True
+            except ValueError:
+                pass
+            continue
+        if kind == "ip":
+            continue  # an address entry never covers a host name
         if name == host:
             return True
         if name.startswith("*.") and "." in host:
-            try:
-                ipaddress.ip_address(host)
-                continue
-            except ValueError:
-                pass
             if host.split(".", 1)[1] == name[2:] and host.split(".", 1)[0]:
                 return True
     return False
@@ -422,10 +451,10 @@ def analyse(trace: Dict[str, Any], input_sha256: str) -> Dict[str, Any]:
             c = o["cert"]
             if c is not None:
                 if trace["captured_at"]:
-                    now = dt.datetime.fromisoformat(trace["captured_at"])
-                    if c["not_after"] and now > dt.datetime.fromisoformat(c["not_after"]):
+                    now = _iso(trace["captured_at"])
+                    if c["not_after"] and now > _iso(c["not_after"]):
                         problems.append(("TLS_CERT_EXPIRED", f"certificate expired {c['not_after']} (trace captured {trace['captured_at']})"))
-                    if c["not_before"] and now < dt.datetime.fromisoformat(c["not_before"]):
+                    if c["not_before"] and now < _iso(c["not_before"]):
                         problems.append(("TLS_CERT_NOT_YET_VALID", f"certificate valid only from {c['not_before']}"))
                 elif c["not_after"]:
                     notes.append("certificate dates not judged: the trace has no captured_at")

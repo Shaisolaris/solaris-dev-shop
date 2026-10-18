@@ -146,6 +146,43 @@ class Localization(Base):
         self.assertIn('implied', ' '.join(r['layers']['dns']['evidence']))
 
 
+class SanForms(Base):
+    """G10 rework (Muse finding on 3ebbe73): prefixed SAN entries were cut wrongly and reported as TLS_NAME_MISMATCH."""
+
+    def codes(self, r):
+        return [f['code'] for f in r['findings']]
+
+    def test_prefixed_san_entries_cover_the_host(self):
+        for san in (['DNS:web.lab.example'], ['dns:web.lab.example'], ['DNS:*.lab.example'],
+                    ['  Dns : WEB.lab.example.'], ['IP:192.0.2.99', 'DNS:web.lab.example']):
+            with self.subTest(san=san):
+                r = self.diag(trace([DNS, TCP, dict(TLS, cert=dict(CERT, san=san)), HTTP]))
+                self.assertEqual(r['verdict'], 'healthy', r['findings'])
+                self.assertNotIn('TLS_NAME_MISMATCH', self.codes(r))
+
+    def test_real_mismatch_is_still_reported(self):
+        for san in (['DNS:other.example'], ['IP Address:192.0.2.40'], ['DNS:*.example'], ['dns:web.lab.example.other'],
+                    ['IP:web.lab.example']):
+            with self.subTest(san=san):
+                obs = [DNS, TCP, dict(TLS, cert=dict(CERT, san=san), result='alert', alert='bad_certificate')]
+                r = self.diag(trace(obs))
+                self.assertEqual(r['layer'], 'tls')
+                self.assertIn('TLS_NAME_MISMATCH', self.codes(r))
+
+    def test_address_targets_need_an_address_entry(self):
+        def run(san, result='ok'):
+            obs = [dict(TCP), dict(TLS, sni=None, cert=dict(CERT, san=san), result=result)]
+            if result == 'ok':
+                obs.append(HTTP)
+            return self.diag(trace(obs, host=IP))
+        for san in (['IP:192.0.2.40'], ['IP Address:192.0.2.40'], ['192.0.2.40']):
+            with self.subTest(san=san):
+                self.assertNotIn('TLS_NAME_MISMATCH', self.codes(run(san)))
+        for san in (['DNS:192.0.2.40'], ['IP:192.0.2.41'], ['DNS:web.lab.example']):
+            with self.subTest(san=san):
+                self.assertIn('TLS_NAME_MISMATCH', self.codes(run(san, result='alert')))
+
+
 class Uncertainty(Base):
     def test_empty_trace_is_undetermined_over_every_layer(self):
         r = self.diag(trace([]))
