@@ -1,0 +1,29 @@
+python3 = 3.12.14; curl = /usr/bin/curl; env vars: 6
+-- 1 the doc's 'Run it' block, placeholders filled
+listening on http://127.0.0.1:58556 (loopback only, db ledger.db)
+first  {"amount_cents": 1000, "balance_cents": 1000, "currency": "USD", "customer": "Harrow Lane Bakery", "id": "inv_d01ea5b316050a51", "paid_cents": 0, "status": "open", "tenant": "brackwater", "version": 1}
+second {"amount_cents": 1000, "balance_cents": 1000, "currency": "USD", "customer": "Harrow Lane Bakery", "id": "inv_d01ea5b316050a51", "paid_cents": 0, "status": "open", "tenant": "brackwater", "version": 1}
+same invoice returned twice: yes
+owner list:  {"data": [{"amount_cents": 1000, "balance_cents": 1000, "currency": "USD", "customer": "Harrow Lane Bakery", "id": "inv_d01ea5b316050a51", "paid_cents": 0, "status": "open", "tenant": "brackwater", "version": 1}], "next_after": null}
+other list:  {"data": [], "next_after": null}
+[probe exit 0]  PASS B8 idempotency keys are scoped per tenant PASS B9 reusing a key for a different request is refused and makes nothing PASS B10 unauthenticated and viewer writes are refused and make nothing 0 findings; target http://127.0.0.1:58556 (loopback only; synthetic records were written to this target) 
+consistent: 7 invoices, 24 idempotency records, 11 audit rows
+[check exit 0]
+-- 2 drill: crash after commit, restart, retry (doc 'Restart and retry drill')
+listening on http://127.0.0.1:58640 (loopback only, db ledger.db)
+[curl exit 52]
+[server exit 70]
+listening on http://127.0.0.1:58642 (loopback only, db ledger.db)
+HTTP/1.1 201 Created
+Idempotent-Replayed: true
+-- 3 drill: crash before commit, restart, retry
+listening on http://127.0.0.1:58644 (loopback only, db ledger.db)
+[curl exit 52]
+[server exit 70]
+listening on http://127.0.0.1:58646 (loopback only, db ledger.db)
+HTTP/1.1 201 Created
+Idempotent-Replayed: false
+brackwater: Harrow Lane Bakery x1, Drill After x1, Drill Before x1, 7 invoices in all (the probe adds its own)
+-- 4 check --json (doc 'Check stored state')
+ok True violations [] tenants {'brackwater': {'invoices': 7, 'paid_cents': 1000, 'payments': 4}, 'fenmoor': {'invoices': 2, 'paid_cents': 0, 'payments': 0}}
+[check exit 0]

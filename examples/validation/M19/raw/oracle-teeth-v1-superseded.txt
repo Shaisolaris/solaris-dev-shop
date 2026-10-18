@@ -1,0 +1,712 @@
+# SUPERSEDED: m19_oracle v1 (before v2 first-attempt burst checks and the payment-key-on-another-invoice check); final run is oracle-teeth.txt
+# M19 teeth on 3.12.14 2026-10-18 14:27:36 PDT
+=== candidate
+# m19_oracle candidate: <PY312> /tmp/m19-eval/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.3s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.3s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.2s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.2s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (63 answered) then retries: exactly 64
+PASS k9_check_command (0.3s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (21/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 12/12 pass; oracle ACCEPTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== stub-noop
+# m19_oracle candidate: <D>/grok-output/M19/oracle/stubs/noop.sh
+FAIL k1_clean_control (0.2s): get: <404 not_found b'{"error": {"code": "not_found", "message": "not_found"}}'>
+FAIL k2_concurrent_replays (0.3s): pay burst statuses [404]
+FAIL k3_overspend_race (0.3s): 20 x 300 on 1000: 0 accepted, 0 exceeds_balance, other [<404 not_found b'{"error": {"code": "not_found", "message": "not_found"}}'>, <404 not_found b'{"error": {"code": "not_found", "message": "not_found"}}'>, <404 not_found b'{"error": {"code": "not_found", "message": "not_found"}}'>]
+FAIL k4_cross_tenant_reads (0.2s): paging [0] order ok=False
+FAIL k5_cross_tenant_writes (0.2s): kestrel list []
+FAIL k6_key_scope (0.2s): payment key in two tenants <404 not_found b'{"error": {"code": "not_found", "message": "not_found"}}'> <404 not_found b'{"error": {"code": "not_found", "message": "not_found"}}'>
+FAIL k7_auth (0.2s): viewer read
+FAIL k8_crash_recovery (0.2s): fail_before_commit x2: [201, 201, 201, 201]
+FAIL k9_check_command (0.2s): harness error OperationalError: no such table: invoices
+FAIL k10_invalid_input (15.0s): harness error TimeoutExpired: Command '['<D>/grok-output/M19/oracle/stubs/noop.sh', 'serve', '--db', '/tmp/m19-cal/m19-oracle-run-oh_plwri/m19-oracle-9t_fbzvx/h.db', '--principals', '/tmp/m19-cal/m19-oracle-run-oh_plwri/m19-oracle-9t_fbzvx/principa
+PASS k11_enumeration (0.3s): 40 ids random (24/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+FAIL k12_seeded_load (0.3s): seed 7: write answers [{404}, {404}, {404}]
+SUMMARY core 1/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== stub-naive
+# m19_oracle candidate: <D>/grok-output/M19/oracle/stubs/naive.sh
+FAIL k1_clean_control (0.2s): replay: <201  b'{"id": "inv_e7fd4b62b3cc6cd1", "tenant": "kestrel", "customer": "Fenwick & Daughters", "amount_cents": 12345, "currency"'> {'server': 'BaseHTTP/0.6 Python/3.12.14', 'date': 'Sun, 18 Oct 2026 21:28:45 GMT', 'content-type': 'application/json', 'content-length': '201', 'connection': 'close', 'idempotent-replayed': 'false', 'location': '/api/v1/invoices/inv_e7fd4b62b3cc6cd1'}
+FAIL k2_concurrent_replays (0.3s): 48 concurrent replays made 48 invoices
+FAIL k3_overspend_race (0.2s): replay of k3-p00: <409 exceeds_balance b'{"error": {"code": "exceeds_balance", "message": "balance 100"}}'> vs <201  b'{"id": "inv_e731be74b5d294f2", "tenant": "quillon", "customer": "Saltmarsh Coop", "amount_cents": 1000, "currency": "USD'>
+PASS k4_cross_tenant_reads (0.2s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+FAIL k6_key_scope (0.2s): reuse with another body: <201  b'{"id": "inv_fba7a99f036f74c7", "tenant": "kestrel", "customer": "Shared Key Co", "amount_cents": 801, "currency": "USD",'>
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+FAIL k8_crash_recovery (0.2s): fail_before_commit x2: [201, 201, 201, 201]
+FAIL k9_check_command (0.2s): harness error OperationalError: no such table: invoices
+FAIL k10_invalid_input (15.2s): harness error TimeoutExpired: Command '['<D>/grok-output/M19/oracle/stubs/naive.sh', 'serve', '--db', '/tmp/m19-cal/m19-oracle-run-_e3n2w_0/m19-oracle-ojmi5xcm/p.db', '--principals', '/tmp/m19-cal/m19-oracle-run-_e3n2w_0/m19-oracle-ojmi5xcm/dup-key
+PASS k11_enumeration (0.3s): 40 ids random (19/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+FAIL k12_seeded_load (0.3s): seed 7: keys with mixed answers [(('kestrel', 'L7-kestrel-c007'), {(201, 'inv_f4c2f453edc848aa'), (201, 'inv_0e7d3614ab98dd4b'), (201, 'inv_731650b2a954014e')}), (('marlow', 'L7-marlow-c004'), {(201, 'inv_afe1397afe8c2186'), (201, 'inv_1fc0db178ff9e321'), (201, 'inv_05481f89b4b64843'), (201, 'inv_2bb4990b1aa6e262')}), (('quillon', 'L7-quillon-c011'), {(201, 'inv_1ae8d90de047024d'), (201, 'inv_af257d28e8362253'), (201, 'inv_1f4715527d5d97d3'), (201, 'inv_d92d1586d45a965e')})]
+SUMMARY core 4/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== stub-vulnerable
+# m19_oracle candidate: <D>/grok-output/M19/oracle/stubs/vulnerable.sh
+PASS k1_clean_control (0.3s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+FAIL k2_concurrent_replays (0.3s): 48 concurrent replays made 26 invoices
+FAIL k3_overspend_race (0.3s): 20 x 300 on 1000: 20 accepted, 0 exceeds_balance, other []
+FAIL k4_cross_tenant_reads (0.2s): other tenant reads inv_088f2489bbe42a50: <200  b'{"id": "inv_088f2489bbe42a50", "tenant": "kestrel", "customer": "Hollin Farm", "amount_cents": 700, "currency": "USD", "'>
+FAIL k5_cross_tenant_writes (0.2s): cross-tenant pay: <201  b'{"id": "inv_63c004f4f6ba3431", "tenant": "kestrel", "customer": "Copperline", "amount_cents": 1000, "currency": "USD", "'>
+FAIL k6_key_scope (0.2s): same key in two tenants: <201  b'{"id": "inv_000684d0e44e945d", "tenant": "kestrel", "customer": "Shared Key Co", "amount_cents": 800, "currency": "USD",'> <201  b'{"id": "inv_000684d0e44e945d", "tenant": "kestrel", "customer": "Shared Key Co", "amount_cents": 800, "currency": "USD",'>
+PASS k7_auth (0.4s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+FAIL k8_crash_recovery (0.2s): fail_before_commit x2: [201, 201, 201, 201]
+FAIL k9_check_command (0.3s): harness error OperationalError: no such table: invoices
+FAIL k10_invalid_input (15.2s): harness error TimeoutExpired: Command '['<D>/grok-output/M19/oracle/stubs/vulnerable.sh', 'serve', '--db', '/tmp/m19-cal/m19-oracle-run-ozp311i5/m19-oracle-ygzykzrz/p.db', '--principals', '/tmp/m19-cal/m19-oracle-run-ozp311i5/m19-oracle-ygzykzrz/du
+FAIL k11_enumeration (0.7s): existence leak on inv_cf7940a6890ec7a2: <200  b'{"id": "inv_cf7940a6890ec7a2", "tenant": "kestrel", "customer": "Enum 00", "amount_cents": 100, "currency": "USD", "paid'> {'server': 'BaseHTTP/0.6 Python/3.12.14', 'date': 'Sun, 18 Oct 2026 21:29:44 GMT', 'content-type': 'application/json', 'content-length': '185', 'connection': 'close'}
+FAIL k12_seeded_load (0.3s): seed 7: keys with mixed answers [(('quillon', 'L7-quillon-c011'), {(201, 'inv_73bfb7245b0d320d'), (201, 'inv_727914711053ab71')}), (('tarn-4', 'L7-tarn-4-c009'), {(201, 'inv_3d86bcffbb38b2db'), (201, 'inv_0bff162c9e776c0c')}), (('quillon', 'L7-quillon-c009'), {(201, 'inv_f151fd19ca378aa3'), (201, 'inv_2305fa12597df8c9')})]
+SUMMARY core 2/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== stub-racy
+# m19_oracle candidate: <D>/grok-output/M19/oracle/stubs/racy.sh
+PASS k1_clean_control (0.3s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+FAIL k2_concurrent_replays (0.3s): 48 concurrent replays made 29 invoices
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.4s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.3s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.3s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.3s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+FAIL k8_crash_recovery (0.2s): fail_before_commit x2: [201, 201, 201, 201]
+FAIL k9_check_command (0.3s): harness error OperationalError: no such table: invoices
+FAIL k10_invalid_input (15.2s): harness error TimeoutExpired: Command '['<D>/grok-output/M19/oracle/stubs/racy.sh', 'serve', '--db', '/tmp/m19-cal/m19-oracle-run-q4kt5mo9/m19-oracle-t7rytnq9/p.db', '--principals', '/tmp/m19-cal/m19-oracle-run-q4kt5mo9/m19-oracle-t7rytnq9/dup-key.
+PASS k11_enumeration (0.8s): 40 ids random (19/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+FAIL k12_seeded_load (0.3s): seed 7: keys with mixed answers [(('quillon', 'L7-quillon-c011'), {(201, 'inv_186381a45eb76ede'), (201, 'inv_1db71ca566a86b5f')}), (('quillon', 'L7-quillon-c009'), {(201, 'inv_18e54b8cc243a4db'), (201, 'inv_59701751f504f6e2')}), (('tarn-4', 'L7-tarn-4-c009'), {(201, 'inv_1428345117e17444'), (201, 'inv_07670c17633dad77')})]
+SUMMARY core 7/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== builder-noop_stub
+# m19_oracle candidate: <PY312> /tmp/m19-eval/examples/capabilities/G19/noop_stub.py
+FAIL k1_clean_control (0.2s): create body {'id': 'inv_c32f29d8ce20c2fb', 'status': 'open', 'paid_cents': 0}
+FAIL k2_concurrent_replays (0.2s): 48 concurrent replays made 48 invoices
+FAIL k3_overspend_race (0.2s): 20 x 300 on 1000: 20 accepted, 0 exceeds_balance, other []
+FAIL k4_cross_tenant_reads (0.2s): foreign cursor <200  b'{"data": [], "next_after": null}'> vs made-up <200  b'{"data": [], "next_after": null}'>
+FAIL k5_cross_tenant_writes (0.2s): pay a missing id: <201  b'{"id": "inv_4d5c1180d01fb1f8", "status": "open", "paid_cents": 0}'>
+FAIL k6_key_scope (0.2s): harness error KeyError: 'tenant'
+FAIL k7_auth (0.2s): bad credential None: <201  b'{"id": "inv_b210ef79551a9a76", "status": "open", "paid_cents": 0}'>
+FAIL k8_crash_recovery (0.2s): fail_before_commit x2: [201, 201, 201, 201]
+FAIL k9_check_command (0.2s): clean check rc=2 usage: noop_stub.py [-h] {serve} ...
+noop_stub.py: error: argument cmd: invalid choice: 'check' (choose from serve)
+
+FAIL k10_invalid_input (15.0s): harness error TimeoutExpired: Command '['<PY312>', '/tmp/m19-eval/examples/capabilities/G19/noop_stub.py', 'serve', '--db', '/tmp/m19-cal/m19-oracle-run-ylyn4zk5/m19-oracle-tvm3ovo4/h.db', '--principals', '/tmp/m19-c
+FAIL k11_enumeration (0.2s): write-path existence leak <201  b'{"id": "inv_e2d1deddd5be972d", "status": "open", "paid_cents": 0}'> <201  b'{"id": "inv_687b61844d7596c0", "status": "open", "paid_cents": 0}'> <201  b'{"id": "inv_64d453630b024cb9", "status": "open", "paid_cents": 0}'> <201  b'{"id": "inv_7afdc8778c73bf48", "status": "open", "paid_cents": 0}'>
+FAIL k12_seeded_load (0.2s): seed 7: keys with mixed answers [(('marlow', 'L7-marlow-c004'), {(201, 'inv_8862e85a3f26ee94'), (201, 'inv_3d04171386cedaaf'), (201, 'inv_70f67a9c47771970'), (201, 'inv_eb5357eef35ab917')}), (('kestrel', 'L7-kestrel-c007'), {(201, 'inv_136ee536682ca93b'), (201, 'inv_177735de906f1861'), (201, 'inv_62413b877a9d7b6b')}), (('quillon', 'L7-quillon-c011'), {(201, 'inv_94bc177f44240f63'), (201, 'inv_a5a5fce6b4c1cce4'), (201, 'inv_bdff2ee8dd3c1320'), (201, 'inv_06efa51c9c67a622')})]
+SUMMARY core 0/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== builder-vulnerable_stub
+# m19_oracle candidate: <PY312> /tmp/m19-eval/examples/capabilities/G19/vulnerable_stub.py
+FAIL k1_clean_control (0.2s): first create replayed=None
+FAIL k2_concurrent_replays (0.2s): 48 concurrent replays made 48 invoices
+FAIL k3_overspend_race (0.2s): 20 x 300 on 1000: 20 accepted, 0 exceeds_balance, other []
+FAIL k4_cross_tenant_reads (0.2s): other tenant reads inv_1579d61775843ff7: <200  b'{"amount_cents": 700, "balance_cents": 700, "currency": "USD", "customer": "Hollin Farm", "id": "inv_1579d61775843ff7", '>
+FAIL k5_cross_tenant_writes (0.2s): cross-tenant pay: <201  b'{"amount_cents": 1000, "balance_cents": 900, "currency": "USD", "customer": "Copperline", "id": "inv_e2a1f4a838e33b62", '>
+FAIL k6_key_scope (0.2s): second tenant got a replay
+FAIL k7_auth (0.2s): key after a 401: <201  b'{"amount_cents": 300, "balance_cents": 300, "currency": "EUR", "customer": "Auth Probe", "id": "inv_6e9b91214004f921", "'>
+FAIL k8_crash_recovery (0.2s): fail_before_commit x2: [201, 201, 201, 201]
+FAIL k9_check_command (0.3s): clean check rc=2 usage: vulnerable_stub.py [-h] {serve} ...
+vulnerable_stub.py: error: argument cmd: invalid choice: 'check' (choose from serve)
+
+FAIL k10_invalid_input (15.1s): harness error TimeoutExpired: Command '['<PY312>', '/tmp/m19-eval/examples/capabilities/G19/vulnerable_stub.py', 'serve', '--db', '/tmp/m19-cal/m19-oracle-run-h0q03n6c/m19-oracle-dn5kjdx7/p.db', '--principals', '/tmp
+FAIL k11_enumeration (0.2s): existence leak on inv_793fc914bb72e54b: <200  b'{"amount_cents": 100, "balance_cents": 100, "currency": "USD", "customer": "Enum 00", "id": "inv_793fc914bb72e54b", "pai'> {'server': 'BaseHTTP/0.6 Python/3.12.14', 'date': 'Sun, 18 Oct 2026 21:32:24 GMT', 'content-type': 'application/json', 'content-length': '185', 'connection': 'close'}
+FAIL k12_seeded_load (0.2s): seed 7: keys with mixed answers [(('marlow', 'L7-marlow-c004'), {(201, 'inv_5a949293162832b0'), (201, 'inv_fc591fd59ea8dab4'), (201, 'inv_749d273a0ac7c73f'), (201, 'inv_7e093132506aa376')}), (('quillon', 'L7-quillon-c011'), {(201, 'inv_6dee5b5174635c89'), (201, 'inv_af132bf7394140a1'), (201, 'inv_5f77e2893dd44ad7'), (201, 'inv_f4b1c98cdc67cc7e')}), (('kestrel', 'L7-kestrel-c007'), {(201, 'inv_cb103ea74f02dc4e'), (201, 'inv_73ef4db15f7022bd'), (201, 'inv_a96b94ca39a56dd4')})]
+SUMMARY core 0/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-any_bearer
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/any_bearer/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+FAIL k4_cross_tenant_reads (0.2s): other tenant reads inv_e724f8c9fe64034d: <200  b'{"amount_cents": 700, "balance_cents": 700, "currency": "USD", "customer": "Hollin Farm", "id": "inv_e724f8c9fe64034d", '>
+FAIL k5_cross_tenant_writes (0.2s): cross-tenant pay: <201  b'{"amount_cents": 1000, "balance_cents": 900, "currency": "USD", "customer": "Copperline", "id": "inv_ea698b0887558c17", '>
+FAIL k6_key_scope (0.2s): same key in two tenants: <201  b'{"amount_cents": 800, "balance_cents": 800, "currency": "USD", "customer": "Shared Key Co", "id": "inv_05d9d1a3691b63d6"'> <201  b'{"amount_cents": 800, "balance_cents": 800, "currency": "USD", "customer": "Shared Key Co", "id": "inv_05d9d1a3691b63d6"'>
+FAIL k7_auth (0.2s): bad credential 'not-a-key-xxxxxxxxxxxxxxxxxxxx': <201  b'{"amount_cents": 300, "balance_cents": 300, "currency": "EUR", "customer": "Auth Probe", "id": "inv_d17b31e95ef96aaf", "'>
+FAIL k8_crash_recovery (1.3s): after kill -9 and retries: 67 invoices for 64 keys
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+FAIL k11_enumeration (0.2s): existence leak on inv_8eff90caea1c6975: <200  b'{"amount_cents": 100, "balance_cents": 100, "currency": "USD", "customer": "Enum 00", "id": "inv_8eff90caea1c6975", "pai'> {'server': 'solaris-ledger/1.0.0 ', 'date': 'Sun, 18 Oct 2026 21:33:01 GMT', 'content-type': 'application/json', 'content-length': '185', 'connection': 'close'}
+FAIL k12_seeded_load (0.4s): seed 7 kestrel: 60 listed, 15 expected
+SUMMARY core 5/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-body_limit_off
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/body_limit_off/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.5s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.2s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+FAIL k10_invalid_input (0.4s): POST /api/v1/invoices b'{"customer": "Valid", "amount_cents": 100, "currency": "US: <422 unknown_field b'{"error": {"code": "unknown_field", "message": "unknown fields: pad"}}'>
+PASS k11_enumeration (0.3s): 40 ids random (17/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-bool_amount_ok
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/bool_amount_ok/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.5s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.2s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.4s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.3s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+FAIL k10_invalid_input (0.4s): POST /api/v1/invoices {'customer': 'Valid', 'amount_cents': True, 'currency': 'USD: <201  b'{"amount_cents": 1, "balance_cents": 1, "currency": "USD", "customer": "Valid", "id": "inv_f76d4d5a25e97c3a", "paid_cent'>
+PASS k11_enumeration (0.3s): 40 ids random (19/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.2s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-check_audit_skipped
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/check_audit_skipped/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.5s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.2s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.3s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (63 answered) then retries: exactly 64
+FAIL k9_check_command (0.3s): duplicated audit row: rc=0 consistent: 2 invoices, 4 idempotency records, 5 audit rows
+
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (19/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.4s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-check_paid_skipped
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/check_paid_skipped/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.3s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.2s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.4s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (63 answered) then retries: exactly 64
+FAIL k9_check_command (0.2s): paid_cents tamper: rc=0 consistent: 2 invoices, 4 idempotency records, 4 audit rows
+
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (20/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.2s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-conflict_not_stored
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/conflict_not_stored/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+FAIL k3_overspend_race (0.3s): a stored 409 replayed after the invoice changed: <409 invoice_not_open b'{"error": {"code": "invoice_not_open", "message": "invoice is paid"}}'>
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.3s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.3s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.3s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.3s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.3s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.2s): 40 ids random (21/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.4s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-cursor_any_tenant
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/cursor_any_tenant/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+FAIL k4_cross_tenant_reads (0.2s): foreign cursor <200  b'{"data": [{"amount_cents": 900, "balance_cents": 900, "currency": "USD", "customer": "Marlow Own", "id": "inv_a95eb1463f'> vs made-up <422 invalid_cursor b'{"error": {"code": "invalid_cursor", "message": "after must be an invoice id from a previous page"}}'>
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.3s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.6s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (22/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-cursor_inclusive
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/cursor_inclusive/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.3s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.5s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+FAIL k4_cross_tenant_reads (0.2s): paging [3, 3, 3] order ok=False
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.3s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.6s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (21/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-deferred_begin
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/deferred_begin/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.5s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.5s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.3s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.3s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.5s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (7 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (23/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.9s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 12/12 pass; oracle ACCEPTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-dup_json_keys_ok
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/dup_json_keys_ok/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.3s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.3s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.4s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+FAIL k10_invalid_input (0.5s): POST /api/v1/invoices b'{"customer":"a","customer":"b","amount_cents":1,"currency": <201  b'{"amount_cents": 1, "balance_cents": 1, "currency": "USD", "customer": "b", "id": "inv_780447a9ddac5d46", "paid_cents": '>
+PASS k11_enumeration (0.3s): 40 ids random (24/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-errors_stored
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/errors_stored/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.3s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+FAIL k7_auth (0.2s): key after a 422: <422 idempotency_key_reused b'{"error": {"code": "idempotency_key_reused", "message": "this Idempotency-Key was already used for a different request"}'>
+PASS k8_crash_recovery (1.4s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (63 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (20/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-extra_fields_allowed
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/extra_fields_allowed/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.5s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+FAIL k5_cross_tenant_writes (0.2s): body tenantId: <201  b'{"amount_cents": 50, "balance_cents": 50, "currency": "USD", "customer": "Smuggler", "id": "inv_086b990035f53c1c", "paid'>
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.3s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.3s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+FAIL k10_invalid_input (0.4s): POST /api/v1/invoices {'customer': 'Valid', 'amount_cents': 100, 'currency': 'USD': <201  b'{"amount_cents": 100, "balance_cents": 100, "currency": "USD", "customer": "Valid", "id": "inv_a563aba4f00516dd", "paid_'>
+PASS k11_enumeration (0.3s): 40 ids random (18/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.1s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 10/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-fault_after_commit_swapped
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/fault_after_commit_swapped/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.2s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.3s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+FAIL k8_crash_recovery (0.2s): fail_before_commit x2: [503, 201, 201, 201]
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (22/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.2s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-find_any_tenant
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/find_any_tenant/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.3s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+FAIL k4_cross_tenant_reads (0.2s): other tenant reads inv_b2c1056641f007fd: <200  b'{"amount_cents": 700, "balance_cents": 700, "currency": "USD", "customer": "Hollin Farm", "id": "inv_b2c1056641f007fd", '>
+FAIL k5_cross_tenant_writes (0.2s): cross-tenant pay: <201  b'{"amount_cents": 1000, "balance_cents": 1000, "currency": "USD", "customer": "Copperline", "id": "inv_bdc11025114a5840",'>
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.5s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.6s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+FAIL k11_enumeration (0.2s): existence leak on inv_56b4cb2d2e434892: <200  b'{"amount_cents": 100, "balance_cents": 100, "currency": "USD", "customer": "Enum 00", "id": "inv_56b4cb2d2e434892", "pai'> {'server': 'solaris-ledger/1.0.0 ', 'date': 'Sun, 18 Oct 2026 21:35:01 GMT', 'content-type': 'application/json', 'content-length': '185', 'connection': 'close'}
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 9/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-fingerprint_ignored
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/fingerprint_ignored/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.3s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+FAIL k2_concurrent_replays (0.4s): loser-body answer <201  b'{"amount_cents": 111, "balance_cents": 111, "currency": "USD", "customer": "Variant X", "id": "inv_1be61280303ecfe4", "p'>
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+FAIL k6_key_scope (0.2s): reuse with another body: <201  b'{"amount_cents": 800, "balance_cents": 800, "currency": "USD", "customer": "Shared Key Co", "id": "inv_80f0c2a2f9d8bc4f"'>
+PASS k7_auth (0.3s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.4s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (22/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 10/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-fingerprint_no_body
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/fingerprint_no_body/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.3s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+FAIL k2_concurrent_replays (0.4s): loser-body answer <201  b'{"amount_cents": 111, "balance_cents": 111, "currency": "USD", "customer": "Variant X", "id": "inv_05d92ddd882bb1c9", "p'>
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+FAIL k6_key_scope (0.2s): reuse with another body: <201  b'{"amount_cents": 800, "balance_cents": 800, "currency": "USD", "customer": "Shared Key Co", "id": "inv_1d5f3342ec947581"'>
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.2s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (62 answered) then retries: exactly 64
+PASS k9_check_command (0.3s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (21/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.2s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 10/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-fingerprint_no_iid
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/fingerprint_no_iid/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.2s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.1s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.3s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (19/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.2s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 12/12 pass; oracle ACCEPTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-key_global_scope
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/key_global_scope/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+FAIL k6_key_scope (0.2s): same key in two tenants: <201  b'{"amount_cents": 800, "balance_cents": 800, "currency": "USD", "customer": "Shared Key Co", "id": "inv_79534e36afe23b54"'> <201  b'{"amount_cents": 800, "balance_cents": 800, "currency": "USD", "customer": "Shared Key Co", "id": "inv_79534e36afe23b54"'>
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.4s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (18/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-key_optional
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/key_optional/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.4s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (63 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+FAIL k10_invalid_input (0.5s): POST /api/v1/invoices {'customer': 'Valid', 'amount_cents': 100, 'currency': 'USD': <400 invalid_idempotency_key b'{"error": {"code": "invalid_idempotency_key", "message": "Idempotency-Key must be 1-128 of A-Z a-z 0-9 . _ : -"}}'>
+PASS k11_enumeration (0.3s): 40 ids random (24/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.2s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-list_any_tenant
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/list_any_tenant/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+FAIL k4_cross_tenant_reads (0.2s): marlow list leaks
+FAIL k5_cross_tenant_writes (0.2s): kestrel list [{'amount_cents': 1000, 'balance_cents': 1000, 'currency': 'USD', 'customer': 'Copperline', 'id': 'inv_04fc7c1682120c85', 'paid_cents': 0, 'status': 'open', 'tenant': 'kestrel', 'version': 1}, {'amount_cents': 50, 'balance_cents': 50, 'currency': 'USD', 'customer': 'Header Probe', 'id': 'inv_5f3a0abaf6ff6446', 'paid_cents': 0, 'status': 'open', 'tenant': 'marlow', 'version': 1}]
+FAIL k6_key_scope (0.2s): kestrel state
+PASS k7_auth (0.3s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+FAIL k8_crash_recovery (1.3s): after kill -9 and retries: 67 invoices for 64 keys
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (20/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+FAIL k12_seeded_load (0.4s): seed 7 kestrel: 60 listed, 15 expected
+SUMMARY core 7/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-location_missing
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/location_missing/employees/engineering/backend-developer/ledger_api.py
+FAIL k1_clean_control (0.2s): Location None
+PASS k2_concurrent_replays (0.5s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.3s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (18/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-next_after_lost
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/next_after_lost/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.5s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+FAIL k4_cross_tenant_reads (0.2s): paging [3] order ok=False
+PASS k5_cross_tenant_writes (0.3s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.3s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.4s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (63 answered) then retries: exactly 64
+PASS k9_check_command (0.5s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.6s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (17/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-non_loopback_bind
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/non_loopback_bind/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.3s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.3s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.3s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.5s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+FAIL k10_invalid_input (15.0s): harness error TimeoutExpired: Command '['<PY312>', '/tmp/m19-mutants/non_loopback_bind/employees/engineering/backend-developer/ledger_api.py', 'serve', '--db', '/tmp/m19-cal/m19-oracle-run-iewd9rdu/m19-oracle-e8gukq3
+PASS k11_enumeration (0.3s): 40 ids random (16/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.2s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-other_tenant_403
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/other_tenant_403/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+FAIL k4_cross_tenant_reads (0.2s): other tenant reads inv_b81b01ff01155736: <403 forbidden b'{"error": {"code": "forbidden", "message": "not yours"}}'>
+FAIL k5_cross_tenant_writes (0.2s): header-switched read: <403 forbidden b'{"error": {"code": "forbidden", "message": "not yours"}}'>
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.3s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.3s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+FAIL k11_enumeration (0.2s): existence leak on inv_36de59d9a0b89de9: <403 forbidden b'{"error": {"code": "forbidden", "message": "not yours"}}'> {'server': 'solaris-ledger/1.0.0 ', 'date': 'Sun, 18 Oct 2026 21:36:58 GMT', 'content-type': 'application/json', 'content-length': '56', 'connection': 'close'}
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 9/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-overspend_allowed
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/overspend_allowed/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+FAIL k3_overspend_race (1.9s): 20 x 300 on 1000: 3 accepted, 0 exceeds_balance, other [<0  RemoteDisconnected: Remote end closed connection without response>, <0  RemoteDisconnected: Remote end closed connection without response>, <0  RemoteDisconnected: Remote end closed connection without response>]
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.3s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.4s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.6s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (23/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-pay_audit_dropped
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/pay_audit_dropped/employees/engineering/backend-developer/ledger_api.py
+FAIL k1_clean_control (0.2s): check after traffic: rc=1 VIOLATIONS: 2 invoices, 7 idempotency records, 3 audit rows
+  - key k1-pay-1 in tenant kestrel: effect pay:inv_a82c06357b2c31f3 but audit has []
+  - key k1-pay-2 in tenant kestrel: effect pay:inv_a82c06357b2c31f3 but audit has []
+FAIL k2_concurrent_replays (0.4s): check after traffic: rc=1 VIOLATIONS: 2 invoices, 3 idempotency records, 2 audit rows
+  - key k2-pay in tenant marlow: effect pay:inv_63c51a624f50aad2 but audit has []
+FAIL k3_overspend_race (0.3s): check after traffic: rc=1 VIOLATIONS: 1 invoices, 22 idempotency records, 1 audit rows
+  - key k3-p01 in tenant quillon: effect pay:inv_83a8b23882d3c840 but audit has []
+  - key k3-p19 in tenant quillon: effect pay:inv_83a8b23882d3c840 but audit has []
+  - key k3-p05 in tenant quillon: effect pay:inv_83a8b23882d3c840 but aud
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.3s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+FAIL k6_key_scope (0.2s): check after traffic: rc=1 VIOLATIONS: 2 invoices, 4 idempotency records, 2 audit rows
+  - key pk-1 in tenant kestrel: effect pay:inv_134cfb38e0a4d703 but audit has []
+  - key pk-1 in tenant marlow: effect pay:inv_6c1f141434c2c9ff but audit has []
+FAIL k7_auth (0.2s): check after traffic: rc=1 VIOLATIONS: 4 invoices, 5 idempotency records, 4 audit rows
+  - key k7-404 in tenant tarn-4: effect pay:inv_b0906cf52dd14179 but audit has []
+FAIL k8_crash_recovery (1.2s): check after SIGKILL mid-burst: rc=1 VIOLATIONS: 67 invoices, 69 idempotency records, 67 audit rows
+  - key k8-cbp in tenant kestrel: effect pay:inv_796a54712e6e7555 but audit has []
+  - key k8-cap in tenant kestrel: effect pay:inv_796a5
+FAIL k9_check_command (0.2s): clean check rc=1 VIOLATIONS: 2 invoices, 4 idempotency records, 3 audit rows
+  - key k9-p in tenant quillon: effect pay:inv_bfa0ea5b84aa1a18 but audit has []
+
+PASS k10_invalid_input (0.6s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (20/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+FAIL k12_seeded_load (0.4s): check after traffic: rc=1 VIOLATIONS: 60 invoices, 139 idempotency records, 78 audit rows
+  - key L7-tarn-4-c001-p0 in tenant tarn-4: effect pay:inv_2f1edf4617cf2a18 but audit has []
+  - key L7-kestrel-c005-p0 in tenant kestrel: effect pay:inv_0ad1540a874c9246 but audit has []
+  - key L7-quillon-c008-p1 in tenant quillon: ef
+SUMMARY core 4/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-pay_closed_allowed
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/pay_closed_allowed/employees/engineering/backend-developer/ledger_api.py
+FAIL k1_clean_control (0.2s): pay a paid invoice: <409 exceeds_balance b'{"error": {"code": "exceeds_balance", "message": "payment 1 is more than the balance 0"}}'>
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.3s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.4s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (62 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.6s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (16/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.4s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-replay_header_false
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/replay_header_false/employees/engineering/backend-developer/ledger_api.py
+FAIL k1_clean_control (0.2s): replay: <201  b'{"amount_cents": 12345, "balance_cents": 12345, "currency": "GBP", "customer": "Fenwick & Daughters", "id": "inv_348c306'> {'server': 'solaris-ledger/1.0.0 ', 'date': 'Sun, 18 Oct 2026 21:37:33 GMT', 'content-type': 'application/json', 'content-length': '201', 'connection': 'close', 'idempotent-replayed': 'false', 'location': '/api/v1/invoices/inv_348c306f61536615'}
+FAIL k2_concurrent_replays (0.2s): 48 responses claim to be the first (want 1)
+FAIL k3_overspend_race (0.2s): a 201 replayed: <201  b'{"amount_cents": 1000, "balance_cents": 700, "currency": "USD", "customer": "Saltmarsh Coop", "id": "inv_9b145a451926c95'>
+PASS k4_cross_tenant_reads (0.2s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+FAIL k6_key_scope (0.2s): payment replay <201  b'{"amount_cents": 800, "balance_cents": 700, "currency": "USD", "customer": "Shared Key Co", "id": "inv_440a67963e97d8fe"'>
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+FAIL k8_crash_recovery (0.2s): transient answers [<503 transient_failure b'{"error": {"code": "transient_failure", "message": "write rolled back; retry with the same Idempotency-Key"}}'>, <503 transient_failure b'{"error": {"code": "transient_failure", "message": "write rolled back; retry with the same Idempotency-Key"}}'>, <201  b'{"amount_cents": 100, "balance_cents": 100, "currency": "USD", "customer": "FB Ltd", "id": "inv_38e29180fada80b5", "paid'>, <201  b'{"amount_cents": 100, "balance_cents": 100, "currency": "USD", "customer": "FB Ltd", "id": "inv_38e29180fada80b5", "paid'>]
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (18/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 7/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-replay_ignored
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/replay_ignored/employees/engineering/backend-developer/ledger_api.py
+FAIL k1_clean_control (0.2s): replay: <0  RemoteDisconnected: Remote end closed connection without response> {}
+FAIL k2_concurrent_replays (2.0s): burst statuses [0, 201]
+FAIL k3_overspend_race (1.8s): replay of k3-p00: <0  RemoteDisconnected: Remote end closed connection without response> vs <409 exceeds_balance b'{"error": {"code": "exceeds_balance", "message": "payment 300 is more than the balance 100"}}'>
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+FAIL k6_key_scope (0.2s): reuse with another body: <0  RemoteDisconnected: Remote end closed connection without response>
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+FAIL k8_crash_recovery (0.2s): fail_before_commit x2: [503, 503, 201, 0]
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.6s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (19/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+FAIL k12_seeded_load (8.4s): seed 7: keys with mixed answers [(('quillon', 'L7-quillon-c011'), {(201, 'inv_c190acebd17d5de7'), (0, None)}), (('marlow', 'L7-marlow-c004'), {(201, 'inv_891e781e3c40be58'), (0, None)}), (('quillon', 'L7-quillon-c004'), {(201, 'inv_baeed2fa761f6345'), (0, None)})]
+SUMMARY core 6/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-replay_status_200
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/replay_status_200/employees/engineering/backend-developer/ledger_api.py
+FAIL k1_clean_control (0.2s): replay: <200  b'{"amount_cents": 12345, "balance_cents": 12345, "currency": "GBP", "customer": "Fenwick & Daughters", "id": "inv_9046f8e'> {'server': 'solaris-ledger/1.0.0 ', 'date': 'Sun, 18 Oct 2026 21:47:55 GMT', 'content-type': 'application/json', 'content-length': '201', 'connection': 'close', 'idempotent-replayed': 'true'}
+FAIL k2_concurrent_replays (0.2s): burst statuses [200, 201]
+FAIL k3_overspend_race (0.2s): replay of k3-p00: <200 exceeds_balance b'{"error": {"code": "exceeds_balance", "message": "payment 300 is more than the balance 100"}}'> vs <409 exceeds_balance b'{"error": {"code": "exceeds_balance", "message": "payment 300 is more than the balance 100"}}'>
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+FAIL k6_key_scope (0.2s): second editor, same tenant, same request: <200  b'{"amount_cents": 800, "balance_cents": 800, "currency": "USD", "customer": "Shared Key Co", "id": "inv_5318f846ef2cd3eb"'>
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+FAIL k8_crash_recovery (0.2s): fail_before_commit x2: [503, 503, 201, 200]
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (21/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+FAIL k12_seeded_load (0.2s): seed 7: keys with mixed answers [(('kestrel', 'L7-kestrel-c007'), {(201, 'inv_74f664d07fa0d301'), (200, 'inv_74f664d07fa0d301')}), (('marlow', 'L7-marlow-c008'), {(201, 'inv_a221d400c6a224c6'), (200, 'inv_a221d400c6a224c6')}), (('quillon', 'L7-quillon-c011'), {(200, 'inv_9166d017cc779f11'), (201, 'inv_9166d017cc779f11')})]
+SUMMARY core 6/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-sequential_ids
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/sequential_ids/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.5s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.3s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (63 answered) then retries: exactly 64
+PASS k9_check_command (0.3s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+FAIL k11_enumeration (0.2s): ids look sequential (39/39 ascending)
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-smuggle_code_lost
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/smuggle_code_lost/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.2s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+FAIL k5_cross_tenant_writes (0.2s): body tenant_id: <422 unknown_field b'{"error": {"code": "unknown_field", "message": "unknown fields: tenant_id"}}'>
+PASS k6_key_scope (0.3s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.4s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.6s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (17/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-status_stays_open
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/status_stays_open/employees/engineering/backend-developer/ledger_api.py
+FAIL k1_clean_control (0.2s): pay rest: <201  b'{"amount_cents": 12345, "balance_cents": 0, "currency": "GBP", "customer": "Fenwick & Daughters", "id": "inv_fb853dbba06'>
+PASS k2_concurrent_replays (0.5s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+FAIL k3_overspend_race (0.2s): final payment <201  b'{"amount_cents": 1000, "balance_cents": 0, "currency": "USD", "customer": "Saltmarsh Coop", "id": "inv_596ae8b07783c0a2"'>
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.4s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (59 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (21/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.2s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 10/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-tenant_header_trusted
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/tenant_header_trusted/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.4s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+FAIL k5_cross_tenant_writes (0.2s): tenant headers: <201  b'{"amount_cents": 50, "balance_cents": 50, "currency": "USD", "customer": "Header Probe", "id": "inv_030400bb32b4d968", "'>
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.3s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (19/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-viewer_can_write
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/viewer_can_write/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.2s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.5s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.2s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.3s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+FAIL k7_auth (0.2s): viewer create <201  b'{"amount_cents": 300, "balance_cents": 300, "currency": "EUR", "customer": "Auth Probe", "id": "inv_9ed5e47ae873d2e4", "'>
+PASS k8_crash_recovery (1.3s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.3s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (20/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+
+=== mutant-void_paid_allowed
+# m19_oracle candidate: <PY312> /tmp/m19-mutants/void_paid_allowed/employees/engineering/backend-developer/ledger_api.py
+FAIL k1_clean_control (0.2s): void a paid invoice: <200  b'{"amount_cents": 12345, "balance_cents": 0, "currency": "GBP", "customer": "Fenwick & Daughters", "id": "inv_166d65fc97f'>
+PASS k2_concurrent_replays (0.5s): 48-way create replay: 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.2s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.2s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.2s): keys scoped per tenant; reuse with another body or endpoint 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.2s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.3s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (64 answered) then retries: exactly 64
+PASS k9_check_command (0.4s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.5s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (16/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.3s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+SUMMARY core 11/12 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings)
+

@@ -1,0 +1,2 @@
+Preparing worktree (detached HEAD 5606672)
+HEAD is now at 5606672 G19: duplicate-safe API and tenant boundaries (review only)

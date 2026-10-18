@@ -1,0 +1,550 @@
+# M19 teeth on 3.12.14 2026-10-18 14:27:36 PDT
+=== candidate
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.22s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.23s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.24s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.26s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.18s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.48s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.19s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.36s)
+10/10 checks passed
+
+=== stub-noop
+FAIL o1 clean control: create, read, list, pay in full, void, with exact values (0.18s)
+FAIL o2 32 concurrent replays of one create make one invoice and one shared answer (0.19s)
+FAIL o3 payment replays apply once; concurrent distinct payments never overspend (0.19s)
+FAIL o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.2s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.21s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.18s)
+FAIL o7 401 and 403 are exact and change nothing (0.19s)
+FAIL o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.74s)
+FAIL o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (0.47s)
+FAIL o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (40.25s)
+2/10 checks passed
+
+=== stub-naive
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.18s)
+FAIL o2 32 concurrent replays of one create make one invoice and one shared answer (0.19s)
+FAIL o3 payment replays apply once; concurrent distinct payments never overspend (0.19s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.2s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.21s)
+FAIL o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+FAIL o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.78s)
+FAIL o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (0.55s)
+FAIL o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (20.34s)
+4/10 checks passed
+
+=== stub-vulnerable
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.31s)
+FAIL o2 32 concurrent replays of one create make one invoice and one shared answer (0.2s)
+FAIL o3 payment replays apply once; concurrent distinct payments never overspend (0.28s)
+FAIL o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.81s)
+FAIL o5 cross-tenant pay/void and tenant smuggling change nothing (2.04s)
+FAIL o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.2s)
+PASS o7 401 and 403 are exact and change nothing (0.2s)
+FAIL o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.78s)
+FAIL o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.79s)
+FAIL o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (20.4s)
+2/10 checks passed
+
+=== stub-racy
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.25s)
+FAIL o2 32 concurrent replays of one create make one invoice and one shared answer (0.21s)
+FAIL o3 payment replays apply once; concurrent distinct payments never overspend (0.25s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.81s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (1.46s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.21s)
+PASS o7 401 and 403 are exact and change nothing (0.2s)
+FAIL o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.79s)
+FAIL o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.78s)
+FAIL o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (20.39s)
+5/10 checks passed
+
+=== builder-noop_stub
+FAIL o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+FAIL o2 32 concurrent replays of one create make one invoice and one shared answer (0.18s)
+FAIL o3 payment replays apply once; concurrent distinct payments never overspend (0.2s)
+FAIL o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.19s)
+FAIL o5 cross-tenant pay/void and tenant smuggling change nothing (0.21s)
+FAIL o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.18s)
+FAIL o7 401 and 403 are exact and change nothing (0.19s)
+FAIL o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.74s)
+FAIL o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (0.49s)
+FAIL o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (50.22s)
+0/10 checks passed
+
+=== builder-vulnerable_stub
+FAIL o1 clean control: create, read, list, pay in full, void, with exact values (0.22s)
+FAIL o2 32 concurrent replays of one create make one invoice and one shared answer (0.2s)
+FAIL o3 payment replays apply once; concurrent distinct payments never overspend (0.32s)
+FAIL o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.21s)
+FAIL o5 cross-tenant pay/void and tenant smuggling change nothing (0.85s)
+FAIL o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+FAIL o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.75s)
+FAIL o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (9.0s)
+FAIL o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (20.32s)
+1/10 checks passed
+
+=== mutant-any_bearer
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.2s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.21s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.28s)
+FAIL o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.23s)
+FAIL o5 cross-tenant pay/void and tenant smuggling change nothing (0.27s)
+FAIL o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+FAIL o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+FAIL o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.05s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.36s)
+5/10 checks passed
+
+=== mutant-body_limit_off
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.2s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.23s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.24s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.23s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.26s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.5s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.05s)
+FAIL o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.36s)
+9/10 checks passed
+
+=== mutant-bool_amount_ok
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.21s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.25s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.23s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.26s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.02s)
+FAIL o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.36s)
+9/10 checks passed
+
+=== mutant-check_audit_skipped
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.2s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.22s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.32s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.28s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.33s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.16s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.39s)
+10/10 checks passed
+
+=== mutant-check_paid_skipped
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.21s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.28s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.24s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.28s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.09s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.37s)
+10/10 checks passed
+
+=== mutant-conflict_not_stored
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.21s)
+FAIL o3 payment replays apply once; concurrent distinct payments never overspend (0.23s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.25s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.25s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.18s)
+PASS o7 401 and 403 are exact and change nothing (0.18s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.48s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.06s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.37s)
+9/10 checks passed
+
+=== mutant-cursor_any_tenant
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.34s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.29s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.26s)
+FAIL o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.35s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.35s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.25s)
+PASS o7 401 and 403 are exact and change nothing (0.24s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.65s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.4s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.38s)
+9/10 checks passed
+
+=== mutant-cursor_inclusive
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.23s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.26s)
+FAIL o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.25s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.26s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.48s)
+FAIL o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.14s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.39s)
+8/10 checks passed
+
+=== mutant-deferred_begin
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+FAIL o2 32 concurrent replays of one create make one invoice and one shared answer (0.2s)
+FAIL o3 payment replays apply once; concurrent distinct payments never overspend (0.21s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.24s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.27s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.18s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.48s)
+FAIL o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.36s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.37s)
+7/10 checks passed
+
+=== mutant-dup_json_keys_ok
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.2s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.25s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.31s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.25s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.27s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.07s)
+FAIL o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.36s)
+9/10 checks passed
+
+=== mutant-errors_stored
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.21s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.23s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.25s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.27s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.48s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.02s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.35s)
+10/10 checks passed
+
+=== mutant-extra_fields_allowed
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.23s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.24s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.24s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.26s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.09s)
+FAIL o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.35s)
+9/10 checks passed
+
+=== mutant-fault_after_commit_swapped
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.23s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.26s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.24s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.27s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.18s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+FAIL o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.5s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.2s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.38s)
+9/10 checks passed
+
+=== mutant-find_any_tenant
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.23s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.23s)
+FAIL o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.25s)
+FAIL o5 cross-tenant pay/void and tenant smuggling change nothing (0.28s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.18s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.21s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.38s)
+8/10 checks passed
+
+=== mutant-fingerprint_ignored
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.25s)
+FAIL o3 payment replays apply once; concurrent distinct payments never overspend (0.28s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.26s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.27s)
+FAIL o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.2s)
+PASS o7 401 and 403 are exact and change nothing (0.18s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.01s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.37s)
+8/10 checks passed
+
+=== mutant-fingerprint_no_body
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.23s)
+FAIL o3 payment replays apply once; concurrent distinct payments never overspend (0.24s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.24s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.27s)
+FAIL o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.18s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.48s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (0.98s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.35s)
+8/10 checks passed
+
+=== mutant-fingerprint_no_iid
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.21s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.21s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.35s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.29s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.38s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.24s)
+PASS o7 401 and 403 are exact and change nothing (0.18s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.08s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.36s)
+10/10 checks passed
+
+=== mutant-key_global_scope
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.18s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.22s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.25s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.24s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.27s)
+FAIL o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.48s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.45s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.38s)
+9/10 checks passed
+
+=== mutant-key_optional
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.23s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.24s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.23s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.25s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.5s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.14s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.36s)
+10/10 checks passed
+
+=== mutant-list_any_tenant
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.22s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.26s)
+FAIL o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.23s)
+FAIL o5 cross-tenant pay/void and tenant smuggling change nothing (0.25s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+FAIL o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.0s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.36s)
+7/10 checks passed
+
+=== mutant-location_missing
+FAIL o1 clean control: create, read, list, pay in full, void, with exact values (0.2s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.21s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.24s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.25s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.29s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.18s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (0.97s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.35s)
+9/10 checks passed
+
+=== mutant-next_after_lost
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.21s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.26s)
+FAIL o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.25s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.27s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.18s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+FAIL o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.14s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.37s)
+8/10 checks passed
+
+=== mutant-non_loopback_bind
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.2s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.26s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.26s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.24s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.28s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.0s)
+FAIL o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (10.33s)
+9/10 checks passed
+
+=== mutant-other_tenant_403
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.22s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.25s)
+FAIL o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.23s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.27s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.16s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.38s)
+9/10 checks passed
+
+=== mutant-overspend_allowed
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.21s)
+FAIL o3 payment replays apply once; concurrent distinct payments never overspend (0.28s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.25s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.27s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.18s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.48s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.14s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.37s)
+9/10 checks passed
+
+=== mutant-pay_audit_dropped
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.18s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.21s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.24s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.25s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.27s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.68s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.54s)
+10/10 checks passed
+
+=== mutant-pay_closed_allowed
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.26s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.28s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.25s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.26s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.18s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.15s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.36s)
+10/10 checks passed
+
+=== mutant-replay_header_false
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+FAIL o2 32 concurrent replays of one create make one invoice and one shared answer (0.22s)
+FAIL o3 payment replays apply once; concurrent distinct payments never overspend (0.25s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.24s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.26s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.18s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+FAIL o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.48s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.2s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.37s)
+7/10 checks passed
+
+=== mutant-replay_ignored
+HANG builder oracle on mutant-replay_ignored: no answer after 10 min (14:47:54 PDT); oracle pid 57019 and its server pid 57052 killed by M19 (counted as killed: the oracle did not accept it)
+
+=== mutant-replay_status_200
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+FAIL o2 32 concurrent replays of one create make one invoice and one shared answer (0.22s)
+FAIL o3 payment replays apply once; concurrent distinct payments never overspend (0.24s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.23s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.26s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.2s)
+FAIL o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.5s)
+FAIL o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.01s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.36s)
+6/10 checks passed
+
+=== mutant-sequential_ids
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.21s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.26s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.24s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.25s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.19s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.37s)
+10/10 checks passed
+
+=== mutant-smuggle_code_lost
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.23s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.29s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.25s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.26s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.18s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.48s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.11s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.35s)
+10/10 checks passed
+
+=== mutant-status_stays_open
+FAIL o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.21s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.29s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.24s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.27s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.5s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.07s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.38s)
+9/10 checks passed
+
+=== mutant-tenant_header_trusted
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.23s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.3s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.25s)
+FAIL o5 cross-tenant pay/void and tenant smuggling change nothing (0.26s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.5s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.12s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.36s)
+9/10 checks passed
+
+=== mutant-viewer_can_write
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.23s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.26s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.24s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.26s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+FAIL o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.49s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.08s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.37s)
+9/10 checks passed
+
+=== mutant-void_paid_allowed
+PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.19s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.23s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.25s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.24s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.26s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.19s)
+PASS o7 401 and 403 are exact and change nothing (0.19s)
+PASS o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.48s)
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.08s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (0.36s)
+10/10 checks passed
+

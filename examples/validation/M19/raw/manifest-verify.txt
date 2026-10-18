@@ -1,0 +1,21 @@
+# candidate manifest verify 2026-10-18 14:12:21 PDT against worktree at 5606672b464f5daaf08e28cbfa5a8d307f730c27
+employees/engineering/backend-developer/SKILL.md: OK
+employees/engineering/backend-developer/capability.contract.json: OK
+employees/engineering/backend-developer/learnings.md: OK
+employees/engineering/backend-developer/plugin.json: OK
+employees/engineering/full-stack-developer/SKILL.md: OK
+employees/engineering/full-stack-developer/learnings.md: OK
+employees/quality-security/security-auditor/SKILL.md: OK
+employees/quality-security/security-auditor/capability.contract.json: OK
+employees/quality-security/security-auditor/learnings.md: OK
+employees/engineering/backend-developer/duplicate-safe-api.md: OK
+employees/engineering/backend-developer/ledger_api.py: OK
+employees/quality-security/security-auditor/boundary_probe.py: OK
+examples/capabilities/G19/README.md: OK
+examples/capabilities/G19/boundary_oracle.py: OK
+examples/capabilities/G19/noop_stub.py: OK
+examples/capabilities/G19/vulnerable_stub.py: OK
+examples/capabilities/G19/fixtures/principals.json: OK
+tests/test_g19_capability.py: OK
+ok 18/18
+file set == diff
