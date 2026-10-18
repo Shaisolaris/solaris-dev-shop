@@ -1,7 +1,7 @@
 # Project Onboarding - Rules
 
 ## Hard rules
-- **Intake is 4 questions, plain chat.** No widgets. An unanswered question stays unanswered: silence never accepts a default, and a missing deploy answer is recorded as `DEPLOY-MODEL: UNRESOLVED`.
+- **Intake is 4 questions, plain chat.** No widgets. An unanswered question stays unanswered: silence never accepts a default, and a missing deploy answer is recorded as `DEPLOY-MODEL: UNRESOLVED`. An answer carried over from an earlier activation of the same folder is reported as carried over; nothing is carried over from a journal copied from another project.
 - **Folder law.** `<project-root>/` gets `Scope/`, `Development/`, `Delivery/`, `Assets/` + `STATUS.md`. Run `activate.py`; do not hand-create a parallel layout.
 - **Preserve owner material.** Never overwrite, delete or move a file activation did not write. Report `conflict_preserved` and let the owner merge.
 - **Stay inside the project.** Do not write through symlinks or into another repository. A `blocked` result is the correct outcome for an escaping link; do not delete the link or its target to get past it.

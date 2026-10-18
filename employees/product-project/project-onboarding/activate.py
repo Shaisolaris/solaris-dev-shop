@@ -26,6 +26,7 @@ import socket
 import stat
 import subprocess
 import sys
+import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple
@@ -79,6 +80,20 @@ def _lstat(path: Path) -> Optional[os.stat_result]:
         return None  # a non-directory ancestor is reported by the folder preflight
 
 
+NAME_MAX = 255
+ROOT_MAX = 900  # leaves room under the 1024-byte PATH_MAX for Scope/.ROUND-PLAN.md.<hex>.activation-tmp
+
+
+def _path_problem(path: Path) -> Optional[str]:
+    """Bounded check of a root path before touching it: component and total length."""
+    for part in path.parts:
+        if len(os.fsencode(part)) > NAME_MAX:
+            return f"a path component is longer than {NAME_MAX} bytes"
+    if len(os.fsencode(str(path))) > ROOT_MAX:
+        return f"the path is longer than {ROOT_MAX} bytes"
+    return None
+
+
 def _kind(st: Optional[os.stat_result]) -> str:
     if st is None:
         return "missing"
@@ -104,7 +119,7 @@ def _check_text(field: str, value: Any, problems: List[Dict[str, str]], required
         problems.append({"field": field, "problem": "must be text"})
         return None
     text = value.strip()
-    if not text:
+    if not _visible(text):  # also blank: only zero-width, BOM or other invisible format characters
         if required:
             problems.append({"field": field, "problem": "must not be blank"})
         return None
@@ -114,13 +129,32 @@ def _check_text(field: str, value: Any, problems: List[Dict[str, str]], required
     if len(text) > LIMITS[field.split(".")[-1]]:
         problems.append({"field": field, "problem": f"longer than {LIMITS[field.split('.')[-1]]} characters"})
         return None
+    if not field.endswith("deploy_model") and DEPLOY_MARKER.search(text):
+        # STATUS.md carries exactly one DEPLOY-MODEL line; other fields may not imitate it
+        problems.append({"field": field, "problem": "must not contain a DEPLOY-MODEL: marker"})
+        return None
     for label, rx in SECRET_PATTERNS:
-        if rx.search(text):
+        if rx.search(_without_commit_ids(text) if field == "brief" else text):
             # The value itself is never echoed.
             problems.append({"field": field, "problem": f"looks like a secret value ({label}); "
                              "record where the secret lives, not the secret"})
             return None
     return text
+
+
+DEPLOY_MARKER = re.compile(r"(?i)deploy[-_ ]?model\s*:")
+UNRESOLVED_ANSWER = re.compile(r"(?i)^unresolved\b")
+COMMIT_ID = re.compile(r"(?i)\b(?:commit|fork|sha|revision|rev)\b[\s:#@-]*(?:of\s+)?([0-9a-f]{40}|[0-9a-f]{64})\b")
+
+
+def _visible(text: str) -> bool:
+    """True when text has at least one character that is not whitespace or an invisible format/control mark."""
+    return any(not ch.isspace() and unicodedata.category(ch) not in ("Cf", "Cc", "Zs", "Zl", "Zp") for ch in text)
+
+
+def _without_commit_ids(text: str) -> str:
+    """A brief may name a Git commit (40 or 64 lowercase hex after a word like commit/fork/sha); that id is not a secret."""
+    return COMMIT_ID.sub(lambda m: m.group(0)[: m.start(1) - m.start(0)] + "<commit-id>", text)
 
 
 def normalize_intake(raw: Dict[str, Any]) -> Tuple[Dict[str, Any], List[Dict[str, str]]]:
@@ -135,6 +169,8 @@ def normalize_intake(raw: Dict[str, Any]) -> Tuple[Dict[str, Any], List[Dict[str
         problems.append({"field": "project_type", "problem": "must be one of " + ", ".join(PROJECT_TYPES)})
         ptype = None
     deploy = _check_text("deploy_model", raw.get("deploy_model"), problems, required=False)
+    if deploy is not None and UNRESOLVED_ANSWER.match(deploy):
+        deploy = None  # an answer of "UNRESOLVED" is no answer; it must not finish as complete
     brief = _check_text("brief", raw.get("brief"), problems, required=False)
     creds_raw = raw.get("credentials") or []
     creds: List[Dict[str, str]] = []
@@ -267,6 +303,29 @@ def _atomic_write(target: Path, data: bytes) -> None:
         raise
 
 
+TEMP_RE = re.compile(r"^\.(?P<name>.+)\.[0-9a-f]{16}\.activation-tmp$")
+TEMP_HOMES = {".": ("STATUS.md", JOURNAL), "Scope": ("ROUND-PLAN.md",), "Delivery": ("CREDENTIALS.md",)}
+
+
+def _remove_leftover_temps(root: Path) -> List[str]:
+    """Delete temp files a killed run left next to its own targets. Called only under the lock.
+
+    Only regular files with this tool's exact temp-name shape for one of its own targets are
+    removed; symlinks and anything else are left alone.
+    """
+    removed = []
+    for folder, names in TEMP_HOMES.items():
+        d = root if folder == "." else root / folder
+        if _kind(_lstat(d)) != "directory":
+            continue
+        for entry in sorted(os.listdir(d)):
+            m = TEMP_RE.match(entry)
+            if m and m.group("name") in names and _kind(_lstat(d / entry)) == "file":
+                os.unlink(d / entry)
+                removed.append(entry if folder == "." else f"{folder}/{entry}")
+    return removed
+
+
 def _read_journal(root: Path) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
     path = root / JOURNAL
     kind = _kind(_lstat(path))
@@ -281,6 +340,12 @@ def _read_journal(root: Path) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
     if not isinstance(data, dict) or data.get("schema") != SCHEMA or not isinstance(data.get("files"), dict) \
             or not isinstance(data.get("intake"), dict):
         return None, f"{JOURNAL} has an unknown format; left unchanged. Move it aside to start a new activation"
+    for rel, entry in data["files"].items():
+        if not isinstance(entry, dict) or any(not isinstance(entry.get(k), (str, type(None))) for k in ("written", "pending")):
+            return None, (f"{JOURNAL} has a malformed entry for {str(rel)[:80]!r}; left unchanged. "
+                          "Move it aside to start a new activation")
+    if not isinstance(data.get("project_root"), (str, type(None))):
+        return None, f"{JOURNAL} has a malformed project_root; left unchanged. Move it aside to start a new activation"
     return data, None
 
 
@@ -395,22 +460,30 @@ def _acquire_lock(root: Path) -> Optional[str]:
         fd = os.open(root / LOCK, flags, 0o644)
     except FileExistsError:
         holder = "unknown holder"
-        if _kind(_lstat(root / LOCK)) != "file":
+        st = _lstat(root / LOCK)
+        if _kind(st) != "file":
             return f"{LOCK} exists but is not a regular file; it was left unchanged and nothing was written."
-        try:
-            info = json.loads((root / LOCK).read_text(encoding="utf-8"))
-            holder = f"pid {info.get('pid')} on {info.get('host')} since {info.get('started')}"
-            if info.get("host") == socket.gethostname() and isinstance(info.get("pid"), int):
-                try:
-                    os.kill(info["pid"], 0)
-                except ProcessLookupError:
-                    holder += ", which is no longer running (stale lock)"
-                except PermissionError:
-                    pass
-        except (OSError, ValueError):
-            pass
+        if st is not None and st.st_size == 0:
+            holder = ("empty lock: the run that created it was most likely killed before recording itself "
+                      "(stale lock)")
+        else:
+            try:
+                info = json.loads((root / LOCK).read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                info = None
+            if isinstance(info, dict):
+                holder = f"pid {info.get('pid')} on {info.get('host')} since {info.get('started')}"
+                if info.get("host") == socket.gethostname() and isinstance(info.get("pid"), int) and info["pid"] > 0:
+                    try:
+                        os.kill(info["pid"], 0)
+                    except ProcessLookupError:
+                        holder += ", which is no longer running (stale lock)"
+                    except (PermissionError, OverflowError):
+                        pass
         return (f"another activation holds {LOCK} ({holder}); nothing written. If no activation is "
                 f"running, delete {LOCK} and rerun.")
+    except OSError as exc:  # read-only root, quota, ...: os.open raised before anything was created
+        return f"could not create {LOCK}: {exc.strerror or exc}; nothing written. Fix the cause and rerun."
     with os.fdopen(fd, "w", encoding="utf-8") as fh:
         json.dump({"pid": os.getpid(), "host": socket.gethostname(), "started": _now()}, fh)
     return None
@@ -470,6 +543,9 @@ def _activate(root_arg: str, intake_raw: Optional[Dict[str, Any]] = None, *, res
     root_path = Path(root_arg).expanduser()
     if not root_path.is_absolute():
         root_path = Path.cwd() / root_path
+    too_long = _path_problem(root_path)
+    if too_long:
+        return _result("invalid", root_path, problems=[{"field": "project_root", "problem": too_long}])
     if within is not None:
         boundary = Path(within).expanduser().resolve()
         try:
@@ -498,7 +574,19 @@ def _activate(root_arg: str, intake_raw: Optional[Dict[str, Any]] = None, *, res
             return _result("invalid", root, problems=[{"field": "resume", "problem":
                            "no activation journal in this project root; run activate first"}])
         supplied = dict(journal["intake"])
-    previous = journal["intake"] if journal else {}
+    # The journal is bound to the folder it was written in. A journal copied with a project
+    # folder (or on its own) belongs to another project: nothing is inherited from it.
+    foreign_gap = None
+    if journal is not None and journal.get("project_root") != str(root):
+        origin = journal.get("project_root")
+        head = (f"{JOURNAL} was written for another folder ({origin})" if origin else
+                f"{JOURNAL} does not record which folder it belongs to")
+        if resume:
+            return _result("blocked", root, errors=[head + "; resume refused, nothing written. "
+                           "Run activate with this project's intake, or move the journal aside."])
+        foreign_gap = head + ("; nothing was inherited from it (deploy model, brief, credentials). "
+                              "State them again if they apply here.")
+    previous = journal["intake"] if journal and not foreign_gap else {}
     inherited = []
     for key in ("name", "project_type", "deploy_model", "brief", "credentials", "code_project"):
         if key not in supplied and key in previous:
@@ -548,7 +636,7 @@ def _activate(root_arg: str, intake_raw: Optional[Dict[str, Any]] = None, *, res
         else:
             artifacts[rel] = "conflict_preserved"
 
-    gaps: List[str] = []
+    gaps: List[str] = [foreign_gap] if foreign_gap else []
     if not intake["deploy_model"]:
         gaps.append("Deploy model unresolved: recorded as UNRESOLVED; nothing may deploy until the owner states one.")
     if not intake["project_type"]:
@@ -569,26 +657,28 @@ def _activate(root_arg: str, intake_raw: Optional[Dict[str, Any]] = None, *, res
     needs_dirs = [n for n, a in folders.items() if a == "create"]
     changed: List[str] = []
     errors: List[str] = []
+    removed: List[str] = []
     new_files = {rel: dict(jfiles.get(rel) or {}) for rel in GENERATED}
     for rel in GENERATED:
         if artifacts[rel] in ("unchanged", "update"):
             new_files[rel]["written"] = current_hash[rel]  # current content is tool output
         if artifacts[rel] != "conflict_preserved":
             new_files[rel]["pending"] = _sha(desired[rel])
-    jstate = {"schema": SCHEMA, "state": "in_progress", "intake": intake, "files": new_files,
+    jstate = {"schema": SCHEMA, "state": "in_progress", "intake": intake, "files": new_files, "project_root": str(root),
               "created_at": (journal or {}).get("created_at") or _now(), "updated_at": _now(),
               "git_initialized_by_activation": bool((journal or {}).get("git_initialized_by_activation"))}
 
     def save_journal() -> None:
         _atomic_write(root / JOURNAL, (json.dumps(jstate, indent=2, sort_keys=True) + "\n").encode("utf-8"))
 
-    something_to_do = bool(to_write or needs_dirs or changes or journal is None
+    something_to_do = bool(to_write or needs_dirs or changes or journal is None or foreign_gap
                            or (journal or {}).get("state") != "done")
     current: Optional[str] = None
     try:
         if root_kind == "missing":
             os.mkdir(root)
             changed.append(".")
+        removed = _remove_leftover_temps(root) if root_kind != "missing" else []
         if something_to_do:
             current = JOURNAL
             save_journal()
@@ -613,7 +703,7 @@ def _activate(root_arg: str, intake_raw: Optional[Dict[str, Any]] = None, *, res
                       "journal records progress. Fix the cause and run resume.")
         return _result("failed", root, intake=intake, intake_changes=changes, inherited=inherited,
                        folders=folders, artifacts=artifacts, changed=changed, errors=errors,
-                       gaps=gaps + [EXTERNAL_OWNER_STEPS])
+                       removed_temp_files=removed, gaps=gaps + [EXTERNAL_OWNER_STEPS])
 
     git_info, ggaps, gerrs = _git_step(root, intake["code_project"], init_git, dry_run=False)
     if git_info.get("state") == "initialized_unborn":
@@ -632,7 +722,7 @@ def _activate(root_arg: str, intake_raw: Optional[Dict[str, Any]] = None, *, res
             status = "failed"
     return _result(status, root, intake=intake, intake_changes=changes, inherited=inherited,
                    folders=folders, artifacts=artifacts, changed=changed, git=git_info,
-                   gaps=gaps + [EXTERNAL_OWNER_STEPS], errors=errors)
+                   removed_temp_files=removed, gaps=gaps + [EXTERNAL_OWNER_STEPS], errors=errors)
 
 
 def report_lines(res: Dict[str, Any]) -> List[str]:
@@ -643,7 +733,9 @@ def report_lines(res: Dict[str, Any]) -> List[str]:
     human = [g for g in res.get("gaps", []) if g != EXTERNAL_OWNER_STEPS]
     return [
         f"Folder: {res.get('project_root')} ({res['status']})",
-        f"Deploy model: {intake.get('deploy_model') or 'UNRESOLVED'}",
+        f"Deploy model: {intake.get('deploy_model') or 'UNRESOLVED'}"
+        + (" (carried over from this folder's earlier activation, not restated)"
+           if intake.get("deploy_model") and "deploy_model" in res.get("inherited", []) else ""),
         f"Credential reference rows: {rows} (locations only)",
         f"Repo: {git.get('state', 'not checked')}" + (f", branch {git['branch']}" if git.get("branch") else ""),
         "Needs a human: " + ("fix the invalid input listed below; nothing was written" if res["status"] == "invalid"

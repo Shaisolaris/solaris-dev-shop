@@ -483,5 +483,217 @@ class ConcurrencyAndScale(Base):
                          sorted([act.JOURNAL, 'Delivery', 'Scope', *act.GENERATED]))
 
 
+
+KILL_AFTER_WRITE = r'''
+import os, signal, sys
+sys.path.insert(0, sys.argv[1])
+import activate as act
+real = act._atomic_write
+def killing(target, data):
+    real(target, data)
+    if target.name == sys.argv[3]:
+        os.kill(os.getpid(), signal.SIGKILL)  # real crash: after the file is replaced, before the journal moves
+act._atomic_write = killing
+act.activate(sys.argv[2], {"name": "Beta", "project_type": "web app", "deploy_model": "prod-beta"})
+'''
+
+
+class M02Rework(Base):
+    """Correction batch for the M02 self-validation findings F1..F8 and its two test gaps."""
+
+    def cli_json(self, *args):
+        p = subprocess.run([sys.executable, str(TOOL), *map(str, args), '--json'], capture_output=True, text=True,
+                           env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+        self.assertNotIn('Traceback', p.stderr)
+        return p.returncode, json.loads(p.stdout)
+
+    # F1 ------------------------------------------------------------------------------------------
+    def test_copied_folder_or_journal_inherits_nothing(self):
+        self.activate(name='Alpha Corp', deploy_model='production: main=live', brief='alpha brief')
+        gamma = self.tmp / 'gamma'
+        shutil.copytree(self.project, gamma, symlinks=True)
+        r = act.activate(str(gamma), {'name': 'Gamma Inc', 'project_type': 'website'})
+        self.assertEqual(r['status'], 'partial')
+        self.assertEqual(r['inherited'], [])
+        self.assertIsNone(r['intake']['deploy_model'])
+        self.assertTrue(any('written for another folder' in g for g in r['gaps']), r['gaps'])
+        for rel in act.GENERATED:
+            text = (gamma / rel).read_text()
+            self.assertNotIn('main=live', text, rel)
+            self.assertNotIn('Alpha', text, rel)
+        self.assertIn('DEPLOY-MODEL: UNRESOLVED', (gamma / 'STATUS.md').read_text())
+        self.assertEqual(json.loads((gamma / act.JOURNAL).read_text())['project_root'], str(gamma))
+        r = act.activate(str(gamma), {'name': 'Gamma Inc', 'project_type': 'website'})
+        self.assertFalse(any('another folder' in g for g in r['gaps']))  # bound to gamma now
+        beta = self.tmp / 'beta'
+        beta.mkdir()
+        shutil.copy2(self.project / act.JOURNAL, beta / act.JOURNAL)
+        r = act.activate(str(beta), resume=True)
+        self.assertEqual(r['status'], 'blocked')
+        self.assertEqual(sorted(p.name for p in beta.iterdir()), [act.JOURNAL])
+        r = act.activate(str(beta), {'name': 'Beta Ltd', 'project_type': 'website'})
+        self.assertEqual((r['status'], r['inherited'], r['intake']['brief']), ('partial', [], None))
+
+    def test_same_folder_rename_still_inherits_and_says_so(self):
+        self.activate(name='Alpha', deploy_model='web: main=live')
+        r = self.activate(name='Alpha Two')
+        self.assertEqual(r['status'], 'complete')
+        self.assertIn('deploy_model', r['inherited'])
+        self.assertIn('carried over', act.report_lines(r)[1])
+        r = self.activate(name='Alpha Two', deploy_model='web: main=live')
+        self.assertNotIn('carried over', act.report_lines(r)[1])
+
+    # F2, F3 --------------------------------------------------------------------------------------
+    def test_invisible_or_literal_unresolved_answers_stay_unresolved(self):
+        for deploy in ('\u200b', '\ufeff', ' \u200b\u200d\u2060 ', '\u00a0\u200b', 'UNRESOLVED', 'unresolved',
+                       'Unresolved (ask the owner)'):
+            with self.subTest(deploy=deploy):
+                r = self.activate(deploy_model=deploy)
+                self.assertEqual(r['status'], 'partial')
+                self.assertIsNone(r['intake']['deploy_model'])
+                self.assertIn('DEPLOY-MODEL: UNRESOLVED (no answer recorded',
+                              (self.project / 'STATUS.md').read_text())
+        r = self.activate(deploy_model='manual uploads, unresolved staging')  # a real answer that mentions the word
+        self.assertEqual(r['intake']['deploy_model'], 'manual uploads, unresolved staging')
+        intake, problems = act.normalize_intake({'name': '\u200b\ufeff'})
+        self.assertEqual(problems, [{'field': 'name', 'problem': 'must not be blank'}])
+
+    # F4 ------------------------------------------------------------------------------------------
+    def test_malformed_journal_entries_give_a_bounded_result(self):
+        for files in ({'STATUS.md': ['a']}, {'STATUS.md': {'pending': ['x']}}, {'STATUS.md': {'written': 5}}):
+            with self.subTest(files=files):
+                shutil.rmtree(self.project, True)
+                self.project.mkdir()
+                path = self.project / act.JOURNAL
+                path.write_text(json.dumps({'schema': act.SCHEMA, 'intake': {'name': 'X'}, 'files': files}))
+                before = path.read_bytes()
+                for args in (('resume', self.project), ('activate', self.project, '--name', 'X')):
+                    code, r = self.cli_json(*args)
+                    self.assertEqual((code, r['status']), (1, 'blocked'))
+                    self.assertIn('malformed entry', r['errors'][0])
+                self.assertEqual(path.read_bytes(), before)
+                self.assertEqual([p.name for p in self.project.iterdir()], [act.JOURNAL])
+
+    def test_overlong_path_component_is_invalid_input(self):
+        code, r = self.cli_json('activate', self.tmp / ('x' * 300), '--name', 'Long')
+        self.assertEqual((code, r['status']), (2, 'invalid'))
+        self.assertIn('longer than 255 bytes', r['problems'][0]['problem'])
+        code, r = self.cli_json('activate', self.tmp / '/'.join(['d' * 200] * 5), '--name', 'Deep')
+        self.assertEqual((code, r['status']), (2, 'invalid'))
+
+    @unittest.skipIf(os.name != 'posix' or (hasattr(os, 'geteuid') and os.geteuid() == 0), 'needs POSIX non-root')
+    def test_read_only_root_gives_a_bounded_result(self):
+        self.project.mkdir()
+        os.chmod(self.project, 0o555)
+        self.addCleanup(os.chmod, self.project, 0o755)
+        code, r = self.cli_json('activate', self.project, '--name', 'RO')
+        self.assertEqual((code, r['status']), (1, 'blocked'))
+        self.assertIn('could not create', r['errors'][0])
+        self.assertEqual(list(self.project.iterdir()), [])
+
+    # F5 ------------------------------------------------------------------------------------------
+    def test_leftover_temp_files_are_removed_but_nothing_else(self):
+        self.activate(deploy_model='manual')
+        hexid = 'ab12' * 4
+        own = [f'.STATUS.md.{hexid}.activation-tmp', f'..solaris-activation.json.{hexid}.activation-tmp',
+               f'Scope/.ROUND-PLAN.md.{hexid}.activation-tmp', f'Delivery/.CREDENTIALS.md.{hexid}.activation-tmp']
+        for rel in own:
+            (self.project / rel).write_text('half-written generated text')
+        keep = {'Scope/.STATUS.md.%s.activation-tmp' % hexid: 'wrong folder for this target',
+                '.notes.md.%s.activation-tmp' % hexid: 'not one of the tool targets',
+                '.STATUS.md.123.activation-tmp': 'not the temp-name shape',
+                'Development/.STATUS.md.%s.activation-tmp' % hexid: 'owner folder'}
+        for rel, text in keep.items():
+            (self.project / rel).write_text(text)
+        link = self.project / f'Delivery/.CREDENTIALS.md.{"cd34" * 4}.activation-tmp'
+        link.symlink_to(self.outside / 'sentinel')
+        r = self.activate(deploy_model='manual')
+        self.assertEqual(sorted(r['removed_temp_files']), sorted(own))
+        for rel in own:
+            self.assertFalse((self.project / rel).exists(), rel)
+        for rel, text in keep.items():
+            self.assertEqual((self.project / rel).read_text(), text)
+        self.assertTrue(link.is_symlink())
+        self.assert_outside_untouched()
+
+    # F6 ------------------------------------------------------------------------------------------
+    def test_empty_lock_is_reported_as_stale(self):
+        self.activate(deploy_model='manual')
+        (self.project / act.LOCK).write_bytes(b'')
+        r = self.activate(resume=True)
+        self.assertEqual(r['status'], 'blocked')
+        self.assertIn('stale lock', r['errors'][0])
+        self.assertIn('delete .solaris-activation.lock', r['errors'][0])
+
+    # F7, F8 --------------------------------------------------------------------------------------
+    def test_deploy_marker_only_in_the_deploy_field_and_commit_ids_in_briefs(self):
+        for field in ('name', 'brief'):
+            with self.subTest(field=field):
+                _, problems = act.normalize_intake({'name': 'Acme', field: 'Acme DEPLOY-MODEL: main=live'})
+                self.assertEqual(problems, [{'field': field, 'problem': 'must not contain a DEPLOY-MODEL: marker'}])
+        _, problems = act.normalize_intake({'name': 'Acme', 'credentials': [
+            {'system': 'ci', 'location': 'Vault deploy_model: main=live'}]})
+        self.assertEqual(problems[0]['field'], 'credentials[1].location')
+        sha1 = '41132041afeb2cce63a68554caf18cf6992a11ae'
+        for brief in (f'fork of {sha1}', f'based on commit {sha1}', f'sha256 revision {"0f" * 32}'):
+            with self.subTest(brief=brief):
+                self.assertEqual(act.normalize_intake({'name': 'Acme', 'brief': brief})[1], [])
+        for brief in (f'notes {sha1}', f'token {sha1}'):
+            self.assertTrue(act.normalize_intake({'name': 'Acme', 'brief': brief})[1])  # no commit context: refused
+        self.assertTrue(act.normalize_intake({'name': f'commit {sha1}'})[1])  # only briefs get the exemption
+
+    # test gaps: no_intent_journal and no_lock mutants, crash during changed intake ---------------------
+    def kill_beta_after(self, filename):
+        p = subprocess.run([sys.executable, '-c', KILL_AFTER_WRITE, str(TOOL.parent), str(self.project), filename],
+                           capture_output=True, text=True, env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+        self.assertEqual(p.returncode, -9, p.stderr)
+        lock = self.project / act.LOCK
+        self.assertTrue(lock.exists())
+        r = self.activate(resume=True)
+        self.assertEqual(r['status'], 'blocked')
+        self.assertIn('stale lock', r['errors'][0])  # documented recovery: the owner deletes the stale lock
+        lock.unlink()
+
+    def test_crash_during_changed_intake_then_resume_converges_on_the_new_intake(self):
+        self.activate(name='Alpha', deploy_model='staging-alpha')
+        self.kill_beta_after('STATUS.md')
+        self.assertIn('Beta', (self.project / 'STATUS.md').read_text())
+        self.assertIn('Alpha', (self.project / 'Scope/ROUND-PLAN.md').read_text())
+        journal = json.loads((self.project / act.JOURNAL).read_text())
+        self.assertEqual(journal['intake']['name'], 'Beta')  # the intent was journaled before the first write
+        r = self.activate(resume=True)
+        self.assertEqual(r['status'], 'complete', r)
+        for rel in act.GENERATED:
+            text = (self.project / rel).read_text()
+            self.assertIn('Beta', text, rel)
+            self.assertNotIn('Alpha', text, rel)
+
+    def test_crash_during_changed_intake_then_new_intake_is_not_mistaken_for_owner_content(self):
+        self.activate(name='Alpha', deploy_model='staging-alpha')
+        self.kill_beta_after('STATUS.md')
+        r = self.activate(name='Gamma', deploy_model='prod-gamma')
+        self.assertEqual(r['status'], 'complete', r['gaps'])
+        self.assertEqual(r['artifacts']['STATUS.md'], 'updated')
+        for rel in act.GENERATED:
+            self.assertIn('Gamma', (self.project / rel).read_text(), rel)
+
+    def test_a_second_activation_during_a_write_is_blocked_by_the_lock(self):
+        self.activate(name='Alpha', deploy_model='manual')
+        inner = []
+
+        def contend(rel):
+            if not inner:
+                inner.append(act.activate(str(self.project), {'name': 'Intruder', 'deploy_model': 'main=live'}))
+        r = self.activate(name='Beta', deploy_model='manual', _before_write=contend)
+        self.assertEqual(r['status'], 'complete')
+        self.assertEqual(inner[0]['status'], 'blocked')
+        self.assertIn('pid %d' % os.getpid(), inner[0]['errors'][0])
+        for rel in act.GENERATED:
+            text = (self.project / rel).read_text()
+            self.assertIn('Beta', text, rel)
+            self.assertNotIn('Intruder', text, rel)
+        self.assertFalse((self.project / act.LOCK).exists())
+
+
 if __name__ == '__main__':
     unittest.main()
