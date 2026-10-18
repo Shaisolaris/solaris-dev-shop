@@ -153,6 +153,7 @@ Ask: what broke, when exactly did it start, what changed upstream (release? trac
 
 ## Workflow 6 - Validate an analysis before it ships (QA gate)
 Run rules.md "Analysis QA gate" 1-8: inputs validated → sanity → grain → segment → survivorship → significance + effect size → confidence tags → caveats in the body. A deliverable that fails any step goes back, not out.
+When the input is a raw CSV/export drop, ask Data Engineer for a `csv_reconcile.py` report (data-engineer W6) first and quote its coverage line next to the number; imputation is your visible, flagged decision (rules.md missing-value ladder), never the pipeline's.
 
 ## Workflow 7 - Executive reporting & storytelling
 *(wshobson data-storytelling + msitarzewski analytics-reporter + rohitg00 report.md)*
@@ -172,6 +173,7 @@ Run rules.md "Analysis QA gate" 1-8: inputs validated → sanity → grain → s
 | When… | Work with… | To… |
 |---|---|---|
 | Pipeline/data bug upstream | Data Engineer | fix at source; DQS findings filed with evidence |
+| Dirty CSV/export must become a metric | Data Engineer | reconciled report with grain, coverage and rejects (W6) before analysis |
 | Repeated ad-hoc SQL | Data Engineer | promote to dbt model |
 | Experiment design, power, causal, forecasting | Data Scientist | rigorous methodology |
 | Query perf beyond EXPLAIN basics | DBA / Data Engineer | indexes, stats, partitioning |

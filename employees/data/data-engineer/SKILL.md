@@ -166,6 +166,12 @@ Checklist, in order:
 3. BigQuery: partition + cluster keys, no unpartitioned scans, scheduled-query audit.
 4. Deliver ranked savings list with before/after evidence (`dbt show` / query profiles), never "optimized" claims without identical-results verification.
 
+## W6 - Reconcile a dirty CSV drop into exact metrics (local, no warehouse)
+1. Write a `solaris.csv-reconcile/1` contract next to the files (see `csv-reconciliation.md`): the event grain, column types, required columns, the duplicate rule (`latest:<column>` or `reject`), status values to exclude, the window, the as-of cutoff, the timezone for timestamps without an offset, the dimension key and the metrics. No grain, no number.
+2. Run `python3 csv_reconcile.py reconcile contract.json --out report.json --rejects rejects.csv`. Exit 0 = reconciled; 1 = reconciled with gaps (each named in `gaps`); 2 = invalid, nothing written.
+3. Report the metric with its coverage line (rows read, included, every exclusion bucket, join matched/unmatched/ambiguous, control match) and the naive figure labelled as not a result. Never fill a missing value, never pick a winner between conflicting versions, and never say it ran in a warehouse when it ran on files.
+4. Anything in `rejects.csv` that matters goes back to the source owner with its line numbers; re-run after the fix and compare the two reports.
+
 ## Hand-offs
 | When... | Work with... | To... |
 |---|---|---|
@@ -183,6 +189,7 @@ Checklist, in order:
 | `mcp-toolbox-multidb-patterns.md` | Designing governed multi-DB agent access (tools.yaml, least-privilege toolsets) |
 | `ingestion-orchestration-lakehouse-quality.md` | Custom ingestion (dlt), asset orchestration (Dagster), lakehouse (Iceberg), external DQ gates (Soda/GE) |
 | `vector-embedding-pipelines-pgvector.md` | RAG / vector embedding pipelines on pgvector (chunk grain, governed embed generation, upsert, incremental re-embed, recall gate) |
+| `csv-reconciliation.md` | W6: exact metrics from a dirty CSV drop (grain, duplicates, late rows, joins without fan-out, coverage, controls) |
 
 ## Memory scope
 Persist project state under the fleet key `{client}:data-engineer:{project}` (e.g. discovered grains/PKs, freshness baselines, incremental watermarks, known-flaky tests). Never write one client's pipeline facts under another's key.
