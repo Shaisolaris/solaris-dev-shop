@@ -454,7 +454,7 @@ class M10Rework(Base):
                 self.assertEqual(self.diag(trace([DNS, TCP, TLS, HTTP], captured=ok))['verdict'], 'healthy')
         self.assertEqual(nd._iso('2026-10-18T12:00:00.5Z'), nd._iso('2026-10-18T12:00:00.500000+00:00'))
         for bad in ('2026-10-18T12:00:00+0000', '2026-10-18T12:00:00+00', '20261018T120000Z', '2026-W42-7T12:00:00Z',
-                    '2026-10-18T12:00:00.1234567Z', '2026-10-18T12:00Z', '2026-10-18'):
+                    '2026-10-18T12:00:00.Z', '2026-10-18T12:00Z', '2026-10-18'):
             with self.subTest(bad=bad):
                 self.assertEqual(cli('diagnose', self.write('t.json', trace([DNS], captured=bad)))[0], 2)
 
@@ -473,6 +473,76 @@ class M10Rework(Base):
         outs = {cli('diagnose', p, '--json', env=dict(ENV, PYTHONHASHSEED=str(seed)))[1] for seed in range(6)}
         self.assertEqual(len(outs), 1)
         self.assertIn('NOERROR 192.0.2.1,192.0.2.200,192.0.2.40,192.0.2.9', outs.pop())
+
+
+class M10R2Rework(Base):
+    """G10 r4 (M10 r2 Grok self-validation of be36f86): non-host SAN types beside DNS entries (RG1),
+    RFC 3339 fractions of any length (RG3, RG4), and wildcard depth tested apart from the suffix rule (E1)."""
+
+    def codes(self, r):
+        return [f['code'] for f in r['findings']]
+
+    def alert(self, san, sni=H, host=H):
+        tls = dict(TLS, sni=sni, cert=dict(CERT, san=san), result='alert', alert='bad_certificate')
+        return self.diag(trace([dict(DNS, qname=host), TCP, tls], host=host))
+
+    EXTRA = ('URI:spiffe://lab.example/ns/a/sa/b', 'email:ops@lab.example', 'othername:UPN::ops@lab.example',
+             'DirName:/C=GB, O=Example Lab, CN=web', 'Registered ID:1.2.3.4', 'rfc822Name: ops@lab.example')
+
+    def test_rg1_non_host_san_types_never_hide_a_real_mismatch(self):
+        for extra in self.EXTRA:
+            for san in (['DNS:other.example', extra], [f'DNS:other.example, {extra}'], [f'{extra}, DNS:other.example']):
+                with self.subTest(san=san):
+                    r = self.alert(san)
+                    self.assertIn('TLS_NAME_MISMATCH', self.codes(r))
+                    self.assertTrue(any('not host names were ignored' in n for n in r['notes']), r['notes'])
+                    self.assertFalse(any('not understood' in n for n in r['notes']), r['notes'])
+
+    def test_rg1_covering_dns_beside_non_host_types_and_controls(self):
+        for extra in self.EXTRA:
+            with self.subTest(extra=extra):
+                self.assertEqual(self.codes(self.alert(['DNS:web.lab.example', extra])), ['TLS_ALERT'])
+                self.assertEqual(self.codes(self.alert([f'{extra}, DNS:web.lab.example'])), ['TLS_ALERT'])
+        self.assertIn('TLS_NAME_MISMATCH', self.codes(self.alert(['DNS:other.example'])))
+        # only non-host types: no host entry to judge, so still "not understood" and no confident mismatch
+        r = self.alert(['URI:spiffe://lab.example/a', 'email:ops@lab.example'])
+        self.assertNotIn('TLS_NAME_MISMATCH', self.codes(r))
+        self.assertTrue(any('not understood' in n for n in r['notes']), r['notes'])
+        # an unrecognised typed spelling still blocks a confident mismatch
+        r = self.alert(['DNS:other.example', 'Foo Name:web.lab.example'])
+        self.assertNotIn('TLS_NAME_MISMATCH', self.codes(r))
+        # a DirName value with commas is one entry; a host-like part inside it never covers
+        self.assertEqual(nd._san_parts('DirName:/C=GB, O=web.lab.example, DNS:other.example'),
+                         ['DirName:/C=GB, O=web.lab.example', 'DNS:other.example'])
+        self.assertIn('TLS_NAME_MISMATCH', self.codes(self.alert(['DirName:/C=GB, O=web.lab.example, DNS:other.example'])))
+
+    def test_rg3_any_fraction_length_is_accepted_and_truncated(self):
+        for ts in ('2026-10-18T12:00:00.1234567Z', '2026-10-18T12:00:00.12345678Z', '2026-10-18T12:00:00.123456789Z',
+                   '2026-10-18T12:00:00.123456789-07:00', '2026-10-18T12:00:00.000000001Z'):
+            with self.subTest(ts=ts):
+                self.assertEqual(self.diag(trace([DNS, TCP, TLS, HTTP], captured=ts))['verdict'], 'healthy')
+                rc, _ = cli('diagnose', self.write('c.json', trace([DNS, TCP, TLS, HTTP], captured=ts)))
+                self.assertEqual(rc, 0)
+        self.assertEqual(nd._iso('2026-10-18T12:00:00.123456789Z'), nd._iso('2026-10-18T12:00:00.123456Z'))
+        self.assertEqual(nd._iso('2026-10-18T12:00:00.9999999Z'), nd._iso('2026-10-18T12:00:00.999999Z'))
+        for bad in ('2026-10-18T12:00:00.Z', '2026-10-18T12:00:00.12a3Z', '2026-10-18T12:00:00.123456789+0000'):
+            with self.subTest(bad=bad):
+                self.assertEqual(cli('diagnose', self.write('t.json', trace([DNS], captured=bad)))[0], 2)
+
+    def test_rg4_nanosecond_not_after_before_capture_is_expired(self):
+        cert = dict(CERT, not_after='2026-10-18T15:59:59.999999999Z')
+        tls = dict(TLS, cert=cert, result='alert', alert='certificate_expired')
+        r = self.diag(trace([DNS, TCP, tls], captured='2026-10-18T16:00:00Z'))
+        self.assertIn('TLS_CERT_EXPIRED', self.codes(r))
+        r = self.diag(trace([DNS, TCP, dict(TLS, cert=cert), HTTP], captured='2026-10-18T15:59:59.5Z'))
+        self.assertEqual(r['verdict'], 'healthy')
+
+    def test_e1_wildcard_depth_apart_from_the_suffix_rule(self):
+        # *.lab.example is a legal wildcard (two labels after *.), so only depth decides these
+        self.assertEqual(self.codes(self.alert(['DNS:*.lab.example'])), ['TLS_ALERT'])
+        for host in ('a.web.lab.example', 'x.y.web.lab.example'):
+            with self.subTest(host=host):
+                self.assertIn('TLS_NAME_MISMATCH', self.codes(self.alert(['DNS:*.lab.example'], sni=host, host=host)))
 
 
 if __name__ == '__main__':

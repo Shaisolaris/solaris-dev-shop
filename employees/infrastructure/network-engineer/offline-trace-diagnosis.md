@@ -14,7 +14,8 @@ Exit 0 healthy, 1 a fault or an undetermined result, 2 invalid input (nothing wr
 
 ## Trace format (`solaris.net-trace/1`)
 `target` {host, scheme http|https, port, path}; `captured_at` (RFC 3339 only, for example `2026-09-01T12:00:00Z` or
-`2026-09-01T12:00:00.5+02:00`, so every Python from 3.9 up reads it the same; used to
+`2026-09-01T12:00:00.5+02:00`, so every Python from 3.9 up reads it the same; a fraction may have
+any number of digits, as Go, Kubernetes and journald write nine, and digits past the sixth are dropped; used to
 judge certificate dates, never the wall clock); optional `config` {resolvers, addresses
 [{dev, cidr}], routes [{dst or "default", via, dev, type unicast|blackhole|unreachable|
 prohibit}], expected_addresses}; `observations`, each with a `stage`:
@@ -22,11 +23,12 @@ prohibit}], expected_addresses}; `observations`, each with a `stage`:
 - `route` {dst, hops [{ttl, addr or null}], reached}
 - `tcp` {dst, port, result connected|refused|timeout|unreachable|reset}
 - `tls` {dst, sni, result ok|alert|timeout|reset|eof, alert, version, cert {san, not_before, not_after, chain_trusted}}
-  - `san` entries may be bare (`api.example`, `*.example.org`, `192.0.2.1`) or typed, in any case, as openssl `DNS:`/`IP:`/`IP Address:`, keytool `DNSName:`/`IPAddress:`, or Windows certutil `DNS Name=`/`IP Address=`. A pasted one-line list (`DNS:a.example, DNS:b.example, IP Address:192.0.2.1`) is split on commas.
+  - `san` entries may be bare (`api.example`, `*.example.org`, `192.0.2.1`) or typed, in any case, as openssl `DNS:`/`IP:`/`IP Address:`, keytool `DNSName:`/`IPAddress:`, or Windows certutil `DNS Name=`/`IP Address=`. A pasted one-line list (`DNS:a.example, DNS:b.example, IP Address:192.0.2.1`) is split before each type prefix, so a `DirName:/C=GB, O=Example` value with commas stays one entry; a list with no type prefix is split on commas.
   - A name target is covered only by name entries, an address target only by address entries, compared as addresses (IPv6 long and short forms are equal). One trailing dot is ignored; two make the entry invalid.
   - A wildcard covers exactly one label and needs at least two labels after `*.`, and never covers a public suffix: `*.example`, `*.com`, `*.co.uk` cover nothing. The suffix list is a short built-in set (for example `co.uk`, `com.au`, `github.io`), not the full Public Suffix List.
   - Names are lower-cased only when they are plain ASCII. Non-ASCII entries are never Unicode-folded and never cover (paste the punycode `xn--` form).
-  - Other typed entries (`URI:`, `email:`, `othername:` and so on) are not used for matching; the report notes them and does not claim a name mismatch on them alone.
+  - Non-host typed entries (`URI:`, `email:` or `rfc822Name:`, `othername:`, `DirName:`, `Registered ID:`, x400, EDI party) never identify a TLS server (RFC 6125) and are never used for matching. Beside DNS or IP entries they are noted as ignored and a real mismatch is still reported; with no DNS or IP entry at all they are noted as not understood and no name mismatch is claimed.
+  - Any other typed spelling is not understood: it is noted and blocks a confident name mismatch.
   - An `sni` different from the target host gives TLS_SNI_MISMATCH: the client asked the server for another name.
 - `http` {status or result timeout|reset, headers (only names are read), via_proxy}
 
@@ -48,6 +50,8 @@ rest still run. Observation order does not matter; the same trace gives the same
 ## Limits
 - Judges only what the trace holds; a forged or partial capture gives a bounded answer, not truth.
 - A TCP timeout cannot separate a routing hole from a silent firewall drop; both are `route`.
+- Times keep microseconds, so two times that differ only past the sixth fraction digit compare as equal.
+- A leap second (`23:59:60`) is refused with exit 2: RFC 3339 allows it, Python's datetime cannot hold it.
 - The built-in public-suffix list is short; a wildcard over a suffix it does not know is still judged as covering.
 - Header values and bodies are never echoed; anything else in the trace may appear in evidence lines.
 - Any change it suggests (route, firewall, certificate) still goes through a change window with rollback.

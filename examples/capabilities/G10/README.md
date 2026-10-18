@@ -42,5 +42,10 @@ types, wildcard depth, ambiguity kept, host case, IPv6 forms and answer order ac
 o14 (r3) keytool, Windows and one-line SAN spellings cover, unknown types are noted not judged,
 suffix wildcards, non-ASCII and double-dot entries do not cover, SNI mismatch is flagged, deep
 JSON and non-RFC 3339 times exit 2.
+r4 (M10 r2): o13's depth case uses a legal wildcard one label above the host, so it tests depth and
+not the suffix rule; o14 adds URI, email, othername, DirName and Registered ID entries beside a
+non-covering DNS entry (must stay TLS_NAME_MISMATCH), 7 and 9 digit fractions, and a nanosecond
+not_after before the capture (TLS_CERT_EXPIRED), with extra digits dropped and never rounded.
+Also: certutil "Principal Name=" (not understood) stays separate from a lone othername entry.
 The naive stub blames the first bad-looking observation, is always certain, uses the wall
 clock for certificates, does a live lookup and copies headers.

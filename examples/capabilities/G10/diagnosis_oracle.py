@@ -237,9 +237,17 @@ def main():
         j = variant("ipname", lambda o: o["cert"].update(san=[f"IP:{host}"]))
         if "TLS_NAME_MISMATCH" not in codes(j):
             bad.append(f"an IP: entry holding the host name covered it: {codes(j)}")
-        j = variant("deep", lambda o: o["cert"].update(san=["DNS:*.example"]))
+        # wildcard depth (G10 r4, M10 r2 E1): a legal wildcard one label above the host covers it and does not
+        # cover a name two labels below; "*.example" would be refused by the single-label rule before depth.
+        wdom = host.split(".", 1)[1]
+        j = variant("deep-ok", lambda o: o["cert"].update(san=[f"DNS:*.{wdom}"]))
+        if codes(j) != ["TLS_ALERT"]:
+            bad.append(f"DNS:*.{wdom} must cover {host}: {codes(j)}, expected only TLS_ALERT")
+        def deep_ed(o):
+            o["cert"]["san"] = [f"DNS:*.{wdom}"]; o["sni"] = f"a.{host}"
+        j = variant("deep", deep_ed, target=f"a.{host}")
         if "TLS_NAME_MISMATCH" not in codes(j):
-            bad.append(f"DNS:*.example covered {host}: {codes(j)}")
+            bad.append(f"DNS:*.{wdom} covered a.{host} (two labels below): {codes(j)}")
         nocfg = json.loads(json.dumps(clean)); nocfg["config"]["expected_addresses"] = []
         for o in nocfg["observations"]:
             if o["stage"] == "tls":
@@ -304,9 +312,13 @@ def main():
                 bad.append(f"{n} spelling {san} covering {host}: {codes(j)}, expected only TLS_ALERT")
             if any("not understood" in x for x in j.get("notes", [])):
                 bad.append(f"{n} spelling {san} reported as not understood; it is a known spelling")
-        j = variant("sp-unknown", lambda o: o["cert"].update(san=[f"othername:{host}"]))
-        if "TLS_NAME_MISMATCH" in codes(j) or not any("not understood" in x for x in j.get("notes", [])):
-            bad.append(f"unknown SAN type othername: must be noted as not understood, not judged a mismatch: {codes(j)}")
+        # an unrecognised typed spelling (certutil "Principal Name=") and a known non-host type with no host
+        # entry beside it are both "not understood" and never a confident mismatch (G10 r4 keeps both cases)
+        for n, san in (("sp-unknown", [f"Principal Name={host}"]), ("sp-unknown-dns", ["DNS:other.example", f"Principal Name={host}"]),
+                       ("sp-nonhost-only", [f"othername:{host}"])):
+            j = variant(n, lambda o, san=san: o["cert"].update(san=san))
+            if "TLS_NAME_MISMATCH" in codes(j) or not any("not understood" in x for x in j.get("notes", [])):
+                bad.append(f"{san}: must be noted as not understood, not judged a mismatch: {codes(j)}")
         for n, tgt, san in (("tld", "shop.example", "DNS:*.example"), ("psl", "shop.co.uk", "DNS:*.co.uk"),
                             ("kelvin", "kelvin.example", "DNS:\u212aelvin.example"), ("dots", host, f"DNS:{host}..")):
             def ed(o, san=san, tgt=tgt):
@@ -321,13 +333,46 @@ def main():
         rc = run("diagnose", str(sdir / "deep.json"), "--json")[0]
         if rc != 2:
             bad.append(f"deeply nested JSON exit {rc}, expected 2")
-        for ts, ok in (("2026-09-01T12:00:00.5Z", 0), ("2026-09-01T12:00:00+0000", 2), ("20260901T120000Z", 2)):
+        for ts, ok in (("2026-09-01T12:00:00.5Z", 0), ("2026-09-01T12:00:00.1234567Z", 0),
+                       ("2026-09-01T12:00:00.123456789Z", 0), ("2026-09-01T12:00:00.Z", 2),
+                       ("2026-09-01T12:00:00+0000", 2), ("20260901T120000Z", 2)):
             d = dict(clean, captured_at=ts)
             (sdir / "ts.json").write_text(json.dumps(d))
             rc = run("diagnose", str(sdir / "ts.json"), "--json")[0]
             if rc != ok:
                 bad.append(f"captured_at {ts}: exit {rc}, expected {ok} (RFC 3339 only, same on every Python)")
-        check("o14_san_spellings_and_inputs", not bad, "keytool/Windows/one-line SANs cover; suffix wildcards, non-ASCII, double dot refused; SNI flagged; deep JSON and non-RFC 3339 times exit 2" if not bad else "; ".join(bad[:3]))
+        # G10 r4 (M10 r2 RG1): non-host SAN types beside DNS entries never hide a real name mismatch
+        for n, extra in (("uri", "URI:spiffe://svc.example/ns/a/sa/b"), ("email", "email:ops@svc.example"),
+                         ("othername", "othername:UPN::ops@svc.example"), ("dirname", "DirName:/C=GB, O=Example, CN=x"),
+                         ("rid", "Registered ID:1.2.3.4")):
+            for form, san in (("list", ["DNS:other.example", extra]), ("oneline", [f"DNS:other.example, {extra}"])):
+                j = variant(f"nh-{n}-{form}", lambda o, san=san: o["cert"].update(san=san))
+                if "TLS_NAME_MISMATCH" not in codes(j):
+                    bad.append(f"{san} on {host}: {codes(j)}, a real name mismatch must be reported")
+                elif not any("not host names" in x for x in j.get("notes", [])):
+                    bad.append(f"{san} on {host}: the ignored non-host entry is not named in the notes")
+        j = variant("nh-cover", lambda o: o["cert"].update(san=[f"DNS:{host}", "URI:spiffe://svc.example/a"]))
+        if codes(j) != ["TLS_ALERT"]:
+            bad.append(f"covering DNS entry plus URI: {codes(j)}, expected only TLS_ALERT")
+        # G10 r4 (M10 r2 RG4): a nanosecond not_after before the capture is an expiry, not invalid input
+        exp = json.loads(json.dumps(clean)); exp["captured_at"] = "2026-10-18T16:00:00Z"
+        for o in exp["observations"]:
+            if o["stage"] == "tls":
+                o["cert"]["not_after"] = "2026-10-18T15:59:59.999999999Z"
+        (sdir / "ns-expired.json").write_text(json.dumps(exp))
+        rc, j, _ = run("diagnose", str(sdir / "ns-expired.json"), "--json")
+        if rc == 2 or "TLS_CERT_EXPIRED" not in codes(j if isinstance(j, dict) else {}):
+            bad.append(f"not_after with 9 fraction digits before capture: exit {rc}, expected TLS_CERT_EXPIRED")
+        # digits past the sixth are dropped, never rounded: .1234567 is before .123457
+        exp["captured_at"] = "2026-10-18T16:00:00.123457Z"
+        for o in exp["observations"]:
+            if o["stage"] == "tls":
+                o["cert"]["not_after"] = "2026-10-18T16:00:00.1234567Z"
+        (sdir / "ns-trunc.json").write_text(json.dumps(exp))
+        rc, j, _ = run("diagnose", str(sdir / "ns-trunc.json"), "--json")
+        if rc == 2 or "TLS_CERT_EXPIRED" not in codes(j if isinstance(j, dict) else {}):
+            bad.append(f"not_after .1234567 before capture .123457: exit {rc}, expected TLS_CERT_EXPIRED (truncate, not round)")
+        check("o14_san_spellings_and_inputs", not bad, "keytool/Windows/one-line SANs cover; non-host SAN types never hide a mismatch; suffix wildcards, non-ASCII, double dot refused; SNI flagged; deep JSON and non-RFC 3339 times exit 2; any fraction digit count accepted" if not bad else "; ".join(bad[:3]))
     n = sum(results)
     print(f"SUMMARY {n}/{len(results)} pass; candidate {'ACCEPTED by oracle' if n == len(results) else 'REJECTED'}")
     return 0 if n == len(results) else 1
