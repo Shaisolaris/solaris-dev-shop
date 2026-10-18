@@ -1,0 +1,11 @@
+--- a/employees/infrastructure/database-administrator/sqlite_recovery.py	2026-10-18 13:43:25
++++ b/employees/infrastructure/database-administrator/sqlite_recovery.py	2026-10-18 13:43:25
+@@ -533,6 +533,8 @@
+         if (dataset / n).stat().st_size == 0:
+             problems.append(f"{n}: empty file (0 bytes), not a database")
+             continue
++        if _lkind(dataset / JOURNAL) != "missing":
++            continue  # mid-swap: do not open; a WAL fallback open would create sidecars that block recover
+         try:
+             con = _open_live(dataset / n, timeout=lock_timeout)
+             try:

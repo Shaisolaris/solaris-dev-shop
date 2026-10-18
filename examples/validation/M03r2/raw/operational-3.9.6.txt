@@ -1,0 +1,18 @@
+# m03_operational on 3.9.6 2026-10-18 13:39:14 PDT
+== drill (1.5s): PROBLEMS 1
+   N=1: health-before=1 recover=0 -> snap, health-after=0, live kept=True, debris=[]
+   N=2: health-before=1 recover=0 -> snap, health-after=0, live kept=True, debris=[]
+   N=3: health-before=1 recover=0 -> snap, health-after=0, live kept=True, debris=[]
+   N=4: health-before=1 recover=1 -> MIXED, health-after=1, live kept=True, debris=['.audit.db.restore-c8cded50f20f8c2b-4922e380.staged', '.solaris-recovery.json']
+   N=5: health-before=1 recover=0 -> snap, health-after=0, live kept=True, debris=[]
+   N=6: health-before=1 recover=0 -> snap, health-after=0, live kept=True, debris=[]
+   N=7: rc=0 (no rename left to interrupt)
+   PROBLEM N=4: health-before=1 recover=1 -> MIXED, health-after=1, live kept=True, debris=['.audit.db.restore-c8cded50f20f8c2b-4922e380.staged', '.solaris-recovery.json']
+== kill-restore (8.8s): OK
+   40 rounds, outcomes {'killed->live': 40}
+== kill-recover (11.2s): OK
+   40 rounds, outcomes {'finished->snap': 2, 'killed->snap': 38}
+== scale (5.9s): OK
+   8 DBs x 50000 rows: snapshot 0.7s, verify rc=0 0.3s, restore rc=0 3.3s, values exact=True
+SUMMARY operational problems=1
+[exit 0]

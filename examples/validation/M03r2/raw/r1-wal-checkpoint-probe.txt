@@ -1,0 +1,34 @@
+python 3.9.6 sqlite 3.54.0
+== health
+ before:
+  main sha 67a0826de1302c1c size 8192; files: app.db app.db-wal ; -wal 4152 bytes
+ [exit 0] health: ok   healthy: app.db 
+ after:
+  main sha 67a0826de1302c1c size 8192; files: app.db app.db-shm app.db-wal ; -wal 4152 bytes
+  rows now visible: [(1, 'base')] (main file alone, immutable)
+== snapshot
+ before:
+  main sha 67a0826de1302c1c size 8192; files: app.db app.db-wal ; -wal 4152 bytes
+ [exit 0] snapshot: ok   snapshot 700b266b753bffb0 written to /private/tmp/m03r2wal.9MCJ/snap 
+ after:
+  main sha 67a0826de1302c1c size 8192; files: app.db app.db-shm app.db-wal ; -wal 4152 bytes
+  snapshot copy rows: [(1, 'base'), (2, 'only-in-wal')]
+  rows now visible: [(1, 'base')] (main file alone, immutable)
+
+python 3.12.14 sqlite 3.53.1
+== health
+ before:
+  main sha 4d9406964d907047 size 8192; files: app.db app.db-wal ; -wal 4152 bytes
+ [exit 0] health: ok   healthy: app.db 
+ after:
+  main sha 4d9406964d907047 size 8192; files: app.db app.db-shm app.db-wal ; -wal 4152 bytes
+  rows now visible: [(1, 'base')] (main file alone, immutable)
+== snapshot
+ before:
+  main sha 4d9406964d907047 size 8192; files: app.db app.db-wal ; -wal 4152 bytes
+ [exit 0] snapshot: ok   snapshot 5601d50af4b5a99e written to /private/tmp/m03r2wal.9Eri/snap 
+ after:
+  main sha 4d9406964d907047 size 8192; files: app.db app.db-shm app.db-wal ; -wal 4152 bytes
+  snapshot copy rows: [(1, 'base'), (2, 'only-in-wal')]
+  rows now visible: [(1, 'base')] (main file alone, immutable)
+

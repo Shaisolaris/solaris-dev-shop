@@ -1,0 +1,13 @@
+# r2 injector check 13:17:22 PDT: Path.touch/rename/replace/unlink and os.open under the injector
+== injector M03/oracle on Python 3.9.6
+TypeError: unsupported operand type(s) for &: 'PosixPath' and 'int'
+events: 0
+== injector M03/oracle on Python 3.12.14
+ok
+events: 5
+== injector r2/oracle on Python 3.9.6
+ok
+events: 5
+== injector r2/oracle on Python 3.12.14
+ok
+events: 5

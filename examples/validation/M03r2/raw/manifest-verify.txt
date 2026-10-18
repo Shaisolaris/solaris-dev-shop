@@ -1,0 +1,16 @@
+employees/infrastructure/database-administrator/SKILL.md: OK
+employees/infrastructure/database-administrator/capability.contract.json: OK
+employees/infrastructure/database-administrator/learnings.md: OK
+employees/infrastructure/database-administrator/plugin.json: OK
+employees/infrastructure/site-reliability-engineer/SKILL.md: OK
+employees/infrastructure/site-reliability-engineer/learnings.md: OK
+employees/infrastructure/database-administrator/sqlite_recovery.py: OK
+employees/infrastructure/database-administrator/sqlite-recovery.md: OK
+examples/capabilities/G03/README.md: OK
+examples/capabilities/G03/recovery_oracle.py: OK
+examples/capabilities/G03/noop_stub.py: OK
+examples/capabilities/G03/naive_stub.py: OK
+tests/test_g03_capability.py: OK
+OK: 13 / 13
+MANIFEST_FILESET_EQUALS_DIFF_FILESET_vs_02ba9c5
+manifest sha256 0b4e01d3abafb2ed2b7a7574ddb69565d9fea71f8ef1e4fb97967def254ef69d

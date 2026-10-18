@@ -1,0 +1,20 @@
+# m03_adversarial on 3.12.14 2026-10-18 13:38:36 PDT
+OK a01_sqlite_prefixed_user_table: sqlite-prefixed user tables restored
+OK a02_user_version_only: header pragmas restored
+OK a03_zero_byte_expected_db: 0-byte db rejected rc=1
+NOTE a04_tables_dropped_health_no_snapshot: health without --snapshot after dropping every user table: rc=1 (only --snapshot checks content)
+NOTE a05_case_alias_expect: case-insensitive FS: --expect App.db with app.db present rc=0; --expect Audit.db with audit.db absent rc=1
+OK a06_manifest_missing_tables_key: manifest without 'tables' refused cleanly: [('verify', 1, False), ('health', 2, False), ('restore', 2, False)]
+OK a07_journal_traversal: forged traversal journal refused rc=1, outside untouched: recover: needs_human
+OK a08_journal_onto_existing_file: tampered journal (rename onto an existing file) changed nothing rc=1
+OK a09_journal_traversal_real_schema: real-schema journal with ../ target refused rc=1; outside untouched
+OK a10_symlinked_live_db: symlinked live DB: restore rc=2, outside target untouched; health rc=1
+OK a11_lock_symlink_outside: symlinked lock file refused (restore rc=1, snapshot rc=1); outside untouched
+OK a12_stale_rollback_journal_sidecar: app.db-journal sidecar set aside with the old copy; restored values exact
+NOTE a13_open_reader_during_restore: open read transaction on app.db: restore rc=1 in 1.1s, values unchanged (doc: probe refuses while another connection holds the DB)
+NOTE a14_nan_and_inf_timeout: --lock-timeout values (dry run): nan:rc=2, inf:rc=2, -1:rc=2, 0:rc=2, 601:rc=2, 1e-9:rc=0
+NOTE a15_health_locked_wording: health on an exclusively locked DB: rc=1 after 5.2s: app.db: busy, another connection held it for 5s (database is locked); retry
+OK a16_snapshot_inside_dataset: snapshot into the dataset refused rc=2
+OK a17_kill_on_every_write_open: 4 write-open kill points: all recovered to live or snapshot values, health ok, no debris: ['w1:live/recover=0/health=0', 'w2:live/recover=0/health=0', 'w3:live/recover=0/health=0', 'w4:live/recover=0/health=0']
+SUMMARY NOTE=5, OK=12
+[exit 0]

@@ -1,0 +1,2 @@
+Preparing worktree (detached HEAD 9f2fbbc)
+HEAD is now at 9f2fbbc G03 rework: M03 self-validation findings F1 to F7 (review only)

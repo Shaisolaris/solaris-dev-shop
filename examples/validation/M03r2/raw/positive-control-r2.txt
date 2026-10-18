@@ -1,0 +1,20 @@
+# positive control: candidate 9f2fbbc + oracle/proposed-fix-r2.patch (scratch copy /tmp/m03r2-fix; candidate untouched) 2026-10-18 13:43:25 PDT
+== Python 3.9.6 m03_oracle
+SUMMARY 12/12 pass; oracle ACCEPTS candidate
+== Python 3.9.6 builder oracle
+SUMMARY 15/15 pass; candidate ACCEPTED by oracle
+== Python 3.9.6 full suite
+Ran 128 tests in 6.553s
+OK
+== Python 3.12.14 m03_oracle
+SUMMARY 12/12 pass; oracle ACCEPTS candidate
+== Python 3.12.14 builder oracle
+SUMMARY 15/15 pass; candidate ACCEPTED by oracle
+== Python 3.12.14 full suite
+Ran 128 tests in 5.670s
+OK
+== 3.9.6 k4 probe with health
+=== kill@7 restore rc=-9
+health rc=1: health: unhealthy |   .solaris-recovery.json: a restore is in progress or was interrupted; run `recover`
+recover rc=0: recover: ok |   interrupted after 4 of 6 renames; staged copies verify, completing the restore |   restored app.db, audit.db from snapshot b6a93c3acdbc676f |   previous files kept: app.db.pre-restore-b6a93c3acdbc676f-6efe9dc4, audit.db-wal.pre-restore-b6a93c3acdbc676f-6efe9dc4, audit.db-shm.pre-restore-b6a93c3acdbc676f-6efe9dc4, audit.db.pre-restore-b6a93c3acdbc676f-6efe9dc4
+state: ('forward', True)

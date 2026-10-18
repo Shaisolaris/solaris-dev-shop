@@ -1,0 +1,18 @@
+# python 3.9.6? helper/tool interpreter: 3.9.6 3.54.0
+FINDING g01_parent_created_then_refused: snapshot refused (exit 1: 'snapshot: busy\n  another recovery operation is running on this dataset (unknown holder); n'); missing parent snapshots/ created anyway: True
+OK g02_parent_via_symlinked_grandparent: --out link/snapshots/s1 with link -> elsewhere: exit 2; created under the link target: []
+OK g03_fallback_concurrency: quiescent WAL DB without sidecars, 8 health + 4 snapshot at once: exits [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1] (busy 2), other failures [], snapshots verify [0, 0], main file unchanged True, dataset now ['app.db', 'app.db-shm', 'app.db-wal']
+OK g04_health_lock_timeout: exclusive holder: --lock-timeout 1 -> exit 1 in 1.1s ('health: unhealthy\n  app.db: busy, another connection held it for 1s (database is'); 0.2 -> 0.3s; bad values exit {'nan': 2, 'inf': 2, '-1': 2, '0': 2, '601': 2}
+OK g05_journal_temp_cleanup_scope: dry run exit 0 removed nothing: True; recover exit 0 removed ['match']; dir, symlink and outside file kept: True
+OK g06_recover_races_restore: 10 restores each raced by back-to-back recover: restored 2, refused busy with live values untouched 8, bad []; debris []
+OK g07_restore_into_fallback_sidecars: snapshot exit 0; dataset before restore ['app.db', 'app.db-shm', 'app.db-wal']; restore exit 0; id=1 value now 'r0' (want 'r0'); health vs snapshot exit 0
+
+# python 3.12.14? helper/tool interpreter: 3.12.14 3.53.1
+FINDING g01_parent_created_then_refused: snapshot refused (exit 1: 'snapshot: busy\n  another recovery operation is running on this dataset (unknown holder); n'); missing parent snapshots/ created anyway: True
+OK g02_parent_via_symlinked_grandparent: --out link/snapshots/s1 with link -> elsewhere: exit 2; created under the link target: []
+OK g03_fallback_concurrency: quiescent WAL DB without sidecars, 8 health + 4 snapshot at once: exits [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1] (busy 2), other failures [], snapshots verify [0, 0], main file unchanged True, dataset now ['app.db', 'app.db-shm', 'app.db-wal']
+OK g04_health_lock_timeout: exclusive holder: --lock-timeout 1 -> exit 1 in 1.1s ('health: unhealthy\n  app.db: busy, another connection held it for 1s (database is'); 0.2 -> 0.3s; bad values exit {'nan': 2, 'inf': 2, '-1': 2, '0': 2, '601': 2}
+OK g05_journal_temp_cleanup_scope: dry run exit 0 removed nothing: True; recover exit 0 removed ['match']; dir, symlink and outside file kept: True
+OK g06_recover_races_restore: 10 restores each raced by back-to-back recover: restored 2, refused busy with live values untouched 8, bad []; debris []
+OK g07_restore_into_fallback_sidecars: snapshot exit 0; dataset before restore ['app.db', 'app.db-shm', 'app.db-wal']; restore exit 0; id=1 value now 'r0' (want 'r0'); health vs snapshot exit 0
+

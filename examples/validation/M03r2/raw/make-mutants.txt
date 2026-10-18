@@ -1,0 +1,15 @@
+skip_snapshot_verify
+no_confirm_needed
+dry_run_restores_when_confirmed
+delete_recoverable_copies
+recover_always_forward
+recover_noop
+no_dataset_flock
+no_dataset_lock_at_all
+unbounded_lock_wait
+health_ignores_journal
+health_missing_ok
+follow_symlinks
+skip_when_counts_match
+no_extra_member_check
+no_staging_journal

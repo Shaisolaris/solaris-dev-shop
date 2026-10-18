@@ -1,0 +1,18 @@
+=== r2_f3_no_ro_fallback: m03_oracle on 3.9.6
+SUMMARY 12/12 pass; oracle ACCEPTS candidate
+=== r2_f3_no_ro_fallback: builder oracle on 3.9.6
+SUMMARY 15/15 pass; candidate ACCEPTED by oracle
+r2_f3_no_ro_fallback builder tests 3.9.6: rc=1 FAIL: test_f3_quiescent_wal_database_snapshots_without_sidecars (test_g03_capability.M03Rework) Ran 44 tests in 4.813s FAILED (failures=1) 
+=== r2_f3_copy_keeps_sidecars: m03_oracle on 3.9.6
+FAIL k1_restore_values: verify of a fresh snapshot failed rc=1
+FAIL k3_dry_run: dry run with --confirm exited non-zero
+FAIL k4_rename_gaps: restore made only 0 rename/unlink events: nothing to interrupt
+FAIL k7_finite_timeout: restore after the lock was released failed
+FAIL k9_concurrency: round 0: no concurrent restore succeeded: [2, 2, 2, 2, 2, 2, 2, 2]
+FAIL k10_value_fidelity: table sqlitedata changed after snapshot; restore rc=2 but values not restored (health before restore rc=2). table sqlitedata: health_rc=2 restore_rc=2 values_restored=False
+FAIL k11_same_count_change: equal-count value change not restored (rc=2): restore: refused
+FAIL k12_external_flock: restore after the lock was released rc=2
+SUMMARY 4/12 pass; oracle REJECTS candidate
+=== r2_f3_copy_keeps_sidecars: builder oracle on 3.9.6
+SUMMARY 15/15 pass; candidate ACCEPTED by oracle
+r2_f3_copy_keeps_sidecars builder tests 3.9.6: rc=1 FAIL: test_wal_source_and_sidecars_are_handled (test_g03_capability.CleanRestore) FAIL: test_f3_live_writer_snapshot_keeps_no_sidecar (test_g03_capability.M03Rework) FAIL: test_f3_quiescent_wal_database_snapshots_without_sidecars (test_g03_capability.M03Rework) Ran 44 tests in 4.520s FAILED (failures=3) 

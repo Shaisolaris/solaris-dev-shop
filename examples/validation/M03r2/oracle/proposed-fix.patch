@@ -1,0 +1,13 @@
+--- a/employees/infrastructure/database-administrator/sqlite_recovery.py	2026-10-18 11:47:19
++++ b/sqlite_recovery.py	2026-10-18 11:54:38
+@@ -171,8 +171,9 @@
+     """Integrity result, schema digest and per-table row count + value digest."""
+     integrity = [r[0] for r in con.execute("PRAGMA integrity_check").fetchall()]
+     schema = con.execute("SELECT type, name, tbl_name, sql FROM sqlite_master ORDER BY type, name").fetchall()
++    schema.append(("pragma", con.execute("PRAGMA user_version").fetchone()[0], con.execute("PRAGMA application_id").fetchone()[0]))
+     tables: Dict[str, Dict[str, Any]] = {}
+-    for (name,) in con.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' "
++    for (name,) in con.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite\\_%' ESCAPE '\\' "
+                                "ORDER BY name").fetchall():
+         try:
+             cur = con.execute(f"SELECT * FROM {_quote(name)} ORDER BY rowid")

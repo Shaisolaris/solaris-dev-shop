@@ -1,0 +1,103 @@
+# REJECTED RUN (harness): the r1 fresh-caller script still applied its F6 mkdir workaround and re-ran the snapshot,
+# which exited 2 because the snapshot already existed, so SID was empty and every --confirm lacked its value.
+# The literal first doc command itself exited 0 (F6 fixed). Superseded by fresh-caller.txt (oracle/m03r2_fresh_caller.sh).
+# fresh caller 2026-10-18 13:39:41 PDT
+python3 = 3.12.14; HOME=/tmp/m03-fresh/home; env vars: 7
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py snapshot data/ --out snapshots/2026-10-18 --json   (literal doc command)
+{
+  "databases": {
+    "app.db": {
+      "tables": {
+        "orders": 2
+      }
+    },
+    "audit.db": {
+      "tables": {
+        "ev": 1
+      }
+    }
+  },
+  "exit_code": 0,
+  "messages": [
+    "snapshot fab0ee8d8dd687ab written to /private/tmp/m03-fresh/repo/snapshots/2026-10-18"
+  ],
+  "snapshot": "/private/tmp/m03-fresh/repo/snapshots/2026-10-18",
+  "snapshot_id": "fab0ee8d8dd687ab",
+  "status": "ok"
+}
+[exit 0]
+DEVIATION: the doc does not say the parent must exist; creating it: mkdir -p snapshots
+[exit 2]
+{
+  "exit_code": 2,
+  "messages": [
+    "snapshot destination /private/tmp/m03-fresh/repo/snapshots/2026-10-18 already exists; choose a new path"
+  ],
+  "status": "refused"
+}
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+KeyError: 'snapshot_id'
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py verify snapshots/2026-10-18 --expect app.db --expect audit.db
+verify: ok
+  snapshot fab0ee8d8dd687ab verified: 2 databases, sha256, integrity and per-table value digests match
+[exit 0]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py health data/ --expect app.db --expect audit.db --snapshot snapshots/2026-10-18
+health: ok
+  healthy: app.db, audit.db match snapshot fab0ee8d8dd687ab
+[exit 0]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py health data/ --expect app.db --expect audit.db --snapshot snapshots/2026-10-18
+health: unhealthy
+  app.db: values differ from snapshot fab0ee8d8dd687ab in tables ['orders']
+[exit 1]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py restore data/ --snapshot snapshots/2026-10-18 --dry-run
+restore: planned
+  dry run: would restore 1 of 2 databases from snapshot fab0ee8d8dd687ab; nothing written
+  a real restore needs --confirm fab0ee8d8dd687ab
+  plan app.db: tables differing: ['orders']; rows only in the live database: {'orders': 2}
+  plan audit.db: already matches the snapshot; left in place
+[exit 0]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py restore data/ --snapshot snapshots/2026-10-18
+restore: refused
+  restore needs explicit intent: --confirm fab0ee8d8dd687ab (the plan below shows what the live files hold that the snapshot does not); nothing changed
+  plan app.db: tables differing: ['orders']; rows only in the live database: {'orders': 2}
+  plan audit.db: already matches the snapshot; left in place
+[exit 2]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py restore data/ --snapshot snapshots/2026-10-18 --confirm
+usage: sqlite_recovery.py restore [-h] --snapshot SNAPSHOT [--confirm CONFIRM]
+                                  [--dry-run] [--lock-timeout LOCK_TIMEOUT]
+                                  [--simulate-crash-after SIMULATE_CRASH_AFTER]
+                                  [--json]
+                                  dataset
+sqlite_recovery.py restore: error: argument --confirm: expected one argument
+[exit 2]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py health data/ --expect app.db --expect audit.db --snapshot snapshots/2026-10-18
+health: unhealthy
+  app.db: values differ from snapshot fab0ee8d8dd687ab in tables ['orders']
+[exit 1]
+values now: [('apple', 99), ('pear', 2), ('mistake', 0)]
+dataset: app.db audit.db 
+-- drill from the doc
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py restore data/ --snapshot snapshots/2026-10-18 --confirm --simulate-crash-after 1
+usage: sqlite_recovery.py restore [-h] --snapshot SNAPSHOT [--confirm CONFIRM]
+                                  [--dry-run] [--lock-timeout LOCK_TIMEOUT]
+                                  [--simulate-crash-after SIMULATE_CRASH_AFTER]
+                                  [--json]
+                                  dataset
+sqlite_recovery.py restore: error: argument --confirm: expected one argument
+[exit 2]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py health data/ --expect app.db --expect audit.db
+health: ok
+  healthy: app.db, audit.db
+[exit 0]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py recover data/
+recover: nothing_to_do
+  no interrupted restore recorded; nothing changed
+[exit 0]
+$ python3 employees/infrastructure/database-administrator/sqlite_recovery.py health data/ --expect app.db --expect audit.db --snapshot snapshots/2026-10-18
+health: unhealthy
+  app.db: values differ from snapshot fab0ee8d8dd687ab in tables ['orders']
+[exit 1]
+values now: [('apple', 7), ('pear', 7), ('mistake', 7)]
+dataset: app.db audit.db 
+[exit 0]

@@ -1,0 +1,10 @@
+run 1 3.12.14: SUMMARY 15/15 pass; candidate ACCEPTED by oracle 
+run 1 3.9.6: FAIL c10_concurrent: leftovers SUMMARY 14/15 pass; candidate REJECTED 
+run 2 3.12.14: SUMMARY 15/15 pass; candidate ACCEPTED by oracle 
+run 2 3.9.6: SUMMARY 15/15 pass; candidate ACCEPTED by oracle 
+run 3 3.12.14: SUMMARY 15/15 pass; candidate ACCEPTED by oracle 
+run 3 3.9.6: FAIL c10_concurrent: leftovers SUMMARY 14/15 pass; candidate REJECTED 
+run 4 3.12.14: SUMMARY 15/15 pass; candidate ACCEPTED by oracle 
+run 4 3.9.6: SUMMARY 15/15 pass; candidate ACCEPTED by oracle 
+run 5 3.12.14: SUMMARY 15/15 pass; candidate ACCEPTED by oracle 
+run 5 3.9.6: FAIL c10_concurrent: leftovers SUMMARY 14/15 pass; candidate REJECTED 
