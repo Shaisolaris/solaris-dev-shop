@@ -1,0 +1,19 @@
+# manifest verify r3 2026-10-18 16:16:41 PDT against d4d98f2
+employees/infrastructure/database-administrator/SKILL.md: OK
+employees/infrastructure/database-administrator/capability.contract.json: OK
+employees/infrastructure/database-administrator/learnings.md: OK
+employees/infrastructure/database-administrator/plugin.json: OK
+employees/infrastructure/site-reliability-engineer/SKILL.md: OK
+employees/infrastructure/site-reliability-engineer/learnings.md: OK
+employees/infrastructure/database-administrator/sqlite_recovery.py: OK
+employees/infrastructure/database-administrator/sqlite-recovery.md: OK
+examples/capabilities/G03/README.md: OK
+examples/capabilities/G03/recovery_oracle.py: OK
+examples/capabilities/G03/noop_stub.py: OK
+examples/capabilities/G03/naive_stub.py: OK
+tests/test_g03_capability.py: OK
+manifest file set vs diff 02ba9c5..d4d98f2:
+file sets equal
+G03-r3.patch vs 9f2fbbc..d4d98f2:
+9fc3c3ebec74411a2e0bd13dbe40ac55e7e8c7e71edb4b6fbe8bec0399179da1  -
+9fc3c3ebec74411a2e0bd13dbe40ac55e7e8c7e71edb4b6fbe8bec0399179da1  <D>/grok-output/G03/G03-r3.patch

@@ -1,0 +1,34 @@
+done candidate
+done r2-9f2fbbc
+done delete_recoverable_copies
+done dry_run_restores_when_confirmed
+done follow_symlinks
+done health_ignores_journal
+done health_missing_ok
+done m03r3_no_prelock_journal_check
+done m03r3_no_underlock_journal_check
+done no_confirm_needed
+done no_dataset_flock
+done no_dataset_lock_at_all
+done no_extra_member_check
+done no_staging_journal
+done r2_f1_like_unescaped
+done r2_f2_no_header
+done r2_f3_copy_keeps_sidecars
+BUDGET-STOP before r2_f3_no_ro_fallback
+done r2_f3_no_ro_fallback
+done r2_f4_empty_db_healthy
+done r2_f5_no_entry_check
+done r2_f7_nan_accepted
+done r2_journal_temps_kept
+done r3_health_opens_mid_swap
+done r3_mkdir_before_lock
+done r3_no_fallback_guard
+done r3_no_rmdir_on_failure
+done r3_snapshot_ignores_journal
+done recover_always_forward
+done recover_noop
+done skip_snapshot_verify
+done skip_when_counts_match
+done unbounded_lock_wait
+TEETH-DONE

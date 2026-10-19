@@ -1,0 +1,6 @@
+run 1 3.12.14: c10 c16 SUMMARY 16/18 pass; candidate REJECTED 
+run 1 3.9.6: c16 SUMMARY 17/18 pass; candidate REJECTED 
+run 2 3.12.14: c10 c16 SUMMARY 16/18 pass; candidate REJECTED 
+run 2 3.9.6: c16 SUMMARY 17/18 pass; candidate REJECTED 
+run 3 3.12.14: c16 SUMMARY 17/18 pass; candidate REJECTED 
+run 3 3.9.6: c16 SUMMARY 17/18 pass; candidate REJECTED 

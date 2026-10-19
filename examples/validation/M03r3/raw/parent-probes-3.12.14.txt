@@ -1,0 +1,9 @@
+NOTE p1_zero_db: snapshot exit 0 (snapshot: ok); health calls this DB unhealthy
+OK p1_garbage_db_missing_parent: exit 2 (snapshot: refused); parent exists after: False
+NOTE p1_tableless_db: snapshot exit 0 (snapshot: ok); health calls this DB unhealthy
+OK p2_failed_snapshot_keeps_preexisting_parent: exit 2; parent listing after: ['keep.txt']
+OK p3_failed_snapshot_keeps_preexisting_empty_parent: exit 2; parent exists after: True
+OK p4_ok_snapshot_missing_parent_wal=False: exit 0 (snapshot: ok); s1 present True; other entries []
+OK p4_ok_snapshot_missing_parent_wal=True: exit 0 (snapshot: ok); s1 present True; other entries []
+OK p5_two_missing_levels_refused_nothing_created: exit 2; a/ exists False
+PROBES OK

@@ -1,0 +1,2 @@
+Preparing worktree (detached HEAD d4d98f2)
+HEAD is now at d4d98f2 G03 rework r3: M03 r2 findings R-A to R-D (review only)

@@ -1,0 +1,100 @@
+=== kill@1 restore rc=-9
+events: 1 osopen-w ..solaris-recovery.json.5b278f2b69508a5a.tmp; 1 replace .solaris-recovery.json; 
+after kill: ['..solaris-recovery.json.5b278f2b69508a5a.tmp', '.solaris-recovery.lock', 'app.db', 'audit.db', 'notes.txt', 'sub/']
+after kill values: app live | audit live
+health rc=0: health: ok |   healthy: app.db, audit.db
+after health: ['..solaris-recovery.json.5b278f2b69508a5a.tmp', '.solaris-recovery.lock', 'app.db', 'audit.db', 'audit.db-shm', 'audit.db-wal', 'notes.txt', 'sub/']
+recover rc=0: recover: nothing_to_do |   no interrupted restore recorded; nothing changed |   removed 1 leftover journal temp file(s)
+after recover: ['app.db', 'audit.db', 'audit.db-shm', 'audit.db-wal', 'notes.txt', 'sub/']
+after recover values: app live | audit live
+state: ('back', True)
+=== kill@2 restore rc=-9
+events: 1 osopen-w ..solaris-recovery.json.d73591eb61dcaadd.tmp; 1 replace .solaris-recovery.json; 2 osopen-w .app.db.restore-6368478dee4c0c22-2b6bfcb0.staged; 3 osopen-w .audit.db.restore-6368478dee4c0c22-2b6bfcb0.staged; 4 osopen-w ..solaris-recovery.json.bb574c6236d0c695.tmp; 2 replace .solaris-recovery.json; 
+after kill: ['..solaris-recovery.json.bb574c6236d0c695.tmp', '.app.db.restore-6368478dee4c0c22-2b6bfcb0.staged', '.audit.db.restore-6368478dee4c0c22-2b6bfcb0.staged', '.solaris-recovery.json', '.solaris-recovery.lock', 'app.db', 'audit.db', 'notes.txt', 'sub/']
+after kill values: app live | audit live
+health rc=1: health: unhealthy |   .solaris-recovery.json: a restore is in progress or was interrupted; run `recover`. Databases were not opened, so nothing (not even a -wal/-shm file) was created
+after health: ['..solaris-recovery.json.bb574c6236d0c695.tmp', '.app.db.restore-6368478dee4c0c22-2b6bfcb0.staged', '.audit.db.restore-6368478dee4c0c22-2b6bfcb0.staged', '.solaris-recovery.json', '.solaris-recovery.lock', 'app.db', 'audit.db', 'notes.txt', 'sub/']
+recover rc=0: recover: ok |   interrupted before any swap; staged copies removed, original files were never moved |   removed 1 leftover journal temp file(s)
+after recover: ['app.db', 'audit.db', 'notes.txt', 'sub/']
+after recover values: app live | audit live
+state: ('back', True)
+=== kill@3 restore rc=-9
+events: 1 osopen-w ..solaris-recovery.json.6913dca5aa039cba.tmp; 1 replace .solaris-recovery.json; 2 osopen-w .app.db.restore-c9dd790869d36033-0cb51c1e.staged; 3 osopen-w .audit.db.restore-c9dd790869d36033-0cb51c1e.staged; 4 osopen-w ..solaris-recovery.json.98de03817dae3daf.tmp; 2 replace .solaris-recovery.json; 3 rename app.db.pre-restore-c9dd790869d36033-0cb51c1e; 
+after kill: ['.app.db.restore-c9dd790869d36033-0cb51c1e.staged', '.audit.db.restore-c9dd790869d36033-0cb51c1e.staged', '.solaris-recovery.json', '.solaris-recovery.lock', 'app.db', 'audit.db', 'notes.txt', 'sub/']
+after kill values: app live | audit live
+health rc=1: health: unhealthy |   .solaris-recovery.json: a restore is in progress or was interrupted; run `recover`. Databases were not opened, so nothing (not even a -wal/-shm file) was created
+after health: ['.app.db.restore-c9dd790869d36033-0cb51c1e.staged', '.audit.db.restore-c9dd790869d36033-0cb51c1e.staged', '.solaris-recovery.json', '.solaris-recovery.lock', 'app.db', 'audit.db', 'notes.txt', 'sub/']
+recover rc=0: recover: ok |   interrupted after 0 of 4 renames; staged copies verify, completing the restore |   restored app.db, audit.db from snapshot c9dd790869d36033 |   previous files kept: app.db.pre-restore-c9dd790869d36033-0cb51c1e, audit.db.pre-restore-c9dd790869d36033-0cb51c1e
+after recover: ['app.db', 'app.db.pre-restore-c9dd790869d36033-0cb51c1e', 'audit.db', 'audit.db.pre-restore-c9dd790869d36033-0cb51c1e', 'notes.txt', 'sub/']
+after recover values: app snap | audit snap
+state: ('forward', True)
+=== kill@4 restore rc=-9
+events: 1 osopen-w ..solaris-recovery.json.03b90bcdad5ed51d.tmp; 1 replace .solaris-recovery.json; 2 osopen-w .app.db.restore-c08ac2c341b4dde4-24ebc14a.staged; 3 osopen-w .audit.db.restore-c08ac2c341b4dde4-24ebc14a.staged; 4 osopen-w ..solaris-recovery.json.13883ef9512e56a4.tmp; 2 replace .solaris-recovery.json; 3 rename app.db.pre-restore-c08ac2c341b4dde4-24ebc14a; 4 rename app.db; 
+after kill: ['.app.db.restore-c08ac2c341b4dde4-24ebc14a.staged', '.audit.db.restore-c08ac2c341b4dde4-24ebc14a.staged', '.solaris-recovery.json', '.solaris-recovery.lock', 'app.db.pre-restore-c08ac2c341b4dde4-24ebc14a', 'audit.db', 'notes.txt', 'sub/']
+after kill values: app None | audit live
+health rc=1: health: unhealthy |   .solaris-recovery.json: a restore is in progress or was interrupted; run `recover`. Databases were not opened, so nothing (not even a -wal/-shm file) was created |   app.db: expected database is missing
+after health: ['.app.db.restore-c08ac2c341b4dde4-24ebc14a.staged', '.audit.db.restore-c08ac2c341b4dde4-24ebc14a.staged', '.solaris-recovery.json', '.solaris-recovery.lock', 'app.db.pre-restore-c08ac2c341b4dde4-24ebc14a', 'audit.db', 'notes.txt', 'sub/']
+recover rc=0: recover: ok |   interrupted after 1 of 4 renames; staged copies verify, completing the restore |   restored app.db, audit.db from snapshot c08ac2c341b4dde4 |   previous files kept: app.db.pre-restore-c08ac2c341b4dde4-24ebc14a, audit.db.pre-restore-c08ac2c341b4dde4-24ebc14a
+after recover: ['app.db', 'app.db.pre-restore-c08ac2c341b4dde4-24ebc14a', 'audit.db', 'audit.db.pre-restore-c08ac2c341b4dde4-24ebc14a', 'notes.txt', 'sub/']
+after recover values: app snap | audit snap
+state: ('forward', True)
+=== kill@5 restore rc=-9
+events: 1 osopen-w ..solaris-recovery.json.15b96f978db5c9b6.tmp; 1 replace .solaris-recovery.json; 2 osopen-w .app.db.restore-92461be8f433a197-12f41251.staged; 3 osopen-w .audit.db.restore-92461be8f433a197-12f41251.staged; 4 osopen-w ..solaris-recovery.json.22ba1c90bfb70dfc.tmp; 2 replace .solaris-recovery.json; 3 rename app.db.pre-restore-92461be8f433a197-12f41251; 4 rename app.db; 5 rename audit.db.pre-restore-92461be8f433a197-12f41251; 
+after kill: ['.audit.db.restore-92461be8f433a197-12f41251.staged', '.solaris-recovery.json', '.solaris-recovery.lock', 'app.db', 'app.db.pre-restore-92461be8f433a197-12f41251', 'audit.db', 'notes.txt', 'sub/']
+after kill values: app snap | audit live
+health rc=1: health: unhealthy |   .solaris-recovery.json: a restore is in progress or was interrupted; run `recover`. Databases were not opened, so nothing (not even a -wal/-shm file) was created
+after health: ['.audit.db.restore-92461be8f433a197-12f41251.staged', '.solaris-recovery.json', '.solaris-recovery.lock', 'app.db', 'app.db.pre-restore-92461be8f433a197-12f41251', 'audit.db', 'notes.txt', 'sub/']
+recover rc=0: recover: ok |   interrupted after 2 of 4 renames; staged copies verify, completing the restore |   restored app.db, audit.db from snapshot 92461be8f433a197 |   previous files kept: app.db.pre-restore-92461be8f433a197-12f41251, audit.db.pre-restore-92461be8f433a197-12f41251
+after recover: ['app.db', 'app.db.pre-restore-92461be8f433a197-12f41251', 'audit.db', 'audit.db.pre-restore-92461be8f433a197-12f41251', 'notes.txt', 'sub/']
+after recover values: app snap | audit snap
+state: ('forward', True)
+=== kill@6 restore rc=-9
+events: 1 osopen-w ..solaris-recovery.json.464dbb08ce6f3d02.tmp; 1 replace .solaris-recovery.json; 2 osopen-w .app.db.restore-2b3cfa4bad52af5b-bb879e50.staged; 3 osopen-w .audit.db.restore-2b3cfa4bad52af5b-bb879e50.staged; 4 osopen-w ..solaris-recovery.json.39845deb2df550d4.tmp; 2 replace .solaris-recovery.json; 3 rename app.db.pre-restore-2b3cfa4bad52af5b-bb879e50; 4 rename app.db; 5 rename audit.db.pre-restore-2b3cfa4bad52af5b-bb879e50; 6 rename audit.db; 
+after kill: ['.audit.db.restore-2b3cfa4bad52af5b-bb879e50.staged', '.solaris-recovery.json', '.solaris-recovery.lock', 'app.db', 'app.db.pre-restore-2b3cfa4bad52af5b-bb879e50', 'audit.db.pre-restore-2b3cfa4bad52af5b-bb879e50', 'notes.txt', 'sub/']
+after kill values: app snap | audit None
+health rc=1: health: unhealthy |   .solaris-recovery.json: a restore is in progress or was interrupted; run `recover`. Databases were not opened, so nothing (not even a -wal/-shm file) was created |   audit.db: expected database is missing
+after health: ['.audit.db.restore-2b3cfa4bad52af5b-bb879e50.staged', '.solaris-recovery.json', '.solaris-recovery.lock', 'app.db', 'app.db.pre-restore-2b3cfa4bad52af5b-bb879e50', 'audit.db.pre-restore-2b3cfa4bad52af5b-bb879e50', 'notes.txt', 'sub/']
+recover rc=0: recover: ok |   interrupted after 3 of 4 renames; staged copies verify, completing the restore |   restored app.db, audit.db from snapshot 2b3cfa4bad52af5b |   previous files kept: app.db.pre-restore-2b3cfa4bad52af5b-bb879e50, audit.db.pre-restore-2b3cfa4bad52af5b-bb879e50
+after recover: ['app.db', 'app.db.pre-restore-2b3cfa4bad52af5b-bb879e50', 'audit.db', 'audit.db.pre-restore-2b3cfa4bad52af5b-bb879e50', 'notes.txt', 'sub/']
+after recover values: app snap | audit snap
+state: ('forward', True)
+=== kill@7 restore rc=-9
+events: 1 osopen-w ..solaris-recovery.json.7ddb7197b00cdeda.tmp; 1 replace .solaris-recovery.json; 2 osopen-w .app.db.restore-8f1635629b44045d-a68149fe.staged; 3 osopen-w .audit.db.restore-8f1635629b44045d-a68149fe.staged; 4 osopen-w ..solaris-recovery.json.97fdb6d3e35d85dc.tmp; 2 replace .solaris-recovery.json; 3 rename app.db.pre-restore-8f1635629b44045d-a68149fe; 4 rename app.db; 5 rename audit.db.pre-restore-8f1635629b44045d-a68149fe; 6 rename audit.db; 7 unlink .solaris-recovery.json; 
+after kill: ['.solaris-recovery.json', '.solaris-recovery.lock', 'app.db', 'app.db.pre-restore-8f1635629b44045d-a68149fe', 'audit.db', 'audit.db.pre-restore-8f1635629b44045d-a68149fe', 'notes.txt', 'sub/']
+after kill values: app snap | audit snap
+health rc=1: health: unhealthy |   .solaris-recovery.json: a restore is in progress or was interrupted; run `recover`. Databases were not opened, so nothing (not even a -wal/-shm file) was created
+after health: ['.solaris-recovery.json', '.solaris-recovery.lock', 'app.db', 'app.db.pre-restore-8f1635629b44045d-a68149fe', 'audit.db', 'audit.db.pre-restore-8f1635629b44045d-a68149fe', 'notes.txt', 'sub/']
+recover rc=0: recover: ok |   interrupted after 4 of 4 renames; staged copies verify, completing the restore |   restored app.db, audit.db from snapshot 8f1635629b44045d |   previous files kept: app.db.pre-restore-8f1635629b44045d-a68149fe, audit.db.pre-restore-8f1635629b44045d-a68149fe
+after recover: ['app.db', 'app.db.pre-restore-8f1635629b44045d-a68149fe', 'audit.db', 'audit.db.pre-restore-8f1635629b44045d-a68149fe', 'notes.txt', 'sub/']
+after recover values: app snap | audit snap
+state: ('forward', True)
+=== kill@8 restore rc=0
+events: 1 osopen-w ..solaris-recovery.json.5517a777e9a74b17.tmp; 1 replace .solaris-recovery.json; 2 osopen-w .app.db.restore-10c08548d7672640-10392588.staged; 3 osopen-w .audit.db.restore-10c08548d7672640-10392588.staged; 4 osopen-w ..solaris-recovery.json.fd35d5a023c625c2.tmp; 2 replace .solaris-recovery.json; 3 rename app.db.pre-restore-10c08548d7672640-10392588; 4 rename app.db; 5 rename audit.db.pre-restore-10c08548d7672640-10392588; 6 rename audit.db; 7 unlink .solaris-recovery.json; 
+after kill: ['app.db', 'app.db.pre-restore-10c08548d7672640-10392588', 'audit.db', 'audit.db.pre-restore-10c08548d7672640-10392588', 'notes.txt', 'sub/']
+after kill values: app snap | audit snap
+health rc=0: health: ok |   healthy: app.db, audit.db
+after health: ['app.db', 'app.db.pre-restore-10c08548d7672640-10392588', 'audit.db', 'audit.db.pre-restore-10c08548d7672640-10392588', 'notes.txt', 'sub/']
+recover rc=0: recover: nothing_to_do |   no interrupted restore recorded; nothing changed
+after recover: ['app.db', 'app.db.pre-restore-10c08548d7672640-10392588', 'audit.db', 'audit.db.pre-restore-10c08548d7672640-10392588', 'notes.txt', 'sub/']
+after recover values: app snap | audit snap
+state: ('forward', True)
+=== kill@9 restore rc=0
+events: 1 osopen-w ..solaris-recovery.json.7c4c17ab4a55784b.tmp; 1 replace .solaris-recovery.json; 2 osopen-w .app.db.restore-469912f5b3603a68-a6cb060d.staged; 3 osopen-w .audit.db.restore-469912f5b3603a68-a6cb060d.staged; 4 osopen-w ..solaris-recovery.json.976db7488c56affe.tmp; 2 replace .solaris-recovery.json; 3 rename app.db.pre-restore-469912f5b3603a68-a6cb060d; 4 rename app.db; 5 rename audit.db.pre-restore-469912f5b3603a68-a6cb060d; 6 rename audit.db; 7 unlink .solaris-recovery.json; 
+after kill: ['app.db', 'app.db.pre-restore-469912f5b3603a68-a6cb060d', 'audit.db', 'audit.db.pre-restore-469912f5b3603a68-a6cb060d', 'notes.txt', 'sub/']
+after kill values: app snap | audit snap
+health rc=0: health: ok |   healthy: app.db, audit.db
+after health: ['app.db', 'app.db.pre-restore-469912f5b3603a68-a6cb060d', 'audit.db', 'audit.db.pre-restore-469912f5b3603a68-a6cb060d', 'notes.txt', 'sub/']
+recover rc=0: recover: nothing_to_do |   no interrupted restore recorded; nothing changed
+after recover: ['app.db', 'app.db.pre-restore-469912f5b3603a68-a6cb060d', 'audit.db', 'audit.db.pre-restore-469912f5b3603a68-a6cb060d', 'notes.txt', 'sub/']
+after recover values: app snap | audit snap
+state: ('forward', True)
+=== kill@10 restore rc=0
+events: 1 osopen-w ..solaris-recovery.json.fe47750cc5e14c7c.tmp; 1 replace .solaris-recovery.json; 2 osopen-w .app.db.restore-0bfc0f2cef7432e0-f6444b86.staged; 3 osopen-w .audit.db.restore-0bfc0f2cef7432e0-f6444b86.staged; 4 osopen-w ..solaris-recovery.json.1ca8feae732c8755.tmp; 2 replace .solaris-recovery.json; 3 rename app.db.pre-restore-0bfc0f2cef7432e0-f6444b86; 4 rename app.db; 5 rename audit.db.pre-restore-0bfc0f2cef7432e0-f6444b86; 6 rename audit.db; 7 unlink .solaris-recovery.json; 
+after kill: ['app.db', 'app.db.pre-restore-0bfc0f2cef7432e0-f6444b86', 'audit.db', 'audit.db.pre-restore-0bfc0f2cef7432e0-f6444b86', 'notes.txt', 'sub/']
+after kill values: app snap | audit snap
+health rc=0: health: ok |   healthy: app.db, audit.db
+after health: ['app.db', 'app.db.pre-restore-0bfc0f2cef7432e0-f6444b86', 'audit.db', 'audit.db.pre-restore-0bfc0f2cef7432e0-f6444b86', 'notes.txt', 'sub/']
+recover rc=0: recover: nothing_to_do |   no interrupted restore recorded; nothing changed
+after recover: ['app.db', 'app.db.pre-restore-0bfc0f2cef7432e0-f6444b86', 'audit.db', 'audit.db.pre-restore-0bfc0f2cef7432e0-f6444b86', 'notes.txt', 'sub/']
+after recover values: app snap | audit snap
+state: ('forward', True)

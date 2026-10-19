@@ -1,0 +1,43 @@
+=== kill@2 restore rc=-9 journal=present
+  health                         rc=1 no file change | health: unhealthy
+  health --snapshot              rc=1 no file change | health: unhealthy
+  snapshot to new dir            rc=2 no file change | snapshot: refused
+  snapshot into missing parent   rc=2 no file change | snapshot: refused
+  restore --dry-run              rc=2 no file change | restore: refused
+  restore --confirm              rc=2 no file change | restore: refused
+  verify snapshot                rc=0 no file change | verify: ok
+  recover --dry-run              rc=0 no file change | recover: planned
+  recover rc=0 state=('back', True) | recover: ok
+=== kill@3 restore rc=-9 journal=present
+  health                         rc=1 no file change | health: unhealthy
+  health --snapshot              rc=1 no file change | health: unhealthy
+  snapshot to new dir            rc=2 no file change | snapshot: refused
+  snapshot into missing parent   rc=2 no file change | snapshot: refused
+  restore --dry-run              rc=2 no file change | restore: refused
+  restore --confirm              rc=2 no file change | restore: refused
+  verify snapshot                rc=0 no file change | verify: ok
+  recover --dry-run              rc=0 no file change | recover: planned
+  recover rc=0 state=('forward', True) | recover: ok
+=== kill@5 restore rc=-9 journal=present
+  health                         rc=1 no file change | health: unhealthy
+  health --snapshot              rc=1 no file change | health: unhealthy
+  snapshot to new dir            rc=2 no file change | snapshot: refused
+  snapshot into missing parent   rc=2 no file change | snapshot: refused
+  restore --dry-run              rc=2 no file change | restore: refused
+  restore --confirm              rc=2 no file change | restore: refused
+  verify snapshot                rc=0 no file change | verify: ok
+  recover --dry-run              rc=0 no file change | recover: planned
+  recover rc=0 state=('forward', True) | recover: ok
+=== kill@7 restore rc=-9 journal=present
+  health                         rc=1 no file change | health: unhealthy
+  health --snapshot              rc=1 no file change | health: unhealthy
+  snapshot to new dir            rc=2 no file change | snapshot: refused
+  snapshot into missing parent   rc=2 no file change | snapshot: refused
+  restore --dry-run              rc=2 no file change | restore: refused
+  restore --confirm              rc=2 no file change | restore: refused
+  verify snapshot                rc=0 no file change | verify: ok
+  recover --dry-run              rc=0 no file change | recover: planned
+  recover rc=0 state=('forward', True) | recover: ok
+=== kill@9 restore rc=0 journal=absent
+  (no journal at this point; sweep not applicable)
+SWEEP OK

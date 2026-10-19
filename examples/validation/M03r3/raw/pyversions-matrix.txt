@@ -1,0 +1,4 @@
+3.9.6 sqlite 3.54.0 full suite rc=0 Ran 132 tests in 6.647s OK 
+3.11.16 sqlite 3.53.1 full suite rc=0 Ran 132 tests in 5.476s OK 
+3.12.14 sqlite 3.53.1 full suite rc=0 Ran 132 tests in 5.936s OK 
+3.13.15 sqlite 3.53.1 full suite rc=0 Ran 132 tests in 5.606s OK 

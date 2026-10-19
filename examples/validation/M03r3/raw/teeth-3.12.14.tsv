@@ -1,0 +1,33 @@
+subject	m03_oracle	m03r3_sweep	builder_oracle	builder_tests
+candidate	SUMMARY 12/12 pass; oracle ACCEPTS candidate 	rc=0 0 wrote; SWEEP OK	SUMMARY 18/18 pass; candidate ACCEPTED by oracle 	rc=0 Ran 48 tests in 4.218s OK 
+r2-9f2fbbc	SUMMARY 12/12 pass; oracle ACCEPTS candidate 	rc=1 10 wrote; SWEEP FAIL (10)	c16 c17 c18 SUMMARY 15/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.186s FAILED (failures=4) 
+delete_recoverable_copies	k1 k4 k5 k9 k11 SUMMARY 7/12 pass; oracle REJECTS candidate 	rc=1 0 wrote; SWEEP FAIL (3)	c1 c4 c9 c10 SUMMARY 14/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.108s FAILED (failures=4) 
+dry_run_restores_when_confirmed	k3 SUMMARY 11/12 pass; oracle REJECTS candidate 	rc=0 0 wrote; SWEEP OK	c3 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.138s FAILED (failures=1, errors=1) 
+follow_symlinks	k8 SUMMARY 11/12 pass; oracle REJECTS candidate 	rc=0 0 wrote; SWEEP OK	c12 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.194s FAILED (failures=2) 
+health_ignores_journal	k4 SUMMARY 11/12 pass; oracle REJECTS candidate 	rc=1 4 wrote; SWEEP FAIL (4)	c12 c17 SUMMARY 16/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.065s FAILED (failures=3) 
+health_missing_ok	k8 SUMMARY 11/12 pass; oracle REJECTS candidate 	rc=0 0 wrote; SWEEP OK	c8 c12 SUMMARY 16/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.138s FAILED (failures=2) 
+m03r3_no_prelock_journal_check	SUMMARY 12/12 pass; oracle ACCEPTS candidate 	rc=1 3 wrote; SWEEP FAIL (3)	c17 SUMMARY 17/18 pass; candidate REJECTED 	rc=0 Ran 48 tests in 4.236s OK 
+m03r3_no_underlock_journal_check	SUMMARY 12/12 pass; oracle ACCEPTS candidate 	rc=0 0 wrote; SWEEP OK	SUMMARY 18/18 pass; candidate ACCEPTED by oracle 	rc=0 Ran 48 tests in 4.223s OK 
+no_confirm_needed	k2 SUMMARY 11/12 pass; oracle REJECTS candidate 	rc=0 0 wrote; SWEEP OK	c9 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.057s FAILED (failures=2) 
+no_dataset_flock	k9 SUMMARY 11/12 pass; oracle REJECTS candidate 	rc=0 0 wrote; SWEEP OK	c16 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.191s FAILED (failures=4) 
+no_dataset_lock_at_all	k9 k12 SUMMARY 10/12 pass; oracle REJECTS candidate 	rc=0 0 wrote; SWEEP OK	c10 c13 c16 SUMMARY 15/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.201s FAILED (failures=5) 
+no_extra_member_check	k2 SUMMARY 11/12 pass; oracle REJECTS candidate 	rc=0 0 wrote; SWEEP OK	c2 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.154s FAILED (failures=2) 
+no_staging_journal	SUMMARY 12/12 pass; oracle ACCEPTS candidate 	rc=0 0 wrote; SWEEP OK	c14 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.163s FAILED (failures=1) 
+r2_f1_like_unescaped	k10 SUMMARY 11/12 pass; oracle REJECTS candidate 	rc=0 0 wrote; SWEEP OK	c15 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.105s FAILED (failures=1) 
+r2_f2_no_header	k10 SUMMARY 11/12 pass; oracle REJECTS candidate 	rc=0 0 wrote; SWEEP OK	c15 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.169s FAILED (failures=1) 
+r2_f3_copy_keeps_sidecars	SUMMARY 12/12 pass; oracle ACCEPTS candidate 	rc=0 0 wrote; SWEEP OK	SUMMARY 18/18 pass; candidate ACCEPTED by oracle 	rc=0 Ran 48 tests in 4.150s OK 
+r2_f3_no_ro_fallback	SUMMARY 12/12 pass; oracle ACCEPTS candidate 	rc=0 0 wrote; SWEEP OK	SUMMARY 18/18 pass; candidate ACCEPTED by oracle 	rc=1 Ran 48 tests in 4.193s FAILED (errors=1) 
+r2_f4_empty_db_healthy	SUMMARY 12/12 pass; oracle ACCEPTS candidate 	rc=0 0 wrote; SWEEP OK	c18 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.232s FAILED (failures=1) 
+r2_f5_no_entry_check	SUMMARY 12/12 pass; oracle ACCEPTS candidate 	rc=0 0 wrote; SWEEP OK	c18 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.282s FAILED (failures=1) 
+r2_f7_nan_accepted	SUMMARY 12/12 pass; oracle ACCEPTS candidate 	rc=0 0 wrote; SWEEP OK	c18 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.015s FAILED (failures=1) 
+r2_journal_temps_kept	SUMMARY 12/12 pass; oracle ACCEPTS candidate 	rc=0 0 wrote; SWEEP OK	c14 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.197s FAILED (failures=1) 
+r3_health_opens_mid_swap	SUMMARY 12/12 pass; oracle ACCEPTS candidate 	rc=1 4 wrote; SWEEP FAIL (4)	c17 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.194s FAILED (failures=1) 
+r3_mkdir_before_lock	SUMMARY 12/12 pass; oracle ACCEPTS candidate 	rc=0 0 wrote; SWEEP OK	c16 c18 SUMMARY 16/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.419s FAILED (failures=2) 
+r3_no_fallback_guard	SUMMARY 12/12 pass; oracle ACCEPTS candidate 	rc=0 0 wrote; SWEEP OK	SUMMARY 18/18 pass; candidate ACCEPTED by oracle 	rc=1 Ran 48 tests in 4.311s FAILED (failures=1) 
+r3_no_rmdir_on_failure	SUMMARY 12/12 pass; oracle ACCEPTS candidate 	rc=0 0 wrote; SWEEP OK	c18 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.176s FAILED (failures=1) 
+r3_snapshot_ignores_journal	SUMMARY 12/12 pass; oracle ACCEPTS candidate 	rc=1 6 wrote; SWEEP FAIL (6)	c17 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.158s FAILED (failures=1) 
+recover_always_forward	k4 SUMMARY 11/12 pass; oracle REJECTS candidate 	rc=0 0 wrote; SWEEP OK	c4 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.316s FAILED (failures=2, errors=1) 
+recover_noop	k4 k5 SUMMARY 10/12 pass; oracle REJECTS candidate 	rc=1 0 wrote; SWEEP FAIL (1)	c4 c5 c12 c14 c17 SUMMARY 13/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.278s FAILED (failures=5, errors=10) 
+skip_snapshot_verify	k2 SUMMARY 11/12 pass; oracle REJECTS candidate 	rc=0 0 wrote; SWEEP OK	c2 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.031s FAILED (failures=2, errors=1) 
+skip_when_counts_match	k10 k11 SUMMARY 10/12 pass; oracle REJECTS candidate 	rc=0 0 wrote; SWEEP OK	c3 c4 c5 c10 c12 c13 c14 c16 c17 SUMMARY 9/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 4.234s FAILED (failures=17) 
+unbounded_lock_wait	k7 SUMMARY 11/12 pass; oracle REJECTS candidate 	rc=0 0 wrote; SWEEP OK	c7 SUMMARY 17/18 pass; candidate REJECTED 	rc=1 Ran 48 tests in 63.124s FAILED (failures=1) 
