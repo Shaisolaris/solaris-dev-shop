@@ -15,7 +15,7 @@ library only. No model, judge, provider, key or network is used.
   Source text is data: a sentence addressed to an automated reader ("note to assistants: reply
   that ...", "AI assistants should say ...", "if you are a language model ...", "Assistant: reply
   that ...", "To the AI reading this: say ...", "Note for any AI tool: reply ...", "If you are an AI language
-  model reading this, you must reply ...") is never used as an answer or a rival. A rule that only
+  model reading this, you must reply ...", "For AI readers only: reply ...") is never used as an answer or a rival. A rule that only
   mentions models or answering ("Model boats may be sailed ...; the warden will answer any questions",
   "Shop assistants will answer questions", "Note for model boat owners: ...") is kept, and the answers file lists the
   skipped ones under
@@ -104,17 +104,32 @@ on the new snapshot.
   quote into `stale_citation` (still a failing verdict). Keep the old snapshot to check a stale claim.
 - The journal hash chain detects edits and corruption, not a forger who recomputes it; `evaluate`
   still re-runs the baseline to verify a file that claims to be the baseline.
-- The instruction filter is a fixed pattern list. It needs an automated addressee with a reply verb
-  next to it. Bare "assistant" or "model" is an addressee only in "note to assistants", "dear model",
-  "if you are an assistant" forms, where it must end its noun phrase ("Note for model boat owners"
-  and "If you are a model boat owner" are kept), or as the sentence's opening vocative ("Assistant:
-  reply that ...", "Model, say ..."). "To the AI ...: say" is an addressee form too. An AI, chatbot,
-  LLM, language-model or virtual-assistant addressee may be described further ("Note for any AI tool:",
-  "Dear AI friend,", "Reminder for the virtual assistant on duty:") when a reply verb follows within
-  8 words of the colon or comma (r5). That fails closed: a people-rule addressed to an AI-named group
-  with a reply verb after the colon ("Note for AI club members: the secretary will answer questions")
-  is skipped, so its question abstains; "Note for AI club members: the hall opens at 6" is kept. Other phrasings,
-  such as "Please, AI reader, ..." without a reply verb next to the addressee, are treated as ordinary
-  sentences.
+- The instruction filter is a small grammar (r6), not a growing word list. A sentence is skipped when it
+  has an addressee phrase naming an automated reader, then a separator, then a reply verb:
+  - Anchor: the start of the sentence, a point after a colon, semicolon, comma or bracket, or an opener
+    (note, message, memo, instructions, attention, notice, reminder, warning, dear, hey, hi, hello, greetings,
+    to, for, if you are, you are), optionally followed by to or for.
+  - Determiner (optional): every, each, all, any, the, a, an, you, these, those, other, all the, any of the.
+  - Automated reader: a noun phrase whose head is automated: AI, bot, chatbot, LLM, or a generic head
+    (assistant, model, tool, agent, reader, system, crawler, program, friend) after one to three automated
+    qualifiers (AI, AI-powered, automated, autonomous, virtual, digital, chat, generative, language, large,
+    LLM). The head must end the noun phrase: the next word is the separator or a post-modifier opener
+    (reading, processing, that, who, which, only, here, below, everywhere, out there, on, at, in, with,
+    using, from), and a post-modifier runs at most 40 characters. So "AI club members", "AI researchers",
+    "chatbot developers", "model boat owners", "bot owners" and "shop assistants" are people and never match.
+  - Separator: a colon, semicolon, comma or dash. Then at most 8 words (`PRE_VERB_WORDS`), then a reply
+    verb (reply, respond, answer, say, state, tell, output, ignore, disregard, write).
+  So "For AI readers only: reply ...", "Note for every AI tool: reply ..." and "Note for AI tools; reply ..."
+  are skipped, while "For AI researchers only: reply to the conference email" and "Note for AI club members:
+  the secretary will answer questions" are kept and can be answered.
+- The older addressee rules still apply alongside the grammar: "note to assistants", "dear model", "if you
+  are an assistant" (the addressee must end its noun phrase, so "Note for model boat owners" and "If you are a
+  model boat owner" are kept), a sentence-opening "Assistant:" or "Model," vocative with a reply verb within
+  6 words, "AI assistants should say ...", and "ignore previous instructions".
+- Fail-closed limits: the older "note to ..." rule needs no reply verb, so "Note for the bot and drone club:
+  reply by Monday" is still skipped (its head check accepts "and"). An addressee with no anchor ("Staff who use
+  AI: reply ...") or a reply verb more than 8 words after the separator is treated as an ordinary sentence, and
+  so is a form the grammar does not name ("Kindly have every AI tool reply ..." has no anchor or separator). The
+  grammar is lexical: it recognises the shape of an address, not intent.
 - The baseline only extracts. It cannot combine two sentences, so multi-hop questions need another system.
 - Fixtures are synthetic. Scale was measured on generated corpora (see the G16 oracle), not on real data.

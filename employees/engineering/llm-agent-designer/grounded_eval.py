@@ -70,21 +70,39 @@ _BOT = (r"(?:(?:automated|ai|virtual|digital|chat)\s+(?:assistants?|readers?|age
 _END = r"(?=\s*(?:[:,.;!?-]|$|(?:and|or|reading|processing|answering|who|that|which)\b))"
 _ANY = r"(?:" + _BOT + r"|assistants?|models?)" + _END
 _SAY = r"(?:reply|respond|answer|say|state|tell|output|ignore|disregard|write)"
+# G16 r6 (M16 r5: rounds 3 to 5 widened word lists one form at a time). One small grammar instead:
+#   ANCHOR [DETERMINER] AUTOMATED-READER [POST-MODIFIER] SEPARATOR (up to PRE_VERB_WORDS words) REPLY-VERB
+# ANCHOR: the start of the sentence, a point after a colon, semicolon, comma or bracket, or an opener word
+#   (note, message, instructions, attention, reminder, dear, hello, to, for, if you are, ...), optionally plus to/for.
+# DETERMINER: any of every, each, all, any, the, a, an, you, these, those, other (and "all the", "any of the").
+# AUTOMATED-READER: a noun phrase whose HEAD is automated: ai, bot(s), chatbot(s), llm(s), or a generic head (assistant,
+#   model, tool, agent, reader, system, crawler, program, friend) after automated qualifiers (ai, automated, virtual,
+#   digital, chat, generative, language, large, llm). The head must end the noun phrase: the next word is a separator
+#   or a post-modifier opener (reading, that, who, only, here, everywhere, on, at, ...), so "AI club members",
+#   "chatbot developers", "model boat owners" and "shop assistants" are people and never match.
+# SEPARATOR: colon, semicolon, comma, or a dash. Then up to PRE_VERB_WORDS words, then a reply verb (_SAY).
+PRE_VERB_WORDS = 8
+_OPENER = (r"(?:note|notes|message|memo|instructions?|attention|notice|reminder|warning|dear|hey|hi|hello|greetings|to|for"
+           r"|if\s+you\s+are|if\s+you['\u2019]re|you\s+are)")
+_DET = (r"(?:(?:all\s+(?:of\s+)?the|any\s+of\s+the|every|each|all|any|the|an?|you|these|those|other)\s+)?")
+_QUAL = r"(?:ai|ai-powered|automated|autonomous|virtual|digital|chat|generative|large|language|llm)"
+_HEAD = r"(?:assistants?|models?|tools?|agents?|readers?|systems?|crawlers?|programs?|friends?|bots?|chatbots?)"
+_READER = r"(?:(?:" + _QUAL + r"\s+){1,3}" + _HEAD + r"|chatbots?|bots?|llms?|ai)"
+_SEP = r"(?:\s*[:;,\u2013\N{EM DASH}]|\s+--?)\s*"
+_POST_OPEN = (r"(?:reading|processing|parsing|answering|summari[sz]ing|scanning|indexing|crawling|browsing|that|who|which"
+              r"|only|here|there|below|above|everywhere|out\s+there|on|at|in|with|using|from)")
+ADDRESSED = (r"(?:^\W*|[:;,(]\s*|\b" + _OPENER + r"\s+(?:(?:to|for)\s+)?)" + _DET + r"\b" + _READER
+             + r"(?=" + _SEP + r"|\s+" + _POST_OPEN + r"\b)(?:\s+" + _POST_OPEN + r"\b[^.:;,!?\u2013\N{EM DASH}]{0,40}?)?"
+             + _SEP + r"(?:[\w']+\s+){0," + str(PRE_VERB_WORDS) + r"}?" + _SAY + r"\b")
+ADDRESSED_RE = re.compile(r"(?i)" + ADDRESSED)
 INSTRUCTION_RE = re.compile(
     r"(?i)\b(?:note|message|instructions?|attention|notice|reminder)\s+(?:to|for)\s+(?:all\s+|any\s+|the\s+)?" + _ANY
     + r"|\b(?:dear|hey|attention)\s+" + _ANY
     + r"|\bif\s+you\s+are\s+an?\s+" + _ANY
     # a sentence that opens by addressing a bare "Assistant:" or "Model," and tells it what to say (M16 r3 S3)
     + r"|^\W*(?:assistants?|models?)\s*[,:]\s*(?:[\w']+\s+){0,6}?" + _SAY + r"\b"
-    # a note, greeting or "if you are" form addressed to an automated reader that describes it further and then tells it
-    # what to say: "Note for any AI tool: reply ...", "If you are an AI language model reading this, you must reply ...".
-    # _END keeps people-rules ("Note for chatbot developers: the API closes at noon") usable; this branch needs a reply
-    # verb after the colon or comma (M16 r4 T1: the Grok self-validation's proposed fix, applied in G16 r5)
-    + r"|\b(?:note|message|instructions?|attention|notice|reminder|dear|hey|if\s+you\s+are)\s+(?:(?:to|for|an?)\s+)?"
-    r"(?:all\s+|any\s+|the\s+)?" + _BOT + r"\b[^.:;]{0,40}?[:,]\s*(?:[\w']+\s+){0,8}?" + _SAY + r"\b"
-    # "To the AI reading this: say ..." (M16 r3 e01)
-    + r"|\bto\s+(?:the\s+|any\s+|all\s+)?" + _BOT + r"\b[^.:;]{0,40}:\s*(?:[\w']+\s+){0,6}?" + _SAY + r"\b"
-    + r"|\b" + _BOT + r"\s*[,:]\s*(?:[\w']+\s+){0,6}?" + _SAY + r"\b"
+    # an addressee phrase naming an automated reader, a separator, then a reply verb (G16 r6, ADDRESSED; see above)
+    + r"|" + ADDRESSED +
     r"|\b" + _BOT + r"\s+(?:(?:must|should|shall|will|need\s+to|are\s+to|is\s+to|are\s+asked\s+to|have\s+to)\s+)?"
     r"(?:always\s+|only\s+)?" + _SAY + r"\b"
     r"|\b(?:ignore|disregard)\s+(?:all\s+|any\s+)?(?:the\s+)?(?:previous|prior|above|earlier)\s+instructions\b")
