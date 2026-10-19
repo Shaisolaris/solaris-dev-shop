@@ -1,0 +1,30 @@
+M16 r7 teeth (Grok self-validation, 3.13.15): the BUILDER's 27 r7 mutants (2 retired anchors not generated), scored by Grok instruments and builder G16 tests.
+  end_reorder_EQUIV                  grok=-                                             builder_tests=-
+  r6_anchor_anywhere                 grok=table,greetings,m16r7_greeting_probes         builder_tests=KILL
+  r6_grammar_off                     grok=table,m16r6_probes,m16r4_adversarial,m16r5_probes,greetings,m16r7_greeting_probes builder_tests=KILL
+  r6_head_end_off                    grok=table,m16r6_probes,greetings                  builder_tests=KILL
+  r6_head_lookahead_off_EQUIV        grok=-                                             builder_tests=-
+  r6_no_bare_ai                      grok=table,m16r6_probes,m16r5_probes,greetings     builder_tests=KILL
+  r6_no_comma_anchor                 grok=table,greetings,m16r7_greeting_probes         builder_tests=KILL
+  r6_no_dash                         grok=table                                         builder_tests=KILL
+  r6_no_every_each                   grok=table,m16r5_probes                            builder_tests=KILL
+  r6_no_friend                       grok=m16r4_adversarial                             builder_tests=KILL
+  r6_no_semicolon                    grok=table,m16r6_probes,m16r5_probes               builder_tests=KILL
+  r6_no_to_for_opener                grok=table,m16r5_probes                            builder_tests=KILL
+  r6_one_qualifier                   grok=table,m16r4_adversarial                       builder_tests=KILL
+  r6_window_const_7                  grok=-                                             builder_tests=KILL
+  r6_window_regex_2                  grok=-                                             builder_tests=KILL
+  r7_no_attention_of                 grok=table,m16r6_probes                            builder_tests=KILL
+  r7_no_there                        grok=table,m16r6_probes,greetings                  builder_tests=KILL
+  r7_of_required                     grok=table,m16r4_adversarial                       builder_tests=KILL
+  r7_there_any_word                  grok=greetings,m16r7_greeting_probes               builder_tests=-
+  r7_there_required                  grok=table,m16r6_probes,m16r5_probes,greetings     builder_tests=KILL
+  s1_count_ge2                       grok=m16r4_adversarial                             builder_tests=KILL
+  s1_count_off                       grok=m16r4_adversarial                             builder_tests=KILL
+  s2_end_no_comma                    grok=-                                             builder_tests=KILL
+  s2_end_no_reading                  grok=-                                             builder_tests=KILL
+  s2_end_off                         grok=table,m16r6_probes,m16r4_adversarial,m16r5_probes builder_tests=KILL
+  s3_unanchored                      grok=table,greetings,m16r7_greeting_probes         builder_tests=KILL
+  s3_window_1                        grok=-                                             builder_tests=KILL
+Grok instruments kill 20/27 (non-EQUIV 20/25); builder tests kill 24/27 (non-EQUIV 24/25)
+survive every instrument: ['end_reorder_EQUIV', 'r6_head_lookahead_off_EQUIV']

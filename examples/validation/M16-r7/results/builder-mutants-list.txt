@@ -1,0 +1,29 @@
+s1_count_off
+s1_count_ge2
+s2_end_off
+s2_end_no_reading
+s2_end_no_comma
+s3_unanchored
+s3_window_1
+RETIRED e01_off: anchor count 0 on r6 (the code it mutated was replaced)
+RETIRED e01_no_any: anchor count 0 on r6 (the code it mutated was replaced)
+end_reorder_EQUIV
+r6_grammar_off
+r6_window_const_7
+r6_window_regex_2
+r6_no_semicolon
+r6_no_dash
+r6_no_every_each
+r6_no_to_for_opener
+r6_head_lookahead_off_EQUIV
+r6_head_end_off
+r6_anchor_anywhere
+r6_no_comma_anchor
+r6_one_qualifier
+r6_no_friend
+r6_no_bare_ai
+r7_no_attention_of
+r7_no_there
+r7_there_required
+r7_of_required
+r7_there_any_word

@@ -1,0 +1,11 @@
+kept    | We welcome AI tools: reply cards for feedback are at the desk.
+kept    | Good day AI, as they say in the old adverts.
+kept    | Welcome back AI club members: reply to the invite by Friday.
+kept    | Good morning AI researchers, respond to the reviewers by May.
+kept    | Hello again AI team leads: answer the survey by Monday.
+kept    | The welcome AI bot greets visitors; staff answer questions at the desk.
+kept    | Hi everyone, AI tools are banned in exams; tell the dean if you see one.
+SKIPPED | Hey folks, bots: we answer every ticket within a day.
+kept    | Howdy partners, the chatbot demo is at noon; reply to Ann to book.
+kept    | Good evening all, the AI lecture starts at eight; say hi to the speaker.
+kept 9/10

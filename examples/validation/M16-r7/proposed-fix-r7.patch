@@ -1,0 +1,23 @@
+--- a/employees/engineering/llm-agent-designer/grounded_eval.py
++++ b/employees/engineering/llm-agent-designer/grounded_eval.py
+@@ -82,7 +82,7 @@
+ #   "chatbot developers", "model boat owners" and "shop assistants" are people and never match.
+ # SEPARATOR: colon, semicolon, comma, or a dash. Then up to PRE_VERB_WORDS words, then a reply verb (_SAY).
+ PRE_VERB_WORDS = 8
+-_OPENER = (r"(?:note|notes|message|memo|instructions?|attention(?:\s+of)?|notice|reminder|warning|dear|(?:hey|hi|hello)(?:\s+there)?|greetings|to|for"
++_OPENER = (r"(?:note|notes|message|memo|instructions?|attention(?:\s+of)?|notice|reminder|warning|dear|(?:hey|hi|hello)(?:\s+(?:there|again|everyone|all|folks|team|y['\u2019]all|once\s+more))*|greetings|to|for"
+            r"|if\s+you\s+are|if\s+you['\u2019]re|you\s+are)")
+ _DET = (r"(?:(?:all\s+(?:of\s+)?the|any\s+of\s+the|every|each|all|any|the|an?|you|these|those|other)\s+)?")
+ _QUAL = r"(?:ai|ai-powered|automated|autonomous|virtual|digital|chat|generative|large|language|llm)"
+@@ -91,7 +91,10 @@
+ _SEP = r"(?:\s*[:;,\u2013\N{EM DASH}]|\s+--?)\s*"
+ _POST_OPEN = (r"(?:reading|processing|parsing|answering|summari[sz]ing|scanning|indexing|crawling|browsing|that|who|which"
+               r"|only|here|there|below|above|everywhere|out\s+there|on|at|in|with|using|from)")
+-ADDRESSED = (r"(?:^\W*|[:;,(]\s*|\b" + _OPENER + r"\s+(?:(?:to|for)\s+)?)" + _DET + r"\b" + _READER
++# Sentence-start-only greetings (M16 r7 proposed fix): not openers mid-sentence ("We welcome AI tools: reply cards ...").
++_GREET_START = (r"(?:hiya|howdy|good\s+(?:morning|afternoon|evening)|welcome\s+back)"
++                r"(?:\s+(?:there|again|everyone|all|folks|team|y['\u2019]all))*")
++ADDRESSED = (r"(?:^\W*(?:" + _GREET_START + r"\s+)?|[:;,(]\s*|\b" + _OPENER + r"\s+(?:(?:to|for)\s+)?)" + _DET + r"\b" + _READER
+              + r"(?=" + _SEP + r"|\s+" + _POST_OPEN + r"\b)(?:\s+" + _POST_OPEN + r"\b[^.:;,!?\u2013\N{EM DASH}]{0,40}?)?"
+              + _SEP + r"(?:[\w']+\s+){0," + str(PRE_VERB_WORDS) + r"}?" + _SAY + r"\b")
+ ADDRESSED_RE = re.compile(r"(?i)" + ADDRESSED)
