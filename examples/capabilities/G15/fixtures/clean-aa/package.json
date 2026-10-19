@@ -1,0 +1,32 @@
+{
+ "schema": "solaris.experiment/1",
+ "experiment": "clean-aa",
+ "unit": "unit_id",
+ "assignment": "randomized",
+ "arms": [
+  "control",
+  "treatment"
+ ],
+ "planned_split": [
+  0.5,
+  0.5
+ ],
+ "timezone": "UTC",
+ "cohort": {
+  "start": "2026-08-01T00:00:00Z",
+  "end": "2026-09-01T00:00:00Z"
+ },
+ "as_of": "2026-09-20T00:00:00Z",
+ "outcome": {
+  "event": "retained",
+  "horizon_days": 7
+ },
+ "min_sample_per_arm": 200,
+ "alpha": 0.05,
+ "assignments": {
+  "file": "assignments.csv"
+ },
+ "events": {
+  "file": "events.csv"
+ }
+}

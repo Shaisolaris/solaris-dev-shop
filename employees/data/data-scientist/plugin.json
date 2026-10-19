@@ -10,7 +10,8 @@
   "references": [
     "rules.md",
     "learnings.md",
-    "experimentation-and-forecasting-stack.md"
+    "experimentation-and-forecasting-stack.md",
+    "experiment-readout.md"
   ],
   "tags": [
     "data",

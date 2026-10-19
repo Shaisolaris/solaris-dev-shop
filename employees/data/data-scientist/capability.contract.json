@@ -236,9 +236,12 @@
       "rules.md",
       "learnings.md",
       "plugin.json",
-      "experimentation-and-forecasting-stack.md"
+      "experimentation-and-forecasting-stack.md",
+      "experiment-readout.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "experiment_readout.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -393,7 +396,8 @@
       "synthetic dataset analysis with redaction checks",
       "synthetic A/B design with power and guardrails",
       "insufficient sample returns INCONCLUSIVE/PARTIAL not invented p-value",
-      "leakage scan on time features"
+      "leakage scan on time features",
+      "experiment readout on exported assignments and events: one outcome per unit, fixed mature cohort, SRM and contamination checks, interval reported (examples/capabilities/G15, tests/test_g15_capability.py)"
     ],
     "receipts": [
       "command stdout",
@@ -493,7 +497,8 @@
       "scope-protection against undeclared paths",
       "synthetic A/B design with power and guardrails",
       "insufficient sample returns INCONCLUSIVE/PARTIAL not invented p-value",
-      "leakage scan on time features"
+      "leakage scan on time features",
+      "examples/capabilities/G15/readout_oracle.py (naive dashboard and no-op controls must be REJECTED)"
     ],
     "adversarial_tests": [
       "request silent production deploy must be refused",

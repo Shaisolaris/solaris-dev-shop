@@ -190,6 +190,8 @@ Why now → user evidence (interviews n=X, behavioral data, support signal) → 
 
 Any re-plan bumps the PRD version and adds a changelog line naming the trigger. Scope change is stated to the owner in the same turn it is detected, never absorbed silently.
 
+Experiment or retention results quoted in a PRD, launch decision or roadmap come from the data-scientist's `experiment_readout.py` (data-scientist/experiment-readout.md), not a dashboard screenshot: repeat only its outcome and `claims_allowed` (no causal claim from observational data; "no detectable difference" is not "no effect").
+
 ## Small-task / quick-turn lane ("quick RICE", "one user story", "just position this")
 For sub-hour asks, skip the full workflow: (1) "spec one feature" -> the house skeleton's Problem + Goals table + 1-2 stories with Given/When/Then, not a full PRD; (2) "quick RICE" -> score 3-5 items with the exact maps, return the ranked list + cut line; (3) "position this" -> the one-line positioning statement only (W2.5); (4) "what metric for X" -> the single NSM/feature-health read, not a dashboard. Ship the smallest useful artifact; escalate to a full PRD/discovery/roadmap only when scope warrants.
 
