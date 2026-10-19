@@ -340,11 +340,11 @@
     ]
    },
    {
-    "live": "r2",
-    "uv": 2,
+    "live": "r1",
+    "uv": 1,
     "mixed": false,
-    "preflight_rc": 2,
-    "rollback_again": 0,
+    "preflight_rc": 0,
+    "rollback_again": null,
     "final": [
      "r1",
      true
@@ -399,10 +399,10 @@
     "uv": 2,
     "mixed": false,
     "preflight_rc": 2,
-    "rollback_again": 0,
+    "rollback_again": 2,
     "final": [
-     "r1",
-     true
+     "r2",
+     false
     ]
    }
   ]
@@ -493,13 +493,30 @@
      1
     ],
     "errs": [],
-    "live": "r3",
-    "pending": true,
-    "data_equals_r2": false,
+    "live": "r2",
+    "pending": false,
+    "data_equals_r2": true,
     "totals": [
-     125000,
-     480000,
-     99000
+     1250,
+     4800,
+     990
+    ],
+    "next_preflight_r2_repeat": 2
+   },
+   {
+    "case": "2x r3-broken from r2",
+    "rcs": [
+     2,
+     1
+    ],
+    "errs": [],
+    "live": "r2",
+    "pending": false,
+    "data_equals_r2": true,
+    "totals": [
+     1250,
+     4800,
+     990
     ],
     "next_preflight_r2_repeat": 2
    },
@@ -527,23 +544,6 @@
      1
     ],
     "errs": [],
-    "live": "r3",
-    "pending": true,
-    "data_equals_r2": false,
-    "totals": [
-     125000,
-     480000,
-     99000
-    ],
-    "next_preflight_r2_repeat": 2
-   },
-   {
-    "case": "2x r3-broken from r2",
-    "rcs": [
-     2,
-     1
-    ],
-    "errs": [],
     "live": "r2",
     "pending": false,
     "data_equals_r2": true,
@@ -560,9 +560,9 @@
     "rcs": [
      2,
      2,
+     1,
      2,
-     2,
-     2,
+     1,
      0
     ],
     "errs": [],
@@ -579,9 +579,9 @@
     "rcs": [
      2,
      2,
-     2,
-     2,
      0,
+     2,
+     2,
      1
     ],
     "errs": [],
@@ -596,18 +596,18 @@
     "case": "6x r2 from r1",
     "data_uv_before_rollback": null,
     "rcs": [
-     1,
+     0,
+     2,
+     2,
      2,
      1,
-     1,
-     2,
      2
     ],
     "errs": [],
     "live": "r1",
-    "pending": true,
-    "deployed_events_r2": 0,
-    "rollback_rc": 2,
+    "pending": false,
+    "deployed_events_r2": 1,
+    "rollback_rc": 0,
     "after_rollback_data_equals_r1": true,
     "after_rollback_live": "r1"
    },
@@ -615,12 +615,12 @@
     "case": "6x r2 from r1",
     "data_uv_before_rollback": null,
     "rcs": [
+     2,
+     2,
+     2,
      1,
      2,
-     2,
-     2,
-     0,
-     2
+     0
     ],
     "errs": [],
     "live": "r1",
@@ -637,7 +637,7 @@
   "kind": "OBS",
   "result": "OBS",
   "detail": {
-   "deploy_seconds": 0.05725383758544922
+   "deploy_seconds": 0.05628800392150879
   }
  },
  {
@@ -646,6 +646,41 @@
   "result": "PASS",
   "detail": {
    "found": []
+  }
+ },
+ {
+  "id": "D12_repinned_and_live_health_refusals",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "revision_relabel_repinned": [
+    2,
+    true
+   ],
+   "secret_file_repinned": [
+    2,
+    true
+   ],
+   "symlink_repinned": [
+    2,
+    true
+   ],
+   "approval_action_changed_only": [
+    2,
+    true
+   ],
+   "live_schema_version_wrong": [
+    2,
+    true
+   ],
+   "live_required_file_empty": [
+    2,
+    true
+   ],
+   "release_folder_exists_other_content": [
+    2,
+    true
+   ]
   }
  }
 ]

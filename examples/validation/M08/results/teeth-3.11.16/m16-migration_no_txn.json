@@ -814,7 +814,7 @@
   "kind": "OBS",
   "result": "OBS",
   "detail": {
-   "deploy_seconds": 0.03237485885620117
+   "deploy_seconds": 0.02872490882873535
   }
  },
  {
@@ -823,6 +823,41 @@
   "result": "PASS",
   "detail": {
    "found": []
+  }
+ },
+ {
+  "id": "D12_repinned_and_live_health_refusals",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "revision_relabel_repinned": [
+    2,
+    true
+   ],
+   "secret_file_repinned": [
+    2,
+    true
+   ],
+   "symlink_repinned": [
+    2,
+    true
+   ],
+   "approval_action_changed_only": [
+    2,
+    true
+   ],
+   "live_schema_version_wrong": [
+    2,
+    true
+   ],
+   "live_required_file_empty": [
+    2,
+    true
+   ],
+   "release_folder_exists_other_content": [
+    2,
+    true
+   ]
   }
  }
 ]

@@ -1,0 +1,6 @@
+trial 10 live releases/r1 uv 1
+rollback refused: [('authority', "approval does not cover ['revision']"), ('rollback', 'no previous release with a verified snapshot to return to')]
+preflight r2: 0 []
+data dir: ['app.db', 'app.db.pre-restore-dfbe42d9919fe0a6-090c66c1']
+recover: 0
+history events: [('deployed', 'r1'), ('deployed', 'r2'), ('deployed', 'r1')]

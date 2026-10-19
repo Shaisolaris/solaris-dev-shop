@@ -153,10 +153,176 @@
   }
  },
  {
-  "id": "D05",
+  "id": "D05_sigkill_during_deploy_16x",
   "kind": "core",
   "result": "FAIL",
-  "detail": "harness or tool crash: OperationalError('attempt to write a readonly database')"
+  "detail": {
+   "bad": [
+    [
+     6,
+     [
+      "r2",
+      true
+     ],
+     "r1",
+     2,
+     2,
+     []
+    ],
+    [
+     10,
+     [
+      "r2",
+      true
+     ],
+     "r1",
+     2,
+     2,
+     []
+    ],
+    [
+     12,
+     [
+      "r2",
+      true
+     ],
+     "r1",
+     2,
+     2,
+     []
+    ]
+   ],
+   "outcomes": [
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      true
+     ],
+     "r1",
+     2
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      true
+     ],
+     "r1",
+     2
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      true
+     ],
+     "r1",
+     2
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r1",
+      true
+     ],
+     "r1",
+     0
+    ]
+   ]
+  }
  },
  {
   "id": "D06_sigkill_during_rollback_10x",
@@ -168,18 +334,18 @@
     "uv": 2,
     "mixed": false,
     "preflight_rc": 2,
-    "rollback_again": 2,
+    "rollback_again": 0,
     "final": [
-     "r2",
-     false
+     "r1",
+     true
     ]
    },
    {
-    "live": "r1",
-    "uv": 1,
+    "live": "r2",
+    "uv": 2,
     "mixed": false,
-    "preflight_rc": 0,
-    "rollback_again": null,
+    "preflight_rc": 2,
+    "rollback_again": 0,
     "final": [
      "r1",
      true
@@ -391,23 +557,6 @@
    {
     "case": "2x r3-broken from r2",
     "rcs": [
-     1,
-     2
-    ],
-    "errs": [],
-    "live": "r2",
-    "pending": false,
-    "data_equals_r2": false,
-    "totals": [
-     125000,
-     480000,
-     99000
-    ],
-    "next_preflight_r2_repeat": 2
-   },
-   {
-    "case": "2x r3-broken from r2",
-    "rcs": [
      2,
      1
     ],
@@ -423,34 +572,32 @@
     "next_preflight_r2_repeat": 2
    },
    {
-    "case": "6x r2 from r1",
-    "data_uv_before_rollback": null,
+    "case": "2x r3-broken from r2",
     "rcs": [
-     2,
-     0,
-     2,
-     2,
-     2,
+     1,
      2
     ],
     "errs": [],
-    "live": "r1",
+    "live": "r2",
     "pending": false,
-    "deployed_events_r2": 1,
-    "rollback_rc": 0,
-    "after_rollback_data_equals_r1": true,
-    "after_rollback_live": "r1"
+    "data_equals_r2": false,
+    "totals": [
+     125000,
+     480000,
+     99000
+    ],
+    "next_preflight_r2_repeat": 2
    },
    {
     "case": "6x r2 from r1",
     "data_uv_before_rollback": null,
     "rcs": [
-     0,
+     2,
+     2,
      2,
      1,
      2,
-     2,
-     2
+     0
     ],
     "errs": [],
     "live": "r1",
@@ -464,11 +611,11 @@
     "case": "6x r2 from r1",
     "data_uv_before_rollback": null,
     "rcs": [
+     2,
+     2,
      0,
      2,
      2,
-     2,
-     2,
      2
     ],
     "errs": [],
@@ -483,12 +630,31 @@
     "case": "6x r2 from r1",
     "data_uv_before_rollback": null,
     "rcs": [
+     2,
+     2,
      1,
      2,
-     2,
      0,
-     2,
      2
+    ],
+    "errs": [],
+    "live": "r1",
+    "pending": false,
+    "deployed_events_r2": 1,
+    "rollback_rc": 0,
+    "after_rollback_data_equals_r1": true,
+    "after_rollback_live": "r1"
+   },
+   {
+    "case": "6x r2 from r1",
+    "data_uv_before_rollback": null,
+    "rcs": [
+     2,
+     2,
+     2,
+     1,
+     2,
+     0
     ],
     "errs": [],
     "live": "r1",
@@ -505,7 +671,7 @@
   "kind": "OBS",
   "result": "OBS",
   "detail": {
-   "deploy_seconds": 0.05686807632446289
+   "deploy_seconds": 0.062036991119384766
   }
  },
  {
@@ -514,6 +680,41 @@
   "result": "PASS",
   "detail": {
    "found": []
+  }
+ },
+ {
+  "id": "D12_repinned_and_live_health_refusals",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "revision_relabel_repinned": [
+    2,
+    true
+   ],
+   "secret_file_repinned": [
+    2,
+    true
+   ],
+   "symlink_repinned": [
+    2,
+    true
+   ],
+   "approval_action_changed_only": [
+    2,
+    true
+   ],
+   "live_schema_version_wrong": [
+    2,
+    true
+   ],
+   "live_required_file_empty": [
+    2,
+    true
+   ],
+   "release_folder_exists_other_content": [
+    2,
+    true
+   ]
   }
  }
 ]

@@ -1,7 +1,34 @@
-# teeth-tally from kept/v3-run/*.log (Grok self-validation; TEETH lines from teeth_m08.py)
-TEETH 3.11.16: my oracle kills 26/33; survivors [('revision_unchecked', 1), ('secrets_ok', 1), ('symlink_ok', 1), ('approval_action_any', 1), ('live_health_skipped', 1), ('no_snapshot_verify_EQUIV', 0), ('required_files_empty_ok', 1)]
-TEETH 3.13.15: my oracle kills 25/33; survivors [('revision_unchecked', 1), ('secrets_ok', 1), ('symlink_ok', 1), ('approval_action_any', 1), ('live_health_skipped', 1), ('existing_release_ok', 1), ('no_snapshot_verify_EQUIV', 0), ('required_files_empty_ok', 1)]
-# builder_tests_rc in the survivor tuples: 1 means builder tests failed (killed by builder); 0 means EQUIV or builder also passed.
-# Differing survivor: existing_release_ok killed on 3.11.16 (row D06), survived on 3.13.15 (builder_tests_rc 1).
-# Non-equivalent survivors with builder_tests_rc 1 on both: revision_unchecked, secrets_ok, symlink_ok, approval_action_any, live_health_skipped, required_files_empty_ok.
-# EQUIV: no_snapshot_verify_EQUIV (builder_tests_rc 0).
+identical kill sets True killed 31 / 33
+  env_name_unchecked               D02_refusals_exit2_tree_identical
+  env_kind_unchecked               D02_refusals_exit2_tree_identical
+  revision_unchecked               D12_repinned_and_live_health_refusals
+  digest_unchecked                 D02_refusals_exit2_tree_identical
+  secrets_ok                       D12_repinned_and_live_health_refusals
+  symlink_ok                       D12_repinned_and_live_health_refusals
+  approval_missing_ok              D02_refusals_exit2_tree_identical
+  approval_fields_unchecked        D02_refusals_exit2_tree_identical,D07_rollback_needs_matching_approval,D12_repinned_and_live_health_refusals
+  approver_blank_ok                D02_refusals_exit2_tree_identical,D07_rollback_needs_matching_approval
+  approval_action_any              D12_repinned_and_live_health_refusals
+  live_health_skipped              D12_repinned_and_live_health_refusals
+  pending_journal_ok               D04_crash_drills_recover_then_redeploy
+  live_intact_unchecked            D02_refusals_exit2_tree_identical
+  existing_release_ok              D12_repinned_and_live_health_refusals
+  refuse_ignored                   D02_refusals_exit2_tree_identical,D04_crash_drills_recover_then_redeploy,D12_repinned_and_live_health_refusals
+  no_snapshot_verify_EQUIV         SURVIVED builder_tests_rc=0
+  migration_no_txn                 D01_clean_deploy_upgrade_rollback,D04_crash_drills_recover_then_redeploy,D05_sigkill_during_deploy_16x,D07b_rollback_approval_reusable,D08_failed_deploys_restore_release_and_data,D09_repeat_live_deploy_noop
+  post_health_skipped              D08_failed_deploys_restore_release_and_data
+  undo_no_data_restore             D04_crash_drills_recover_then_redeploy,D05_sigkill_during_deploy_16x,D08_failed_deploys_restore_release_and_data
+  undo_restore_only_after_switch   D04_crash_drills_recover_then_redeploy
+  undo_no_relink                   D04_crash_drills_recover_then_redeploy,D05_sigkill_during_deploy_16x,D08_failed_deploys_restore_release_and_data
+  undo_keeps_release               D08_failed_deploys_restore_release_and_data
+  migrated_recorded_late           D04_crash_drills_recover_then_redeploy
+  health_files_unchecked           D08_failed_deploys_restore_release_and_data
+  health_user_version_ignored      D08_failed_deploys_restore_release_and_data,D12_repinned_and_live_health_refusals
+  health_g03_ignored               D02_refusals_exit2_tree_identical
+  rollback_approval_any_rev        D07_rollback_needs_matching_approval
+  rollback_no_data                 D01_clean_deploy_upgrade_rollback,D07b_rollback_approval_reusable
+  rollback_refuse_ignored          D07_rollback_needs_matching_approval
+  idempotent_off                   D05_sigkill_during_deploy_16x,D09_repeat_live_deploy_noop
+  path_escape_ok                   D02_refusals_exit2_tree_identical
+  required_files_empty_ok          SURVIVED builder_tests_rc=1
+  recover_noop                     D04_crash_drills_recover_then_redeploy,D05_sigkill_during_deploy_16x

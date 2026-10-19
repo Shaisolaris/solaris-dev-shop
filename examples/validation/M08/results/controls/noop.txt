@@ -9,6 +9,7 @@ D07b_rollback_approval_reusable OBS {"first_rollback": 0, "redeploy": 0, "second
 D08_failed_deploys_restore_release_and_data FAIL {"badmig": [0, null, true], "broken": [0, null, true]}
 D09_repeat_live_deploy_noop PASS {"rc": 0}
 D10_concurrent_deploys_same_target OBS [{"case": "2x r3-broken from r2", "rcs": [0, 0], "errs": [], "live": null, "pending": false, "data_equals_r2": true, "totals": [1250, 4800, 990], "next_preflight_r2_repeat": 0}, {"case": "2x r3-broken from r2", "rcs": [0, 0], "errs": [], "live": null, "pending": false, "data_equals_r2": true, "totals": [1250, 4800, 990], "next_preflight_r2_repeat": 0}, {"case": "2x r3-broken from r2", "rcs": [0, 0], "errs": [], "live": null, "pending": false, "data_equals_r2": true, "totals": [1250, 4800, 990], "next_preflight_r2_repeat": 0}, {"case": "2x r3-broken from r2", "rcs": [0, 0], "errs": [], "live": 
-D10_timing OBS {"deploy_seconds": 0.028205156326293945}
+D10_timing OBS {"deploy_seconds": 0.025574922561645508}
 D11_static_no_network_cloud_process PASS {"found": []}
-M08 ORACLE 3/9 core PASS
+D12 FAIL "harness or tool crash: FileNotFoundError(2, 'No such file or directory')"
+M08 ORACLE 3/10 core PASS

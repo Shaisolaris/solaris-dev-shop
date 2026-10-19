@@ -257,7 +257,7 @@
     ],
     [
      [
-      "r1",
+      "r2",
       true
      ],
      "r1",
@@ -296,72 +296,6 @@
   "result": "OBS",
   "detail": [
    {
-    "live": "r1",
-    "uv": 1,
-    "mixed": false,
-    "preflight_rc": 0,
-    "rollback_again": null,
-    "final": [
-     "r1",
-     true
-    ]
-   },
-   {
-    "live": "r2",
-    "uv": 2,
-    "mixed": false,
-    "preflight_rc": 2,
-    "rollback_again": 0,
-    "final": [
-     "r1",
-     true
-    ]
-   },
-   {
-    "live": "r1",
-    "uv": 1,
-    "mixed": false,
-    "preflight_rc": 0,
-    "rollback_again": null,
-    "final": [
-     "r1",
-     true
-    ]
-   },
-   {
-    "live": "r1",
-    "uv": 1,
-    "mixed": false,
-    "preflight_rc": 0,
-    "rollback_again": null,
-    "final": [
-     "r1",
-     true
-    ]
-   },
-   {
-    "live": "r1",
-    "uv": 1,
-    "mixed": false,
-    "preflight_rc": 0,
-    "rollback_again": null,
-    "final": [
-     "r1",
-     true
-    ]
-   },
-   {
-    "live": "r1",
-    "uv": 1,
-    "mixed": false,
-    "preflight_rc": 0,
-    "rollback_again": null,
-    "final": [
-     "r1",
-     true
-    ]
-   },
-   {
     "live": "r2",
     "uv": 2,
     "mixed": false,
@@ -395,14 +329,80 @@
     ]
    },
    {
+    "live": "r1",
+    "uv": 1,
+    "mixed": false,
+    "preflight_rc": 0,
+    "rollback_again": null,
+    "final": [
+     "r1",
+     true
+    ]
+   },
+   {
+    "live": "r1",
+    "uv": 1,
+    "mixed": false,
+    "preflight_rc": 0,
+    "rollback_again": null,
+    "final": [
+     "r1",
+     true
+    ]
+   },
+   {
+    "live": "r1",
+    "uv": 1,
+    "mixed": false,
+    "preflight_rc": 0,
+    "rollback_again": null,
+    "final": [
+     "r1",
+     true
+    ]
+   },
+   {
     "live": "r2",
     "uv": 2,
     "mixed": false,
     "preflight_rc": 2,
-    "rollback_again": 2,
+    "rollback_again": 0,
     "final": [
-     "r2",
-     false
+     "r1",
+     true
+    ]
+   },
+   {
+    "live": "r2",
+    "uv": 2,
+    "mixed": false,
+    "preflight_rc": 2,
+    "rollback_again": 0,
+    "final": [
+     "r1",
+     true
+    ]
+   },
+   {
+    "live": "r1",
+    "uv": 1,
+    "mixed": false,
+    "preflight_rc": 0,
+    "rollback_again": null,
+    "final": [
+     "r1",
+     true
+    ]
+   },
+   {
+    "live": "r2",
+    "uv": 2,
+    "mixed": false,
+    "preflight_rc": 2,
+    "rollback_again": 0,
+    "final": [
+     "r1",
+     true
     ]
    }
   ]
@@ -523,8 +523,8 @@
    {
     "case": "2x r3-broken from r2",
     "rcs": [
-     1,
-     2
+     2,
+     1
     ],
     "errs": [],
     "live": "r2",
@@ -540,8 +540,8 @@
    {
     "case": "2x r3-broken from r2",
     "rcs": [
-     1,
-     2
+     2,
+     1
     ],
     "errs": [],
     "live": "r2",
@@ -559,75 +559,75 @@
     "data_uv_before_rollback": null,
     "rcs": [
      2,
+     1,
+     2,
+     1,
+     0,
+     0
+    ],
+    "errs": [],
+    "live": "r1",
+    "pending": false,
+    "deployed_events_r2": 2,
+    "rollback_rc": 1,
+    "after_rollback_data_equals_r1": false,
+    "after_rollback_live": "r1"
+   },
+   {
+    "case": "6x r2 from r1",
+    "data_uv_before_rollback": null,
+    "rcs": [
+     2,
+     0,
+     0,
+     1,
+     2,
+     2
+    ],
+    "errs": [],
+    "live": "r1",
+    "pending": false,
+    "deployed_events_r2": 2,
+    "rollback_rc": 1,
+    "after_rollback_data_equals_r1": false,
+    "after_rollback_live": "r1"
+   },
+   {
+    "case": "6x r2 from r1",
+    "data_uv_before_rollback": null,
+    "rcs": [
      2,
      2,
      2,
+     1,
+     2,
+     0
+    ],
+    "errs": [],
+    "live": "r2",
+    "pending": true,
+    "deployed_events_r2": 1,
+    "rollback_rc": 2,
+    "after_rollback_data_equals_r1": false,
+    "after_rollback_live": "r2"
+   },
+   {
+    "case": "6x r2 from r1",
+    "data_uv_before_rollback": null,
+    "rcs": [
+     0,
+     1,
+     2,
+     1,
      2,
      0
     ],
     "errs": [],
     "live": "r1",
     "pending": false,
-    "deployed_events_r2": 1,
-    "rollback_rc": 0,
-    "after_rollback_data_equals_r1": true,
-    "after_rollback_live": "r1"
-   },
-   {
-    "case": "6x r2 from r1",
-    "data_uv_before_rollback": null,
-    "rcs": [
-     2,
-     2,
-     1,
-     2,
-     0,
-     2
-    ],
-    "errs": [],
-    "live": "r1",
-    "pending": false,
-    "deployed_events_r2": 1,
-    "rollback_rc": 0,
-    "after_rollback_data_equals_r1": true,
-    "after_rollback_live": "r1"
-   },
-   {
-    "case": "6x r2 from r1",
-    "data_uv_before_rollback": null,
-    "rcs": [
-     2,
-     2,
-     0,
-     2,
-     2,
-     2
-    ],
-    "errs": [],
-    "live": "r1",
-    "pending": false,
-    "deployed_events_r2": 1,
-    "rollback_rc": 0,
-    "after_rollback_data_equals_r1": true,
-    "after_rollback_live": "r1"
-   },
-   {
-    "case": "6x r2 from r1",
-    "data_uv_before_rollback": null,
-    "rcs": [
-     0,
-     2,
-     1,
-     2,
-     2,
-     2
-    ],
-    "errs": [],
-    "live": "r1",
-    "pending": false,
-    "deployed_events_r2": 1,
-    "rollback_rc": 0,
-    "after_rollback_data_equals_r1": true,
+    "deployed_events_r2": 2,
+    "rollback_rc": 1,
+    "after_rollback_data_equals_r1": false,
     "after_rollback_live": "r1"
    }
   ]
@@ -637,7 +637,7 @@
   "kind": "OBS",
   "result": "OBS",
   "detail": {
-   "deploy_seconds": 0.05070209503173828
+   "deploy_seconds": 0.05400204658508301
   }
  },
  {
@@ -646,6 +646,41 @@
   "result": "PASS",
   "detail": {
    "found": []
+  }
+ },
+ {
+  "id": "D12_repinned_and_live_health_refusals",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "revision_relabel_repinned": [
+    0,
+    false
+   ],
+   "secret_file_repinned": [
+    0,
+    false
+   ],
+   "symlink_repinned": [
+    2,
+    false
+   ],
+   "approval_action_changed_only": [
+    0,
+    false
+   ],
+   "live_schema_version_wrong": [
+    0,
+    false
+   ],
+   "live_required_file_empty": [
+    0,
+    false
+   ],
+   "release_folder_exists_other_content": [
+    1,
+    false
+   ]
   }
  }
 ]

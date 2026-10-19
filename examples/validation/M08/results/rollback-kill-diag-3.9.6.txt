@@ -1,0 +1,2 @@
+no stuck case in 60 trials
+Note (Grok, 01:59 PT): this v2 run executed 150 trials (range(150)); the printed '60 trials' is a stale message string fixed afterwards in the script.

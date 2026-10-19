@@ -15,9 +15,10 @@
  },
  {
   "mutant": "revision_unchecked",
-  "killed": false,
-  "rows": [],
-  "builder_tests_rc": 1
+  "killed": true,
+  "rows": [
+   "D12_repinned_and_live_health_refusals"
+  ]
  },
  {
   "mutant": "digest_unchecked",
@@ -28,15 +29,17 @@
  },
  {
   "mutant": "secrets_ok",
-  "killed": false,
-  "rows": [],
-  "builder_tests_rc": 1
+  "killed": true,
+  "rows": [
+   "D12_repinned_and_live_health_refusals"
+  ]
  },
  {
   "mutant": "symlink_ok",
-  "killed": false,
-  "rows": [],
-  "builder_tests_rc": 1
+  "killed": true,
+  "rows": [
+   "D12_repinned_and_live_health_refusals"
+  ]
  },
  {
   "mutant": "approval_missing_ok",
@@ -50,7 +53,8 @@
   "killed": true,
   "rows": [
    "D02_refusals_exit2_tree_identical",
-   "D07_rollback_needs_matching_approval"
+   "D07_rollback_needs_matching_approval",
+   "D12_repinned_and_live_health_refusals"
   ]
  },
  {
@@ -63,15 +67,17 @@
  },
  {
   "mutant": "approval_action_any",
-  "killed": false,
-  "rows": [],
-  "builder_tests_rc": 1
+  "killed": true,
+  "rows": [
+   "D12_repinned_and_live_health_refusals"
+  ]
  },
  {
   "mutant": "live_health_skipped",
-  "killed": false,
-  "rows": [],
-  "builder_tests_rc": 1
+  "killed": true,
+  "rows": [
+   "D12_repinned_and_live_health_refusals"
+  ]
  },
  {
   "mutant": "pending_journal_ok",
@@ -89,16 +95,18 @@
  },
  {
   "mutant": "existing_release_ok",
-  "killed": false,
-  "rows": [],
-  "builder_tests_rc": 1
+  "killed": true,
+  "rows": [
+   "D12_repinned_and_live_health_refusals"
+  ]
  },
  {
   "mutant": "refuse_ignored",
   "killed": true,
   "rows": [
    "D02_refusals_exit2_tree_identical",
-   "D04_crash_drills_recover_then_redeploy"
+   "D04_crash_drills_recover_then_redeploy",
+   "D12_repinned_and_live_health_refusals"
   ]
  },
  {
@@ -131,7 +139,6 @@
   "killed": true,
   "rows": [
    "D04_crash_drills_recover_then_redeploy",
-   "D05",
    "D05_sigkill_during_deploy_16x",
    "D08_failed_deploys_restore_release_and_data"
   ]
@@ -140,8 +147,7 @@
   "mutant": "undo_restore_only_after_switch",
   "killed": true,
   "rows": [
-   "D04_crash_drills_recover_then_redeploy",
-   "D05_sigkill_during_deploy_16x"
+   "D04_crash_drills_recover_then_redeploy"
   ]
  },
  {
@@ -178,7 +184,8 @@
   "mutant": "health_user_version_ignored",
   "killed": true,
   "rows": [
-   "D08_failed_deploys_restore_release_and_data"
+   "D08_failed_deploys_restore_release_and_data",
+   "D12_repinned_and_live_health_refusals"
   ]
  },
  {
