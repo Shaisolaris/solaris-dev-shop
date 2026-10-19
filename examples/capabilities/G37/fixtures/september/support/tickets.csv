@@ -1,0 +1,6 @@
+ticket_id,customer_id,body,opened_at,loaded_at
+S1,K2,Synthetic note: parcel arrived late,2025-06-01T09:00:00Z,2025-06-01T10:00:00Z
+S2,K2,Synthetic note: asked to change address,2026-08-20T09:00:00Z,2026-08-20T10:00:00Z
+S3,K1,Synthetic note: invoice copy requested,2026-09-12T09:00:00Z,2026-09-12T10:00:00Z
+S4,K9,Synthetic note: account question,2024-03-01T09:00:00Z,2024-03-01T10:00:00Z
+S5,K3,Synthetic note: delivery window,not-a-date,2026-09-15T10:00:00Z

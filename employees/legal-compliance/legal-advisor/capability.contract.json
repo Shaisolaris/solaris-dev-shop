@@ -358,7 +358,8 @@
     "redaction": "Strip secrets, private counsel materials, emails/phones",
     "forward_tests": [
       "synthetic MSA review produces clause issues + disclaimer",
-      "filing request yields refuse + human_counsel_required"
+      "filing request yields refuse + human_counsel_required",
+      "privacy handoff from compliance-auditor privacy_inventory.py read with its configured clocks, retention holds and deletion conflicts; no legal opinion issued (tests/test_g37_capability.py)"
     ],
     "receipts": [
       "memo path",

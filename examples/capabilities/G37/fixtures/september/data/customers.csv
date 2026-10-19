@@ -1,0 +1,6 @@
+customer_id,region,name,contact,birth_date,created_at,updated_at
+K1,west,Synthetic Person K1,contact-token-K1,1990-01-01,2026-02-01T00:00:00Z,2026-02-01T00:00:00Z
+K2,east,Synthetic Person K2,contact-token-K2,1985-05-05,2025-03-01T00:00:00Z,2025-03-01T00:00:00Z
+K3,east,Synthetic Person K3,contact-token-K3,1979-07-07,2026-04-01T00:00:00Z,2026-04-01T00:00:00Z
+K4,west,Synthetic Person K4,contact-token-K4,2000-02-02,2026-01-05T00:00:00Z,2026-01-05T00:00:00Z
+K9,north,Synthetic Person K9,contact-token-K9,1970-09-09,2024-01-15T00:00:00Z,2024-01-15T00:00:00Z

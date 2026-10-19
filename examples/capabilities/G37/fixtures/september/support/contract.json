@@ -1,0 +1,15 @@
+{
+ "schema": "solaris.csv-reconcile/1",
+ "timezone": "UTC",
+ "facts": {
+  "file": "tickets.csv",
+  "grain": ["ticket_id"],
+  "columns": {"ticket_id": "str", "customer_id": "str", "body": "str", "opened_at": "timestamp", "loaded_at": "timestamp"},
+  "required": ["opened_at"],
+  "duplicate_policy": "reject",
+  "loaded_at_column": "loaded_at"
+ },
+ "window": {"column": "opened_at", "start": "2024-01-01T00:00:00Z", "end": "2026-10-01T00:00:00Z"},
+ "as_of": "2026-10-02T00:00:00Z",
+ "metrics": [{"name": "tickets", "agg": "count_distinct", "column": "ticket_id"}]
+}

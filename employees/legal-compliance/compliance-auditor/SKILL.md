@@ -58,6 +58,13 @@ Coverage diff clean over CC1-CC9 + A1; each row owned + evidence-sourced; P0s ar
 | Encryption at rest + in transit | CC6.7 | A.8.24 | §164.312(a)(2)(iv)/(e) | KMS config + TLS scan |
 One row implemented once satisfies every claimed framework - never run two siloed gap analyses. Add ISO/IEC 42001 + EU AI Act Arts 9-15 columns for AI-deploying clients.
 
+## Privacy inventory check (G37)
+Data inventory, retention review and data-subject requests are worked with `privacy_inventory.py`
+(`privacy-inventory.md`) on the data engineer's G13 contracts: every field actually present is mapped (including
+columns G13 ignores), records past retention are listed by file and line, each request is traced to its records
+with a configured response clock, unverified requests reveal nothing, and every jurisdiction-specific point goes
+to legal-advisor and a qualified reviewer. It plans; it never deletes or sends, and it does not certify compliance.
+
 ## HARD NUMBERS
 - **SOC 2 TSC:** CC1-CC9 common criteria + A1/C1/PI1/P1-P8 category criteria (Security mandatory; others only if management asserts). 5 system-description narratives.
 - **Type 2 evidence period:** 6-month minimum typical (Type 1 = point-in-time). Set runway before quoting.

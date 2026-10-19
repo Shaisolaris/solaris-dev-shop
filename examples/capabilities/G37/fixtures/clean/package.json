@@ -1,0 +1,11 @@
+{
+ "schema": "solaris.privacy-inventory/1",
+ "as_of": "2026-10-02T00:00:00Z",
+ "contracts": ["data/contract.json"],
+ "inventory": "inventory.json",
+ "requests": "requests.jsonl",
+ "clocks": {
+  "EU-GDPR": {"months": 1, "source": "fixture value modelled on GDPR Art. 12(3) (one month, extendable); confirm with counsel"},
+  "US-CA-CCPA": {"days": 45, "source": "fixture value modelled on the CCPA 45-day response period; confirm with counsel"}
+ }
+}

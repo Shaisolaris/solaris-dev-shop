@@ -1,0 +1,31 @@
+{
+ "systems": [{"id": "warehouse", "owner_role": "data-engineer"}, {"id": "cfo-books", "owner_role": "cfo"}],
+ "tables": {
+  "customers.csv": {
+   "subject_key": "customer_id",
+   "retention": {"days": 730, "anchor": "created_at", "basis": "account records; fixture value, confirm"},
+   "fields": {
+    "customer_id": {"category": "identifier", "purpose": "link orders to the account", "basis": "contract (to confirm)", "flows": ["warehouse"]},
+    "region": {"category": "location", "purpose": "regional reporting", "basis": "legitimate interest (to confirm)", "flows": ["warehouse"]},
+    "name": {"category": "identifier", "purpose": "account holder", "basis": "contract (to confirm)"},
+    "contact": {"category": "contact", "purpose": "order updates", "basis": "contract (to confirm)"},
+    "created_at": {"category": "not_personal"},
+    "updated_at": {"category": "not_personal"}
+   }
+  },
+  "orders.csv": {
+   "subject_key": "customer_id",
+   "retention": {"days": 2555, "anchor": "event_time", "basis": "financial records; fixture value, confirm", "hold_for_review": true},
+   "fields": {
+    "order_id": {"category": "not_personal"},
+    "customer_id": {"category": "identifier", "purpose": "who ordered", "basis": "contract (to confirm)", "flows": ["warehouse", "cfo-books"]},
+    "amount": {"category": "financial", "purpose": "billing", "basis": "contract (to confirm)", "flows": ["cfo-books"]},
+    "currency": {"category": "not_personal"},
+    "status": {"category": "not_personal"},
+    "event_time": {"category": "behavioral", "purpose": "order time", "basis": "contract (to confirm)"},
+    "loaded_at": {"category": "not_personal"},
+    "updated_at": {"category": "not_personal"}
+   }
+  }
+ }
+}
