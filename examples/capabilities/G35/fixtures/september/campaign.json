@@ -1,0 +1,19 @@
+{
+ "schema": "solaris.campaign-ledger/1",
+ "as_of": "2026-10-02T00:00:00Z",
+ "window": {"start": "2026-09-01T00:00:00Z", "end": "2026-10-01T00:00:00Z"},
+ "spend": {"contract": "spend-contract.json"},
+ "orders": {"contract": "orders-contract.json"},
+ "finance": {"g14_package": "finance/package.json"},
+ "campaigns": [
+  {"id": "C-search", "name": "Search, generic terms", "currency": "USD", "flight_start": "2026-09-01", "flight_end": "2026-09-30",
+   "budget_total": "400.00", "budget_daily": "20.00", "click_window_days": 7, "view_window_days": 0},
+  {"id": "C-social", "name": "Social prospecting", "currency": "USD", "flight_start": "2026-09-10", "flight_end": "2026-09-30",
+   "budget_total": "150.00", "budget_daily": "10.00", "click_window_days": 1, "view_window_days": 1},
+  {"id": "C-eu", "name": "Search, EU", "currency": "EUR", "flight_start": "2026-09-01", "flight_end": "2026-09-30",
+   "budget_total": "100.00", "budget_daily": "10.00", "click_window_days": 7, "view_window_days": 0}
+ ],
+ "touches": "touches.jsonl",
+ "conversions": "conversions.jsonl",
+ "creatives": "creatives.json"
+}

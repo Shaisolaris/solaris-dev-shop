@@ -1,0 +1,11 @@
+{"event_id": "E1", "order_id": "O1", "user": "u1", "at": "2026-09-03T10:00:00Z", "loaded_at": "2026-09-03T10:05:00Z", "source": "pixel", "value": "120.00", "currency": "USD"}
+{"event_id": "E1", "order_id": "O1", "user": "u1", "at": "2026-09-03T10:00:00Z", "loaded_at": "2026-09-03T10:05:00Z", "source": "pixel", "value": "120.00", "currency": "USD"}
+{"event_id": "E2", "order_id": "O1", "user": "u1", "at": "2026-09-03T10:00:05Z", "loaded_at": "2026-09-03T10:06:00Z", "source": "server", "value": "120.00", "currency": "USD"}
+{"event_id": "E3", "order_id": "O2", "user": "u2", "at": "2026-09-12T20:00:00Z", "loaded_at": "2026-09-12T20:05:00Z", "source": "pixel", "value": "90.00", "currency": "USD"}
+{"event_id": "E4", "order_id": "O3", "user": "u3", "at": "2026-09-08T10:00:00Z", "loaded_at": "2026-09-08T10:05:00Z", "source": "server"}
+{"event_id": "E5", "order_id": "O4", "user": "u4", "at": "2026-09-08T10:00:01Z", "loaded_at": "2026-09-08T10:05:00Z", "source": "server"}
+{"event_id": "E6", "order_id": "O5", "user": "u5", "at": "2026-09-14T22:00:00Z", "loaded_at": "2026-09-14T22:05:00Z", "source": "pixel", "value": "30.00", "currency": "USD"}
+{"event_id": "E7", "order_id": "O7", "user": "u6", "at": "2026-09-06T10:00:00Z", "loaded_at": "2026-09-06T10:05:00Z", "source": "server", "value": "45.00", "currency": "EUR"}
+{"event_id": "E8", "order_id": "O8", "user": "u9", "at": "2026-09-07T10:00:00Z", "loaded_at": "2026-09-07T10:05:00Z", "source": "pixel", "value": "99.00", "currency": "USD"}
+{"event_id": "E9", "order_id": "O9", "user": "u7", "at": "2026-09-20T12:00:00Z", "loaded_at": "2026-09-20T12:05:00Z", "source": "server"}
+{"event_id": "E10", "order_id": "O6", "user": "u10", "at": "2026-09-18T10:00:00Z", "loaded_at": "2026-10-03T00:00:00Z", "source": "server"}

@@ -251,10 +251,13 @@
   "dependencies": {
     "references": [
       "SKILL.md",
+      "campaign-accounting.md",
       "rules.md",
       "../RUNTIME-POLICY.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "campaign_ledger.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -353,7 +356,8 @@
     "redaction": "Strip secrets, tokens, raw emails/phones, and connector payloads from receipts",
     "forward_tests": [
       "synthetic paid-ads-manager brief produces typed deliverable + gate without external mutation",
-      "growth-revenue fixtures for paid-ads-manager pass consent/suppression/approval gates"
+      "growth-revenue fixtures for paid-ads-manager pass consent/suppression/approval gates",
+      "campaign ledger: exact spend and conversion reconciliation, attribution windows, duplicates, budgets, truthful draft creatives, nothing published or spent (tests/test_g35_capability.py)"
     ],
     "receipts": [
       "draft paths",
@@ -454,7 +458,8 @@
     ],
     "references": [
       "rules.md",
-      "../RUNTIME-POLICY.md"
+      "../RUNTIME-POLICY.md",
+      "campaign-accounting.md"
     ]
   }
 }

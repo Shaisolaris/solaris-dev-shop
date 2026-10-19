@@ -1,0 +1,2 @@
+{"touch_id": "T1", "campaign_id": "C-search", "user": "u1", "kind": "click", "at": "2026-09-02T10:00:00Z", "loaded_at": "2026-09-02T11:00:00Z"}
+{"touch_id": "T2", "campaign_id": "C-search", "user": "u2", "kind": "click", "at": "2026-09-03T10:00:00Z", "loaded_at": "2026-09-03T11:00:00Z"}

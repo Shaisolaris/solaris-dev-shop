@@ -1,0 +1,18 @@
+{
+ "schema": "solaris.csv-reconcile/1",
+ "timezone": "UTC",
+ "facts": {
+  "file": "orders.csv",
+  "grain": ["order_id"],
+  "columns": {"order_id": "str", "amount": "decimal", "currency": "str", "status": "str", "event_time": "timestamp", "loaded_at": "timestamp", "updated_at": "timestamp"},
+  "required": ["amount", "currency", "event_time"],
+  "uppercase": ["currency"],
+  "duplicate_policy": "latest:updated_at",
+  "status_column": "status",
+  "exclude_status": ["test", "void"],
+  "loaded_at_column": "loaded_at"
+ },
+ "window": {"column": "event_time", "start": "2026-09-01T00:00:00Z", "end": "2026-10-01T00:00:00Z"},
+ "as_of": "2026-10-02T00:00:00Z",
+ "metrics": [{"name": "revenue", "agg": "sum", "column": "amount", "by": ["order_id", "currency"]}]
+}

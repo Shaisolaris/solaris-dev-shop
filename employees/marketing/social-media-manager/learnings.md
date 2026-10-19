@@ -1,6 +1,7 @@
 # Social Media Manager - Learnings (Pending)
 
 ## Pending observations
+- **2026-10-19 - G35 creative review**: a headline like "Guaranteed 10x returns" fails twice (prohibited wording and a number no figure supports), and a draft carrying a publish time was refused outright. *Proposed rule: every number in a draft names the figure it comes from.*
 - **2026-04-25 - Clean rebuild from alirezarezvani SMM SKILL + platforms**: 5-pillar content mix (40/20/15/15/10) + 1:1 publishing-to-engagement rule are the structural rules that consistently get violated.
 - **2026-04-25 - Native-to-platform discipline**: Cross-posting raw content (especially TikTok watermarks on Reels) gets algorithmic demotion. Codified.
 - **2026-06-13 - Platform API caps set the ceiling, not the strategy**: a clean cadence plan can be impossible under the platform's own API cap (X free = 500/MONTH read-paywalled; FB 25/page/day; TikTok ~15 SHARED/creator; YouTube ~6 uploads/day). Always check the cap before promising a schedule. Codified in rules.md + tooling-and-platform-apis-2026.md.
