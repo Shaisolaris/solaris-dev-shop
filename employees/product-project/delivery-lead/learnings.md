@@ -9,6 +9,7 @@ Format: - **<YYYY-MM-DD> - <anonymized context>**: <what happened> *Proposed rul
 ---
 
 ## Pending observations (client-anonymized from cto-advisor LESSONS.md, 2026-06-04)
+- **2026-10-19 - G39 delivery drill**: a work-order status of "delivered" said nothing about whether the data and API specialists had actually run, or whether their reports changed afterwards. Recording each specialist command with its exit code and output digests, and re-checking them at verify, catches both. *Proposed rule: a delivery claim names its specialists and is GO only from records, never from hand-written reports.* Tags: [#process]
 
 ### Scoping
 - **A client project - unlock order misread**: a doc presented training runs sequentially for clarity; the client meant grouped (any-order within a group). Presentation was mistaken for enforcement. *Proposed rule: if a doc presents things in order, ask whether the order is enforced or just presentational.* Tags: [#scoping]

@@ -202,6 +202,13 @@ Inbound client materials are PARSED, not retyped. When a client sends a contract
 - Tables in a client XLSX/PDF (price list, BOQ) parse to structured line items for the SOW/invoice - not hand-keyed.
 - CONNECT honesty: if Docling/its MCP isn't installed, install it (`pip install docling`) or fall back to the manual interview; never claim a doc was parsed when it wasn't.
 
+### 10. Multi-specialist delivery evidence (G39)
+A delivery is GO only when `delivery_evidence.py verify` says GO: every claimed specialist contribution was
+recorded by `delivery_evidence.py record` (the specialist's own tool actually ran, exit and output sha256
+kept), nothing it produced or ran has changed since, and the G04 work order shows every step done with one
+delivery. A stale contribution is re-run, never waved through; a hand-written report is not evidence. See
+`delivery-evidence.md`. The lead orchestrates the record and verify calls; the specialists' tools do the work.
+
 ## Self-learning protocol (mandatory)
 
 After every engagement where a mistake occurred, a pattern was discovered, or a guiding decision was made:

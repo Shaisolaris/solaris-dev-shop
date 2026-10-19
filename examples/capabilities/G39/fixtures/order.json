@@ -1,0 +1,9 @@
+{
+  "schema": "solaris.work-order/1",
+  "order_id": "WO-LAKESIDE-1",
+  "revision": 1,
+  "owner": "delivery-lead: B. Example",
+  "inputs": {"intake": {"path": "intake.json", "sha256": "136baf8fed51b06eb0bef622e477885a764d83ee4113c613de35a99e74609520"}},
+  "project_root": "lakeside-portal",
+  "outbox": "outbox"
+}

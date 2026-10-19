@@ -262,6 +262,13 @@ Review weekly. Escalate Score = High × High to sponsor.
 
 ---
 
+## Delivery status from evidence (G39)
+When a delivery spans specialists, report a deliverable as done only when
+`employees/product-project/delivery-lead/delivery_evidence.py verify` lists its contribution as `evidenced`.
+Report `stale`, `failed`, `unevidenced` and an incomplete work order as open items with the action the
+report names, and carry the report's limits line into the status update. Worker names in records are
+plain-text claims.
+
 ## Project closure
 
 1. Final deliverable handoff + acceptance

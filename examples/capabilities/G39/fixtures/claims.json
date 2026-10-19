@@ -1,0 +1,9 @@
+{
+  "schema": "solaris.delivery-claims/1",
+  "order": "order.json",
+  "contributions": [
+    {"role": "data/data-engineer", "outputs": ["reports/metrics.json"]},
+    {"role": "quality-security/security-auditor", "outputs": ["reports/api-boundary.json"]},
+    {"role": "infrastructure/database-administrator", "outputs": ["snapshots/s1"]}
+  ]
+}

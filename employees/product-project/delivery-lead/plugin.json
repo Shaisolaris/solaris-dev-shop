@@ -10,6 +10,7 @@
   ],
   "references": [
     "rules.md",
+    "delivery-evidence.md",
     "learnings.md",
     "PROJECT_TAKEOVER.md",
     "codebase-onboarding.md",
