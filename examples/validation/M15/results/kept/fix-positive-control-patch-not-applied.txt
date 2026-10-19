@@ -1,0 +1,8 @@
+File to patch: 
+No file found--skip this patch? [y] 
+1 out of 1 hunks ignored--saving rejects to Oops.rej
+File to patch: 
+No file found--skip this patch? [y] 
+3 out of 3 hunks ignored--saving rejects to Oops.rej
+== 3.9.6 | fixtures: clean-aa=no_detectable_difference retention-lift=difference_detected sample-ratio-mismatch=invalid_experiment | g15: OK | full: OK | builder-oracle: ACCEPTED: 12/12 checks passed (seed 1515) | m15: X13b_simpson_ramp_reversal OBS {"rc": 0, "units": {"base": 500, "variant": 500}, "converted": {"base": 210, "variant": 115}, "outcome": "difference_detected", "effect": {"ci_high": "-0.133148", "ci_low": "-0.246852", "confidence": "0.950000", "difference": "-0 X13_simpson_ramp OBS {"rc": 0, "units": {"base": 500, "variant": 500}, "converted": {"base": 90, "variant": 235}, "outcome": "difference_detected", "effect": {"ci_high": "0.345207", "ci_low": "0.234793", "confidence": "0.950000", "difference": "0.290000", "p_v M15 ORACLE 15/15 core PASS 
+== 3.13.15 | fixtures: clean-aa=no_detectable_difference retention-lift=difference_detected sample-ratio-mismatch=invalid_experiment | g15: OK | full: OK | builder-oracle: ACCEPTED: 12/12 checks passed (seed 1515) | m15: X13b_simpson_ramp_reversal OBS {"rc": 0, "units": {"base": 500, "variant": 500}, "converted": {"base": 210, "variant": 115}, "outcome": "difference_detected", "effect": {"ci_high": "-0.133148", "ci_low": "-0.246852", "confidence": "0.950000", "difference": "-0 X13_simpson_ramp OBS {"rc": 0, "units": {"base": 500, "variant": 500}, "converted": {"base": 90, "variant": 235}, "outcome": "difference_detected", "effect": {"ci_high": "0.345207", "ci_low": "0.234793", "confidence": "0.950000", "difference": "0.290000", "p_v M15 ORACLE 15/15 core PASS 

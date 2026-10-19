@@ -1,0 +1,347 @@
+[
+ {
+  "id": "X01_aa_no_claim",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "units": {
+    "base": 300,
+    "variant": 300
+   },
+   "converted": {
+    "base": 90,
+    "variant": 90
+   },
+   "outcome": "no_detectable_difference",
+   "claims": {
+    "causal": false,
+    "significance": false
+   }
+  }
+ },
+ {
+  "id": "X02_lift_exact_interval",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "converted": {
+    "base": 60,
+    "variant": 96
+   },
+   "effect_mismatch": {
+    "ci_low": [
+     "0.044213",
+     0.035446
+    ],
+    "ci_high": [
+     "0.135787",
+     0.144554
+    ]
+   },
+   "effect": {
+    "ci_high": "0.135787",
+    "ci_low": "0.044213",
+    "confidence": "0.950000",
+    "difference": "0.090000",
+    "p_value": "0.001316"
+   },
+   "outcome": "difference_detected"
+  }
+ },
+ {
+  "id": "X03_repeated_users_once",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "units": {
+    "base": 250,
+    "variant": 250
+   },
+   "converted": {
+    "base": 50,
+    "variant": 50
+   },
+   "exclusions": {
+    "events_after_horizon": 0,
+    "events_before_assignment": 0,
+    "events_unassigned_units": 0,
+    "immature": 0,
+    "missing_values": 0,
+    "multiple_arms": [],
+    "outside_cohort": 0,
+    "rejected_rows": 0,
+    "repeat_assignment_rows": 40,
+    "unknown_arm": 0
+   }
+  }
+ },
+ {
+  "id": "X04_leakage_windows",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "converted": {
+    "base": 0,
+    "variant": 12
+   },
+   "exclusions": {
+    "events_after_horizon": 18,
+    "events_before_assignment": 30,
+    "events_unassigned_units": 7,
+    "immature": 0,
+    "missing_values": 0,
+    "multiple_arms": [],
+    "outside_cohort": 0,
+    "rejected_rows": 0,
+    "repeat_assignment_rows": 0,
+    "unknown_arm": 0
+   }
+  }
+ },
+ {
+  "id": "X04b_horizon_end_boundary",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "event_exactly_at_assignment_plus_horizon_counted": false
+  }
+ },
+ {
+  "id": "X05_contamination_threshold",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "at5": {
+    "rc": 0,
+    "outcome": "no_detectable_difference",
+    "named": 20,
+    "units": {
+     "base": 180,
+     "variant": 200
+    },
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "over5": {
+    "rc": 0,
+    "outcome": "invalid_experiment",
+    "named": 21,
+    "units": {
+     "base": 179,
+     "variant": 200
+    },
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   }
+  }
+ },
+ {
+  "id": "X06_underpowered",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "below_min": [
+    "insufficient_information",
+    {
+     "causal": false,
+     "significance": false
+    }
+   ],
+   "at_min": "difference_detected"
+  }
+ },
+ {
+  "id": "X07_srm",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "srm": {
+    "rc": 0,
+    "outcome": "invalid_experiment",
+    "chi_ok": true,
+    "p": 1.733679663961263e-05,
+    "tool_p": "0.000017"
+   },
+   "mild": {
+    "rc": 0,
+    "outcome": "no_detectable_difference",
+    "chi_ok": true,
+    "p": 0.15729920705028516,
+    "tool_p": "0.157299"
+   },
+   "planned_30_70": {
+    "rc": 0,
+    "outcome": "no_detectable_difference",
+    "chi_ok": true,
+    "p": 1.0,
+    "tool_p": "1.000000"
+   }
+  }
+ },
+ {
+  "id": "X08_observational_association_only",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "outcome": "association_only",
+   "claims": {
+    "causal": false,
+    "significance": true
+   }
+  }
+ },
+ {
+  "id": "X09_cohort_and_immature",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "units": {
+    "base": 200,
+    "variant": 200
+   },
+   "outside": 13,
+   "immature_run": {
+    "units": {
+     "base": 200,
+     "variant": 200
+    },
+    "immature": 5,
+    "converted": {
+     "base": 50,
+     "variant": 50
+    }
+   }
+  }
+ },
+ {
+  "id": "X10_invalid_refused_out_kept",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "split_not_one": 2,
+   "three_arms": 2,
+   "unit_not_unit_id": 2,
+   "alpha_one": 2,
+   "unknown_field": 2,
+   "missing_file": 2,
+   "cohort_reversed": 2,
+   "bad_assignment_kind": 2,
+   "first": 0,
+   "kept": true,
+   "recover": 0
+  }
+ },
+ {
+  "id": "X11_order_stable",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "equal": true
+  }
+ },
+ {
+  "id": "X12_reads_only_no_bytecode",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0
+  }
+ },
+ {
+  "id": "X13b_simpson_ramp_reversal",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "rc": 0,
+   "units": {
+    "base": 500,
+    "variant": 500
+   },
+   "converted": {
+    "base": 210,
+    "variant": 115
+   },
+   "outcome": "difference_detected",
+   "effect": {
+    "ci_high": "-0.142284",
+    "ci_low": "-0.237716",
+    "confidence": "0.950000",
+    "difference": "-0.190000",
+    "p_value": "0.000000"
+   },
+   "claims": {
+    "causal": true,
+    "significance": true
+   },
+   "truth": "variant +0.05 in each period; pooled sign reversed"
+  }
+ },
+ {
+  "id": "X13_simpson_ramp",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "rc": 0,
+   "units": {
+    "base": 500,
+    "variant": 500
+   },
+   "converted": {
+    "base": 90,
+    "variant": 235
+   },
+   "outcome": "difference_detected",
+   "effect": {
+    "ci_high": "0.336335",
+    "ci_low": "0.243665",
+    "confidence": "0.950000",
+    "difference": "0.290000",
+    "p_value": "0.000000"
+   },
+   "claims": {
+    "causal": true,
+    "significance": true
+   },
+   "truth": "variant +0.05 in each period (0.50 vs 0.55, then 0.10 vs 0.15)",
+   "srm": {
+    "chi_square": "0.000000",
+    "mismatch": false,
+    "p_value": "1.000000",
+    "planned_split": [
+     0.5,
+     0.5
+    ]
+   }
+  }
+ },
+ {
+  "id": "X14_wald_near_zero",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "rc": 0,
+   "outcome": "difference_detected",
+   "effect": {
+    "ci_high": "0.066320",
+    "ci_low": "0.013680",
+    "confidence": "0.950000",
+    "difference": "0.040000",
+    "p_value": "0.013348"
+   },
+   "my_wald": {
+    "difference": 0.04,
+    "ci_low": 0.008641,
+    "ci_high": 0.071359,
+    "p_value": 0.013348
+   }
+  }
+ }
+]

@@ -1,0 +1,280 @@
+[
+ {
+  "id": "X01_aa_no_claim",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "units": {
+    "base": null,
+    "variant": null
+   },
+   "converted": {
+    "base": null,
+    "variant": null
+   },
+   "outcome": null,
+   "claims": null
+  }
+ },
+ {
+  "id": "X02_lift_exact_interval",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "converted": {
+    "base": null,
+    "variant": null
+   },
+   "effect_mismatch": {
+    "difference": [
+     null,
+     0.09
+    ],
+    "ci_low": [
+     null,
+     0.035446
+    ],
+    "ci_high": [
+     null,
+     0.144554
+    ],
+    "p_value": [
+     null,
+     0.001316
+    ]
+   },
+   "effect": null,
+   "outcome": null
+  }
+ },
+ {
+  "id": "X03_repeated_users_once",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "units": {
+    "base": null,
+    "variant": null
+   },
+   "converted": {
+    "base": null,
+    "variant": null
+   },
+   "exclusions": null
+  }
+ },
+ {
+  "id": "X04_leakage_windows",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "converted": {
+    "base": null,
+    "variant": null
+   },
+   "exclusions": {}
+  }
+ },
+ {
+  "id": "X04b_horizon_end_boundary",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "event_exactly_at_assignment_plus_horizon_counted": false
+  }
+ },
+ {
+  "id": "X05_contamination_threshold",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "at5": {
+    "rc": 0,
+    "outcome": null,
+    "named": 0,
+    "units": {
+     "base": null,
+     "variant": null
+    },
+    "claims": null
+   },
+   "over5": {
+    "rc": 0,
+    "outcome": null,
+    "named": 0,
+    "units": {
+     "base": null,
+     "variant": null
+    },
+    "claims": null
+   }
+  }
+ },
+ {
+  "id": "X06_underpowered",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "below_min": [
+    null,
+    null
+   ],
+   "at_min": null
+  }
+ },
+ {
+  "id": "X07_srm",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "srm": {
+    "rc": 0,
+    "outcome": null,
+    "chi_ok": false,
+    "p": 1.733679663961263e-05,
+    "tool_p": null
+   },
+   "mild": {
+    "rc": 0,
+    "outcome": null,
+    "chi_ok": false,
+    "p": 0.15729920705028516,
+    "tool_p": null
+   },
+   "planned_30_70": {
+    "rc": 0,
+    "outcome": null,
+    "chi_ok": false,
+    "p": 1.0,
+    "tool_p": null
+   }
+  }
+ },
+ {
+  "id": "X08_observational_association_only",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "outcome": null,
+   "claims": null
+  }
+ },
+ {
+  "id": "X09_cohort_and_immature",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "units": {
+    "base": null,
+    "variant": null
+   },
+   "outside": null,
+   "immature_run": {
+    "units": {
+     "base": null,
+     "variant": null
+    },
+    "immature": null,
+    "converted": {
+     "base": null,
+     "variant": null
+    }
+   }
+  }
+ },
+ {
+  "id": "X10_invalid_refused_out_kept",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "split_not_one": 0,
+   "three_arms": 0,
+   "unit_not_unit_id": 0,
+   "alpha_one": 0,
+   "unknown_field": 0,
+   "missing_file": 0,
+   "cohort_reversed": 0,
+   "bad_assignment_kind": 0,
+   "first": 0,
+   "kept": false,
+   "recover": 0
+  }
+ },
+ {
+  "id": "X11_order_stable",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "equal": true
+  }
+ },
+ {
+  "id": "X12_reads_only_no_bytecode",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0
+  }
+ },
+ {
+  "id": "X13b_simpson_ramp_reversal",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "rc": 0,
+   "units": {
+    "base": null,
+    "variant": null
+   },
+   "converted": {
+    "base": null,
+    "variant": null
+   },
+   "outcome": null,
+   "effect": null,
+   "claims": null,
+   "truth": "variant +0.05 in each period; pooled sign reversed"
+  }
+ },
+ {
+  "id": "X13_simpson_ramp",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "rc": 0,
+   "units": {
+    "base": null,
+    "variant": null
+   },
+   "converted": {
+    "base": null,
+    "variant": null
+   },
+   "outcome": null,
+   "effect": null,
+   "claims": null,
+   "truth": "variant +0.05 in each period (0.50 vs 0.55, then 0.10 vs 0.15)",
+   "srm": null
+  }
+ },
+ {
+  "id": "X14_wald_near_zero",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "rc": 0,
+   "outcome": null,
+   "effect": null,
+   "my_wald": {
+    "difference": 0.04,
+    "ci_low": 0.008641,
+    "ci_high": 0.071359,
+    "p_value": 0.013348
+   }
+  }
+ }
+]
