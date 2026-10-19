@@ -372,6 +372,7 @@ If a control fails, do not emit `Gate: passed` for the affected path.
 - Planted defects and release packets: see `../assurance/ASSURANCE.md` and run
   `python3 ../assurance/quality_os.py suite` from fixtures root.
 - Evidence required: run results with pass/fail counts + artifact paths; never “tests written” alone.
+- Bind each QA receipt to the build tested (`reviewed.revision`, or `quality_os.py digest` for the files); a later build makes it stale unless those files are unchanged.
 
 ## QA Loop
 All deliverables follow the canonical QA loop (`docs/QA-LOOP.md`): build → independent review → fix → repeat until clean. No self-certification.

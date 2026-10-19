@@ -36,7 +36,12 @@
     "order_id": { "type": "string" },
     "waiver_id": { "type": "string" },
     "created_at": { "type": "string" },
-    "updated_at": { "type": "string" }
+    "updated_at": { "type": "string" },
+    "closed_at_revision": {
+      "type": "string",
+      "description": "Revision the closing verification reviewed (git commit id or sha256:<hex>); empty when unbound",
+      "pattern": "^(|[0-9a-f]{7,64}|sha256:[0-9a-f]{64})$"
+    }
   },
   "additionalProperties": false
 }
