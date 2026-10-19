@@ -9,6 +9,7 @@ was interrupted, ends on the previous release with the previous data. Exit 0 don
 75 crash drill. Data is read with sqlite3 directly, never from the tool's output.
 """
 import argparse
+import fcntl
 import hashlib
 import json
 import os
@@ -18,6 +19,7 @@ import sqlite3
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -296,13 +298,79 @@ def o15(w):  # invalid plans create nothing
     return w.tree() == t and still and w.deploy("r1") == 0  # positive control
 
 
+LAUNCH = "import os,sys,time\nt=float(sys.argv[1])\nwhile time.time()<t: pass\nos.execv(sys.argv[2], sys.argv[2:])\n"
+OFFSETS_MS = (0, 2, 4, 5, 6, 8, 10, 12, 15)
+
+
+def race(w, name, offset_ms):
+    """Two deploys of one plan on one target, released offset_ms apart from a common start time (a spin-wait
+    launcher takes interpreter start-up out of the timing); returns both exit codes, sorted."""
+    t0 = time.time() + 0.4
+    args = [w.tool, "deploy", str(w.w / ("plan-%s.json" % name)), "--approval", str(w.w / ("approval-%s.json" % name))]
+    ps = [subprocess.Popen([sys.executable, "-c", LAUNCH, "%.4f" % (t0 + d / 1000.0), sys.executable] + args,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=ENV, cwd=str(w.w))
+          for d in (0, offset_ms)]
+    return sorted(p.wait(timeout=300) for p in ps)
+
+
+def deployed(w, rev):
+    h = w.env / ".deploy" / "history.jsonl"
+    rows = [json.loads(x) for x in h.read_text().splitlines() if x.strip()] if h.exists() else []
+    return sum(1 for r in rows if r.get("event") == "deployed" and r.get("revision") == rev)
+
+
+def o16(w):  # concurrency: a held target lock refuses; overlapping deploys never corrupt or double-report
+    if not at_r2(w):
+        return False
+    fd = os.open(str(w.env), os.O_RDONLY)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        held = unchanged(w, lambda: w.deploy("r3-broken")) and \
+            unchanged(w, lambda: w.run("rollback", "r2", "approval-rollback-to-r1.json")) and \
+            unchanged(w, lambda: w.run("recover", "r2"))
+    finally:
+        os.close(fd)
+    if not held:
+        return False
+    before = w.data()
+    for i in range(18):  # two broken deploys at once: both end on r2 with r2's data, nothing pending
+        rcs = race(w, "r3-broken", OFFSETS_MS[i % len(OFFSETS_MS)])
+        if not set(rcs) <= {1, 2} or w.live() != "r2" or w.data() != before or (w.env / ".deploy/journal.json").exists():
+            return False
+    for i in range(9):  # two deploys of r2 at once from r1: exactly one deploy happens
+        if w.run("rollback", "r2", "approval-rollback-to-r1.json") != 0:
+            return False
+        n = deployed(w, "r2")
+        rcs = race(w, "r2", OFFSETS_MS[i])
+        if rcs not in ([0, 0], [0, 2]) or deployed(w, "r2") != n + 1 or w.live() != "r2" or w.data()[0] != 2:
+            return False
+    return True
+
+
+def o17(w):  # a repeat deploy of the live release still needs approval and a healthy live release
+    if not at_r2(w):
+        return False
+    t1 = unchanged(w, lambda: w.run("deploy", "r2"))  # no approval
+    t2 = unchanged(w, lambda: w.run("deploy", "r2", "approval-r1.json"))  # approval for another revision
+    before = w.tree()
+    t3 = w.deploy("r2") == 0 and w.tree() == before  # approved and healthy: success, nothing changed
+    con = sqlite3.connect(str(w.env / "data" / "app.db"))
+    try:
+        con.execute("PRAGMA user_version = 3")  # an outside writer breaks the live release's precondition
+        con.commit()
+    finally:
+        con.close()
+    t4 = unchanged(w, lambda: w.deploy("r2"))
+    return t1 and t2 and t3 and t4
+
+
 def s1(w):  # static: no network, cloud SDK or process launch
     src = Path(w.tool).read_text()
     return not any(x in src for x in ("import subprocess", "import socket", "urllib", "http.client", "boto",
                                       "requests", "os.system"))
 
 
-CHECKS = [o1, o2, o3, o4, o5, o6, o7, o8, o9, o10, o11, o12, o13, o14, o15, s1]
+CHECKS = [o1, o2, o3, o4, o5, o6, o7, o8, o9, o10, o11, o12, o13, o14, o15, o16, o17, s1]
 
 
 def main():

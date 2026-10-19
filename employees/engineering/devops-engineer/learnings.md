@@ -8,6 +8,11 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 
 ## Pending observations
 
+- **2026-10-19 - G08 r2 concurrency**: two overlapping deploys without a lock can both report "rolled back" while
+  leaving migrated data under the old release and no journal, so recover and rollback cannot heal it; a repeat
+  deploy that exits 0 without checking health turns that into a false success receipt. *Proposed rule: one
+  deployer per target, enforced by a lock held for the whole command, and every exit 0 backed by approval and
+  health.*
 - **2026-10-19 - G08 local deploy drill**: a deploy that checks health only after switching cannot tell its
   own failure from one that was already there, and a rollback that restores code but not data leaves a
   migrated schema under old code. *Proposed rule: check live health and rollback availability (intact

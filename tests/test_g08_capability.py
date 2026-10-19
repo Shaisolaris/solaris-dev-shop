@@ -94,6 +94,56 @@ class G08Deploy(unittest.TestCase):
         self.assertEqual(con.execute('SELECT sum(total_cents) FROM orders').fetchone()[0], 1250 + 4800 + 990)
         con.close()
 
+    def tree(self):
+        out = {}
+        for p in sorted((self.w / 'env').rglob('*')):
+            out[str(p)] = os.readlink(str(p)) if p.is_symlink() else p.read_bytes() if p.is_file() else None
+        return out
+
+    def test_held_lock_refuses_every_mutating_command(self):
+        import fcntl
+        self.assertEqual(self.deploy('r1')[0], 0)
+        self.assertEqual(self.deploy('r2')[0], 0)
+        before = self.tree()
+        fd = os.open(str(self.w / 'env'), os.O_RDONLY)
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            for args in (('deploy', 'plan-r3-broken.json', '--approval', 'approval-r3-broken.json'),
+                         ('rollback', 'plan-r2.json', '--approval', 'approval-rollback-to-r1.json'),
+                         ('recover', 'plan-r2.json')):
+                code, _, err = self.cli(*args)
+                self.assertEqual(code, 2, args)
+                self.assertIn('holds the lock', err)
+            self.assertEqual(self.cli('preflight', 'plan-r2.json', '--approval', 'approval-r2.json')[0], 2)  # no lock taken
+            self.assertEqual(self.tree(), before)
+        finally:
+            os.close(fd)
+        self.assertEqual(self.deploy('r3-broken')[0], 1)  # released: the next caller runs
+        self.assertEqual(self.deploy('r3-broken', '--fail-at', 'switched')[0], 75)
+        self.assertEqual(self.cli('recover', 'plan-r2.json')[0], 1)  # a crashed holder leaves no stale lock
+
+    def test_repeat_deploy_needs_approval_and_health(self):
+        self.assertEqual(self.deploy('r1')[0], 0)
+        before = self.tree()
+        code, out, _ = self.cli('deploy', 'plan-r1.json', '--json')
+        self.assertEqual(self.tree(), before)
+        self.assertEqual(code, 2)
+        self.assertEqual([c['check'] for c in json.loads(out)['checks'] if not c['ok'] and c['check'] != 'rollback'], ['authority'])
+        code, out, _ = self.deploy('r1')
+        self.assertEqual(code, 0)
+        self.assertIn('approved and healthy', out)
+        con = sqlite3.connect(str(self.w / 'env/data/app.db'))
+        con.execute('PRAGMA user_version = 7')
+        con.commit()
+        con.close()
+        code, out, _ = self.deploy('r1')
+        self.assertEqual(code, 2)
+        self.assertIn('health failed', out)
+        os.remove(str(self.w / 'env/releases/r1/index.html'))
+        before = self.tree()
+        self.assertEqual(self.deploy('r1')[0], 2)
+        self.assertEqual(self.tree(), before)
+
     def test_secret_like_names(self):
         for n in ('.env', 'config/.env.production', 'deploy.pem', 'id_rsa', 'gcp/credentials.json', 'x.key'):
             self.assertTrue(ld.SECRET_RE.search(n), n)
@@ -110,7 +160,7 @@ class G08Deploy(unittest.TestCase):
         demo = (EX / 'README.md').read_text().split('```bash\n')[1].split('```')[0]
         lines = [c for c in demo.splitlines() if c.startswith('python3 $T ')]
         codes = [self.cli(*c.split('#')[0].split()[2:])[0] for c in lines]
-        self.assertEqual(len(lines), 8)
+        self.assertEqual(len(lines), 9)
         self.assertEqual(codes, [int(x.split('# exit ')[1].split(':')[0]) for x in lines])
 
 

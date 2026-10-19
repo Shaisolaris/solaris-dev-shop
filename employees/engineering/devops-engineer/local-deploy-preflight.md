@@ -53,12 +53,26 @@ invalid, nothing changed; 75 a `--fail-at staged|migrated|switched` crash drill.
 Snapshot and verify the data (G03), record the journal, stage and verify the release, apply `migrate.sql`
 in one transaction, switch `current` atomically, run the health check on the new release. On failure it
 restores the data from the snapshot (G03 restore keeps the replaced file as `*.pre-restore-*`), switches back
-and moves the failed release to `releases/.failed-<rev>-<deploy_id>`. A repeated deploy of the live release
-with the same artifact changes nothing.
+and moves the failed release to `releases/.failed-<rev>-<deploy_id>`.
+
+A repeated deploy of the live release with the same artifact changes nothing, but it is still judged: exit 0
+only when the approval covers it and the live release passes its health check; otherwise exit 2 with the
+failed checks listed. A repeat is never a success receipt for an unhealthy or unapproved target.
+
+## One deployer per target
+
+`deploy`, `rollback` and `recover` hold an exclusive, non-blocking lock on the target folder (POSIX `flock`
+on the folder itself, so no lock file is written) for the whole command, preflight included. A second caller
+on the same target is refused with exit 2 and nothing changed; run it again when the first has finished.
+The kernel drops the lock when the process ends, including SIGKILL and the `--fail-at` drills, so there is no
+stale lock to clear. `preflight` and `status` take no lock and write nothing. Systems without `fcntl` are
+refused rather than run unlocked.
 
 ## Limits
 
 - Data written between a deploy and a later explicit `rollback` is replaced by the pre-deploy snapshot (the
   replaced file is kept by G03). Stop writers before deploying or rolling back.
-- One deployer at a time; there is no lock between two concurrent deploys of the same target.
+- The lock is advisory: it serialises callers of this tool, not other programs writing to the target.
+- A rollback approval names the revision returned to, not a deploy id, so one approval file can be reused for
+  a later rollback to the same revision.
 - Not run: any real host, container, cloud provider, DNS, CDN or traffic switch.

@@ -11,6 +11,11 @@ health conditions. `preflight` checks, without writing anything:
   rollback      the live release is intact and the data can be snapshotted (G03 sqlite_recovery.py); no
                 unfinished deploy is pending
 
+`deploy`, `rollback` and `recover` take an exclusive per-target lock (flock on the target folder, released by
+the kernel when the process ends, even on SIGKILL); a second caller on the same target is refused with exit 2
+and nothing changed. A repeat deploy of the release that is already live changes nothing, but still needs
+the approval and a healthy live release: exit 0 only then, otherwise exit 2.
+
 `deploy` refuses (exit 2, nothing changed) unless every check passes. It then records a journal, snapshots
 and verifies the data with G03, stages the release, applies the artifact's migrate.sql in one transaction,
 switches the `current` link atomically and runs the health check on the new release. If that fails it rolls
@@ -31,7 +36,13 @@ import shutil
 import sqlite3
 import sys
 import time
+from contextlib import contextmanager
 from pathlib import Path
+
+try:
+    import fcntl
+except ImportError:  # pragma: no cover - not POSIX
+    fcntl = None
 
 PLAN_SCHEMA = "solaris.deploy-plan/1"
 ENV_SCHEMA = "solaris.local-environment/1"
@@ -47,6 +58,26 @@ CRASH_EXIT = 75
 
 class Refused(Exception):
     pass
+
+
+@contextmanager
+def target_lock(plan):
+    """Exclusive, non-blocking lock on the target folder for one mutating command. Writes nothing."""
+    if fcntl is None:
+        raise Refused("the per-target lock needs a POSIX system (fcntl); refusing to deploy without it")
+    try:
+        fd = os.open(str(plan["target"]), os.O_RDONLY)
+    except OSError:
+        raise Refused("target %s cannot be opened" % plan["target"].name)
+    try:
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            raise Refused("another deploy, rollback or recover holds the lock on target %s; nothing changed"
+                          % plan["target"].name)
+        yield
+    finally:
+        os.close(fd)  # closing the descriptor releases the lock
 
 
 def g03():
@@ -289,13 +320,24 @@ def _undo(plan, env, j, why):
 
 
 def deploy(plan, approval, fail_at=None):
+    with target_lock(plan):
+        return _deploy(plan, approval, fail_at)
+
+
+def _deploy(plan, approval, fail_at=None):
     env = Env(plan)
+    checks, ctx = preflight(plan, approval)
     if env.live() == plan["revision"] and not os.path.lexists(str(env.journal)):
         rec = [h for h in env.hist() if h.get("event") == "deployed" and h.get("revision") == plan["revision"]]
         if rec and rec[-1].get("sha256") == plan["artifact_sha"] and \
                 tree_digest(env.releases / plan["revision"])[0] == plan["artifact_sha"]:
-            return 0, {"result": "%s is already live with this artifact; nothing changed" % plan["revision"]}
-    checks, ctx = preflight(plan, approval)
+            # a repeat changes nothing, but is only a success when it is approved and the live release is healthy
+            bad = [c for c in checks if not c["ok"] and c["check"] != "rollback"]
+            if bad:
+                return 2, {"result": "refused: %s is already live but %s failed; nothing changed" % (
+                    plan["revision"], ", ".join(c["check"] for c in bad)), "checks": checks}
+            return 0, {"result": "%s is already live with this artifact, approved and healthy; nothing changed"
+                       % plan["revision"], "checks": [c for c in checks if c["check"] != "rollback"]}
     bad = [c for c in checks if not c["ok"]]
     if bad:
         return 2, {"result": "refused before any change", "checks": checks}
@@ -360,6 +402,11 @@ def deploy(plan, approval, fail_at=None):
 
 
 def recover(plan):
+    with target_lock(plan):
+        return _recover(plan)
+
+
+def _recover(plan):
     env = Env(plan)
     if not os.path.lexists(str(env.journal)):
         return 0, {"result": "nothing to recover"}
@@ -373,6 +420,11 @@ def recover(plan):
 
 
 def rollback(plan, approval):
+    with target_lock(plan):
+        return _rollback(plan, approval)
+
+
+def _rollback(plan, approval):
     checks, ctx = preflight(plan, approval, action="rollback")
     if [c for c in checks if not c["ok"]]:
         return 2, {"result": "refused before any change", "checks": checks}
