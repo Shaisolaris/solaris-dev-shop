@@ -68,6 +68,12 @@ Any no → fix or **BLOCKED**. End successful deliverables with: `Gate: passed`
 
 Every dispatched branch carries `WORK-ORDER.md`: scope, interface contract, definition of done, forbidden files, skills to read (Step-0), commit rules (no AI co-author stamps), PR target, and mandatory closer `Gate: passed`.
 
+## Restartable work orders (local)
+
+When work may be stopped by one worker and finished by another on the same machine, run it as a work order
+with `handoff.py` (see `handoff-work-orders.md`): explicit owner, revision, hashed inputs, per-step receipts,
+one delivery per revision even after a crash. It launches no worker and does not involve the router.
+
 ## Monitoring (project-local only)
 
 - Status: read `project/fleet/status.json` or run the **project-declared** watch script under `project/fleet/ops/` (or `$SOLARIS_FLEET_ROOT/ops/`).  

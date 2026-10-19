@@ -109,6 +109,7 @@ Gate: passed
 - **cto** - pure technical strategy / architecture | **project-manager** - internal PM mechanics
 - **product-manager** - authors the product spec | **cloud-architect** - owns the technical plan
 - **code-reviewer** - executes the takeover audit I orchestrate; I own the client relationship and the contractor + delivery pipeline
+- **fleet-dispatcher** - a handoff that must survive one worker stopping and another resuming on the same machine: a local restartable work order (owner, revision, receipts, one delivery) via `handoff.py`; it launches no worker
 
 ## Critical rules (always active)
 

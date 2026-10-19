@@ -1,0 +1,9 @@
+{
+  "schema": "solaris.work-order/1",
+  "order_id": "WO-HARBOR-1",
+  "revision": 1,
+  "owner": "delivery-lead: A. Example",
+  "inputs": {"intake": {"path": "intake.json", "sha256": "6c651bd7151769fbb1685253894955c1b9f3d559bca9bc14862172b59564d0e4"}},
+  "project_root": "harbor-kiosk",
+  "outbox": "outbox"
+}
