@@ -1,0 +1,32 @@
+== 3.9.6
+$ python3 employees/legal-compliance/compliance-auditor/privacy_inventory.py review examples/capabilities/G37/fixtures/clean/package.json   # exit 0
+  -> exit 0; last line:   local files only; nothing was deleted, exported, sent or changed
+$ python3 employees/legal-compliance/compliance-auditor/privacy_inventory.py review examples/capabilities/G37/fixtures/september/package.json   # exit 1
+  -> exit 1; last line:   local files only; nothing was deleted, exported, sent or changed
+$ python3 employees/legal-compliance/compliance-auditor/privacy_inventory.py review examples/capabilities/G37/fixtures/september/package.json --out $STATE/handoff   # exit 1
+  -> exit 1; last line:   local files only; nothing was deleted, exported, sent or changed
+$ python3 employees/legal-compliance/compliance-auditor/privacy_inventory.py review examples/capabilities/G37/README.md   # exit 2
+  -> exit 2; last line: invalid: README.md: not JSON (Expecting value) (nothing written)
+$ python3 examples/capabilities/G37/privacy_oracle.py   # ACCEPTED 9/9
+  -> exit 0; last line: ACCEPTED 9/9
+$ python3 examples/capabilities/G37/privacy_oracle.py -- python3 examples/capabilities/G37/naive_inventory.py   # REJECTED 0/9
+  -> exit 1; last line: REJECTED 0/9
+$ python3 examples/capabilities/G37/privacy_oracle.py -- python3 examples/capabilities/G37/noop_inventory.py   # REJECTED 0/9
+  -> exit 1; last line: REJECTED 0/9
+-- --out files: ./handoff/handoff.md ./handoff/report.json ; pycache dirs in copy: 0; tree changed: no; HOME entries: ./Library ./Library/Caches ./Library/Caches/com.apple.python 
+== 3.13.15
+$ python3 employees/legal-compliance/compliance-auditor/privacy_inventory.py review examples/capabilities/G37/fixtures/clean/package.json   # exit 0
+  -> exit 0; last line:   local files only; nothing was deleted, exported, sent or changed
+$ python3 employees/legal-compliance/compliance-auditor/privacy_inventory.py review examples/capabilities/G37/fixtures/september/package.json   # exit 1
+  -> exit 1; last line:   local files only; nothing was deleted, exported, sent or changed
+$ python3 employees/legal-compliance/compliance-auditor/privacy_inventory.py review examples/capabilities/G37/fixtures/september/package.json --out $STATE/handoff   # exit 1
+  -> exit 1; last line:   local files only; nothing was deleted, exported, sent or changed
+$ python3 employees/legal-compliance/compliance-auditor/privacy_inventory.py review examples/capabilities/G37/README.md   # exit 2
+  -> exit 2; last line: invalid: README.md: not JSON (Expecting value) (nothing written)
+$ python3 examples/capabilities/G37/privacy_oracle.py   # ACCEPTED 9/9
+  -> exit 0; last line: ACCEPTED 9/9
+$ python3 examples/capabilities/G37/privacy_oracle.py -- python3 examples/capabilities/G37/naive_inventory.py   # REJECTED 0/9
+  -> exit 1; last line: REJECTED 0/9
+$ python3 examples/capabilities/G37/privacy_oracle.py -- python3 examples/capabilities/G37/noop_inventory.py   # REJECTED 0/9
+  -> exit 1; last line: REJECTED 0/9
+-- --out files: ./handoff/handoff.md ./handoff/report.json ; pycache dirs in copy: 0; tree changed: no; HOME entries: 

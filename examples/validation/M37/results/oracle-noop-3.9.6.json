@@ -1,0 +1,451 @@
+{
+ "tool": "/tmp/m37mx-V7vqgJ/examples/capabilities/G37/noop_inventory.py",
+ "python": "3.9.6",
+ "rows": [
+  {
+   "row": "R01 clean control: complete, R1 finds exactly customers line 2 and orders lines 2 and 4, due 2026-10-10T09:00Z, the access package holds the personal fields only, every clock goes to qualified review, not legal advice",
+   "pass": false,
+   "sub": {
+    "complete": true,
+    "records_exact": false,
+    "due_one_month": false,
+    "access_personal_fields_only": false,
+    "every_clock_in_qualified_review": false,
+    "not_legal_advice_and_read_only": false
+   },
+   "detail": {
+    "complete": [
+     true,
+     [
+      0,
+      "complete",
+      []
+     ]
+    ],
+    "records_exact": [
+     false,
+     []
+    ],
+    "due_one_month": [
+     false,
+     null
+    ],
+    "access_personal_fields_only": [
+     false,
+     []
+    ],
+    "every_clock_in_qualified_review": [
+     false,
+     []
+    ],
+    "not_legal_advice_and_read_only": [
+     false,
+     null
+    ]
+   }
+  },
+  {
+   "row": "R02 inventory against the data: a new column and a G13-ignored column are unmapped (the latter marked); a stale entry, a personal field without purpose or basis, an undeclared flow target, a personal table without retention or subject key are named; an unknown category is refused",
+   "pass": false,
+   "sub": {
+    "new_column_unmapped": false,
+    "g13_ignored_column_unmapped_and_marked": false,
+    "stale_entry": false,
+    "personal_without_purpose": false,
+    "personal_without_basis": false,
+    "flow_to_undeclared_system": false,
+    "personal_table_without_retention": false,
+    "personal_table_without_subject_key": false,
+    "unknown_category_refused": false
+   },
+   "detail": {
+    "new_column_unmapped": [
+     false,
+     []
+    ],
+    "g13_ignored_column_unmapped_and_marked": [
+     false,
+     []
+    ],
+    "stale_entry": [
+     false,
+     []
+    ],
+    "personal_without_purpose": [
+     false,
+     []
+    ],
+    "personal_without_basis": [
+     false,
+     []
+    ],
+    "flow_to_undeclared_system": [
+     false,
+     []
+    ],
+    "personal_table_without_retention": [
+     false,
+     [
+      0,
+      []
+     ]
+    ],
+    "personal_table_without_subject_key": [
+     false,
+     [
+      0,
+      []
+     ]
+    ],
+    "unknown_category_refused": [
+     false,
+     0
+    ]
+   }
+  },
+  {
+   "row": "R03 retention: anchor + days at exactly as_of is due and one second later is not; due records become a data-engineer obligation; an unreadable anchor is named and not guessed; a held table's old record (outside the G13 metric window) is still due and goes to qualified review",
+   "pass": false,
+   "sub": {
+    "exact_boundary_due": false,
+    "due_record_is_an_obligation_for_the_data_engineer": false,
+    "one_second_later_not_due": false,
+    "unreadable_anchor_named_not_guessed": false,
+    "held_old_order_outside_g13_window_still_due_and_to_qualified_review": false
+   },
+   "detail": {
+    "exact_boundary_due": [
+     false,
+     []
+    ],
+    "due_record_is_an_obligation_for_the_data_engineer": [
+     false,
+     []
+    ],
+    "one_second_later_not_due": [
+     false,
+     null
+    ],
+    "unreadable_anchor_named_not_guessed": [
+     false,
+     [
+      0,
+      null,
+      null,
+      []
+     ]
+    ],
+    "held_old_order_outside_g13_window_still_due_and_to_qualified_review": [
+     false,
+     [
+      null,
+      []
+     ]
+    ]
+   }
+  },
+  {
+   "row": "R04 request clocks: months clamp to the month end (Jan 31 -> Feb 28, Mar 31 -> Apr 30); 45 days closed on the due instant is on time and one second later is closed_late; open past due is overdue; no clock is named and sent to qualified review",
+   "pass": false,
+   "sub": {
+    "jan31_plus_1_month_is_feb28": false,
+    "mar31_plus_1_month_is_apr30": false,
+    "ccpa_45_days_closed_on_due_is_on_time": false,
+    "closed_one_second_late": false,
+    "open_past_due_overdue": false,
+    "open_not_yet_due_fine": true,
+    "unknown_jurisdiction_clock_and_review_item": false
+   },
+   "detail": {
+    "jan31_plus_1_month_is_feb28": [
+     false,
+     null
+    ],
+    "mar31_plus_1_month_is_apr30": [
+     false,
+     null
+    ],
+    "ccpa_45_days_closed_on_due_is_on_time": [
+     false,
+     [
+      null,
+      []
+     ]
+    ],
+    "closed_one_second_late": [
+     false,
+     []
+    ],
+    "open_past_due_overdue": [
+     false,
+     []
+    ],
+    "open_not_yet_due_fine": [
+     true,
+     [
+      0,
+      []
+     ]
+    ],
+    "unknown_jurisdiction_clock_and_review_item": [
+     false,
+     [
+      [],
+      []
+     ]
+    ]
+   }
+  },
+  {
+   "row": "R05 requests: an unverified request looks nothing up; deletion splits into delete (customers) and retain_pending_review (held orders) and names the systems to propagate to; correction lists the personal fields; no data file changes",
+   "pass": false,
+   "sub": {
+    "unverified_looks_nothing_up": true,
+    "deletion_split_delete_vs_retain_pending_review": false,
+    "deletion_propagates_to_systems": false,
+    "correction_lists_personal_fields": false,
+    "data_files_unchanged": true
+   },
+   "detail": {
+    "unverified_looks_nothing_up": [
+     true,
+     {}
+    ],
+    "deletion_split_delete_vs_retain_pending_review": [
+     false,
+     {
+      "delete": null,
+      "retain_pending_review": null
+     }
+    ],
+    "deletion_propagates_to_systems": [
+     false,
+     null
+    ],
+    "correction_lists_personal_fields": [
+     false,
+     {}
+    ],
+    "data_files_unchanged": [
+     true,
+     []
+    ]
+   }
+  },
+  {
+   "row": "R06 request integrity: an exact re-send collapses, the same id with another body is refused or named; the subject matches by exact key only (no case, space or prefix match, no free-text search); access finds every held line including excluded-status and out-of-window rows",
+   "pass": false,
+   "sub": {
+    "exact_resend_collapses": false,
+    "same_id_other_body_refused_and_named": false,
+    "exact_key_only_lowercase": true,
+    "exact_key_only_trailing_space": true,
+    "exact_key_only_prefix": true,
+    "exact_key_only_other": true,
+    "no_free_text_search": false,
+    "access_finds_test_status_and_out_of_window_rows": false
+   },
+   "detail": {
+    "exact_resend_collapses": [
+     false,
+     [
+      0,
+      0
+     ]
+    ],
+    "same_id_other_body_refused_and_named": [
+     false,
+     [
+      0,
+      []
+     ]
+    ],
+    "exact_key_only_lowercase": [
+     true,
+     []
+    ],
+    "exact_key_only_trailing_space": [
+     true,
+     []
+    ],
+    "exact_key_only_prefix": [
+     true,
+     []
+    ],
+    "exact_key_only_other": [
+     true,
+     []
+    ],
+    "no_free_text_search": [
+     false,
+     []
+    ],
+    "access_finds_test_status_and_out_of_window_rows": [
+     false,
+     []
+    ]
+   }
+  },
+  {
+   "row": "r07 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "FileNotFoundError(2, 'No such file or directory')"
+   }
+  },
+  {
+   "row": "R08 seeded soak: 12 random packages; every request's due time, matched lines (by file and line) and late/overdue findings equal my model",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "bad": [
+     {
+      "seed": 0,
+      "rc": 0,
+      "probs": [
+       [
+        "Q0",
+        "due",
+        null,
+        "2026-11-11 09:00:00"
+       ],
+       [
+        "Q0",
+        "records",
+        [],
+        [
+         [
+          "customers.csv",
+          6
+         ],
+         [
+          "orders.csv",
+          15
+         ]
+        ]
+       ],
+       [
+        "Q0",
+        "closed_late"
+       ],
+       [
+        "Q1",
+        "due",
+        null,
+        "2026-09-18 09:00:00"
+       ]
+      ],
+      "err": ""
+     },
+     {
+      "seed": 1,
+      "rc": 0,
+      "probs": [
+       [
+        "Q0",
+        "due",
+        null,
+        "2026-08-25 09:00:00"
+       ],
+       [
+        "Q0",
+        "records",
+        [],
+        [
+         [
+          "customers.csv",
+          6
+         ],
+         [
+          "orders.csv",
+          12
+         ]
+        ]
+       ],
+       [
+        "Q0",
+        "overdue"
+       ],
+       [
+        "Q1",
+        "due",
+        null,
+        "2026-09-04 09:00:00"
+       ]
+      ],
+      "err": ""
+     }
+    ]
+   }
+  },
+  {
+   "row": "O10 OBS: a request received_at without an offset (the doc requires an offset only for as_of)",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "rc": 0,
+    "status": "complete",
+    "due": null,
+    "codes": []
+   }
+  },
+  {
+   "row": "R11 (v2) package rules: a blank clock source, a real file outside the package and a naive as_of are refused; a subject key missing from the data and an inventory table with no data are named; free-text and special-category fields go to qualified review",
+   "pass": false,
+   "sub": {
+    "blank_clock_source_refused": false,
+    "existing_file_outside_package_refused": false,
+    "naive_as_of_refused": false,
+    "subject_key_not_in_data_named": false,
+    "inventory_table_without_data_named": false,
+    "free_text_field_in_qualified_review": false,
+    "special_category_field_in_qualified_review": false
+   },
+   "detail": {
+    "blank_clock_source_refused": [
+     false,
+     0
+    ],
+    "existing_file_outside_package_refused": [
+     false,
+     0
+    ],
+    "naive_as_of_refused": [
+     false,
+     0
+    ],
+    "subject_key_not_in_data_named": [
+     false,
+     [
+      0,
+      []
+     ]
+    ],
+    "inventory_table_without_data_named": [
+     false,
+     []
+    ],
+    "free_text_field_in_qualified_review": [
+     false,
+     []
+    ],
+    "special_category_field_in_qualified_review": [
+     false,
+     []
+    ]
+   }
+  },
+  {
+   "row": "R09 nothing is deleted, exported or sent: no network import, no audited network/process event other than G13, and every data file byte-identical after every run of this oracle",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "imports": [],
+    "delete_calls_in_source": [],
+    "audit_hits": [],
+    "data_changed_in": []
+   }
+  }
+ ]
+}

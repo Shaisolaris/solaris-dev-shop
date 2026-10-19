@@ -1,0 +1,627 @@
+{
+ "tool": "/tmp/m37teeth-s2nxdza4/overdue_off/employees/legal-compliance/compliance-auditor/privacy_inventory.py",
+ "python": "3.13.15",
+ "rows": [
+  {
+   "row": "R01 clean control: complete, R1 finds exactly customers line 2 and orders lines 2 and 4, due 2026-10-10T09:00Z, the access package holds the personal fields only, every clock goes to qualified review, not legal advice",
+   "pass": true,
+   "sub": {
+    "complete": true,
+    "records_exact": true,
+    "due_one_month": true,
+    "access_personal_fields_only": true,
+    "every_clock_in_qualified_review": true,
+    "not_legal_advice_and_read_only": true
+   },
+   "detail": {
+    "complete": [
+     true,
+     [
+      0,
+      "complete",
+      []
+     ]
+    ],
+    "records_exact": [
+     true,
+     [
+      [
+       "customers.csv",
+       2
+      ],
+      [
+       "orders.csv",
+       2
+      ],
+      [
+       "orders.csv",
+       4
+      ]
+     ]
+    ],
+    "due_one_month": [
+     true,
+     "2026-10-10T09:00:00+00:00"
+    ],
+    "access_personal_fields_only": [
+     true,
+     [
+      [
+       "amount",
+       "customer_id",
+       "event_time"
+      ],
+      [
+       "amount",
+       "customer_id",
+       "event_time"
+      ],
+      [
+       "contact",
+       "customer_id",
+       "name",
+       "region"
+      ]
+     ]
+    ],
+    "every_clock_in_qualified_review": [
+     true,
+     [
+      {
+       "why": "response clock for EU-GDPR is configured as 1 month(s) (source: fixture value modelled on GDPR Art. 12(3) (one month, extendable); confirm with counsel); confirm before relying on it"
+      },
+      {
+       "why": "response clock for US-CA-CCPA is configured as 45 days (source: fixture value modelled on the CCPA 45-day response period; confirm with counsel); confirm before relying on it"
+      }
+     ]
+    ],
+    "not_legal_advice_and_read_only": [
+     true,
+     null
+    ]
+   }
+  },
+  {
+   "row": "R02 inventory against the data: a new column and a G13-ignored column are unmapped (the latter marked); a stale entry, a personal field without purpose or basis, an undeclared flow target, a personal table without retention or subject key are named; an unknown category is refused",
+   "pass": true,
+   "sub": {
+    "new_column_unmapped": true,
+    "g13_ignored_column_unmapped_and_marked": true,
+    "stale_entry": true,
+    "personal_without_purpose": true,
+    "personal_without_basis": true,
+    "flow_to_undeclared_system": true,
+    "personal_table_without_retention": true,
+    "personal_table_without_subject_key": true,
+    "unknown_category_refused": true
+   },
+   "detail": {
+    "new_column_unmapped": [
+     true,
+     [
+      "unmapped_field"
+     ]
+    ],
+    "g13_ignored_column_unmapped_and_marked": [
+     true,
+     [
+      {
+       "code": "unmapped_field",
+       "field": "name",
+       "ignored_by_g13": true,
+       "table": "customers.csv"
+      }
+     ]
+    ],
+    "stale_entry": [
+     true,
+     [
+      "stale_inventory_entry"
+     ]
+    ],
+    "personal_without_purpose": [
+     true,
+     [
+      "personal_field_without_purpose_or_basis"
+     ]
+    ],
+    "personal_without_basis": [
+     true,
+     [
+      "personal_field_without_purpose_or_basis"
+     ]
+    ],
+    "flow_to_undeclared_system": [
+     true,
+     [
+      "flow_to_undeclared_system"
+     ]
+    ],
+    "personal_table_without_retention": [
+     true,
+     [
+      1,
+      [
+       "personal_table_without_retention"
+      ]
+     ]
+    ],
+    "personal_table_without_subject_key": [
+     true,
+     [
+      1,
+      [
+       "personal_table_without_subject_key"
+      ]
+     ]
+    ],
+    "unknown_category_refused": [
+     true,
+     2
+    ]
+   }
+  },
+  {
+   "row": "R03 retention: anchor + days at exactly as_of is due and one second later is not; due records become a data-engineer obligation; an unreadable anchor is named and not guessed; a held table's old record (outside the G13 metric window) is still due and goes to qualified review",
+   "pass": true,
+   "sub": {
+    "exact_boundary_due": true,
+    "due_record_is_an_obligation_for_the_data_engineer": true,
+    "one_second_later_not_due": true,
+    "unreadable_anchor_named_not_guessed": true,
+    "held_old_order_outside_g13_window_still_due_and_to_qualified_review": true
+   },
+   "detail": {
+    "exact_boundary_due": [
+     true,
+     [
+      {
+       "anchor": "2024-10-02T00:00:00Z",
+       "expired_on": "2026-10-02",
+       "line": 2,
+       "subject": "K1"
+      }
+     ]
+    ],
+    "due_record_is_an_obligation_for_the_data_engineer": [
+     true,
+     [
+      {
+       "action": "review for deletion; nothing deleted by this tool",
+       "id": "OB-001",
+       "kind": "retention",
+       "owner": "data-engineer",
+       "refs": [
+        {
+         "file": "customers.csv",
+         "line": 2
+        }
+       ],
+       "review": "operational"
+      }
+     ]
+    ],
+    "one_second_later_not_due": [
+     true,
+     []
+    ],
+    "unreadable_anchor_named_not_guessed": [
+     true,
+     [
+      1,
+      1,
+      [],
+      [
+       "retention_anchor_unreadable"
+      ]
+     ]
+    ],
+    "held_old_order_outside_g13_window_still_due_and_to_qualified_review": [
+     true,
+     [
+      [
+       {
+        "anchor": "2018-09-02T10:00:00Z",
+        "expired_on": "2025-08-31",
+        "line": 2,
+        "subject": "K1"
+       }
+      ],
+      [
+       {
+        "obligation": "OB-001",
+        "refs": [
+         {
+          "file": "orders.csv",
+          "line": 2
+         }
+        ],
+        "why": "orders.csv: 1 record(s) past 2555 days but marked hold_for_review (financial records; fixture value, confirm)"
+       },
+       {
+        "why": "response clock for EU-GDPR is configured as 1 month(s) (source: fixture value modelled on GDPR Art. 12(3) (one month, extendable); confirm with counsel); confirm before relying on it"
+       },
+       {
+        "why": "response clock for US-CA-CCPA is configured as 45 days (source: fixture value modelled on the CCPA 45-day response period; confirm with counsel); confirm before relying on it"
+       }
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "row": "R04 request clocks: months clamp to the month end (Jan 31 -> Feb 28, Mar 31 -> Apr 30); 45 days closed on the due instant is on time and one second later is closed_late; open past due is overdue; no clock is named and sent to qualified review",
+   "pass": false,
+   "sub": {
+    "jan31_plus_1_month_is_feb28": true,
+    "mar31_plus_1_month_is_apr30": true,
+    "ccpa_45_days_closed_on_due_is_on_time": true,
+    "closed_one_second_late": true,
+    "open_past_due_overdue": false,
+    "open_not_yet_due_fine": true,
+    "unknown_jurisdiction_clock_and_review_item": true
+   },
+   "detail": {
+    "jan31_plus_1_month_is_feb28": [
+     true,
+     "2026-02-28T09:00:00+00:00"
+    ],
+    "mar31_plus_1_month_is_apr30": [
+     true,
+     "2026-04-30T09:00:00+00:00"
+    ],
+    "ccpa_45_days_closed_on_due_is_on_time": [
+     true,
+     [
+      "2026-09-15T09:00:00+00:00",
+      []
+     ]
+    ],
+    "closed_one_second_late": [
+     true,
+     [
+      "closed_late"
+     ]
+    ],
+    "open_past_due_overdue": [
+     false,
+     []
+    ],
+    "open_not_yet_due_fine": [
+     true,
+     [
+      0,
+      []
+     ]
+    ],
+    "unknown_jurisdiction_clock_and_review_item": [
+     true,
+     [
+      [
+       "unknown_jurisdiction_clock"
+      ],
+      [
+       {
+        "refs": [
+         {
+          "line": 1
+         }
+        ],
+        "why": "request Q1: no response clock configured for 'BR-LGPD'"
+       },
+       {
+        "why": "response clock for EU-GDPR is configured as 1 month(s) (source: fixture value modelled on GDPR Art. 12(3) (one month, extendable); confirm with counsel); confirm before relying on it"
+       },
+       {
+        "why": "response clock for US-CA-CCPA is configured as 45 days (source: fixture value modelled on the CCPA 45-day response period; confirm with counsel); confirm before relying on it"
+       }
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "row": "R05 requests: an unverified request looks nothing up; deletion splits into delete (customers) and retain_pending_review (held orders) and names the systems to propagate to; correction lists the personal fields; no data file changes",
+   "pass": true,
+   "sub": {
+    "unverified_looks_nothing_up": true,
+    "deletion_split_delete_vs_retain_pending_review": true,
+    "deletion_propagates_to_systems": true,
+    "correction_lists_personal_fields": true,
+    "data_files_unchanged": true
+   },
+   "detail": {
+    "unverified_looks_nothing_up": [
+     true,
+     {
+      "closed_at": null,
+      "due": "2026-10-20T09:00:00+00:00",
+      "jurisdiction": "EU-GDPR",
+      "line": 1,
+      "note": "nothing about the subject is looked up or shown until identity is verified",
+      "obligation": "OB-003",
+      "received_at": "2026-09-20T09:00:00+00:00",
+      "request_id": "U1",
+      "status": "awaiting_identity_verification",
+      "type": "access"
+     }
+    ],
+    "deletion_split_delete_vs_retain_pending_review": [
+     true,
+     {
+      "delete": [
+       {
+        "file": "customers.csv",
+        "line": 3
+       }
+      ],
+      "retain_pending_review": [
+       {
+        "file": "orders.csv",
+        "line": 3
+       }
+      ]
+     }
+    ],
+    "deletion_propagates_to_systems": [
+     true,
+     [
+      "cfo-books",
+      "warehouse"
+     ]
+    ],
+    "correction_lists_personal_fields": [
+     true,
+     {
+      "closed_at": null,
+      "due": "2026-10-20T09:00:00+00:00",
+      "fields": [
+       "amount",
+       "contact",
+       "customer_id",
+       "event_time",
+       "name",
+       "region"
+      ],
+      "jurisdiction": "EU-GDPR",
+      "line": 3,
+      "obligation": "OB-001",
+      "received_at": "2026-09-20T09:00:00+00:00",
+      "records": [
+       {
+        "file": "orders.csv",
+        "line": 2
+       },
+       {
+        "file": "orders.csv",
+        "line": 4
+       },
+       {
+        "file": "customers.csv",
+        "line": 2
+       }
+      ],
+      "request_id": "C1",
+      "status": "correction_ready_for_review",
+      "type": "correction"
+     }
+    ],
+    "data_files_unchanged": [
+     true,
+     []
+    ]
+   }
+  },
+  {
+   "row": "R06 request integrity: an exact re-send collapses, the same id with another body is refused or named; the subject matches by exact key only (no case, space or prefix match, no free-text search); access finds every held line including excluded-status and out-of-window rows",
+   "pass": true,
+   "sub": {
+    "exact_resend_collapses": true,
+    "same_id_other_body_refused_and_named": true,
+    "exact_key_only_lowercase": true,
+    "exact_key_only_trailing_space": true,
+    "exact_key_only_prefix": true,
+    "exact_key_only_other": true,
+    "no_free_text_search": true,
+    "access_finds_test_status_and_out_of_window_rows": true
+   },
+   "detail": {
+    "exact_resend_collapses": [
+     true,
+     [
+      0,
+      1
+     ]
+    ],
+    "same_id_other_body_refused_and_named": [
+     true,
+     [
+      1,
+      [
+       "conflicting_request_ids"
+      ]
+     ]
+    ],
+    "exact_key_only_lowercase": [
+     true,
+     []
+    ],
+    "exact_key_only_trailing_space": [
+     true,
+     []
+    ],
+    "exact_key_only_prefix": [
+     true,
+     []
+    ],
+    "exact_key_only_other": [
+     true,
+     []
+    ],
+    "no_free_text_search": [
+     true,
+     [
+      [
+       "customers.csv",
+       2
+      ],
+      [
+       "orders.csv",
+       2
+      ],
+      [
+       "orders.csv",
+       4
+      ]
+     ]
+    ],
+    "access_finds_test_status_and_out_of_window_rows": [
+     true,
+     [
+      [
+       "customers.csv",
+       2
+      ],
+      [
+       "orders.csv",
+       2
+      ],
+      [
+       "orders.csv",
+       3
+      ],
+      [
+       "orders.csv",
+       4
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "row": "R07 output and recovery: --out writes report.json and handoff.md; nothing claims compliance, certification or identity verification; the handoff says not legal advice; an invalid run keeps the earlier report; --out inside the package, a clock without a source, a path escape are refused; an unknown request type or a non-boolean identity_verified is rejected and named",
+   "pass": true,
+   "sub": {
+    "out_writes_report_and_handoff": true,
+    "no_compliance_or_identity_claim": true,
+    "handoff_says_not_legal_advice": true,
+    "invalid_keeps_earlier_report": true,
+    "out_inside_package_refused": true,
+    "clock_without_source_refused": true,
+    "path_escape_refused": true,
+    "unknown_request_type_refused_or_rejected": true,
+    "non_boolean_identity_verified_rejected": true
+   },
+   "detail": {
+    "out_writes_report_and_handoff": [
+     true,
+     [
+      0,
+      [
+       "handoff.md",
+       "report.json"
+      ]
+     ]
+    ],
+    "no_compliance_or_identity_claim": [
+     true,
+     []
+    ],
+    "handoff_says_not_legal_advice": [
+     true,
+     null
+    ],
+    "invalid_keeps_earlier_report": [
+     true,
+     2
+    ],
+    "out_inside_package_refused": [
+     true,
+     2
+    ],
+    "clock_without_source_refused": [
+     true,
+     null
+    ],
+    "path_escape_refused": [
+     true,
+     null
+    ],
+    "unknown_request_type_refused_or_rejected": [
+     true,
+     [
+      1,
+      [
+       "rejected_request_rows"
+      ]
+     ]
+    ],
+    "non_boolean_identity_verified_rejected": [
+     true,
+     [
+      1,
+      [
+       "rejected_request_rows"
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "row": "R08 seeded soak: 12 random packages; every request's due time, matched lines (by file and line) and late/overdue findings equal my model",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "bad": [
+     {
+      "seed": 0,
+      "rc": 1,
+      "probs": [
+       [
+        "Q1",
+        "overdue"
+       ]
+      ],
+      "err": ""
+     },
+     {
+      "seed": 1,
+      "rc": 0,
+      "probs": [
+       [
+        "Q0",
+        "overdue"
+       ]
+      ],
+      "err": ""
+     }
+    ]
+   }
+  },
+  {
+   "row": "O10 OBS: a request received_at without an offset (the doc requires an offset only for as_of)",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "rc": 0,
+    "status": "complete",
+    "due": "2026-10-10T09:00:00+00:00",
+    "codes": []
+   }
+  },
+  {
+   "row": "R09 nothing is deleted, exported or sent: no network import, no audited network/process event other than G13, and every data file byte-identical after every run of this oracle",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "imports": [],
+    "delete_calls_in_source": [
+     "os.unlink",
+     ".unlink("
+    ],
+    "audit_hits": [],
+    "data_changed_in": []
+   }
+  }
+ ]
+}

@@ -1,0 +1,6 @@
+== 3.9.6 | g37: Ran 13 tests in 5.730s  OK  | full: Ran 137 tests in 17.585s  OK  | builder-oracle: ACCEPTED 9/9 | builder-naive: REJECTED 0/9 | builder-noop: REJECTED 0/9 | m37-oracle: M37 ORACLE 11/11 core PASS | m37-naive: M37 ORACLE 2/11 core FAIL | m37-noop: M37 ORACLE 2/11 core FAIL
+== 3.11.16 | g37: Ran 13 tests in 4.227s  OK  | full: Ran 137 tests in 12.956s  OK  | builder-oracle: ACCEPTED 9/9 | builder-naive: REJECTED 0/9 | builder-noop: REJECTED 0/9 | m37-oracle: M37 ORACLE 11/11 core PASS | m37-naive: M37 ORACLE 2/11 core FAIL | m37-noop: M37 ORACLE 2/11 core FAIL
+== 3.12.14 | g37: Ran 13 tests in 4.343s  OK  | full: Ran 137 tests in 13.436s  OK  | builder-oracle: ACCEPTED 9/9 | builder-naive: REJECTED 0/9 | builder-noop: REJECTED 0/9 | m37-oracle: M37 ORACLE 11/11 core PASS | m37-naive: M37 ORACLE 2/11 core FAIL | m37-noop: M37 ORACLE 2/11 core FAIL
+== 3.13.15 | g37: Ran 13 tests in 4.249s  OK  | full: Ran 137 tests in 13.548s  OK  | builder-oracle: ACCEPTED 9/9 | builder-naive: REJECTED 0/9 | builder-noop: REJECTED 0/9 | m37-oracle: M37 ORACLE 11/11 core PASS | m37-naive: M37 ORACLE 2/11 core FAIL | m37-noop: M37 ORACLE 2/11 core FAIL
+pycache in copy: 0
+candidate status lines: 0
