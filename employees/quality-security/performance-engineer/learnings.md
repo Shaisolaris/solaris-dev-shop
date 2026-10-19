@@ -20,6 +20,8 @@
 - RUNTIME HARDENING: mutation authority only after plan, dry-run evidence, failure notes, cost/security, and rollback.
 - Provider adapters retain default_deny + require_human for deploy/spend/mutate_external.
 - Evaluation packet: meta/skill-rotation/evaluations/20260724/platform-reliability/.
+## 2026-10-18 - G23 speedup claims
+- Claim a speedup only from the same measurement set: same URLs, same sample count (5 or more), same cache state, stack and procedure. wordpress-master's `wp_trace_diag.py compare` refuses otherwise (exit 3) and calls a URL faster only when every after-sample beats every before-sample.
 ## Sources
 
 - Upstream: locustio/locust (license not stated: 27.8k); grafana/pyroscope (license not stated: ~10k (7.2k @ 2023 acquisition, grew since; 2.0 GA)); open-telemetry/opentelemetry-collector (license not stated: ~5k core (+4.6k contrib)); harlan-zw/unlighthouse (license not stated: 4.5k); darold/pgbadger (license not stated: ~4k)

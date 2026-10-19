@@ -14,6 +14,12 @@
 | Date | Rule | Location |
 |------|------|----------|
 | | | |
+## 2026-10-18 - G23 trace and config diagnosis (synthetic fixtures only)
+- No WordPress, PHP or database on the build host: the analyzer reads a bundle, and every report says that nothing was run and carries the bundle's source line.
+- A bisect log alone can be ambiguous: three runs over four plugins left four pairs equally possible (fixture 08). Report the failure as unlocalized with its candidates instead of naming a pair.
+- Merge a `Cannot redeclare` fatal and a bisect result that name the same pair into one finding; two findings for one fault read as two faults.
+- Fold IN lists into one query shape or N+1 loops of `post_id IN (...)` hide; the same folding made 12 meta-cache primes look like an N+1 in an early fixture, so the clean control uses a realistic 4.
+- Reference: wp-trace-diagnosis.md, wp_trace_diag.py.
 ## Sources
 
 - Upstream: WordPress/mcp-adapter (GPL-2.0+ (FLAG copyleft; methodology only)); WordPress Abilities API (GPL (core)); WordPress 7.0 AI Client / PHP AI Client (GPL); WordPress/agent-skills (GPL-2.0+ (methodology absorbed in own voice)); WordPress 6.9 perf + Interactivity API iteration (GPL)
