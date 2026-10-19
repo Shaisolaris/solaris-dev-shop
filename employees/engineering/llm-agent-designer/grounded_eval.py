@@ -32,6 +32,7 @@ import re
 import secrets
 import stat
 import sys
+import unicodedata
 try:
     import fcntl
 except ImportError:  # pragma: no cover - not POSIX
@@ -59,8 +60,21 @@ NEEDS_NUMBER = re.compile(r"^\s*(how (many|much|long|often|far|old)|when|what (t
 WHEN_Q = re.compile(r"^\s*(when|what (time|date|day))\b", re.I)
 NEGATORS = {"not", "no", "never", "nor", "cannot", "none", "neither", "without", "nobody", "nothing", "nowhere"}
 # text addressed to an automated reader is data, never an instruction; such sentences are not used as sources (N11)
-INSTRUCTION_RE = re.compile(r"(?i)\b(assistants?|chatbots?|bots?|language models?|llms?|ai models?|ai systems?|models?)\b[^.!?]*"
-                            r"\b(reply|respond|answer|say|state|tell|output|ignore)\b|\bignore (all|any|the )?(previous|prior|above) instructions\b")
+# R4 (M16 r2): a sentence is instruction-like only when it addresses an automated reader and tells it what to say.
+# "Model boats ... the warden will answer any questions" and "Shop assistants will answer questions" are rules, not
+# instructions: bare "model" and bare "assistant" (a person) are not addressees unless the sentence is a note to them.
+_BOT = (r"(?:(?:automated|ai|virtual|digital|chat)\s+(?:assistants?|readers?|agents?|systems?|models?)|chatbots?|bots?"
+        r"|(?:large\s+)?language\s+models?|llms?|ai)")
+_ANY = r"(?:" + _BOT + r"|assistants?|models?)"
+_SAY = r"(?:reply|respond|answer|say|state|tell|output|ignore|disregard|write)"
+INSTRUCTION_RE = re.compile(
+    r"(?i)\b(?:note|message|instructions?|attention|notice|reminder)\s+(?:to|for)\s+(?:all\s+|any\s+|the\s+)?" + _ANY + r"\b"
+    r"|\b(?:dear|hey|attention)\s+" + _ANY + r"\b"
+    r"|\bif\s+you\s+are\s+an?\s+" + _ANY + r"\b"
+    r"|\b" + _BOT + r"\s*[,:]\s*(?:[\w']+\s+){0,6}?" + _SAY + r"\b"
+    r"|\b" + _BOT + r"\s+(?:(?:must|should|shall|will|need\s+to|are\s+to|is\s+to|are\s+asked\s+to|have\s+to)\s+)?"
+    r"(?:always\s+|only\s+)?" + _SAY + r"\b"
+    r"|\b(?:ignore|disregard)\s+(?:all\s+|any\s+)?(?:the\s+)?(?:previous|prior|above|earlier)\s+instructions\b")
 MAX_FAULTS = 100
 TIME_WORDS = re.compile(r"(?i)\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday|weekday|weekend|"
                         r"january|february|march|april|june|july|august|september|october|november|december|"
@@ -122,6 +136,19 @@ def seq(text: str) -> List[str]:
 
 def negated(text: str) -> bool:
     return any(t in NEGATORS or t.endswith("n't") for t in TOK_RE.findall(text.lower().replace("\u2019", "'")))
+
+
+def _neg_bindings(text: str) -> List[Optional[str]]:
+    """Each negator with the next content word it governs ("must not light" -> light) (M16 r2 R1). A leading
+    "No," that answers the question is not a negator; "No dogs are allowed" keeps its "no"."""
+    low = text.lower().replace("\u2019", "'")
+    toks = [t.strip(".,'") for t in TOK_RE.findall(low)]
+    answer_no = re.match(r"\s*no\s*[,;:.!]", low) is not None
+
+    def isneg(t: str) -> bool:
+        return t in NEGATORS or t.endswith("n't")
+    return [next((_stem(x) for x in toks[i + 1:] if x not in STOP and not isneg(x)), None)
+            for i, t in enumerate(toks) if isneg(t) and not (i == 0 and t == "no" and answer_no)]
 
 
 def number_context(text: str) -> List[Tuple[str, set, Optional[str]]]:
@@ -516,6 +543,7 @@ def run_answer(a) -> int:
                              f"{'journal kept, rerun with --resume' if jpath else 'no journal: rerun from the start'}\n")
             return 3
         meta = {"kind": "meta", "schema": ANSWERS_SCHEMA, "corpus_sha256": corpus["sha256"], "questions_sha256": qsha,
+                "documents": {n: d["sha256"] for n, d in sorted(corpus["docs"].items())},
                 "producer": {"kind": "deterministic_baseline", "tool": "grounded_eval.py", "version": TOOL_VERSION,
                              "method": "BM25 sentence retrieval + key-term coverage; extractive, no model",
                              "min_coverage": a.min_coverage, "executed_here": True}}
@@ -540,14 +568,18 @@ VERDICTS = ("correct_supported", "correct_abstain", "missed_answer", "answered_u
 PASSING = ("correct_supported", "correct_abstain")
 
 
-def check_citation(c: Any, corpus: Dict[str, Any], other_snapshot: bool = True) -> Tuple[str, str]:
+def check_citation(c: Any, corpus: Dict[str, Any], other_snapshot: Any = True) -> Tuple[str, str]:
     """Return (status, detail): valid | relocated | stale | invalid. A missing quote is called stale only
-    when the answers file says it was made for a different snapshot; otherwise a mismatching doc_sha256
-    cannot show that the source changed, and the quote is invalid (N7)."""
+    when the answers file declares the snapshot it was made for and the citation's doc_sha256 is that
+    snapshot's hash of the document; otherwise a mismatching doc_sha256 cannot show that the source
+    changed, and the quote is invalid (N7, M16 r2 R3). other_snapshot is the declared {doc: sha256} map,
+    or a bool for callers that have already decided."""
     if not isinstance(c, dict) or not isinstance(c.get("doc"), str) or not isinstance(c.get("quote"), str) or not c["quote"]:
         return "invalid", "malformed citation"
     doc = corpus["docs"].get(c["doc"])
     recorded = c.get("doc_sha256")
+    if isinstance(other_snapshot, dict):  # the declared document must carry the hash the citation records
+        other_snapshot = isinstance(recorded, str) and other_snapshot.get(c["doc"]) == recorded
     if doc is None:
         if recorded and other_snapshot:
             return "stale", f"{c['doc']} no longer in the snapshot"
@@ -585,6 +617,13 @@ def _support(answer: str, ok: List[Dict[str, Any]], sts: List[str], corpus: Dict
     if negated(answer) != any(negated(x) for x in sents):
         return ("the answer drops a negation that its cited sentence has" if not negated(answer)
                 else "the answer adds a negation that its cited sentences do not have")
+    # R1: same presence is not same meaning; a negator that moved, or a new one, must govern what the source negates
+    a_neg, s_neg = _neg_bindings(answer), [b for x in sents for b in _neg_bindings(x)]
+    if any(b not in s_neg for b in a_neg):
+        return "the answer negates something its cited sentence does not negate (a negation was added or moved)"
+    a_words = set(seq(answer))
+    if any(b is not None and b in a_words and b not in a_neg for b in s_neg):
+        return "the answer asserts a word that its cited sentence negates (a negation was dropped or moved)"
     ctxs = [(c["quote"], number_context(c["quote"]), set(terms(x))) for c, x in zip(ok, sents)]
     for n, actx, anext in number_context(answer):
         fits = False
@@ -602,7 +641,7 @@ def _support(answer: str, ok: List[Dict[str, Any]], sts: List[str], corpus: Dict
     return None
 
 
-def grade(q: Dict[str, Any], r: Optional[Dict[str, Any]], corpus: Dict[str, Any], other_snapshot: bool = True) -> Dict[str, Any]:
+def grade(q: Dict[str, Any], r: Optional[Dict[str, Any]], corpus: Dict[str, Any], other_snapshot: Any = True) -> Dict[str, Any]:
     exp = q["expect"]
     out: Dict[str, Any] = {"id": q["id"], "answerable": exp["answerable"]}
     if r is None:
@@ -664,6 +703,25 @@ def grade(q: Dict[str, Any], r: Optional[Dict[str, Any]], corpus: Dict[str, Any]
     return out
 
 
+def _corpus_hash(docs: Dict[str, str]) -> str:
+    return sha("".join(f"{n}\0{h}\n" for n, h in sorted(docs.items())).encode())
+
+
+def declared_snapshot(meta: Optional[Dict[str, Any]], corpus: Dict[str, Any]) -> Tuple[Optional[Dict[str, str]], Optional[str]]:
+    """The {doc: sha256} snapshot an answers file says it was made for, when that differs from this one and is
+    self-consistent: its document list must reproduce meta.corpus_sha256. A bare corpus_sha256 is one free field
+    and is not enough to call a missing quote stale (M16 r2 R3). Returns (docs or None, note or None)."""
+    if not meta or not isinstance(meta.get("corpus_sha256"), str) or meta["corpus_sha256"] == corpus["sha256"]:
+        return None, None
+    docs = meta.get("documents")
+    hexok = lambda h: isinstance(h, str) and re.fullmatch(r"[0-9a-f]{64}", h) is not None
+    if (isinstance(docs, dict) and docs and all(isinstance(n, str) and hexok(h) for n, h in docs.items())
+            and _corpus_hash(docs) == meta["corpus_sha256"]):
+        return dict(docs), None
+    return None, ("the answers file names another snapshot, but its documents list does not reproduce that "
+                  "corpus_sha256, so missing quotes are reported invalid, not stale")
+
+
 def run_evaluate(a) -> Tuple[int, Dict[str, Any], str]:
     corpus = load_corpus(a.corpus)
     qs, qsha = load_questions(a.questions)
@@ -679,8 +737,8 @@ def run_evaluate(a) -> Tuple[int, Dict[str, Any], str]:
         by_id[r["id"]] = r
     known = {q["id"] for q in qs}
     extra = sorted(set(by_id) - known)
-    other = bool(meta) and isinstance(meta.get("corpus_sha256"), str) and meta.get("corpus_sha256") != corpus["sha256"]
-    rows = [grade(q, by_id.get(q["id"]), corpus, other) for q in qs]
+    declared, declared_note = declared_snapshot(meta, corpus)
+    rows = [grade(q, by_id.get(q["id"]), corpus, declared if declared is not None else False) for q in qs]
     counts = {v: 0 for v in VERDICTS}
     for row in rows:
         counts[row["verdict"]] += 1
@@ -715,6 +773,8 @@ def run_evaluate(a) -> Tuple[int, Dict[str, Any], str]:
     notes = []
     if meta and meta.get("corpus_sha256") != corpus["sha256"]:
         notes.append("answers were produced against a different snapshot; changed sources are reported per citation")
+    if declared_note:
+        notes.append(declared_note)
     if meta and meta.get("questions_sha256") not in (None, qsha):
         notes.append("answers were produced for a different question file")
     if extra:
@@ -782,19 +842,38 @@ def render(rep: Dict[str, Any]) -> str:
 
 # -- output -------------------------------------------------------------------------------
 
+def _fold(p: Path) -> str:
+    """A resolved path in a form that compares equal on case- and normalisation-insensitive file systems."""
+    return unicodedata.normalize("NFC", os.path.normcase(str(p))).casefold()
+
+
+def _same_file(a: Path, b: Path) -> bool:
+    try:
+        sa, sb = os.stat(a), os.stat(b)
+    except OSError:
+        return False
+    return (sa.st_dev, sa.st_ino) == (sb.st_dev, sb.st_ino)
+
+
 def _check_target(out: Path, protect: List[Path], corpus_dir: Optional[Path] = None) -> Path:
-    """An output never replaces an input, the journal, or anything in the snapshot folder (N5, N9)."""
+    """An output never replaces an input, the journal, or anything in the snapshot folder (N5, N9). Paths are
+    compared by file identity and case-folded after resolving, so SNAP/plots.md cannot reach snap/plots.md on a
+    case-insensitive volume (M16 r2 R2). On a case-sensitive volume a folder that differs only in case from the
+    snapshot folder is refused too (fail closed)."""
     out = Path(os.path.abspath(out))
     _need(not out.is_symlink() and (not out.exists() or out.is_file()), f"{out.name}: exists and is not a regular file")
     _need(out.parent.is_dir(), f"{out.name}: its folder does not exist")
     out = Path(os.path.realpath(out.parent)) / out.name
     for p in protect:
-        same = (os.path.samefile(out, p) if out.exists() and p.exists()
-                else Path(os.path.realpath(os.path.abspath(p))) == out)
+        rp = Path(os.path.realpath(os.path.abspath(p)))
+        same = _same_file(out, p) or _fold(rp) == _fold(out)
         _need(not same, f"{out.name}: would overwrite an input")
     if corpus_dir is not None:
         c = Path(os.path.realpath(os.path.abspath(corpus_dir)))
-        _need(c != out and c not in out.parents, f"{out.name}: is inside the snapshot folder; write outputs elsewhere")
+        fc, fo = _fold(c), _fold(out)
+        inside = (fo == fc or fo.startswith(fc.rstrip(os.sep) + os.sep) or _same_file(out, c)
+                  or any(_same_file(d, c) for d in out.parents))
+        _need(not inside, f"{out.name}: is inside the snapshot folder; write outputs elsewhere")
     return out
 
 

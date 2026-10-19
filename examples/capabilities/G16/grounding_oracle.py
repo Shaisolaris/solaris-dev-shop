@@ -195,6 +195,22 @@ R2_DOCS = {
 }
 
 
+R3_DOCS = dict(R2_DOCS, **{
+    "plots.md": "# Plots\n\nPlot holders must not light bonfires between April and September.\n"
+                "Hosepipes are not allowed on the Eastside site.\n"
+                "Dogs are not allowed and bonfires are never lit on the Southend site.\n",
+    "pond.md": "# Pond\n\nModel boats may be sailed on the pond at weekends; the warden will answer any questions.\n",
+    "buses.md": "# Buses\n\nBus K241 to Heron leaves at 23:10 on weekdays.\nBus K7 to Godwit leaves at 06:15.\n",
+})
+
+
+def r3_cite(doc, quote):
+    t = R3_DOCS[doc]
+    st = t.index(quote)
+    return {"doc": doc, "start": st, "end": st + len(quote), "quote": quote,
+            "doc_sha256": hashlib.sha256(t.encode("utf-8")).hexdigest()}
+
+
 def r2_world(folder):
     folder = Path(folder)
     folder.mkdir(parents=True, exist_ok=True)
@@ -735,6 +751,84 @@ def main(argv=None):
             return e
         check("o14", "outputs never replace inputs, the journal or snapshot files; fault plans are whole numbers; resume refuses an "
                      "edited journal and concurrent resumes leave a usable journal", o14)
+
+    with tempfile.TemporaryDirectory(prefix="g16-oracle-r3-") as td3:
+        tmp = Path(td3).resolve()
+
+        def o15():
+            """M16 r2 R1-R5: a moved or added negator, case-variant output paths, a bare declared corpus hash,
+            rule text that mentions models or answering, and identifiers that are substrings of others."""
+            snap = tmp / "snap"
+            snap.mkdir()
+            for n, t in R3_DOCS.items():
+                (snap / n).write_bytes(t.encode("utf-8"))
+            e = []
+            fire = "Plot holders must not light bonfires between April and September."
+            hose = "Hosepipes are not allowed on the Eastside site."
+            qf = r2_q("f", "When may plot holders light bonfires?", ["April"], ["plots.md"])
+            qh = r2_q("h", "Are hosepipes allowed on the Eastside site?", ["Eastside"], ["plots.md"])
+            rows = [("n1", qf, "Plot holders must light bonfires between April and September, not later.", fire, False),
+                    ("n2", qh, "Hosepipes are allowed on the Eastside site, nothing else is.", hose, False),
+                    ("n3", qh, "Hosepipes are allowed on the Eastside site, not elsewhere.", hose, False),
+                    ("n4", qh, "Hosepipes aren't allowed on the Eastside site.", hose, True),
+                    ("n5", qh, "No, hosepipes are not allowed on the Eastside site.", hose, True),
+                    ("n6", r2_q("s", "Are bonfires lit on the Southend site?", ["Southend"], ["plots.md"]),
+                     "Dogs are not allowed and bonfires are lit on the Southend site.",
+                     "Dogs are not allowed and bonfires are never lit on the Southend site.", False),
+                    ("n7", qh, "Hosepipes are permitted on the Eastside site.", hose, False)]
+            qp, ap_ = tmp / "o15q.jsonl", tmp / "o15a.jsonl"
+            write_q(qp, [dict(q, id=rid) for rid, q, _, _, _ in rows])
+            write_answers(ap_, [{"id": rid, "abstain": False, "answer": ans, "citations": [r3_cite("plots.md", quote)]}
+                                for rid, _, ans, quote, _ in rows], {"kind": "external_model"})
+            code, rep = evaluate(a.tool, snap, qp, ap_)
+            v = verdicts(rep) if rep else {}
+            for rid, _, ans, _, ok in rows:
+                if (v.get(rid) == "correct_supported") != ok:
+                    e.append(f"R1 {rid}: {ans!r} graded {v.get(rid)}")
+            # R3: a fabricated quote plus a bare, self-declared other corpus_sha256 stays invalid
+            fake = dict(r3_cite("buses.md", "Bus K241 to Heron leaves at 23:10 on weekdays."),
+                        quote="Bus K241 to Heron leaves at 23:10 on weekdays and Sundays.", doc_sha256="0" * 64)
+            qb = r2_q("b", "When does the K241 bus to Heron leave?", ["23:10"], ["buses.md"])
+            write_q(qp, [qb])
+            ap_.write_text(json.dumps({"kind": "meta", "corpus_sha256": "f" * 64, "producer": {"kind": "external_model"}}) + "\n"
+                           + json.dumps({"id": "b", "abstain": False, "answer": fake["quote"], "citations": [fake]}) + "\n")
+            code, rep = evaluate(a.tool, snap, qp, ap_)
+            if (verdicts(rep) if rep else {}).get("b") != "invalid_citation":
+                e.append(f"R3: fabricated quote with a bare declared corpus_sha256 graded {(verdicts(rep) if rep else {}).get('b')}")
+            # R5 and R4 on the baseline, then R3 positive control: those answers go stale when the bus document changes
+            qs = [r2_q("k24", "When does the K24 bus to Heron leave?"), r2_q("k99", "When does the K99 bus to Heron leave?"),
+                  qb, r2_q("p", "May model boats be sailed on the pond?", ["weekends"], ["pond.md"])]
+            write_q(qp, qs)
+            B = tmp / "o15b.jsonl"
+            run(a.tool, "answer", "--corpus", snap, "--questions", qp, "--out", B)
+            _, recs = read_answers(B) if B.exists() else (None, {})
+            for qid in ("k24", "k99"):
+                if (recs.get(qid) or {}).get("abstain") is not True:
+                    e.append(f"R5: {qid} (an identifier the snapshot lacks) answered {(recs.get(qid) or {}).get('answer')!r}")
+            if (recs.get("b") or {}).get("abstain") is not False:
+                e.append("R5 control: the K241 question abstained")
+            if (recs.get("p") or {}).get("abstain") is not False:
+                e.append("R4: the pond rule that mentions model boats and answering was filtered as an instruction")
+            meta = json.loads(B.read_text().splitlines()[0]) if B.exists() else {}
+            if [x.get("doc") for x in meta.get("skipped_instruction_like_sentences", [])] != ["notice.md"]:
+                e.append(f"R4: skipped sentences {meta.get('skipped_instruction_like_sentences')}, expected only notice.md")
+            # R2: case-variant output paths reach the snapshot on a case-insensitive volume
+            before = {x.name: x.read_bytes() for x in snap.iterdir()}
+            for target in (tmp / "SNAP" / "plots.md", tmp / "Snap" / "new.json", tmp / "O15Q.JSONL"):
+                code, out, _ = run(a.tool, "evaluate", "--corpus", snap, "--questions", qp, "--answers", B, "--out", target)
+                if code != 2:
+                    e.append(f"R2: evaluate --out {target.relative_to(tmp)} exit {code}")
+            if {x.name: x.read_bytes() for x in snap.iterdir()} != before:
+                e.append("R2: a case-variant --out changed the snapshot folder")
+            info["o15_case_insensitive_volume"] = (tmp / "SNAP").exists()
+            (snap / "buses.md").write_text("# Buses\n\nBus K241 to Heron now leaves at 23:40 on weekdays.\n")
+            code, rep = evaluate(a.tool, snap, qp, B)
+            if (verdicts(rep) if rep else {}).get("b") != "stale_citation":
+                e.append(f"R3 control: a baseline answer whose document changed graded {(verdicts(rep) if rep else {}).get('b')}")
+            return e
+        check("o15", "a moved or added negator is unsupported; case-variant outputs cannot reach the snapshot or an input; "
+                     "a bare declared corpus hash keeps a fabricated quote invalid; rule text is not an instruction; "
+                     "identifiers match exactly", o15)
 
     passed = sum(r["pass"] for r in results)
     summary = {"tool": a.tool, "seed": a.seed, "passed": passed, "total": len(results), "checks": results, "info": info}
