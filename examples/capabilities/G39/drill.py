@@ -32,9 +32,10 @@ def sh(root, *args):
     return p.returncode, p.stdout + p.stderr
 
 
-def record(root, role, worker, outputs, *cmd, ok_exit="0"):
+def record(root, role, worker, outputs, *cmd, ok_exit="0", inputs=()):
+    extra = ["--inputs"] + list(inputs) if inputs else []
     return sh(root, T["evidence"], "record", ".", "--role", role, "--worker", worker, "--ok-exit", ok_exit,
-              "--outputs", *outputs, "--", PY, *cmd)
+              *extra, "--outputs", *outputs, "--", PY, *cmd)
 
 
 def setup(root):
@@ -103,7 +104,7 @@ def drill(root, ns):
          sh(root, T["handoff"], "run", "order.json", "--worker", "ana", "--fail-at", "deliver"))
     step("ana: G13 reconcile the month (data-engineer)", 0,
          record(root, "data/data-engineer", "ana", ["reports/metrics.json"], T["csv"], "reconcile",
-                "data/contract.json", "--out", "reports/metrics.json"))
+                "data/contract.json", "--out", "reports/metrics.json", inputs=["data"]))
     step("verify while interrupted: NO_GO (API, snapshot, handoff pending)", 1,
          sh(root, T["evidence"], "verify", ".", "--claims", "claims.json"))
     step("ben: G19 API probed for duplicates and tenant leaks (security-auditor)", 0, api_probe(root, "ben"))
@@ -122,7 +123,7 @@ def drill(root, ns):
         bad += 1; print("FAIL stale not reported")
     step("cy: re-run the stale reconciliation", 0,
          record(root, "data/data-engineer", "cy", ["reports/metrics.json"], T["csv"], "reconcile",
-                "data/contract.json", "--out", "reports/metrics.json"))
+                "data/contract.json", "--out", "reports/metrics.json", inputs=["data"]))
     step("cy: verify: GO again", 0, sh(root, T["evidence"], "verify", ".", "--claims", "claims.json", "--json",
                                        "--out", "reports/verdict-2.json"))
     v = json.loads((root / "reports/verdict-2.json").read_text())
@@ -131,6 +132,26 @@ def drill(root, ns):
     print("contributions: %s" % ", ".join("%s by %s" % (c["role"], c["worker"]) for c in v["contributions"]))
     if len(led) != 1:
         bad += 1; print("FAIL expected exactly one delivery")
+    # r2: an upstream input changed after review, and a recorded output file removed, both block the delivery
+    orders = root / "data/orders.csv"
+    keep = orders.read_bytes()
+    with open(orders, "ab") as f:
+        f.write(keep.splitlines(True)[-1])
+    out = step("upstream data/orders.csv changed after review: NO_GO", 1,
+               sh(root, T["evidence"], "verify", ".", "--claims", "claims.json", "--json"))
+    if "data/orders.csv" not in out or "inputs_changed" not in out:
+        bad += 1; print("FAIL changed input not named")
+    orders.write_bytes(keep)
+    step("orders.csv restored byte for byte: GO", 0, sh(root, T["evidence"], "verify", ".", "--claims", "claims.json"))
+    snap = sorted(p for p in (root / "snapshots/s1").iterdir() if p.is_file())[0]
+    sb = snap.read_bytes()
+    snap.unlink()
+    out = step("a recorded snapshot file removed: NO_GO", 1,
+               sh(root, T["evidence"], "verify", ".", "--claims", "claims.json", "--json"))
+    if '"removed"' not in out:
+        bad += 1; print("FAIL removed output not named")
+    snap.write_bytes(sb)
+    step("snapshot file restored byte for byte: GO", 0, sh(root, T["evidence"], "verify", ".", "--claims", "claims.json"))
     print("drill folder: %s" % (root if ns.keep else "(temporary, removed)"))
     print("DRILL %s" % ("PASSED" if not bad else "FAILED (%d)" % bad))
     return 0 if not bad else 1

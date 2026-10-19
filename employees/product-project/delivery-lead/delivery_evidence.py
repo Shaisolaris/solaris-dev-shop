@@ -5,7 +5,8 @@ The delivery lead does not perform specialist work. This tool records that a spe
 actually ran in the delivery folder (exit code, tool and output sha256), and later checks a delivery claim
 against those records, the files on disk and the G04 work-order status:
 
-  record ROOT --role DEPT/ROLE --outputs PATH... [--ok-exit 0,1] [--worker NAME] [--timeout S] -- CMD ARGS...
+  record ROOT --role DEPT/ROLE --outputs PATH... [--inputs PATH...] [--ok-exit 0|0,1] [--worker NAME] [--timeout S]
+         -- CMD ARGS...
   verify ROOT --claims CLAIMS.json [--json] [--out FILE]
 
 Records live in ROOT/.delivery/contributions.jsonl, one JSON object per line, each carrying the sha256 of
@@ -14,9 +15,18 @@ record breaks the chain (self-consistency only: someone who rewrites every line 
 command has finished; a recorder killed earlier leaves no record and the step is simply run again.
 Output digests come from the G05 assurance engine (artifact_digests) and are compared with binding_state,
 so a changed output or a changed tool makes the contribution stale and names the command to re-run.
+Inputs are bound too (r2): every existing file named in the command that is not an output or a .py tool, plus
+--inputs PATH... for files and folders the tool reads indirectly, is digested after the run; a later change,
+addition or removal makes the contribution stale (inputs_changed). A recorded output file that has disappeared
+is stale (removed). The run log must still exist and match its digest. Exit 1 (disclosed gaps) may be accepted
+with --ok-exit 0,1 only; it gives the separate state evidenced_with_gaps, which counts only when the claim for
+that role says "accept_gaps": true, and then the verdict is GO_WITH_GAPS, never a plain GO. The last record is
+unconfirmed while head.json lags one behind it (a cut-short append or a record added by hand): it vouches for
+nothing until the next append confirms it. A claim without a work order is EVIDENCED_NO_ORDER, never GO.
 
 Exit codes: record 0 ok, 1 recorded but not ok, 2 invalid input (nothing appended), 3 ledger does not
-verify (nothing appended), 4 ledger lock held. verify 0 GO, 1 NO_GO, 2 invalid input.
+verify (nothing appended), 4 ledger lock held. verify 0 GO, GO_WITH_GAPS or EVIDENCED_NO_ORDER (read the
+verdict word), 1 NO_GO, 2 invalid input.
 
 Records are evidence that a command ran here with that exit code and produced these bytes. They do not
 show that the output is correct beyond each tool's own checks, and --worker is a plain-text claim.
@@ -48,8 +58,10 @@ TOKEN_RE = re.compile(r"ghp_[A-Za-z0-9]{20,}|github[_]pat_|gho_[A-Za-z0-9]{20,}|
 MAX_LINE = 1 << 20
 MAX_TIMEOUT = 3600
 STEPS = ("activate", "brief", "deliver")
-LIMITS = ("records show that a command ran in this folder with that exit code and produced these bytes; "
-          "correctness beyond each tool's own checks is not shown; worker names are plain-text claims")
+LIMITS = ("records show that a command ran in this folder with that exit code, read these inputs and produced "
+          "these bytes; correctness beyond each tool's own checks is not shown; worker names are plain-text claims; "
+          "inputs a tool reads without being named in the command or --inputs are not bound")
+OK_EXITS = {0, 1}
 
 
 class Invalid(Exception):
@@ -115,7 +127,10 @@ def _root(raw):
 def read_ledger(root):
     """Return (records, good_byte_length, torn_tail). Raises LedgerBroken on an edited or reordered record."""
     p = root / LEDGER_DIR / LEDGER
+    hp = root / LEDGER_DIR / HEAD
     if not p.exists():
+        if hp.exists() or hp.is_symlink():
+            raise LedgerBroken("head.json exists but the ledger is missing (deleted ledger); restore it")
         return [], 0, False
     if p.is_symlink() or not p.is_file():
         raise LedgerBroken("the ledger is not a regular file")
@@ -135,7 +150,8 @@ def read_ledger(root):
         prev = hashlib.sha256(line).hexdigest()
         good += len(line) + 1
         recs.append(r)
-    hp = root / LEDGER_DIR / HEAD
+    if not recs and (hp.exists() or hp.is_symlink()):
+        raise LedgerBroken("head.json exists but the ledger holds no record (emptied ledger); restore it")
     if recs:
         try:
             head = json.loads(hp.read_text(encoding="utf-8"))
@@ -154,6 +170,44 @@ def read_ledger(root):
         except (UnicodeDecodeError, ValueError):
             pass  # an append cut short: never committed, ignored
     return recs, good, torn
+
+
+def head_lags(root, recs):
+    """True when head.json names the record before the last one: the last record is then unconfirmed."""
+    if not recs:
+        return False
+    try:
+        head = json.loads((root / LEDGER_DIR / HEAD).read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, ValueError):
+        return False
+    return head == {"seq": len(recs) - 2, "sha256": recs[-1].get("prev")}
+
+
+def _safe_rel(a):
+    return not os.path.isabs(a) and ".." not in Path(a).parts and Path(a).parts[:1] != (LEDGER_DIR,)
+
+
+def _named_inputs(root, argv, outputs, explicit):
+    """Explicit --inputs plus every existing regular file named in the command that is not an output or a .py
+    tool (tools are bound separately). Returns a sorted, de-duplicated list of relative paths."""
+    outs = {Path(o).as_posix().rstrip("/") for o in outputs}
+    named = []
+    for i in explicit or []:
+        if not _safe_rel(i):
+            raise Invalid("input %r must be a relative path inside ROOT and outside %s" % (i[:80], LEDGER_DIR))
+        if not (root / i).exists() or (root / i).is_symlink():
+            raise Invalid("input %r does not exist in ROOT (or is a symlink)" % i[:80])
+        named.append(Path(i).as_posix().rstrip("/"))
+    for a in argv[1:]:
+        if not a or a.startswith("-") or a.endswith(".py") or not _safe_rel(a):
+            continue
+        k = Path(a).as_posix().rstrip("/")
+        if k in outs:
+            continue
+        q = root / a
+        if q.is_file() and not q.is_symlink():
+            named.append(k)
+    return sorted(set(named))
 
 
 def _role_ok(role):
@@ -208,6 +262,8 @@ def cmd_record(ns):
         ok_exit = sorted({int(x) for x in ns.ok_exit.split(",")})
     except ValueError:
         raise Invalid("--ok-exit must be comma-separated integers")
+    if 0 not in ok_exit or not set(ok_exit) <= OK_EXITS:
+        raise Invalid("--ok-exit must be 0 or 0,1 (exit 1 means disclosed gaps; other exits never count)")
     if not (0 < ns.timeout <= MAX_TIMEOUT):
         raise Invalid("--timeout must be between 0 and %d seconds" % MAX_TIMEOUT)
     d = root / LEDGER_DIR
@@ -215,6 +271,12 @@ def cmd_record(ns):
         raise Invalid("%s must not be a symlink" % LEDGER_DIR)
     (d / "logs").mkdir(parents=True, exist_ok=True)
     read_ledger(root)  # refuse early on a broken ledger, before running anything
+    qos = _load_qos()
+    named_inputs = _named_inputs(root, argv, ns.outputs, ns.inputs)
+    try:
+        inputs_before = qos.artifact_digests(root, named_inputs) if named_inputs else {}
+    except ValueError as e:
+        raise Invalid("inputs: %s" % str(e)[:200])
     log = d / "logs" / ("%s.log" % uuid.uuid4().hex)
     started = _now()
     with open(log, "wb") as lf:
@@ -226,16 +288,22 @@ def cmd_record(ns):
             rc, why = None, "timeout after %gs" % ns.timeout
         except OSError as e:
             rc, why = None, "could not start: %s" % type(e).__name__
-    qos = _load_qos()
     outputs = {}
     try:
         outputs = qos.artifact_digests(root, ns.outputs)
     except ValueError as e:
         why = why or ("outputs: %s" % str(e)[:200])
+    inputs = {}
+    try:
+        inputs = qos.artifact_digests(root, named_inputs) if named_inputs else {}
+    except ValueError as e:
+        why = why or ("inputs after the run: %s" % str(e)[:200])
+    touched = sorted(k for k in set(inputs) | set(inputs_before) if inputs.get(k) != inputs_before.get(k))
     ok = why is None and rc in ok_exit
     rec = {"role": ns.role, "worker": ns.worker, "argv": argv, "ok_exit": ok_exit, "exit": rc, "ok": ok,
            "reason": why if why else (None if ok else "exit %s not in %s" % (rc, ok_exit)),
            "claimed_outputs": list(ns.outputs), "outputs": outputs, "tools": _tool_digests(argv, root),
+           "claimed_inputs": named_inputs, "inputs": inputs, "inputs_changed_during_run": touched[:50],
            "log": log.relative_to(root).as_posix(), "log_sha256": _sha_file(log),
            "started": started, "ended": _now(), "worker_identity": "claimed in plain text, not authenticated"}
     lockp = d / "ledger.lock"
@@ -288,6 +356,8 @@ def _load_claims(path, root):
                 not all(isinstance(o, str) and o for o in x["outputs"]):
             raise Invalid("each contribution needs a role and a non-empty outputs list")
         _role_ok(x.get("role"))
+        if not isinstance(x.get("accept_gaps", False), bool):
+            raise Invalid("accept_gaps must be true or false")
         if x["role"] in seen:
             raise Invalid("role %s is claimed twice" % x["role"])
         seen.add(x["role"])
@@ -298,7 +368,15 @@ def _load_claims(path, root):
     return c
 
 
-def _contribution(qos, root, claim, recs):
+def _log_ok(root, r):
+    lg = r.get("log")
+    if not isinstance(lg, str) or not lg.startswith(LEDGER_DIR + "/logs/") or ".." in Path(lg).parts:
+        return False
+    p = root / lg
+    return p.is_file() and not p.is_symlink() and _sha_file(p) == r.get("log_sha256")
+
+
+def _contribution(qos, root, claim, recs, unconfirmed_seq=None):
     role, want = claim["role"], claim["outputs"]
     mine = [r for r in recs if r.get("role") == role]
     out = {"role": role, "outputs": want}
@@ -310,7 +388,19 @@ def _contribution(qos, root, claim, recs):
     if not r.get("ok"):
         out.update(state="failed", reason=r.get("reason"), action="fix the cause and re-run: %s" % " ".join(r["argv"]))
         return out
+    if unconfirmed_seq is not None and r.get("seq") == unconfirmed_seq:
+        out.update(state="unconfirmed", action="head.json does not confirm this last record (cut-short append or a "
+                   "record added by hand); re-run: %s" % " ".join(r["argv"]))
+        return out
+    if not _log_ok(root, r):
+        out.update(state="log_mismatch", action="the run log is missing or changed; re-run: %s" % " ".join(r["argv"]))
+        return out
     recorded = r.get("outputs") or {}
+    under = lambda p: any(p == w.rstrip("/") or p.startswith(w.rstrip("/") + "/") for w in want)
+    gone = sorted(p for p in recorded if under(p) and not (root / p).is_file())
+    if gone:
+        out.update(state="stale", removed=gone[:20], action="a recorded output was removed; re-run: %s" % " ".join(r["argv"]))
+        return out
     try:
         current = qos.artifact_digests(root, want)
     except ValueError as e:
@@ -337,6 +427,23 @@ def _contribution(qos, root, claim, recs):
     if drift:
         out.update(state="stale", tool_changed=drift, action="tool source changed; re-run: %s" % " ".join(r["argv"]))
         return out
+    ins = r.get("inputs") or {}
+    if r.get("claimed_inputs"):
+        try:
+            now = qos.artifact_digests(root, r["claimed_inputs"])
+        except ValueError:
+            now = {}
+        moved = sorted(k for k in set(ins) | set(now) if ins.get(k) != now.get(k))
+        if moved:
+            out.update(state="stale", inputs_changed=moved[:20],
+                       action="an input changed, appeared or disappeared after the run; re-run: %s" % " ".join(r["argv"]))
+            return out
+    if r.get("exit") == 1:
+        out.update(state="evidenced_with_gaps", gaps_accepted_by_claim=bool(claim.get("accept_gaps")))
+        if not claim.get("accept_gaps"):
+            out["action"] = ("the run exited 1 (disclosed gaps) and the claim does not accept gaps for this role; "
+                             "fix the data and re-run, or set \"accept_gaps\": true in the claim")
+        return out
     out["state"] = "evidenced"
     return out
 
@@ -357,7 +464,17 @@ def _handoff(root, order):
     out = {"order_id": s.get("order_id"), "revision": s.get("revision"), "owner": s.get("owner"),
            "steps": steps, "workers": workers, "deliveries_this_revision": len(cur),
            "interrupted": s.get("interrupted")}
-    if set(workers) != set(STEPS):
+    intake_ok = True
+    try:
+        od = json.loads((root / order).read_text(encoding="utf-8"))
+        ip = (root / order).parent / od["inputs"]["intake"]["path"]
+        intake_ok = ip.is_file() and _sha_file(ip) == od["inputs"]["intake"]["sha256"]
+    except (OSError, ValueError, KeyError, TypeError):
+        intake_ok = False
+    if not intake_ok:
+        out.update(state="intake_changed", action="the intake no longer matches the sha256 in the work order; "
+                   "issue a new revision and resume it")
+    elif set(workers) != set(STEPS):
         out.update(state="incomplete", action="resume the order: handoff.py run %s --worker NAME" % order)
     elif len(cur) != 1:
         out.update(state="delivery_count_wrong", action="exactly one delivery per revision is expected")
@@ -373,11 +490,14 @@ def cmd_verify(ns):
     rep = {"schema": "solaris.delivery-verdict/1", "limits": LIMITS}
     try:
         recs, _, torn = read_ledger(root)
-        rep["ledger"] = {"records": len(recs), "chain": "intact", "torn_tail_ignored": torn}
+        lag = head_lags(root, recs)
+        rep["ledger"] = {"records": len(recs), "chain": "intact", "torn_tail_ignored": torn,
+                         "last_record_unconfirmed": lag}
     except LedgerBroken as e:
         recs = []
         rep["ledger"] = {"chain": "broken", "reason": str(e)}
-    rep["contributions"] = [_contribution(qos, root, c, recs) for c in claims["contributions"]]
+    unconf = len(recs) - 1 if rep["ledger"].get("last_record_unconfirmed") else None
+    rep["contributions"] = [_contribution(qos, root, c, recs, unconf) for c in claims["contributions"]]
     if rep["ledger"]["chain"] == "broken":
         for c in rep["contributions"]:
             c.update(state="unevidenced", action="the ledger does not verify; no record can be trusted")
@@ -385,28 +505,43 @@ def cmd_verify(ns):
     rep["unclaimed_records"] = sorted({r["role"] for r in recs if r.get("role") not in claimed})
     if claims.get("order"):
         rep["handoff"] = _handoff(root, claims["order"])
-    blockers = [c["role"] for c in rep["contributions"] if c["state"] != "evidenced"]
+    blockers = [c["role"] for c in rep["contributions"] if not (c["state"] == "evidenced" or (
+        c["state"] == "evidenced_with_gaps" and c.get("gaps_accepted_by_claim")))]
+    gaps = [c["role"] for c in rep["contributions"] if c["state"] == "evidenced_with_gaps"]
     if "handoff" in rep and rep["handoff"]["state"] != "delivered":
         blockers.append("handoff")
     if rep["ledger"]["chain"] == "broken":
         blockers.append("ledger")
-    rep["verdict"] = "NO_GO" if blockers else "GO"
+    if blockers:
+        rep["verdict"] = "NO_GO"
+    elif not claims.get("order"):
+        rep["verdict"] = "EVIDENCED_NO_ORDER"  # contributions only: no work order was named, so no delivery GO
+    else:
+        rep["verdict"] = "GO_WITH_GAPS" if gaps else "GO"
     rep["blockers"] = blockers
+    rep["gaps"] = gaps
+    rep["work_order"] = "named" if claims.get("order") else "not named: this is not a delivery GO"
     data = json.dumps(rep, indent=2, sort_keys=True) + "\n"
     if ns.out:
         _atomic(ns.out, data.encode("utf-8"))
     if ns.json:
         sys.stdout.write(data)
     else:
-        print("delivery verdict: %s" % rep["verdict"])
+        print("delivery verdict: %s%s" % (rep["verdict"], {
+            "GO_WITH_GAPS": " (accepted exit 1, disclosed gaps: %s)" % ", ".join(gaps),
+            "EVIDENCED_NO_ORDER": " (contributions evidenced; no work order named, so this is not a delivery GO)"}.get(
+                rep["verdict"], "")))
         print("ledger: %s" % (rep["ledger"].get("reason") or "%d records, chain intact" % rep["ledger"]["records"]))
         for c in rep["contributions"]:
-            print("  %-40s %s%s" % (c["role"], c["state"], "" if c["state"] == "evidenced" else "  -> " + c.get("action", "")))
+            extra = "  (exit 1 accepted: %s)" % ("claim accepts gaps" if c.get("gaps_accepted_by_claim") else
+                                                "claim does not accept gaps") if c["state"] == "evidenced_with_gaps" else ""
+            print("  %-40s %s%s%s" % (c["role"], c["state"], extra, "  -> " + c["action"] if c.get("action") and
+                                      c["state"] != "evidenced" else ""))
         if "handoff" in rep:
             h = rep["handoff"]
             print("  %-40s %s %s" % ("handoff (G04 work order)", h["state"], h.get("workers", h.get("reason", ""))))
         print("limits: " + LIMITS)
-    return 0 if rep["verdict"] == "GO" else 1
+    return 1 if rep["verdict"] == "NO_GO" else 0
 
 
 def main(argv=None):
@@ -416,7 +551,9 @@ def main(argv=None):
     r.add_argument("root")
     r.add_argument("--role", required=True)
     r.add_argument("--outputs", nargs="+", required=True)
-    r.add_argument("--ok-exit", default="0")
+    r.add_argument("--inputs", nargs="+", help="files or folders the command reads (beyond those named in it); "
+                   "a later change makes the record stale")
+    r.add_argument("--ok-exit", default="0", help="0 (default) or 0,1 to accept disclosed gaps")
     r.add_argument("--worker", default="unnamed")
     r.add_argument("--timeout", type=float, default=600)
     r.add_argument("--no-wait", action="store_true", help="exit 4 instead of waiting for the ledger lock")

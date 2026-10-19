@@ -74,3 +74,4 @@ Format: - **<YYYY-MM-DD> - <anonymized context>**: <what happened> *Proposed rul
 - Upstream: alirezarezvani/the coding agent-skills (MIT); PROJECT_TAKEOVER + codebase-onboarding + migration-architect + docling-parsing-l (n/a)
 - What was used: noted: alirezarezvani/the coding agent-skills; methodology absorbed: PROJECT_TAKEOVER + codebase-onboarding + migration-architect + docling-parsing-l; rejected (not used): sdi2200262/agentic-project-management, opf/openproject, client-portal / client-management GitHub topics
 - License notes: opf/openproject: GPL-3.0 (FLAG)
+- **2026-10-19 - G39 r2 after M39**: the first version bound outputs and tool scripts but not the data a tool read, so an upstream CSV changed after review still gave GO, and a file removed from an output folder went unnoticed. *Proposed rule: a record binds what the command read as well as what it wrote, and a missing recorded file is a change.* Tags: [#process]

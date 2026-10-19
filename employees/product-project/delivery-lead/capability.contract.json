@@ -383,7 +383,7 @@
     "redaction": "Strip secrets, tokens, raw emails/phones, and connector payloads from receipts",
     "forward_tests": [
       "fixtures/evaluation/leadership-operations/delivery-lead/",
-      "synthetic multi-specialist delivery: real G13/G19/G03 tool runs recorded, G04 order crashed and resumed by another worker, changed output or tool makes the claim stale, edited ledger refused (tests/test_g39_capability.py)"
+      "synthetic multi-specialist delivery: real G13/G19/G03 tool runs recorded, G04 order crashed and resumed by another worker, changed output, input or tool, or a removed output, makes the claim stale, edited ledger refused (tests/test_g39_capability.py)"
     ],
     "receipts": [
       "draft paths",

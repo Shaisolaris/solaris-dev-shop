@@ -43,9 +43,10 @@ def writer(path, content, rc=0):
                       "p.write_text(sys.argv[2]);sys.exit(int(sys.argv[3]))", path, content, str(rc)]
 
 
-def record(root, role, outputs, cmd, ok="0", worker="w"):
-    return run(root, "record", ".", "--role", role, "--worker", worker, "--ok-exit", ok, "--outputs", *outputs,
-               "--", *cmd)
+def record(root, role, outputs, cmd, ok="0", worker="w", inputs=()):
+    extra = ["--inputs"] + list(inputs) if inputs else []
+    return run(root, "record", ".", "--role", role, "--worker", worker, "--ok-exit", ok, *extra, "--outputs",
+               *outputs, "--", *cmd)
 
 
 def verify(root, claims="claims.json"):
@@ -149,7 +150,9 @@ def o3_unevidenced():
 
 
 def o4_real_data_gaps():
-    """G13 on the dirty September drop exits 1; with --ok-exit 0 that blocks, with 0,1 it is accepted."""
+    """G13 on the dirty September drop exits 1. With --ok-exit 0 that blocks. With 0,1 the contribution is
+    evidenced_with_gaps: still NO_GO unless the claim accepts gaps, then GO_WITH_GAPS (never a plain GO), and
+    the text verdict says so. --ok-exit 0,1,2 is refused."""
     root = fresh([(R1, ["reports/m.json"])])
     shutil.copytree(REPO / "examples/capabilities/G13/fixtures/september", root / "data")
     cmd = [PY, str(CSV), "reconcile", "data/contract.json", "--out", "reports/m.json"]
@@ -159,10 +162,18 @@ def o4_real_data_gaps():
     v1, rep1 = verify(root)
     b = record(root, R1, ["reports/m.json"], cmd, ok="0,1")[0]
     v2, rep2 = verify(root)
+    c = json.loads((root / "claims.json").read_text())
+    c["contributions"][0]["accept_gaps"] = True
+    (root / "gaps.json").write_text(json.dumps(c))
+    v3, rep3 = verify(root, "gaps.json")
+    text = run(root, "verify", ".", "--claims", "gaps.json")[1]
+    wide = record(root, R1, ["reports/m.json"], cmd, ok="0,1,2")[0]
     m = json.loads((root / "reports/m.json").read_text())
-    ok = a == 1 and v1 == 1 and state(rep1, R1) == "failed" and b == 0 and v2 == 0 and \
-        m.get("status") == "reconciled_with_gaps"
-    return ok, "strict %s/%s %s, gaps-accepted %s/%s, status %s" % (a, v1, state(rep1, R1), b, v2, m.get("status"))
+    ok = a == 1 and v1 == 1 and state(rep1, R1) == "failed" and b == 0 and v2 == 1 and \
+        state(rep2, R1) == "evidenced_with_gaps" and v3 == 0 and rep3.get("verdict") == "GO_WITH_GAPS" and \
+        "GO_WITH_GAPS" in text and "exit 1" in text and wide == 2 and m.get("status") == "reconciled_with_gaps"
+    return ok, "strict %s/%s %s, 0,1 %s/%s %s, claim accepts %s %s, 0,1,2 %s" % (
+        a, v1, state(rep1, R1), b, v2, state(rep2, R1), v3, rep3.get("verdict"), wide)
 
 
 def o5_stale_output():
@@ -333,6 +344,114 @@ def o14_drill():
     return p.returncode == 0 and "DRILL PASSED" in p.stdout, p.stdout.strip().splitlines()[-1] if p.stdout else p.stderr[-200:]
 
 
+def _recon_root():
+    root = fresh([(R1, ["reports/m.json"])])
+    shutil.copytree(REPO / "examples/capabilities/G13/fixtures/clean", root / "data")
+    (root / "reports").mkdir()
+    return root, [PY, str(CSV), "reconcile", "data/contract.json", "--out", "reports/m.json"]
+
+
+def o15_upstream_inputs():
+    """An input changed after review (a CSV read through --inputs, the contract named in the command, a file
+    added to or removed from an input folder) makes the contribution stale; the bytes restored give GO again."""
+    res = []
+    for name in ("csv_row", "contract_named_in_command", "file_added", "file_removed"):
+        root, cmd = _recon_root()
+        a = record(root, R1, ["reports/m.json"], cmd, inputs=["data"])[0]
+        complete_order(root)
+        v0 = verify(root)[0]
+        d = root / "data"
+        csvs = sorted(p for p in d.iterdir() if p.suffix == ".csv")
+        target, keep = csvs[0], csvs[0].read_bytes()
+        if name == "csv_row":
+            target.write_bytes(keep + keep.splitlines(True)[-1])
+        elif name == "contract_named_in_command":
+            target, keep = d / "contract.json", (d / "contract.json").read_bytes()
+            target.write_bytes(keep.replace(b"America/Los_Angeles", b"UTC"))
+        elif name == "file_added":
+            target = d / "extra.csv"; keep = None; target.write_text("id\n1\n")
+        else:
+            target = csvs[-1]; keep = target.read_bytes(); target.unlink()
+        v1, rep1 = verify(root)
+        c = [x for x in rep1.get("contributions", []) if x.get("role") == R1]
+        named = bool(c) and target.relative_to(root).as_posix() in (c[0].get("inputs_changed") or [])
+        if keep is None:
+            target.unlink()
+        else:
+            target.write_bytes(keep)
+        v2 = verify(root)[0]
+        res.append((name, a == 0 and v0 == 0 and v1 == 1 and state(rep1, R1) == "stale" and named and v2 == 0,
+                    (a, v0, v1, state(rep1, R1), named, v2)))
+    return all(r[1] for r in res), "; ".join("%s %s" % (r[0], r[2]) for r in res)
+
+
+def o16_removed_output():
+    """A recorded file that has disappeared from a claimed output folder is stale (removed), not evidenced."""
+    root = fresh([(R1, ["out"])])
+    a = record(root, R1, ["out"], [PY, "-c", "import os;os.makedirs('out');open('out/a','w').write('a');"
+                                             "open('out/b','w').write('b')"])[0]
+    complete_order(root)
+    v0 = verify(root)[0]
+    (root / "out/b").unlink()
+    v1, rep = verify(root)
+    c = [x for x in rep.get("contributions", []) if x.get("role") == R1]
+    ok = a == 0 and v0 == 0 and v1 == 1 and state(rep, R1) == "stale" and bool(c) and c[0].get("removed") == ["out/b"]
+    return ok, "record %s before %s after %s %s %s" % (a, v0, v1, state(rep, R1), c and c[0].get("removed"))
+
+
+def o17_unconfirmed_and_log():
+    """A record the head does not confirm (head one behind) vouches for nothing until the next append; a
+    hand-added record with no run log is refused even when the head is rewritten to match."""
+    root = fresh([(R1, ["r/a.json"]), (R2, ["r/b.json"])])
+    record(root, R1, ["r/a.json"], writer("r/a.json", "x"))
+    h = (root / ".delivery/head.json").read_text()
+    record(root, R2, ["r/b.json"], writer("r/b.json", "y"))
+    (root / ".delivery/head.json").write_text(h)  # as if the append stopped before its head write
+    complete_order(root)
+    v1, rep1 = verify(root)
+    n = record(root, "engineering/backend-developer", ["r/c"], writer("r/c", "z"))[0]
+    v2, rep2 = verify(root)
+    p = root / ".delivery/contributions.jsonl"
+    lines = p.read_bytes().split(b"\n")[:-1]
+    forged = json.loads(lines[-1])
+    forged.update(seq=len(lines), prev=sha(lines[-1]), role=R2, argv=["true"], tools={}, log=".delivery/logs/none.log",
+                  log_sha256="0" * 64, outputs={"r/b.json": sha((root / "r/b.json").read_bytes())}, inputs={},
+                  claimed_inputs=[], exit=0, ok=True, reason=None)
+    fl = json.dumps(forged, sort_keys=True, separators=(",", ":")).encode()
+    p.write_bytes(p.read_bytes() + fl + b"\n")
+    v3, rep3 = verify(root)
+    (root / ".delivery/head.json").write_text(json.dumps({"seq": forged["seq"], "sha256": sha(fl)}))
+    v4, rep4 = verify(root)
+    ok = v1 == 1 and state(rep1, R2) == "unconfirmed" and state(rep1, R1) == "evidenced" and n == 0 and v2 == 0 \
+        and v3 == 1 and state(rep3, R2) == "unconfirmed" and v4 == 1 and state(rep4, R2) == "log_mismatch"
+    return ok, "lag %s/%s, next append %s -> %s, forged %s/%s, forged+head %s/%s" % (
+        v1, state(rep1, R2), n, v2, v3, state(rep3, R2), v4, state(rep4, R2))
+
+
+def o18_order_intake_ledger():
+    """A claim without a work order is never a delivery GO; an intake changed after delivery is NO_GO; a
+    deleted ledger with its head kept is a broken ledger (verify NO_GO, record refuses), not a fresh start."""
+    root = fresh([(R1, ["r/a.json"])], order=False)
+    record(root, R1, ["r/a.json"], writer("r/a.json", "x"))
+    v1, rep1 = verify(root)
+    q = fresh([(R1, ["r/a.json"])])
+    record(q, R1, ["r/a.json"], writer("r/a.json", "x"))
+    complete_order(q)
+    v2 = verify(q)[0]
+    with open(q / "intake.json", "a") as f:
+        f.write("\n")
+    v3, rep3 = verify(q)
+    (q / ".delivery/contributions.jsonl").unlink()
+    v4, rep4 = verify(q)
+    a = record(q, R1, ["r/a.json"], writer("r/a.json", "y"))[0]
+    ok = v1 == 0 and rep1.get("verdict") == "EVIDENCED_NO_ORDER" and v2 == 0 and v3 == 1 and \
+        (rep3.get("handoff") or {}).get("state") == "intake_changed" and v4 == 1 and \
+        (rep4.get("ledger") or {}).get("chain") == "broken" and a == 3
+    return ok, "no order %s %s; intake %s->%s %s; ledger deleted %s %s record %s" % (
+        v1, rep1.get("verdict"), v2, v3, (rep3.get("handoff") or {}).get("state"), v4,
+        (rep4.get("ledger") or {}).get("chain"), a)
+
+
 def cleanup():
     while MADE:
         shutil.rmtree(MADE.pop(), ignore_errors=True)
@@ -340,7 +459,8 @@ def cleanup():
 
 CHECKS = [o1_clean, o2_exit_truth, o3_unevidenced, o4_real_data_gaps, o5_stale_output, o6_stale_tool, o7_tamper,
           o8_torn_tail, o9_killed_recorder, o10_concurrent, o11_invalid, o12_handoff_incomplete,
-          o13_symlink_output, o14_drill]
+          o13_symlink_output, o14_drill, o15_upstream_inputs, o16_removed_output, o17_unconfirmed_and_log,
+          o18_order_intake_ledger]
 
 
 def main():
