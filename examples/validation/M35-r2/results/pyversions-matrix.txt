@@ -1,0 +1,6 @@
+== 3.9.6 | g35: Ran 16 tests in 9.180s  OK  | full: Ran 150 tests in 24.480s  OK  | builder-oracle: ACCEPTED 12/12 | builder-naive: REJECTED 1/12 | builder-noop: REJECTED 0/12 | m35-oracle: M35 ORACLE 14/14 core PASS | m35-naive: M35 ORACLE 2/14 core FAIL | m35-noop: M35 ORACLE 2/14 core FAIL
+== 3.11.16 | g35: Ran 16 tests in 7.283s  OK  | full: Ran 150 tests in 20.775s  OK  | builder-oracle: ACCEPTED 12/12 | builder-naive: REJECTED 1/12 | builder-noop: REJECTED 0/12 | m35-oracle: M35 ORACLE 14/14 core PASS | m35-naive: M35 ORACLE 2/14 core FAIL | m35-noop: M35 ORACLE 2/14 core FAIL
+== 3.12.14 | g35: Ran 16 tests in 9.931s  OK  | full: Ran 150 tests in 25.462s  OK  | builder-oracle: ACCEPTED 12/12 | builder-naive: REJECTED 1/12 | builder-noop: REJECTED 0/12 | m35-oracle: M35 ORACLE 14/14 core PASS | m35-naive: M35 ORACLE 2/14 core FAIL | m35-noop: M35 ORACLE 2/14 core FAIL
+== 3.13.15 | g35: Ran 16 tests in 9.671s  OK  | full: Ran 150 tests in 26.011s  OK  | builder-oracle: ACCEPTED 12/12 | builder-naive: REJECTED 1/12 | builder-noop: REJECTED 0/12 | m35-oracle: M35 ORACLE 14/14 core PASS | m35-naive: M35 ORACLE 2/14 core FAIL | m35-noop: M35 ORACLE 2/14 core FAIL
+pycache in copy: 0
+candidate status lines: 0

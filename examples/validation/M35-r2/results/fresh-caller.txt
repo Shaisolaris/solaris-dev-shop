@@ -1,0 +1,32 @@
+== 3.9.6
+$ python3 employees/marketing/paid-ads-manager/campaign_ledger.py reconcile examples/capabilities/G35/fixtures/clean/campaign.json   # exit 0
+  -> exit 0; last line:   local files only; nothing was published, scheduled, bought or sent
+$ python3 employees/marketing/paid-ads-manager/campaign_ledger.py reconcile examples/capabilities/G35/fixtures/september/campaign.json   # exit 1
+  -> exit 1; last line:   local files only; nothing was published, scheduled, bought or sent
+$ python3 employees/marketing/paid-ads-manager/campaign_ledger.py reconcile examples/capabilities/G35/fixtures/september/campaign.json --out $STATE/brief   # exit 1
+  -> exit 1; last line:   local files only; nothing was published, scheduled, bought or sent
+$ python3 employees/marketing/paid-ads-manager/campaign_ledger.py reconcile examples/capabilities/G35/README.md   # exit 2
+  -> exit 2; last line: invalid: README.md: not JSON (Expecting value) (nothing written)
+$ python3 examples/capabilities/G35/campaign_oracle.py   # ACCEPTED 12/12
+  -> exit 0; last line: ACCEPTED 12/12
+$ python3 examples/capabilities/G35/campaign_oracle.py -- python3 examples/capabilities/G35/naive_ledger.py   # REJECTED 1/12
+  -> exit 1; last line: REJECTED 1/12
+$ python3 examples/capabilities/G35/campaign_oracle.py -- python3 examples/capabilities/G35/noop_ledger.py   # REJECTED 0/12
+  -> exit 1; last line: REJECTED 0/12
+-- --out files: ./brief/campaign-brief.md ./brief/report.json ; pycache dirs in copy: 0; tree changed: no; HOME entries: ./Library ./Library/Caches ./Library/Caches/com.apple.python 
+== 3.13.15
+$ python3 employees/marketing/paid-ads-manager/campaign_ledger.py reconcile examples/capabilities/G35/fixtures/clean/campaign.json   # exit 0
+  -> exit 0; last line:   local files only; nothing was published, scheduled, bought or sent
+$ python3 employees/marketing/paid-ads-manager/campaign_ledger.py reconcile examples/capabilities/G35/fixtures/september/campaign.json   # exit 1
+  -> exit 1; last line:   local files only; nothing was published, scheduled, bought or sent
+$ python3 employees/marketing/paid-ads-manager/campaign_ledger.py reconcile examples/capabilities/G35/fixtures/september/campaign.json --out $STATE/brief   # exit 1
+  -> exit 1; last line:   local files only; nothing was published, scheduled, bought or sent
+$ python3 employees/marketing/paid-ads-manager/campaign_ledger.py reconcile examples/capabilities/G35/README.md   # exit 2
+  -> exit 2; last line: invalid: README.md: not JSON (Expecting value) (nothing written)
+$ python3 examples/capabilities/G35/campaign_oracle.py   # ACCEPTED 12/12
+  -> exit 0; last line: ACCEPTED 12/12
+$ python3 examples/capabilities/G35/campaign_oracle.py -- python3 examples/capabilities/G35/naive_ledger.py   # REJECTED 1/12
+  -> exit 1; last line: REJECTED 1/12
+$ python3 examples/capabilities/G35/campaign_oracle.py -- python3 examples/capabilities/G35/noop_ledger.py   # REJECTED 0/12
+  -> exit 1; last line: REJECTED 0/12
+-- --out files: ./brief/campaign-brief.md ./brief/report.json ; pycache dirs in copy: 0; tree changed: no; HOME entries: 

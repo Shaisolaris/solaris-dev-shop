@@ -1,0 +1,1000 @@
+{
+ "tool": "/tmp/m35r2teeth-o7zorweu/tie_first_wins/employees/marketing/paid-ads-manager/campaign_ledger.py",
+ "python": "3.13.15",
+ "rows": [
+  {
+   "row": "F01 clean control: the clean fixture reconciles to 30.00 spend, 2 conversions, 75.00 revenue, CPA 15.00, ROAS 2.5000, 270.00 left; G14 tie-out 0.00; the creative is ready; caveats explicit",
+   "pass": true,
+   "sub": {
+    "status": true,
+    "numbers": true,
+    "finance_tie_out": true,
+    "creative_ready": true,
+    "caveats_explicit": true
+   },
+   "detail": {
+    "status": [
+     true,
+     [
+      0,
+      "reconciled"
+     ]
+    ],
+    "numbers": [
+     true,
+     {
+      "attributed_revenue": "75.00",
+      "budget_daily": "20.00",
+      "budget_remaining": "270.00",
+      "budget_total": "300.00",
+      "click_conversions": 2,
+      "click_window_days": 7,
+      "conversions": 2,
+      "cpa": "15.00",
+      "currency": "USD",
+      "flight": [
+       "2026-09-01",
+       "2026-09-30"
+      ],
+      "id": "C-search",
+      "name": "Search, brand terms",
+      "orders": [
+       "O1",
+       "O2"
+      ],
+      "roas": "2.5000",
+      "spend": "30.00",
+      "view_conversions": 0,
+      "view_window_days": 1
+     }
+    ],
+    "finance_tie_out": [
+     true,
+     {
+      "currencies": {
+       "USD": {
+        "difference": "0.00",
+        "order_value": "75.00",
+        "recognized_revenue": "75.00"
+       }
+      },
+      "result": "reconciled"
+     }
+    ],
+    "creative_ready": [
+     true,
+     [
+      "ready_for_human_review"
+     ]
+    ],
+    "caveats_explicit": [
+     true,
+     [
+      "Attribution: last click inside the campaign's click window, else last view inside its view window, matched on the synthetic user key only; no cross-device, modelled or platform-reported conversions are counted.",
+      "Revenue is order value from the reconciled order book (G13), never the value a pixel or platform reported; refunds and credit notes after the order only show through the finance tie-out (G14).",
+      "Spend is the deduplicated platform export (latest restatement per campaign and day); it is not an invoice or a payment, and nothing here moves money.",
+      "Currencies are never combined and no FX conversion is made.",
+      "Local files only: no ad account, network, publish, schedule or spend was used."
+     ]
+    ]
+   }
+  },
+  {
+   "row": "F02 attribution boundaries: click at exactly 7 d counts and 7 d + 1 s does not; a touch after the conversion never counts; view window 1 d boundary and 0 = none; a click beats a later view; a cross-campaign tie credits neither; flight, user and currency are respected",
+   "pass": false,
+   "sub": {
+    "click_exactly_7d_counts": true,
+    "click_7d_plus_1s_not": true,
+    "touch_after_conversion_never": true,
+    "touch_same_instant_counts": true,
+    "view_exactly_1d_counts": true,
+    "view_1d_plus_1s_not": true,
+    "view_window_0_no_view_through": true,
+    "click_beats_later_view": true,
+    "tie_is_ambiguous_credited_to_neither": false,
+    "touch_outside_flight_ignored": true,
+    "other_user_never": true,
+    "currency_mismatch_not_credited": true
+   },
+   "detail": {
+    "click_exactly_7d_counts": [
+     true,
+     1
+    ],
+    "click_7d_plus_1s_not": [
+     true,
+     [
+      0,
+      {
+       "no_eligible_touch": {
+        "USD": {
+         "orders": 1,
+         "value": "40.00"
+        }
+       }
+      }
+     ]
+    ],
+    "touch_after_conversion_never": [
+     true,
+     0
+    ],
+    "touch_same_instant_counts": [
+     true,
+     1
+    ],
+    "view_exactly_1d_counts": [
+     true,
+     {
+      "attributed_revenue": "40.00",
+      "budget_daily": "100.00",
+      "budget_remaining": "980.00",
+      "budget_total": "1000.00",
+      "click_conversions": 0,
+      "click_window_days": 7,
+      "conversions": 1,
+      "cpa": "20.00",
+      "currency": "USD",
+      "flight": [
+       "2026-09-01",
+       "2026-09-30"
+      ],
+      "id": "C-a",
+      "name": "C-a",
+      "orders": [
+       "O1"
+      ],
+      "roas": "2.0000",
+      "spend": "20.00",
+      "view_conversions": 1,
+      "view_window_days": 1
+     }
+    ],
+    "view_1d_plus_1s_not": [
+     true,
+     0
+    ],
+    "view_window_0_no_view_through": [
+     true,
+     0
+    ],
+    "click_beats_later_view": [
+     true,
+     [
+      1,
+      0
+     ]
+    ],
+    "tie_is_ambiguous_credited_to_neither": [
+     false,
+     {}
+    ],
+    "touch_outside_flight_ignored": [
+     true,
+     0
+    ],
+    "other_user_never": [
+     true,
+     0
+    ],
+    "currency_mismatch_not_credited": [
+     true,
+     {
+      "currency_mismatch": {
+       "USD": {
+        "orders": 1,
+        "value": "40.00"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "row": "F03 dedup and value: an identical touch re-send is a copy; a conflicting id drops every version and is named; pixel + server is one conversion; value comes from the book, differences listed; an order not in the book is named and worth nothing; test orders, user conflicts and late touches never credit",
+   "pass": true,
+   "sub": {
+    "identical_touch_resend_is_a_copy": true,
+    "touch_conflict_all_versions_dropped_and_named": true,
+    "pixel_plus_server_one_conversion_earliest_time": true,
+    "value_from_book_not_pixel": true,
+    "conversion_without_order_valued_nothing": true,
+    "test_order_not_revenue": true,
+    "user_conflict_unattributed": true,
+    "late_touch_not_used_and_named": true
+   },
+   "detail": {
+    "identical_touch_resend_is_a_copy": [
+     true,
+     {
+      "blank": 0,
+      "conflicting_ids": 0,
+      "exact_copies": 1,
+      "kept": 1,
+      "late": 0,
+      "lines": 2,
+      "outside_flight": 0,
+      "rejected": 0,
+      "unknown_campaign": 0
+     }
+    ],
+    "touch_conflict_all_versions_dropped_and_named": [
+     true,
+     [
+      1,
+      [
+       "conflicting_touch_ids"
+      ],
+      {
+       "blank": 0,
+       "conflicting_ids": 1,
+       "exact_copies": 0,
+       "kept": 0,
+       "late": 0,
+       "lines": 2,
+       "outside_flight": 0,
+       "rejected": 0,
+       "unknown_campaign": 0
+      }
+     ]
+    ],
+    "pixel_plus_server_one_conversion_earliest_time": [
+     true,
+     [
+      0,
+      1
+     ]
+    ],
+    "value_from_book_not_pixel": [
+     true,
+     [
+      "40.00",
+      {
+       "count": 1,
+       "examples": [
+        {
+         "book": "40.00",
+         "event_id": "E1",
+         "order_id": "O1",
+         "reported": "99.00"
+        }
+       ]
+      }
+     ]
+    ],
+    "conversion_without_order_valued_nothing": [
+     true,
+     [
+      1,
+      [
+       "conversion_without_order"
+      ],
+      "40.00"
+     ]
+    ],
+    "test_order_not_revenue": [
+     true,
+     [
+      1,
+      [
+       "conversion_without_order"
+      ],
+      "0.00"
+     ]
+    ],
+    "user_conflict_unattributed": [
+     true,
+     [
+      [
+       "order_user_conflict"
+      ],
+      {
+       "user_conflict": {
+        "USD": {
+         "orders": 1,
+         "value": "40.00"
+        }
+       }
+      }
+     ]
+    ],
+    "late_touch_not_used_and_named": [
+     true,
+     [
+      1,
+      [
+       "late_touch_rows"
+      ],
+      {
+       "blank": 0,
+       "conflicting_ids": 0,
+       "exact_copies": 0,
+       "kept": 0,
+       "late": 1,
+       "lines": 1,
+       "outside_flight": 0,
+       "rejected": 0,
+       "unknown_campaign": 0
+      }
+     ]
+    ]
+   }
+  },
+  {
+   "row": "F04 budgets: spend equal to a daily or total cap is fine and one cent over is named; unknown-campaign spend is unassigned and the export identity holds; spend outside the flight is named; float budgets and out-of-range windows are refused",
+   "pass": true,
+   "sub": {
+    "at_daily_and_total_cap_fine": true,
+    "one_cent_over_daily": true,
+    "one_cent_over_total": true,
+    "unknown_campaign_spend_unassigned": true,
+    "spend_outside_flight": true,
+    "float_budget_refused": true,
+    "click_window_91_refused": true,
+    "view_window_31_refused": true
+   },
+   "detail": {
+    "at_daily_and_total_cap_fine": [
+     true,
+     [
+      0,
+      []
+     ]
+    ],
+    "one_cent_over_daily": [
+     true,
+     [
+      "over_daily_budget"
+     ]
+    ],
+    "one_cent_over_total": [
+     true,
+     [
+      "over_total_budget"
+     ]
+    ],
+    "unknown_campaign_spend_unassigned": [
+     true,
+     [
+      [
+       "spend_for_unknown_campaign"
+      ],
+      {
+       "USD": {
+        "attributed": "40.00",
+        "campaign_spend": "20.00",
+        "order_value_total": "40.00",
+        "revenue_identity_ok": true,
+        "spend_export_total": "25.00",
+        "spend_identity_ok": true,
+        "unassigned_spend": "5.00",
+        "unattributed": "0.00"
+       }
+      }
+     ]
+    ],
+    "spend_outside_flight": [
+     true,
+     [
+      "spend_outside_flight"
+     ]
+    ],
+    "float_budget_refused": [
+     true,
+     2
+    ],
+    "click_window_91_refused": [
+     true,
+     2
+    ],
+    "view_window_31_refused": [
+     true,
+     2
+    ]
+   }
+  },
+  {
+   "row": "F05 ratios: CPA 2 dp and ROAS 4 dp half-even (0.125 -> 0.12, 0.03125 -> 0.0312); no conversions gives CPA null, no spend gives ROAS and CPA null, never 0 or infinity",
+   "pass": true,
+   "sub": {
+    "cpa_half_even_0_125_is_0_12": true,
+    "roas_half_even_0_03125_is_0_0312": true,
+    "no_conversions_cpa_null_roas_zero": true,
+    "no_spend_roas_and_cpa_null": true
+   },
+   "detail": {
+    "cpa_half_even_0_125_is_0_12": [
+     true,
+     "0.12"
+    ],
+    "roas_half_even_0_03125_is_0_0312": [
+     true,
+     "0.0312"
+    ],
+    "no_conversions_cpa_null_roas_zero": [
+     true,
+     [
+      null,
+      "0.0000"
+     ]
+    ],
+    "no_spend_roas_and_cpa_null": [
+     true,
+     [
+      null,
+      null
+     ]
+    ]
+   }
+  },
+  {
+   "row": "F06 creatives: a true claim is ready; '2x' supports 2.0000 and '2.01x' does not; an unclaimed number, a publish field, a non-draft status, prohibited wording, an unknown figure, an undisclosed paid connection and a social creative with no or unknown connection are blocked; held when other findings exist",
+   "pass": true,
+   "sub": {
+    "clean_ready": true,
+    "2x_supports_2_0000": true,
+    "2_01_blocked": true,
+    "number_outside_claim_blocked": true,
+    "publish_field_blocked": true,
+    "status_scheduled_blocked": true,
+    "prohibited_wording_blocked": true,
+    "unknown_figure_blocked": true,
+    "unknown_campaign_figure_blocked": true,
+    "paid_without_disclosure_in_copy_blocked": true,
+    "paid_with_disclosure_in_copy_ready": true,
+    "social_without_connection_blocked": true,
+    "social_unknown_connection_blocked": true,
+    "social_none_ready": true,
+    "held_when_other_findings": true
+   },
+   "detail": {
+    "clean_ready": [
+     true,
+     [
+      0,
+      "ready_for_human_review",
+      "[]"
+     ]
+    ],
+    "2x_supports_2_0000": [
+     true,
+     [
+      "ready_for_human_review",
+      "[]"
+     ]
+    ],
+    "2_01_blocked": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"claim_mismatch\", \"detail\": {\"computed\": \"2.0000\", \"figure\": \"campaign:C-a:roas\", \"text\": \"2.01x\"}}]"
+     ]
+    ],
+    "number_outside_claim_blocked": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"unsupported_number\", \"detail\": \"3\"}]"
+     ]
+    ],
+    "publish_field_blocked": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"publish_request_refused\", \"detail\": [\"publish_at\"]}]"
+     ]
+    ],
+    "status_scheduled_blocked": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"publish_request_refused\", \"detail\": [\"status=scheduled\"]}]"
+     ]
+    ],
+    "prohibited_wording_blocked": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"prohibited_claim\", \"detail\": [\"guaranteed\", \"guarantee\"]}]"
+     ]
+    ],
+    "unknown_figure_blocked": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"unknown_figure\", \"detail\": \"campaign:C-a:ctr\"}]"
+     ]
+    ],
+    "unknown_campaign_figure_blocked": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"unknown_figure\", \"detail\": \"campaign:C-zz:roas\"}]"
+     ]
+    ],
+    "paid_without_disclosure_in_copy_blocked": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"undisclosed_material_connection\", \"detail\": \"paid\"}]"
+     ]
+    ],
+    "paid_with_disclosure_in_copy_ready": [
+     true,
+     [
+      "ready_for_human_review",
+      "[]"
+     ]
+    ],
+    "social_without_connection_blocked": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"material_connection_unknown\", \"detail\": \"unknown\"}]"
+     ]
+    ],
+    "social_unknown_connection_blocked": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"material_connection_unknown\", \"detail\": \"unknown\"}]"
+     ]
+    ],
+    "social_none_ready": [
+     true,
+     [
+      "ready_for_human_review",
+      "[]"
+     ]
+    ],
+    "held_when_other_findings": [
+     true,
+     [
+      "held_unverified",
+      "[]"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "F07 cherry-picking and mixed windows: a figure borrowed from elsewhere, a claim not in the copy, an unclaimed percent and 'number one' are blocked; an order-book window that differs from the package window is refused",
+   "pass": true,
+   "sub": {
+    "cherry_pick_other_campaign_figure": true,
+    "claim_text_not_in_copy": true,
+    "percent_number_unclaimed": true,
+    "spelled_out_rank_number_one": true,
+    "orders_window_differs_refused": true
+   },
+   "detail": {
+    "cherry_pick_other_campaign_figure": [
+     true,
+     null
+    ],
+    "claim_text_not_in_copy": [
+     true,
+     null
+    ],
+    "percent_number_unclaimed": [
+     true,
+     null
+    ],
+    "spelled_out_rank_number_one": [
+     true,
+     null
+    ],
+    "orders_window_differs_refused": [
+     true,
+     2
+    ]
+   }
+  },
+  {
+   "row": "F08 mixed windows: a spend export over a longer window than the package, or a spend or order contract with another as_of, is refused or named, never folded silently into CPA and ROAS",
+   "pass": true,
+   "sub": {
+    "spend_window_starts_a_month_early": true,
+    "spend_as_of_later_than_package": true,
+    "orders_as_of_later_than_package": true
+   },
+   "detail": {
+    "spend_window_starts_a_month_early": [
+     true,
+     {
+      "rc": 2,
+      "status": null,
+      "spend": null,
+      "roas": null,
+      "codes": [],
+      "september_truth": {
+       "spend": "20.00",
+       "roas": "2.0000"
+      }
+     }
+    ],
+    "spend_as_of_later_than_package": [
+     true,
+     {
+      "rc": 2,
+      "spend": null,
+      "codes": [],
+      "note": "a spend row loaded 2026-10-10, after the package as_of 2026-10-02"
+     }
+    ],
+    "orders_as_of_later_than_package": [
+     true,
+     {
+      "rc": 2,
+      "codes": []
+     }
+    ]
+   }
+  },
+  {
+   "row": "F09 invalid input and recovery: unknown keys, path escapes, naive times refused; --out writes report.json and an INTERNAL DRAFT brief; an invalid run keeps the earlier report; --out inside the package is refused",
+   "pass": true,
+   "sub": {
+    "unknown_top_key_refused": true,
+    "path_escape_refused": true,
+    "absolute_path_refused": true,
+    "unknown_campaign_key_refused": true,
+    "naive_time_refused": true,
+    "out_writes_report_and_internal_draft_brief": true,
+    "invalid_run_keeps_earlier_report": true,
+    "out_inside_package_refused": true,
+    "no_package_files_changed": true
+   },
+   "detail": {
+    "unknown_top_key_refused": [
+     true,
+     null
+    ],
+    "path_escape_refused": [
+     true,
+     null
+    ],
+    "absolute_path_refused": [
+     true,
+     null
+    ],
+    "unknown_campaign_key_refused": [
+     true,
+     null
+    ],
+    "naive_time_refused": [
+     true,
+     null
+    ],
+    "out_writes_report_and_internal_draft_brief": [
+     true,
+     [
+      0,
+      [
+       "campaign-brief.md",
+       "report.json"
+      ]
+     ]
+    ],
+    "invalid_run_keeps_earlier_report": [
+     true,
+     2
+    ],
+    "out_inside_package_refused": [
+     true,
+     2
+    ],
+    "no_package_files_changed": [
+     true,
+     null
+    ]
+   }
+  },
+  {
+   "row": "F10 seeded soak: 15 random multi-campaign, two-currency packages (flights, windows, clicks and views, pixel and server events) equal my independent model per campaign; both identities hold",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "bad": []
+   }
+  },
+  {
+   "row": "F12 (v2) finance difference named and consistent; the doc's 2.4658 example ('2.47' yes, '2.46' no); a real file outside the package refused; a late spend row is a spend gap and not counted; a conversion at the window end is not counted; a duplicate campaign id refused",
+   "pass": true,
+   "sub": {
+    "finance_difference_named_and_consistent": true,
+    "doc_example_2_4658_supports_2_47": true,
+    "doc_example_2_4658_not_2_46": true,
+    "existing_file_outside_package_refused": true,
+    "late_spend_row_is_a_spend_export_gap": true,
+    "conversion_at_window_end_not_counted": true,
+    "duplicate_campaign_id_refused": true
+   },
+   "detail": {
+    "finance_difference_named_and_consistent": [
+     true,
+     [
+      {
+       "code": "order_value_differs_from_recognized_revenue",
+       "currency": "USD",
+       "difference": "60.00",
+       "order_value": "555.00",
+       "recognized_revenue": "495.00"
+      }
+     ]
+    ],
+    "doc_example_2_4658_supports_2_47": [
+     true,
+     [
+      "ready_for_human_review",
+      "2.4658"
+     ]
+    ],
+    "doc_example_2_4658_not_2_46": [
+     true,
+     [
+      "blocked",
+      "2.4658"
+     ]
+    ],
+    "existing_file_outside_package_refused": [
+     true,
+     2
+    ],
+    "late_spend_row_is_a_spend_export_gap": [
+     true,
+     [
+      1,
+      [
+       "spend_export_gaps"
+      ],
+      "20.00"
+     ]
+    ],
+    "conversion_at_window_end_not_counted": [
+     true,
+     [
+      0,
+      0,
+      {
+       "blank": 0,
+       "conflicting_ids": 0,
+       "exact_copies": 0,
+       "kept": 1,
+       "late": 0,
+       "lines": 1,
+       "orders_with_events": 0,
+       "outside_window": 1,
+       "rejected": 0
+      }
+     ]
+    ],
+    "duplicate_campaign_id_refused": [
+     true,
+     2
+    ]
+   }
+  },
+  {
+   "row": "F11 nothing contacts an ad platform: no network import or ad-platform host in the tool, and the audit log of every run in this oracle shows no socket, DNS, URL, mail or browser use and no child process other than G13/G14",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "imports": [],
+    "host_strings": [],
+    "audit_hits": []
+   }
+  },
+  {
+   "row": "F13 r2 repairs probed beyond M35: the same instant with another offset is accepted; a contract as_of one second off, a missing as_of, a window end a day later, a start an hour later and a naive start at another instant are refused with exit 2 and no traceback (a naive start at the same instant is the same window under the contract's UTC); zero spend with conversions gives CPA and ROAS null; prohibited wording is caught through non-breaking hyphen, en dash, minus sign, fullwidth letters, no-break space, repeated spaces, upper case, fullwidth #1, a line break and a soft hyphen standing for the dash; clean copy stays ready",
+   "pass": true,
+   "sub": {
+    "same_instant_other_offset_accepted": true,
+    "orders_end_plus00_accepted": true,
+    "refused_spend_as_of_plus_1s": true,
+    "refused_orders_as_of_minus_1s": true,
+    "refused_spend_no_as_of": true,
+    "refused_orders_no_as_of": true,
+    "refused_spend_end_one_day_later": true,
+    "refused_orders_start_one_hour_later": true,
+    "naive_start_same_instant_under_contract_utc_accepted": true,
+    "refused_naive_start_other_instant": true,
+    "zero_spend_with_conversion_cpa_roas_null": true,
+    "two_zero_spend_days_cpa_null": true,
+    "prohibited_nb_hyphen": true,
+    "prohibited_en_dash": true,
+    "prohibited_minus_sign": true,
+    "prohibited_fullwidth_guaranteed": true,
+    "prohibited_nbsp_risk_free": true,
+    "prohibited_double_space_no_risk": true,
+    "prohibited_upper": true,
+    "prohibited_fullwidth_hash1": true,
+    "prohibited_newline_between_words": true,
+    "prohibited_soft_hyphen_as_dash": true,
+    "clean_copy_still_ready": true
+   },
+   "detail": {
+    "same_instant_other_offset_accepted": [
+     true,
+     [
+      0,
+      "20.00",
+      ""
+     ]
+    ],
+    "orders_end_plus00_accepted": [
+     true,
+     [
+      0,
+      ""
+     ]
+    ],
+    "refused_spend_as_of_plus_1s": [
+     true,
+     [
+      2,
+      "invalid: spend contract as_of must equal the package as_of (nothing written)"
+     ]
+    ],
+    "refused_orders_as_of_minus_1s": [
+     true,
+     [
+      2,
+      "invalid: orders contract as_of must equal the package as_of (nothing written)"
+     ]
+    ],
+    "refused_spend_no_as_of": [
+     true,
+     [
+      2,
+      "invalid: spend contract as_of must equal the package as_of (nothing written)"
+     ]
+    ],
+    "refused_orders_no_as_of": [
+     true,
+     [
+      2,
+      "invalid: orders contract as_of must equal the package as_of (nothing written)"
+     ]
+    ],
+    "refused_spend_end_one_day_later": [
+     true,
+     [
+      2,
+      "invalid: spend contract window must equal the package window (no mixed windows in CPA or ROAS) (nothing written)"
+     ]
+    ],
+    "refused_orders_start_one_hour_later": [
+     true,
+     [
+      2,
+      "invalid: orders contract window must equal the package window (no mixed windows in CPA or ROAS) (nothing written)"
+     ]
+    ],
+    "naive_start_same_instant_under_contract_utc_accepted": [
+     true,
+     [
+      0,
+      ""
+     ]
+    ],
+    "refused_naive_start_other_instant": [
+     true,
+     [
+      2,
+      "invalid: spend contract window must equal the package window (no mixed windows in CPA or ROAS) (nothing written)"
+     ]
+    ],
+    "zero_spend_with_conversion_cpa_roas_null": [
+     true,
+     [
+      0,
+      "0.00",
+      null,
+      null,
+      1
+     ]
+    ],
+    "two_zero_spend_days_cpa_null": [
+     true,
+     [
+      "0.00",
+      null
+     ]
+    ],
+    "prohibited_nb_hyphen": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"prohibited_claim\", \"detail\": [\"risk-free\"]}]"
+     ]
+    ],
+    "prohibited_en_dash": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"prohibited_claim\", \"detail\": [\"risk-free\"]}]"
+     ]
+    ],
+    "prohibited_minus_sign": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"prohibited_claim\", \"detail\": [\"risk-free\"]}]"
+     ]
+    ],
+    "prohibited_fullwidth_guaranteed": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"prohibited_claim\", \"detail\": [\"guaranteed\", \"guarantee\"]}]"
+     ]
+    ],
+    "prohibited_nbsp_risk_free": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"prohibited_claim\", \"detail\": [\"risk free\"]}]"
+     ]
+    ],
+    "prohibited_double_space_no_risk": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"prohibited_claim\", \"detail\": [\"no risk\"]}]"
+     ]
+    ],
+    "prohibited_upper": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"prohibited_claim\", \"detail\": [\"guaranteed\", \"guarantee\"]}]"
+     ]
+    ],
+    "prohibited_fullwidth_hash1": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"prohibited_claim\", \"detail\": [\"#1\"]}, {\"code\": \"unsupported_number\", \"detail\": \"\\uff11\"}]"
+     ]
+    ],
+    "prohibited_newline_between_words": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"prohibited_claim\", \"detail\": [\"risk free\"]}]"
+     ]
+    ],
+    "prohibited_soft_hyphen_as_dash": [
+     true,
+     [
+      "blocked",
+      "[{\"code\": \"prohibited_claim\", \"detail\": [\"risk-free\"]}]"
+     ]
+    ],
+    "clean_copy_still_ready": [
+     true,
+     [
+      "ready_for_human_review",
+      "[]"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "O14 OBS: invisible characters inside a prohibited word, a Cyrillic look-alike, a spaced or missing dash, and two substring false positives (recorded, not scored)",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "soft_hyphen_inside_word": "ready_for_human_review",
+    "zwsp_inside_word": "ready_for_human_review",
+    "zwj_inside_word": "ready_for_human_review",
+    "zwsp_before_dash": "ready_for_human_review",
+    "cyrillic_a": "ready_for_human_review",
+    "spaced_dash": "ready_for_human_review",
+    "joined_riskfree": "ready_for_human_review",
+    "no_riskier_false_positive": "blocked",
+    "hash_10_false_positive": "blocked"
+   }
+  }
+ ]
+}
