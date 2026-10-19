@@ -5,7 +5,7 @@ Roadmap: `skill-solaris-product-quality-hardening`
 Engine: `quality_os.py` (this directory)  
 Engine version: `1.0.2`
 
-Tests: `tests/test_assurance_packets.py`, `tests/test_closure_hardening.py`
+Tests: `tests/test_assurance_packets.py`, `tests/test_closure_hardening.py`, `tests/test_fixture_runner.py`
 Upstream standard (2026-07 wave skill-lkl): `../QUALITY-SECURITY-STANDARD.md`
 
 ## Purpose
@@ -83,6 +83,26 @@ risk declarations cannot be detected from syntax alone.
 make a negative fixture succeed when the expected gate fires. That suite success
 is test evidence, never permission to release. Call `evaluate_artifact_packet`
 for the underlying packet decision; it does not apply fixture expectations.
+
+The fixture runner fails closed on its own contract (added after engine
+1.0.2; the engine version is assigned at the next reviewed integration):
+
+- `fixture_kind` (or the legacy `kind`) must be one of `packet`,
+  `planted_defect`, `defect`, `legal`, `legal_boundary`, `closure` or
+  `self_approval`. A bare planted defect must use `fixture_kind:
+  "planted_defect"` with `defect_kind`, not `kind: "security"`.
+- `expectations` accepts only `outcome` (`pass` or `fail_gate`),
+  `gate_codes` (array of strings) and `accountable_role` (nonblank string).
+  An unknown key or value returns `INVALID_PACKET` instead of being ignored.
+- `suite <dir>` reports `ok: false` with an `error` when the directory does
+  not exist or contains no fixtures. The repository does not ship assurance
+  fixtures, so pass an explicit directory; `suite` with no argument looks for
+  `fixtures/solaris/assurance` and fails when it is absent. Files whose names
+  start with `_` are skipped. Router intake fixtures under `fixtures/` are not
+  assurance fixtures and fail as `INVALID_PACKET`.
+- Unknown top-level packet keys are still ignored by
+  `evaluate_artifact_packet`; a misspelled packet field such as `dimenions`
+  is not detected yet.
 
 ## Findings → orders
 
@@ -168,6 +188,7 @@ there is at least one CONFIRMED and zero dissent.
 ```bash
 python3 employees/quality-security/assurance/quality_os.py self-test
 python3 employees/quality-security/assurance/quality_os.py run packet.json
+python3 employees/quality-security/assurance/quality_os.py suite path/to/assurance-fixtures
 python3 employees/quality-security/assurance/quality_os.py audit
 python3 employees/quality-security/assurance/quality_os.py route security
 python3 -m unittest discover -s tests -v

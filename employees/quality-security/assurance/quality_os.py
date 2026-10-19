@@ -1104,6 +1104,14 @@ def _apply_expectations(result: AssuranceResult, expected: Dict[str, Any]) -> As
     return result
 
 
+# Fixture contract for `run` and `suite`. A misspelled kind or expectation must
+# not be silently ignored, because the suite would then report a false pass.
+FIXTURE_KINDS = ("packet", "planted_defect", "defect", "legal", "legal_boundary",
+                 "closure", "self_approval")
+EXPECTATION_KEYS = ("outcome", "gate_codes", "accountable_role")
+EXPECTATION_OUTCOMES = ("pass", "fail_gate")
+
+
 def evaluate_path(path: Path) -> AssuranceResult:
     try:
         data = load_json(path)
@@ -1111,12 +1119,30 @@ def evaluate_path(path: Path) -> AssuranceResult:
         return _invalid_packet(f"Cannot read JSON packet: {exc}")
     if not isinstance(data, dict):
         return _invalid_packet("Fixture must be an object")
-    kind = data.get("fixture_kind") or data.get("kind") or "packet"
+    kind_key = "fixture_kind" if "fixture_kind" in data else "kind" if "kind" in data else None
+    kind = data[kind_key] if kind_key else "packet"
+    if kind not in FIXTURE_KINDS:
+        return _invalid_packet(
+            f"{kind_key} must be one of {', '.join(FIXTURE_KINDS)}; a planted defect "
+            "fixture uses fixture_kind \"planted_defect\" with defect_kind"
+        )
     expected = data.get("expectations", {})
     if not isinstance(expected, dict):
         return _invalid_packet("expectations must be an object")
+    unknown = sorted(str(k) for k in expected if k not in EXPECTATION_KEYS)
+    if unknown:
+        return _invalid_packet(
+            "expectations has unknown keys: " + ", ".join(unknown)
+            + "; supported keys are " + ", ".join(EXPECTATION_KEYS)
+        )
+    if "outcome" in expected and expected["outcome"] not in EXPECTATION_OUTCOMES:
+        return _invalid_packet("expectations.outcome must be one of " + ", ".join(EXPECTATION_OUTCOMES))
     if "gate_codes" in expected and not _string_list(expected["gate_codes"]):
         return _invalid_packet("expectations.gate_codes must be an array of strings")
+    if "accountable_role" in expected and (
+        not isinstance(expected["accountable_role"], str) or not expected["accountable_role"].strip()
+    ):
+        return _invalid_packet("expectations.accountable_role must be a nonblank string")
 
     if kind in ("planted_defect", "defect"):
         result = evaluate_planted_defect(data.get("defect") or data)
@@ -1191,7 +1217,26 @@ def evaluate_path(path: Path) -> AssuranceResult:
     return _apply_expectations(result, expected)
 
 
+def _suite_report(results: List[Dict[str, Any]], passed: int, failed: int,
+                  error: Optional[str] = None) -> Dict[str, Any]:
+    report = {
+        "schema_version": SCHEMA_VERSION,
+        "assurance_version": ASSURANCE_VERSION,
+        "total": len(results),
+        "passed": passed,
+        "failed": failed,
+        "ok": failed == 0 and error is None,
+        "results": results,
+    }
+    if error is not None:
+        report["error"] = error
+    return report
+
+
 def run_suite(root: Path) -> Dict[str, Any]:
+    """Run every fixture under root. A missing directory or zero fixtures is not a pass."""
+    if not root.is_dir():
+        return _suite_report([], 0, 0, error=f"fixture directory not found: {root}")
     paths = sorted(root.rglob("*.json"))
     results = []
     passed = failed = 0
@@ -1212,15 +1257,10 @@ def run_suite(root: Path) -> Dict[str, Any]:
             passed += 1
         else:
             failed += 1
-    return {
-        "schema_version": SCHEMA_VERSION,
-        "assurance_version": ASSURANCE_VERSION,
-        "total": len(results),
-        "passed": passed,
-        "failed": failed,
-        "ok": failed == 0,
-        "results": results,
-    }
+    if not results:
+        return _suite_report(results, passed, failed,
+                             error=f"no fixtures found under {root}; nothing was evaluated")
+    return _suite_report(results, passed, failed)
 
 
 # ---------------------------------------------------------------------------
