@@ -1,0 +1,80 @@
+# m13r2_regressions on 3.9.6, r3 (labelled r2 in the script) vs r2 (labelled r1) 2026-10-18 17:32:48 PDT
+RT timestamp spellings that common exports write (one extra row O3 USD 4.00 with this event_time)
+[RT PostgreSQL timestamptz text (+00): 2026-09-12 12:00:00+00]
+    r2 rc=0 reconciled revenue={'USD': '154.00'} orders=[3] gaps=[] rejected={}
+    r1 rc=1 reconciled_with_gaps revenue={'USD': '150.00'} orders=[2] gaps=['rejected_rows'] rejected={'bad_timestamp': 1}
+[RT PostgreSQL with fraction (+00): 2026-09-12 12:00:00.123456+00]
+    r2 rc=0 reconciled revenue={'USD': '154.00'} orders=[3] gaps=[] rejected={}
+    r1 rc=1 reconciled_with_gaps revenue={'USD': '150.00'} orders=[2] gaps=['rejected_rows'] rejected={'bad_timestamp': 1}
+[RT PostgreSQL non-UTC session (+05:30): 2026-09-12 12:00:00+05:30]
+    r2 rc=0 reconciled revenue={'USD': '154.00'} orders=[3] gaps=[] rejected={}
+    r1 rc=0 reconciled revenue={'USD': '154.00'} orders=[3] gaps=[] rejected={}
+    (same)
+[RT PostgreSQL hour offset (-07): 2026-09-12 05:00:00-07]
+    r2 rc=0 reconciled revenue={'USD': '154.00'} orders=[3] gaps=[] rejected={}
+    r1 rc=1 reconciled_with_gaps revenue={'USD': '150.00'} orders=[2] gaps=['rejected_rows'] rejected={'bad_timestamp': 1}
+[RT SQL Server datetime2(7): 2026-09-12 12:00:00.1234567]
+    r2 rc=0 reconciled revenue={'USD': '154.00'} orders=[3] gaps=[] rejected={}
+    r1 rc=1 reconciled_with_gaps revenue={'USD': '150.00'} orders=[2] gaps=['rejected_rows'] rejected={'bad_timestamp': 1}
+[RT SQL Server datetimeoffset(7): 2026-09-12 12:00:00.1234567 +00:00]
+    r2 rc=0 reconciled revenue={'USD': '154.00'} orders=[3] gaps=[] rejected={}
+    r1 rc=1 reconciled_with_gaps revenue={'USD': '150.00'} orders=[2] gaps=['rejected_rows'] rejected={'bad_timestamp': 1}
+[RT ISO basic offset (-0700): 2026-09-12T05:00:00-0700]
+    r2 rc=0 reconciled revenue={'USD': '154.00'} orders=[3] gaps=[] rejected={}
+    r1 rc=1 reconciled_with_gaps revenue={'USD': '150.00'} orders=[2] gaps=['rejected_rows'] rejected={'bad_timestamp': 1}
+[RT MySQL DATETIME (naive): 2026-09-12 12:00:00]
+    r2 rc=0 reconciled revenue={'USD': '154.00'} orders=[3] gaps=[] rejected={}
+    r1 rc=0 reconciled revenue={'USD': '154.00'} orders=[3] gaps=[] rejected={}
+    (same)
+[RT JavaScript toISOString: 2026-09-12T12:00:00.000Z]
+    r2 rc=0 reconciled revenue={'USD': '154.00'} orders=[3] gaps=[] rejected={}
+    r1 rc=0 reconciled revenue={'USD': '154.00'} orders=[3] gaps=[] rejected={}
+    (same)
+[RT Go RFC3339Nano: 2026-09-12T12:00:00.123456789Z]
+    r2 rc=0 reconciled revenue={'USD': '154.00'} orders=[3] gaps=[] rejected={}
+    r1 rc=1 reconciled_with_gaps revenue={'USD': '150.00'} orders=[2] gaps=['rejected_rows'] rejected={'bad_timestamp': 1}
+RD date-only and midnight wall times where midnight does not exist (America/Santiago, DST start 2026-09-06 00:00)
+[RD fact row event_time 2026-09-06 (date only)]
+    r2 rc=0 reconciled revenue={'USD': '154.00'} orders=[3] gaps=[] rejected={}
+    r1 rc=1 reconciled_with_gaps revenue={'USD': '150.00'} orders=[2] gaps=['rejected_rows'] rejected={'nonexistent_local_time': 1}
+[RD window start 2026-09-06 (date only, contract)]
+    r2 rc=0 reconciled revenue={'USD': '100.00'} orders=[1] gaps=[] rejected={}
+    r1 rc=2 invalid: window.start: '2026-09-06' does not exist in America/Santiago (DST spring-forward); give an offset
+[RD control: America/Los_Angeles date 2026-09-06]
+    r2 rc=0 reconciled revenue={'USD': '154.00'} orders=[3] gaps=[] rejected={}
+    r1 rc=0 reconciled revenue={'USD': '154.00'} orders=[3] gaps=[] rejected={}
+    (same)
+RN interactions of the N1/N3/N8 fixes
+[RN re-delivery identical but loaded_at, both on time (N3)]
+    r2 rc=0 reconciled revenue={'USD': '150.00'} orders=[2] gaps=[] rejected={}
+    r1 rc=0 reconciled revenue={'USD': '150.00'} orders=[2] gaps=[] rejected={}
+    (same)
+[RN re-delivery: first copy loaded late, second on time]
+    r2 rc=1 reconciled_with_gaps revenue={'USD': '150.00'} orders=[2] gaps=['late_rows'] rejected={}
+    r1 rc=1 reconciled_with_gaps revenue={'USD': '150.00'} orders=[2] gaps=['late_rows'] rejected={}
+    (same)
+[RN no as_of, copy with blank loaded_at (N1 must not apply)]
+    r2 rc=0 reconciled revenue={'USD': '150.00'} orders=[2] gaps=[] rejected={}
+    r1 rc=0 reconciled revenue={'USD': '150.00'} orders=[2] gaps=[] rejected={}
+    (same)
+[RN latest:loaded_at policy, versions differ in amount]
+    r2 rc=0 reconciled revenue={'USD': '120.00'} orders=[1] gaps=[] rejected={}
+    r1 rc=0 reconciled revenue={'USD': '120.00'} orders=[1] gaps=[] rejected={}
+    (same)
+[RN latest:loaded_at policy, versions identical except loaded_at]
+    r2 rc=0 reconciled revenue={'USD': '100.00'} orders=[1] gaps=[] rejected={}
+    r1 rc=0 reconciled revenue={'USD': '100.00'} orders=[1] gaps=[] rejected={}
+    (same)
+[RN as_of, newer version loaded_at blank, older on time (N1)]
+    r2 rc=1 reconciled_with_gaps revenue={'USD': '150.00'} orders=[2] gaps=['loaded_at_unknown'] rejected={}
+    r1 rc=1 reconciled_with_gaps revenue={'USD': '150.00'} orders=[2] gaps=['loaded_at_unknown'] rejected={}
+    (same)
+[RN void re-delivery differing only in loaded_at and status]
+    r2 rc=1 reconciled_with_gaps revenue={'USD': '100.00'} orders=[1] gaps=['unresolved_duplicates'] rejected={}
+    r1 rc=1 reconciled_with_gaps revenue={'USD': '100.00'} orders=[1] gaps=['unresolved_duplicates'] rejected={}
+    (same)
+RW write path (N4)
+[RW --out over an existing report, --rejects new] r2 rc=1 files in out/ and hidden in folder: ['report.json'] rejects.csv written: True
+[RW --out over an existing report, --rejects new] r1 rc=1 files in out/ and hidden in folder: ['report.json'] rejects.csv written: True
+[RW --out into a read-only folder] r2 rc=2 files in out/ and hidden in folder: [] rejects.csv written: False
+[RW --out into a read-only folder] r1 rc=2 files in out/ and hidden in folder: [] rejects.csv written: False

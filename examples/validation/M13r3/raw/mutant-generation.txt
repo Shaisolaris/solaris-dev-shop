@@ -1,0 +1,14 @@
+# M13 r3 mutant generation 2026-10-18 17:34:11 PDT
+31 mutants (3 ported, 8 fix-revert) in /tmp/m13r3-mut
+--- r3 fix-revert mutants
+rv_rt_colon_offset_only: ok
+rv_rt_six_fraction_digits: ok
+rv_rt_no_space_before_offset: ok
+rt_fraction_rounded: ok
+rt_space_not_stripped: ok
+rt_offset_minutes_unchecked: ok
+rt_hour_offset_minutes_misread: ok
+rv_rd_date_only_refused: ok
+rd_date_only_second_fold: ok
+rd_any_clock_time: ok
+      41

@@ -1,0 +1,33 @@
+# candidate manifest verify 2026-10-18 17:30:02 PDT against worktree at 5666e7beb161d1252ddd5dcc0a166aca83255370
+employees/data/data-engineer/SKILL.md: OK
+employees/data/data-engineer/capability.contract.json: OK
+employees/data/data-engineer/learnings.md: OK
+employees/data/data-engineer/plugin.json: OK
+employees/data/data-analyst/SKILL.md: OK
+employees/data/data-analyst/learnings.md: OK
+employees/data/data-engineer/csv_reconcile.py: OK
+employees/data/data-engineer/csv-reconciliation.md: OK
+examples/capabilities/G13/README.md: OK
+examples/capabilities/G13/reconcile_oracle.py: OK
+examples/capabilities/G13/noop_stub.py: OK
+examples/capabilities/G13/naive_stub.py: OK
+examples/capabilities/G13/fixtures/clean/contract.json: OK
+examples/capabilities/G13/fixtures/clean/control.csv: OK
+examples/capabilities/G13/fixtures/clean/customers.csv: OK
+examples/capabilities/G13/fixtures/clean/orders.csv: OK
+examples/capabilities/G13/fixtures/september/contract.json: OK
+examples/capabilities/G13/fixtures/september/control.csv: OK
+examples/capabilities/G13/fixtures/september/customers.csv: OK
+examples/capabilities/G13/fixtures/september/orders.csv: OK
+tests/test_g13_capability.py: OK
+ok 21/21
+file set == diff 02ba9c5..5666e7b
+G13-r3.patch == diff 75a4e2b..5666e7b
+4fd4fa357b8d68167a42ac7d6b7b34da8aab5ffd694f9ace51cd896319b7172b  <D>/grok-output/G13/G13-r3.patch
+ employees/data/data-engineer/csv-reconciliation.md |  4 +-
+ employees/data/data-engineer/csv_reconcile.py      | 24 ++++--
+ employees/data/data-engineer/learnings.md          |  1 +
+ examples/capabilities/G13/README.md                |  2 +-
+ examples/capabilities/G13/reconcile_oracle.py      | 45 ++++++++++-
+ tests/test_g13_capability.py                       | 92 ++++++++++++++++++++--
+ 6 files changed, 152 insertions(+), 16 deletions(-)

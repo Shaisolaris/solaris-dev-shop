@@ -1,0 +1,76 @@
+# m13r3_probes on 3.9.6 2026-10-18 17:32:44 PDT (Grok self-validation)
+== p01 RT accepted spellings, each checked to the microsecond (row O3 USD 4.00; window end at its instant, then +1us)
+PASS p01 '2026-09-12 12:00:00+00' == 2026-09-12T12:00:00Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+PASS p01 '2026-09-12 12:00:00.123456+00' == 2026-09-12T12:00:00.123456Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+PASS p01 '2026-09-12 05:00:00-07' == 2026-09-12T12:00:00Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+PASS p01 '2026-09-12 05:00:00.5-07' == 2026-09-12T12:00:00.500000Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+PASS p01 '2026-09-12 17:30:00+05:30' == 2026-09-12T12:00:00Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+PASS p01 '2026-09-12T17:30:00+0530' == 2026-09-12T12:00:00Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+PASS p01 '2026-09-12T05:00:00-0700' == 2026-09-12T12:00:00Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+PASS p01 '2026-09-12 12:00:00.1234567 +00:00' == 2026-09-12T12:00:00.123456Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+PASS p01 '2026-09-12 05:00:00.9999999 -07:00' == 2026-09-12T12:00:00.999999Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+PASS p01 '2026-09-12T12:00:00.123456789Z' == 2026-09-12T12:00:00.123456Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+PASS p01 '2026-09-12T12:00:00.000000999Z' == 2026-09-12T12:00:00Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+PASS p01 '2026-09-12 12:00:00.1234567' == 2026-09-12T12:00:00.123456Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+PASS p01 '2026-09-12t12:00z' == 2026-09-12T12:00:00Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+PASS p01 '2026-09-12 12:00 -07' == 2026-09-12T19:00:00Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+PASS p01 '2026-09-13 11:59:00+23:59' == 2026-09-12T12:00:00Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+PASS p01 '2026-09-11 12:01:00-23:59' == 2026-09-12T12:00:00Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+PASS p01 '2026-09-12 12:00:00-00' == 2026-09-12T12:00:00Z: end=instant usd=150.00 rc=0; end=+1us usd=154.00 rc=0
+== p02 RT refused spellings (expect exit 1, USD 150.00, 1 rejected row)
+FAIL p02 refused '2026-09-12T12:00:00.1234567890Z': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00+0': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00+000': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00+05:60': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00+0560': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00+24:00': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00+24': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00 Z': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00  +00': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00.Z': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00.+00': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00+05:3': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00+5': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00+05:30:00': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00+05:': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00.١٢Z': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00+００': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00 +0': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00+00:00Z': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '20260912T120000Z': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-W37-6': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 24:00:00Z': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:60Z': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12 12:00:00 UTC': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+FAIL p02 refused '2026-09-12T12Z': {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'bad_timestamp': 1}}
+== p03 documented limit: digits past the sixth are dropped; consequences at contract bounds with sub-microsecond digits
+OBS p03a window end .0000005Z, row .0000001Z (truly inside the window): usd=150.00 rc=0 (154.00 is exact)
+OBS p03b window start .0000005Z, row .0000001Z (truly before the window): usd=5.00 rc=0 (1.00 is exact)
+OBS p03c as_of .0000001Z, loaded_at .0000009Z (truly late): usd=154.00 gaps=[] rc=0 (150.00 with late_rows is exact)
+OBS p03d two versions whose updated_at differ only in the 7th digit: usd=150.00 gaps=['unresolved_duplicates'] rc=1 (loud tie expected per doc)
+== p04 RD date-only values on midnight DST days (expected first instant written by hand)
+PASS p04 row America/Santiago 2026-09-06 == 2026-09-06T04:00:00Z (midnight spring-forward 00:00 -> 01:00 (-04 -> -03)): end=instant usd=1.00 rc=0; +1us usd=5.00 rc=0
+PASS p04 window start America/Santiago 2026-09-06 == 2026-09-06T04:00:00Z: row at instant usd=4.00; row 1us before usd=2.00
+PASS p04 row America/Havana 2026-11-01 == 2026-11-01T04:00:00Z (midnight fall-back 01:00 -> 00:00 (-04 -> -05), first midnight): end=instant usd=1.00 rc=0; +1us usd=5.00 rc=0
+PASS p04 window start America/Havana 2026-11-01 == 2026-11-01T04:00:00Z: row at instant usd=4.00; row 1us before usd=2.00
+PASS p04 row Asia/Beirut 2026-03-29 == 2026-03-28T22:00:00Z (midnight spring-forward 00:00 -> 01:00 (+02 -> +03)): end=instant usd=1.00 rc=0; +1us usd=5.00 rc=0
+PASS p04 window start Asia/Beirut 2026-03-29 == 2026-03-28T22:00:00Z: row at instant usd=4.00; row 1us before usd=2.00
+PASS p04 row Asia/Beirut 2026-10-25 == 2026-10-24T22:00:00Z (fall-back 00:00 -> 23:00 the day before; 00:00 +02 happens once): end=instant usd=1.00 rc=0; +1us usd=5.00 rc=0
+PASS p04 window start Asia/Beirut 2026-10-25 == 2026-10-24T22:00:00Z: row at instant usd=4.00; row 1us before usd=2.00
+FAIL p04 row America/Santiago 2026-04-05 == 2026-04-05T03:00:00Z (fall-back at 00:00 -> 23:00 the day before (-03 -> -04)): end=instant usd=1.00 rc=0; +1us usd=1.00 rc=0
+FAIL p04 window start America/Santiago 2026-04-05 == 2026-04-05T03:00:00Z: row at instant usd=None; row 1us before usd=2.00
+PASS p04 row America/Los_Angeles 2026-09-06 == 2026-09-06T07:00:00Z (control, no transition): end=instant usd=1.00 rc=0; +1us usd=5.00 rc=0
+PASS p04 window start America/Los_Angeles 2026-09-06 == 2026-09-06T07:00:00Z: row at instant usd=4.00; row 1us before usd=2.00
+PASS p04 row America/Los_Angeles 2026-03-08 == 2026-03-08T08:00:00Z (control, 02:00 transition, midnight unaffected): end=instant usd=1.00 rc=0; +1us usd=5.00 rc=0
+PASS p04 window start America/Los_Angeles 2026-03-08 == 2026-03-08T08:00:00Z: row at instant usd=4.00; row 1us before usd=2.00
+== p05 RD scope: clock times in a gap or repeat are still refused (N6 kept)
+FAIL p05 America/Santiago '2026-09-06 00:30' refused: {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'nonexistent_local_time': 1}} (expect nonexistent_local_time)
+FAIL p05 America/Havana '2026-11-01 00:30' refused: {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'ambiguous_local_time': 1}} (expect ambiguous_local_time)
+FAIL p05 Asia/Beirut '2026-10-24 23:30' refused: {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'ambiguous_local_time': 1}} (expect ambiguous_local_time)
+FAIL p05 America/Santiago '2026-09-06 00:00' refused: {'rc': 1, 'usd': '150.00', 'gaps': ['rejected_rows'], 'rejected': {'nonexistent_local_time': 1}} (expect nonexistent_local_time)
+PASS p05 contract window start '2026-09-06 00:00' Santiago (clock time in the gap) invalid: {'rc': 2, 'invalid': "window.start: '2026-09-06 00:00' does not exist in America/Santiago (DST spring-forward); give an offset"}
+== p06 observation: a calendar day that never existed (Pacific/Apia skipped 2011-12-30)
+OBS p06 '2011-12-30' in Pacific/Apia (no such local day): end=10:00Z usd=1.00; end=+1us usd=5.00 (5.00 at +1us means read as 2011-12-30T10:00Z = 2011-12-31 00:00 local)
+== p07 r2 tool on the same p01 spellings (for comparison only)
+r2 tool accepts 4/17 p01 spellings at the right instant
+SUMMARY FAIL failures=31 ["p02 refused '2026-09-12T12:00:00.1234567890Z'", "p02 refused '2026-09-12 12:00:00+0'", "p02 refused '2026-09-12 12:00:00+000'", "p02 refused '2026-09-12 12:00:00+05:60'", "p02 refused '2026-09-12 12:00:00+0560'", "p02 refused '2026-09-12 12:00:00+24:00'", "p02 refused '2026-09-12 12:00:00+24'", "p02 refused '2026-09-12 12:00:00 Z'", "p02 refused '2026-09-12 12:00:00  +00'", "p02 refused '2026-09-12 12:00:00.Z'", "p02 refused '2026-09-12 12:00:00.+00'", "p02 refused '2026-09-12 12:00:00+05:3'", "p02 refused '2026-09-12 12:00:00+5'", "p02 refused '2026-09-12 12:00:00+05:30:00'", "p02 refused '2026-09-12 12:00:00+05:'", "p02 refused '2026-09-12 12:00:00.١٢Z'", "p02 refused '2026-09-12 12:00:00+００'", "p02 refused '2026-09-12 12:00:00 +0'", "p02 refused '2026-09-12 12:00:00+00:00Z'", "p02 refused '20260912T120000Z'", "p02 refused '2026-W37-6'", "p02 refused '2026-09-12 24:00:00Z'", "p02 refused '2026-09-12 12:00:60Z'", "p02 refused '2026-09-12 12:00:00 UTC'", "p02 refused '2026-09-12T12Z'", 'p04 row America/Santiago 2026-04-05 == 2026-04-05T03:00:00Z (fall-back at 00:00 -> 23:00 the day before (-03 -> -04))', 'p04 window start America/Santiago 2026-04-05 == 2026-04-05T03:00:00Z', "p05 America/Santiago '2026-09-06 00:30' refused", "p05 America/Havana '2026-11-01 00:30' refused", "p05 Asia/Beirut '2026-10-24 23:30' refused", "p05 America/Santiago '2026-09-06 00:00' refused"]

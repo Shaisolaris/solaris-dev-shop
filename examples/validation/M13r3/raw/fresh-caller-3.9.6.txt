@@ -1,0 +1,37 @@
+Hand answer (written before running; M13 r3): 10 data rows (lines 2-11), r3 spellings throughout.
+C1 PostgreSQL +00 -> USD 2,000.00 in. C2 datetimeoffset(7) with space and 7 digits -> EUR 40.00 in; its loaded_at has 9
+digits. C3 2026-09-30 23:59:59.9999999-07 is before the window end (2026-10-01 00:00 -07) -> USD 30.00 in.
+C4 2026-10-01 00:00:00.0000001-0700 is after the end (truncates to the end) -> outside_window (line 5). C5 date-only
+2026-09-15 in Los Angeles -> USD 5.00 in. C6 offset +05:60 -> bad_timestamp, rejected (line 7). C7 loaded 1 s after as_of
+-> late_after_as_of (line 8), gap late_rows. C8 orphan K9 -> USD 3.00 in, segment (unmatched); line 10 differs only in
+loaded_at -> exact copy, earliest load (line 9) kept. C9 status test -> excluded_status (line 11).
+Revenue USD 2038.00, EUR 40.00; orders 5 (C1, C2, C3, C5, C8); exit 1; gaps rejected_rows, late_rows,
+unmatched_or_missing_join_key, control_mismatch (a row was rejected).
+# m13r3 fresh caller 2026-10-18 17:35:58 PDT; python3 shim -> 3.9.6; contract = the doc's JSON block verbatim; offline guard on
+$ python3 $T reconcile contract.json; echo "exit=$?"
+reconcile: reconciled_with_gaps  (grain order_id; window 2026-09-01T07:00:00+00:00 .. 2026-10-01T07:00:00+00:00; as of 2026-10-02T00:00:00+00:00)
+  revenue [currency=EUR] = 40.00  (1 rows)
+  revenue [currency=USD] = 2038.00  (4 rows)
+  orders [all] = 5  (5 rows)
+  rows read 10, included 5, all accounted: yes
+  excluded: rejected 1 {'bad_timestamp': 1}, missing required 0, loaded_at unknown 0, late 1, status 1, outside window 1, exact copies 1, superseded 0, unresolved 0 rows/0 keys
+  join: matched 4, unmatched 1, ambiguous 0, key missing 0; dimension copies 0, conflicting keys 0 (no fan-out)
+  control control.csv: rows 10/10, sum 2174.00/2183.00 -> MISMATCH
+  naive SUM(amount) over every parsed row: {'EUR': '40.00', 'USD': '2134.00'} (9 rows) - not a result
+  naive SUM after an inner join: {'EUR': '40.00', 'USD': '2128.00'} (7 rows) - not a result
+  note: 1 fact rows had timestamps without an offset; read as America/Los_Angeles as the contract declares
+  local stdlib Python over the supplied CSV files; no warehouse, database or network was used
+exit=1
+$ python3 $T reconcile contract.json --json --out report.json --rejects rejects.csv > /dev/null; echo "exit=$?"; cat rejects.csv
+exit=1
+file,line,reason,detail
+orders.csv,5,outside_window,event_time
+orders.csv,7,bad_timestamp,event_time
+orders.csv,8,late_after_as_of,loaded_at
+orders.csv,10,duplicate_exact,order_id
+orders.csv,11,excluded_status,test
+report: ({'EUR': '40.00', 'USD': '2038.00'}, 5, 'reconciled_with_gaps', ['control_mismatch', 'late_rows', 'rejected_rows', 'unmatched_or_missing_join_key'], False)
+matches the hand answer: True
+net attempts: 0
+files now: CHANGELOG.md CODE_OF_CONDUCT.md CONTRIBUTING.md MANIFEST.in NOTICE.md ROADMAP.md SECURITY.md SUPPORT.md assets benchmarks chief-of-staff contract.json control-plane control.csv customers.csv fixtures hand-answer.txt install.sh orders.csv rejects.csv report.json requirements-dev.txt solaris_intake tools 
+HOME after: 0 entries; hidden temp files: 0
