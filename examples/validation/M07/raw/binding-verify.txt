@@ -1,0 +1,10 @@
+# M07 binding and prerequisite verify 2026-10-19 01:32:34 PDT (Grok self-validation)
+remote g07 head: 0d6a78d56cdb4c3b8d87ed25bb41704e99bc5382	refs/heads/review/grok-g07-fleet-registration
+parent: 314b4dbf980437cf14bc32438117e5b5b777f942 (want G04 314b4dbf980437cf14bc32438117e5b5b777f942)
+G04 branch head now: 314b4dbf980437cf14bc32438117e5b5b777f942	refs/heads/review/grok-g04-handoff
+G04 parent: bbe682b28e96296723826c1f113e138ccc39c530 (want G02 bbe682b28e96296723826c1f113e138ccc39c530)
+G02 branch head now: bbe682b28e96296723826c1f113e138ccc39c530	refs/heads/review/grok-g02-activation
+patch sha256: 0449d373cad253f2f18d567a9906f3e796e4776e41abe858d6c6dbdb42869f15
+diff --binary sha256: 0449d373cad253f2f18d567a9906f3e796e4776e41abe858d6c6dbdb42869f15
+ 18 files changed, 1038 insertions(+), 9 deletions(-)
+manifest 18 match 18 manifest set == diff set True

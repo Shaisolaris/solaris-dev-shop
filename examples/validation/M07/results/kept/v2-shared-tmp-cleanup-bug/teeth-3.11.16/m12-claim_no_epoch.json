@@ -1,0 +1,420 @@
+[
+ {
+  "id": "C01_clean_register_claim",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "machines": [
+    {
+     "alias": "mini1",
+     "machine_id": "mini-7f3a-0001",
+     "owner": "ana",
+     "owner_epoch": 1,
+     "registered_by": "reg-1",
+     "status": "active"
+    }
+   ],
+   "fleet_md_has_alias": true
+  }
+ },
+ {
+  "id": "C02_race_same_machine_8_aliases",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rcs": [
+    0,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "machines": 1
+  }
+ },
+ {
+  "id": "C03_race_8_machines_one_alias",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rcs": [
+    0,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "machines": 1
+  }
+ },
+ {
+  "id": "C04_retry_storm_same_request",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rcs": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "machines": 1,
+   "commits": 1
+  }
+ },
+ {
+  "id": "C05_race_8_transfers_one_view",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rcs": [
+    0,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "machine": [
+    {
+     "alias": "mini1",
+     "machine_id": "mini-7f3a-0001",
+     "owner": "o0",
+     "owner_epoch": 2,
+     "registered_by": "reg-1",
+     "status": "active"
+    }
+   ]
+  }
+ },
+ {
+  "id": "C06_wrong_machine_cannot_claim",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rcs": [
+    2,
+    2,
+    2,
+    2
+   ],
+   "unchanged": true
+  }
+ },
+ {
+  "id": "C06b_case_variant_identity_claim",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "claim_rc_with_MINI-7F3A-0001": 2,
+   "register_second_alias_rc": 0
+  }
+ },
+ {
+  "id": "C07_stale_owner_and_epoch",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "old_owner_old_epoch_claim": 2,
+   "new_owner_old_epoch_claim": 0,
+   "old_owner_new_epoch_claim": 2,
+   "future_epoch_claim": 0,
+   "stale_transfer_old_owner": 2,
+   "stale_transfer_right_owner_old_epoch": 2,
+   "transfer_wrong_owner_right_epoch": 2,
+   "self_transfer": 2,
+   "reregister_by_old_owner": 2,
+   "transfer": 0,
+   "unchanged": true,
+   "current_claim": 0
+  }
+ },
+ {
+  "id": "C08_abab_old_epoch_stays_stale",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "transfer_back": 0,
+   "machine": [
+    {
+     "alias": "mini1",
+     "machine_id": "mini-7f3a-0001",
+     "owner": "ana",
+     "owner_epoch": 3,
+     "registered_by": "reg-1",
+     "status": "active"
+    }
+   ]
+  }
+ },
+ {
+  "id": "C09_crash_before_replace_prior_owner_kept",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "drill": 75,
+   "after_drill": [
+    {
+     "alias": "mini1",
+     "machine_id": "mini-7f3a-0001",
+     "owner": "ana",
+     "owner_epoch": 1,
+     "registered_by": "reg-1",
+     "status": "active"
+    }
+   ],
+   "prior_claim": 0,
+   "retry": 0,
+   "after_retry": [
+    {
+     "alias": "mini1",
+     "machine_id": "mini-7f3a-0001",
+     "owner": "ben",
+     "owner_epoch": 2,
+     "registered_by": "reg-1",
+     "status": "active"
+    }
+   ]
+  }
+ },
+ {
+  "id": "C10_crash_after_replace_settles_once",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "drill": 75,
+   "after_drill": [
+    {
+     "alias": "mini1",
+     "machine_id": "mini-7f3a-0001",
+     "owner": "cy",
+     "owner_epoch": 3,
+     "registered_by": "reg-1",
+     "status": "active"
+    }
+   ],
+   "retry": 0,
+   "after_retry": [
+    {
+     "alias": "mini1",
+     "machine_id": "mini-7f3a-0001",
+     "owner": "cy",
+     "owner_epoch": 3,
+     "registered_by": "reg-1",
+     "status": "active"
+    }
+   ]
+  }
+ },
+ {
+  "id": "C11",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: IndexError('list index out of range')"
+ },
+ {
+  "id": "C12",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: FileNotFoundError(2, 'No such file or directory')"
+ },
+ {
+  "id": "C15_request_id_reuse_refused_repeat_noop",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "reuse_for_other_machine": 2,
+   "reuse_for_transfer": 2
+  }
+ },
+ {
+  "id": "C16_retire_blocks_work_and_alias",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "retire": 0,
+   "claim_retired": 2,
+   "reuse_alias_other_machine": 2,
+   "transfer_retired": 2,
+   "stale_retire": 2
+  }
+ },
+ {
+  "id": "C16b_retired_machine_new_alias",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "register_same_machine_new_alias_rc": 0
+  }
+ },
+ {
+  "id": "C17_invalid_inputs_create_nothing",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rcs": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "unchanged": true,
+   "nope_created": false,
+   "positive_control": 0
+  }
+ },
+ {
+  "id": "C18_scale_40_machines_4_registrars",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "machines": 40,
+   "distinct": 40
+  }
+ },
+ {
+  "id": "C19_handoff_gate_refuses_with_nothing_created",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "impostor": [
+    2,
+    0,
+    []
+   ],
+   "no_identity": [
+    2,
+    0,
+    []
+   ],
+   "wrong_epoch": [
+    0,
+    1,
+    [
+     ".handoff",
+     ".handoff/WO-HARBOR-1",
+     ".handoff/WO-HARBOR-1/.worker.lock",
+     ".handoff/WO-HARBOR-1/holder.json",
+     ".handoff/WO-HARBOR-1/journal.jsonl",
+     ".handoff/WO-HARBOR-1/rev1",
+     ".handoff/WO-HARBOR-1/rev1/HANDOFF-BRIEF.md",
+     "harbor-kiosk",
+     "harbor-kiosk/.solaris-activation.json",
+     "harbor-kiosk/Assets",
+     "harbor-kiosk/Delivery",
+     "harbor-kiosk/Delivery/CREDENTIALS.md",
+     "harbor-kiosk/Development",
+     "harbor-kiosk/STATUS.md",
+     "harbor-kiosk/Scope",
+     "harbor-kiosk/Scope/ROUND-PLAN.md",
+     "outbox",
+     "outbox/.ledger.lock",
+     "outbox/ledger.jsonl"
+    ]
+   ],
+   "good": [
+    0,
+    1,
+    [
+     ".handoff",
+     ".handoff/WO-HARBOR-1",
+     ".handoff/WO-HARBOR-1/.worker.lock",
+     ".handoff/WO-HARBOR-1/holder.json",
+     ".handoff/WO-HARBOR-1/journal.jsonl",
+     ".handoff/WO-HARBOR-1/rev1",
+     ".handoff/WO-HARBOR-1/rev1/HANDOFF-BRIEF.md",
+     "harbor-kiosk",
+     "harbor-kiosk/.solaris-activation.json",
+     "harbor-kiosk/Assets",
+     "harbor-kiosk/Delivery",
+     "harbor-kiosk/Delivery/CREDENTIALS.md",
+     "harbor-kiosk/Development",
+     "harbor-kiosk/STATUS.md",
+     "harbor-kiosk/Scope",
+     "harbor-kiosk/Scope/ROUND-PLAN.md",
+     "outbox",
+     "outbox/.ledger.lock",
+     "outbox/ledger.jsonl"
+    ]
+   ],
+   "after_transfer": [
+    2,
+    0,
+    []
+   ],
+   "plain_order_no_fleet": [
+    0,
+    1
+   ]
+  }
+ },
+ {
+  "id": "C20_registry_path_confined",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "dotdot": [
+    2,
+    0,
+    []
+   ],
+   "absolute": [
+    2,
+    0,
+    []
+   ],
+   "empty": [
+    2,
+    0,
+    []
+   ],
+   "nul": [
+    2,
+    0,
+    []
+   ],
+   "symlink_out": [
+    2,
+    0
+   ],
+   "inside_ok": [
+    0,
+    1
+   ]
+  }
+ },
+ {
+  "id": "C21_no_pycache_left_in_repo_after_fleet_order",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "run_rc": 0,
+   "pycache_dirs": [
+    "employees/infrastructure/fleet-provisioner/__pycache__",
+    "employees/product-project/project-onboarding/__pycache__"
+   ]
+  }
+ },
+ {
+  "id": "C22_static_no_subprocess_network",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "found": []
+  }
+ }
+]

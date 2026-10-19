@@ -1,0 +1,15 @@
+rc=0 want=0 OK :: /tmp/m07-fresh/home/../repo/employees/infrastructure/fleet-provisioner/registry.py register --root fleet --alias mini1 --identity id/identity-mini1.json --owner ana --request-id reg-1
+rc=0 want=0 OK :: /tmp/m07-fresh/home/../repo/employees/infrastructure/fleet-provisioner/registry.py register --root fleet --alias mini1 --identity id/identity-mini1.json --owner ana --request-id reg-1
+rc=2 want=2 OK :: /tmp/m07-fresh/home/../repo/employees/infrastructure/fleet-provisioner/registry.py register --root fleet --alias spare --identity id/identity-mini1.json --owner ben --request-id reg-2
+rc=2 want=2 OK :: /tmp/m07-fresh/home/../repo/employees/infrastructure/fleet-provisioner/registry.py claim --root fleet --alias mini1 --identity id/identity-impostor.json --owner ana --epoch 1
+rc=75 want=75 OK :: /tmp/m07-fresh/home/../repo/employees/infrastructure/fleet-provisioner/registry.py transfer --root fleet --alias mini1 --from-owner ana --expect-epoch 1 --to-owner ben --request-id t-1 --fail-at before-replace
+rc=0 want=0 OK :: /tmp/m07-fresh/home/../repo/employees/infrastructure/fleet-provisioner/registry.py claim --root fleet --alias mini1 --identity id/identity-mini1.json --owner ana --epoch 1
+rc=0 want=0 OK :: /tmp/m07-fresh/home/../repo/employees/infrastructure/fleet-provisioner/registry.py transfer --root fleet --alias mini1 --from-owner ana --expect-epoch 1 --to-owner ben --request-id t-1
+rc=2 want=2 OK :: /tmp/m07-fresh/home/../repo/employees/infrastructure/fleet-provisioner/registry.py claim --root fleet --alias mini1 --identity id/identity-mini1.json --owner ana --epoch 1
+{"machines": [{"alias": "mini1", "machine_id": "mini-7f3a-0001", "owner": "ben", "owner_epoch": 2, "registered_by": "reg-1", "status": "active"}], "notes": [], "seq": 2}
+status rc=0
+rc=0 want=0 OK :: /tmp/m07-fresh/home/../repo/employees/infrastructure/fleet-provisioner/registry.py transfer --root fleet --alias mini1 --from-owner ben --expect-epoch 2 --to-owner delivery-lead: A. Example --request-id t-2
+wrong machine order rc=2 want=2
+right machine order rc=0 want=0
+       1
+python3 = 3.9.6; pycache dirs left in the repo copy:

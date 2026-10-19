@@ -1,0 +1,240 @@
+[
+ {
+  "mutant": "dup_machine_ok",
+  "killed": true,
+  "rows": [
+   "C02_race_same_machine_8_aliases",
+   "C18_scale_40_machines_4_registrars"
+  ]
+ },
+ {
+  "mutant": "alias_other_machine_ok",
+  "killed": true,
+  "rows": [
+   "C03_race_8_machines_one_alias"
+  ]
+ },
+ {
+  "mutant": "reregister_other_owner_ok",
+  "killed": true,
+  "rows": [
+   "C07_stale_owner_and_epoch"
+  ]
+ },
+ {
+  "mutant": "retired_alias_reuse_ok",
+  "killed": true,
+  "rows": [
+   "C11b_temp_files_left_after_sigkill"
+  ]
+ },
+ {
+  "mutant": "no_idempotency",
+  "killed": true,
+  "rows": [
+   "C10_crash_after_replace_settles_once",
+   "C11_sigkill_mid_change_30x"
+  ]
+ },
+ {
+  "mutant": "reqid_reuse_ok",
+  "killed": true,
+  "rows": [
+   "C15_request_id_reuse_refused_repeat_noop"
+  ]
+ },
+ {
+  "mutant": "transfer_no_epoch",
+  "killed": true,
+  "rows": [
+   "C07_stale_owner_and_epoch",
+   "C08_abab_old_epoch_stays_stale"
+  ]
+ },
+ {
+  "mutant": "transfer_no_owner",
+  "killed": true,
+  "rows": [
+   "C07_stale_owner_and_epoch",
+   "C08_abab_old_epoch_stays_stale"
+  ]
+ },
+ {
+  "mutant": "epoch_not_bumped",
+  "killed": true,
+  "rows": [
+   "C05_race_8_transfers_one_view",
+   "C07_stale_owner_and_epoch",
+   "C08_abab_old_epoch_stays_stale",
+   "C09_crash_before_replace_prior_owner_kept",
+   "C10_crash_after_replace_settles_once",
+   "C11_sigkill_mid_change_30x"
+  ]
+ },
+ {
+  "mutant": "transfer_retired_ok",
+  "killed": true,
+  "rows": [
+   "C16_retire_blocks_work_and_alias"
+  ]
+ },
+ {
+  "mutant": "claim_no_identity",
+  "killed": true,
+  "rows": [
+   "C06_wrong_machine_cannot_claim",
+   "C06b_case_variant_identity_claim",
+   "C19_handoff_gate_refuses_with_nothing_created"
+  ]
+ },
+ {
+  "mutant": "claim_retired_ok",
+  "killed": true,
+  "rows": [
+   "C16_retire_blocks_work_and_alias"
+  ]
+ },
+ {
+  "mutant": "claim_no_epoch",
+  "killed": true,
+  "rows": [
+   "C07_stale_owner_and_epoch",
+   "C08_abab_old_epoch_stays_stale",
+   "C19_handoff_gate_refuses_with_nothing_created"
+  ]
+ },
+ {
+  "mutant": "claim_no_owner",
+  "killed": true,
+  "rows": [
+   "C07_stale_owner_and_epoch"
+  ]
+ },
+ {
+  "mutant": "no_lock",
+  "killed": true,
+  "rows": [
+   "C05_race_8_transfers_one_view",
+   "C18_scale_40_machines_4_registrars"
+  ]
+ },
+ {
+  "mutant": "settle_always_commit",
+  "killed": true,
+  "rows": [
+   "C09_crash_before_replace_prior_owner_kept",
+   "C10_crash_after_replace_settles_once",
+   "C11b_temp_files_left_after_sigkill"
+  ]
+ },
+ {
+  "mutant": "settle_always_abort",
+  "killed": true,
+  "rows": [
+   "C10_crash_after_replace_settles_once"
+  ]
+ },
+ {
+  "mutant": "outside_edit_ok",
+  "killed": true,
+  "rows": [
+   "C11b_temp_files_left_after_sigkill",
+   "C12_hand_edit_refused_everywhere_restore_works",
+   "C13_ops_log_deleted_refused"
+  ]
+ },
+ {
+  "mutant": "torn_not_cut",
+  "killed": true,
+  "rows": [
+   "C14_ops_corrupt_stops_torn_tail_cut"
+  ]
+ },
+ {
+  "mutant": "bad_ops_line_ok",
+  "killed": true,
+  "rows": [
+   "C14_ops_corrupt_stops_torn_tail_cut"
+  ]
+ },
+ {
+  "mutant": "write_before_intent",
+  "killed": true,
+  "rows": [
+   "C09_crash_before_replace_prior_owner_kept",
+   "C11b_temp_files_left_after_sigkill"
+  ]
+ },
+ {
+  "mutant": "no_render",
+  "killed": true,
+  "rows": [
+   "C01_clean_register_claim",
+   "C12b_fleet_md_hand_edit"
+  ]
+ },
+ {
+  "mutant": "mid_any",
+  "killed": true,
+  "rows": [
+   "C11b_temp_files_left_after_sigkill"
+  ]
+ },
+ {
+  "mutant": "alias_any",
+  "killed": true,
+  "rows": [
+   "C11b_temp_files_left_after_sigkill",
+   "C17_invalid_inputs_create_nothing"
+  ]
+ },
+ {
+  "mutant": "owner_pipe_ok",
+  "killed": true,
+  "rows": [
+   "C17_invalid_inputs_create_nothing"
+  ]
+ },
+ {
+  "mutant": "self_transfer_ok",
+  "killed": true,
+  "rows": [
+   "C07_stale_owner_and_epoch",
+   "C08_abab_old_epoch_stays_stale"
+  ]
+ },
+ {
+  "mutant": "handoff_no_fleet_check",
+  "killed": true,
+  "rows": [
+   "C19_handoff_gate_refuses_with_nothing_created"
+  ]
+ },
+ {
+  "mutant": "handoff_no_identity_ok",
+  "killed": true,
+  "rows": [
+   "C19_handoff_gate_refuses_with_nothing_created"
+  ]
+ },
+ {
+  "mutant": "handoff_refusal_ignored",
+  "killed": true,
+  "rows": [
+   "C19_handoff_gate_refuses_with_nothing_created"
+  ]
+ },
+ {
+  "mutant": "handoff_fleet_extra_keys_ok",
+  "killed": false,
+  "rows": [],
+  "builder_tests_rc": 1
+ },
+ {
+  "mutant": "handoff_check_after_mkdir",
+  "killed": true,
+  "rows": [
+   "C19_handoff_gate_refuses_with_nothing_created"
+  ]
+ }
+]

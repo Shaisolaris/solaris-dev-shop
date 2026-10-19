@@ -1,0 +1,26 @@
+C01_clean_register_claim PASS {"rc": 0, "machines": [{"alias": "mini1", "machine_id": "mini-7f3a-0001", "owner": "ana", "owner_epoch": 1, "status": "active"}], "fleet_md_has_alias": true}
+C02_race_same_machine_8_aliases FAIL {"rcs": [0, 0, 0, 0, 0, 0, 0, 0], "machines": 7}
+C03_race_8_machines_one_alias FAIL {"rcs": [0, 0, 0, 0, 0, 0, 0, 0], "machines": 1}
+C04_retry_storm_same_request FAIL {"rcs": [1, 0, 0, 0, 0, 0], "machines": 1, "commits": 0}
+C05_race_8_transfers_one_view PASS {"rcs": [0, 2, 2, 2, 2, 2, 2, 2], "machine": [{"alias": "mini1", "machine_id": "mini-7f3a-0001", "owner": "o0", "owner_epoch": 2, "status": "active"}]}
+C06_wrong_machine_cannot_claim FAIL {"rcs": [0, 0, 0, 0], "unchanged": true}
+C06b_case_variant_identity_claim OBS {"claim_rc_with_MINI-7F3A-0001": 0, "register_second_alias_rc": 0}
+C07_stale_owner_and_epoch FAIL {"old_owner_old_epoch_claim": 2, "new_owner_old_epoch_claim": 0, "old_owner_new_epoch_claim": 2, "future_epoch_claim": 0, "stale_transfer_old_owner": 2, "stale_transfer_right_owner_old_epoch": 0, "transfer_wrong_owner_right_epoch": 2, "self_transfer": 2, "reregister_by_old_owner": 0, "transfer": 0, 
+C08_abab_old_epoch_stays_stale FAIL {"transfer_back": 2, "machine": [{"alias": "mini1", "machine_id": "mini-7f3a-0001", "owner": "ana", "owner_epoch": 1, "status": "active"}]}
+C09_crash_before_replace_prior_owner_kept FAIL {"drill": 75, "after_drill": [{"alias": "mini1", "machine_id": "mini-7f3a-0001", "owner": "ben", "owner_epoch": 2, "status": "active"}], "prior_claim": 2, "retry": 2, "after_retry": [{"alias": "mini1", "machine_id": "mini-7f3a-0001", "owner": "ben", "owner_epoch": 2, "status": "active"}]}
+C10_crash_after_replace_settles_once FAIL {"drill": 75, "after_drill": [{"alias": "mini1", "machine_id": "mini-7f3a-0001", "owner": "cy", "owner_epoch": 3, "status": "active"}], "retry": 2, "after_retry": [{"alias": "mini1", "machine_id": "mini-7f3a-0001", "owner": "cy", "owner_epoch": 3, "status": "active"}]}
+C11_sigkill_mid_change_30x PASS {"bad": [], "final": ["w29", 31]}
+C11b_temp_files_left_after_sigkill OBS {"leftover_tmp": []}
+C12_hand_edit_refused_everywhere_restore_works FAIL {"claim_edited_owner": 0, "claim_orig_owner": 2, "status": 0, "transfer": 0, "register": 0, "restored_claim": 0, "whitespace_only_edit_claim": 0}
+C12b_fleet_md_hand_edit OBS {"claim_rc_after_fleet_md_edit": 0, "fleet_md_rerendered_on_next_change": true}
+C12 FAIL "harness or tool crash: FileNotFoundError(2, 'No such file or directory')"
+C15_request_id_reuse_refused_repeat_noop FAIL {"reuse_for_other_machine": 0, "reuse_for_transfer": 0}
+C16_retire_blocks_work_and_alias FAIL {"retire": 2, "claim_retired": 2, "reuse_alias_other_machine": 0, "transfer_retired": 0, "stale_retire": 2}
+C16b_retired_machine_new_alias OBS {"register_same_machine_new_alias_rc": 0}
+C17_invalid_inputs_create_nothing FAIL {"rcs": [0, 0, 0, 0, 0, 2, 2], "unchanged": false, "nope_created": false, "positive_control": 0}
+C18_scale_40_machines_4_registrars FAIL {"machines": 0, "distinct": 0}
+C19_handoff_gate_refuses_with_nothing_created FAIL {"impostor": [2, 0, []], "no_identity": [2, 0, []], "wrong_epoch": [2, 0, []], "good": [2, 0, []], "after_transfer": [2, 0, []], "plain_order_no_fleet": [0, 1]}
+C20_registry_path_confined FAIL {"dotdot": [2, 0, []], "absolute": [2, 0, []], "empty": [2, 0, []], "nul": [2, 0, []], "symlink_out": [2, 0], "inside_ok": [2, 0]}
+C21_no_pycache_left_in_repo_after_fleet_order FAIL {"run_rc": 2, "pycache_dirs": []}
+C22_static_no_subprocess_network PASS {"found": []}
+M07 ORACLE 4/21 core PASS

@@ -1,0 +1,65 @@
+teeth-3.11.16 mutants 31 my oracle kills 28 survivors ['handoff_fleet_extra_keys_ok', 'mid_any', 'retired_alias_reuse_ok']
+  alias_any                          C17_invalid_inputs_create_nothing
+  alias_other_machine_ok             C03_race_8_machines_one_alias
+  bad_ops_line_ok                    C14_ops_corrupt_stops_torn_tail_cut
+  claim_no_epoch                     C07_stale_owner_and_epoch,C08_abab_old_epoch_stays_stale,C19_handoff_gate_refuses_with_nothing_created
+  claim_no_identity                  C06_wrong_machine_cannot_claim,C06b_case_variant_identity_claim,C19_handoff_gate_refuses_with_nothing_created
+  claim_no_owner                     C07_stale_owner_and_epoch
+  claim_retired_ok                   C16_retire_blocks_work_and_alias
+  dup_machine_ok                     C02_race_same_machine_8_aliases,C18_scale_40_machines_4_registrars
+  epoch_not_bumped                   C05_race_8_transfers_one_view,C07_stale_owner_and_epoch,C08_abab_old_epoch_stays_stale,C09_crash_before_replace_prior_owner_kept,C10_crash_after_replace_settles_once,C11_sigkill_mid_change_30x
+  handoff_check_after_mkdir          C19_handoff_gate_refuses_with_nothing_created
+  handoff_fleet_extra_keys_ok        SURVIVED (builder tests rc 1)
+  handoff_no_fleet_check             C19_handoff_gate_refuses_with_nothing_created
+  handoff_no_identity_ok             C19_handoff_gate_refuses_with_nothing_created
+  handoff_refusal_ignored            C19_handoff_gate_refuses_with_nothing_created
+  mid_any                            SURVIVED (builder tests rc not run: killed in raw run, see note)
+  no_idempotency                     C10_crash_after_replace_settles_once,C11_sigkill_mid_change_30x
+  no_lock                            C05_race_8_transfers_one_view,C18_scale_40_machines_4_registrars
+  no_render                          C01_clean_register_claim,C12b_fleet_md_hand_edit
+  outside_edit_ok                    C12_hand_edit_refused_everywhere_restore_works,C13_ops_log_deleted_refused
+  owner_pipe_ok                      C17_invalid_inputs_create_nothing
+  reqid_reuse_ok                     C15_request_id_reuse_refused_repeat_noop
+  reregister_other_owner_ok          C07_stale_owner_and_epoch
+  retired_alias_reuse_ok             SURVIVED (builder tests rc not run: killed in raw run, see note)
+  self_transfer_ok                   C07_stale_owner_and_epoch,C08_abab_old_epoch_stays_stale
+  settle_always_abort                C10_crash_after_replace_settles_once
+  settle_always_commit               C09_crash_before_replace_prior_owner_kept,C10_crash_after_replace_settles_once
+  torn_not_cut                       C14_ops_corrupt_stops_torn_tail_cut
+  transfer_no_epoch                  C07_stale_owner_and_epoch,C08_abab_old_epoch_stays_stale
+  transfer_no_owner                  C07_stale_owner_and_epoch,C08_abab_old_epoch_stays_stale
+  transfer_retired_ok                C16_retire_blocks_work_and_alias
+  write_before_intent                C09_crash_before_replace_prior_owner_kept
+teeth-3.13.15 mutants 31 my oracle kills 28 survivors ['handoff_fleet_extra_keys_ok', 'mid_any', 'retired_alias_reuse_ok']
+  alias_any                          C17_invalid_inputs_create_nothing
+  alias_other_machine_ok             C03_race_8_machines_one_alias
+  bad_ops_line_ok                    C14_ops_corrupt_stops_torn_tail_cut
+  claim_no_epoch                     C07_stale_owner_and_epoch,C08_abab_old_epoch_stays_stale,C19_handoff_gate_refuses_with_nothing_created
+  claim_no_identity                  C06_wrong_machine_cannot_claim,C06b_case_variant_identity_claim,C19_handoff_gate_refuses_with_nothing_created
+  claim_no_owner                     C07_stale_owner_and_epoch
+  claim_retired_ok                   C16_retire_blocks_work_and_alias
+  dup_machine_ok                     C02_race_same_machine_8_aliases,C18_scale_40_machines_4_registrars
+  epoch_not_bumped                   C05_race_8_transfers_one_view,C07_stale_owner_and_epoch,C08_abab_old_epoch_stays_stale,C09_crash_before_replace_prior_owner_kept,C10_crash_after_replace_settles_once,C11_sigkill_mid_change_30x
+  handoff_check_after_mkdir          C19_handoff_gate_refuses_with_nothing_created
+  handoff_fleet_extra_keys_ok        SURVIVED (builder tests rc 1)
+  handoff_no_fleet_check             C19_handoff_gate_refuses_with_nothing_created
+  handoff_no_identity_ok             C19_handoff_gate_refuses_with_nothing_created
+  handoff_refusal_ignored            C19_handoff_gate_refuses_with_nothing_created
+  mid_any                            SURVIVED (builder tests rc 1)
+  no_idempotency                     C10_crash_after_replace_settles_once,C11_sigkill_mid_change_30x
+  no_lock                            C18_scale_40_machines_4_registrars
+  no_render                          C01_clean_register_claim,C12b_fleet_md_hand_edit
+  outside_edit_ok                    C12_hand_edit_refused_everywhere_restore_works,C13_ops_log_deleted_refused
+  owner_pipe_ok                      C17_invalid_inputs_create_nothing
+  reqid_reuse_ok                     C15_request_id_reuse_refused_repeat_noop
+  reregister_other_owner_ok          C07_stale_owner_and_epoch
+  retired_alias_reuse_ok             SURVIVED (builder tests rc 1)
+  self_transfer_ok                   C07_stale_owner_and_epoch,C08_abab_old_epoch_stays_stale
+  settle_always_abort                C10_crash_after_replace_settles_once
+  settle_always_commit               C09_crash_before_replace_prior_owner_kept,C10_crash_after_replace_settles_once,C11_sigkill_mid_change_30x
+  torn_not_cut                       C14_ops_corrupt_stops_torn_tail_cut
+  transfer_no_epoch                  C07_stale_owner_and_epoch,C08_abab_old_epoch_stays_stale
+  transfer_no_owner                  C07_stale_owner_and_epoch,C08_abab_old_epoch_stays_stale
+  transfer_retired_ok                C16_retire_blocks_work_and_alias
+  write_before_intent                C09_crash_before_replace_prior_owner_kept
+kill sets identical across versions: True
