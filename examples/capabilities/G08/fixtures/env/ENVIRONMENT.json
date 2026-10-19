@@ -1,0 +1,1 @@
+{"schema": "solaris.local-environment/1", "name": "staging-local", "kind": "local-fixture", "note": "disposable fixture; no cloud account, secret or billable resource"}

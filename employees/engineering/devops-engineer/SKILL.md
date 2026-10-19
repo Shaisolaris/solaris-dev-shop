@@ -349,6 +349,13 @@ jobs:
 
 ---
 
+## Local deploy preflight and rollback drill (G08)
+
+Before any deploy runbook is trusted, rehearse it on a disposable local fixture with `local_deploy.py`
+(see `local-deploy-preflight.md`): read-only preflight of environment, artifact digest, approval, live
+health and rollback availability; refusal before any change when one fails; G03 snapshot, atomic switch,
+post-deploy health and automatic rollback; `recover` after an interrupted deploy. Local only, no cloud.
+
 ## Hand-offs
 
 | When... | DevOps works with... | To... |

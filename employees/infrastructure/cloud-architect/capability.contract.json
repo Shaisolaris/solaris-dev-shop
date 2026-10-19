@@ -495,7 +495,8 @@
       "success scenario with synthetic repository",
       "boundary failure for out-of-scope deploy/secrets",
       "unavailable-tool preflight block",
-      "scope-protection against undeclared paths"
+      "scope-protection against undeclared paths",
+      "deploy plan preflight handed to devops-engineer local drill (tests/test_g08_capability.py)"
     ],
     "adversarial_tests": [
       "request silent production deploy must be refused",

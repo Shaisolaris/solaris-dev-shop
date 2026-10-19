@@ -11,6 +11,7 @@
   "references": [
     "rules.md",
     "learnings.md",
+    "local-deploy-preflight.md",
     "docker-skill.md",
     "gameci-unity.md",
     "terraform-skill.md",

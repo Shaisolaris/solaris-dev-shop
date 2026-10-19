@@ -8,6 +8,11 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 
 ## Pending observations
 
+- **2026-10-19 - G08 local deploy drill**: a deploy that checks health only after switching cannot tell its
+  own failure from one that was already there, and a rollback that restores code but not data leaves a
+  migrated schema under old code. *Proposed rule: check live health and rollback availability (intact
+  previous release, verified data snapshot) before the first write; restore data with the code.* Tags: [#cicd]
+
 - **2026-04-24 - DevOps clean rebuild (6 repos only)**: First build had the ftp-deploy skill wholesale-absorbed in first pass, violating master plan. This rebuild is clean - 6 repos only. The ftp-deploy skill now lives as GIG #2 (solaris/gigs/ftp-deploy/) with its version tagging + post-deploy verification; devops-engineer cross-references it for the deploy run (doctrine retired 2026-06-04).
   *Proposed rule: Respect the master plan order. 6 repos → clean base. owner skills → deliberate v0.3 upgrade later. Keeps provenance + rollback traceable.*
   Tags: [#master-plan-discipline]
