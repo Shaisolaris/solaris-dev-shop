@@ -1,0 +1,6 @@
+res_limit_not_request builder tests rc 1 FAILED (failures=1, skipped=1)
+anchor_ok builder tests rc 1 FAILED (failures=1, skipped=1)
+tab_ok builder tests rc 1 FAILED (failures=1, skipped=1)
+seq_item_line_shift_EQUIV builder tests rc 0 OK (skipped=1)
+bool_yes_string builder tests rc 1 FAILED (failures=1, skipped=1)
+block_clip_off builder tests rc 1 FAILED (failures=1, skipped=1)

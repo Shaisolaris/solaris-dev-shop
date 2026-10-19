@@ -1,0 +1,6 @@
+== 3.9.6 | g09: Ran 15 tests in 3.985s  OK  | full: Ran 159 tests in 33.224s  OK  | builder-oracle: ACCEPTED 17/17 | builder-naive: REJECTED 3/17 | builder-noop: REJECTED 2/17 | m09-oracle: M09 ORACLE 41/41 core PASS | m09-naive: M09 ORACLE 0/41 core PASS | m09-noop: M09 ORACLE 6/41 core PASS
+== 3.11.16 | g09: Ran 15 tests in 3.249s  OK (skipped=1)  | full: Ran 159 tests in 28.969s  OK (skipped=1)  | builder-oracle: ACCEPTED 17/17 | builder-naive: REJECTED 3/17 | builder-noop: REJECTED 2/17 | m09-oracle: M09 ORACLE 41/41 core PASS | m09-naive: M09 ORACLE 0/41 core PASS | m09-noop: M09 ORACLE 6/41 core PASS
+== 3.12.14 | g09: Ran 15 tests in 3.412s  OK (skipped=1)  | full: Ran 159 tests in 29.648s  OK (skipped=1)  | builder-oracle: ACCEPTED 17/17 | builder-naive: REJECTED 3/17 | builder-noop: REJECTED 2/17 | m09-oracle: M09 ORACLE 57/58 core PASS | m09-naive: M09 ORACLE 0/58 core PASS | m09-noop: M09 ORACLE 9/58 core PASS
+== 3.13.15 | g09: Ran 15 tests in 3.147s  OK (skipped=1)  | full: Ran 159 tests in 29.601s  OK (skipped=1)  | builder-oracle: ACCEPTED 17/17 | builder-naive: REJECTED 3/17 | builder-noop: REJECTED 2/17 | m09-oracle: M09 ORACLE 58/58 core PASS | m09-naive: M09 ORACLE 0/58 core PASS | m09-noop: M09 ORACLE 9/58 core PASS
+pycache in copy: 0
+candidate status lines: 0

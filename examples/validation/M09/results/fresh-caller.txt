@@ -1,0 +1,42 @@
+== 3.9.6
+clean rc=0 want 0 | Scope: static manifest files only; no cluster was contacted, nothing was applied or deployed, and no rollout behaviour was observed.
+broken rc=1 want 1
+examples/capabilities/G09/fixtures/broken/shop-broken.yaml:32: error IMAGE_TAG_MUTABLE Deployment/web (shop) spec.template.spec.containers[0].image: image 'registry.example.test/shop/web:latest' uses the latest tag; rollouts and rollbacks are not reproducible
+    suggestion (not applied): pin a version tag or a digest
+examples/capabilities/G09/fixtures/broken/shop-broken.yaml:38: error RESOURCES_MISSING Deployment/web (shop) spec.template.spec.containers[0].resources: container 'web' has no limits.memory; it can be BestEffort, starve neighbours or be OOM-killed first
+    suggestion (not applied): set requests from measured peak and a memory limit
+examples/capabilities/G09/fixtures/broken/shop-broken.yaml:55: error PROBE_PORT_NAME_UNKNOWN Deployment/web (shop) spec.template.spec.containers[0].livenessProbe.httpGet.port: livenessProbe port 'htttp' is not a port name of container 'web' (names: http, metrics); the probe always fails
+    suggestion (not applied): use one of: http, metrics
+examples/capabilities/G09/fixtures/broken/shop-broken.yaml:66: error SERVICE_SELECTOR_NO_MATCH Service/web (shop) spec.selector: selector app.kubernetes.io/name=web,tier=front-end matches no pod template in namespace shop; the Service would have no endpoints
+    suggestion (not applied): Deployment/web has app.kubernetes.io/name=web,tier=frontend
+examples/capabilities/G09/fixtures/broken/shop-broken.yaml:83: error PDB_BLOCKS_EVICTION PodDisruptionBudget/web (shop) spec.minAvailable: minAvailable 3 with 3 replica(s) allows no voluntary eviction; node drains hang
+    suggestion (not applied): minAvailable: 2 or maxUnavailable: 1
+qos Deployment/web (shop): Burstable
+5 error(s), 0 warning(s) in 5 object(s) from 1 file(s).
+Scope: static manifest files only; no cluster was contacted, nothing was applied or deployed, and no rollout behaviour was observed.
+broken --json rc=1 want 1 | lines [('IMAGE_TAG_MUTABLE', 32), ('RESOURCES_MISSING', 38), ('PROBE_PORT_NAME_UNKNOWN', 55), ('SERVICE_SELECTOR_NO_MATCH', 66), ('PDB_BLOCKS_EVICTION', 83)]
+README rc=2 want 2 | examples/capabilities/G09/README.md:5: UNUSABLE YAML_UNSUPPORTED: content after the end of the document Nothing was checked. static manifest files only; no cluster was contacted, nothing was applied or deployed, and no rollout behaviour was observed. 
+oracle rc=0 | ACCEPTED 17/17
+noop rc=1 | REJECTED 2/17
+tree unchanged: yes | pycache: 0 | home entries: 1
+== 3.13.15
+clean rc=0 want 0 | Scope: static manifest files only; no cluster was contacted, nothing was applied or deployed, and no rollout behaviour was observed.
+broken rc=1 want 1
+examples/capabilities/G09/fixtures/broken/shop-broken.yaml:32: error IMAGE_TAG_MUTABLE Deployment/web (shop) spec.template.spec.containers[0].image: image 'registry.example.test/shop/web:latest' uses the latest tag; rollouts and rollbacks are not reproducible
+    suggestion (not applied): pin a version tag or a digest
+examples/capabilities/G09/fixtures/broken/shop-broken.yaml:38: error RESOURCES_MISSING Deployment/web (shop) spec.template.spec.containers[0].resources: container 'web' has no limits.memory; it can be BestEffort, starve neighbours or be OOM-killed first
+    suggestion (not applied): set requests from measured peak and a memory limit
+examples/capabilities/G09/fixtures/broken/shop-broken.yaml:55: error PROBE_PORT_NAME_UNKNOWN Deployment/web (shop) spec.template.spec.containers[0].livenessProbe.httpGet.port: livenessProbe port 'htttp' is not a port name of container 'web' (names: http, metrics); the probe always fails
+    suggestion (not applied): use one of: http, metrics
+examples/capabilities/G09/fixtures/broken/shop-broken.yaml:66: error SERVICE_SELECTOR_NO_MATCH Service/web (shop) spec.selector: selector app.kubernetes.io/name=web,tier=front-end matches no pod template in namespace shop; the Service would have no endpoints
+    suggestion (not applied): Deployment/web has app.kubernetes.io/name=web,tier=frontend
+examples/capabilities/G09/fixtures/broken/shop-broken.yaml:83: error PDB_BLOCKS_EVICTION PodDisruptionBudget/web (shop) spec.minAvailable: minAvailable 3 with 3 replica(s) allows no voluntary eviction; node drains hang
+    suggestion (not applied): minAvailable: 2 or maxUnavailable: 1
+qos Deployment/web (shop): Burstable
+5 error(s), 0 warning(s) in 5 object(s) from 1 file(s).
+Scope: static manifest files only; no cluster was contacted, nothing was applied or deployed, and no rollout behaviour was observed.
+broken --json rc=1 want 1 | lines [('IMAGE_TAG_MUTABLE', 32), ('RESOURCES_MISSING', 38), ('PROBE_PORT_NAME_UNKNOWN', 55), ('SERVICE_SELECTOR_NO_MATCH', 66), ('PDB_BLOCKS_EVICTION', 83)]
+README rc=2 want 2 | examples/capabilities/G09/README.md:5: UNUSABLE YAML_UNSUPPORTED: content after the end of the document Nothing was checked. static manifest files only; no cluster was contacted, nothing was applied or deployed, and no rollout behaviour was observed. 
+oracle rc=0 | ACCEPTED 17/17
+noop rc=1 | REJECTED 2/17
+tree unchanged: yes | pycache: 0 | home entries: 0

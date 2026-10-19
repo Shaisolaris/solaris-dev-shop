@@ -1,0 +1,10 @@
+Mon Oct 19 04:30:01 PDT 2026
+candidate edfa64d4d86532d18164e37175c7b0e4d734d0e0 parent ddebe98707219aa2638cd424777b1255413d9ceb
+02ba9c571b10ad1dba792d2ac5534bcad3171e67	refs/heads/main
+d4d98f2180ed9b92fd058a2350285f60f83b877d	refs/heads/review/grok-g03-recovery
+ddebe98707219aa2638cd424777b1255413d9ceb	refs/heads/review/grok-g08-deploy-preflight
+edfa64d4d86532d18164e37175c7b0e4d734d0e0	refs/heads/review/grok-g09-k8s-manifest-check
+patch sha 8955a55642ddb0f8b1ba4c9c4809720417f7b5205942a30016c7eadd930ed3b4 diff sha 8955a55642ddb0f8b1ba4c9c4809720417f7b5205942a30016c7eadd930ed3b4
+manifest entries 16 mismatches 0
+manifest set == diff set
+G08 r2 ddebe98 is the validated M08 r2 candidate (9ed30c3)

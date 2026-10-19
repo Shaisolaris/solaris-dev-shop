@@ -1,0 +1,613 @@
+[
+ {
+  "detail": {
+   "claims_false": true,
+   "errors": [],
+   "rc": 0,
+   "warnings": []
+  },
+  "id": "P01_clean_control",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "code": "SERVICE_SELECTOR_NO_MATCH",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 62,
+   "want_rc": 1
+  },
+  "id": "P02_service_selector_value_typo",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "SERVICE_SELECTOR_NO_MATCH",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 62,
+   "want_rc": 1
+  },
+  "id": "P03_service_selector_extra_key",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "no_match_error": false,
+   "note": "doc: a Service whose namespace has no workload in the files is UNRESOLVED (warning); pods elsewhere are never matched",
+   "rc": 0,
+   "unresolved_warning": false
+  },
+  "id": "P04_selector_matches_only_other_namespace",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "errors": [],
+   "rc": 0,
+   "warnings": []
+  },
+  "id": "P04b_selector_crosses_namespace_with_local_workload",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "errors": [],
+   "rc": 0,
+   "warnings": []
+  },
+  "id": "P04c_omitted_namespace_is_default",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "errors": [],
+   "rc": 0
+  },
+  "id": "P04d_cross_file_selector",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "WORKLOAD_SELECTOR_TEMPLATE_MISMATCH",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 16,
+   "want_rc": 1
+  },
+  "id": "P05_workload_selector_vs_template",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "SERVICE_TARGETPORT_NAME_UNKNOWN",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 68,
+   "want_rc": 1
+  },
+  "id": "P06_service_targetport_name_missing",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "SERVICE_TARGETPORT_NAME_UNKNOWN",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 63,
+   "want_rc": 1
+  },
+  "id": "P07_container_has_no_ports_named_target",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "SERVICE_TARGETPORT_UNDECLARED",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 68,
+   "want_rc": 0
+  },
+  "id": "P08_numeric_targetport_undeclared_is_warning",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "SERVICE_PORT_NAME_REQUIRED",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 69,
+   "want_rc": 1
+  },
+  "id": "P09_multiport_unnamed",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "PROBE_PORT_NAME_UNKNOWN",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 44,
+   "want_rc": 1
+  },
+  "id": "P10_readiness_port_name_typo",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "PROBE_HANDLER_INVALID",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 41,
+   "want_rc": 1
+  },
+  "id": "P11_readiness_two_handlers",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "READINESS_PROBE_MISSING",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 27,
+   "want_rc": 1
+  },
+  "id": "P12_readiness_missing_behind_service",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "PROBE_SUCCESS_THRESHOLD",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 55,
+   "want_rc": 1
+  },
+  "id": "P13_liveness_success_threshold",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "errors": [],
+   "rc": 0
+  },
+  "id": "P14_readiness_success_threshold_allowed",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "code": "PROBE_PORT_INVALID",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 44,
+   "want_rc": 1
+  },
+  "id": "P15_readiness_port_out_of_range",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "PDB_BLOCKS_EVICTION",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 75,
+   "want_rc": 1
+  },
+  "id": "P16a_pdb_blocks_eviction",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "PDB_BLOCKS_EVICTION",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 75,
+   "want_rc": 1
+  },
+  "id": "P16b_pdb_blocks_eviction",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "PDB_BLOCKS_EVICTION",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 75,
+   "want_rc": 1
+  },
+  "id": "P16c_pdb_blocks_eviction",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "PDB_BLOCKS_EVICTION",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 75,
+   "want_rc": 1
+  },
+  "id": "P16d_pdb_blocks_eviction",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "PDB_SELECTOR_NO_MATCH",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 76,
+   "want_rc": 1
+  },
+  "id": "P17_pdb_selects_nothing",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "rc": 0,
+   "warnings": []
+  },
+  "id": "P18_no_pdb_is_warning",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "HPA_MIN_GT_MAX",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 87,
+   "want_rc": 1
+  },
+  "id": "P19_hpa_min_gt_max",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "HPA_TARGET_NO_REQUEST",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 85,
+   "want_rc": 1
+  },
+  "id": "P20_hpa_cpu_without_request",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "REQUEST_EXCEEDS_LIMIT",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 34,
+   "want_rc": 1
+  },
+  "id": "P21a_request_exceeds_limit_mem",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "REQUEST_EXCEEDS_LIMIT",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 34,
+   "want_rc": 1
+  },
+  "id": "P21b_request_exceeds_limit_cpu",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "errors": [],
+   "note": "500m == 0.5; 1G = 1e9 < 1Gi",
+   "rc": 0
+  },
+  "id": "P21c_equal_and_decimal_vs_binary_ok",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "code": "RESOURCE_QUANTITY_INVALID",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 37,
+   "want_rc": 1
+  },
+  "id": "P21d_quantity_invalid",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "code": "IMAGE_TAG_MUTABLE",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 28,
+   "want_rc": 1
+  },
+  "id": "P22a_image_tag",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "errors": [],
+   "image": "registry.example.test:5000/shop/web:2.0.1",
+   "rc": 0
+  },
+  "id": "P22b_image_pinned_ok",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "errors": [],
+   "image": "registry.example.test/shop/web@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "rc": 0
+  },
+  "id": "P22c_image_pinned_ok",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "code": "IMAGE_TAG_MUTABLE",
+   "hit": [],
+   "inputs_unchanged": true,
+   "other_errors": [],
+   "rc": 0,
+   "stderr": "",
+   "want_line": 28,
+   "want_rc": 1
+  },
+  "id": "P22d_image_tag",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "errors": [],
+   "rc": 0
+  },
+  "id": "P23_duplicate_key",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "errors": [],
+   "rc": 0
+  },
+  "id": "P24_duplicate_object_across_files",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "anchor": {
+    "clean_claim": true,
+    "rc": 0,
+    "unchanged": true
+   },
+   "empty": {
+    "clean_claim": true,
+    "rc": 0,
+    "unchanged": true
+   },
+   "not_yaml": {
+    "clean_claim": true,
+    "rc": 0,
+    "unchanged": true
+   },
+   "tab": {
+    "clean_claim": true,
+    "rc": 0,
+    "unchanged": true
+   },
+   "template": {
+    "clean_claim": true,
+    "rc": 0,
+    "unchanged": true
+   }
+  },
+  "id": "P25_unusable_input_exit2_never_clean",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "evidence_scope": "static manifest files only; no cluster was contacted, nothing was applied or deployed",
+   "files": [
+    "m.yaml"
+   ],
+   "json_claims": {
+    "applied": false,
+    "cluster_contacted": false,
+    "deployed": false
+   },
+   "text_tail": ": false, \"applied\": false, \"deployed\": false, \"evidence_scope\": \"static manifest files only; no cluster was contacted, nothing was applied or deployed\", \"files\": [\"/private/tmp/m09o-eyugozdw/b042\"], \"objects\": 0, \"findings\": [], \"qos\": [], \"summary\": {\"errors\": 0, \"warnings\": 0, \"status\": \"clean\"}}\n"
+  },
+  "id": "P26_static_only_claims",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "rc_after": 0,
+   "rc_before": 0,
+   "suggestion": ""
+  },
+  "id": "P27_recovery_edit_then_rerun",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "cases": 30,
+   "fails": [
+    {
+     "case": 0,
+     "codes": [],
+     "defect": "svc_sel",
+     "rc": 0
+    },
+    {
+     "case": 1,
+     "codes": [],
+     "defect": "latest",
+     "rc": 0
+    },
+    {
+     "case": 2,
+     "codes": [],
+     "defect": "req_gt_lim",
+     "rc": 0
+    }
+   ]
+  },
+  "id": "P28_random_bundles_property",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "errors": [],
+   "objects": 0,
+   "rc": 0
+  },
+  "id": "P29_scale_one_defect_in_60_namespaces",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "rc": 0,
+   "warnings": []
+  },
+  "id": "O30_identical_probes",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "errors": [],
+   "rc": 0,
+   "warnings": []
+  },
+  "id": "O31_single_replica_no_pdb",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "errors": [],
+   "rc": 0
+  },
+  "id": "O32_pdb_50pct_of_2",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "findings": [],
+   "rc": 0
+  },
+  "id": "O33_service_without_selector",
+  "kind": "OBS",
+  "result": "OBS"
+ }
+]
