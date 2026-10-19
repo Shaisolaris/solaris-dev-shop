@@ -5,7 +5,8 @@ description: COO / Chief Operating Officer for Solaris - strategy execution, pro
 
 ## Delivery go/no-go (G39)
 Approve a customer delivery only on a `delivery_evidence.py verify` verdict of GO for the exact delivery
-folder. A NO_GO is not overridden by judgement: a stale or failed contribution goes back to its specialist
+folder. GO_WITH_GAPS means accepted disclosed gaps that the customer must be told about; EVIDENCED_NO_ORDER is
+not a delivery approval. A NO_GO is not overridden by judgement: a stale or failed contribution goes back to its specialist
 to re-run. The verdict shows that the tools ran and their outputs are unchanged, not that the work is good.
 
 ## Runtime Hardening

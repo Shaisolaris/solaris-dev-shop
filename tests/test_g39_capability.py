@@ -62,6 +62,10 @@ class OracleChecks(unittest.TestCase):
     def test_o12_handoff_incomplete(self): self._check(O.o12_handoff_incomplete)
     def test_o13_symlink_output(self): self._check(O.o13_symlink_output)
     def test_o14_drill(self): self._check(O.o14_drill)
+    def test_o15_upstream_inputs(self): self._check(O.o15_upstream_inputs)
+    def test_o16_removed_output(self): self._check(O.o16_removed_output)
+    def test_o17_unconfirmed_and_log(self): self._check(O.o17_unconfirmed_and_log)
+    def test_o18_order_intake_ledger(self): self._check(O.o18_order_intake_ledger)
 
 
 class Controls(unittest.TestCase):
@@ -102,6 +106,16 @@ class Direct(unittest.TestCase):
         self.assertEqual(self.rec()[0], 0)
         p = self.root / ".delivery/contributions.jsonl"
         p.write_bytes(p.read_bytes().rstrip(b"\n"))
+        self.assertEqual(self.rec()[0], 3)
+
+    def test_parseable_last_line_without_newline_refused_even_with_head_on_previous(self):
+        self.assertEqual(self.rec()[0], 0)
+        h = self.root / ".delivery/head.json"
+        first = h.read_text()
+        self.assertEqual(self.rec()[0], 0)
+        p = self.root / ".delivery/contributions.jsonl"
+        p.write_bytes(p.read_bytes().rstrip(b"\n"))
+        h.write_text(first)  # the head confirms record 0, so only the parseable-tail rule can refuse
         self.assertEqual(self.rec()[0], 3)
 
     def test_well_chained_record_with_wrong_seq_is_refused(self):
@@ -185,11 +199,13 @@ class Direct(unittest.TestCase):
         self.assertEqual(rc, 1)
         self.assertEqual(json.loads(out)["contributions"][0]["state"], "not_covered")
 
-    def test_no_order_claim_can_go_and_bad_order_path_refused(self):
+    def test_no_order_claim_is_never_go_and_bad_order_path_refused(self):
         self.rec()
         rc, out = self.claims({"schema": "solaris.delivery-claims/1", "contributions": [
             {"role": "data/data-engineer", "outputs": ["a.txt"]}]})
-        self.assertEqual(rc, 0, out)
+        self.assertEqual((rc, json.loads(out)["verdict"]), (0, "EVIDENCED_NO_ORDER"), out)
+        rc, out = self.run_tool("verify", ".", "--claims", "c.json")
+        self.assertIn("not a delivery GO", out)
         shutil.copy2(X / "fixtures/order.json", self.parent / "order.json")
         rc, _ = self.claims({"schema": "solaris.delivery-claims/1", "order": "../order.json", "contributions": [
             {"role": "data/data-engineer", "outputs": ["a.txt"]}]})
@@ -238,6 +254,75 @@ class Direct(unittest.TestCase):
                            cwd=str(self.root), capture_output=True, text=True, env=env, timeout=120)
         self.assertEqual(p.returncode, 0, p.stderr)
         self.assertEqual([x.name for x in prefix.rglob("quality_os*.pyc")] if prefix.exists() else [], [])
+
+    # ---- r2 (M39 P2-1, P2-2, P3-1, P3-2, P3-3, P4-2)
+    def _body(self, **kw):
+        return {"schema": "solaris.delivery-claims/1", "contributions": [dict({"role": "data/data-engineer",
+                                                                              "outputs": ["a.txt"]}, **kw)]}
+
+    def test_input_named_in_command_is_bound_without_flag(self):
+        (self.root / "src.txt").write_text("v1")
+        cmd = [sys.executable, "-c", "import sys;open('a.txt','w').write(open(sys.argv[1]).read())", "src.txt"]
+        self.assertEqual(self.rec(cmd=cmd)[0], 0)
+        r = json.loads((self.root / ".delivery/contributions.jsonl").read_text().splitlines()[-1])
+        self.assertEqual(r["claimed_inputs"], ["src.txt"])
+        self.assertEqual(self.claims(self._body())[0], 0)
+        (self.root / "src.txt").write_text("v2")
+        rc, out = self.claims(self._body())
+        c = json.loads(out)["contributions"][0]
+        self.assertEqual((rc, c["state"], c["inputs_changed"]), (1, "stale", ["src.txt"]))
+
+    def test_bad_inputs_refused_before_running(self):
+        self.assertEqual(self.rec()[0], 0)  # so .delivery/head.json exists and only the path rule refuses it
+        for bad in ("../x", "/etc/hosts", ".delivery/head.json", "missing.txt"):
+            rc, _ = self.rec("--inputs", bad, cmd=[sys.executable, "-c", "open('ran.txt','w')"])
+            self.assertEqual(rc, 2, bad)
+        self.assertFalse((self.root / "ran.txt").exists())
+
+    def test_input_rewritten_by_the_run_is_noted_and_bound_after(self):
+        (self.root / "state.txt").write_text("old")
+        cmd = [sys.executable, "-c", "open('state.txt','w').write('new');open('a.txt','w').write('x')"]
+        self.assertEqual(self.rec("--inputs", "state.txt", cmd=cmd)[0], 0)
+        r = json.loads((self.root / ".delivery/contributions.jsonl").read_text().splitlines()[-1])
+        self.assertEqual(r["inputs_changed_during_run"], ["state.txt"])
+        self.assertEqual(self.claims(self._body())[0], 0)
+
+    def test_ok_exit_only_0_or_0_1(self):
+        for bad in ("0,2", "1", "0,1,2", "-1,0"):
+            self.assertEqual(self.rec("--ok-exit", bad)[0], 2, bad)
+        self.assertFalse((self.root / ".delivery/contributions.jsonl").exists())
+
+    def test_exit_1_is_evidenced_with_gaps_and_needs_the_claim(self):
+        cmd = [sys.executable, "-c", "import sys;open('a.txt','w').write('x');sys.exit(1)"]
+        self.assertEqual(self.rec("--ok-exit", "0,1", cmd=cmd)[0], 0)
+        rc, out = self.claims(self._body())
+        rep = json.loads(out)
+        self.assertEqual((rc, rep["verdict"], rep["contributions"][0]["state"]), (1, "NO_GO", "evidenced_with_gaps"))
+        rc, out = self.claims(self._body(accept_gaps=True))
+        self.assertEqual((rc, json.loads(out)["gaps"]), (0, ["data/data-engineer"]))
+        rc, _ = self.claims(self._body(accept_gaps="yes"))
+        self.assertEqual(rc, 2)
+
+    def test_log_changed_or_removed_is_log_mismatch(self):
+        self.rec()
+        r = json.loads((self.root / ".delivery/contributions.jsonl").read_text())
+        with open(self.root / r["log"], "a") as f:
+            f.write("edited")
+        rc, out = self.claims(self._body())
+        self.assertEqual((rc, json.loads(out)["contributions"][0]["state"]), (1, "log_mismatch"))
+        (self.root / r["log"]).unlink()
+        rc, out = self.claims(self._body())
+        self.assertEqual(json.loads(out)["contributions"][0]["state"], "log_mismatch")
+
+    def test_emptied_or_deleted_ledger_with_head_is_broken(self):
+        self.rec()
+        p = self.root / ".delivery/contributions.jsonl"
+        p.write_bytes(b"")
+        self.assertEqual(self.rec()[0], 3)
+        p.unlink()
+        self.assertEqual(self.rec()[0], 3)
+        rc, out = self.claims(self._body())
+        self.assertEqual((rc, json.loads(out)["ledger"]["chain"]), (1, "broken"))
 
 
 if __name__ == "__main__":

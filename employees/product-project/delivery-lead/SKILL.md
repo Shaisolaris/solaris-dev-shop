@@ -205,8 +205,9 @@ Inbound client materials are PARSED, not retyped. When a client sends a contract
 ### 10. Multi-specialist delivery evidence (G39)
 A delivery is GO only when `delivery_evidence.py verify` says GO: every claimed specialist contribution was
 recorded by `delivery_evidence.py record` (the specialist's own tool actually ran, exit and output sha256
-kept), nothing it produced or ran has changed since, and the G04 work order shows every step done with one
-delivery. A stale contribution is re-run, never waved through; a hand-written report is not evidence. See
+kept), nothing it read, produced or ran has changed since, and the G04 work order shows every step done with one
+delivery and an unchanged intake. Name what a tool reads indirectly with `--inputs`. Exit 1 (disclosed gaps)
+only counts as GO_WITH_GAPS when the claim says `accept_gaps`; a claim without a work order is never GO. A stale contribution is re-run, never waved through; a hand-written report is not evidence. See
 `delivery-evidence.md`. The lead orchestrates the record and verify calls; the specialists' tools do the work.
 
 ## Self-learning protocol (mandatory)
