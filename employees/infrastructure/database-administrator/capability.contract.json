@@ -242,9 +242,12 @@
       "plugin.json",
       "mongodb-nosql-admin.md",
       "sql-ops-tuning-ha-backup.md",
-      "verified-restore-and-baselining.md"
+      "verified-restore-and-baselining.md",
+      "sqlite-recovery.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "sqlite_recovery.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -306,6 +309,12 @@
           "id": "ref-verified-restore-and-baselining-md",
           "kind": "file_exists",
           "target": "verified-restore-and-baselining.md",
+          "required": false
+        },
+        {
+          "id": "ref-sqlite-recovery-md",
+          "kind": "file_exists",
+          "target": "sqlite-recovery.md",
           "required": false
         }
       ],
@@ -530,7 +539,8 @@
       "plugin.json",
       "mongodb-nosql-admin.md",
       "sql-ops-tuning-ha-backup.md",
-      "verified-restore-and-baselining.md"
+      "verified-restore-and-baselining.md",
+      "sqlite-recovery.md"
     ]
   }
 }

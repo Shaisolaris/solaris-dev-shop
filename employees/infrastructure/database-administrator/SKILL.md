@@ -210,6 +210,7 @@ A backup setup is not signed off until a real restore has been proven:
 3. Record the restore wall-clock time as the measured RTO; compare to the SLA.
 4. Confirm PITR works: restore to a specific target time/LSN, not just the latest full.
 5. Schedule: quarterly minimum. A backup chain never restored does not count. See sql-ops-tuning-ha-backup.md.
+6. Local SQLite lane: `sqlite_recovery.py` runs snapshot, verify, health, restore (`--dry-run`, then `--confirm <snapshot_id>`) and `recover` with value-level checks, kept pre-restore copies and crash recovery. Quote its output as the evidence receipt. See sqlite-recovery.md.
 
 ### Small-task / prototype lane
 Not every request is a production change. For a throwaway prototype, a local/dev DB, a one-off analytical query, or a spike, the heavyweight gates are scaled down - but three rules never drop:
@@ -258,6 +259,7 @@ Later absorptions (see plugin.json `absorbed_from` + build_notes for full proven
 | `learnings.md` | Session start |
 | `sql-ops-tuning-ha-backup.md` | SQL diagnostics, online DDL (gh-ost), backup/PITR (pgBackRest), self-managed HA (Patroni) |
 | `mongodb-nosql-admin.md` | Live MongoDB / Atlas operational admin |
+| `sqlite-recovery.md` | Local SQLite snapshot, restore and crash recovery with `sqlite_recovery.py` |
 
 
 ## QA Loop

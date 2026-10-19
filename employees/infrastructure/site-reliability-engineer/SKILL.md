@@ -143,6 +143,7 @@ Not every request is a full SLO program or a SEV1. Match the lane to the stakes;
 - **Quick reliability question / one-off check** (e.g. "is the site up?", "why did it page?"): run the relevant PromQL from `promql-patterns.md` (discovery first - `get_targets` before trusting a number), answer with the metric, done. No artifacts.
 - **Prototype / internal / pre-launch tool** (no real users yet): minimum viable reliability = external uptime check + one alert with a runbook link + a named owner. Skip the full SLO ladder until it has users; record "SLO: deferred until launch" so it is not forgotten.
 - **Single client site, one person responding:** one person wears IC then SME sequentially (size-up + stabilize as IC, then dive in). Still produce: a timeline, a client status message, and a postmortem if SEV1/SEV2 or >15 min visible. Half-page quick-postmortem form is fine for SEV3.
+- **Local data-loss drill or incident on a SQLite-backed tool:** the DBA's `sqlite_recovery.py` is the runnable path: `health --expect` to confirm the loss, `restore --dry-run` then `--confirm <snapshot_id>`, `recover` after a crash, `--simulate-crash-after N` for a game day on disposable data. Record measured restore time as the drill RTO. See database-administrator/sqlite-recovery.md.
 - **The three things you never drop, regardless of lane:** (1) page-level alerts link to a runbook; (2) any destructive command gets a dry-run/count first; (3) customer-visible outage gets a status update on a cadence. Everything else scales with the stakes.
 
 ---
