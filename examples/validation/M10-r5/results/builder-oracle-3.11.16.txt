@@ -1,0 +1,15 @@
+PASS o1_clean_control: verdict=healthy layer=None candidates=[]; every layer ok=True; exit 0
+PASS o2_known_faults_localized: all 7 localized to the right layer
+PASS o3_bounded_uncertainty: incomplete traces stay bounded candidate sets; confidence ['low', 'medium']
+PASS o4_cross_layer_ambiguity: DNS pointing at the wrong server is blamed on dns, not just tls
+PASS o5_reproducible: same trace -> identical bytes; reordered/reformatted trace -> identical verdict
+PASS o6_no_false_blame: icmp filtered: verdict=healthy layer=None candidates=[]; cert valid at capture: verdict=healthy layer=None candidates=[]; expired at capture: verdict=localized layer=tls candidates=['tls']
+PASS o7_no_secret_echo: header values never echoed
+PASS o8_invalid_input_safe: exit codes {'garbage': 2, 'schema': 2, 'dupkey': 2, 'badip': 2, 'symlink': 2}; previous report intact=True
+PASS o9_recovery_after_bad_run: next good run rewrote the report: True
+PASS o10_offline_read_only: no socket use under a socket-denying guard; trace directory unchanged
+PASS o11_scale_concurrency: 600 shuffled traces with 4 workers in 0.2s, 0 wrong; 6 parallel runs gave 1 distinct output(s)
+PASS o12_san_forms: prefixed SAN entries cover the host; other names still mismatch
+PASS o13_specific_causes: chain, expiry, refused port, IP/DNS entry types, wildcard depth, ambiguity, case, IPv6, order
+PASS o14_san_spellings_and_inputs: keytool/Windows/one-line SANs cover; non-host SAN types (openssl, keytool, certutil) never hide a mismatch; a bare name after a typed one covers; suffix wildcards, non-ASCII, double dot refused; SNI flagged; deep JSON and non-RFC 3339 times exit 2; any fraction digit count accepted
+SUMMARY 14/14 pass; candidate ACCEPTED by oracle

@@ -1,0 +1,46 @@
+u01-u03,u07,u12: the covering name is its own entry after a non-host value (want: no mismatch)
+HOLDS u01 'URI:spiffe://x, api.shop.example, DNS:other.example'
+    r6 rc=1 localized/tls [TLS_ALERT]
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+HOLDS u02 'URI:spiffe://x, other.example, api.shop.example'
+    r6 rc=1 localized/tls [TLS_ALERT]
+    r5 rc=1 localized/tls [TLS_ALERT]
+GAP   u03 tab after the comma 'URI:spiffe://x,<TAB>api.shop.example'
+    r6 rc=2 invalid/None []
+    r5 rc=2 invalid/None []
+HOLDS u07 wildcard after URI 'URI:spiffe://x, *.shop.example'
+    r6 rc=1 localized/tls [TLS_ALERT]
+    r5 rc=1 localized/tls [TLS_ALERT]
+HOLDS u12 dotted-OID RDN then the name 'DirName:CN=svc, 2.5.4.10=Shop, api.shop.example'
+    r6 rc=1 localized/tls [TLS_ALERT]
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+u04-u06,u08,u13: the target appears only inside a non-host value or a too-broad wildcard (want: mismatch)
+HOLDS u04 DirName CN equals target 'DirName:/C=GB, O=Shop, CN=api.shop.example'
+    r6 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+HOLDS u05 keytool 'DirectoryName: CN=svc, O=Shop, CN=api.shop.example'
+    r6 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+GAP   u06 URI host equals target 'URI:https://api.shop.example/, other.example'
+    r6 rc=1 localized/tls [TLS_ALERT]
+    r5 rc=1 localized/tls [TLS_ALERT]
+GAP   u08 too-broad wildcard after URI 'URI:spiffe://x, *.example'
+    r6 rc=1 localized/tls [TLS_ALERT]
+    r5 rc=1 localized/tls [TLS_ALERT]
+GAP   u13 RDN-shaped chunk after URI 'URI:spiffe://x, CN=api.shop.example'
+    r6 rc=1 localized/tls [TLS_ALERT]
+    r5 rc=1 localized/tls [TLS_ALERT]
+HOLDS u14 type-prefixed chunk after URI 'URI:spiffe://x, OtherName:api.shop.example'
+    r6 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+u09-u11: documented limits and conservative forms (recorded)
+OBS   u09 DirName RDN value without '=' equal to the target 'DirName:CN=svc, api.shop.example' (doc limit)
+    r6 rc=1 localized/tls [TLS_ALERT]
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+OBS   u10 comma without a space 'URI:spiffe://x,api.shop.example' (doc: never splits)
+    r6 rc=1 localized/tls [TLS_ALERT]
+    r5 rc=1 localized/tls [TLS_ALERT]
+OBS   u11 trailing dot 'URI:spiffe://x, api.shop.example.'
+    r6 rc=1 localized/tls [TLS_ALERT]
+    r5 rc=1 localized/tls [TLS_ALERT]
+SUMMARY HOLDS=7 GAP=4 OBS=3

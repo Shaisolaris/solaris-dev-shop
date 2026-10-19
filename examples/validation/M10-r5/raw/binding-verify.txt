@@ -1,0 +1,16 @@
+# binding check 2026-10-18 21:29:30 PDT
+parent 865734eb290bb6cce89a142bad8811cbe1583766
+diff r5..r6 e00c218d25d03c06df4902428b700b20340c8a28142d1246c8f07803e2148e87
+G10-r6.patch e00c218d25d03c06df4902428b700b20340c8a28142d1246c8f07803e2148e87
+identical: yes
+ .../infrastructure/network-engineer/learnings.md   |  1 +
+ .../infrastructure/network-engineer/netdiag.py     | 19 ++++++++++--
+ .../network-engineer/offline-trace-diagnosis.md    |  2 +-
+ examples/capabilities/G10/README.md                |  3 ++
+ examples/capabilities/G10/diagnosis_oracle.py      | 12 ++++++++
+ tests/test_g10_capability.py                       | 35 ++++++++++++++++++++++
+ 6 files changed, 69 insertions(+), 3 deletions(-)
+manifest:
+  25 OK
+manifest set vs diff 02ba9c5..r6:
+equal: yes

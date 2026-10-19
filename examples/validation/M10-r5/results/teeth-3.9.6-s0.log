@@ -1,0 +1,18 @@
+done candidate
+done r5-865734e
+done stub-noop
+done stub-naive
+done builder-noop_stub
+done builder-naive_stub
+done answers_unsorted
+done expiry_ignored
+done no_dns_ambiguity_on_mismatch
+done q1_no_oidname
+done q2_rv_bare_split
+done rg1_other_alone_mismatches
+done rv_f1_no_list_split
+done rv_f3_fold
+done rv_rg1_other_blocks
+done v1_glue_drops_comma
+done v1_type_ignored
+TEETH-DONE

@@ -1,0 +1,39 @@
+Hand answer (written before running; M10 r5):
+a-keytool-mismatch (file name kept): one line 'DNS:ledger-old.example, URI:spiffe://..., ledger-two.example'; neither host
+  name covers pay.ledger.example; the URI is ignored -> TLS_NAME_MISMATCH, layer tls, exit 1, with an "ignored" note.
+b-bare-after-typed: one line 'DNS:ledger-old.example, URI:spiffe://..., pay.ledger.example'; the bare name after the URI
+  covers -> no TLS_NAME_MISMATCH; TLS_ALERT, exit 1.
+c-certutil-covering (file name kept): keytool 'DNSName: ledger-old.example, DirectoryName: CN=pay, O=Ledger, pay.ledger.example';
+  the bare name after the DirName RDNs covers -> no TLS_NAME_MISMATCH; TLS_ALERT, exit 1.
+d-healthy: keytool DNSName covers, handshake ok, http 200 -> healthy, exit 0.
+batch: 4 traces, none invalid.
+# m10r5 fresh caller 2026-10-18 21:37:22 PDT; python3 shim -> 3.12.14; offline guard on (M10_NET_LOG)
+$ python3 $T diagnose traces/a-keytool-mismatch.json
+diagnosis: localized at tls (confidence high)
+  target https://pay.ledger.example:443/health; 3 observations; input sha256 c7a6560ab66263f8
+  candidate layers: tls
+  layers: dns=ok, route=ok, tls=failed, application=not_reached
+  finding TLS_NAME_MISMATCH (tls): certificate host names ['ledger-old.example'] do not cover pay.ledger.example
+  note: certificate SAN entries that are not host names were ignored: ['uri:spiffe://ledger.example/ns/pay']
+  next (read-only, not run): openssl s_client -connect pay.ledger.example:443 -servername pay.ledger.example </dev/null | openssl x509 -noout -ext subjectAltName
+  next (read-only, not run): confirm DNS points pay.ledger.example at the server that owns this certificate
+[exit 1]
+$ python3 $T diagnose traces/a-keytool-mismatch.json --json --out a-keytool-mismatch.report.json > /dev/null
+[exit 1]
+a-keytool-mismatch: localized tls ['TLS_NAME_MISMATCH'] ["certificate SAN entries that are not host names were ignored: ['uri:sp"]
+$ python3 $T diagnose traces/b-bare-after-typed.json --json --out b-bare-after-typed.report.json > /dev/null
+[exit 1]
+b-bare-after-typed: localized tls ['TLS_ALERT'] ["certificate SAN entries that are not host names were ignored: ['uri:sp"]
+$ python3 $T diagnose traces/c-certutil-covering.json --json --out c-certutil-covering.report.json > /dev/null
+[exit 1]
+c-certutil-covering: localized tls ['TLS_ALERT'] ["certificate SAN entries that are not host names were ignored: ['direct"]
+$ python3 $T diagnose traces/d-healthy.json --json --out d-healthy.report.json > /dev/null
+[exit 0]
+d-healthy: healthy None [] ["certificate SAN entries that are not host names were ignored: ['urinam"]
+$ python3 $T batch traces/ --workers 4
+batch: 4 traces; healthy=1, localized:tls=3
+[exit 1]
+matches the hand answer: True
+network attempts logged: 0
+stray files: 
+HOME after: 0 entries

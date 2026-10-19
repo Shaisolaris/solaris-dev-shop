@@ -1,0 +1,53 @@
+Grok self-validation. M10 r5 teeth on G10 r6 f79be61, /usr/bin/python3 3.9.6, 4 shards; kill = differs from the candidate row (probe columns: HOLDS/GAP pattern; tests: rc and status).
+candidate                      m10_oracle=- builder_oracle=- builder_tests=- r3_probes=- r4_probes=- r5_probes=-
+r5-865734e                     m10_oracle=- builder_oracle=K builder_tests=K r3_probes=- r4_probes=K r5_probes=K
+stub-noop                      m10_oracle=K builder_oracle=K builder_tests=- r3_probes=- r4_probes=- r5_probes=-
+stub-naive                     m10_oracle=K builder_oracle=K builder_tests=- r3_probes=- r4_probes=- r5_probes=-
+builder-noop_stub              m10_oracle=K builder_oracle=K builder_tests=- r3_probes=- r4_probes=- r5_probes=-
+builder-naive_stub             m10_oracle=K builder_oracle=K builder_tests=- r3_probes=- r4_probes=- r5_probes=-
+answers_unsorted               m10_oracle=K builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+chain_ignored                  m10_oracle=K builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+detail_all_san                 m10_oracle=- builder_oracle=- builder_tests=K r3_probes=- r4_probes=K r5_probes=-
+dns_entry_covers_ip            m10_oracle=K builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+expiry_ignored                 m10_oracle=K builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+host_not_lowercased            m10_oracle=K builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+ip_compared_as_text            m10_oracle=K builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+ip_entry_covers_names          m10_oracle=K builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+no_dns_ambiguity_on_mismatch   m10_oracle=K builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+no_middlebox_ambiguity         m10_oracle=K builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+prefix_strip3                  m10_oracle=K builder_oracle=K builder_tests=K r3_probes=K r4_probes=- r5_probes=-
+probable_promoted              m10_oracle=K builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+q1_no_oidname                  m10_oracle=- builder_oracle=K builder_tests=K r3_probes=K r4_probes=K r5_probes=-
+q1_no_url                      m10_oracle=- builder_oracle=K builder_tests=K r3_probes=K r4_probes=K r5_probes=-
+q1_note_old                    m10_oracle=- builder_oracle=K builder_tests=K r3_probes=- r4_probes=K r5_probes=-
+q1_rv_types                    m10_oracle=- builder_oracle=K builder_tests=K r3_probes=K r4_probes=K r5_probes=K
+q2_rv_bare_split               m10_oracle=- builder_oracle=K builder_tests=K r3_probes=K r4_probes=K r5_probes=K
+q2_split_nonhost_too           m10_oracle=- builder_oracle=K builder_tests=K r3_probes=K r4_probes=K r5_probes=K
+refused_not_app                m10_oracle=K builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+rg1_note_dropped               m10_oracle=- builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+rg1_other_alone_mismatches     m10_oracle=- builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+rg1_split_every_comma          m10_oracle=- builder_oracle=K builder_tests=K r3_probes=K r4_probes=K r5_probes=K
+rg3_no_truncate                m10_oracle=- builder_oracle=K builder_tests=K r3_probes=K r4_probes=- r5_probes=-
+rg3_rounded                    m10_oracle=- builder_oracle=K builder_tests=K r3_probes=K r4_probes=- r5_probes=-
+rv_f1_no_list_split            m10_oracle=- builder_oracle=K builder_tests=K r3_probes=K r4_probes=K r5_probes=K
+rv_f1_unknown_bare             m10_oracle=- builder_oracle=K builder_tests=K r3_probes=- r4_probes=K r5_probes=-
+rv_f2_one_label                m10_oracle=K builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+rv_f2_public_suffix            m10_oracle=- builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+rv_f3_fold                     m10_oracle=K builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+rv_f4_sni                      m10_oracle=- builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+rv_f5_recursion                m10_oracle=- builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+rv_f7_fromisoformat            m10_oracle=- builder_oracle=K builder_tests=K r3_probes=K r4_probes=- r5_probes=-
+rv_rg1_other_blocks            m10_oracle=- builder_oracle=K builder_tests=K r3_probes=K r4_probes=K r5_probes=K
+rv_rg3_six_digits              m10_oracle=- builder_oracle=K builder_tests=K r3_probes=K r4_probes=- r5_probes=-
+unknown_counts_healthy         m10_oracle=K builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+v1_eq_ignored                  m10_oracle=- builder_oracle=- builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+v1_glue_drops_comma            m10_oracle=- builder_oracle=- builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+v1_never_split                 m10_oracle=- builder_oracle=K builder_tests=K r3_probes=- r4_probes=K r5_probes=K
+v1_rv_nonhost_whole            m10_oracle=- builder_oracle=K builder_tests=K r3_probes=- r4_probes=K r5_probes=K
+v1_split_any_comma             m10_oracle=- builder_oracle=- builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+v1_type_ignored                m10_oracle=- builder_oracle=- builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+wall_clock_dates               m10_oracle=K builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+wildcard_any_depth             m10_oracle=K builder_oracle=K builder_tests=K r3_probes=- r4_probes=- r5_probes=-
+
+mutants 43; kills: m10_oracle 17, builder_oracle 38, builder_tests 43, r3_probes 13, r4_probes 13, r5_probes 8; union 43
+survivors: []

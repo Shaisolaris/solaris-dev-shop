@@ -1,0 +1,2 @@
+3.9.6 regressions r6-vs-r5 output == r5-vs-r4 output: yes
+3.12.14 regressions r6-vs-r5 output == r5-vs-r4 output: yes

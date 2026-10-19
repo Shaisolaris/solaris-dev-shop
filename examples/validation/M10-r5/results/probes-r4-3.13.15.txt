@@ -1,0 +1,65 @@
+s01 Q2 residual: a bare covering name after a NON-HOST entry in one pasted line (want: no mismatch)
+HOLDS s01 'DNS:other.example, URI:spiffe://shop.example/x, api.shop.example'
+    r5 rc=1 localized/tls [TLS_ALERT]
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+HOLDS s01 'email:ops, api.shop.example'
+    r5 rc=1 localized/tls [TLS_ALERT]
+    r4 rc=1 localized/tls [TLS_ALERT]
+HOLDS s01 'DNS:other.example, Registered ID:1.2.3.4, api.shop.example'
+    r5 rc=1 localized/tls [TLS_ALERT]
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+HOLDS s01 keytool order 'DNSName: other.example, URIName: spiffe://x, api.shop.example'
+    r5 rc=1 localized/tls [TLS_ALERT]
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+s02 controls for s01 (want: mismatch, nothing covers)
+HOLDS s02 'DNS:other.example, URI:spiffe://x, DNS:other2.example'
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+HOLDS s02 'DNS:other.example, URI:spiffe://x, other2.example'
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+HOLDS s02 DirName with commas then nothing covering
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+s03 Q1 spellings: case and spacing variants beside DNS:other.example (want: mismatch)
+HOLDS s03 URINAME:
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+HOLDS s03 uriname no space
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+HOLDS s03 url= lower
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+HOLDS s03 URI Name:
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+HOLDS s03 oidname=
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+HOLDS s03 Other-Name upper
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+HOLDS s03 DirectoryName:
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+s04 notes and detail after r5
+HOLDS s04 unknown typed spelling beside DNS: note no longer advises rewriting a non-host value as DNS
+    r5 rc=1 localized/tls [TLS_ALERT]
+    r4 rc=1 localized/tls [TLS_ALERT]
+    r5 notes: ["certificate SAN entries not understood and not used: ['principal name=svc']; if one of them is really a host name, give it as DNS:<name> or IP:<address>. URI, e"]
+HOLDS s04 mismatch detail lists host names only (no URI/email text)
+    r5 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r5 detail: ["certificate host names ['other.example'] do not cover api.shop.example"]
+s05 split edge observations
+OBS   s05 DirName then bare host 'DirName:/C=GB, O=Shop, api.shop.example' (ambiguous; a confident mismatch would be wrong)
+    r5 rc=1 localized/tls [TLS_ALERT]
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+HOLDS s05 no-space typed then bare 'DNS:a.example,api.shop.example'
+    r5 rc=1 localized/tls [TLS_ALERT]
+    r4 rc=1 localized/tls [TLS_ALERT]
+HOLDS s05 bare then typed 'api.shop.example, URI:spiffe://x'
+    r5 rc=1 localized/tls [TLS_ALERT]
+    r4 rc=1 localized/tls [TLS_ALERT]
+SUMMARY HOLDS=18 GAP=0 OBS=1

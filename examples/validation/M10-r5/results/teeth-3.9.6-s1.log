@@ -1,0 +1,18 @@
+done candidate
+done r5-865734e
+done stub-noop
+done stub-naive
+done builder-noop_stub
+done builder-naive_stub
+done chain_ignored
+done host_not_lowercased
+done no_middlebox_ambiguity
+done q1_no_url
+done q2_split_nonhost_too
+done rg1_split_every_comma
+done rv_f1_unknown_bare
+done rv_f4_sni
+done rv_rg3_six_digits
+done v1_never_split
+done wall_clock_dates
+TEETH-DONE

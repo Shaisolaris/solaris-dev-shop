@@ -1,0 +1,18 @@
+done candidate
+done r5-865734e
+done stub-noop
+done stub-naive
+done builder-noop_stub
+done builder-naive_stub
+done detail_all_san
+done ip_compared_as_text
+done prefix_strip3
+done q1_note_old
+done refused_not_app
+done rg3_no_truncate
+done rv_f2_one_label
+done rv_f5_recursion
+done unknown_counts_healthy
+done v1_rv_nonhost_whole
+done wildcard_any_depth
+TEETH-DONE
