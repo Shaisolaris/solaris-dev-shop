@@ -1,0 +1,31 @@
+# manifest verify r2 2026-10-18 16:52:32 PDT against df25d6a
+employees/engineering/ai-ml-engineer/SKILL.md: OK
+employees/engineering/ai-ml-engineer/learnings.md: OK
+employees/engineering/llm-agent-designer/SKILL.md: OK
+employees/engineering/llm-agent-designer/capability.contract.json: OK
+employees/engineering/llm-agent-designer/learnings.md: OK
+employees/engineering/llm-agent-designer/plugin.json: OK
+employees/engineering/llm-agent-designer/grounded_eval.py: OK
+employees/engineering/llm-agent-designer/grounded-answer-evals.md: OK
+examples/capabilities/G16/README.md: OK
+examples/capabilities/G16/grounding_oracle.py: OK
+examples/capabilities/G16/noop_stub.py: OK
+examples/capabilities/G16/naive_stub.py: OK
+examples/capabilities/G16/fixtures/answers-imported-example.jsonl: OK
+examples/capabilities/G16/fixtures/fault-plan.json: OK
+examples/capabilities/G16/fixtures/questions-v1.jsonl: OK
+examples/capabilities/G16/fixtures/questions-v2.jsonl: OK
+examples/capabilities/G16/fixtures/snapshot-v1/NOTICE.txt: OK
+examples/capabilities/G16/fixtures/snapshot-v1/accessibility.md: OK
+examples/capabilities/G16/fixtures/snapshot-v1/fares.md: OK
+examples/capabilities/G16/fixtures/snapshot-v1/lost-found.md: OK
+examples/capabilities/G16/fixtures/snapshot-v1/refunds.md: OK
+examples/capabilities/G16/fixtures/snapshot-v2/NOTICE.txt: OK
+examples/capabilities/G16/fixtures/snapshot-v2/accessibility.md: OK
+examples/capabilities/G16/fixtures/snapshot-v2/fares.md: OK
+examples/capabilities/G16/fixtures/snapshot-v2/lost-found.md: OK
+examples/capabilities/G16/fixtures/snapshot-v2/paratransit.md: OK
+examples/capabilities/G16/fixtures/snapshot-v2/refunds.md: OK
+tests/test_g16_capability.py: OK
+file sets equal
+G16-r2.patch vs 1f2d0b9..df25d6a: b3d3bca58337c740d8d13aee59e42d4a8e873b47d196f4bb5b00ab50d27cd93d / b3d3bca58337c740d8d13aee59e42d4a8e873b47d196f4bb5b00ab50d27cd93d

@@ -1,0 +1,2 @@
+Preparing worktree (detached HEAD df25d6a)
+HEAD is now at df25d6a G16 rework r2: M16 findings N1-N11 (review only)

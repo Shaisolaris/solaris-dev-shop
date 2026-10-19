@@ -1,0 +1,89 @@
+# r1 repro script rerun on Python 3.9.6 (/usr/bin/python3) 2026-10-18 17:26 PDT (Grok self-validation). Replaces an earlier run (3.12) with the same verdict content whose interpreter path was not public-safe.
+
+### N1 meaning-reversing or dumped citations graded correct_supported
+question n1a: When may plot holders light bonfires?  expect {'answerable': True, 'facts': ['April'], 'support_docs': ['plots.md']}
+  answer: 'Plot holders may light bonfires between April and September.'  abstain=False
+  cites plots.md[114:179] = 'Plot holders must not light bonfires between April and September.'
+question n1b: Are hosepipes allowed on the Eastside site?  expect {'answerable': True, 'facts': ['Eastside'], 'support_docs': ['plots.md']}
+  answer: 'Hosepipes are allowed on the Eastside site.'  abstain=False
+  cites plots.md[180:193] = 'Hosepipes are'
+  cites plots.md[198:227] = 'allowed on the Eastside site.'
+question n1c: How much does a full plot cost per season?  expect {'answerable': True, 'facts': ['64 pounds'], 'support_docs': ['plots.md']}
+  answer: '# Plot fees (Brackwater Société)\n\nA full plot costs 64 pounds per season. A half plot costs 38 pounds per season.\nPlot holders must not light bonfires between April and September.\nHosepipes are not allowed on the Eastside site.\nEach plot holder may keep up to 6 hens.\n'  abstain=False
+  cites plots.md[0:268] = '# Plot fees (Brackwater Société)\n\nA full plot costs 64 pounds per season. A half plot costs 38 pounds per season.\nPlot holders must not light bonfires between April and September.\nHosepipes are not allowed on the Eastside site.\nEach plot holder may keep up to 6 hens.\n'
+question n1d: How much does a half plot cost per season?  expect {'answerable': True, 'facts': ['38 pounds'], 'support_docs': ['plots.md']}
+  answer: 'A half plot costs 64 pounds per season (a full plot is 38 pounds).'  abstain=False
+  cites plots.md[34:113] = 'A full plot costs 64 pounds per season. A half plot costs 38 pounds per season.'
+  -> n1a: unsupported_claim citations=['valid'] support={'content_coverage': 1.0, 'numbers_not_in_quotes': [], 'problem': 'the answer drops a negation that its cited sentence has'}
+  -> n1b: unsupported_claim citations=['valid', 'valid'] support={'content_coverage': 1.0, 'numbers_not_in_quotes': [], 'problem': 'the answer drops a negation that its cited sentence has'}
+  -> n1c: unsupported_claim citations=['valid'] support={'content_coverage': 1.0, 'numbers_not_in_quotes': [], 'problem': 'a quote from plots.md spans more than one sentence; quote one sentence (or part of one) per citation'}
+  -> n1d: unsupported_claim citations=['valid'] support={'content_coverage': 1.0, 'numbers_not_in_quotes': [], 'problem': 'a quote from plots.md spans more than one sentence; quote one sentence (or part of one) per citation'}
+
+### N2 numbers and facts not bound to the claim
+question n2a: How long is the Eastside waiting list?  expect {'answerable': True, 'facts': ['18 months'], 'support_docs': ['waiting.md']}
+  answer: 'The Eastside waiting list is about 18 months long, or 12 months at Westfield.'  abstain=False
+  cites waiting.md[16:76] = 'The Eastside waiting list is currently about 18 months long.'
+  cites water.md[64:98] = 'The Westfield site has 12 troughs.'
+question n2b: How much do rainwater butts cost?  expect {'answerable': True, 'facts': ['22 pounds'], 'support_docs': ['water.md']}
+  answer: 'Rainwater butts cost 122 pounds from the society shop.'  abstain=False
+  cites water.md[99:152] = 'Rainwater butts cost 22 pounds from the society shop.'
+  cites shop.md[8:59] = 'Compost bins cost 122 pounds from the society shop.'
+  -> n2a: unsupported_claim citations=['valid', 'valid'] support={'content_coverage': 1.0, 'numbers_not_in_quotes': [], 'problem': 'the number 12 is not stated, with the same subject and unit, in one cited quote'}
+  -> n2b: incorrect citations=['valid', 'valid'] support={'content_coverage': 1.0, 'numbers_not_in_quotes': []}
+
+### N6 abstain:true with an asserted, cited answer counts as correct_abstain
+question n6: What is the phone number of the society shop?  expect {'answerable': False}
+  answer: 'The society shop number is 0161 22 318.'  abstain=True
+  cites water.md[99:152] = 'Rainwater butts cost 22 pounds from the society shop.'
+  -> n6: answered_unanswerable citations=[] support=None
+
+### N7 fabricated quote with a made-up doc_sha256 reported as stale, not invalid
+question n7: How much does a full plot cost per season?  expect {'answerable': True, 'facts': ['64 pounds'], 'support_docs': ['plots.md']}
+  answer: 'A full plot costs 64 pounds per season.'  abstain=False
+  cites plots.md[34:73] = 'A full plot costs 64 pounds per season, water included.'
+  -> n7: invalid_citation citations=['invalid'] support=None
+
+### N3 conflicting sources (shed-2025.md says 15, shed-2026.md says 20) answered unless phrased 'how much'
+$ grounded_eval.py answer --corpus snap --questions q3.jsonl --out a3.jsonl
+answered 0, abstained 4 of 4
+[exit 0]
+  n30 'How much does a shed permit cost?' -> abstain (conflicting_sources)
+  n31 'What does a shed permit cost?' -> abstain (conflicting_sources)
+  n32 'Shed permit cost per year?' -> abstain (conflicting_sources)
+  n33 'A shed permit costs how much?' -> abstain (conflicting_sources)
+
+### N4 near-miss question answered with a sibling fact (min_coverage 0.75 lets one missing modifier through)
+$ grounded_eval.py answer --corpus snap --questions q4.jsonl --out a4.jsonl
+answered 0, abstained 1 of 1
+[exit 0]
+  n4 -> abstain coverage=None
+
+### N5 evaluate --out overwrites a snapshot source document
+  before: snap/plots.md starts '# Plot fees (Brackwater Sociét'
+$ grounded_eval.py evaluate --corpus snap --questions q5.jsonl --answers a5.jsonl --out snap/plots.md
+invalid: plots.md: is inside the snapshot folder; write outputs elsewhere
+nothing written
+[exit 2]
+  after:  snap/plots.md starts '# Plot fees (Brackwater Sociét'
+
+### N8 journal: a hand-edited done record is resumed into the output; concurrent resumes poison the journal
+$ grounded_eval.py answer --corpus snap --questions q5.jsonl --out a8.jsonl --journal j8.jsonl --fault-plan fp.json
+tool step failed: retrieval tool failed for b05 (attempt 1, injected by fault plan)
+11/12 questions done; journal kept, rerun with --resume
+[exit 3]
+  edited the b01 done record in j8.jsonl to answer 'A full plot is free.'
+$ grounded_eval.py answer --corpus snap --questions q5.jsonl --out a8.jsonl --journal j8.jsonl --resume
+invalid: journal: entry 2 fails its integrity check (edited, reordered or corrupted); refusing to resume; start a new journal
+nothing written
+[exit 2]
+Traceback (most recent call last):
+  File "<D>/grok-output/M16/r2/oracle/m16_finding_repros.py", line 113, in <module>
+    lines = (tmp / "a8.jsonl").read_text().splitlines()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1256, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1242, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1110, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '<TMPDIR>/m16rep-iekkbxbh/a8.jsonl'
+[script exit 1]

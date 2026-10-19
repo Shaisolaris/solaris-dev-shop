@@ -1,0 +1,23 @@
+a01 GAP   N1 bypass: the 'not' moved to a trailing clause, meaning reversed
+      observed: ('correct_supported', {'content_coverage': 0.875, 'numbers_not_in_quotes': []})
+a02 GAP   N1 bypass: a different negator word ('nothing') in an added clause
+      observed: ('correct_supported', {'content_coverage': 0.667, 'numbers_not_in_quotes': []})
+a03 HOLDS control: correct contracted negation (aren't) still supported
+      observed: ('correct_supported', {'content_coverage': 0.8, 'numbers_not_in_quotes': []})
+a04 GAP   N7 bypass: fabricated quote plus a self-declared other corpus_sha256 in meta
+      observed: ('stale_citation', [{'detail': 'plots.md changed since the answer was made and the quote is gone', 'doc': 'plots.md', 'status': 'stale'}])
+a05 GAP   N5 bypass: evaluate --out SNAP/plots.md (case variant; fs case-insensitive=True)
+      observed: (0, 'SOURCE DOCUMENT OVERWRITTEN', '{\n  "counts": {\n    "answered_unanswerable": 0,\n    "correct_abstain": 0,\n    "correct_supported": 4,\n    "incorrect": 0')
+a06 GAP   N5 bypass: answer --out Snap/new-answers.jsonl writes a new file into the snapshot folder
+      observed: (0, ['new-answers.jsonl', 'plots.md', 'pond.md', 'shed-2025.md', 'shed-2026.md', 'waiting.md', 'water.md'])
+a07 GAP   control: --out through a symlink to the snapshot is refused
+      observed: (0, '{\n  "counts": {\n    "answered_unanswerable": 0,\n    "correct_abstain": 0,\n    "correct_supported": 4')
+a08 HOLDS N11 over-filter: legit pond rule mentioning model boats and 'answer' is still usable
+      observed: (False, 'Model boats may be sailed on the pond at weekends; the warden will answer any questions.')
+a09 GAP   N4 over-abstain: 'full allotment plot' (extra modifier) still answered
+      observed: (True, 'no_sentence_covers_the_question')
+a10 GAP   N8: journal with a middle entry removed is refused on resume
+      observed: (0, 'answered 5, abstained 7 of 12; resumed with 10 from the journal', 13)
+a11 GAP   N9: fault values 100 (fires, exit 3), 101/'2'/2.0/{} exit 2, 0 no fault
+      observed: [('100', 3, False), ('101', 3, False), ('0', 0, False), ('"2"', 3, False), ('2.0', 3, False), ('{}', 1, True)]
+ADVERSARIAL 2/11 hold

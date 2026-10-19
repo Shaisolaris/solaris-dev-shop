@@ -1,0 +1,20 @@
+=== 3.12.14
+  pattern test_g16_capability.py: rc=0 Ran 22 tests in 9.005s OK 
+  pattern test_[!g]*.py: rc=0 Ran 84 tests in 1.552s OK 
+  pattern test*.py: rc=0 Ran 106 tests in 10.655s OK 
+  candidate git status lines (worktree): 0
+=== 3.9.6
+  pattern test_g16_capability.py: rc=0 Ran 22 tests in 10.916s OK 
+  pattern test_[!g]*.py: rc=0 Ran 84 tests in 1.914s OK 
+  pattern test*.py: rc=0 Ran 106 tests in 13.248s OK 
+  candidate git status lines (worktree): 0
+=== 3.11.16
+  pattern test_g16_capability.py: rc=0 Ran 22 tests in 8.981s OK 
+  pattern test_[!g]*.py: rc=0 Ran 84 tests in 1.500s OK 
+  pattern test*.py: rc=0 Ran 106 tests in 10.193s OK 
+  candidate git status lines (worktree): 0
+=== 3.13.15
+  pattern test_g16_capability.py: rc=0 Ran 22 tests in 8.986s OK 
+  pattern test_[!g]*.py: rc=0 Ran 84 tests in 1.576s OK 
+  pattern test*.py: rc=0 Ran 106 tests in 10.549s OK 
+  candidate git status lines (worktree): 0

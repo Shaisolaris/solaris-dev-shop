@@ -1,0 +1,5 @@
+# week-grok after-check 2026-10-18 17:24:10 PDT
+branch programme/grok-week-20261018
+HEAD 02ba9c571b10ad1dba792d2ac5534bcad3171e67
+index c28a2f586b3e3001 (via git-path index; first attempt read .git/index, which is not a file in a worktree)
+status 3c1f646dbc8025fc lines 61

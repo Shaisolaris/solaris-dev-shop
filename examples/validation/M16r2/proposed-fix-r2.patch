@@ -1,0 +1,32 @@
+diff --git a/employees/engineering/llm-agent-designer/grounded_eval.py b/employees/engineering/llm-agent-designer/grounded_eval.py
+index 6726793..ba21f2d 100644
+--- a/employees/engineering/llm-agent-designer/grounded_eval.py
++++ b/employees/engineering/llm-agent-designer/grounded_eval.py
+@@ -124,6 +124,14 @@ def negated(text: str) -> bool:
+     return any(t in NEGATORS or t.endswith("n't") for t in TOK_RE.findall(text.lower().replace("\u2019", "'")))
+ 
+ 
++def _neg_bindings(text: str) -> List[Optional[str]]:
++    """Each negator with the next content word it governs ("must not light" -> light) (M16 r2 N1 residual)."""
++    toks = [t.strip(".,'") for t in TOK_RE.findall(text.lower().replace("\u2019", "'"))]
++    isneg = lambda t: t in NEGATORS or t.endswith("n't")
++    return [next((_stem(x) for x in toks[i + 1:] if x not in STOP and not isneg(x)), None)
++            for i, t in enumerate(toks) if isneg(t) and not (i == 0 and t == "no")]  # a leading "No," answers the question
++
++
+ def number_context(text: str) -> List[Tuple[str, set, Optional[str]]]:
+     """For each number: (number, content terms since the previous number (at most 6), next token)."""
+     toks = seq(text)
+@@ -585,6 +593,12 @@ def _support(answer: str, ok: List[Dict[str, Any]], sts: List[str], corpus: Dict
+     if negated(answer) != any(negated(x) for x in sents):
+         return ("the answer drops a negation that its cited sentence has" if not negated(answer)
+                 else "the answer adds a negation that its cited sentences do not have")
++    a_neg, s_neg = _neg_bindings(answer), [b for x in sents for b in _neg_bindings(x)]
++    if any(b not in s_neg for b in a_neg):
++        return "the answer negates something its cited sentence does not negate (a negation was added or moved)"
++    a_words = set(seq(answer))
++    if any(b is not None and b in a_words and b not in a_neg for b in s_neg):
++        return "the answer asserts a word that its cited sentence negates (a negation was dropped or moved)"
+     ctxs = [(c["quote"], number_context(c["quote"]), set(terms(x))) for c, x in zip(ok, sents)]
+     for n, actx, anext in number_context(answer):
+         fits = False

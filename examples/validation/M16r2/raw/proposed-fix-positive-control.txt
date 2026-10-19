@@ -1,0 +1,52 @@
+Grok self-validation: positive control of proposed-fix-r2.patch (v2; v1 broke builder test case f, kept as raw/proposed-fix-r2-v1-superseded.patch). Never applied to the candidate. 2026-10-18 17:21 PDT
+df25d6aa531e6fde1d0c8706595bb9a6410cbb69
+d2032840b98da8700507d4521d21728f512edebd1490c7e1e0226c260e9de3fa  <D>/grok-output/M16/r2/proposed-fix-r2.patch
+worktree diff == proposed-fix-r2.patch
+apply --check on clean df25d6a: OK
+ employees/engineering/llm-agent-designer/grounded_eval.py | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+=== interpreter Python 3.12.14
+--- builder tests
+OK
+--- full suite
+Ran 106 tests in 10.902s
+OK
+--- builder oracle
+14/14 checks passed
+--- M16 oracle (full)
+SUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversarial 17/17 rejected the attack (0 findings)
+--- M16 r2 adversarial
+a01 HOLDS N1 bypass: the 'not' moved to a trailing clause, meaning reversed
+a02 HOLDS N1 bypass: a different negator word ('nothing') in an added clause
+a03 HOLDS control: correct contracted negation (aren't) still supported
+a04 GAP   N7 bypass: fabricated quote plus a self-declared other corpus_sha256 in meta
+a05 GAP   N5 bypass: evaluate --out SNAP/plots.md (case variant; fs case-insensitive=True)
+a06 GAP   N5 bypass: answer --out Snap/new-answers.jsonl writes a new file into the snapshot folder
+a07 HOLDS control: --out through a symlink to the snapshot is refused
+a08 GAP   N11 over-filter: legit pond rule mentioning model boats and 'answer' is still usable
+a09 GAP   N4 over-abstain: 'full allotment plot' (extra modifier) still answered
+a10 HOLDS N8: journal with a middle entry removed is refused on resume
+a11 HOLDS N9: fault values 100 (fires, exit 3), 101/'2'/2.0/{} exit 2, 0 no fault
+=== interpreter Python 3.9.6
+--- builder tests
+OK
+--- full suite
+Ran 106 tests in 13.048s
+OK
+--- builder oracle
+14/14 checks passed
+--- M16 oracle (full)
+SUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversarial 17/17 rejected the attack (0 findings)
+--- M16 r2 adversarial
+a01 HOLDS N1 bypass: the 'not' moved to a trailing clause, meaning reversed
+a02 HOLDS N1 bypass: a different negator word ('nothing') in an added clause
+a03 HOLDS control: correct contracted negation (aren't) still supported
+a04 GAP   N7 bypass: fabricated quote plus a self-declared other corpus_sha256 in meta
+a05 GAP   N5 bypass: evaluate --out SNAP/plots.md (case variant; fs case-insensitive=True)
+a06 GAP   N5 bypass: answer --out Snap/new-answers.jsonl writes a new file into the snapshot folder
+a07 HOLDS control: --out through a symlink to the snapshot is refused
+a08 GAP   N11 over-filter: legit pond rule mentioning model boats and 'answer' is still usable
+a09 GAP   N4 over-abstain: 'full allotment plot' (extra modifier) still answered
+a10 HOLDS N8: journal with a middle entry removed is refused on resume
+a11 HOLDS N9: fault values 100 (fires, exit 3), 101/'2'/2.0/{} exit 2, 0 no fault
+ M employees/engineering/llm-agent-designer/grounded_eval.py

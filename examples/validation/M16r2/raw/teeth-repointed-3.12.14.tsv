@@ -1,0 +1,9 @@
+subject	m16_oracle_core	builder_oracle	builder_tests
+candidate	SUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversarial 0/0 rejected the attack (0 findings) 	14/14 checks passed 	rc=0 Ran 22 tests in 9.650s OK 
+r1-1f2d0b9	SUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o12 o13 o14 11/14 checks passed 	rc=1 Ran 22 tests in 3.837s FAILED (failures=7) 
+stub-noop	k1 k2 k3 k4 k5 k6 k7 k8 k9 k10 SUMMARY core 0/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o1 o2 o3 o4 o5 o6 o7 o8 o9 o10 o11 o12 o13 o14 0/14 checks passed 	n/a
+stub-always_abstain	k1 k2 k4 k5 k6 k7 k8 k9 SUMMARY core 2/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o1 o3 o4 o5 o6 o7 o8 o9 o10 o11 o13 o14 2/14 checks passed 	n/a
+stub-copy_question	k1 k2 k4 k5 k6 k7 k8 k9 SUMMARY core 2/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o1 o3 o4 o5 o6 o7 o9 o10 o11 o13 o14 3/14 checks passed 	n/a
+builder-noop_stub	k1 k2 k3 k4 k5 k6 k7 k8 k9 k10 SUMMARY core 0/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o1 o2 o3 o4 o5 o6 o7 o8 o9 o10 o11 o12 o13 o14 0/14 checks passed 	n/a
+builder-naive_stub	k1 k2 k3 k4 k5 k6 k7 k8 k10 SUMMARY core 1/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o1 o2 o3 o4 o5 o6 o7 o9 o10 o11 o12 o13 o14 1/14 checks passed 	n/a
+stale_reported_invalid_repointed	k5 SUMMARY core 9/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o4 13/14 checks passed 	rc=1 Ran 22 tests in 4.515s FAILED (failures=3) 

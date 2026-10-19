@@ -1,0 +1,9 @@
+== identifiers_not_exact: NOT EQUIVALENT (mutant distinguishable)
+   candidate: (0, [('i1', True, 'no_sentence_covers_the_question'), ('i2', True, 'no_sentence_covers_the_question')])
+   mutant:    (0, [('i1', True, 'no_sentence_covers_the_question'), ('i2', False, 'Bus K241 to Heron leaves at 23:10 on weekdays.')])
+== invalid_input_writes: EQUIVALENT on this probe
+   candidate: (2, False, True, False, 'nothing written')
+   mutant:    (2, False, True, False, 'nothing written')
+== numbers_not_checked: EQUIVALENT on this probe
+   candidate: [('A full plot costs 65 pounds per season.', 'unsupported_claim', None), ('A full plot costs 64 pounds per season, or 70 pounds late.', 'unsupported_claim', None)]
+   mutant:    [('A full plot costs 65 pounds per season.', 'unsupported_claim', 'the number 65 is not stated, with the same subject and unit, in one cited quote'), ('A full plot costs 64 pounds per season, or 70 pounds late.', 'unsupported_claim', 'the number 70 is not stated, with the same subject and unit, in one cited quote')]
