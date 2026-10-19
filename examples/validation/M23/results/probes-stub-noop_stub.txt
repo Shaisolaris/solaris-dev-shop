@@ -1,0 +1,62 @@
+N01  FAIL  {"rc": 0, "codes": []}
+N02  FAIL  {"codes": []}
+N03  FAIL  {"codes": [], "c": []}
+N04  FAIL  {"codes": [], "c": []}
+N05  FAIL  {"codes": [], "c": []}
+N06  FAIL  {"codes": []}
+N07  FAIL  {"c": []}
+N08  FAIL  {"c": []}
+N09  FAIL  {"c": []}
+N10  FAIL  {"at50": [], "at49.99": []}
+N11  FAIL  {"10": [], "9": [], "5+5 callers": []}
+N12  FAIL  {"codes": []}
+N13  FAIL  {"100": [], "99.9": []}
+N14  FAIL  {"prod_absent": false, "prod_true": false, "prod_false": false, "staging_absent": false}
+N15  FAIL  {"prod": false, "staging": false}
+N16  FAIL  {"90pct": false, "89pct": false}
+N17  FAIL  {"on_nodropin": [], "off_dropin": [], "absent_dropin": []}
+N18  FAIL  {"false": [], "null": [], "null_notes": []}
+N19  FAIL  {"800001": false, "800000": false}
+N20  PASS  {"rc": 0, "codes": []}
+N21  FAIL  {"finding": [], "note": "config-rooted fault: is core/config named as a component, or only the allocating plugin"}
+N22  FAIL  {"note": "configured 256M but PHP died at 32 MiB (php memory_limit cap); is the mismatch surfaced", "findings": []}
+S01  FAIL  {"rc": 0, "traceback": false, "out_written": false, "stderr": ""}
+S02  FAIL  {"rc": 0, "traceback": false, "out_written": false, "stderr": ""}
+S03  FAIL  {"rc": 0, "traceback": false, "out_written": false, "stderr": ""}
+S04  FAIL  {"rc": 0, "traceback": false, "out_written": false, "stderr": ""}
+S05  FAIL  {"rc": 0, "traceback": false, "out_written": false, "stderr": ""}
+S06  FAIL  {"rc": 0, "traceback": false, "out_written": false, "stderr": ""}
+S07  FAIL  {"rc": 0, "traceback": false, "out_written": false, "stderr": ""}
+S08  FAIL  {"rc": 0, "traceback": false, "out_written": false, "stderr": ""}
+S09  FAIL  {"rc": 0, "traceback": false, "out_written": false, "stderr": ""}
+S10  FAIL  {"rc": 0, "traceback": false, "out_written": false, "stderr": ""}
+S11  FAIL  {"rc": 0, "traceback": false, "out_written": false, "stderr": ""}
+S12  FAIL  {"rc": 0, "traceback": false, "out_written": false, "stderr": ""}
+S13  FAIL  {"rc": 0, "traceback": false, "out_written": false, "stderr": ""}
+S14  FAIL  {"rc": 0, "traceback": false, "out_written": false, "stderr": ""}
+S15  FAIL  {"rc": 0, "stderr": ""}
+E01  PASS  {"leaked_json": [], "leaked_text": [], "note": "SMTP_PASS is not matched by the doc's secret list; value also placed in a SQL literal"}
+O01a FAIL  {"rc": 0, "out_codes": []}
+O01b FAIL  {"stdout_is_json": true, "stdout_head": "{\"schema\": \"solaris.wp-diagnosis/1\", \"verdict\": \"healthy\", \"findings\": [], \"note", "note": "doc synopsis allows --json with --out; is stdout still JSON"}
+O02  FAIL  {"rc": 0}
+O03  FAIL  {"rc": 0, "note": "same input via another path spelling"}
+O04  FAIL  {"rc": 0}
+O05  FAIL  {"rc": 0, "traceback": false, "stderr": ""}
+O06  FAIL  {"rc": 0, "input_intact": true, "note": "--out is a symlink to the input"}
+P01  PASS  {"rc": 0, "claimed": true, "why": [], "urls": [], "note": ""}
+P02  FAIL  {"rc": 0, "claimed": true, "why": [], "urls": [], "note": ""}
+P03  FAIL  {"rc": 0, "claimed": true, "why": [], "urls": [], "note": ""}
+P04  FAIL  {"rc": 0, "claimed": true, "why": [], "urls": [], "note": ""}
+P05  FAIL  {"rc": 0, "claimed": true, "why": [], "urls": [], "note": ""}
+P06  FAIL  {"rc": 0, "claimed": true, "why": [], "urls": [], "note": ""}
+P07  FAIL  {"rc": 0, "claimed": true, "why": [], "urls": [], "note": ""}
+P08  FAIL  {"rc": 0, "claimed": true, "why": [], "urls": [], "note": "overlap: inconclusive, no claim"}
+P09  FAIL  {"rc": 0, "claimed": true, "why": [], "urls": [], "note": "one URL unchanged: no overall claim"}
+P10  FAIL  {"rc": 0, "claimed": true, "why": [], "urls": [], "note": ""}
+P11  FAIL  {"rc": 0, "claimed": true, "why": [], "urls": [], "note": ""}
+P12  FAIL  {"rc": 0, "claimed": true, "why": [], "urls": [], "note": "max(after)=790 equals min(before)=790: not every after beats every before"}
+P13  FAIL  {"rc": 0, "claimed": true, "why": [], "urls": [], "note": ""}
+P14  FAIL  {"rc": 0, "claimed": true, "why": [], "urls": [], "note": "declared runs_per_url differs; samples equal"}
+P15  PASS  {"rc": 0, "claimed": true, "why": [], "urls": [], "note": "source text is not in the comparability list; finding-only if refused"}
+P16  FAIL  {"rc": 0, "claimed": true, "why": [], "urls": [], "note": "after warm_cache unknown (null) vs false: is unknown treated as the same measurement"}
+TOTAL 4/61

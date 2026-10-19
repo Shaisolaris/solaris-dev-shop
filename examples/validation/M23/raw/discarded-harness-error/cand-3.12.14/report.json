@@ -1,0 +1,226 @@
+{
+ "label": "Grok self-validation (M23 prep oracle); not independent review",
+ "subject": "G23 wp_trace_diag.py at d6be00e via the M23 adapter (Grok self-validation)",
+ "runtime": "static/offline only: no WordPress, PHP, MySQL or WP-CLI used; bundles are synthetic",
+ "results": [
+  {
+   "id": "K1_conflict_redeclare",
+   "kind": "core",
+   "result": "FAIL",
+   "detail": {
+    "exit": 2,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')",
+    "findings": 0,
+    "non_benign": 0
+   }
+  },
+  {
+   "id": "K2_slow_query_custom_table",
+   "kind": "core",
+   "result": "FAIL",
+   "detail": {
+    "exit": 2,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')",
+    "findings": 0,
+    "non_benign": 0
+   }
+  },
+  {
+   "id": "K3_config_memory_limit",
+   "kind": "core",
+   "result": "FAIL",
+   "detail": {
+    "exit": 2,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')",
+    "findings": 0,
+    "non_benign": 0
+   }
+  },
+  {
+   "id": "K4_config_wp_cache_without_dropin",
+   "kind": "core",
+   "result": "FAIL",
+   "detail": {
+    "exit": 2,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')",
+    "findings": 0,
+    "non_benign": 0
+   }
+  },
+  {
+   "id": "K5_slow_query_theme_qm",
+   "kind": "core",
+   "result": "FAIL",
+   "detail": {
+    "exit": 2,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')",
+    "findings": 0,
+    "non_benign": 0
+   }
+  },
+  {
+   "id": "C0_control_clean",
+   "kind": "core",
+   "result": "FAIL",
+   "detail": {
+    "exit": 2,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')",
+    "findings": 0,
+    "non_benign": 0
+   }
+  },
+  {
+   "id": "C1_control_cache_ok",
+   "kind": "core",
+   "result": "FAIL",
+   "detail": {
+    "exit": 2,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')",
+    "findings": 0,
+    "non_benign": 0
+   }
+  },
+  {
+   "id": "X1_cache_masks_conflict",
+   "kind": "adversarial",
+   "result": "FAIL",
+   "detail": {
+    "exit": 2,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')",
+    "findings": 0,
+    "non_benign": 0
+   }
+  },
+  {
+   "id": "X2_speedup_not_comparable",
+   "kind": "adversarial",
+   "result": "FAIL",
+   "detail": {
+    "exit": 2,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')",
+    "findings": 0,
+    "non_benign": 0
+   }
+  },
+  {
+   "id": "X3_speedup_comparable",
+   "kind": "adversarial",
+   "result": "FAIL",
+   "detail": {
+    "exit": 2,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')",
+    "findings": 0,
+    "non_benign": 0
+   }
+  },
+  {
+   "id": "X4_slug_substring_trap",
+   "kind": "adversarial",
+   "result": "FAIL",
+   "detail": {
+    "exit": 2,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')",
+    "findings": 0,
+    "non_benign": 0
+   }
+  },
+  {
+   "id": "X5_historical_fatal_removed_plugin",
+   "kind": "adversarial",
+   "result": "FAIL",
+   "detail": {
+    "exit": 2,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')",
+    "findings": 0,
+    "non_benign": 0
+   }
+  },
+  {
+   "id": "X6_malformed_inputs",
+   "kind": "adversarial",
+   "result": "PASS",
+   "detail": {
+    "exit": 2,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')",
+    "findings": 0,
+    "non_benign": 0
+   }
+  },
+  {
+   "id": "X7_no_runtime_data",
+   "kind": "adversarial",
+   "result": "FAIL",
+   "detail": {
+    "exit": 2,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')",
+    "findings": 0,
+    "non_benign": 0
+   }
+  },
+  {
+   "id": "R1_no_crash_all_bundles",
+   "kind": "core",
+   "result": "PASS",
+   "detail": {
+    "bundles": 14,
+    "max_secs": 0.01
+   }
+  }
+ ],
+ "core_pass": 1,
+ "core_total": 8,
+ "adversarial_findings": [
+  "X1_cache_masks_conflict",
+  "X2_speedup_not_comparable",
+  "X3_speedup_comparable",
+  "X4_slug_substring_trap",
+  "X5_historical_fatal_removed_plugin",
+  "X7_no_runtime_data"
+ ],
+ "adversarial_inconclusive": [],
+ "raw_findings": {
+  "K1_conflict_redeclare": [],
+  "K2_slow_query_custom_table": [],
+  "K3_config_memory_limit": [],
+  "K4_config_wp_cache_without_dropin": [],
+  "K5_slow_query_theme_qm": [],
+  "C0_control_clean": [],
+  "C1_control_cache_ok": [],
+  "X1_cache_masks_conflict": [],
+  "X2_speedup_not_comparable": [],
+  "X3_speedup_comparable": [],
+  "X4_slug_substring_trap": [],
+  "X5_historical_fatal_removed_plugin": [],
+  "X6_malformed_inputs": [],
+  "X7_no_runtime_data": []
+ },
+ "verdict_core": "FAIL"
+}

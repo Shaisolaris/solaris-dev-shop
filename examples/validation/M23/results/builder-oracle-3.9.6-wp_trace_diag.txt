@@ -1,0 +1,14 @@
+PASS o1 clean control: healthy bundle has no findings and states that no WordPress was run
+PASS o2 PHP fatal redeclare (both PHP spellings) and class clash localize the plugins involved
+PASS o3 bisect runs: a unique pair is a conflict, a lone culprit is not, ambiguity is reported unresolved, all-pass is clean
+PASS o4 a slow query is localized to the component that ran it; the threshold is respected; fast queries stay clean
+PASS o5 an N+1 loop (same query shape from one caller) is localized; a few repeats are not flagged
+PASS o6 each configuration fault injected alone gives exactly its code; valid look-alikes stay clean
+PASS o7 same measurements: speedup claimed from the samples' own medians; overlapping ranges claim nothing
+PASS o8 different sample counts, cache state, stack, URLs, environment or too few samples: not comparable, no claim
+PASS o9 invalid bundles exit 2 and leave the previous report intact; --out onto the input refused; next good run recovers
+PASS o10 wp_config secret values (DB_PASSWORD, AUTH_KEY) never appear in any output
+PASS o11 scale: 3000 requests and about 27000 queries in budget; one slow query still localized; request order irrelevant
+PASS o12 unseen generated bundles (random plugins, random mix of faults) give exactly the injected fault codes
+scale: {'requests': 3000, 'queries': 27060, 'seconds': 0.16}
+12/12 checks passed

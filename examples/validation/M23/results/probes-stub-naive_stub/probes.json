@@ -1,0 +1,577 @@
+[
+ {
+  "id": "N01",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "codes": []
+  }
+ },
+ {
+  "id": "N02",
+  "result": "FAIL",
+  "detail": {
+   "codes": []
+  }
+ },
+ {
+  "id": "N03",
+  "result": "FAIL",
+  "detail": {
+   "codes": [],
+   "c": []
+  }
+ },
+ {
+  "id": "N04",
+  "result": "FAIL",
+  "detail": {
+   "codes": [],
+   "c": []
+  }
+ },
+ {
+  "id": "N05",
+  "result": "FAIL",
+  "detail": {
+   "codes": [],
+   "c": []
+  }
+ },
+ {
+  "id": "N06",
+  "result": "FAIL",
+  "detail": {
+   "codes": []
+  }
+ },
+ {
+  "id": "N07",
+  "result": "FAIL",
+  "detail": {
+   "c": []
+  }
+ },
+ {
+  "id": "N08",
+  "result": "FAIL",
+  "detail": {
+   "c": []
+  }
+ },
+ {
+  "id": "N09",
+  "result": "FAIL",
+  "detail": {
+   "c": []
+  }
+ },
+ {
+  "id": "N10",
+  "result": "FAIL",
+  "detail": {
+   "at50": [],
+   "at49.99": []
+  }
+ },
+ {
+  "id": "N11",
+  "result": "FAIL",
+  "detail": {
+   "10": [],
+   "9": [],
+   "5+5 callers": []
+  }
+ },
+ {
+  "id": "N12",
+  "result": "FAIL",
+  "detail": {
+   "codes": []
+  }
+ },
+ {
+  "id": "N13",
+  "result": "FAIL",
+  "detail": {
+   "100": [],
+   "99.9": []
+  }
+ },
+ {
+  "id": "N14",
+  "result": "FAIL",
+  "detail": {
+   "prod_absent": false,
+   "prod_true": false,
+   "prod_false": false,
+   "staging_absent": false
+  }
+ },
+ {
+  "id": "N15",
+  "result": "FAIL",
+  "detail": {
+   "prod": false,
+   "staging": false
+  }
+ },
+ {
+  "id": "N16",
+  "result": "FAIL",
+  "detail": {
+   "90pct": false,
+   "89pct": false
+  }
+ },
+ {
+  "id": "N17",
+  "result": "FAIL",
+  "detail": {
+   "on_nodropin": [],
+   "off_dropin": [],
+   "absent_dropin": []
+  }
+ },
+ {
+  "id": "N18",
+  "result": "FAIL",
+  "detail": {
+   "false": [],
+   "null": [],
+   "null_notes": []
+  }
+ },
+ {
+  "id": "N19",
+  "result": "FAIL",
+  "detail": {
+   "800001": false,
+   "800000": false
+  }
+ },
+ {
+  "id": "N20",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "codes": []
+  }
+ },
+ {
+  "id": "N21",
+  "result": "FAIL",
+  "detail": {
+   "finding": [],
+   "note": "config-rooted fault: is core/config named as a component, or only the allocating plugin"
+  }
+ },
+ {
+  "id": "N22",
+  "result": "FAIL",
+  "detail": {
+   "note": "configured 256M but PHP died at 32 MiB (php memory_limit cap); is the mismatch surfaced",
+   "findings": []
+  }
+ },
+ {
+  "id": "S01",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "traceback": false,
+   "out_written": false,
+   "stderr": ""
+  }
+ },
+ {
+  "id": "S02",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "traceback": false,
+   "out_written": false,
+   "stderr": ""
+  }
+ },
+ {
+  "id": "S03",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "traceback": false,
+   "out_written": false,
+   "stderr": ""
+  }
+ },
+ {
+  "id": "S04",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "traceback": false,
+   "out_written": false,
+   "stderr": ""
+  }
+ },
+ {
+  "id": "S05",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "traceback": false,
+   "out_written": false,
+   "stderr": ""
+  }
+ },
+ {
+  "id": "S06",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": ""
+  }
+ },
+ {
+  "id": "S07",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "traceback": false,
+   "out_written": false,
+   "stderr": ""
+  }
+ },
+ {
+  "id": "S08",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": ""
+  }
+ },
+ {
+  "id": "S09",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": ""
+  }
+ },
+ {
+  "id": "S10",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": ""
+  }
+ },
+ {
+  "id": "S11",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "traceback": false,
+   "out_written": false,
+   "stderr": ""
+  }
+ },
+ {
+  "id": "S12",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "traceback": false,
+   "out_written": false,
+   "stderr": ""
+  }
+ },
+ {
+  "id": "S13",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "traceback": false,
+   "out_written": false,
+   "stderr": ""
+  }
+ },
+ {
+  "id": "S14",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "traceback": false,
+   "out_written": false,
+   "stderr": ""
+  }
+ },
+ {
+  "id": "S15",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "stderr": ""
+  }
+ },
+ {
+  "id": "E01",
+  "result": "FAIL",
+  "detail": {
+   "leaked_json": [
+    "probe-not-a-secret-db",
+    "probe-not-a-secret-auth",
+    "probe-not-a-secret-token",
+    "probe-not-a-secret-smtp"
+   ],
+   "leaked_text": [
+    "probe-not-a-secret-db",
+    "probe-not-a-secret-auth",
+    "probe-not-a-secret-token",
+    "probe-not-a-secret-smtp"
+   ],
+   "note": "SMTP_PASS is not matched by the doc's secret list; value also placed in a SQL literal"
+  }
+ },
+ {
+  "id": "O01a",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "out_codes": []
+  }
+ },
+ {
+  "id": "O01b",
+  "result": "FAIL",
+  "detail": {
+   "stdout_is_json": true,
+   "stdout_head": "{\"verdict\": \"healthy\", \"findings\": [], \"notes\": [], \"evidence_scope\": \"offline; ",
+   "note": "doc synopsis allows --json with --out; is stdout still JSON"
+  }
+ },
+ {
+  "id": "O02",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0
+  }
+ },
+ {
+  "id": "O03",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "note": "same input via another path spelling"
+  }
+ },
+ {
+  "id": "O04",
+  "result": "PASS",
+  "detail": {
+   "rc": 2
+  }
+ },
+ {
+  "id": "O05",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "traceback": false,
+   "stderr": ""
+  }
+ },
+ {
+  "id": "O06",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "input_intact": true,
+   "note": "--out is a symlink to the input"
+  }
+ },
+ {
+  "id": "P01",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [],
+   "note": ""
+  }
+ },
+ {
+  "id": "P02",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [],
+   "note": ""
+  }
+ },
+ {
+  "id": "P03",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [],
+   "note": ""
+  }
+ },
+ {
+  "id": "P04",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [],
+   "note": ""
+  }
+ },
+ {
+  "id": "P05",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [],
+   "note": ""
+  }
+ },
+ {
+  "id": "P06",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [],
+   "note": ""
+  }
+ },
+ {
+  "id": "P07",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [],
+   "note": ""
+  }
+ },
+ {
+  "id": "P08",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [],
+   "note": "overlap: inconclusive, no claim"
+  }
+ },
+ {
+  "id": "P09",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [],
+   "note": "one URL unchanged: no overall claim"
+  }
+ },
+ {
+  "id": "P10",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [],
+   "note": ""
+  }
+ },
+ {
+  "id": "P11",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [],
+   "note": ""
+  }
+ },
+ {
+  "id": "P12",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [],
+   "note": "max(after)=790 equals min(before)=790: not every after beats every before"
+  }
+ },
+ {
+  "id": "P13",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [],
+   "note": ""
+  }
+ },
+ {
+  "id": "P14",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [],
+   "note": "declared runs_per_url differs; samples equal"
+  }
+ },
+ {
+  "id": "P15",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [],
+   "note": "source text is not in the comparability list; finding-only if refused"
+  }
+ },
+ {
+  "id": "P16",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [],
+   "note": "after warm_cache unknown (null) vs false: is unknown treated as the same measurement"
+  }
+ }
+]

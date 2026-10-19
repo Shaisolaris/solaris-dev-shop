@@ -1,0 +1,379 @@
+{
+ "label": "Grok self-validation (M23 prep oracle); not independent review",
+ "subject": "G23 wp_trace_diag.py at d6be00e via the M23 adapter (Grok self-validation)",
+ "runtime": "static/offline only: no WordPress, PHP, MySQL or WP-CLI used; bundles are synthetic",
+ "results": [
+  {
+   "id": "K1_conflict_redeclare",
+   "kind": "core",
+   "result": "FAIL",
+   "detail": {
+    "exit": 0,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 0,
+    "non_benign": 0,
+    "localized": false,
+    "decoy_blamed": []
+   }
+  },
+  {
+   "id": "K2_slow_query_custom_table",
+   "kind": "core",
+   "result": "FAIL",
+   "detail": {
+    "exit": 1,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 10,
+    "non_benign": 10,
+    "localized": false,
+    "decoy_blamed": []
+   }
+  },
+  {
+   "id": "K3_config_memory_limit",
+   "kind": "core",
+   "result": "FAIL",
+   "detail": {
+    "exit": 0,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 0,
+    "non_benign": 0,
+    "localized": false,
+    "decoy_blamed": []
+   }
+  },
+  {
+   "id": "K4_config_wp_cache_without_dropin",
+   "kind": "core",
+   "result": "FAIL",
+   "detail": {
+    "exit": 0,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 0,
+    "non_benign": 0,
+    "localized": false,
+    "decoy_blamed": []
+   }
+  },
+  {
+   "id": "K5_slow_query_theme_qm",
+   "kind": "core",
+   "result": "FAIL",
+   "detail": {
+    "exit": 1,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 1,
+    "non_benign": 1,
+    "localized": false,
+    "decoy_blamed": []
+   }
+  },
+  {
+   "id": "C0_control_clean",
+   "kind": "core",
+   "result": "PASS",
+   "detail": {
+    "exit": 0,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 0,
+    "non_benign": 0,
+    "flagged": []
+   }
+  },
+  {
+   "id": "C1_control_cache_ok",
+   "kind": "core",
+   "result": "PASS",
+   "detail": {
+    "exit": 0,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 1,
+    "non_benign": 0,
+    "flagged": []
+   }
+  },
+  {
+   "id": "X1_cache_masks_conflict",
+   "kind": "adversarial",
+   "result": "FAIL",
+   "detail": {
+    "exit": 0,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 0,
+    "non_benign": 0,
+    "localized": false,
+    "decoy_blamed": []
+   }
+  },
+  {
+   "id": "X2_speedup_not_comparable",
+   "kind": "adversarial",
+   "result": "PASS",
+   "detail": {
+    "exit": 0,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 1,
+    "non_benign": 0,
+    "speedup_findings": [
+     "{\"code\": \"COMPARE (adapter wrapper of compare output)\", \"severity\": \"info\", \"compare_exit\": 0, \"compare\": {\"comparable\": true, \"speedup_claimed\": true, \"urls\": [], \"not_comparable_because\": [], \"evidence_scope\": \"offline"
+    ],
+    "refused": false,
+    "claimed_20x": false
+   }
+  },
+  {
+   "id": "X3_speedup_comparable",
+   "kind": "adversarial",
+   "result": "FAIL",
+   "detail": {
+    "exit": 0,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 1,
+    "non_benign": 0,
+    "speedup_findings": [
+     "{\"code\": \"COMPARE (adapter wrapper of compare output)\", \"severity\": \"info\", \"compare_exit\": 0, \"compare\": {\"comparable\": true, \"speedup_claimed\": true, \"urls\": [], \"not_comparable_because\": [], \"evidence_scope\": \"offline"
+    ]
+   }
+  },
+  {
+   "id": "X4_slug_substring_trap",
+   "kind": "adversarial",
+   "result": "FAIL",
+   "detail": {
+    "exit": 1,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 1,
+    "non_benign": 1,
+    "localized": false,
+    "decoy_blamed": []
+   }
+  },
+  {
+   "id": "X5_historical_fatal_removed_plugin",
+   "kind": "adversarial",
+   "result": "FAIL",
+   "detail": {
+    "exit": 0,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 0,
+    "non_benign": 0,
+    "localized": false,
+    "decoy_blamed": []
+   }
+  },
+  {
+   "id": "X6_malformed_inputs",
+   "kind": "adversarial",
+   "result": "PASS",
+   "detail": {
+    "exit": 2,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 0,
+    "non_benign": 0
+   }
+  },
+  {
+   "id": "X7_no_runtime_data",
+   "kind": "adversarial",
+   "result": "PASS",
+   "detail": {
+    "exit": 0,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 0,
+    "non_benign": 0,
+    "flagged": [],
+    "time_values_without_runtime_data": [],
+    "states_runtime_dependency": false
+   }
+  },
+  {
+   "id": "R1_no_crash_all_bundles",
+   "kind": "core",
+   "result": "PASS",
+   "detail": {
+    "bundles": 14,
+    "max_secs": 0.16
+   }
+  }
+ ],
+ "core_pass": 3,
+ "core_total": 8,
+ "adversarial_findings": [
+  "X1_cache_masks_conflict",
+  "X3_speedup_comparable",
+  "X4_slug_substring_trap",
+  "X5_historical_fatal_removed_plugin"
+ ],
+ "adversarial_inconclusive": [],
+ "raw_findings": {
+  "K1_conflict_redeclare": [],
+  "K2_slow_query_custom_table": [
+   {
+    "code": "SLOW_QUERY",
+    "components": [
+     "unknown"
+    ],
+    "detail": "INSERT INTO wp_stats_lite_hits (path, hit_at) VALUES ('/p/1', NOW())"
+   },
+   {
+    "code": "SLOW_QUERY",
+    "components": [
+     "unknown"
+    ],
+    "detail": "INSERT INTO wp_stats_lite_hits (path, hit_at) VALUES ('/p/2', NOW())"
+   },
+   {
+    "code": "SLOW_QUERY",
+    "components": [
+     "unknown"
+    ],
+    "detail": "INSERT INTO wp_stats_lite_hits (path, hit_at) VALUES ('/p/3', NOW())"
+   },
+   {
+    "code": "SLOW_QUERY",
+    "components": [
+     "unknown"
+    ],
+    "detail": "INSERT INTO wp_stats_lite_hits (path, hit_at) VALUES ('/p/4', NOW())"
+   },
+   {
+    "code": "SLOW_QUERY",
+    "components": [
+     "unknown"
+    ],
+    "detail": "SELECT post_id FROM wp_acme_search_index WHERE term LIKE '%heron%' ORDER BY score DESC LIMIT 20"
+   },
+   {
+    "code": "SLOW_QUERY",
+    "components": [
+     "unknown"
+    ],
+    "detail": "INSERT INTO wp_stats_lite_hits (path, hit_at) VALUES ('/p/5', NOW())"
+   },
+   {
+    "code": "SLOW_QUERY",
+    "components": [
+     "unknown"
+    ],
+    "detail": "INSERT INTO wp_stats_lite_hits (path, hit_at) VALUES ('/p/6', NOW())"
+   },
+   {
+    "code": "SLOW_QUERY",
+    "components": [
+     "unknown"
+    ],
+    "detail": "INSERT INTO wp_stats_lite_hits (path, hit_at) VALUES ('/p/7', NOW())"
+   },
+   {
+    "code": "SLOW_QUERY",
+    "components": [
+     "unknown"
+    ],
+    "detail": "INSERT INTO wp_stats_lite_hits (path, hit_at) VALUES ('/p/8', NOW())"
+   },
+   {
+    "code": "SLOW_QUERY",
+    "components": [
+     "unknown"
+    ],
+    "detail": "INSERT INTO wp_stats_lite_hits (path, hit_at) VALUES ('/p/9', NOW())"
+   }
+  ],
+  "K3_config_memory_limit": [],
+  "K4_config_wp_cache_without_dropin": [],
+  "K5_slow_query_theme_qm": [
+   {
+    "code": "SLOW_QUERY",
+    "components": [
+     "theme:solaris-child"
+    ],
+    "detail": "SELECT * FROM wp_posts ORDER BY RAND() LIMIT 5"
+   }
+  ],
+  "C0_control_clean": [],
+  "C1_control_cache_ok": [
+   {
+    "code": "COMPARE (adapter wrapper of compare output)",
+    "severity": "info",
+    "compare_exit": 0,
+    "compare": {
+     "comparable": true,
+     "speedup_claimed": true,
+     "urls": [],
+     "not_comparable_because": [],
+     "evidence_scope": "offline; no PHP, WordPress was run; synthetic"
+    }
+   }
+  ],
+  "X1_cache_masks_conflict": [],
+  "X2_speedup_not_comparable": [
+   {
+    "code": "COMPARE (adapter wrapper of compare output)",
+    "severity": "info",
+    "compare_exit": 0,
+    "compare": {
+     "comparable": true,
+     "speedup_claimed": true,
+     "urls": [],
+     "not_comparable_because": [],
+     "evidence_scope": "offline; no PHP, WordPress was run; synthetic"
+    }
+   }
+  ],
+  "X3_speedup_comparable": [
+   {
+    "code": "COMPARE (adapter wrapper of compare output)",
+    "severity": "info",
+    "compare_exit": 0,
+    "compare": {
+     "comparable": true,
+     "speedup_claimed": true,
+     "urls": [],
+     "not_comparable_because": [],
+     "evidence_scope": "offline; no PHP, WordPress was run; synthetic"
+    }
+   }
+  ],
+  "X4_slug_substring_trap": [
+   {
+    "code": "SLOW_QUERY",
+    "components": [
+     "unknown"
+    ],
+    "detail": "SELECT post_id FROM wp_acme_search_index WHERE term LIKE '%heron%' ORDER BY score DESC LIMIT 20"
+   }
+  ],
+  "X5_historical_fatal_removed_plugin": [],
+  "X6_malformed_inputs": [],
+  "X7_no_runtime_data": []
+ },
+ "verdict_core": "FAIL"
+}

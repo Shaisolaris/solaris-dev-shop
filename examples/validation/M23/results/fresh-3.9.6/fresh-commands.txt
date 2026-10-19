@@ -1,0 +1,95 @@
+python3 = 3.9.6; env vars: 8
+# Hand-transcribed from wp-trace-diagnosis.md "Commands" (d6be00e). Bundles written by hand per the bundle table.
+$ cd employees/specialized/wordpress-master
+[exit 0]
+$ python3 -c 'import json; json.dump({"schema":"solaris.wp-trace/1","site":"fresh","environment":"production","source":"hand-written fresh-caller bundle","php_errors":["[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Cannot redeclare f_x() (previously declared in /srv/www/wp-content/plugins/alpha/a.php:4) in /srv/www/wp-content/plugins/beta/b.php on line 9"]}, open("/tmp/m23-freshb.json","w"))'
+[exit 0]
+$ python3 wp_trace_diag.py diagnose /tmp/m23-freshb.json
+verdict: faults_found (1 findings)
+  high   PLUGIN_CONFLICT [plugin:alpha, plugin:beta] plugin:beta redeclares f_x() already declared by plugin:alpha
+scope: offline analysis of the given trace and config bundle; no PHP, WordPress, WP-CLI or database was run. Bundle source: hand-written fresh-caller bundle
+[exit 1]
+    # expect: exit 1, PLUGIN_CONFLICT naming plugin:alpha and plugin:beta, text output
+$ python3 wp_trace_diag.py diagnose /tmp/m23-freshb.json --json
+{
+  "counts": {
+    "bisect_runs": 0,
+    "php_error_lines": 1,
+    "queries": 0,
+    "query_fingerprints": 0,
+    "requests": 0
+  },
+  "environment": "production",
+  "evidence_scope": "offline analysis of the given trace and config bundle; no PHP, WordPress, WP-CLI or database was run. Bundle source: hand-written fresh-caller bundle",
+  "findings": [
+    {
+      "code": "PLUGIN_CONFLICT",
+      "components": [
+        "plugin:alpha",
+        "plugin:beta"
+      ],
+      "detail": "plugin:beta redeclares f_x() already declared by plugin:alpha",
+      "evidence": [
+        "[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Cannot redeclare f_x() (previously declared in /srv/www/wp-content/plugins/alpha/a.php:4) in /srv/www/wp-content/plugins/beta/b.php on line 9"
+      ],
+      "fix": "rename or guard the function (function_exists) in one of them, or deactivate one; report to both authors",
+      "severity": "high"
+    }
+  ],
+  "notes": [],
+  "schema": "solaris.wp-diagnosis/1",
+  "site": "fresh",
+  "thresholds": {
+    "repeat": 10,
+    "slow_hook_ms": 100.0,
+    "slow_ms": 50.0
+  },
+  "tool_version": "1.0.0",
+  "verdict": "faults_found"
+}
+[exit 1]
+    # expect: exit 1, JSON with findings[0].code PLUGIN_CONFLICT
+$ python3 wp_trace_diag.py diagnose /tmp/m23-freshb.json --out /tmp/m23-freshr.json; python3 -c 'import json; print([f["code"] for f in json.load(open("/tmp/m23-freshr.json"))["findings"]])'
+verdict: faults_found (1 findings)
+  high   PLUGIN_CONFLICT [plugin:alpha, plugin:beta] plugin:beta redeclares f_x() already declared by plugin:alpha
+scope: offline analysis of the given trace and config bundle; no PHP, WordPress, WP-CLI or database was run. Bundle source: hand-written fresh-caller bundle
+['PLUGIN_CONFLICT']
+[exit 0]
+    # expect: exit 1, report file holds ['PLUGIN_CONFLICT']
+$ python3 wp_trace_diag.py diagnose /tmp/m23-freshb.json --out /tmp/m23-freshb.json
+invalid: --out m23-freshb.json: would overwrite an input
+[exit 2]
+    # expect: exit 2, refuses to overwrite the input
+$ python3 -c 'import json; m={"tool":"curl loop","warm_cache":False,"runs_per_url":5,"concurrency":1}; b=lambda v,w: {"schema":"solaris.wp-trace/1","site":"fresh","environment":"production","source":"hand","env":{"php":"8.3","wp":"6.6","host":"h"},"measurement":dict(m,warm_cache=w),"requests":[{"id":"r%d"%i,"url":"/","total_ms":x} for i,x in enumerate(v)]}; json.dump(b([800,810,790,805,795],False),open("/tmp/m23-freshB.json","w")); json.dump(b([400,410,390,405,395],False),open("/tmp/m23-freshA.json","w")); json.dump(b([40,41,39,40,42],True),open("/tmp/m23-freshH.json","w"))'
+[exit 0]
+$ python3 wp_trace_diag.py compare /tmp/m23-freshB.json /tmp/m23-freshA.json --json
+{
+  "comparable": true,
+  "evidence_scope": "offline analysis of the given trace and config bundle; no PHP, WordPress, WP-CLI or database was run. Bundle source: hand / after: hand",
+  "not_comparable_because": [],
+  "schema": "solaris.wp-compare/1",
+  "speedup_claimed": true,
+  "summary": "every URL faster in every sample",
+  "tool_version": "1.0.0",
+  "urls": [
+    {
+      "median_after_ms": 400.0,
+      "median_before_ms": 800.0,
+      "ratio": 2.0,
+      "result": "faster",
+      "samples": 5,
+      "url": "/"
+    }
+  ]
+}
+[exit 0]
+    # expect: exit 0, speedup_claimed true, medians 800 and 400
+$ python3 wp_trace_diag.py compare /tmp/m23-freshB.json /tmp/m23-freshH.json
+comparable: False
+  not comparable: measurement differs: {"concurrency": 1, "runs_per_url": 5, "tool": "curl loop", "warm_cache": false} vs {"concurrency": 1, "runs_per_url": 5, "tool": "curl loop", "warm_cache": true}
+speedup claimed: False
+scope: offline analysis of the given trace and config bundle; no PHP, WordPress, WP-CLI or database was run. Bundle source: hand / after: hand
+[exit 3]
+    # expect: exit 3, not comparable (warm_cache differs), no speedup
+$ rm -f /tmp/m23-freshb.json /tmp/m23-freshr.json /tmp/m23-freshB.json /tmp/m23-freshA.json /tmp/m23-freshH.json
+[exit 0]

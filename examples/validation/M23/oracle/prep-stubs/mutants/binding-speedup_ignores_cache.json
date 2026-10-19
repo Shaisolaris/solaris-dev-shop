@@ -1,0 +1,20 @@
+{
+ "name": "mutant:speedup_ignores_cache (of Grok reference)",
+ "cmd": [
+  "/usr/bin/python3",
+  "{binding_dir}/speedup_ignores_cache.py",
+  "{bundle}"
+ ],
+ "cwd": ".",
+ "output": "stdout",
+ "findings_path": "",
+ "severity_field": "severity",
+ "benign_severities": [
+  "info",
+  "pass",
+  "ok",
+  "clean",
+  "skip"
+ ],
+ "timeout_s": 30
+}

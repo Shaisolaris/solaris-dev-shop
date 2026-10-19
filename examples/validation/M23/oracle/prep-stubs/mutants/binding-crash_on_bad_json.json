@@ -1,0 +1,20 @@
+{
+ "name": "mutant:crash_on_bad_json (of Grok reference)",
+ "cmd": [
+  "/usr/bin/python3",
+  "{binding_dir}/crash_on_bad_json.py",
+  "{bundle}"
+ ],
+ "cwd": ".",
+ "output": "stdout",
+ "findings_path": "",
+ "severity_field": "severity",
+ "benign_severities": [
+  "info",
+  "pass",
+  "ok",
+  "clean",
+  "skip"
+ ],
+ "timeout_s": 30
+}

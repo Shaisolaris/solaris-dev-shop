@@ -1,0 +1,474 @@
+{
+ "label": "Grok self-validation (M23 prep oracle); not independent review",
+ "subject": "G23 wp_trace_diag.py at d6be00e via the M23 adapter (Grok self-validation)",
+ "runtime": "static/offline only: no WordPress, PHP, MySQL or WP-CLI used; bundles are synthetic",
+ "results": [
+  {
+   "id": "K1_conflict_redeclare",
+   "kind": "core",
+   "result": "PASS",
+   "detail": {
+    "exit": 1,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 1,
+    "non_benign": 1,
+    "localized": true,
+    "matching_finding": "{\"code\": \"PLUGIN_CONFLICT\", \"components\": [\"plugin:acme-pricing\", \"plugin:shop-extras\"], \"detail\": \"plugin:shop-extras redeclares solaris_format_price() already declared by plugin:acme-pricing\", \"evidence\": [\"[18-Oct-2026 17:02:11 UTC] PHP Fatal error:  Cannot redeclare solaris_format_price() (previ",
+    "decoy_blamed": []
+   }
+  },
+  {
+   "id": "K2_slow_query_custom_table",
+   "kind": "core",
+   "result": "FAIL",
+   "detail": {
+    "exit": 1,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 2,
+    "non_benign": 2,
+    "localized": false,
+    "decoy_blamed": []
+   }
+  },
+  {
+   "id": "K3_config_memory_limit",
+   "kind": "core",
+   "result": "FAIL",
+   "detail": {
+    "exit": 1,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 1,
+    "non_benign": 1,
+    "localized": false,
+    "decoy_blamed": [
+     "media-tools: {\"code\": \"CONFIG_MEMORY_LIMIT\", \"components\": [\"plugin:media-tools\"], \"detail\": \"PHP ran out of memory at 32 MiB (1 log lines); last allocation in plugin:media-"
+    ]
+   }
+  },
+  {
+   "id": "K4_config_wp_cache_without_dropin",
+   "kind": "core",
+   "result": "PASS",
+   "detail": {
+    "exit": 1,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 1,
+    "non_benign": 1,
+    "localized": true,
+    "matching_finding": "{\"code\": \"CONFIG_CACHE_DROPIN_MISSING\", \"components\": [\"core\"], \"detail\": \"WP_CACHE is on but wp-content/advanced-cache.php is missing, so no page cache runs\", \"evidence\": [\"WP_CACHE=true\", \"dropins=[]\"], \"fix\": \"reinstall the caching plugin's drop-in, or turn WP_CACHE off\", \"severity\": \"medium\"}",
+    "decoy_blamed": []
+   }
+  },
+  {
+   "id": "K5_slow_query_theme_qm",
+   "kind": "core",
+   "result": "FAIL",
+   "detail": {
+    "exit": 1,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 2,
+    "non_benign": 2,
+    "localized": false,
+    "decoy_blamed": [
+     "acme-pricing: {\"code\": \"REPEATED_QUERY\", \"components\": [\"plugin:acme-pricing\"], \"detail\": \"the same query ran up to 40 times from one caller in one request (1 requests); an N"
+    ]
+   }
+  },
+  {
+   "id": "C0_control_clean",
+   "kind": "core",
+   "result": "PASS",
+   "detail": {
+    "exit": 0,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 0,
+    "non_benign": 0,
+    "flagged": []
+   }
+  },
+  {
+   "id": "C1_control_cache_ok",
+   "kind": "core",
+   "result": "PASS",
+   "detail": {
+    "exit": 0,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 1,
+    "non_benign": 0,
+    "flagged": []
+   }
+  },
+  {
+   "id": "X1_cache_masks_conflict",
+   "kind": "adversarial",
+   "result": "PASS",
+   "detail": {
+    "exit": 1,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 1,
+    "non_benign": 1,
+    "localized": true,
+    "matching_finding": "{\"code\": \"PLUGIN_CONFLICT\", \"components\": [\"plugin:calendar-kit\", \"plugin:events-pro\"], \"detail\": \"plugin:events-pro redeclares solaris_event_date() already declared by plugin:calendar-kit\", \"evidence\": [\"[18-Oct-2026 17:30:05 UTC] PHP Fatal error:  Cannot redeclare solaris_event_date() (previously ",
+    "decoy_blamed": []
+   }
+  },
+  {
+   "id": "X2_speedup_not_comparable",
+   "kind": "adversarial",
+   "result": "PASS",
+   "detail": {
+    "exit": 0,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 1,
+    "non_benign": 0,
+    "speedup_findings": [
+     "{\"code\": \"COMPARE (adapter wrapper of compare output)\", \"severity\": \"info\", \"compare_exit\": 3, \"compare\": {\"comparable\": false, \"evidence_scope\": \"offline analysis of the given trace and config bundle; no PHP, WordPress,"
+    ],
+    "refused": false,
+    "claimed_20x": false
+   }
+  },
+  {
+   "id": "X3_speedup_comparable",
+   "kind": "adversarial",
+   "result": "FAIL",
+   "detail": {
+    "exit": 0,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 1,
+    "non_benign": 0,
+    "speedup_findings": [
+     "{\"code\": \"COMPARE (adapter wrapper of compare output)\", \"severity\": \"info\", \"compare_exit\": 0, \"compare\": {\"comparable\": true, \"evidence_scope\": \"offline analysis of the given trace and config bundle; no PHP, WordPress, "
+    ]
+   }
+  },
+  {
+   "id": "X4_slug_substring_trap",
+   "kind": "adversarial",
+   "result": "FAIL",
+   "detail": {
+    "exit": 1,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 1,
+    "non_benign": 1,
+    "localized": false,
+    "decoy_blamed": []
+   }
+  },
+  {
+   "id": "X5_historical_fatal_removed_plugin",
+   "kind": "adversarial",
+   "result": "PASS",
+   "detail": {
+    "exit": 1,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 2,
+    "non_benign": 2,
+    "localized": true,
+    "matching_finding": "{\"code\": \"PLUGIN_CONFLICT\", \"components\": [\"plugin:acme-pricing\", \"plugin:shop-extras\"], \"detail\": \"plugin:shop-extras redeclares solaris_format_price() already declared by plugin:acme-pricing\", \"evidence\": [\"[18-Oct-2026 17:02:11 UTC] PHP Fatal error:  Cannot redeclare solaris_format_price() (previ",
+    "decoy_blamed": []
+   }
+  },
+  {
+   "id": "X6_malformed_inputs",
+   "kind": "adversarial",
+   "result": "PASS",
+   "detail": {
+    "exit": 2,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 0,
+    "non_benign": 0
+   }
+  },
+  {
+   "id": "X7_no_runtime_data",
+   "kind": "adversarial",
+   "result": "PASS",
+   "detail": {
+    "exit": 0,
+    "timeout": false,
+    "traceback": false,
+    "parse_error": null,
+    "findings": 0,
+    "non_benign": 0,
+    "flagged": [],
+    "time_values_without_runtime_data": [],
+    "states_runtime_dependency": false
+   }
+  },
+  {
+   "id": "R1_no_crash_all_bundles",
+   "kind": "core",
+   "result": "PASS",
+   "detail": {
+    "bundles": 14,
+    "max_secs": 0.29
+   }
+  }
+ ],
+ "core_pass": 5,
+ "core_total": 8,
+ "adversarial_findings": [
+  "X3_speedup_comparable",
+  "X4_slug_substring_trap"
+ ],
+ "adversarial_inconclusive": [],
+ "raw_findings": {
+  "K1_conflict_redeclare": [
+   {
+    "code": "PLUGIN_CONFLICT",
+    "components": [
+     "plugin:acme-pricing",
+     "plugin:shop-extras"
+    ],
+    "detail": "plugin:shop-extras redeclares solaris_format_price() already declared by plugin:acme-pricing",
+    "evidence": [
+     "[18-Oct-2026 17:02:11 UTC] PHP Fatal error:  Cannot redeclare solaris_format_price() (previously declared in /var/www/html/wp-content/plugins/acme-pricing/inc/helpers.php:12) in /var/www/html/wp-content/plugins/shop-extras/functions.php on line 40"
+    ],
+    "fix": "rename or guard the function (function_exists) in one of them, or deactivate one; report to both authors",
+    "severity": "high"
+   }
+  ],
+  "K2_slow_query_custom_table": [
+   {
+    "code": "SLOW_QUERY",
+    "components": [
+     "unknown"
+    ],
+    "detail": "1 runs, max 3912.3 ms, total 3912.3 ms (58% of query time)",
+    "evidence": [
+     "select post_id from wp_acme_search_index where term like ? order by score desc limit ?",
+     "unknown"
+    ],
+    "fix": "add an index or cache the result; check EXPLAIN on a copy of the database",
+    "severity": "high"
+   },
+   {
+    "code": "SLOW_QUERY",
+    "components": [
+     "unknown"
+    ],
+    "detail": "9 runs, max 310.4 ms, total 2794.0 ms (42% of query time)",
+    "evidence": [
+     "insert into wp_stats_lite_hits (path, hit_at) values (?, now())",
+     "unknown"
+    ],
+    "fix": "add an index or cache the result; check EXPLAIN on a copy of the database",
+    "severity": "high"
+   }
+  ],
+  "K3_config_memory_limit": [
+   {
+    "code": "CONFIG_MEMORY_LIMIT",
+    "components": [
+     "plugin:media-tools"
+    ],
+    "detail": "PHP ran out of memory at 32 MiB (1 log lines); last allocation in plugin:media-tools",
+    "evidence": [
+     "[18-Oct-2026 17:20:45 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 20480 bytes) in /var/www/html/wp-content/plugins/media-tools/lib/resize.php on line 233"
+    ],
+    "fix": "raise WP_MEMORY_LIMIT (and PHP memory_limit) only after checking why that component needs it",
+    "severity": "high"
+   }
+  ],
+  "K4_config_wp_cache_without_dropin": [
+   {
+    "code": "CONFIG_CACHE_DROPIN_MISSING",
+    "components": [
+     "core"
+    ],
+    "detail": "WP_CACHE is on but wp-content/advanced-cache.php is missing, so no page cache runs",
+    "evidence": [
+     "WP_CACHE=true",
+     "dropins=[]"
+    ],
+    "fix": "reinstall the caching plugin's drop-in, or turn WP_CACHE off",
+    "severity": "medium"
+   }
+  ],
+  "K5_slow_query_theme_qm": [
+   {
+    "code": "SLOW_QUERY",
+    "components": [
+     "theme:solaris-child"
+    ],
+    "detail": "1 runs, max 2480.1 ms, total 2480.1 ms (97% of query time)",
+    "evidence": [
+     "select * from wp_posts order by rand() limit ?",
+     "solaris_related_posts()"
+    ],
+    "fix": "add an index or cache the result; check EXPLAIN on a copy of the database",
+    "severity": "high"
+   },
+   {
+    "code": "REPEATED_QUERY",
+    "components": [
+     "plugin:acme-pricing"
+    ],
+    "detail": "the same query ran up to 40 times from one caller in one request (1 requests); an N+1 loop",
+    "evidence": [
+     "select meta_value from wp_postmeta where post_id = ? and meta_key = ?",
+     "acme_pricing_price()"
+    ],
+    "fix": "batch the lookups (one query with IN, or prime the cache before the loop)",
+    "severity": "medium"
+   }
+  ],
+  "C0_control_clean": [],
+  "C1_control_cache_ok": [
+   {
+    "code": "COMPARE (adapter wrapper of compare output)",
+    "severity": "info",
+    "compare_exit": 0,
+    "compare": {
+     "comparable": true,
+     "evidence_scope": "offline analysis of the given trace and config bundle; no PHP, WordPress, WP-CLI or database was run. Bundle source: Grok M23 synthetic world bundle C1_control_cache_ok, transcribed by the M23 adapter; not a real site / after: Grok M23 synthetic world bundle C1_control_cache_ok, transcribed by the M23 adapter; not a real site",
+     "not_comparable_because": [],
+     "schema": "solaris.wp-compare/1",
+     "speedup_claimed": true,
+     "summary": "every URL faster in every sample",
+     "tool_version": "1.0.0",
+     "urls": [
+      {
+       "median_after_ms": 402.0,
+       "median_before_ms": 801.0,
+       "ratio": 1.993,
+       "result": "faster",
+       "samples": 5,
+       "url": "/shop/"
+      }
+     ]
+    }
+   }
+  ],
+  "X1_cache_masks_conflict": [
+   {
+    "code": "PLUGIN_CONFLICT",
+    "components": [
+     "plugin:calendar-kit",
+     "plugin:events-pro"
+    ],
+    "detail": "plugin:events-pro redeclares solaris_event_date() already declared by plugin:calendar-kit",
+    "evidence": [
+     "[18-Oct-2026 17:30:05 UTC] PHP Fatal error:  Cannot redeclare solaris_event_date() (previously declared in /var/www/html/wp-content/plugins/calendar-kit/includes/dates.php:88) in /var/www/html/wp-content/plugins/events-pro/src/template-tags.php on line 19"
+    ],
+    "fix": "rename or guard the function (function_exists) in one of them, or deactivate one; report to both authors",
+    "severity": "high"
+   }
+  ],
+  "X2_speedup_not_comparable": [
+   {
+    "code": "COMPARE (adapter wrapper of compare output)",
+    "severity": "info",
+    "compare_exit": 3,
+    "compare": {
+     "comparable": false,
+     "evidence_scope": "offline analysis of the given trace and config bundle; no PHP, WordPress, WP-CLI or database was run. Bundle source: Grok M23 synthetic world bundle X2_speedup_not_comparable, transcribed by the M23 adapter; not a real site / after: Grok M23 synthetic world bundle X2_speedup_not_comparable, transcribed by the M23 adapter; not a real site",
+     "not_comparable_because": [
+      "measurement differs: {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"timings.csv ttfb\", \"warm_cache\": false} vs {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"timings.csv ttfb\", \"warm_cache\": true}"
+     ],
+     "schema": "solaris.wp-compare/1",
+     "speedup_claimed": false,
+     "tool_version": "1.0.0"
+    }
+   }
+  ],
+  "X3_speedup_comparable": [
+   {
+    "code": "COMPARE (adapter wrapper of compare output)",
+    "severity": "info",
+    "compare_exit": 0,
+    "compare": {
+     "comparable": true,
+     "evidence_scope": "offline analysis of the given trace and config bundle; no PHP, WordPress, WP-CLI or database was run. Bundle source: Grok M23 synthetic world bundle X3_speedup_comparable, transcribed by the M23 adapter; not a real site / after: Grok M23 synthetic world bundle X3_speedup_comparable, transcribed by the M23 adapter; not a real site",
+     "not_comparable_because": [],
+     "schema": "solaris.wp-compare/1",
+     "speedup_claimed": true,
+     "summary": "every URL faster in every sample",
+     "tool_version": "1.0.0",
+     "urls": [
+      {
+       "median_after_ms": 402.0,
+       "median_before_ms": 801.0,
+       "ratio": 1.993,
+       "result": "faster",
+       "samples": 5,
+       "url": "/shop/"
+      }
+     ]
+    }
+   }
+  ],
+  "X4_slug_substring_trap": [
+   {
+    "code": "SLOW_QUERY",
+    "components": [
+     "unknown"
+    ],
+    "detail": "1 runs, max 3912.3 ms, total 3912.3 ms (100% of query time)",
+    "evidence": [
+     "select post_id from wp_acme_search_index where term like ? order by score desc limit ?",
+     "unknown"
+    ],
+    "fix": "add an index or cache the result; check EXPLAIN on a copy of the database",
+    "severity": "high"
+   }
+  ],
+  "X5_historical_fatal_removed_plugin": [
+   {
+    "code": "PLUGIN_CONFLICT",
+    "components": [
+     "plugin:acme-pricing",
+     "plugin:shop-extras"
+    ],
+    "detail": "plugin:shop-extras redeclares solaris_format_price() already declared by plugin:acme-pricing",
+    "evidence": [
+     "[18-Oct-2026 17:02:11 UTC] PHP Fatal error:  Cannot redeclare solaris_format_price() (previously declared in /var/www/html/wp-content/plugins/acme-pricing/inc/helpers.php:12) in /var/www/html/wp-content/plugins/shop-extras/functions.php on line 40"
+    ],
+    "fix": "rename or guard the function (function_exists) in one of them, or deactivate one; report to both authors",
+    "severity": "high"
+   },
+   {
+    "code": "PLUGIN_FATAL",
+    "components": [
+     "plugin:old-gallery"
+    ],
+    "detail": "plugin:old-gallery calls og_resize() which is not defined (missing or deactivated dependency)",
+    "evidence": [
+     "[15-Oct-2026 09:12:40 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function og_resize() in /var/www/html/wp-content/plugins/old-gallery/old-gallery.php:310"
+    ],
+    "fix": "activate the plugin that provides it, or guard the call",
+    "severity": "high"
+   }
+  ],
+  "X6_malformed_inputs": [],
+  "X7_no_runtime_data": []
+ },
+ "verdict_core": "FAIL"
+}

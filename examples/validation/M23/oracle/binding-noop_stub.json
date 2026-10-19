@@ -1,0 +1,4 @@
+{"name": "G23 wp_trace_diag.py at d6be00e via the M23 adapter (Grok self-validation)",
+ "cmd": ["/usr/bin/python3", "{binding_dir}/g23_adapter.py", "{bundle}", "/usr/bin/python3", "/tmp/m23-eval/examples/capabilities/G23/noop_stub.py"],
+ "cwd": ".", "output": "stdout", "findings_path": "findings", "severity_field": "severity",
+ "benign_severities": ["info", "pass", "ok", "clean", "skip", "notice"], "timeout_s": 60}

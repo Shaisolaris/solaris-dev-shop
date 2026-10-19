@@ -1,0 +1,537 @@
+[
+ {
+  "mutant": "min_samples_4",
+  "kills": {
+   "probes": [
+    "P06"
+   ],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "secret_re_no_key",
+  "kills": {
+   "probes": [],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (errors=1)",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "nan_allowed",
+  "kills": {
+   "probes": [],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "dupes_allowed",
+  "kills": {
+   "probes": [
+    "S02"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=2)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "bool_as_number",
+  "kills": {
+   "probes": [
+    "S05"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=2)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "symlink_allowed",
+  "kills": {
+   "probes": [
+    "S15"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=2)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "env_unchecked",
+  "kills": {
+   "probes": [
+    "S11"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=5)",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "redeclare_same_comp",
+  "kills": {
+   "probes": [
+    "N02"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=1)",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "bisect_single_inverted",
+  "kills": {
+   "probes": [
+    "N04",
+    "N05",
+    "N06"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=4)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "bisect_pair_or",
+  "kills": {
+   "probes": [
+    "N04"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=4)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "repeat_gt",
+  "kills": {
+   "probes": [
+    "N11",
+    "N12"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=1)",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "slow_gt",
+  "kills": {
+   "probes": [
+    "N10"
+   ],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "hook_gt",
+  "kills": {
+   "probes": [
+    "N13"
+   ],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "debug_display_default_false",
+  "kills": {
+   "probes": [
+    "N14"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=2)",
+   "builder_oracle": "10/12 checks passed"
+  }
+ },
+ {
+  "mutant": "debug_any_env",
+  "kills": {
+   "probes": [
+    "N14"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=1)",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "savequeries_any_env",
+  "kills": {
+   "probes": [
+    "N15"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=2)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "mem_warn_95",
+  "kills": {
+   "probes": [
+    "N16"
+   ],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "cache_disabled_only_false",
+  "kills": {
+   "probes": [
+    "N17"
+   ],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "cron_null_judged",
+  "kills": {
+   "probes": [
+    "N18"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=1)",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "autoload_ge",
+  "kills": {
+   "probes": [
+    "N19"
+   ],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "cmp_no_measurement",
+  "kills": {
+   "probes": [
+    "P02",
+    "P04",
+    "P13",
+    "P14",
+    "P16"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=2)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "cmp_no_site",
+  "kills": {
+   "probes": [
+    "P10"
+   ],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "cmp_no_env",
+  "kills": {
+   "probes": [
+    "P03"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=1)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "cmp_url_sets",
+  "kills": {
+   "probes": [
+    "P05"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=1)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "cmp_sample_count",
+  "kills": {
+   "probes": [
+    "P07"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=2)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "cmp_min_2",
+  "kills": {
+   "probes": [
+    "P06"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=1)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "cmp_le",
+  "kills": {
+   "probes": [
+    "P12"
+   ],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "cmp_median",
+  "kills": {
+   "probes": [
+    "P08",
+    "P12"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=2)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "cmp_claim_any",
+  "kills": {
+   "probes": [
+    "P09"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=1)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "out_overwrite_input",
+  "kills": {
+   "probes": [
+    "O02",
+    "O03"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=2)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "out_folder_unchecked",
+  "kills": {
+   "probes": [
+    "O05"
+   ],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "out_symlink_allowed",
+  "kills": {
+   "probes": [],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "component_no_unknown",
+  "kills": {
+   "probes": [],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "secret_kept",
+  "kills": {
+   "probes": [],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (errors=1)",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "pair_skip_unknown_side",
+  "kills": {
+   "probes": [],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "atomic_rename_EQUIV",
+  "kills": {
+   "probes": [],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ }
+]

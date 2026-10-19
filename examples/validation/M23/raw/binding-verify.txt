@@ -1,0 +1,30 @@
+# binding check 2026-10-18 19:48:23 PDT (Grok self-validation)
+commit d6be00e9fcfb1b15f047df096a27073e4b2b8e42 parent 02ba9c571b10ad1dba792d2ac5534bcad3171e67
+G23.patch == diff: NO (byte)
+manifest entries 23 ok 23
+manifest set == diff set: yes
+ .../quality-security/performance-engineer/SKILL.md |    1 +
+ .../performance-engineer/learnings.md              |    2 +
+ employees/specialized/wordpress-master/SKILL.md    |    9 +-
+ .../wordpress-master/capability.contract.json      |   16 +-
+ .../diagnostics/plugin-conflicts/SKILL.md          |    4 +
+ .../specialized/wordpress-master/learnings.md      |    6 +
+ employees/specialized/wordpress-master/plugin.json |    3 +-
+ .../wordpress-master/wp-trace-diagnosis.md         |   74 +
+ .../specialized/wordpress-master/wp_trace_diag.py  |  611 ++++++
+ examples/capabilities/G23/README.md                |   37 +
+ .../G23/fixtures/01-clean-control.json             | 1271 ++++++++++++
+ .../G23/fixtures/02-plugin-conflict.json           |  210 ++
+ .../G23/fixtures/03-slow-and-repeated-query.json   | 2181 ++++++++++++++++++++
+ .../G23/fixtures/04-config-faults.json             |  167 ++
+ examples/capabilities/G23/fixtures/05-before.json  |  949 +++++++++
+ .../G23/fixtures/06-after-same-measurements.json   |  865 ++++++++
+ .../fixtures/07-after-different-measurements.json  |  633 ++++++
+ .../G23/fixtures/08-bisect-ambiguous.json          |  135 ++
+ examples/capabilities/G23/make_fixtures.py         |   97 +
+ examples/capabilities/G23/naive_stub.py            |   29 +
+ examples/capabilities/G23/noop_stub.py             |   13 +
+ examples/capabilities/G23/wp_oracle.py             |  418 ++++
+ tests/test_g23_capability.py                       |  273 +++
+ 23 files changed, 7999 insertions(+), 5 deletions(-)
+G23.patch applied to 02ba9c5: tree cd21776815d53c87be4fe4cda8a9197cf70f3f2b vs d6be00e tree cd21776815d53c87be4fe4cda8a9197cf70f3f2b

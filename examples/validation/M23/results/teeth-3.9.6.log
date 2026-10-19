@@ -1,0 +1,37 @@
+{"mutant": "min_samples_4", "probes": ["P06"], "prep": [], "bt": false, "bo": false}
+{"mutant": "secret_re_no_key", "probes": [], "prep": [], "bt": true, "bo": false}
+{"mutant": "nan_allowed", "probes": [], "prep": [], "bt": false, "bo": false}
+{"mutant": "dupes_allowed", "probes": ["S02"], "prep": [], "bt": true, "bo": true}
+{"mutant": "bool_as_number", "probes": ["S05"], "prep": [], "bt": true, "bo": true}
+{"mutant": "symlink_allowed", "probes": ["S15"], "prep": [], "bt": true, "bo": true}
+{"mutant": "env_unchecked", "probes": ["S11"], "prep": [], "bt": true, "bo": false}
+{"mutant": "redeclare_same_comp", "probes": ["N02"], "prep": [], "bt": true, "bo": false}
+{"mutant": "bisect_single_inverted", "probes": ["N04", "N05", "N06"], "prep": [], "bt": true, "bo": true}
+{"mutant": "bisect_pair_or", "probes": ["N04"], "prep": [], "bt": true, "bo": true}
+{"mutant": "repeat_gt", "probes": ["N11", "N12"], "prep": [], "bt": true, "bo": false}
+{"mutant": "slow_gt", "probes": ["N10"], "prep": [], "bt": false, "bo": false}
+{"mutant": "hook_gt", "probes": ["N13"], "prep": [], "bt": false, "bo": false}
+{"mutant": "debug_display_default_false", "probes": ["N14"], "prep": [], "bt": true, "bo": true}
+{"mutant": "debug_any_env", "probes": ["N14"], "prep": [], "bt": true, "bo": false}
+{"mutant": "savequeries_any_env", "probes": ["N15"], "prep": [], "bt": true, "bo": true}
+{"mutant": "mem_warn_95", "probes": ["N16"], "prep": [], "bt": false, "bo": false}
+{"mutant": "cache_disabled_only_false", "probes": ["N17"], "prep": [], "bt": false, "bo": false}
+{"mutant": "cron_null_judged", "probes": ["N18"], "prep": [], "bt": true, "bo": false}
+{"mutant": "autoload_ge", "probes": ["N19"], "prep": [], "bt": false, "bo": false}
+{"mutant": "cmp_no_measurement", "probes": ["P02", "P04", "P13", "P14", "P16"], "prep": [], "bt": true, "bo": true}
+{"mutant": "cmp_no_site", "probes": ["P10"], "prep": [], "bt": false, "bo": false}
+{"mutant": "cmp_no_env", "probes": ["P03"], "prep": [], "bt": true, "bo": true}
+{"mutant": "cmp_url_sets", "probes": ["P05"], "prep": [], "bt": true, "bo": true}
+{"mutant": "cmp_sample_count", "probes": ["P07"], "prep": [], "bt": true, "bo": true}
+{"mutant": "cmp_min_2", "probes": ["P06"], "prep": [], "bt": true, "bo": true}
+{"mutant": "cmp_le", "probes": ["P12"], "prep": [], "bt": false, "bo": false}
+{"mutant": "cmp_median", "probes": ["P08", "P12"], "prep": [], "bt": true, "bo": true}
+{"mutant": "cmp_claim_any", "probes": ["P09"], "prep": [], "bt": true, "bo": true}
+{"mutant": "out_overwrite_input", "probes": ["O02", "O03"], "prep": [], "bt": true, "bo": true}
+{"mutant": "out_folder_unchecked", "probes": ["O05"], "prep": [], "bt": false, "bo": false}
+{"mutant": "out_symlink_allowed", "probes": [], "prep": [], "bt": false, "bo": false}
+{"mutant": "component_no_unknown", "probes": [], "prep": [], "bt": false, "bo": false}
+{"mutant": "secret_kept", "probes": [], "prep": [], "bt": true, "bo": false}
+{"mutant": "pair_skip_unknown_side", "probes": [], "prep": [], "bt": false, "bo": false}
+{"mutant": "atomic_rename_EQUIV", "probes": [], "prep": [], "bt": false, "bo": false}
+DONE

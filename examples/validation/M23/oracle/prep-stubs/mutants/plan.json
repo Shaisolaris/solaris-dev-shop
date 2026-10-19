@@ -1,0 +1,72 @@
+[
+ {
+  "mutant": "slow_by_count",
+  "expected_killers": [
+   "K2_slow_query_custom_table"
+  ]
+ },
+ {
+  "mutant": "slug_shortest_any",
+  "expected_killers": [
+   "X4_slug_substring_trap"
+  ]
+ },
+ {
+  "mutant": "memory_blames_plugin",
+  "expected_killers": [
+   "K3_config_memory_limit"
+  ]
+ },
+ {
+  "mutant": "speedup_ignores_cache",
+  "expected_killers": [
+   "X2_speedup_not_comparable"
+  ]
+ },
+ {
+  "mutant": "wp_cache_always",
+  "expected_killers": [
+   "C1_control_cache_ok"
+  ]
+ },
+ {
+  "mutant": "historical_as_active",
+  "expected_killers": [
+   "X5_historical_fatal_removed_plugin"
+  ]
+ },
+ {
+  "mutant": "redeclare_one_side",
+  "expected_killers": [
+   "K1_conflict_redeclare"
+  ]
+ },
+ {
+  "mutant": "qm_ignored",
+  "expected_killers": [
+   "K5_slow_query_theme_qm"
+  ]
+ },
+ {
+  "mutant": "qm_threshold_low",
+  "expected_killers": [
+   "C0_control_clean"
+  ]
+ },
+ {
+  "mutant": "crash_on_bad_json",
+  "expected_killers": [
+   "X6_malformed_inputs"
+  ]
+ },
+ {
+  "mutant": "fabricated_timing",
+  "expected_killers": [
+   "X7_no_runtime_data"
+  ]
+ },
+ {
+  "mutant": "mean_instead_of_median",
+  "expected_killers": []
+ }
+]

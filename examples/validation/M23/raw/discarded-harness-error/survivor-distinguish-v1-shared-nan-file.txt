@@ -1,0 +1,14 @@
+{"mutant": "nan_allowed", "input": "\"total_ms\": NaN", "subject": "candidate", "rc": 2, "codes": "invalid: nan.json: not valid JSON (NaN is not a number)"}
+{"mutant": "nan_allowed", "input": "\"total_ms\": NaN", "subject": "nan_allowed", "rc": 2, "codes": "invalid: autoload_bytes: needs a number from 0 to 1e+12"}
+{"mutant": "nan_allowed", "input": "\"ms\": NaN", "subject": "candidate", "rc": 2, "codes": "invalid: nan.json: not valid JSON (NaN is not a number)"}
+{"mutant": "nan_allowed", "input": "\"ms\": NaN", "subject": "nan_allowed", "rc": 2, "codes": "invalid: autoload_bytes: needs a number from 0 to 1e+12"}
+{"mutant": "nan_allowed", "input": "\"peak_memory_mb\": NaN", "subject": "candidate", "rc": 2, "codes": "invalid: nan.json: not valid JSON (NaN is not a number)"}
+{"mutant": "nan_allowed", "input": "\"peak_memory_mb\": NaN", "subject": "nan_allowed", "rc": 2, "codes": "invalid: autoload_bytes: needs a number from 0 to 1e+12"}
+{"mutant": "nan_allowed", "input": "\"autoload_bytes\": NaN", "subject": "candidate", "rc": 2, "codes": "invalid: nan.json: not valid JSON (NaN is not a number)"}
+{"mutant": "nan_allowed", "input": "\"autoload_bytes\": NaN", "subject": "nan_allowed", "rc": 2, "codes": "invalid: autoload_bytes: needs a number from 0 to 1e+12"}
+{"mutant": "out_symlink_allowed", "input": "--out is a symlink", "subject": "candidate", "rc": 2, "codes": "invalid: --out out-link.json: exists and is not a regular file", "link_still_symlink": true, "other_intact": true}
+{"mutant": "out_symlink_allowed", "input": "--out is a symlink", "subject": "out_symlink_allowed", "rc": 0, "codes": "", "link_still_symlink": false, "other_intact": true}
+{"mutant": "component_no_unknown", "input": "component \"unknown\"", "subject": "candidate", "rc": 1, "codes": ["SLOW_QUERY"]}
+{"mutant": "component_no_unknown", "input": "component \"unknown\"", "subject": "component_no_unknown", "rc": 2, "codes": "omponent: component must be core, unknown, plugin:<slug>, mu-plugin:<slug> or theme:<slug>"}
+{"mutant": "pair_skip_unknown_side", "input": "first declarer outside wp-content", "subject": "candidate", "rc": 1, "codes": ["PLUGIN_FATAL"]}
+{"mutant": "pair_skip_unknown_side", "input": "first declarer outside wp-content", "subject": "pair_skip_unknown_side", "rc": 1, "codes": ["PLUGIN_CONFLICT"]}
