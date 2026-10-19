@@ -82,7 +82,7 @@ _SAY = r"(?:reply|respond|answer|say|state|tell|output|ignore|disregard|write)"
 #   "chatbot developers", "model boat owners" and "shop assistants" are people and never match.
 # SEPARATOR: colon, semicolon, comma, or a dash. Then up to PRE_VERB_WORDS words, then a reply verb (_SAY).
 PRE_VERB_WORDS = 8
-_OPENER = (r"(?:note|notes|message|memo|instructions?|attention|notice|reminder|warning|dear|hey|hi|hello|greetings|to|for"
+_OPENER = (r"(?:note|notes|message|memo|instructions?|attention(?:\s+of)?|notice|reminder|warning|dear|(?:hey|hi|hello)(?:\s+there)?|greetings|to|for"
            r"|if\s+you\s+are|if\s+you['\u2019]re|you\s+are)")
 _DET = (r"(?:(?:all\s+(?:of\s+)?the|any\s+of\s+the|every|each|all|any|the|an?|you|these|those|other)\s+)?")
 _QUAL = r"(?:ai|ai-powered|automated|autonomous|virtual|digital|chat|generative|large|language|llm)"
