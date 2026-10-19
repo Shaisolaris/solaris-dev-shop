@@ -1,0 +1,4 @@
+credit_id,invoice_id,kind,currency,amount,issued_at,loaded_at
+C6,I6,credit_note,USD,100.00,2026-09-12T10:00:00Z,2026-09-12T11:00:00Z
+C7,I7,credit_note,USD,50.00,2026-09-15T10:00:00Z,2026-09-15T11:00:00Z
+R5,I5,refund,EUR,50.00,2026-09-28T10:00:00Z,2026-09-28T11:00:00Z

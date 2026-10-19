@@ -80,6 +80,7 @@ Why 10/10: numbered and parent-linked, numeric NFR, failure case included, opera
 - VA% verdicts: >25% healthy · 10-25% typical · <10% waste-heavy. Bottleneck triggers: stage P50 > 2× value-add mean · wait share > 40% · rework > 15%.
 - Gross margin: SaaS 75-85% · marketplace 60-70% · e-comm 40-60% · services 50-70%. Early-stage S&M 40-60% · R&D 30-40% · G&A 15-25%. Expense buffer +20%.
 - Headcount: fully-loaded = salary × 1.3-1.4 · 3-6 mo to hire + 3-6 mo to ramp · 10-15% annual attrition.
+- Staffing or descoping scenarios for a dated milestone: run the COO `resource_decision.py` (G17) on the scenario figures instead of a spreadsheet total-hours check.
 - Scenario deltas (P10): customers -30% · churn +20% · price -15% · CAC +25% (P90 mirrors). Growth sanity ≈3x Y2 / ≈2x Y3 · LTV/CAC > 3 · payback < 18 mo · forecast accuracy ±5% (20%+ off = broken process).
 - Utilization band 70-85% (above 85% = selling burnout - hire or raise price).
 - Scorecard weights: functionality .25 · usability .20 · performance .15 · security .15 · integration .10 · support .08 · cost .07 · 3-yr TCO · 90-day pilot checkpoint.

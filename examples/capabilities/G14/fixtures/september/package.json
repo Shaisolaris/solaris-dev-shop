@@ -1,0 +1,10 @@
+{
+ "schema": "solaris.cash-revenue/1",
+ "timezone": "UTC",
+ "period": {"start": "2026-09-01T00:00:00Z", "end": "2026-10-01T00:00:00Z"},
+ "as_of": "2026-10-03T00:00:00Z",
+ "invoices": {"file": "invoices.csv", "header_aliases": {"Invoice No": "invoice_id"}},
+ "payments": {"file": "payments.csv"},
+ "credits": {"file": "credits.csv"},
+ "bank": {"file": "bank.csv"}
+}
