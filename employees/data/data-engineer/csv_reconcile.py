@@ -62,11 +62,13 @@ MAX_FIELD = 4096
 DEFAULT_NULLS = ("", "NULL", "null")
 DEC_RE = re.compile(r"^[+-]?[0-9]{1,20}(\.[0-9]{1,10})?$")  # bounded so every sum stays exact
 INT_RE = re.compile(r"^[+-]?[0-9]{1,18}$")  # ASCII digits only (\d would accept other scripts' digits)
-# One timestamp grammar on every Python (3.9 fromisoformat and 3.11+ fromisoformat differ):
-# YYYY-MM-DD, or YYYY-MM-DD[T or space]HH:MM[:SS[.ffffff]] with an optional Z or +HH:MM / -HH:MM.
-TIME_RE = re.compile(r"^([0-9]{4})-([0-9]{2})-([0-9]{2})(?:[Tt ]([0-9]{2}):([0-9]{2})(?::([0-9]{2})(?:\.([0-9]{1,6}))?)?"
-                     r"([Zz]|[+-][0-9]{2}:[0-9]{2})?)?$")
-TIME_FORMS = "YYYY-MM-DD, or YYYY-MM-DDTHH:MM[:SS[.ffffff]] with optional Z or +HH:MM"
+# One timestamp grammar on every Python (3.9 fromisoformat and 3.11+ fromisoformat differ), parsed here:
+# YYYY-MM-DD, or YYYY-MM-DD[T or space]HH:MM[:SS[.f up to 9 digits]] with an optional Z, or an offset
+# +HH:MM, +HHMM or +HH (PostgreSQL timestamptz text), optionally after one space (SQL Server datetimeoffset).
+# Fraction digits past the sixth are dropped: datetime keeps microseconds.
+TIME_RE = re.compile(r"^([0-9]{4})-([0-9]{2})-([0-9]{2})(?:[Tt ]([0-9]{2}):([0-9]{2})(?::([0-9]{2})(?:\.([0-9]{1,9}))?)?"
+                     r"([Zz]| ?[+-][0-9]{2}(?::?[0-9]{2})?)?)?$")
+TIME_FORMS = "YYYY-MM-DD, or YYYY-MM-DDTHH:MM[:SS[.fraction]] with optional Z, +HH:MM, +HHMM or +HH"
 NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]{0,63}$")
 UNMATCHED, AMBIGUOUS = "(unmatched)", "(ambiguous)"
 
@@ -248,18 +250,24 @@ def _parse_time_r(s: str, tz) -> Tuple[Optional[dt.datetime], Optional[str]]:
         return None, "bad_timestamp"
     y, mo, d, hh, mi, ss, frac, off = m.groups()
     try:
-        t = dt.datetime(int(y), int(mo), int(d), int(hh or 0), int(mi or 0), int(ss or 0), int((frac or "0").ljust(6, "0")))
+        t = dt.datetime(int(y), int(mo), int(d), int(hh or 0), int(mi or 0), int(ss or 0), int((frac or "0")[:6].ljust(6, "0")))
+        off = off.lstrip(" ") if off else off
         if off and off not in ("Z", "z"):
             sign = 1 if off[0] == "+" else -1
-            if int(off[4:6]) > 59:
+            oh, om = int(off[1:3]), int(off[-2:]) if len(off) > 3 else 0
+            if om > 59:
                 return None, "bad_timestamp"
-            t = t.replace(tzinfo=dt.timezone(sign * dt.timedelta(hours=int(off[1:3]), minutes=int(off[4:6]))))
+            t = t.replace(tzinfo=dt.timezone(sign * dt.timedelta(hours=oh, minutes=om)))
         elif off:
             t = t.replace(tzinfo=dt.timezone.utc)
     except ValueError:
         return None, "bad_timestamp"
     if t.tzinfo is None:
         a, b = t.replace(tzinfo=tz, fold=0), t.replace(tzinfo=tz, fold=1)
+        if a.utcoffset() != b.utcoffset() and hh is None:
+            # a date-only value names a calendar day, read as the day's first instant: after a midnight
+            # spring-forward that is the end of the gap (fold=0 normalised), after a fall-back the first midnight
+            return a.astimezone(dt.timezone.utc), None
         if a.utcoffset() != b.utcoffset():
             # DST edge: the wall time either happens twice or never; do not guess which instant was meant
             if a.astimezone(dt.timezone.utc).astimezone(tz).replace(tzinfo=None) != t:

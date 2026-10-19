@@ -379,14 +379,15 @@ class M13Rework(Base):
 
     def test_n2_one_timestamp_grammar_on_every_python(self):
         ok = ['2026-09-10T12:00:00Z', '2026-09-10T12:00:00+00:00', '2026-09-10t12:00:00z', '2026-09-10T12:00:00.5Z',
-              '2026-09-10T12:00Z', '2026-09-10 12:00:00', '2026-09-10', '2026-09-10T05:00:00.123456-07:00']
-        bad = ['2026-09-10T12:00:00+0000', '2026-09-10T12:00:00+00', '20260910T120000Z', '2026-W37-4T12:00:00Z',
-               '2026-09-10T12:00:00.1234567Z', '2026-09-10T12:00:00+00:60', '2026-09-31T12:00:00Z', '\u0662026-09-10T12:00:00Z']
+              '2026-09-10T12:00Z', '2026-09-10 12:00:00', '2026-09-10', '2026-09-10T05:00:00.123456-07:00',
+              '2026-09-10T12:00:00+0000', '2026-09-10T12:00:00+00', '2026-09-10T12:00:00.1234567Z']  # r3 (M13 r2 RT)
+        bad = ['20260910T120000Z', '2026-W37-4T12:00:00Z', '2026-09-10T12:00:00.1234567890Z',
+               '2026-09-10T12:00:00+00:60', '2026-09-31T12:00:00Z', '\u0662026-09-10T12:00:00Z']
         rows = BASE_ROWS + [row(f'T{i}', amt='1.00', ev=v) for i, v in enumerate(ok + bad)]
         code, rep = self.run_json(self.case(rows))
         self.assertEqual(rep['coverage']['rejected'], {'bad_timestamp': len(bad)}, sys.version)
         self.assertEqual(groups(rep, 'revenue')[('USD',)], '%d.00' % (30 + len(ok)))
-        code, rep = self.run_json(self.case(BASE_ROWS, as_of='2026-10-02T00:00:00+0000'))
+        code, rep = self.run_json(self.case(BASE_ROWS, as_of='20261002T000000Z'))
         self.assertEqual((code, rep['status']), (2, 'invalid'))
 
     def test_n3_redelivery_differing_only_in_loaded_at_is_one_record(self):
@@ -501,6 +502,87 @@ class M13Rework(Base):
         self.assertEqual((code, rep['controls']['match']), (0, True))
 
 
+class M13R2Rework(Base):
+    """G13 r3: the M13 r2 Grok self-validation findings on 75a4e2b: common export timestamp spellings (RT)
+    and date-only values on a midnight DST change (RD). The suite runs on 3.9 to 3.13, so each assertion
+    is checked on every interpreter."""
+
+    case = M13Rework.case
+
+    # each names 2026-09-12T12:00:00Z (to the microsecond) in its own spelling
+    EXPORTS = {
+        'PostgreSQL timestamptz text': '2026-09-12 12:00:00+00',
+        'PostgreSQL with fraction': '2026-09-12 12:00:00.123456+00',
+        'PostgreSQL -07 hour offset': '2026-09-12 05:00:00-07',
+        'PostgreSQL +05:30 offset': '2026-09-12 17:30:00+05:30',
+        'SQL Server datetime2(7), naive (UTC zone)': '2026-09-12 12:00:00.1234567',
+        'SQL Server datetimeoffset(7)': '2026-09-12 12:00:00.1234567 +00:00',
+        'SQL Server datetimeoffset(7) -07:00': '2026-09-12 05:00:00.1234567 -07:00',
+        'ISO basic offset -0700': '2026-09-12T05:00:00-0700',
+        'ISO basic offset +0000': '2026-09-12T12:00:00+0000',
+        'ISO basic offset +0530': '2026-09-12T17:30:00+0530',
+        'Go RFC3339Nano': '2026-09-12T12:00:00.123456789Z',
+        'nanoseconds with offset': '2026-09-12T05:00:00.000000001-07:00',
+    }
+
+    def test_rt_common_export_spellings_are_read_as_the_same_instant(self):
+        for label, v in self.EXPORTS.items():
+            with self.subTest(label):
+                rows = BASE_ROWS + [row('T1', amt='4.00', ev=v)]
+                micro = '123456' if '.123456' in v else '000000'
+                # the window end is exclusive: the row is in when the end is one microsecond after its instant,
+                # and out when the end is the instant itself
+                w = {'column': 'event_time', 'start': '2026-09-01T00:00:00Z', 'end': f'2026-09-12T12:00:00.{int(micro) + 1:06d}Z'}
+                code, rep = self.run_json(self.case(rows, timezone='UTC', window=w))
+                self.assertEqual((code, rep['coverage']['rejected'], groups(rep, 'revenue')[('USD',)]), (0, {}, '34.00'), v)
+                w2 = dict(w, end=f'2026-09-12T12:00:00.{micro}Z')
+                code, rep = self.run_json(self.case(rows, timezone='UTC', window=w2))
+                self.assertEqual((rep['coverage']['outside_window'], groups(rep, 'revenue')[('USD',)]), (1, '30.00'), v)
+
+    def test_rt_fractions_are_truncated_never_rounded(self):
+        w = {'column': 'event_time', 'start': '2026-09-01T00:00:00Z', 'end': '2026-09-12T12:00:00.123457Z'}
+        code, rep = self.run_json(self.case(BASE_ROWS + [row('T1', amt='4.00', ev='2026-09-12T12:00:00.1234569Z')],
+                                            timezone='UTC', window=w))
+        self.assertEqual((code, groups(rep, 'revenue')[('USD',)]), (0, '34.00'))
+
+    def test_rt_still_refused_spellings(self):
+        bad = ['2026-09-12T12:00:00+0', '2026-09-12T12:00:00+000', '2026-09-12T12:00:00+00000', '2026-09-12T12:00:00.1234567890Z',
+               '2026-09-12T12:00:00 Z', '2026-09-12T12:00:00  +00', '2026-09-12T12:00:00+24', '2026-09-12T12:00:00+0060',
+               '2026-09-12T12:00:00+00:60', '2026-09-12 +00', '2026-09-12T12:00:00.Z', '2026-09-12T12:00:00+05:3']
+        rows = BASE_ROWS + [row(f'B{i}', amt='1.00', ev=v) for i, v in enumerate(bad)]
+        code, rep = self.run_json(self.case(rows))
+        self.assertEqual(rep['coverage']['rejected'], {'bad_timestamp': len(bad)})
+        self.assertEqual((code, groups(rep, 'revenue')[('USD',)]), (1, '30.00'))
+        for v in ('2026-10-02T00:00:00+00', '2026-10-02T00:00:00-0700', '2026-10-02 00:00:00.123456789 +00:00'):
+            with self.subTest(as_of=v):
+                self.assertEqual(self.run_json(self.case(BASE_ROWS, as_of=v))[0], 0)
+
+    def test_rd_date_only_on_a_midnight_spring_forward_is_the_start_of_that_day(self):
+        # America/Santiago: 2026-09-06 00:00 -04 jumps to 01:00 -03, so the day starts at 04:00 UTC
+        w = {'column': 'event_time', 'start': '2026-09-06', 'end': '2026-10-01'}
+        rows = BASE_ROWS + [row('S1', amt='1.00', ev='2026-09-06'), row('S2', amt='2.00', ev='2026-09-06T03:59:59Z'),
+                            row('S3', amt='4.00', ev='2026-09-06T04:00:00Z'), row('S4', amt='8.00', ev='2026-09-06 00:30')]
+        code, rep = self.run_json(self.case(rows, timezone='America/Santiago', window=w, as_of=None))
+        self.assertNotEqual(code, 2)
+        self.assertEqual(rep['coverage']['rejected'], {'nonexistent_local_time': 1})  # a wall time in the gap is still refused
+        self.assertEqual(rep['coverage']['outside_window'], 1)
+        self.assertEqual(groups(rep, 'revenue')[('USD',)], '35.00')
+
+    def test_rd_date_only_on_a_midnight_fall_back_is_the_first_midnight(self):
+        # America/Havana: 2026-11-01 01:00 -04 falls back to 00:00 -05, so midnight happens twice; the day
+        # starts at the first one, 04:00 UTC
+        w = {'column': 'event_time', 'start': '2026-11-01', 'end': '2026-12-01'}
+        rows = [row('H1', amt='1.00', ev='2026-11-01T03:59:59Z'), row('H2', amt='2.00', ev='2026-11-01T04:30:00Z'),
+                row('H3', amt='4.00', ev='2026-11-01'), row('H4', amt='8.00', ev='2026-11-01 00:30')]
+        code, rep = self.run_json(self.case(rows, timezone='America/Havana', window=w, as_of=None))
+        self.assertEqual(rep['coverage']['rejected'], {'ambiguous_local_time': 1})
+        self.assertEqual(rep['coverage']['outside_window'], 1)
+        self.assertEqual(groups(rep, 'revenue')[('USD',)], '6.00')
+        # an ordinary zone is unchanged: Los Angeles spring-forward is at 02:00, not midnight
+        code, rep = self.run_json(self.case(BASE_ROWS + [row('L1', amt='1.00', ev='2026-09-10')]))
+        self.assertEqual((code, groups(rep, 'revenue')[('USD',)]), (0, '31.00'))
+
+
 class Oracle(Base):
     def oracle(self, tool):
         p = subprocess.run([sys.executable, str(G13 / 'reconcile_oracle.py'), '--tool', tool, '--json',
@@ -509,7 +591,7 @@ class Oracle(Base):
 
     def test_tool_passes_and_stubs_fail(self):
         py = sys.executable
-        self.assertEqual(self.oracle(f'"{py}" "{TOOL}"')['passed'], 13)
+        self.assertEqual(self.oracle(f'"{py}" "{TOOL}"')['passed'], 14)
         self.assertEqual(self.oracle(f'"{py}" "{G13 / "noop_stub.py"}"')['passed'], 0)
         self.assertEqual(self.oracle(f'"{py}" "{G13 / "naive_stub.py"}"')['passed'], 0)
 

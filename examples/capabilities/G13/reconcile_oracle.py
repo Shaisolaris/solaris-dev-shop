@@ -568,7 +568,7 @@ def main(argv=None):
             if usd_of(rep) != usd or code != 1:
                 e.append(f"N1 a newer version with no loaded_at replaced the on-time one: USD {usd_of(rep)}, exit {code}")
             good = ["2026-09-10T12:00:00Z", "2026-09-10T12:00:00+00:00", "2026-09-10T12:00:00.5Z", "2026-09-10T12:00Z", "2026-09-10 12:00:00", "2026-09-10"]
-            bad = ["2026-09-10T12:00:00+0000", "2026-09-10T12:00:00+00", "20260910T120000Z", "2026-W37-4T12:00:00Z", "2026-09-10T12:00:00.1234567Z"]
+            bad = ["20260910T120000Z", "2026-W37-4T12:00:00Z", "2026-09-10T12:00:00.1234567890Z", "2026-09-10T12:00:00+0", "2026-09-10T12:00:00 Z"]
             code, rep, _, _ = run(a.tool, mk(base + [r(20 + i, amt="1.00", ev=v) for i, v in enumerate(good + bad)]))
             rej = ((rep or {}).get("coverage") or {}).get("rejected")
             if rej != {"bad_timestamp": len(bad)} or usd_of(rep) != usd + len(good):
@@ -622,6 +622,49 @@ def main(argv=None):
                 e.append(f"N8 the spelling of a total depends on row order: {va} vs {vb}")
             return e
         check("o13", "as_of without loaded_at, one time grammar, re-delivery, both-or-neither outputs, deep JSON, DST, ASCII digits, spelling", o13)
+
+        # o14 (G13 r3, from the M13 r2 self-validation): export timestamp spellings and midnight DST days
+        def o14():
+            e = []
+            spell = {"pg": "2026-09-12 12:00:00+00", "pgfrac": "2026-09-12 12:00:00.123456+00", "pg-07": "2026-09-12 05:00:00-07",
+                     "dt2_7": "2026-09-12 12:00:00.1234567", "dto_7": "2026-09-12 12:00:00.1234567 +00:00", "dto_7w": "2026-09-12 05:00:00.1234567 -07:00",
+                     "basic": "2026-09-12T05:00:00-0700", "basic+0530": "2026-09-12T17:30:00+0530", "nano": "2026-09-12T12:00:00.123456789Z"}
+            for n, v in spell.items():
+                micro = 123456 if ".123456" in v else 0
+                for end_us, inside in ((micro + 1, True), (micro, False)):
+                    cp = mk(base + [r(30, amt="4.00", ev=v)], timezone="UTC",
+                            window={"column": "event_time", "start": "2026-09-01T00:00:00Z", "end": f"2026-09-12T12:00:00.{end_us:06d}Z"})
+                    code, rep, _, _ = run(a.tool, cp)
+                    want = usd + (4 if inside else 0)
+                    if code != 0 or usd_of(rep) != want or ((rep or {}).get("coverage") or {}).get("rejected"):
+                        e.append(f"RT {n} {v!r} with window end .{end_us:06d}: exit {code}, USD {usd_of(rep)} (want {want})")
+            # digits past the sixth are dropped, not rounded
+            cp = mk(base + [r(31, amt="4.00", ev="2026-09-12T12:00:00.1234569Z")], timezone="UTC",
+                    window={"column": "event_time", "start": "2026-09-01T00:00:00Z", "end": "2026-09-12T12:00:00.123457Z"})
+            code, rep, _, _ = run(a.tool, cp)
+            if usd_of(rep) != usd + 4:
+                e.append(f"RT a 7-digit fraction was rounded up past the window end: USD {usd_of(rep)}")
+            for v in ("2026-10-02T00:00:00+00", "2026-10-02 00:00:00.123456789 +00:00"):
+                code, rep, _, _ = run(a.tool, mk(base, as_of=v))
+                if code == 2:
+                    e.append(f"RT as_of {v!r} refused")
+            # RD: a date-only value on a midnight DST change is the first instant of that day
+            cp = mk([r(40, amt="1.00", ev="2026-09-06T03:59:59Z"), r(41, amt="2.00", ev="2026-09-06T04:00:00Z"),
+                     r(42, amt="4.00", ev="2026-09-06"), r(43, amt="8.00", ev="2026-09-06 00:30")],
+                    timezone="America/Santiago", as_of=None, window={"column": "event_time", "start": "2026-09-06", "end": "2026-10-01"})
+            code, rep, _, _ = run(a.tool, cp)
+            rej = ((rep or {}).get("coverage") or {}).get("rejected")
+            if code == 2 or usd_of(rep) != Decimal("6.00") or rej != {"nonexistent_local_time": 1}:
+                e.append(f"RD Santiago 2026-09-06: exit {code}, USD {usd_of(rep)} (want 6.00), rejected {rej}")
+            cp = mk([r(50, amt="1.00", ev="2026-11-01T03:59:59Z"), r(51, amt="2.00", ev="2026-11-01T04:30:00Z"),
+                     r(52, amt="4.00", ev="2026-11-01"), r(53, amt="8.00", ev="2026-11-01 00:30")],
+                    timezone="America/Havana", as_of=None, window={"column": "event_time", "start": "2026-11-01", "end": "2026-12-01"})
+            code, rep, _, _ = run(a.tool, cp)
+            rej = ((rep or {}).get("coverage") or {}).get("rejected")
+            if code == 2 or usd_of(rep) != Decimal("6.00") or rej != {"ambiguous_local_time": 1}:
+                e.append(f"RD Havana 2026-11-01: exit {code}, USD {usd_of(rep)} (want 6.00), rejected {rej}")
+            return e
+        check("o14", "export timestamp spellings (PostgreSQL +00/-07, 7 and 9 digit fractions, -0700, SQL Server) read exactly; date-only days on midnight DST changes", o14)
 
     passed = sum(r["pass"] for r in results)
     summary = {"tool": a.tool, "seed": a.seed, "passed": passed, "total": len(results), "checks": results,
