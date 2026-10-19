@@ -1,0 +1,5 @@
+# v2 rerun: positive control of proposed-fix-mixed-windows.patch with the v2 oracle (my own patch, private copy only, never the candidate)
+Mon Oct 19 08:44:26 PDT 2026
+FAIL F05 ratios: CPA 2 dp and ROAS 4 dp half-even (0.125 -> 0.12, 0.03125 -> 0.0312); no conversions gives CPA null, no spend gives ROAS and CPA null, never 0 or infinity {"cpa_half_even_0_125_is_0_12": [true, "0.12"], "roas_half_even_0_03125_is_0_0312": [true, "0.0312"], "no_conversions_cpa_null_ro
+PASS F08 mixed windows: a spend export over a longer window than the package, or a spend or order contract with another as_of, is refused or named, never folded silently into CPA and ROAS {"spend_window_starts_a_month_early": [true, {"rc": 2, "status": null, "spend": null, "roas": null, "codes": [],
+M35 ORACLE 11/12 core FAIL

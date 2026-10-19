@@ -1,0 +1,14 @@
+Mon Oct 19 08:31:03 PDT 2026
+candidate 90da27cf1dd3466e34c89b2c4677b9e35dbaba1e parent(s) 6f7b23aa18413907c5fbd250daab475dc94e7a1e 
+02ba9c571b10ad1dba792d2ac5534bcad3171e67	refs/heads/main
+314b4dbf980437cf14bc32438117e5b5b777f942	refs/heads/review/grok-g04-handoff
+5666e7beb161d1252ddd5dcc0a166aca83255370	refs/heads/review/grok-g13-csv-reconciliation
+6f7b23aa18413907c5fbd250daab475dc94e7a1e	refs/heads/review/grok-g14-cash-revenue
+2d85d94fb36933357c733de80a1e988302ffc1ec	refs/heads/review/grok-g32-consent-followthrough
+90da27cf1dd3466e34c89b2c4677b9e35dbaba1e	refs/heads/review/grok-g35-campaign-accounting
+9b0f58e84d3d39828955022d8179c0cf372155a4	refs/heads/review/grok-g37-privacy-inventory
+base 6f7b23aa18413907c5fbd250daab475dc94e7a1e is ancestor: yes; direct parent: yes
+patch-body sha 8432003027e9afe166fc526d7a21df575f4386c9d27f47bf519a3af049b913c9 diff sha 8432003027e9afe166fc526d7a21df575f4386c9d27f47bf519a3af049b913c9 EQUAL
+patch file sha 8432003027e9afe166fc526d7a21df575f4386c9d27f47bf519a3af049b913c9
+manifest entries 43 mismatches 0
+manifest set == diff set

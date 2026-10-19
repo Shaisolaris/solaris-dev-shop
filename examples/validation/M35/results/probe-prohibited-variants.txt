@@ -1,0 +1,6 @@
+plain blocked [{"code": "prohibited_claim", "detail": ["risk-free"]}]
+nb_hyphen_u2011 ready_for_human_review []
+en_dash ready_for_human_review []
+upper blocked [{"code": "prohibited_claim", "detail": ["guaranteed", "guarantee"]}]
+fullwidth_hash_1 blocked [{"code": "unsupported_number", "detail": "\uff11"}]
+no_1 blocked [{"code": "unsupported_number", "detail": "1"}]

@@ -1,0 +1,36 @@
+diff -ru a/employees/marketing/paid-ads-manager/campaign-accounting.md b/employees/marketing/paid-ads-manager/campaign-accounting.md
+--- a/employees/marketing/paid-ads-manager/campaign-accounting.md	2026-10-19 08:38:19
++++ b/employees/marketing/paid-ads-manager/campaign-accounting.md	2026-10-19 08:38:19
+@@ -8,8 +8,8 @@
+ | Key | Meaning |
+ |---|---|
+ | `as_of`, `window` | reporting cutoff and the conversion window (timestamps with Z or an offset) |
+-| `spend.contract` | a G13 `csv_reconcile.py` contract over the platform spend export; it must define a `sum` metric `spend` by `campaign_id`, `day`, `currency`, so copies, restatements and late rows are settled by G13 |
+-| `orders.contract` | a G13 contract over the order book with a `sum` metric `revenue` by `order_id`, `currency`; its window must equal the package window |
++| `spend.contract` | a G13 `csv_reconcile.py` contract over the platform spend export; it must define a `sum` metric `spend` by `campaign_id`, `day`, `currency`, so copies, restatements and late rows are settled by G13; its window and as_of must equal the package's |
++| `orders.contract` | a G13 contract over the order book with a `sum` metric `revenue` by `order_id`, `currency`; its window and as_of must equal the package's |
+ | `finance.g14_package` | optional: the CFO's G14 `cash_revenue_reconcile.py` package, for the tie-out to recognized revenue |
+ | `campaigns` | `id`, `currency`, `flight_start`/`flight_end` (dates, inclusive), `budget_total`, `budget_daily` (two-decimal strings; floats are refused), `click_window_days` (1-90), `view_window_days` (0-30, 0 = no view-through) |
+ | `touches` | JSON lines: `touch_id`, `campaign_id`, `user`, `kind` (`click`/`view`), `at`, `loaded_at` |
+diff -ru a/employees/marketing/paid-ads-manager/campaign_ledger.py b/employees/marketing/paid-ads-manager/campaign_ledger.py
+--- a/employees/marketing/paid-ads-manager/campaign_ledger.py	2026-10-19 08:38:19
++++ b/employees/marketing/paid-ads-manager/campaign_ledger.py	2026-10-19 08:38:19
+@@ -286,6 +286,10 @@
+     win0, win1 = P["window"]
+     # spend export via G13
+     srep = run_tool(G13, P["spend"], "csv_reconcile.py (spend export)")
++    sw = srep.get("window", {})
++    need(_iso_eq(sw.get("start"), win0) and _iso_eq(sw.get("end"), win1),
++         "spend contract window must equal the package window (no mixed windows in CPA or ROAS)")
++    need(_iso_eq(srep.get("as_of"), P["as_of"]), "spend contract as_of must equal the package as_of")
+     sgroups = metric(srep, "spend", ["campaign_id", "day", "currency"], "spend")
+     if srep.get("status") != "reconciled":
+         F.append({"code": "spend_export_gaps", "gaps": srep.get("gaps", [])})
+@@ -313,6 +317,7 @@
+     ow = orep.get("window", {})
+     need(_iso_eq(ow.get("start"), win0) and _iso_eq(ow.get("end"), win1),
+          "orders contract window must equal the package window")
++    need(_iso_eq(orep.get("as_of"), P["as_of"]), "orders contract as_of must equal the package as_of")
+     if orep.get("status") != "reconciled":
+         F.append({"code": "order_book_gaps", "gaps": orep.get("gaps", [])})
+     book = {}
