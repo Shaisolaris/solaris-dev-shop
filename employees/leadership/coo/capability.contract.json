@@ -262,12 +262,15 @@
   "dependencies": {
     "references": [
       "SKILL.md",
+      "resource-cash-decision.md",
       "rules.md",
       "../RUNTIME-POLICY.md",
       "../decision-quality-protocol-2026.md",
       "eos-operating-cadence.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "resource_decision.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -468,7 +471,8 @@
     ],
     "forward_tests": [
       "fixtures/solaris/business/forward/*",
-      "fixtures/evaluation/leadership-operations/coo/"
+      "fixtures/evaluation/leadership-operations/coo/",
+      "resource and cash decision: impossible schedule rejected or narrowed, explicit dated assumptions, rerunnable arithmetic (tests/test_g17_capability.py)"
     ],
     "adversarial_tests": [
       "fixtures/solaris/business/adversarial/*",

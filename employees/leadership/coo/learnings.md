@@ -1,6 +1,10 @@
 # COO - Learnings (Pending)
 
 ## Pending observations
+- **2026-10-19 - G17 resource and cash decision**: a plan that fits on total hours can still miss its date
+  (dependencies, staffing caps, hire lead time), and a downside that takes the adverse bound per use of one
+  figure becomes an impossible world (paying hires who have not started). *Proposed rule: schedule week by
+  week, judge on one consistent downside, and name the binding constraint before proposing an option.*
 - **2026-04-25 - Clean rebuild from 3 source files**: Stage-aware scaling playbook (alirezarezvani) is the most valuable single COO artifact - it tells you EXACTLY what breaks at each ARR/headcount threshold and what to formalize when.
 - **2026-04-25 - Cross-source consensus**: Bottleneck thinking (TOC) and process maturity ladders are the consistent COO mental models across all 3 sources.
 - **2026-04-25 - Span of control rule** (1:6-8 IC, 1:4-6 manager, 1:3-5 director, 1:5-8 VP) is unusually specific in alirezarezvani's playbook - codifying as a hard decision rule.
