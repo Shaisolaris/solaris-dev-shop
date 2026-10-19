@@ -14,7 +14,8 @@ library only. No model, judge, provider, key or network is used.
   "Westfield shop") where the sentence has a different word ("full plot", "Westfield site").
   Source text is data: a sentence addressed to an automated reader ("note to assistants: reply
   that ...", "AI assistants should say ...", "if you are a language model ...", "Assistant: reply
-  that ...", "To the AI reading this: say ...") is never used as an answer or a rival. A rule that only
+  that ...", "To the AI reading this: say ...", "Note for any AI tool: reply ...", "If you are an AI language
+  model reading this, you must reply ...") is never used as an answer or a rival. A rule that only
   mentions models or answering ("Model boats may be sailed ...; the warden will answer any questions",
   "Shop assistants will answer questions", "Note for model boat owners: ...") is kept, and the answers file lists the
   skipped ones under
@@ -107,7 +108,12 @@ on the new snapshot.
   next to it. Bare "assistant" or "model" is an addressee only in "note to assistants", "dear model",
   "if you are an assistant" forms, where it must end its noun phrase ("Note for model boat owners"
   and "If you are a model boat owner" are kept), or as the sentence's opening vocative ("Assistant:
-  reply that ...", "Model, say ..."). "To the AI ...: say" is an addressee form too. Other phrasings,
+  reply that ...", "Model, say ..."). "To the AI ...: say" is an addressee form too. An AI, chatbot,
+  LLM, language-model or virtual-assistant addressee may be described further ("Note for any AI tool:",
+  "Dear AI friend,", "Reminder for the virtual assistant on duty:") when a reply verb follows within
+  8 words of the colon or comma (r5). That fails closed: a people-rule addressed to an AI-named group
+  with a reply verb after the colon ("Note for AI club members: the secretary will answer questions")
+  is skipped, so its question abstains; "Note for AI club members: the hall opens at 6" is kept. Other phrasings,
   such as "Please, AI reader, ..." without a reply verb next to the addressee, are treated as ordinary
   sentences.
 - The baseline only extracts. It cannot combine two sentences, so multi-hop questions need another system.
