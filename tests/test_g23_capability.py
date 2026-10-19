@@ -136,7 +136,9 @@ class Rules(unittest.TestCase):
         rep = self.run_bundle(b)[1]
         self.assertEqual(codes(rep), ["CONFIG_MEMORY_LIMIT", "PLUGIN_FATAL", "PLUGIN_FATAL"])
         mem = next(f for f in rep["findings"] if f["code"] == "CONFIG_MEMORY_LIMIT")
-        self.assertEqual((mem["severity"], mem["components"]), ("high", ["plugin:acme-seo"]))
+        # G23 r2 (M23 S1): the limit is the fault (core configuration); the allocating plugin is only where it ran out
+        self.assertEqual((mem["severity"], mem["components"]), ("high", ["core"]))
+        self.assertIn("last allocation was in plugin:acme-seo", mem["detail"])
 
     def test_slow_hook(self):
         b = load("01-clean-control")
@@ -267,6 +269,172 @@ class Oracle(unittest.TestCase):
     def test_stubs_fail(self):
         self.assertEqual(self.score(G23 / "noop_stub.py"), (1, 2, 12))
         self.assertEqual(self.score(G23 / "naive_stub.py"), (1, 1, 12))
+
+
+
+MEM = ("[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 20480 bytes) "
+       "in /var/www/site/wp-content/plugins/media-tools/r.php on line 3")
+
+
+class M23Rework(unittest.TestCase):
+    """G23 r2 (M23 r1 Grok self-validation of d6be00e): memory blame (S1), source file and line (S2), the nine
+    documented rules pinned (S3), --json with --out (S4), and the behaviours nobody pinned (S5)."""
+    run_bundle = Rules.run_bundle
+
+    def mem(self, cfg):
+        b = load("01-clean-control")
+        b["wp_config"].pop("WP_MEMORY_LIMIT", None)
+        b["wp_config"].update(cfg)
+        b["php_errors"] = [MEM]
+        rep = self.run_bundle(b)[1]
+        return next(f for f in rep["findings"] if f["code"] == "CONFIG_MEMORY_LIMIT")
+
+    def test_s1_memory_exhaustion_is_the_limit_not_the_allocating_plugin(self):
+        f = self.mem({"WP_MEMORY_LIMIT": "32M"})
+        self.assertEqual(f["components"], ["core"])
+        self.assertIn("that is the configured WP_MEMORY_LIMIT 32M", f["detail"])
+        self.assertIn("WP_MEMORY_LIMIT=32M", f["evidence"])
+        self.assertIn("plugin:media-tools, which shows where memory ran out, not what used it", f["detail"])
+        f = self.mem({"WP_MEMORY_LIMIT": "256M"})  # N22: configured above the size PHP died at
+        self.assertIn("WP_MEMORY_LIMIT is 256M (256 MiB) but PHP stopped at 32 MiB", f["detail"])
+        self.assertIn("raise PHP memory_limit", f["fix"])
+        self.assertIn("above WP_MEMORY_LIMIT 16M", self.mem({"WP_MEMORY_LIMIT": "16M"})["detail"])
+        self.assertIn("not in the bundle", self.mem({})["detail"])
+        self.assertIn("is not a size", self.mem({"WP_MEMORY_LIMIT": "lots"})["detail"])
+
+    def test_s2_slow_log_file_and_line_are_kept(self):
+        b = load("01-clean-control")
+        # the faster run is seen first, so the slowest run's source must be tracked, not just the first one
+        b["requests"][0]["queries"].append({"sql": "SELECT * FROM wp_postmeta WHERE meta_key = 'y'", "ms": 900.0,
+                                            "source_file": "mysql-slow.log", "source_line": 88})
+        b["requests"][1]["queries"].append({"sql": "SELECT * FROM wp_postmeta WHERE meta_key = 'x'", "ms": 3912.0,
+                                            "source_file": "mysql-slow.log", "source_line": 1204})
+        code, rep, _ = self.run_bundle(b)
+        f = next(f for f in rep["findings"] if f["code"] == "SLOW_QUERY")
+        self.assertEqual(f["components"], ["unknown"])
+        self.assertEqual([e for e in f["evidence"] if e.startswith("source ")], ["source mysql-slow.log:1204", "source mysql-slow.log:88"])
+        self.assertEqual(f["sources"], ["mysql-slow.log:88", "mysql-slow.log:1204"])
+        self.assertIn("not tied to a plugin", f["detail"])
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "b.json"; p.write_text(json.dumps(b))
+            self.assertIn("sources: mysql-slow.log:88, mysql-slow.log:1204", cli("diagnose", p)[1])
+        code, out, _ = cli("diagnose", FIX / "03-slow-and-repeated-query.json", "--json")
+        self.assertTrue(all("sources" not in f for f in json.loads(out)["findings"]))  # no source given: nothing invented
+        for bad in ({"source_line": 3}, {"source_file": "s.log", "source_line": 0}, {"source_file": "a\nb"},
+                    {"source_file": "s.log", "source_line": True}):
+            b = load("01-clean-control")
+            b["requests"][0]["queries"][0].update(bad)
+            with self.subTest(bad=bad):
+                self.assertEqual(self.run_bundle(b)[0], 2)
+
+    def test_s3_documented_thresholds_and_rules(self):
+        q = lambda ms: {"sql": "SELECT * FROM wp_posts WHERE post_status = 'publish'", "ms": ms, "caller": "q()", "component": "plugin:acme-seo"}
+        h = lambda ms: {"hook": "init", "callback": "slow_cb", "component": "plugin:acme-seo", "ms": ms}
+        for ms, want in ((50.0, True), (49.99, False)):
+            b = load("01-clean-control"); b["requests"][0]["queries"].append(q(ms))
+            with self.subTest(slow_ms=ms):
+                self.assertEqual("SLOW_QUERY" in codes(self.run_bundle(b)[1]), want)
+        for ms, want in ((100.0, True), (99.99, False)):
+            b = load("01-clean-control"); b["requests"][0]["hooks"].append(h(ms))
+            with self.subTest(hook_ms=ms):
+                self.assertEqual("SLOW_HOOK_CALLBACK" in codes(self.run_bundle(b)[1]), want)
+        for peak, want in ((230.4, True), (230.3, False)):   # 90% of 256M is 230.4 MiB
+            b = load("01-clean-control"); b["wp_config"]["WP_MEMORY_LIMIT"] = "256M"
+            for r in b["requests"]:
+                r["peak_memory_mb"] = 40.0
+            b["requests"][0]["peak_memory_mb"] = peak
+            with self.subTest(peak=peak):
+                self.assertEqual("CONFIG_MEMORY_LIMIT" in codes(self.run_bundle(b)[1]), want)
+        for wp_cache, want in ((True, False), (False, True), ("true", True), (1, True), (None, True)):
+            b = load("01-clean-control")
+            if "advanced-cache.php" not in b["dropins"]:
+                b["dropins"].append("advanced-cache.php")
+            if wp_cache is None:
+                b["wp_config"].pop("WP_CACHE", None)
+            else:
+                b["wp_config"]["WP_CACHE"] = wp_cache
+            with self.subTest(wp_cache=wp_cache):
+                self.assertEqual("CONFIG_CACHE_DISABLED" in codes(self.run_bundle(b)[1]), want)
+        for size, want in ((800001, True), (800000, False)):
+            b = load("01-clean-control"); b["autoload_bytes"] = size
+            with self.subTest(autoload=size):
+                self.assertEqual("CONFIG_AUTOLOAD_BLOAT" in codes(self.run_bundle(b)[1]), want)
+
+    def _cmp(self, before, after):
+        with tempfile.TemporaryDirectory() as d:
+            pa, pb = Path(d) / "a.json", Path(d) / "b.json"
+            pa.write_text(json.dumps(before)); pb.write_text(json.dumps(after))
+            code, out, _ = cli("compare", pa, pb, "--json")
+            return code, json.loads(out)
+
+    def test_s3_compare_rules(self):
+        base = load("05-before")
+        def faster(b, k=0.5):
+            b = json.loads(json.dumps(b))
+            for r in b["requests"]:
+                r["total_ms"] = round(r["total_ms"] * k, 3)
+            return b
+        self.assertEqual(self._cmp(base, faster(base))[0], 0)
+        other = faster(base); other["site"] = "another-site"
+        code, rep = self._cmp(base, other)
+        self.assertEqual((code, rep["speedup_claimed"]), (3, False))
+        self.assertTrue(any(w.startswith("site differs") for w in rep["not_comparable_because"]))
+        # five samples per URL are enough; four are not
+        def keep(b, n):
+            b = json.loads(json.dumps(b)); seen = {}
+            b["requests"] = [r for r in b["requests"] if seen.setdefault(r["url"], []).append(1) or len(seen[r["url"]]) <= n]
+            return b
+        self.assertEqual(self._cmp(keep(base, 5), faster(keep(base, 5)))[0], 0)
+        code, rep = self._cmp(keep(base, 4), faster(keep(base, 4)))
+        self.assertEqual(code, 3)
+        self.assertTrue(any("at least 5 needed" in w for w in rep["not_comparable_because"]))
+        # a tie between the slowest after-sample and the fastest before-sample is not "faster"
+        tie = faster(base)
+        u = tie["requests"][0]["url"]
+        fastest_before = min(r["total_ms"] for r in base["requests"] if r["url"] == u)
+        slowest = max((r for r in tie["requests"] if r["url"] == u), key=lambda r: r["total_ms"])
+        slowest["total_ms"] = fastest_before
+        code, rep = self._cmp(base, tie)
+        self.assertEqual(code, 0)
+        self.assertFalse(rep["speedup_claimed"])
+        self.assertTrue(next(x for x in rep["urls"] if x["url"] == u)["result"].startswith("inconclusive"))
+
+    def test_s3_s5_out_rules(self):
+        good = FIX / "01-clean-control.json"
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            self.assertEqual(cli("diagnose", good, "--out", d / "missing" / "r.json")[0], 2)
+            target = d / "elsewhere.json"
+            target.write_text("keep")
+            os.symlink(target, d / "link.json")
+            self.assertEqual(cli("diagnose", good, "--out", d / "link.json")[0], 2)  # S5: a symlink is refused
+            self.assertEqual(target.read_text(), "keep")
+            (d / "dir.json").mkdir()
+            self.assertEqual(cli("diagnose", good, "--out", d / "dir.json")[0], 2)
+
+    def test_s4_json_with_out_prints_json(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = Path(d) / "r.json"
+            code, stdout, _ = cli("diagnose", FIX / "04-config-faults.json", "--json", "--out", out)
+            self.assertEqual(code, 1)
+            self.assertEqual(json.loads(stdout), json.loads(out.read_text()))
+            code, stdout, _ = cli("diagnose", FIX / "04-config-faults.json", "--out", out)  # --out alone: text summary
+            self.assertTrue(stdout.startswith("verdict: faults_found"))
+            code, stdout, _ = cli("compare", FIX / "05-before.json", FIX / "06-after-same-measurements.json", "--json", "--out", out)
+            self.assertEqual((code, json.loads(stdout)), (0, json.loads(out.read_text())))
+
+    def test_s5_unknown_component_and_declarer_outside_wp_content(self):
+        b = load("01-clean-control")
+        b["requests"][0]["queries"].append({"sql": "SELECT SLEEP(1)", "ms": 1000.0, "caller": "", "component": "unknown"})
+        code, rep, _ = self.run_bundle(b)
+        self.assertEqual((code, codes(rep)), (1, ["SLOW_QUERY"]))
+        b = load("01-clean-control")
+        b["php_errors"] = ["PHP Fatal error:  Cannot redeclare lib_fmt() (previously declared in /opt/lib/fmt.php:12) "
+                           "in /var/www/site/wp-content/plugins/acme-forms/lib.php on line 30"]
+        rep = self.run_bundle(b)[1]
+        self.assertEqual(codes(rep), ["PLUGIN_FATAL"])
+        self.assertEqual(rep["findings"][0]["components"], ["plugin:acme-forms"])
+        self.assertIn("outside wp-content", rep["findings"][0]["detail"])
 
 
 if __name__ == "__main__":

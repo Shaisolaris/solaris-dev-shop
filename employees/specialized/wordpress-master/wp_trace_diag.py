@@ -32,7 +32,7 @@ from itertools import combinations
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-TOOL_VERSION = "1.0.0"
+TOOL_VERSION = "1.1.0"
 BUNDLE_SCHEMA = "solaris.wp-trace/1"
 REPORT_SCHEMA = "solaris.wp-diagnosis/1"
 COMPARE_SCHEMA = "solaris.wp-compare/1"
@@ -107,6 +107,15 @@ def _component(v: Any, where: str) -> str:
     if not COMPONENT_RE.match(s):
         raise Invalid(f"{where}: component must be core, unknown, plugin:<slug>, mu-plugin:<slug> or theme:<slug>")
     return s
+
+
+def _source(q: Dict[str, Any], where: str) -> Optional[str]:
+    if "source_file" not in q:
+        return None
+    f = _str(q["source_file"], f"{where}.source_file", 256)
+    if not f.strip() or any(c in f for c in "\n\r\t"):
+        raise Invalid(f"{where}.source_file: a file name on one line")
+    return f"{f}:{int(_num(q['source_line'], f'{where}.source_line', 1, 1e9))}" if "source_line" in q else f
 
 
 def load_bundle(path: Path) -> Dict[str, Any]:
@@ -184,10 +193,14 @@ def check_bundle(b: Any, name: str) -> Dict[str, Any]:
         _obj(r, w, {"id", "url", "total_ms", "peak_memory_mb", "queries", "hooks"}, {"id", "url", "total_ms"})
         qs = []
         for j, q in enumerate(_list(r.get("queries", []), f"{w}.queries", 5000)):
-            _obj(q, f"{w}.queries[{j}]", {"sql", "ms", "caller", "component"}, {"sql", "ms"})
+            _obj(q, f"{w}.queries[{j}]", {"sql", "ms", "caller", "component", "source_file", "source_line"}, {"sql", "ms"})
+            if "source_line" in q and "source_file" not in q:
+                raise Invalid(f"{w}.queries[{j}]: source_line needs source_file")
             qs.append({"sql": _str(q["sql"], f"{w}.queries[{j}].sql", 8192), "ms": _num(q["ms"], f"{w}.queries[{j}].ms", 0, 3.6e6),
                        "caller": _str(q.get("caller", ""), f"{w}.queries[{j}].caller", 256),
-                       "component": _component(q.get("component"), f"{w}.queries[{j}].component")})
+                       "component": _component(q.get("component"), f"{w}.queries[{j}].component"),
+                       # where the record came from (a slow-log file and line, or Query Monitor's file:line), kept for the report (M23 S2)
+                       "source": _source(q, f"{w}.queries[{j}]")})
         nq += len(qs)
         if nq > MAX_QUERIES:
             raise Invalid(f"more than {MAX_QUERIES} queries in one bundle")
@@ -311,9 +324,14 @@ def diagnose(b: Dict[str, Any], slow_ms: float, repeat: int, slow_hook_ms: float
                              [line], "rename or guard the function (function_exists) in one of them, or deactivate one; report to both authors")
                 pairs_from_log[key] = f
                 F.append(f)
-            else:
+            elif a == c:
                 F.append(_finding("PLUGIN_FATAL", "high", [c], f"{m.group(1)}() declared twice inside {c} (two copies loaded?)",
                                   [line], "remove the duplicate copy of the plugin, then reinstall it once"))
+            else:
+                # one declarer is outside wp-content (unknown): no second component to pair, so not a conflict
+                other = c if a == "unknown" else a
+                F.append(_finding("PLUGIN_FATAL", "high", [other], f"{m.group(1)}() is declared both in {other} and outside wp-content; no second plugin or theme to name",
+                                  [line], "find the other declaration (a copied library or custom code outside wp-content) and guard it with function_exists"))
             continue
         m = CLASS_RE.search(line)
         if m:
@@ -368,10 +386,15 @@ def diagnose(b: Dict[str, Any], slow_ms: float, repeat: int, slow_hook_ms: float
         for q in r["queries"]:
             fp = fingerprint(q["sql"])
             total_q_ms += q["ms"]
-            g = by_fp.setdefault(fp, {"n": 0, "ms": 0.0, "max": 0.0, "components": set(), "callers": set(), "repeat_max": 0, "repeat_reqs": set()})
+            g = by_fp.setdefault(fp, {"n": 0, "ms": 0.0, "max": 0.0, "components": set(), "callers": set(), "repeat_max": 0, "repeat_reqs": set(),
+                                      "sources": [], "slowest": None})
             g["n"] += 1
             g["ms"] += q["ms"]
+            if g["slowest"] is None or q["ms"] > g["max"]:
+                g["slowest"] = q["source"]
             g["max"] = max(g["max"], q["ms"])
+            if q["source"] and q["source"] not in g["sources"] and len(g["sources"]) < 50:
+                g["sources"].append(q["source"])
             g["components"].add(q["component"])
             if q["caller"]:
                 g["callers"].add(q["caller"][:120])
@@ -384,14 +407,22 @@ def diagnose(b: Dict[str, Any], slow_ms: float, repeat: int, slow_hook_ms: float
                 g["repeat_reqs"].add(r["id"])
     for fp, g in sorted(by_fp.items(), key=lambda kv: (-kv[1]["ms"], kv[0])):
         share = g["ms"] / total_q_ms if total_q_ms else 0.0
+        src = ([f"source {g['slowest']}"] if g["slowest"] else []) + [f"source {s}" for s in g["sources"] if s != g["slowest"]][:1]
         if g["max"] >= slow_ms:
-            F.append(_finding("SLOW_QUERY", "high" if share >= 0.25 else "medium", sorted(g["components"]),
-                              f"{g['n']} runs, max {g['max']:.1f} ms, total {g['ms']:.1f} ms ({share:.0%} of query time)",
-                              [fp] + sorted(g["callers"])[:2], "add an index or cache the result; check EXPLAIN on a copy of the database"))
+            f = _finding("SLOW_QUERY", "high" if share >= 0.25 else "medium", sorted(g["components"]),
+                         f"{g['n']} runs, max {g['max']:.1f} ms, total {g['ms']:.1f} ms ({share:.0%} of query time)"
+                         + ("; no caller or component recorded, so it is not tied to a plugin" if g["components"] == {"unknown"} and not g["callers"] else ""),
+                         [fp] + sorted(g["callers"])[:2] + src, "add an index or cache the result; check EXPLAIN on a copy of the database")
+            if g["sources"]:
+                f["sources"] = g["sources"][:20]
+            F.append(f)
         if g["repeat_max"]:
-            F.append(_finding("REPEATED_QUERY", "medium", sorted(g["components"]),
-                              f"the same query ran up to {g['repeat_max']} times from one caller in one request ({len(g['repeat_reqs'])} requests); an N+1 loop",
-                              [fp] + sorted(g["callers"])[:2], "batch the lookups (one query with IN, or prime the cache before the loop)"))
+            f = _finding("REPEATED_QUERY", "medium", sorted(g["components"]),
+                         f"the same query ran up to {g['repeat_max']} times from one caller in one request ({len(g['repeat_reqs'])} requests); an N+1 loop",
+                         [fp] + sorted(g["callers"])[:2] + src, "batch the lookups (one query with IN, or prime the cache before the loop)")
+            if g["sources"]:
+                f["sources"] = g["sources"][:20]
+            F.append(f)
     # hooks
     by_cb: Dict[Tuple[str, str, str], List[float]] = {}
     for r in b["requests"]:
@@ -415,9 +446,29 @@ def diagnose(b: Dict[str, Any], slow_ms: float, repeat: int, slow_hook_ms: float
         notes.append("WP_MEMORY_LIMIT is not a size like 256M; memory not judged")
     peaks = [(r["peak_memory_mb"], r["url"]) for r in b["requests"] if r["peak_memory_mb"] is not None]
     if mem_fatal:
-        lim, comp, line = mem_fatal[0]
-        F.append(_finding("CONFIG_MEMORY_LIMIT", "high", [comp], f"PHP ran out of memory at {lim // (1024 * 1024)} MiB ({len(mem_fatal)} log lines); last allocation in {comp}",
-                          [line], "raise WP_MEMORY_LIMIT (and PHP memory_limit) only after checking why that component needs it"))
+        # The component that made the last allocation is where memory ran out, not proof of what used it, so
+        # the finding is about the limit (core configuration) and names that component only as the place (M23 S1).
+        lim, where, line = mem_fatal[0]
+        mib = lim / (1024 * 1024)
+        detail = f"PHP ran out of memory at {mib:g} MiB ({len(mem_fatal)} log lines)"
+        evidence, fix = [line], "find what uses the memory first (a profile of the failing request); raise WP_MEMORY_LIMIT only with that evidence"
+        if "WP_MEMORY_LIMIT" not in cfg:
+            detail += "; WP_MEMORY_LIMIT is not in the bundle, so the configured limit cannot be compared"
+        elif limit is None:
+            detail += f"; WP_MEMORY_LIMIT {cfg['WP_MEMORY_LIMIT']!r} is not a size, so it cannot be compared"
+        else:
+            evidence.append(f"WP_MEMORY_LIMIT={cfg['WP_MEMORY_LIMIT']}")
+            if limit > lim:
+                detail += (f"; WP_MEMORY_LIMIT is {cfg['WP_MEMORY_LIMIT']} ({limit / (1024 * 1024):g} MiB) but PHP stopped at {mib:g} MiB: "
+                           "PHP's memory_limit is lower and WordPress could not raise it (php.ini or the host caps it)")
+                fix = f"raise PHP memory_limit (php.ini or the host's panel) to {cfg['WP_MEMORY_LIMIT']}, or set WP_MEMORY_LIMIT to what the host allows; then find what uses the memory"
+            elif limit == lim:
+                detail += f"; that is the configured WP_MEMORY_LIMIT {cfg['WP_MEMORY_LIMIT']}"
+            else:
+                detail += (f"; above WP_MEMORY_LIMIT {cfg['WP_MEMORY_LIMIT']}, so a higher limit applied "
+                           "(WP_MAX_MEMORY_LIMIT on admin and cron requests, or PHP memory_limit set higher)")
+        detail += f"; the last allocation was in {where}, which shows where memory ran out, not what used it"
+        F.append(_finding("CONFIG_MEMORY_LIMIT", "high", ["core"], detail, evidence, fix))
     elif limit and peaks:
         top = max(peaks)
         if top[0] * 1024 * 1024 >= MEMORY_WARN * limit:
@@ -549,6 +600,8 @@ def render(rep: Dict[str, Any]) -> str:
         lines = [f"verdict: {rep['verdict']} ({len(rep['findings'])} findings)"]
         for f in rep["findings"]:
             lines.append(f"  {f['severity']:6} {f['code']} [{', '.join(f['components'])}] {f['detail']}")
+            if f.get("sources"):  # M23 S2: where the record came from, in the text summary too
+                lines.append(f"         sources: {', '.join(f['sources'][:5])}" + (f" and {len(f['sources']) - 5} more" if len(f["sources"]) > 5 else ""))
         lines += [f"  note: {n}" for n in rep["notes"]]
     lines.append(f"scope: {rep['evidence_scope']}")
     return "\n".join(lines) + "\n"
@@ -598,12 +651,11 @@ def main(argv: Optional[List[str]] = None) -> int:
     except Invalid as exc:
         print(f"invalid: {exc}", file=sys.stderr)
         return 2
-    text = json.dumps(rep, indent=2, sort_keys=True) + "\n" if a.json or a.out else render(rep)
+    data = json.dumps(rep, indent=2, sort_keys=True) + "\n"
     if a.out:
-        write_atomic(Path(a.out), (json.dumps(rep, indent=2, sort_keys=True) + "\n").encode("utf-8"))
-        print(render(rep), end="")
-    else:
-        print(text, end="")
+        write_atomic(Path(a.out), data.encode("utf-8"))
+    # --json means JSON on stdout, with or without --out (M23 S4); --out alone prints the text summary
+    print(data if a.json else render(rep), end="")
     return code
 
 

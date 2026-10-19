@@ -30,8 +30,13 @@ Every report states this in `evidence_scope`.
 ## Oracle checks
 o1 clean control; o2 redeclare (both PHP spellings) and class clash; o3 bisect: unique pair, lone culprit,
 ambiguity, all-pass; o4 slow query by component and threshold; o5 N+1 against a few repeats; o6 each config
-fault alone, valid look-alikes clean; o7 same-measurement speedup from the samples' medians, overlap claims
+fault alone, valid look-alikes clean, a memory-exhausted line blamed on the limit (core) with the configured value cited, not on the allocating plugin (r2); o7 same-measurement speedup from the samples' medians, overlap claims
 nothing; o8 five kinds of mismatched measurements and too few samples; o9 invalid bundles, report kept,
-recovery; o10 secrets never echoed; o11 3000 requests, order irrelevant; o12 unseen random fault mixes.
+recovery, `--out` onto a symlink or into a missing folder refused, `--json` with `--out` printing the same JSON (r2); o10 secrets never echoed; o11 3000 requests, order irrelevant; o12 unseen random fault mixes.
+
+r2 (M23 self-validation): queries may carry `source_file` and `source_line` (for example a MySQL slow-log
+entry), kept in the finding's evidence and `sources`; `tests/test_g23_capability.py` class `M23Rework` pins the
+nine documented rules (5 samples, 50 ms, 100 ms, 90%, WP_CACHE true only, autoload over 800000, same site,
+ties inconclusive and every URL faster, `--out` folder must exist).
 
 Not covered: real WordPress output (no installation here), JavaScript or CSS conflicts, REST route clashes.

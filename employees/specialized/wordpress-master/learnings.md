@@ -19,6 +19,7 @@
 - A bisect log alone can be ambiguous: three runs over four plugins left four pairs equally possible (fixture 08). Report the failure as unlocalized with its candidates instead of naming a pair.
 - Merge a `Cannot redeclare` fatal and a bisect result that name the same pair into one finding; two findings for one fault read as two faults.
 - Fold IN lists into one query shape or N+1 loops of `post_id IN (...)` hide; the same folding made 12 meta-cache primes look like an N+1 in an early fixture, so the clean control uses a realistic 4.
+- r2 (M23 self-validation): the plugin in an `Allowed memory size ... exhausted` line is only where PHP ran out, so blaming it sent the fix to the wrong place; the fault is the limit, and the useful fact is whether the configured WP_MEMORY_LIMIT is above the size PHP died at. Keep a record's source file and line through to the finding, and say when a slow-log query cannot be tied to a plugin instead of guessing.
 - Reference: wp-trace-diagnosis.md, wp_trace_diag.py.
 ## Sources
 

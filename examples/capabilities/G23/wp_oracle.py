@@ -230,7 +230,21 @@ def main(argv=None):
         if codes(rep):
             e.append(f"debug logged but not displayed, and cron run by the system, are valid: {codes(rep)}")
         return e
-    check("o6", "each configuration fault injected alone gives exactly its code; valid look-alikes stay clean", o6)
+    def o6b():
+        # G23 r2 (M23 S1): an exhausted line is a limit fault (core); the allocating plugin is the place, not the cause
+        e = []
+        line = (f"[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 20480 bytes) "
+                f"in /var/www/site/wp-content/plugins/{P[3]}/r.php on line 3")
+        for lim, want in (("32M", "32M"), ("256M", "256M")):
+            b = g.bundle(php_errors=[line]); b["wp_config"]["WP_MEMORY_LIMIT"] = lim
+            f = find(diag(b)[1], "CONFIG_MEMORY_LIMIT")
+            if not f or "core" not in f[0].get("components", []) or f[0].get("components") == [f"plugin:{P[3]}"]:
+                e.append(f"memory exhausted with WP_MEMORY_LIMIT {lim}: components {f[0].get('components') if f else None}, expected core")
+            elif want not in json.dumps(f[0]) or "32" not in f[0].get("detail", ""):
+                e.append(f"memory exhausted with WP_MEMORY_LIMIT {lim}: the configured limit and the 32 MiB are not both cited")
+        return e
+    check("o6", "each configuration fault injected alone gives exactly its code; valid look-alikes stay clean; "
+          "memory exhaustion is the limit, not the allocating plugin", lambda: o6() + o6b())
 
     def timed(b, urls, base, k):
         b["requests"] = [g.request(f"{u.strip('/') or 'home'}-{i}", u, total=base + g.r.uniform(0, 30)) for u in urls for i in range(k)]
@@ -321,8 +335,23 @@ def main(argv=None):
         code, _, _ = run(a.tool, "diagnose", write(b), "--out", out)
         if code != 1 or json.loads(out.read_text()).get("verdict") != "faults_found":
             e.append("after invalid runs, a good run did not write its report")
+        # G23 r2 (M23 S4, S5): --json with --out is JSON on stdout too; a symlinked or folderless --out is refused
+        code, o, _ = run(a.tool, "diagnose", good, "--json", "--out", out)
+        try:
+            same = json.loads(o) == json.loads(out.read_text())
+        except ValueError:
+            same = False
+        if not same:
+            e.append("--json with --out: stdout is not the same JSON report as the file")
+        keep = tmp / "keep.txt"; keep.write_text("keep")
+        os.symlink(keep, tmp / "out-link.json")
+        if run(a.tool, "diagnose", good, "--out", tmp / "out-link.json")[0] != 2 or keep.read_text() != "keep":
+            e.append("--out onto a symlink was not refused")
+        if run(a.tool, "diagnose", good, "--out", tmp / "no-such-dir" / "r.json")[0] != 2:
+            e.append("--out into a missing folder did not exit 2")
         return e
-    check("o9", "invalid bundles exit 2 and leave the previous report intact; --out onto the input refused; next good run recovers", o9)
+    check("o9", "invalid bundles exit 2 and leave the previous report intact; --out onto the input, a symlink or a missing folder refused; "
+          "next good run recovers; --json with --out prints JSON", o9)
 
     def o10():
         e = []
