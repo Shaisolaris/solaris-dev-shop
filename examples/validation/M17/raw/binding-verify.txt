@@ -1,0 +1,11 @@
+Mon Oct 19 04:33:43 PDT 2026
+candidate 550f1848a76ad4d5b6688090afc0519354ac3370 parent 6f7b23aa18413907c5fbd250daab475dc94e7a1e
+02ba9c571b10ad1dba792d2ac5534bcad3171e67	refs/heads/main
+5666e7beb161d1252ddd5dcc0a166aca83255370	refs/heads/review/grok-g13-csv-reconciliation
+6f7b23aa18413907c5fbd250daab475dc94e7a1e	refs/heads/review/grok-g14-cash-revenue
+550f1848a76ad4d5b6688090afc0519354ac3370	refs/heads/review/grok-g17-resource-decision
+patch sha 0e5a364683d30dfbceb602ca7e37e39dc6d618a268c31084653429f887aec385 diff sha 0e5a364683d30dfbceb602ca7e37e39dc6d618a268c31084653429f887aec385
+manifest entries 24 mismatches 0
+manifest set == diff set
+G14 r2 6f7b23a is the validated M14 r2 candidate (60682d2)
+handback names the prerequisite branch review/grok-g14-cash-revenue-reconcile; the remote branch is review/grok-g14-cash-revenue (P4 metadata)

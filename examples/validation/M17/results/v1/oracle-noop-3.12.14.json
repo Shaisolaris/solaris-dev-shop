@@ -1,0 +1,979 @@
+[
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "590000.00",
+      "feasible": true,
+      "fin": {
+       "api": 7,
+       "integ": 9,
+       "opt": 10
+      },
+      "lowest": "590000.00"
+     }
+    },
+    "as-is/downside": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "444000.00",
+      "feasible": true,
+      "fin": {
+       "api": 12,
+       "integ": 15,
+       "opt": 17
+      },
+      "lowest": "444000.00"
+     }
+    }
+   },
+   "feasible_in_downside": [
+    "as-is"
+   ],
+   "model_feasible": [
+    "as-is"
+   ],
+   "rc": 0,
+   "status": "feasible_options",
+   "want_rc": 0
+  },
+  "id": "Q01_clean_control",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "590000.00",
+      "feasible": false,
+      "fin": {
+       "api": 7,
+       "integ": 9,
+       "opt": 10
+      },
+      "lowest": "590000.00"
+     }
+    },
+    "as-is/downside": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "444000.00",
+      "feasible": false,
+      "fin": {
+       "api": 12,
+       "integ": 15,
+       "opt": 17
+      },
+      "lowest": "444000.00"
+     }
+    }
+   },
+   "feasible_in_downside": [
+    "as-is"
+   ],
+   "model_feasible": [],
+   "rc": 0,
+   "status": "feasible_options",
+   "want_rc": 1
+  },
+  "id": "Q02_infeasible_capacity_rejected",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "binding": null,
+   "short": {},
+   "want_short": "234.4"
+  },
+  "id": "Q02b_capacity_binding_and_short_hours",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "model_finish": 15,
+   "narrowed": {}
+  },
+  "id": "Q02c_narrowed_earliest_week",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "590000.00",
+      "feasible": false,
+      "fin": {
+       "c0": 2,
+       "c1": 4,
+       "c2": 6,
+       "c3": 8,
+       "c4": 10
+      },
+      "lowest": "590000.00"
+     }
+    },
+    "as-is/downside": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "444000.00",
+      "feasible": false,
+      "fin": {
+       "c0": 2,
+       "c1": 4,
+       "c2": 6,
+       "c3": 8,
+       "c4": 10
+      },
+      "lowest": "444000.00"
+     }
+    }
+   },
+   "feasible_in_downside": [
+    "as-is"
+   ],
+   "model_feasible": [],
+   "rc": 0,
+   "status": "feasible_options",
+   "want_rc": 1
+  },
+  "id": "Q03_dependency_chain",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "binding": null
+  },
+  "id": "Q03b_binding_is_dependencies",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "590000.00",
+      "feasible": true,
+      "fin": {
+       "api": 12,
+       "integ": 14,
+       "opt": 5
+      },
+      "lowest": "590000.00"
+     }
+    },
+    "as-is/downside": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "444000.00",
+      "feasible": false,
+      "fin": {
+       "api": 19,
+       "opt": 8
+      },
+      "lowest": "444000.00"
+     }
+    }
+   },
+   "feasible_in_downside": [
+    "as-is"
+   ],
+   "model_feasible": [],
+   "rc": 0,
+   "status": "feasible_options",
+   "want_rc": 1
+  },
+  "id": "Q04_optional_first_delays",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "binding": null,
+   "model_after_drop": true,
+   "narrowed": {}
+  },
+  "id": "Q04b_narrowing_drops_optional_work",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "binding": null
+  },
+  "id": "O04c_cause_named",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "240000.00",
+      "feasible": false,
+      "fin": {
+       "api": 7,
+       "integ": 9,
+       "opt": 10
+      },
+      "lowest": "240000.00"
+     }
+    },
+    "as-is/downside": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": 3,
+      "closing": "100000.00",
+      "feasible": false,
+      "fin": {
+       "api": 12,
+       "integ": 15,
+       "opt": 17
+      },
+      "lowest": "100000.00"
+     }
+    },
+    "contractors/base": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": 3,
+      "closing": "150000.00",
+      "feasible": false,
+      "fin": {
+       "api": 5,
+       "integ": 7,
+       "opt": 7
+      },
+      "lowest": "150000.00"
+     }
+    },
+    "contractors/downside": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": 3,
+      "closing": "-8000.00",
+      "feasible": false,
+      "fin": {
+       "api": 8,
+       "integ": 11,
+       "opt": 11
+      },
+      "lowest": "-8000.00"
+     }
+    }
+   },
+   "feasible_in_downside": [
+    "as-is",
+    "contractors"
+   ],
+   "model_feasible": [],
+   "rc": 0,
+   "status": "feasible_options",
+   "want_rc": 1
+  },
+  "id": "Q05_contractor_cash_breach",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "downside": {
+    "got": {
+     "breach": null,
+     "closing": null,
+     "feasible": null,
+     "fin": {},
+     "lowest": null
+    },
+    "want": {
+     "breach": 3,
+     "closing": "-8000.00",
+     "feasible": false,
+     "fin": {
+      "api": 8,
+      "integ": 11,
+      "opt": 11
+     },
+     "lowest": "-8000.00"
+    }
+   }
+  },
+  "id": "Q06_downside_one_world",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "590000.00",
+      "feasible": true,
+      "fin": {
+       "api": 7,
+       "integ": 9,
+       "opt": 10
+      },
+      "lowest": "590000.00"
+     }
+    },
+    "as-is/downside": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "444000.00",
+      "feasible": false,
+      "fin": {
+       "api": 12,
+       "integ": 15,
+       "opt": 17
+      },
+      "lowest": "444000.00"
+     }
+    },
+    "cheap-help/base": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "533000.00",
+      "feasible": true,
+      "fin": {
+       "api": 5,
+       "integ": 7,
+       "opt": 8
+      },
+      "lowest": "533000.00"
+     }
+    },
+    "cheap-help/downside": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "387000.00",
+      "feasible": true,
+      "fin": {
+       "api": 8,
+       "integ": 11,
+       "opt": 12
+      },
+      "lowest": "387000.00"
+     }
+    },
+    "perm-hire/base": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "507000.00",
+      "feasible": true,
+      "fin": {
+       "api": 5,
+       "integ": 7,
+       "opt": 8
+      },
+      "lowest": "507000.00"
+     }
+    },
+    "perm-hire/downside": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "361000.00",
+      "feasible": true,
+      "fin": {
+       "api": 8,
+       "integ": 11,
+       "opt": 12
+      },
+      "lowest": "361000.00"
+     }
+    }
+   },
+   "feasible_in_downside": [
+    "as-is",
+    "cheap-help",
+    "perm-hire"
+   ],
+   "model_feasible": [
+    "cheap-help",
+    "perm-hire"
+   ],
+   "rc": 0,
+   "status": "feasible_options",
+   "want_rc": 0
+  },
+  "id": "Q07a_three_feasible",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "got": [
+    "as-is",
+    "cheap-help",
+    "perm-hire"
+   ],
+   "lowest": {
+    "as-is": "444000",
+    "cheap-help": "387000",
+    "perm-hire": "361000"
+   },
+   "want": [
+    "cheap-help",
+    "perm-hire"
+   ]
+  },
+  "id": "Q07b_ordering_reversible_first_then_lowest_cash",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "590000.00",
+      "feasible": false,
+      "fin": {
+       "api": 7,
+       "integ": 9,
+       "opt": 10
+      },
+      "lowest": "590000.00"
+     }
+    },
+    "as-is/downside": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "444000.00",
+      "feasible": false,
+      "fin": {
+       "api": 12,
+       "integ": 15,
+       "opt": 17
+      },
+      "lowest": "444000.00"
+     }
+    },
+    "hire/base": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "504000.00",
+      "feasible": true,
+      "fin": {
+       "api": 3,
+       "integ": 5,
+       "opt": 4
+      },
+      "lowest": "504000.00"
+     }
+    },
+    "hire/downside": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "358000.00",
+      "feasible": true,
+      "fin": {
+       "api": 5,
+       "integ": 8,
+       "opt": 6
+      },
+      "lowest": "358000.00"
+     }
+    }
+   },
+   "feasible_in_downside": [
+    "as-is",
+    "hire"
+   ],
+   "model_feasible": [
+    "hire"
+   ],
+   "rc": 0,
+   "status": "feasible_options",
+   "want_rc": 0
+  },
+  "id": "Q08_irreversible_only",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "590000.00",
+      "feasible": true,
+      "fin": {
+       "api": 7,
+       "integ": 9,
+       "opt": 10
+      },
+      "lowest": "590000.00"
+     }
+    },
+    "as-is/downside": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "405000.00",
+      "feasible": false,
+      "fin": {
+       "api": 12,
+       "integ": 17,
+       "opt": 19
+      },
+      "lowest": "405000.00"
+     }
+    }
+   },
+   "feasible_in_downside": [
+    "as-is"
+   ],
+   "model_feasible": [],
+   "rc": 0,
+   "status": "feasible_options",
+   "want_rc": 1
+  },
+  "id": "Q09_risk_realised_in_downside",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "exposure": {},
+   "note": "doc: probabilities only weight the listed exposure"
+  },
+  "id": "O09b_risk_exposure_figures",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "dated_after_as_of": {
+    "out_written": false,
+    "rc": 0
+   },
+   "dependency_cycle": {
+    "out_written": false,
+    "rc": 0
+   },
+   "literal_number": {
+    "out_written": false,
+    "rc": 0
+   },
+   "no_owner": {
+    "out_written": false,
+    "rc": 0
+   },
+   "unknown_assumption": {
+    "out_written": false,
+    "rc": 0
+   }
+  },
+  "id": "Q10_invalid_packages_exit2_nothing_written",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "rc": 0,
+   "required_evidence": [],
+   "status": "feasible_options"
+  },
+  "id": "O10b_low_above_high_contradiction",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "590000.00",
+      "feasible": true,
+      "fin": {
+       "api": 7,
+       "integ": 9,
+       "opt": 10
+      },
+      "lowest": "590000.00"
+     }
+    },
+    "as-is/downside": {
+     "got": {
+      "breach": null,
+      "closing": null,
+      "feasible": null,
+      "fin": {},
+      "lowest": null
+     },
+     "want": {
+      "breach": null,
+      "closing": "444000.00",
+      "feasible": false,
+      "fin": {
+       "api": 12,
+       "integ": 14,
+       "opt": 17
+      },
+      "lowest": "444000.00"
+     }
+    }
+   },
+   "feasible_in_downside": [
+    "as-is"
+   ],
+   "model_feasible": [],
+   "rc": 0,
+   "status": "feasible_options",
+   "want_rc": 1
+  },
+  "id": "Q11a_dissent_and_evidence_figures",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "dissent": null,
+   "required_evidence": []
+  },
+  "id": "Q11b_dissent_echoed_and_required_evidence",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "evaluate_rc": 0,
+   "tampered_out": "IDENTICAL\n",
+   "tampered_rc": 0,
+   "verify_rc": 0
+  },
+  "id": "Q12_verify_rerun_and_tamper",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "earliest": null,
+   "one_week_short_feasible": [
+    "as-is",
+    "shift"
+   ],
+   "rc_rejected": 0,
+   "rc_shifted": 0
+  },
+  "id": "Q13_recovery_shift_by_narrowed_weeks",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "feasible_by_deadline": {
+    "14": null,
+    "15": null
+   },
+   "finish": 15
+  },
+  "id": "Q14_deadline_boundary",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "books-sept": {
+    "rc": 0,
+    "status": "feasible_options"
+   },
+   "books-unreconciled": {
+    "rc": 0,
+    "status": "feasible_options"
+   }
+  },
+  "id": "Q15_g14_evidence_gate",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "cases": 25,
+   "fails": [
+    {
+     "bad": {
+      "base": {
+       "got": {
+        "breach": null,
+        "closing": null,
+        "feasible": null,
+        "fin": {},
+        "lowest": null
+       },
+       "want": {
+        "breach": null,
+        "closing": "526000.00",
+        "feasible": false,
+        "fin": {
+         "w0": 5,
+         "w2": 6
+        },
+        "lowest": "526000.00"
+       }
+      },
+      "downside": {
+       "got": {
+        "breach": null,
+        "closing": null,
+        "feasible": null,
+        "fin": {},
+        "lowest": null
+       },
+       "want": {
+        "breach": null,
+        "closing": "346000.00",
+        "feasible": false,
+        "fin": {
+         "w2": 11
+        },
+        "lowest": "346000.00"
+       }
+      }
+     },
+     "case": 0,
+     "rc": 0
+    },
+    {
+     "bad": {
+      "base": {
+       "got": {
+        "breach": null,
+        "closing": null,
+        "feasible": null,
+        "fin": {},
+        "lowest": null
+       },
+       "want": {
+        "breach": null,
+        "closing": "819000.00",
+        "feasible": true,
+        "fin": {
+         "w0": 7,
+         "w1": 13,
+         "w2": 5
+        },
+        "lowest": "663000.00"
+       }
+      },
+      "downside": {
+       "got": {
+        "breach": null,
+        "closing": null,
+        "feasible": null,
+        "fin": {},
+        "lowest": null
+       },
+       "want": {
+        "breach": 14,
+        "closing": "-39000.00",
+        "feasible": false,
+        "fin": {
+         "w0": 9,
+         "w1": 16,
+         "w2": 15
+        },
+        "lowest": "-39000.00"
+       }
+      }
+     },
+     "case": 1,
+     "rc": 0
+    }
+   ]
+  },
+  "id": "Q16_random_packages_property",
+  "kind": "core",
+  "result": "FAIL"
+ }
+]

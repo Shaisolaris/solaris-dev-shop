@@ -1,0 +1,514 @@
+[
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": "ok",
+    "as-is/downside": "ok"
+   },
+   "feasible_in_downside": [
+    "as-is"
+   ],
+   "model_feasible": [
+    "as-is"
+   ],
+   "rc": 0,
+   "status": "feasible_options",
+   "want_rc": 0
+  },
+  "id": "Q01_clean_control",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": "ok",
+    "as-is/downside": "ok"
+   },
+   "feasible_in_downside": [],
+   "model_feasible": [],
+   "rc": 1,
+   "status": "rejected_as_stated",
+   "want_rc": 1
+  },
+  "id": "Q02_infeasible_capacity_rejected",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "binding": "capacity: backend short 234.4 hours by week 8",
+   "short": {
+    "backend": "234.4"
+   },
+   "want_short": "234.4"
+  },
+  "id": "Q02b_capacity_binding_and_short_hours",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "model_finish": 15,
+   "narrowed": {
+    "drop_optional_work": [],
+    "earliest_milestone_weeks": {
+     "launch": 15
+    },
+    "feasible_downside": false,
+    "note": "dropping optional work does not make it feasible; the milestones need a later date, more capacity, or less required scope (the owner's call)"
+   }
+  },
+  "id": "Q02c_narrowed_earliest_week",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": "ok",
+    "as-is/downside": "ok"
+   },
+   "feasible_in_downside": [],
+   "model_feasible": [],
+   "rc": 1,
+   "status": "rejected_as_stated",
+   "want_rc": 1
+  },
+  "id": "Q03_dependency_chain",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "binding": "dependencies: the chain alone needs 10 weeks with unlimited people"
+  },
+  "id": "Q03b_binding_is_dependencies",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": "ok",
+    "as-is/downside": "ok"
+   },
+   "feasible_in_downside": [],
+   "model_feasible": [],
+   "rc": 1,
+   "status": "rejected_as_stated",
+   "want_rc": 1
+  },
+  "id": "Q04_optional_first_delays",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "binding": "sequencing: enough backend hours in total by week 16, but dependencies, staffing caps and priority order finish it later",
+   "model_after_drop": true,
+   "narrowed": {
+    "drop_optional_work": [
+     "opt"
+    ],
+    "feasible_downside": true,
+    "note": "narrowed by dropping work no milestone needs, lowest priority first"
+   }
+  },
+  "id": "Q04b_narrowing_drops_optional_work",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "binding": "sequencing: enough backend hours in total by week 16, but dependencies, staffing caps and priority order finish it later"
+  },
+  "id": "O04c_cause_named",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": "ok",
+    "as-is/downside": "ok",
+    "contractors/base": "ok",
+    "contractors/downside": "ok"
+   },
+   "feasible_in_downside": [],
+   "model_feasible": [],
+   "rc": 1,
+   "status": "rejected_as_stated",
+   "want_rc": 1
+  },
+  "id": "Q05_contractor_cash_breach",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "binding_constraints": [
+    "capacity",
+    "cash"
+   ],
+   "model_breach": 3
+  },
+  "id": "Q05b_cash_named_binding",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "downside": {
+    "got": {
+     "breach": 3,
+     "closing": "-8000.00",
+     "feasible": false,
+     "fin": {
+      "api": 8,
+      "integ": 11,
+      "opt": 11
+     },
+     "lowest": "-8000.00"
+    },
+    "want": {
+     "breach": 3,
+     "closing": "-8000.00",
+     "feasible": false,
+     "fin": {
+      "api": 8,
+      "integ": 11,
+      "opt": 11
+     },
+     "lowest": "-8000.00"
+    }
+   }
+  },
+  "id": "Q06_downside_one_world",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": "ok",
+    "as-is/downside": "ok",
+    "cheap-help/base": "ok",
+    "cheap-help/downside": "ok",
+    "perm-hire/base": "ok",
+    "perm-hire/downside": "ok"
+   },
+   "feasible_in_downside": [
+    "cheap-help",
+    "perm-hire"
+   ],
+   "model_feasible": [
+    "cheap-help",
+    "perm-hire"
+   ],
+   "rc": 0,
+   "status": "feasible_options",
+   "want_rc": 0
+  },
+  "id": "Q07a_three_feasible",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "got": [
+    "cheap-help",
+    "perm-hire"
+   ],
+   "lowest": {
+    "as-is": "444000",
+    "cheap-help": "387000",
+    "perm-hire": "361000"
+   },
+   "want": [
+    "cheap-help",
+    "perm-hire"
+   ]
+  },
+  "id": "Q07b_ordering_reversible_first_then_lowest_cash",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": "ok",
+    "as-is/downside": "ok",
+    "hire/base": "ok",
+    "hire/downside": "ok"
+   },
+   "feasible_in_downside": [
+    "hire"
+   ],
+   "model_feasible": [
+    "hire"
+   ],
+   "rc": 0,
+   "status": "feasible_irreversible_only",
+   "want_rc": 0
+  },
+  "id": "Q08_irreversible_only",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": "ok",
+    "as-is/downside": "ok"
+   },
+   "feasible_in_downside": [],
+   "model_feasible": [],
+   "rc": 1,
+   "status": "rejected_as_stated",
+   "want_rc": 1
+  },
+  "id": "Q09_risk_realised_in_downside",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "exposure": {
+    "expected_cost": "6500.00",
+    "extra_hours": 60,
+    "id": "R1",
+    "mitigation": "tests",
+    "owner": "lead",
+    "probability": "0.25",
+    "work": "integ"
+   },
+   "note": "doc: probabilities only weight the listed exposure"
+  },
+  "id": "O09b_risk_exposure_figures",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "dated_after_as_of": {
+    "out_written": false,
+    "rc": 2
+   },
+   "dependency_cycle": {
+    "out_written": false,
+    "rc": 2
+   },
+   "literal_number": {
+    "out_written": false,
+    "rc": 2
+   },
+   "no_owner": {
+    "out_written": false,
+    "rc": 2
+   },
+   "unknown_assumption": {
+    "out_written": false,
+    "rc": 2
+   },
+   "unsourced": {
+    "out_written": false,
+    "rc": 2
+   }
+  },
+  "id": "Q10_invalid_packages_exit2_nothing_written",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "rc": 2,
+   "required_evidence": null,
+   "status": null
+  },
+  "id": "O10b_low_above_high_contradiction",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "out_written": false,
+   "rc": 2
+  },
+  "id": "Q17a_conflicting_direction_refused",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": "ok",
+    "as-is/downside": "ok",
+    "contractors/base": "ok",
+    "contractors/downside": "ok"
+   },
+   "feasible_in_downside": [],
+   "model_feasible": [],
+   "rc": 1,
+   "status": "rejected_as_stated",
+   "want_rc": 1
+  },
+  "id": "Q17b_stated_downside_low_used_for_both",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "out_written": false,
+   "rc": 2
+  },
+  "id": "Q17c_value_outside_own_range_refused",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": "ok",
+    "as-is/downside": "ok",
+    "short-help/base": "ok",
+    "short-help/downside": "ok"
+   },
+   "feasible_in_downside": [
+    "as-is",
+    "short-help"
+   ],
+   "model_feasible": [
+    "as-is",
+    "short-help"
+   ],
+   "rc": 0,
+   "status": "feasible_options",
+   "want_rc": 0
+  },
+  "id": "Q19_until_week_ends_capacity",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "required_evidence": [
+    "assumption h_int: no low/high range and not marked exact, so the downside equals the base"
+   ]
+  },
+  "id": "Q21_unranged_named_required_evidence",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "package_unchanged": true,
+   "rc": 2
+  },
+  "id": "Q22_out_onto_package_refused",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "cases": {
+    "base": "ok",
+    "downside": "ok"
+   },
+   "rc": 0,
+   "status": "feasible_options"
+  },
+  "id": "Q23_g14_inflow_scaled_by_period",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "cases": {
+    "as-is/base": "ok",
+    "as-is/downside": "ok"
+   },
+   "feasible_in_downside": [],
+   "model_feasible": [],
+   "rc": 1,
+   "status": "rejected_as_stated",
+   "want_rc": 1
+  },
+  "id": "Q11a_dissent_and_evidence_figures",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "dissent": [
+    "Finance (synthetic): the inflow low case is too optimistic.",
+    "Delivery (synthetic): prefers descoping."
+   ],
+   "required_evidence": [
+    "assumption h_int: no low/high range and not marked exact, so the downside equals the base",
+    "assumption h_int: stale (older than 180 days)"
+   ]
+  },
+  "id": "Q11b_dissent_echoed_and_required_evidence",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "evaluate_rc": 0,
+   "tampered_out": "DIFFERENT: 1 field(s) do not match a rerun of the package\n  .options[0].cases.downside.cash.closing: stored '1.00', recomputed '444000.00'\n",
+   "tampered_rc": 1,
+   "verify_rc": 0
+  },
+  "id": "Q12_verify_rerun_and_tamper",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "earliest": 15,
+   "one_week_short_feasible": [],
+   "rc_rejected": 1,
+   "rc_shifted": 0
+  },
+  "id": "Q13_recovery_shift_by_narrowed_weeks",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "feasible_by_deadline": {
+    "14": false,
+    "15": true
+   },
+   "finish": 15
+  },
+  "id": "Q14_deadline_boundary",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "books-sept": {
+    "rc": 1,
+    "status": "rejected_as_stated"
+   },
+   "books-unreconciled": {
+    "rc": 1,
+    "status": "rejected_as_stated"
+   }
+  },
+  "id": "Q15_g14_evidence_gate",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "cases": 25,
+   "fails": []
+  },
+  "id": "Q16_random_packages_property",
+  "kind": "core",
+  "result": "PASS"
+ }
+]

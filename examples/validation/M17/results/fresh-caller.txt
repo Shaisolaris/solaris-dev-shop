@@ -1,0 +1,60 @@
+== 3.9.6
+evaluate rc=0 want 0
+Decision: Synthetic studio: how do we deliver the client platform launch by week 16 without breaking the cash buffer?
+Owner: COO (synthetic role, approves resourcing up to the delegated limit) (decides; this report does not)
+As of 2026-10-05, USD. Status: feasible_options
+- as-is [reversible]: base feasible, downside not feasible; lowest cash downside 337000.00 (week 26); binding: capacity
+    launch due week 16, finishes 18: capacity: backend short 73.2 hours by week 16
+    narrowed: {"drop_optional_work": [], "earliest_milestone_weeks": {"launch": 18}, "feasible_downside": false, "note": "dropping optional work does not make it feasible; the milestones need a later date, more capacity, or less required scope (the owner's call)"}
+- contractors [reversible]: base feasible, downside not feasible; lowest cash downside 240076.92 (week 26); binding: cash
+    cash below buffer in week 17: 304692.31 < 308000.00
+    narrowed: {"cash_buffer_breach": {"balance": "304692.31", "buffer": "308000.00", "week": 17}, "drop_optional_work": [], "feasible_downside": false, "note": "the schedule holds but cash falls below the buffer in week 17; it needs a lower or shorter cost, more cash, or a buffer exception (the owner's call)"}
+- hire [irreversible]: base feasible, downside not feasible; lowest cash downside 205000.00 (week 26); binding: capacity, cash
+    launch due week 16, finishes 18: capacity: backend short 8.4 hours by week 16
+    cash below buffer in week 18: 315769.23 < 316000.00
+    narrowed: {"drop_optional_work": [], "earliest_milestone_weeks": {"launch": 18}, "feasible_downside": false, "note": "dropping optional work does not make it feasible; the milestones need a later date, more capacity, or less required scope (the owner's call)"}
+- descope-reporting [reversible]: base feasible, downside feasible; lowest cash downside 337000.00 (week 26)
+Feasible in the downside case: descope-reporting
+computed only from the stated assumptions and their ranges; not a forecast, and no outcome is certain. The decision owner decides.
+evaluate --json rc=0 want 0
+status feasible_options feasible_in_downside ['descope-reporting']
+as-is finish {'api': 14, 'design': 2, 'integration': 18, 'reporting': 22, 'web': 10} closing 337000.00 lowest 337000.00
+as-is feasible False breach None short [('capacity: backend short 73.2 hours by week 16', {'backend': '73.2'})]
+contractors feasible False breach {'balance': '304692.31', 'buffer': '308000.00', 'week': 17} short [(None, None)]
+hire feasible False breach {'balance': '315769.23', 'buffer': '316000.00', 'week': 18} short [('capacity: backend short 8.4 hours by week 16', {'backend': '8.4'})]
+descope-reporting feasible True breach None short [(None, None)]
+oracle rc=0 | ACCEPTED 12/12
+naive rc=1 | REJECTED 1/12
+noop rc=1 | REJECTED 1/12
+unreconciled books rc=1 want 1 | blocked_evidence
+tree unchanged: yes | pycache: 0 | home: /tmp/m17fr-lrNC5A/home/Library /tmp/m17fr-lrNC5A/home/Library/Caches /tmp/m17fr-lrNC5A/home/Library/Caches/com.apple.python 
+== 3.13.15
+evaluate rc=0 want 0
+Decision: Synthetic studio: how do we deliver the client platform launch by week 16 without breaking the cash buffer?
+Owner: COO (synthetic role, approves resourcing up to the delegated limit) (decides; this report does not)
+As of 2026-10-05, USD. Status: feasible_options
+- as-is [reversible]: base feasible, downside not feasible; lowest cash downside 337000.00 (week 26); binding: capacity
+    launch due week 16, finishes 18: capacity: backend short 73.2 hours by week 16
+    narrowed: {"drop_optional_work": [], "earliest_milestone_weeks": {"launch": 18}, "feasible_downside": false, "note": "dropping optional work does not make it feasible; the milestones need a later date, more capacity, or less required scope (the owner's call)"}
+- contractors [reversible]: base feasible, downside not feasible; lowest cash downside 240076.92 (week 26); binding: cash
+    cash below buffer in week 17: 304692.31 < 308000.00
+    narrowed: {"cash_buffer_breach": {"balance": "304692.31", "buffer": "308000.00", "week": 17}, "drop_optional_work": [], "feasible_downside": false, "note": "the schedule holds but cash falls below the buffer in week 17; it needs a lower or shorter cost, more cash, or a buffer exception (the owner's call)"}
+- hire [irreversible]: base feasible, downside not feasible; lowest cash downside 205000.00 (week 26); binding: capacity, cash
+    launch due week 16, finishes 18: capacity: backend short 8.4 hours by week 16
+    cash below buffer in week 18: 315769.23 < 316000.00
+    narrowed: {"drop_optional_work": [], "earliest_milestone_weeks": {"launch": 18}, "feasible_downside": false, "note": "dropping optional work does not make it feasible; the milestones need a later date, more capacity, or less required scope (the owner's call)"}
+- descope-reporting [reversible]: base feasible, downside feasible; lowest cash downside 337000.00 (week 26)
+Feasible in the downside case: descope-reporting
+computed only from the stated assumptions and their ranges; not a forecast, and no outcome is certain. The decision owner decides.
+evaluate --json rc=0 want 0
+status feasible_options feasible_in_downside ['descope-reporting']
+as-is finish {'api': 14, 'design': 2, 'integration': 18, 'reporting': 22, 'web': 10} closing 337000.00 lowest 337000.00
+as-is feasible False breach None short [('capacity: backend short 73.2 hours by week 16', {'backend': '73.2'})]
+contractors feasible False breach {'balance': '304692.31', 'buffer': '308000.00', 'week': 17} short [(None, None)]
+hire feasible False breach {'balance': '315769.23', 'buffer': '316000.00', 'week': 18} short [('capacity: backend short 8.4 hours by week 16', {'backend': '8.4'})]
+descope-reporting feasible True breach None short [(None, None)]
+oracle rc=0 | ACCEPTED 12/12
+naive rc=1 | REJECTED 1/12
+noop rc=1 | REJECTED 1/12
+unreconciled books rc=1 want 1 | blocked_evidence
+tree unchanged: yes | pycache: 0 | home: 

@@ -1,0 +1,6 @@
+== 3.9.6 | g17: Ran 15 tests in 9.182s  OK  | full: Ran 149 tests in 24.331s  OK  | builder-oracle: ACCEPTED 12/12 | builder-naive: REJECTED 1/12 | builder-noop: REJECTED 1/12 | m17-oracle: M17 ORACLE 22/22 core PASS | m17-naive: M17 ORACLE 0/22 core PASS | m17-noop: M17 ORACLE 0/22 core PASS
+== 3.11.16 | g17: Ran 15 tests in 7.055s  OK  | full: Ran 149 tests in 18.407s  OK  | builder-oracle: ACCEPTED 12/12 | builder-naive: REJECTED 1/12 | builder-noop: REJECTED 1/12 | m17-oracle: M17 ORACLE 22/22 core PASS | m17-naive: M17 ORACLE 0/22 core PASS | m17-noop: M17 ORACLE 0/22 core PASS
+== 3.12.14 | g17: Ran 15 tests in 7.243s  OK  | full: Ran 149 tests in 18.962s  OK  | builder-oracle: ACCEPTED 12/12 | builder-naive: REJECTED 1/12 | builder-noop: REJECTED 1/12 | m17-oracle: M17 ORACLE 22/22 core PASS | m17-naive: M17 ORACLE 0/22 core PASS | m17-noop: M17 ORACLE 0/22 core PASS
+== 3.13.15 | g17: Ran 15 tests in 7.920s  OK  | full: Ran 149 tests in 23.506s  OK  | builder-oracle: ACCEPTED 12/12 | builder-naive: REJECTED 1/12 | builder-noop: REJECTED 1/12 | m17-oracle: M17 ORACLE 22/22 core PASS | m17-naive: M17 ORACLE 0/22 core PASS | m17-noop: M17 ORACLE 0/22 core PASS
+pycache in copy: 0
+candidate status lines: 0
