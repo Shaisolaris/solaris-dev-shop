@@ -1,0 +1,972 @@
+[
+ {
+  "id": "K01_clean_control_exit0_exact",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "diffs": []
+  }
+ },
+ {
+  "id": "K02_seeded_books_equal_journal",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "11": {
+    "rc": 1,
+    "diffs": [
+     [
+      "USD",
+      "closing",
+      "unbilled",
+      "0.00",
+      "519.98"
+     ]
+    ],
+    "exceptions": {
+     "undelivered": 16
+    },
+    "stderr": ""
+   },
+   "12": {
+    "rc": 1,
+    "diffs": [],
+    "exceptions": {
+     "undelivered": 16
+    },
+    "stderr": ""
+   },
+   "13": {
+    "rc": 1,
+    "diffs": [],
+    "exceptions": {
+     "undelivered": 11
+    },
+    "stderr": ""
+   }
+  }
+ },
+ {
+  "id": "K03_settlement_timing_period_edges",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "diffs": [],
+   "journal": {
+    "open": "300.00",
+    "cash": "300.00",
+    "close": "800.00"
+   }
+  }
+ },
+ {
+  "id": "K04_negative_and_duplicate_transactions",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "cash": "300.00",
+   "closing_ar": "100.00",
+   "rejected": [
+    {
+     "detail": "-50.00",
+     "file": "payments.csv",
+     "id": "N1",
+     "line": 2,
+     "reason": "bad_amount",
+     "table": "payments"
+    },
+    {
+     "detail": "0.00",
+     "file": "credits.csv",
+     "id": "Z1",
+     "line": 2,
+     "reason": "bad_amount",
+     "table": "credits"
+    }
+   ],
+   "conflicting": [
+    "V1"
+   ],
+   "counts": {
+    "credits_used": 0,
+    "exact_duplicates_collapsed": 1,
+    "excluded_ids": 3,
+    "invoices_used": 1,
+    "payments_used": 3,
+    "void_invoices": 0
+   }
+  }
+ },
+ {
+  "id": "K05_mixed_currencies_not_combined",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "currencies": [
+    "EUR",
+    "GBP",
+    "USD"
+   ],
+   "usd": {
+    "cash_received": "500.00",
+    "recognized_revenue": "250.00"
+   },
+   "unapplied": [
+    [
+     "MP2",
+     "USD",
+     "currency_mismatch"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "K06_missing_documents_explicit",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "unapplied": [
+    [
+     "XP1",
+     "no_invoice_reference"
+    ],
+    [
+     "XP2",
+     "unknown_invoice"
+    ]
+   ],
+   "unlinked": [
+    "XC1",
+    "XC2"
+   ],
+   "no_loaded_at": [
+    "X2"
+   ],
+   "undelivered": [
+    "X1"
+   ],
+   "usd": {
+    "recognized_revenue": "0.00",
+    "closing": {
+     "ar_net": "300.00",
+     "ar_owed": "300.00",
+     "customer_credit": "0.00",
+     "deferred": "300.00",
+     "unapplied": "100.00",
+     "unbilled": "0.00"
+    }
+   }
+  }
+ },
+ {
+  "id": "K07_late_and_refund",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "late": [
+    {
+     "file": "payments.csv",
+     "id": "LP2",
+     "line": 3,
+     "loaded_at": "2026-08-07T10:00:00+00:00",
+     "table": "payments"
+    }
+   ],
+   "eur": {
+    "cash_received": "900.00",
+    "refunds_paid": "120.00",
+    "net_cash": "780.00",
+    "recognized_revenue": "900.00",
+    "closing": {
+     "ar_net": "120.00",
+     "ar_owed": "120.00",
+     "customer_credit": "0.00",
+     "deferred": "0.00",
+     "unapplied": "0.00",
+     "unbilled": "0.00"
+    }
+   },
+   "control": {
+    "bank_cash_in": "915.00",
+    "bank_cash_out": "120.00",
+    "difference_in": "15.00",
+    "difference_out": "0.00",
+    "ledger_cash_in": "900.00",
+    "ledger_cash_out": "120.00",
+    "ok": false
+   }
+  }
+ },
+ {
+  "id": "K07b_later_cutoff_takes_late_row",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "eur_closing": {
+    "ar_net": "105.00",
+    "ar_owed": "105.00",
+    "customer_credit": "0.00",
+    "deferred": "0.00",
+    "unapplied": "0.00",
+    "unbilled": "0.00"
+   },
+   "cash": "915.00"
+  }
+ },
+ {
+  "id": "K08_credit_note_timing_overpay_unbilled",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "got": {
+    "recognized_revenue": "1250.00",
+    "credit_notes": "160.00",
+    "billed": "1600.00",
+    "closing": {
+     "ar_net": "490.00",
+     "ar_owed": "540.00",
+     "customer_credit": "50.00",
+     "deferred": "540.00",
+     "unapplied": "0.00",
+     "unbilled": "0.00"
+    }
+   },
+   "want": {
+    "recognized_revenue": "1250.00",
+    "credit_notes": "160.00",
+    "billed": "1600.00",
+    "closing": {
+     "ar_net": "490.00",
+     "ar_owed": "540.00",
+     "customer_credit": "50.00",
+     "deferred": "540.00",
+     "unbilled": "350.00",
+     "unapplied": "0.00"
+    }
+   },
+   "checks_ok": false
+  }
+ },
+ {
+  "id": "K09_redelivered_shuffled_stable",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rcs": [
+    1,
+    1
+   ],
+   "same_figures": true,
+   "rerun_identical": true
+  }
+ },
+ {
+  "id": "K10_invalid_exit2_keeps_out_recovers",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "wrong_schema": 2,
+   "end_before_start": 2,
+   "missing_file": 2,
+   "bad_timezone": 2,
+   "file_outside": 2,
+   "unknown_field": 2,
+   "first": 0,
+   "kept": true,
+   "recover": 0
+  }
+ },
+ {
+  "id": "K11_amount_formats",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "rejected": [
+    {
+     "detail": "10.005",
+     "file": "invoices.csv",
+     "id": "F1",
+     "line": 2,
+     "reason": "bad_amount",
+     "table": "invoices"
+    },
+    {
+     "detail": "amount",
+     "file": "invoices.csv",
+     "line": 4,
+     "reason": "bad_decimal",
+     "table": "invoices"
+    }
+   ],
+   "jpy_rev": "15000.00"
+  }
+ },
+ {
+  "id": "K12_bank_control",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc_one_sided": 1,
+   "controls_one_sided": {
+    "CHF": {
+     "bank_cash_in": "1300.00",
+     "bank_cash_out": "0.00",
+     "difference_in": "0.00",
+     "difference_out": "0.00",
+     "ledger_cash_in": "1300.00",
+     "ledger_cash_out": "0.00",
+     "ok": true
+    },
+    "SEK": {
+     "bank_cash_in": "10.00",
+     "bank_cash_out": "0.00",
+     "difference_in": "10.00",
+     "difference_out": "0.00",
+     "ledger_cash_in": "0.00",
+     "ledger_cash_out": "0.00",
+     "ok": false
+    }
+   },
+   "rc_diff": 1,
+   "chf": {
+    "bank_cash_in": "1300.01",
+    "bank_cash_out": "0.00",
+    "difference_in": "0.01",
+    "difference_out": "0.00",
+    "ledger_cash_in": "1300.00",
+    "ledger_cash_out": "0.00",
+    "ok": false
+   }
+  }
+ },
+ {
+  "id": "K13_reads_only_no_bytecode",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "new_pycache": []
+  }
+ },
+ {
+  "id": "K14_obs_edge_probes",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "over_refund_over_credit": {
+    "rc": 1,
+    "closing": {
+     "ar_net": "200.00",
+     "ar_owed": "200.00",
+     "customer_credit": "0.00",
+     "deferred": "0.00",
+     "unapplied": "0.00",
+     "unbilled": "0.00"
+    },
+    "revenue": "-200.00",
+    "exceptions": {
+     "over_credited": [
+      {
+       "credit_notes": "300.00",
+       "currency": "USD",
+       "excess": "200.00",
+       "id": "O1",
+       "invoice_amount": "100.00"
+      }
+     ],
+     "over_refunded": [
+      {
+       "currency": "USD",
+       "excess": "400.00",
+       "id": "O1",
+       "paid": "100.00",
+       "refunded": "500.00"
+      }
+     ]
+    }
+   },
+   "currency_with_spaces": {
+    "rc": 0,
+    "currencies": [
+     "USD"
+    ],
+    "rejected": []
+   }
+  }
+ },
+ {
+  "id": "K15_void_invoice",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "usd": {
+    "billed": "0.00",
+    "recognized_revenue": "0.00",
+    "closing": {
+     "ar_net": "0.00",
+     "ar_owed": "0.00",
+     "customer_credit": "0.00",
+     "deferred": "0.00",
+     "unapplied": "200.00",
+     "unbilled": "0.00"
+    }
+   },
+   "unapplied": [
+    [
+     "VP1",
+     "invoice_void"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "K16_missing_value_rejected",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "rejected": [
+    {
+     "detail": "amount",
+     "file": "invoices.csv",
+     "id": "V2",
+     "line": 3,
+     "reason": "missing_value",
+     "table": "invoices"
+    },
+    {
+     "detail": "amount",
+     "file": "payments.csv",
+     "id": "VP2",
+     "line": 3,
+     "reason": "missing_value",
+     "table": "payments"
+    }
+   ],
+   "billed": "200.00",
+   "cash": "200.00"
+  }
+ },
+ {
+  "id": "K17_excluded_invoice_not_linkable",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "conflicting": [
+    {
+     "id": "V1",
+     "lines": [
+      2,
+      3
+     ],
+     "table": "invoices"
+    }
+   ],
+   "unapplied": [
+    {
+     "amount": "200.00",
+     "currency": "USD",
+     "id": "VP1",
+     "reason": "invoice_conflicting_versions",
+     "table": "payments"
+    }
+   ],
+   "closing": {
+    "ar_net": "0.00",
+    "ar_owed": "0.00",
+    "customer_credit": "0.00",
+    "deferred": "0.00",
+    "unapplied": "200.00",
+    "unbilled": "0.00"
+   }
+  }
+ },
+ {
+  "id": "K18_period_end_exclusive",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "billed": "200.00",
+   "revenue": "200.00",
+   "closing": {
+    "ar_net": "0.00",
+    "ar_owed": "0.00",
+    "customer_credit": "0.00",
+    "deferred": "0.00",
+    "unapplied": "0.00",
+    "unbilled": "0.00"
+   }
+  }
+ },
+ {
+  "id": "K19_bank_out_and_one_sided_ledger",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc_out": 1,
+   "usd": {
+    "bank_cash_in": "200.00",
+    "bank_cash_out": "25.00",
+    "difference_in": "0.00",
+    "difference_out": "5.00",
+    "ledger_cash_in": "200.00",
+    "ledger_cash_out": "20.00",
+    "ok": false
+   },
+   "rc_one_sided": 1,
+   "eur": {
+    "detail": "no bank line for this currency",
+    "ledger_cash_in": "200.00",
+    "ledger_cash_out": "0.00",
+    "ok": false
+   }
+  }
+ },
+ {
+  "id": "K20_doc_silent_refusals",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "as_of_before_end_rc": 2,
+   "duplicate_key_rc": 2
+  }
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [],
+   "over_refunded": [
+    {
+     "currency": "USD",
+     "excess": "50.00",
+     "id": "A",
+     "paid": "100.00",
+     "refunded": "150.00"
+    }
+   ],
+   "rc": 1,
+   "want_credited": [],
+   "want_rc": 1,
+   "want_refunded": [
+    {
+     "currency": "USD",
+     "excess": "50.00",
+     "id": "A",
+     "paid": "100.00",
+     "refunded": "150.00"
+    }
+   ]
+  },
+  "id": "N01_over_refund_only",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [
+    {
+     "credit_notes": "130.00",
+     "currency": "USD",
+     "excess": "30.00",
+     "id": "B",
+     "invoice_amount": "100.00"
+    }
+   ],
+   "over_refunded": [],
+   "rc": 1,
+   "want_credited": [
+    {
+     "credit_notes": "130.00",
+     "currency": "USD",
+     "excess": "30.00",
+     "id": "B",
+     "invoice_amount": "100.00"
+    }
+   ],
+   "want_rc": 1,
+   "want_refunded": []
+  },
+  "id": "N02_over_credit_unpaid",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [],
+   "over_refunded": [],
+   "rc": 0,
+   "want_credited": [],
+   "want_rc": 0,
+   "want_refunded": []
+  },
+  "id": "N03_equal_amounts_not_challenged",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "note": "refund+credit 120 > paid 100 on A, and an ordinary credit note on unpaid B: neither is challenged",
+   "over_credited": [],
+   "over_refunded": [],
+   "rc": 0,
+   "want_credited": [],
+   "want_rc": 0,
+   "want_refunded": []
+  },
+  "id": "N04_separate_not_combined",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [],
+   "over_refunded": [],
+   "rc": 0,
+   "want_credited": [],
+   "want_rc": 0,
+   "want_refunded": []
+  },
+  "id": "N05_refund_before_payment_after_period_end",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [],
+   "over_refunded": [
+    {
+     "currency": "USD",
+     "excess": "10.00",
+     "id": "A",
+     "paid": "100.00",
+     "refunded": "110.00"
+    }
+   ],
+   "rc": 1,
+   "want_credited": [],
+   "want_rc": 1,
+   "want_refunded": [
+    {
+     "currency": "USD",
+     "excess": "10.00",
+     "id": "A",
+     "paid": "100.00",
+     "refunded": "110.00"
+    }
+   ]
+  },
+  "id": "N06_refund_after_period_end_counts",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [],
+   "over_refunded": [
+    {
+     "currency": "USD",
+     "excess": "0.01",
+     "id": "A",
+     "paid": "99.99",
+     "refunded": "100.00"
+    }
+   ],
+   "rc": 1,
+   "want_credited": [],
+   "want_rc": 1,
+   "want_refunded": [
+    {
+     "currency": "USD",
+     "excess": "0.01",
+     "id": "A",
+     "paid": "99.99",
+     "refunded": "100.00"
+    }
+   ]
+  },
+  "id": "N07_cents_many_rows",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [],
+   "over_refunded": [
+    {
+     "currency": "USD",
+     "excess": "50.00",
+     "id": "A",
+     "paid": "100.00",
+     "refunded": "150.00"
+    }
+   ],
+   "rc": 1,
+   "want_credited": [],
+   "want_rc": 1,
+   "want_refunded": [
+    {
+     "currency": "USD",
+     "excess": "50.00",
+     "id": "A",
+     "paid": "100.00",
+     "refunded": "150.00"
+    }
+   ]
+  },
+  "id": "N08_per_invoice_no_netting",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "late": 2,
+   "over_refunded": [
+    {
+     "currency": "USD",
+     "excess": "100.00",
+     "id": "B",
+     "paid": "0.00",
+     "refunded": "100.00"
+    }
+   ],
+   "rc": 1,
+   "want": [
+    {
+     "currency": "USD",
+     "excess": "100.00",
+     "id": "B",
+     "paid": "0.00",
+     "refunded": "100.00"
+    }
+   ]
+  },
+  "id": "N09_late_rows_excluded_from_totals",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "over_refunded": [],
+   "rc": 1,
+   "unapplied_reasons": [
+    "currency_mismatch"
+   ]
+  },
+  "id": "N10_currency_mismatch_refund_not_counted",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "over_refunded": [],
+   "rc": 1
+  },
+  "id": "N11_conflicting_refund_excluded",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [],
+   "over_refunded": [],
+   "rc": 0,
+   "want_credited": [],
+   "want_rc": 0,
+   "want_refunded": []
+  },
+  "id": "N12_exact_repeat_counts_once",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "over_credited": [],
+   "over_refunded": [],
+   "rc": 1,
+   "unapplied": [
+    "invoice_void"
+   ],
+   "unlinked": [
+    "invoice_void"
+   ]
+  },
+  "id": "N13_void_invoice_not_challenged",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [
+    {
+     "credit_notes": "110.00",
+     "currency": "USD",
+     "excess": "10.00",
+     "id": "A",
+     "invoice_amount": "100.00"
+    }
+   ],
+   "over_refunded": [
+    {
+     "currency": "USD",
+     "excess": "20.00",
+     "id": "A",
+     "paid": "100.00",
+     "refunded": "120.00"
+    }
+   ],
+   "rc": 1,
+   "want_credited": [
+    {
+     "credit_notes": "110.00",
+     "currency": "USD",
+     "excess": "10.00",
+     "id": "A",
+     "invoice_amount": "100.00"
+    }
+   ],
+   "want_rc": 1,
+   "want_refunded": [
+    {
+     "currency": "USD",
+     "excess": "20.00",
+     "id": "A",
+     "paid": "100.00",
+     "refunded": "120.00"
+    }
+   ]
+  },
+  "id": "N14_both_on_one_invoice",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "controls": null,
+   "currencies": {
+    "USD": {
+     "billed": "100.00",
+     "cash_received": "100.00",
+     "checks": {
+      "ar_rollforward": {
+       "closing_ar": "10.00",
+       "expected_closing_ar": "10.00",
+       "ok": true
+      },
+      "cash_ledger": {
+       "cash_from_balances": "-20.00",
+       "net_cash": "-20.00",
+       "ok": true
+      },
+      "revenue_cash_bridge": {
+       "balance_changes": "10.00",
+       "ok": true,
+       "revenue_minus_cash": "10.00"
+      }
+     },
+     "closing": {
+      "ar_net": "10.00",
+      "ar_owed": "10.00",
+      "customer_credit": "0.00",
+      "deferred": "0.00",
+      "unapplied": "0.00",
+      "unbilled": "0.00"
+     },
+     "credit_notes": "110.00",
+     "net_cash": "-20.00",
+     "opening": {
+      "ar_net": "0.00",
+      "ar_owed": "0.00",
+      "customer_credit": "0.00",
+      "deferred": "0.00",
+      "unapplied": "0.00",
+      "unbilled": "0.00"
+     },
+     "recognized_revenue": "-10.00",
+     "refunds_paid": "120.00"
+    }
+   }
+  },
+  "id": "O15_controls_and_revenue_as_booked",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "cases": 40,
+   "fails": []
+  },
+  "id": "N16_random_books_property",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "over_refunded": [],
+   "rc": 0
+  },
+  "id": "O17_payment_dated_after_as_of_loaded_before",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "over_credited": [
+    {
+     "credit_notes": "100.01",
+     "currency": "USD",
+     "excess": "0.01",
+     "id": "A",
+     "invoice_amount": "100.00"
+    }
+   ],
+   "rc": 1
+  },
+  "id": "O18_undelivered_over_credit_by_a_cent",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "rc": 1,
+   "unapplied": [
+    "currency_mismatch",
+    "no_invoice_reference",
+    "unknown_invoice"
+   ],
+   "unlinked": [
+    "credit_note_before_invoice"
+   ],
+   "want_unapplied": [
+    "currency_mismatch",
+    "no_invoice_reference",
+    "unknown_invoice"
+   ],
+   "want_unlinked": [
+    "credit_note_before_invoice"
+   ]
+  },
+  "id": "N19_exact_reason_values",
+  "kind": "core",
+  "result": "PASS"
+ }
+]

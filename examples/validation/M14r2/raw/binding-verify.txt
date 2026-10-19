@@ -1,0 +1,14 @@
+Mon Oct 19 03:20:39 PDT 2026
+candidate 6f7b23aa18413907c5fbd250daab475dc94e7a1e parent 76b9c669359214c5dbe06768c78229beb54a4eae
+02ba9c571b10ad1dba792d2ac5534bcad3171e67	refs/heads/main
+5666e7beb161d1252ddd5dcc0a166aca83255370	refs/heads/review/grok-g13-csv-reconciliation
+6f7b23aa18413907c5fbd250daab475dc94e7a1e	refs/heads/review/grok-g14-cash-revenue
+4d82e4387376bbb62d460ff3742683b1db7e0a9c	refs/heads/review/grok-m13-validation
+c3ecabc0d176bc5ad621f5bf8629d6a29cacff95	refs/heads/review/grok-m13r2-validation
+db6028ed56d059c1926df5311379fa1e6880bb7b	refs/heads/review/grok-m13r3-validation
+a07d54e40ad07d6d99a499c1cac3491ccc572111	refs/heads/review/grok-m14-validation
+fast-forward from r1 76b9c66: yes
+contains G13 r3 5666e7b: yes
+patch sha 63684f2321d1dd9bbc1b902bf88db926f4e0c209fe41a17d534592b42186cdd1 diff sha 63684f2321d1dd9bbc1b902bf88db926f4e0c209fe41a17d534592b42186cdd1
+manifest entries 7 mismatches 0
+manifest set == diff set

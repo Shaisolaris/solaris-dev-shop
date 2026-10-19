@@ -1,0 +1,383 @@
+[
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [],
+   "over_refunded": [],
+   "rc": 0,
+   "want_credited": [],
+   "want_rc": 1,
+   "want_refunded": [
+    {
+     "currency": "USD",
+     "excess": "50.00",
+     "id": "A",
+     "paid": "100.00",
+     "refunded": "150.00"
+    }
+   ]
+  },
+  "id": "N01_over_refund_only",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [],
+   "over_refunded": [],
+   "rc": 0,
+   "want_credited": [
+    {
+     "credit_notes": "130.00",
+     "currency": "USD",
+     "excess": "30.00",
+     "id": "B",
+     "invoice_amount": "100.00"
+    }
+   ],
+   "want_rc": 1,
+   "want_refunded": []
+  },
+  "id": "N02_over_credit_unpaid",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [],
+   "over_refunded": [],
+   "rc": 0,
+   "want_credited": [],
+   "want_rc": 0,
+   "want_refunded": []
+  },
+  "id": "N03_equal_amounts_not_challenged",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "note": "refund+credit 120 > paid 100 on A, and an ordinary credit note on unpaid B: neither is challenged",
+   "over_credited": [],
+   "over_refunded": [],
+   "rc": 0,
+   "want_credited": [],
+   "want_rc": 0,
+   "want_refunded": []
+  },
+  "id": "N04_separate_not_combined",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [],
+   "over_refunded": [],
+   "rc": 0,
+   "want_credited": [],
+   "want_rc": 0,
+   "want_refunded": []
+  },
+  "id": "N05_refund_before_payment_after_period_end",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [],
+   "over_refunded": [],
+   "rc": 0,
+   "want_credited": [],
+   "want_rc": 1,
+   "want_refunded": [
+    {
+     "currency": "USD",
+     "excess": "10.00",
+     "id": "A",
+     "paid": "100.00",
+     "refunded": "110.00"
+    }
+   ]
+  },
+  "id": "N06_refund_after_period_end_counts",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [],
+   "over_refunded": [],
+   "rc": 0,
+   "want_credited": [],
+   "want_rc": 1,
+   "want_refunded": [
+    {
+     "currency": "USD",
+     "excess": "0.01",
+     "id": "A",
+     "paid": "99.99",
+     "refunded": "100.00"
+    }
+   ]
+  },
+  "id": "N07_cents_many_rows",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [],
+   "over_refunded": [],
+   "rc": 0,
+   "want_credited": [],
+   "want_rc": 1,
+   "want_refunded": [
+    {
+     "currency": "USD",
+     "excess": "50.00",
+     "id": "A",
+     "paid": "100.00",
+     "refunded": "150.00"
+    }
+   ]
+  },
+  "id": "N08_per_invoice_no_netting",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "late": 0,
+   "over_refunded": [],
+   "rc": 0,
+   "want": [
+    {
+     "currency": "USD",
+     "excess": "100.00",
+     "id": "B",
+     "paid": "0.00",
+     "refunded": "100.00"
+    }
+   ]
+  },
+  "id": "N09_late_rows_excluded_from_totals",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "over_refunded": [],
+   "rc": 0,
+   "unapplied_reasons": []
+  },
+  "id": "N10_currency_mismatch_refund_not_counted",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "over_refunded": [],
+   "rc": 0
+  },
+  "id": "N11_conflicting_refund_excluded",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [],
+   "over_refunded": [],
+   "rc": 0,
+   "want_credited": [],
+   "want_rc": 0,
+   "want_refunded": []
+  },
+  "id": "N12_exact_repeat_counts_once",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "over_credited": [],
+   "over_refunded": [],
+   "rc": 0,
+   "unapplied": [],
+   "unlinked": []
+  },
+  "id": "N13_void_invoice_not_challenged",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "note": null,
+   "over_credited": [],
+   "over_refunded": [],
+   "rc": 0,
+   "want_credited": [
+    {
+     "credit_notes": "110.00",
+     "currency": "USD",
+     "excess": "10.00",
+     "id": "A",
+     "invoice_amount": "100.00"
+    }
+   ],
+   "want_rc": 1,
+   "want_refunded": [
+    {
+     "currency": "USD",
+     "excess": "20.00",
+     "id": "A",
+     "paid": "100.00",
+     "refunded": "120.00"
+    }
+   ]
+  },
+  "id": "N14_both_on_one_invoice",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "controls": null,
+   "currencies": {
+    "USD": {
+     "billed": "100.00",
+     "cash_received": "100.00",
+     "checks": {
+      "all": {
+       "ok": true
+      }
+     },
+     "closing": {
+      "ar_net": "0.00",
+      "ar_owed": "0.00",
+      "customer_credit": "0.00",
+      "deferred": "0.00",
+      "unapplied": "0.00",
+      "unbilled": "0.00"
+     },
+     "credit_notes": "0.00",
+     "net_cash": "100.00",
+     "opening": {},
+     "recognized_revenue": "100.00",
+     "refunds_paid": "0.00"
+    }
+   }
+  },
+  "id": "O15_controls_and_revenue_as_booked",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "cases": 40,
+   "fails": [
+    {
+     "case": 0,
+     "got": [
+      [],
+      []
+     ],
+     "rc": 0,
+     "want": [
+      [],
+      [
+       {
+        "credit_notes": "455.16",
+        "currency": "USD",
+        "excess": "444.15",
+        "id": "I3",
+        "invoice_amount": "11.01"
+       },
+       {
+        "credit_notes": "301.33",
+        "currency": "USD",
+        "excess": "260.89",
+        "id": "I4",
+        "invoice_amount": "40.44"
+       }
+      ]
+     ],
+     "want_rc": 1
+    },
+    {
+     "case": 1,
+     "got": [
+      [],
+      []
+     ],
+     "rc": 0,
+     "want": [
+      [
+       {
+        "currency": "USD",
+        "excess": "72.70",
+        "id": "I0",
+        "paid": "167.91",
+        "refunded": "240.61"
+       }
+      ],
+      [
+       {
+        "credit_notes": "201.28",
+        "currency": "USD",
+        "excess": "181.15",
+        "id": "I0",
+        "invoice_amount": "20.13"
+       }
+      ]
+     ],
+     "want_rc": 1
+    }
+   ]
+  },
+  "id": "N16_random_books_property",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "over_refunded": [],
+   "rc": 0
+  },
+  "id": "O17_payment_dated_after_as_of_loaded_before",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "over_credited": [],
+   "rc": 0
+  },
+  "id": "O18_undelivered_over_credit_by_a_cent",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "rc": 0,
+   "unapplied": [],
+   "unlinked": [],
+   "want_unapplied": [
+    "currency_mismatch",
+    "no_invoice_reference",
+    "unknown_invoice"
+   ],
+   "want_unlinked": [
+    "credit_note_before_invoice"
+   ]
+  },
+  "id": "N19_exact_reason_values",
+  "kind": "core",
+  "result": "FAIL"
+ }
+]

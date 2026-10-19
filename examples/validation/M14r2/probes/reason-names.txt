@@ -1,0 +1,5 @@
+bad_amount IN_DOC
+bad_decimal NOT_IN_DOC (G13 reader reason, documented by reference)
+currency_mismatch IN_DOC
+invoice_conflicting_versions IN_DOC
+missing_value IN_DOC

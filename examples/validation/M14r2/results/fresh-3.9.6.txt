@@ -1,0 +1,57 @@
+-- rc=0 :: python3 employees/leadership/cfo/cash_revenue_reconcile.py reconcile examples/capabilities/G14/fixtures/clean/package.json
+period 2026-09-01T00:00:00+00:00 to 2026-10-01T00:00:00+00:00: reconciled
+  USD: revenue 2250.50, net cash 2250.50 (in 2250.50, refunds 0.00), billed 2250.50, credit notes 0.00
+       closing AR 0.00 (owed 0.00, customer credit 0.00), deferred 0.00, unbilled 0.00, unapplied cash 0.00
+       checks: all close
+  bank control USD: ok
+-- rc=1 :: python3 employees/leadership/cfo/cash_revenue_reconcile.py reconcile examples/capabilities/G14/fixtures/september/package.json
+period 2026-09-01T00:00:00+00:00 to 2026-10-01T00:00:00+00:00: reconciled_with_exceptions
+  EUR: revenue 400.00, net cash 400.00 (in 450.00, refunds 50.00), billed 400.00, credit notes 0.00
+       closing AR 0.00 (owed 0.00, customer credit 0.00), deferred 0.00, unbilled 0.00, unapplied cash 0.00
+       checks: all close
+  GBP: revenue 0.00, net cash 90.00 (in 90.00, refunds 0.00), billed 0.00, credit notes 0.00
+       closing AR 0.00 (owed 0.00, customer credit 0.00), deferred 0.00, unbilled 0.00, unapplied cash 90.00
+       checks: all close
+  USD: revenue 2000.00, net cash 2195.00 (in 2195.00, refunds 0.00), billed 2550.00, credit notes 150.00
+       closing AR 700.00 (owed 700.00, customer credit 0.00), deferred 400.00, unbilled 0.00, unapplied cash 195.00
+       checks: all close
+  bank control EUR: ok
+  bank control GBP: ok
+  bank control USD: ok
+  late: 1
+-- rc=1 :: python3 employees/leadership/cfo/cash_revenue_reconcile.py reconcile examples/capabilities/G14/fixtures/september/package.json --json
+{
+ "as_of": "2026-10-03T00:00:00+00:00",
+ "controls": {
+  "EUR": {
+   "bank_cash_in": "450.00",
+   "bank_cash_out": "50.00",
+   "difference_in": "0.00",
+   "difference_out": "0.00",
+   "ledger_cash_in": "450.00",
+   "ledger_cash_out": "50.00",
+   "ok": true
+  },
+  "GBP": {
+   "bank_cash_in": "90.00",
+-- rc=2 :: python3 employees/leadership/cfo/cash_revenue_reconcile.py reconcile examples/capabilities/G14/README.md
+invalid: README.md: not valid UTF-8 JSON
+-- rc=1 :: python3 employees/leadership/cfo/cash_revenue_reconcile.py reconcile examples/capabilities/G14/fixtures/september/package.json --json --out r.json
+{
+ "as_of": "2026-10-03T00:00:00+00:00",
+ "controls": {
+  "EUR": {
+   "bank_cash_in": "450.00",
+   "bank_cash_out": "50.00",
+   "difference_in": "0.00",
+   "difference_out": "0.00",
+   "ledger_cash_in": "450.00",
+   "ledger_cash_out": "50.00",
+   "ok": true
+  },
+  "GBP": {
+   "bank_cash_in": "90.00",
+EUR 400.00 0.00 400.00 450.00 50.00 0.00 0.00 0.00 0.00
+GBP 0.00 0.00 0.00 90.00 0.00 0.00 0.00 0.00 90.00
+USD 2550.00 150.00 2000.00 2195.00 0.00 300.00 700.00 400.00 195.00
+new files in copy (besides r.json): 0, pycache: 0
