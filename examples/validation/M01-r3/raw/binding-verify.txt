@@ -1,0 +1,17 @@
+# binding check 2026-10-18 21:15:39 PDT
+parent deb06f66201f1752a659214a2e1c915a4a7991af
+diff deb06f6..1621c82 a730fc3345b276bcb854fc1749e75ab82c0c89a34981854f6e4e6b1cbbaa80cf
+G01-r2.patch          a730fc3345b276bcb854fc1749e75ab82c0c89a34981854f6e4e6b1cbbaa80cf
+identical: yes
+ employees/quality-security/assurance/ASSURANCE.md  | 12 +++-
+ employees/quality-security/assurance/quality_os.py | 27 ++++++--
+ tests/test_fixture_runner.py                       | 74 ++++++++++++++++++++++
+ 3 files changed, 106 insertions(+), 7 deletions(-)
+manifest at 1621c82:
+G01/MANIFEST.sha256 (20:44) vs 1621c82 tree:
+docs/install.md: OK
+employees/quality-security/assurance/ASSURANCE.md: OK
+employees/quality-security/assurance/quality_os.py: OK
+tests/test_fixture_runner.py: OK
+manifest set vs diff 02ba9c5..1621c82:
+equal: yes

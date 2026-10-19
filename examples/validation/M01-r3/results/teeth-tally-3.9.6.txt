@@ -1,0 +1,46 @@
+Grok self-validation. M01 r3 teeth on G01 r2 1621c82, /usr/bin/python3 3.9.6, 4 shards. Kill = deviation from candidate baseline.
+control_noop                       oracle=- probes_r2=- probes_r3=- fixture_tests=- suite=-
+rv_kind_check                      oracle=- probes_r2=- probes_r3=- fixture_tests=K suite=K
+rv_unknown_exp                     oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+rv_role                            oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+mut_ok_error                       oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+f1_stray_off                       oracle=- probes_r2=K probes_r3=K fixture_tests=K suite=K
+f2_gate_nonempty_off               oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+f4_fresh_bool                      oracle=- probes_r2=- probes_r3=- fixture_tests=K suite=K
+f4_generic_except_off              oracle=- probes_r2=- probes_r3=- fixture_tests=K suite=K
+r3_legal_fields_off                oracle=- probes_r2=K probes_r3=K fixture_tests=K suite=K
+r3_onerror_off                     oracle=- probes_r2=K probes_r3=K fixture_tests=K suite=K
+rv_kind_or                         oracle=- probes_r2=- probes_r3=- fixture_tests=K suite=K
+mut_exp_keys                       oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+mut_role_strip                     oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+f1_near_off                        oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+f1_extra_off                       oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+f2_gate_outcome_off                oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+f4_fresh_neg                       oracle=- probes_r2=- probes_r3=- fixture_tests=K suite=K
+f4_outer_recursion_off_EQUIV       oracle=- probes_r2=- probes_r3=- fixture_tests=- suite=-
+r3_alias_off                       oracle=- probes_r2=- probes_r3=- fixture_tests=K suite=K
+r3_unreadable_count_off            oracle=- probes_r2=K probes_r3=K fixture_tests=K suite=K
+mut_kind_precedence                oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+rv_outcome                         oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+rv_missing_dir                     oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+f1_norm_only                       oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+f1_dup_off                         oracle=- probes_r2=- probes_r3=- fixture_tests=K suite=K
+f2_role_vacuous                    oracle=- probes_r2=- probes_r3=- fixture_tests=K suite=K
+f4_text_type_off                   oracle=- probes_r2=- probes_r3=- fixture_tests=K suite=K
+f5_case_suffix                     oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+r3_alias_kind_only                 oracle=- probes_r2=- probes_r3=- fixture_tests=K suite=K
+r3_unreadable_ok_true              oracle=- probes_r2=- probes_r3=K fixture_tests=K suite=K
+mut_kinds_empty                    oracle=- probes_r2=- probes_r3=- fixture_tests=K suite=K
+mut_outcome_set                    oracle=- probes_r2=- probes_r3=- fixture_tests=K suite=K
+rv_empty                           oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+f1_ratio_095                       oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+f2_gate_any                        oracle=K probes_r2=- probes_r3=- fixture_tests=K suite=K
+f3_legal_default_off               oracle=- probes_r2=- probes_r3=- fixture_tests=K suite=K
+f4_defect_type_off                 oracle=- probes_r2=- probes_r3=- fixture_tests=K suite=K
+f5_symlink_report_off              oracle=- probes_r2=- probes_r3=- fixture_tests=K suite=K
+r3_alias_contract_off              oracle=- probes_r2=- probes_r3=- fixture_tests=- suite=-
+
+mutants 39 (+ control_noop), errors []
+kills: oracle 17, probes_r2 4, probes_r3 5, fixture_tests 37, suite 37; union 37
+survivors: ['f4_outer_recursion_off_EQUIV', 'r3_alias_contract_off']
+control_noop killed: {'oracle': False, 'probes_r2': False, 'probes_r3': False, 'fixture_tests': False, 'suite': False}

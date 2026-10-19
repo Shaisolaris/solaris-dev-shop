@@ -1,0 +1,317 @@
+[
+ {
+  "mutant": "mut_kinds_empty",
+  "kills": {
+   "oracle": false,
+   "probes_r2": false,
+   "probes_r3": false,
+   "fixture_tests": true,
+   "suite": true
+  },
+  "scores": {
+   "oracle": "core: 12 / 12  gaps open: 0 / 14",
+   "probes_r2": [
+    "y01",
+    "y02",
+    "y03",
+    "y04",
+    "y05",
+    "y06",
+    "y07"
+   ],
+   "probes_r3": [
+    "z03",
+    "z05",
+    "z06",
+    "z07",
+    "z08",
+    "z09",
+    "z10",
+    "z11",
+    "z12"
+   ],
+   "fixture_tests": false,
+   "suite": false
+  }
+ },
+ {
+  "mutant": "mut_outcome_set",
+  "kills": {
+   "oracle": false,
+   "probes_r2": false,
+   "probes_r3": false,
+   "fixture_tests": true,
+   "suite": true
+  },
+  "scores": {
+   "oracle": "core: 12 / 12  gaps open: 0 / 14",
+   "probes_r2": [
+    "y01",
+    "y02",
+    "y03",
+    "y04",
+    "y05",
+    "y06",
+    "y07"
+   ],
+   "probes_r3": [
+    "z03",
+    "z05",
+    "z06",
+    "z07",
+    "z08",
+    "z09",
+    "z10",
+    "z11",
+    "z12"
+   ],
+   "fixture_tests": false,
+   "suite": false
+  }
+ },
+ {
+  "mutant": "rv_empty",
+  "kills": {
+   "oracle": true,
+   "probes_r2": false,
+   "probes_r3": false,
+   "fixture_tests": true,
+   "suite": true
+  },
+  "scores": {
+   "oracle": "core: 11 / 12  gaps open: 0 / 14",
+   "probes_r2": [
+    "y01",
+    "y02",
+    "y03",
+    "y04",
+    "y05",
+    "y06",
+    "y07"
+   ],
+   "probes_r3": [
+    "z03",
+    "z05",
+    "z06",
+    "z07",
+    "z08",
+    "z09",
+    "z10",
+    "z11",
+    "z12"
+   ],
+   "fixture_tests": false,
+   "suite": false
+  }
+ },
+ {
+  "mutant": "f1_ratio_095",
+  "kills": {
+   "oracle": true,
+   "probes_r2": false,
+   "probes_r3": false,
+   "fixture_tests": true,
+   "suite": true
+  },
+  "scores": {
+   "oracle": "core: 12 / 12  gaps open: 1 / 14",
+   "probes_r2": [
+    "y01",
+    "y02",
+    "y03",
+    "y04",
+    "y05",
+    "y06",
+    "y07"
+   ],
+   "probes_r3": [
+    "z03",
+    "z05",
+    "z06",
+    "z07",
+    "z08",
+    "z09",
+    "z10",
+    "z11",
+    "z12"
+   ],
+   "fixture_tests": false,
+   "suite": false
+  }
+ },
+ {
+  "mutant": "f2_gate_any",
+  "kills": {
+   "oracle": true,
+   "probes_r2": false,
+   "probes_r3": false,
+   "fixture_tests": true,
+   "suite": true
+  },
+  "scores": {
+   "oracle": "core: 12 / 12  gaps open: 1 / 14",
+   "probes_r2": [
+    "y01",
+    "y02",
+    "y03",
+    "y04",
+    "y05",
+    "y06",
+    "y07"
+   ],
+   "probes_r3": [
+    "z03",
+    "z05",
+    "z06",
+    "z07",
+    "z08",
+    "z09",
+    "z10",
+    "z11",
+    "z12"
+   ],
+   "fixture_tests": false,
+   "suite": false
+  }
+ },
+ {
+  "mutant": "f3_legal_default_off",
+  "kills": {
+   "oracle": false,
+   "probes_r2": false,
+   "probes_r3": false,
+   "fixture_tests": true,
+   "suite": true
+  },
+  "scores": {
+   "oracle": "core: 12 / 12  gaps open: 0 / 14",
+   "probes_r2": [
+    "y01",
+    "y02",
+    "y03",
+    "y04",
+    "y05",
+    "y06",
+    "y07"
+   ],
+   "probes_r3": [
+    "z03",
+    "z05",
+    "z06",
+    "z07",
+    "z08",
+    "z09",
+    "z10",
+    "z11",
+    "z12"
+   ],
+   "fixture_tests": false,
+   "suite": false
+  }
+ },
+ {
+  "mutant": "f4_defect_type_off",
+  "kills": {
+   "oracle": false,
+   "probes_r2": false,
+   "probes_r3": false,
+   "fixture_tests": true,
+   "suite": true
+  },
+  "scores": {
+   "oracle": "core: 12 / 12  gaps open: 0 / 14",
+   "probes_r2": [
+    "y01",
+    "y02",
+    "y03",
+    "y04",
+    "y05",
+    "y06",
+    "y07"
+   ],
+   "probes_r3": [
+    "z03",
+    "z05",
+    "z06",
+    "z07",
+    "z08",
+    "z09",
+    "z10",
+    "z11",
+    "z12"
+   ],
+   "fixture_tests": false,
+   "suite": false
+  }
+ },
+ {
+  "mutant": "f5_symlink_report_off",
+  "kills": {
+   "oracle": false,
+   "probes_r2": false,
+   "probes_r3": false,
+   "fixture_tests": true,
+   "suite": true
+  },
+  "scores": {
+   "oracle": "core: 12 / 12  gaps open: 0 / 14",
+   "probes_r2": [
+    "y01",
+    "y02",
+    "y03",
+    "y04",
+    "y05",
+    "y06",
+    "y07"
+   ],
+   "probes_r3": [
+    "z03",
+    "z05",
+    "z06",
+    "z07",
+    "z08",
+    "z09",
+    "z10",
+    "z11",
+    "z12"
+   ],
+   "fixture_tests": false,
+   "suite": false
+  }
+ },
+ {
+  "mutant": "r3_alias_contract_off",
+  "kills": {
+   "oracle": false,
+   "probes_r2": false,
+   "probes_r3": false,
+   "fixture_tests": false,
+   "suite": false
+  },
+  "scores": {
+   "oracle": "core: 12 / 12  gaps open: 0 / 14",
+   "probes_r2": [
+    "y01",
+    "y02",
+    "y03",
+    "y04",
+    "y05",
+    "y06",
+    "y07"
+   ],
+   "probes_r3": [
+    "z03",
+    "z05",
+    "z06",
+    "z07",
+    "z08",
+    "z09",
+    "z10",
+    "z11",
+    "z12"
+   ],
+   "fixture_tests": true,
+   "suite": true
+  }
+ }
+]

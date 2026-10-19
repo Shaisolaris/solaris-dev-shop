@@ -1,0 +1,25 @@
+--- a/employees/quality-security/assurance/quality_os.py	2026-10-18 21:19:30
++++ b/employees/quality-security/assurance/quality_os.py	2026-10-18 21:19:30
+@@ -1151,6 +1151,12 @@
+                            "text", "requested_actions", "sources", "freshness_days")
+ 
+ 
++# requested_actions and sources are also G05 packet fields (evaluate_packet validates them and passes them
++# to the legal check), so they only count as stray legal fields on an object that has no packet key.
++PACKET_LEGAL_KEYS = ("requested_actions", "sources")
++PACKET_MARKER_KEYS = ("legal_text", "risk_level", "dimensions", "completed_gates", "evidence", "planted_defects")
++
++
+ def _norm_key(key: str) -> str:
+     return key.lower().replace("_", "").replace("-", "").replace(" ", "")
+ 
+@@ -1169,7 +1175,8 @@
+     if group == "packet" and "packet" not in data:
+         # Unwrapped packet: packet fields are G05's allowlist; only refuse fields that
+         # belong to another fixture kind, which means its fixture_kind key was lost.
+-        stray = [k for k in NON_PACKET_FIXTURE_KEYS if k in data]
++        stray = [k for k in NON_PACKET_FIXTURE_KEYS if k in data
++                 and not (k in PACKET_LEGAL_KEYS and any(m in data for m in PACKET_MARKER_KEYS))]
+         if stray:
+             return "packet fixture has non-packet fields " + ", ".join(stray) + "; set fixture_kind"
+         # a kind written under another name ("fixture_type": "legal", "type": "closure")

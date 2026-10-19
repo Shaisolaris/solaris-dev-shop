@@ -1,0 +1,12 @@
+{"baseline": {"oracle": "core: 12 / 12  gaps open: 0 / 14", "probes_r2": ["y01", "y02", "y03", "y04", "y05", "y06", "y07"], "probes_r3": ["z03", "z05", "z06", "z07", "z08", "z09", "z10", "z11", "z12"], "fixture_tests": true, "suite": true}}
+{"mutant": "mut_kind_precedence", "oracle": true, "probes_r2": false, "probes_r3": false, "fixture_tests": true, "suite": true}
+{"mutant": "rv_outcome", "oracle": true, "probes_r2": false, "probes_r3": false, "fixture_tests": true, "suite": true}
+{"mutant": "rv_missing_dir", "oracle": true, "probes_r2": false, "probes_r3": false, "fixture_tests": true, "suite": true}
+{"mutant": "f1_norm_only", "oracle": true, "probes_r2": false, "probes_r3": false, "fixture_tests": true, "suite": true}
+{"mutant": "f1_dup_off", "oracle": false, "probes_r2": false, "probes_r3": false, "fixture_tests": true, "suite": true}
+{"mutant": "f2_role_vacuous", "oracle": false, "probes_r2": false, "probes_r3": false, "fixture_tests": true, "suite": true}
+{"mutant": "f4_text_type_off", "oracle": false, "probes_r2": false, "probes_r3": false, "fixture_tests": true, "suite": true}
+{"mutant": "f5_case_suffix", "oracle": true, "probes_r2": false, "probes_r3": false, "fixture_tests": true, "suite": true}
+{"mutant": "r3_alias_kind_only", "oracle": false, "probes_r2": false, "probes_r3": false, "fixture_tests": true, "suite": true}
+{"mutant": "r3_unreadable_ok_true", "oracle": false, "probes_r2": false, "probes_r3": true, "fixture_tests": true, "suite": true}
+DONE

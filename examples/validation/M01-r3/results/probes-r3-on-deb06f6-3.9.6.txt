@@ -1,0 +1,29 @@
+z01 HOLDS unwrapped packet with legal_text + requested_actions + sources (all G05 packet fields), benign text: passes as a packet
+      observed: (0, True, [], [''], False)
+z02 HOLDS unwrapped packet with requested_actions only: passes as a packet
+      observed: (0, True, [], [''], False)
+z03 HOLDS control: the z01 packet wrapped with fixture_kind packet passes
+      observed: (0, True, [], [''], False)
+z04 INFO  unwrapped negative legal packet (blocked text + requested_actions) with a fail_gate expectation
+      observed: (0, True, ['LEGAL_BINDING_PROHIBITED', 'LEGAL_DISCLAIMER_MISSING'], ['fail_gate expectation met'], False)
+z05 GAP   kind synonym with upper-case value on blocked legal text is not a pass
+      observed: (0, True, [], [''], False)
+z06 GAP   kind under a non kind/type name ('category') on blocked legal text is not a pass
+      observed: (0, True, [], [''], False)
+z07 HOLDS bare planted defect with kind under 'fixture_type'='planted_defect': refused or same as the fixture_kind form (True, ['SELF_APPROVAL_FORBIDDEN'])
+      observed: (1, False, ['INVALID_PACKET'], ['evidence must be an object keyed by gate'], False)
+z08 HOLDS bare planted defect with kind under 'fixture_type'='Planted_Defect': refused or same as the fixture_kind form (True, ['SELF_APPROVAL_FORBIDDEN'])
+      observed: (1, False, ['INVALID_PACKET'], ['evidence must be an object keyed by gate'], False)
+z09 HOLDS bare planted defect with kind under 'category'='planted_defect': refused or same as the fixture_kind form (True, ['SELF_APPROVAL_FORBIDDEN'])
+      observed: (1, False, ['INVALID_PACKET'], ['evidence must be an object keyed by gate'], False)
+z13 GAP   bare planted defect without evidence, kind under 'fixture_type'='Planted_Defect': refused or same as the fixture_kind form (True, ['SELF_APPROVAL_FORBIDDEN'])
+      observed: (0, True, [], [''], False)
+z14 GAP   bare planted defect without evidence, kind under 'category'='planted_defect': refused or same as the fixture_kind form (True, ['SELF_APPROVAL_FORBIDDEN'])
+      observed: (0, True, [], [''], False)
+z10 HOLDS suite whose root folder is unreadable is not ok and has no traceback
+      observed: (1, False, 0, 0, 'no fixtures found under /private/tmp/m01r3p-yx5iwsgc/s10; nothing was evaluated', False)
+z11 GAP   suite with an unreadable folder two levels down is not ok and names that folder
+      observed: (0, True, 1, 0, [])
+z12 HOLDS suite with an unreadable fixture FILE is not ok and has no traceback
+      observed: (1, False, 1, 1, False)
+PROBES-M01R3 8/13 hold

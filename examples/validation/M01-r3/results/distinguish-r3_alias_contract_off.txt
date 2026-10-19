@@ -1,0 +1,4 @@
+# Grok self-validation. Distinguishing input for survivor r3_alias_contract_off (ASSURANCE.md: when fixture_kind and kind are both present, fixture_kind wins and kind is ignored)
+fixture: {"fixture_kind": "packet", "kind": "closure", "risk_level": "elevated", "dimensions": ["security"], "completed_gates": ["security"], "evidence": {"security": {"gate": "security", "role": "security-auditor", "summary": "STRIDE review", "artifacts": ["reports/threat-model.md"], "blocking_open": 0}}}
+candidate rc=0 True [] ['']
+mutant rc=1 False ['INVALID_PACKET'] ['']
