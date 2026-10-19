@@ -1,0 +1,150 @@
+[
+ {
+  "detail": {
+   "labels": [
+    "no detected or declared event",
+    "no mitigated event",
+    "no resolved event"
+   ],
+   "mismatch": {},
+   "rc": 0,
+   "status": "met",
+   "total": 54000
+  },
+  "id": "S01_three_sources_summed",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "labels": [],
+   "mismatch": {},
+   "rc": 0,
+   "status": "met",
+   "total": 60000
+  },
+  "id": "S02_equal_counts_four_sources",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "labels": [],
+   "mismatch": {},
+   "rc": 0,
+   "status": "met",
+   "total": 60000
+  },
+  "id": "S03_same_source_repeat_once",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "labels": [
+    "conflicting telemetry for 1 minute(s); left out of the SLO"
+   ],
+   "mismatch": {},
+   "rc": 0,
+   "status": "met",
+   "total": 59000
+  },
+  "id": "S04_one_source_conflict_drops_minute",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "labels": [
+    "conflicting telemetry for 1 minute(s); left out of the SLO"
+   ],
+   "mismatch": {},
+   "rc": 0,
+   "status": "met",
+   "total": 29500
+  },
+  "id": "S05_unnamed_is_one_source",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "labels": [
+    "conflicting telemetry for 1 minute(s); left out of the SLO"
+   ],
+   "mismatch": {},
+   "rc": 0,
+   "status": "met",
+   "total": 59000
+  },
+  "id": "S06_no_source_bundle_r1_semantics",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "cases": 40,
+   "fails": []
+  },
+  "id": "S07_random_sources_property",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "same": true,
+   "status": "met"
+  },
+  "id": "S08_split_equals_combined",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "labels": [],
+   "measured_minutes": 60,
+   "note": "one of two LBs silent for 30 min: minutes still count as measured",
+   "rc": 0,
+   "total": 45000
+  },
+  "id": "O09_partial_source_dropout",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "rc": 0,
+   "total": 60000
+  },
+  "id": "O10_source_name_case_space",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "conflicting": null,
+   "rc": 2,
+   "total": null
+  },
+  "id": "O11_empty_string_vs_missing_source",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "rc": 2
+  },
+  "id": "O12_non_string_source",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "rc": 0,
+   "total": 60500
+  },
+  "id": "O13_mirror_added_as_documented",
+  "kind": "OBS",
+  "result": "OBS"
+ }
+]

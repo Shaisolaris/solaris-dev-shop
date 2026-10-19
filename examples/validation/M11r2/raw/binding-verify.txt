@@ -1,0 +1,11 @@
+Mon Oct 19 03:14:30 PDT 2026
+candidate 62fd4b88ba48a0f82576db4d4af5a2cf325f46c0 parent 36c1ed1686f013e382eddffa40151073ec0d8d28
+02ba9c571b10ad1dba792d2ac5534bcad3171e67	refs/heads/main
+d4d98f2180ed9b92fd058a2350285f60f83b877d	refs/heads/review/grok-g03-recovery
+f79be61580dec0911f6aba56c3bdc746a30898e7	refs/heads/review/grok-g10-network-diagnosis
+62fd4b88ba48a0f82576db4d4af5a2cf325f46c0	refs/heads/review/grok-g11-incident-slo
+10b5f8b55728c15a05f2f9d0d82e822d9825f5b8	refs/heads/review/grok-m11-validation
+fast-forward from r1 36c1ed1: yes
+patch sha a6754fb93a2e864f5ef4c99bb66dd35b82cea03b2ba000b033e53bbac68034df diff sha a6754fb93a2e864f5ef4c99bb66dd35b82cea03b2ba000b033e53bbac68034df
+manifest entries 13 mismatches 0
+manifest set == diff set

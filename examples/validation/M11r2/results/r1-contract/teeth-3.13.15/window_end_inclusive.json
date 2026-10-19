@@ -1,0 +1,769 @@
+[
+ {
+  "id": "E19_hidden_impact_start",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "decision": "insufficient_evidence",
+   "impact": {
+    "end": "2026-09-07T13:50:00Z",
+    "end_bound": "exact",
+    "minutes": 15,
+    "start": "2026-09-07T13:35:00Z",
+    "start_bound": "at_or_before"
+   }
+  }
+ },
+ {
+  "id": "E20_late_events_labelled",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "late": {
+    "lt1": true,
+    "lt2": false
+   },
+   "events_late": 1
+  }
+ },
+ {
+  "id": "E21_missing_telemetry_label_and_timeline",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "labels": [
+    "telemetry missing for 5 minute(s); left out of the SLO, not counted as good or bad"
+   ],
+   "timeline_gap": [
+    {
+     "at": "2026-09-07T13:40:00Z",
+     "detail": "no telemetry for 4 minute(s) until 2026-09-07T13:44:00Z",
+     "id": "gap",
+     "kind": "telemetry_missing",
+     "source": "telemetry"
+    }
+   ]
+  }
+ },
+ {
+  "id": "E22_g03_snapshot_gating",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "good": {
+    "g03_rc": 0,
+    "rc": 0,
+    "decision": "rollback",
+    "names_sid": true
+   },
+   "damaged": {
+    "g03_rc": 0,
+    "rc": 0,
+    "decision": "rollback_blocked",
+    "names_sid": false
+   }
+  }
+ },
+ {
+  "id": "E23_no_bytecode_left",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "new_pycache": [],
+   "note": "Apple 3.9.6 redirects bytecode to sys.pycache_prefix, so this row only bites on 3.11 to 3.13"
+  }
+ },
+ {
+  "id": "E16_g10_trace_gating",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "during": [
+    0,
+    "do_not_rollback"
+   ],
+   "before": [
+    0,
+    "rollback"
+   ],
+   "outside_path_rc": 2
+  }
+ },
+ {
+  "id": "E17_zero_denominator_and_window_limit",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "zero_rc": 0,
+   "zero_status": "insufficient_telemetry",
+   "stderr_tail": "",
+   "window_32d_rc": 2
+  }
+ },
+ {
+  "id": "E18_burn_since_change_window",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "trace": [
+    {
+     "check": "burn rate from the change to the end of the impact",
+     "observed": "23.231177 over 2026-09-07T13:30:00Z/2026-09-07T13:40:00Z (rollback threshold 6.000000)",
+     "result": "above"
+    }
+   ]
+  }
+ },
+ {
+  "id": "E01_clean_control_exact",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "diff": {},
+   "status": "met",
+   "decision": "do_not_rollback"
+  }
+ },
+ {
+  "id": "E02_regression_exact_and_trace_names",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "diff": {},
+   "impact": {
+    "end": "2026-09-07T13:51:00Z",
+    "end_bound": "exact",
+    "minutes": 18,
+    "start": "2026-09-07T13:33:00Z",
+    "start_bound": "exact"
+   },
+   "want_impact": [
+    "2026-09-07T13:33:00Z",
+    "2026-09-07T13:51:00Z",
+    18
+   ],
+   "response": {
+    "time_to_detect_s": 130,
+    "time_to_mitigate_s": 1025,
+    "time_to_resolve_s": 1500
+   },
+   "want_response": {
+    "time_to_detect_s": 130,
+    "time_to_mitigate_s": 1025,
+    "time_to_resolve_s": 1500
+   },
+   "decision": "rollback",
+   "trace_names_service_window_revision": true
+  }
+ },
+ {
+  "id": "E03_request_weighted_denominator",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "diff": {}
+  }
+ },
+ {
+  "id": "E04_denominator_window_and_objective_changes",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "outside_window_count": 4,
+   "diff_full": {},
+   "diff_narrow": {},
+   "diff_obj": {},
+   "rcs": [
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "E05_duplicate_alerts",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "timeline_alerts": [
+    {
+     "actor": null,
+     "at": "2026-09-07T13:34:30Z",
+     "detail": null,
+     "id": "pg-9b",
+     "kind": "detected",
+     "late": false,
+     "outside_window": false,
+     "source": "event"
+    },
+    {
+     "actor": null,
+     "at": "2026-09-07T13:36:00Z",
+     "detail": null,
+     "id": "pg-9",
+     "kind": "detected",
+     "late": false,
+     "outside_window": false,
+     "source": "event"
+    }
+   ],
+   "detect": 90,
+   "want_detect": 90,
+   "import": {
+    "event_duplicates": 2,
+    "event_records": 4,
+    "events_late": 0,
+    "telemetry_duplicates": 0,
+    "telemetry_late": 0,
+    "telemetry_minutes_multi_source": 0,
+    "telemetry_outside_window": 0,
+    "telemetry_records": 90
+   }
+  }
+ },
+ {
+  "id": "E05b_duplicate_kept_record",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "kept": [
+    {
+     "actor": null,
+     "at": "2026-09-07T13:36:00Z",
+     "detail": null,
+     "id": "pg-9",
+     "kind": "detected",
+     "late": false,
+     "outside_window": false,
+     "source": "event"
+    }
+   ]
+  }
+ },
+ {
+  "id": "E06_conflicting_event_refused_out_kept",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rcs": [
+    0,
+    2
+   ],
+   "files": [
+    "b.json",
+    "r.json"
+   ]
+  }
+ },
+ {
+  "id": "E07_repeated_import_stable",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rcs": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "equal_to_single": [
+    false,
+    false,
+    false,
+    false
+   ],
+   "rerun_identical": true
+  }
+ },
+ {
+  "id": "E08_missing_telemetry_labelled",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "diff": {},
+   "missing": {
+    "conflicting_minutes": 0,
+    "conflicting_ranges": [],
+    "minutes": 8,
+    "ranges": [
+     {
+      "end": "2026-09-07T13:26:00Z",
+      "minutes": 6,
+      "start": "2026-09-07T13:20:00Z"
+     },
+     {
+      "end": "2026-09-07T14:02:00Z",
+      "minutes": 1,
+      "start": "2026-09-07T14:01:00Z"
+     },
+     {
+      "end": "2026-09-07T14:31:00Z",
+      "minutes": 1,
+      "start": "2026-09-07T14:30:00Z"
+     }
+    ]
+   },
+   "want_ranges": [
+    [
+     "2026-09-07T13:20:00Z",
+     "2026-09-07T13:26:00Z"
+    ],
+    [
+     "2026-09-07T14:01:00Z",
+     "2026-09-07T14:02:00Z"
+    ]
+   ],
+   "coverage_ok": false,
+   "low_cov_status": "insufficient_telemetry"
+  }
+ },
+ {
+  "id": "E08b_gap_after_change_no_rollback",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "decision": "insufficient_evidence"
+  }
+ },
+ {
+  "id": "E09_conflicting_minute_left_out",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "diff": {
+    "good": [
+     93671,
+     92209
+    ],
+    "total": [
+     93703,
+     92231
+    ],
+    "bad": [
+     32,
+     22
+    ],
+    "availability": [
+     "0.999658",
+     "0.999761"
+    ],
+    "error_budget_requests": [
+     "468.515000",
+     "461.155000"
+    ],
+    "burn_rate": [
+     "0.068301",
+     "0.047706"
+    ],
+    "budget_consumed": [
+     "0.068301",
+     "0.047706"
+    ],
+    "budget_remaining": [
+     "0.931699",
+     "0.952294"
+    ]
+   },
+   "conflicting": 0,
+   "measured": 90
+  }
+ },
+ {
+  "id": "E10_late_records_labelled_used",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "diff": {},
+   "telemetry_late": 3
+  }
+ },
+ {
+  "id": "E10b_late_boundary",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "telemetry_late_for_3_at_301s_and_3_at_300s_after_minute_end": 3,
+   "note": "doc does not say whether lateness is measured from the minute start or end"
+  }
+ },
+ {
+  "id": "E11_timeline_sorted",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "order": [
+    [
+     "2026-09-07T13:05:00Z",
+     "note"
+    ],
+    [
+     "2026-09-07T13:30:40Z",
+     "change"
+    ],
+    [
+     "2026-09-07T13:33:00Z",
+     "impact_start"
+    ],
+    [
+     "2026-09-07T13:35:00Z",
+     "detected"
+    ],
+    [
+     "2026-09-07T13:36:30Z",
+     "declared"
+    ],
+    [
+     "2026-09-07T13:36:30Z",
+     "status"
+    ],
+    [
+     "2026-09-07T13:44:00Z",
+     "mitigated"
+    ],
+    [
+     "2026-09-07T13:48:00Z",
+     "impact_end"
+    ],
+    [
+     "2026-09-07T13:50:00Z",
+     "resolved"
+    ],
+    [
+     "2026-09-07T14:30:00Z",
+     "telemetry_missing"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "E12_decision_classes",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "got": {
+    "change_outside_window": "not_applicable",
+    "impact_before_change": "do_not_rollback",
+    "slow_burn_below_threshold": "do_not_rollback",
+    "migrating_no_snapshot": "rollback_blocked"
+   },
+   "want": {
+    "change_outside_window": "not_applicable",
+    "impact_before_change": "do_not_rollback",
+    "slow_burn_below_threshold": "do_not_rollback",
+    "migrating_no_snapshot": "rollback_blocked"
+   }
+  }
+ },
+ {
+  "id": "E13_invalid_refused_then_recovers",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "good_gt_total": 2,
+   "negative_total": 2,
+   "float_counts": 2,
+   "window_not_whole_minute": 2,
+   "window_end_before_start": 2,
+   "objective_one": 2,
+   "unknown_event_kind": 2,
+   "bool_counts": 2,
+   "unknown_top_field": 2,
+   "naive_event_time": 2,
+   "duplicate_json_key": 2,
+   "valid_after": 0
+  }
+ },
+ {
+  "id": "E14_zero_traffic_minutes",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "rc": 0,
+   "values_match_request_weighted": true,
+   "measured_minutes": 90,
+   "coverage": "0.989011"
+  }
+ },
+ {
+  "id": "E14b_odd_timestamps",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "telemetry_minute_with_seconds_rc": 2,
+   "event_with_offset_rc": 0,
+   "event_at_in_timeline": [
+    "2026-09-07T13:10:00Z"
+   ]
+  }
+ },
+ {
+  "id": "E15_reads_only",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "files_after": [
+    "b.json"
+   ]
+  }
+ },
+ {
+  "detail": {
+   "labels": [
+    "no detected or declared event",
+    "no mitigated event",
+    "no resolved event",
+    "telemetry missing for 1 minute(s); left out of the SLO, not counted as good or bad"
+   ],
+   "mismatch": {
+    "coverage": [
+     "1.000000",
+     "0.983607"
+    ],
+    "missing_minutes": [
+     0,
+     1
+    ]
+   },
+   "rc": 0,
+   "status": "met",
+   "total": 54000
+  },
+  "id": "S01_three_sources_summed",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "labels": [
+    "telemetry missing for 1 minute(s); left out of the SLO, not counted as good or bad"
+   ],
+   "mismatch": {
+    "coverage": [
+     "1.000000",
+     "0.983607"
+    ],
+    "missing_minutes": [
+     0,
+     1
+    ]
+   },
+   "rc": 0,
+   "status": "met",
+   "total": 60000
+  },
+  "id": "S02_equal_counts_four_sources",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "labels": [
+    "telemetry missing for 1 minute(s); left out of the SLO, not counted as good or bad"
+   ],
+   "mismatch": {
+    "coverage": [
+     "1.000000",
+     "0.983607"
+    ],
+    "missing_minutes": [
+     0,
+     1
+    ]
+   },
+   "rc": 0,
+   "status": "met",
+   "total": 60000
+  },
+  "id": "S03_same_source_repeat_once",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "labels": [
+    "telemetry missing for 1 minute(s); left out of the SLO, not counted as good or bad",
+    "conflicting telemetry for 1 minute(s); left out of the SLO"
+   ],
+   "mismatch": {
+    "coverage": [
+     "0.983333",
+     "0.967213"
+    ],
+    "missing_minutes": [
+     0,
+     1
+    ]
+   },
+   "rc": 0,
+   "status": "met",
+   "total": 59000
+  },
+  "id": "S04_one_source_conflict_drops_minute",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "labels": [
+    "telemetry missing for 1 minute(s); left out of the SLO, not counted as good or bad",
+    "conflicting telemetry for 1 minute(s); left out of the SLO"
+   ],
+   "mismatch": {
+    "coverage": [
+     "0.983333",
+     "0.967213"
+    ],
+    "missing_minutes": [
+     0,
+     1
+    ]
+   },
+   "rc": 0,
+   "status": "met",
+   "total": 29500
+  },
+  "id": "S05_unnamed_is_one_source",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "labels": [
+    "telemetry missing for 1 minute(s); left out of the SLO, not counted as good or bad",
+    "conflicting telemetry for 1 minute(s); left out of the SLO"
+   ],
+   "mismatch": {
+    "coverage": [
+     "0.983333",
+     "0.967213"
+    ],
+    "missing_minutes": [
+     0,
+     1
+    ]
+   },
+   "rc": 0,
+   "status": "met",
+   "total": 59000
+  },
+  "id": "S06_no_source_bundle_r1_semantics",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "cases": 40,
+   "fails": [
+    {
+     "case": 0,
+     "mismatch": {
+      "coverage": [
+       "0.833333",
+       "0.806452"
+      ],
+      "missing_minutes": [
+       4,
+       5
+      ]
+     },
+     "rc": 0
+    },
+    {
+     "case": 1,
+     "mismatch": {
+      "coverage": [
+       "0.966667",
+       "0.935484"
+      ],
+      "missing_minutes": [
+       0,
+       1
+      ]
+     },
+     "rc": 0
+    },
+    {
+     "case": 2,
+     "mismatch": {
+      "coverage": [
+       "0.950000",
+       "0.942149"
+      ],
+      "missing_minutes": [
+       0,
+       1
+      ]
+     },
+     "rc": 0
+    }
+   ]
+  },
+  "id": "S07_random_sources_property",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "same": true,
+   "status": "met"
+  },
+  "id": "S08_split_equals_combined",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "labels": [
+    "telemetry missing for 1 minute(s); left out of the SLO, not counted as good or bad"
+   ],
+   "measured_minutes": 60,
+   "note": "one of two LBs silent for 30 min: minutes still count as measured",
+   "rc": 0,
+   "total": 45000
+  },
+  "id": "O09_partial_source_dropout",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "rc": 0,
+   "total": 60000
+  },
+  "id": "O10_source_name_case_space",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "conflicting": null,
+   "rc": 2,
+   "total": null
+  },
+  "id": "O11_empty_string_vs_missing_source",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "rc": 2
+  },
+  "id": "O12_non_string_source",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "rc": 0,
+   "total": 60500
+  },
+  "id": "O13_mirror_added_as_documented",
+  "kind": "OBS",
+  "result": "OBS"
+ }
+]
