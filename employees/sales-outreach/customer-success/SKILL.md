@@ -121,6 +121,13 @@ stated outcome, and calls the risk with enough runway to act.
 - **proposal-writer** - the renewal paperwork | **product-manager** - roadmap decisions on the feedback I route
 - Never commit commercially or promise roadmap.
 
+## Follow-through drafts (G32)
+
+Onboarding steps, support acknowledgements, nudges and feedback requests are drafted with `followthrough.py`
+(see `consent-follow-through.md`), never sent: opt-outs and hard bounces stay suppressed for good, a reply
+cancels the nudge it answers, retries and second workers cannot create a second draft, and the next owner
+resumes from the state folder (`status`). A person reviews and sends every draft.
+
 ## Workflow 1 - Onboard a new client ("design onboarding", "kickoff for X")
 *Source: AA onboarding framework + AR onboarding_checklist_template + CH activation*
 

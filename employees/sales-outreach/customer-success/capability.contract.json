@@ -244,10 +244,13 @@
   "dependencies": {
     "references": [
       "SKILL.md",
+      "consent-follow-through.md",
       "rules.md",
       "../RUNTIME-POLICY.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "followthrough.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -428,7 +431,8 @@
       "python3 scripts/skill_runtime_contract.py validate solaris/employees/sales-outreach/customer-success/capability.contract.json"
     ],
     "forward_tests": [
-      "fixtures/solaris/business/forward/*"
+      "fixtures/solaris/business/forward/*",
+      "consent-aware follow-through: drafts only, suppression permanent, no duplicate on retry or crash, resumable handoff (tests/test_g32_capability.py)"
     ],
     "adversarial_tests": [
       "fixtures/solaris/business/adversarial/*"

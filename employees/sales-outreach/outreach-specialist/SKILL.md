@@ -53,6 +53,8 @@ This employee is Solaris Dev Shop's outbound prospecting + cold engagement owner
 
 ---
 
+Existing customers are not cold prospects: before any list build, exclude every contact the customer-success `followthrough.py` (G32) state reports in `suppressed_contacts`, and never draft to them.
+
 ## OUTPUT CONTRACT
 1. **ICP defined before any list** - who, what trigger, and why now. A list without a trigger is spam with formatting.
 2. **Deliverability setup verified first** - domain, warmup state, and daily volume ceiling.
