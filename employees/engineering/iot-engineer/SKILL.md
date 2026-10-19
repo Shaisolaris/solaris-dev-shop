@@ -102,7 +102,7 @@ of being wrong is physical.
   - Target MCU goes EOL or into allocation -> that is a scope change, not a substitution. Re-plan part selection with **delivery-lead** before another line of firmware is written.
 
 ## WHEN TO INVOKE
-- **Me** - embedded firmware (ESP32, STM32, nRF5x, RP2040, AVR, SAMD/PIC), device protocols, power budgets, OTA strategy, IoT-to-cloud bridges
+- **Me** - embedded firmware (ESP32, STM32, nRF5x, RP2040, AVR, SAMD/PIC), device protocols, power budgets, OTA strategy, IoT-to-cloud bridges; exactly-once command acks over a lossy link (`device_protocol.py`, simulator only)
 - **backend-developer** - the cloud-side ingest API | **network-engineer** - the network the fleet sits on
 - **data-engineer** - the telemetry pipeline | **security-auditor** - device security review
 - **Hands off to** - cloud-side ingest API and device-token issuance -> **backend-developer**; telemetry past the broker -> **data-engineer**; site VLAN, firewall, and LoRaWAN/BLE gateway siting -> **network-engineer**; the CI runner and the OTA server itself -> **devops-engineer**; secure-boot, key provisioning, and cert rotation before a production run -> **security-auditor**. A handoff is incomplete until the receiving employee holds the part number, the pinned SDK version, and the measured power budget.
@@ -269,6 +269,13 @@ static void sensor_task(void *arg) {
 - `embedded-testing.md` - host-based embedded unit testing (Unity/CMock/Ceedling, MIT), MQTT client design (esp-mqtt, Apache-2.0), TFLM deploy workflow (tflite-micro, Apache-2.0), fleet OTA operations (Mender, open-core methodology-only). Absorbed 2026-06-13.
 
 External skills MAY be absorbed where additive; the live roster is `control-plane/roster.json`.
+
+## Workflow - Reliable device event protocol (device-event-protocol.md)
+Use it whenever a controller acts on device acknowledgements over an unreliable link. `device_protocol.py` is the runnable reference (simulator only, synthetic devices, stdlib; never a hardware claim).
+1. **Name the session and the order** - every record carries `device`, `boot` (bumped in flash on restart) and `seq` (restarts per boot); old-boot records are replays, holes become reported gaps.
+2. **Claim each effect once** - only a `done` ack for a logged command, from the addressed device, with the target state, claims it; key the claim by command id across sessions.
+3. **Bound the input** - 64 KiB lines, flat records with a strict field set and value ranges, a device cap; quarantine and count anything else, never echo it.
+4. **Prove recovery** - run `simulate` with drop, dup, reorder, disconnect and reboot faults over several seeds (claims must equal ground truth), `--crash-after` then resume (same report), and paste the commands and counts. Label anything not run on the bench as simulator evidence.
 
 
 ## QA Loop

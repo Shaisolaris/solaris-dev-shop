@@ -236,9 +236,12 @@
       "rules.md",
       "learnings.md",
       "plugin.json",
-      "embedded-testing.md"
+      "embedded-testing.md",
+      "device-event-protocol.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "device_protocol.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -288,6 +291,12 @@
           "id": "ref-embedded-testing-md",
           "kind": "file_exists",
           "target": "embedded-testing.md",
+          "required": false
+        },
+        {
+          "id": "ref-device-event-protocol-md",
+          "kind": "file_exists",
+          "target": "device-event-protocol.md",
           "required": false
         }
       ],
@@ -497,7 +506,8 @@
       "rules.md",
       "learnings.md",
       "plugin.json",
-      "embedded-testing.md"
+      "embedded-testing.md",
+      "device-event-protocol.md"
     ]
   }
 }
