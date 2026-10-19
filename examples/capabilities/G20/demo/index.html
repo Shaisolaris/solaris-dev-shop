@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Solaris help search (G20 fixture demo)</title>
-<!-- G20 fixture demo. Browser behaviour (rendering, keyboard, focus, screen reader) has NOT been run by any check;
-     the checks run the DOM-free core in JavaScriptCore and inspect this file statically. -->
+<!-- G20 fixture demo. browser_checks.py can render it in headless Chrome at 320, 360 and 1280 px (opt-in, not run for
+     this revision); screen-reader output and other browsers have not been run. -->
 <style>
   :root {
     --sol-navy: #102033;      /* navy, cream, amber, line and the Georgia font: assets/social-preview.svg */
@@ -17,7 +17,8 @@
     --sol-font: Georgia, "Times New Roman", serif;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--sol-cream); color: var(--sol-navy); font: 1rem/1.5 var(--sol-font); }
+  body { margin: 0; background: var(--sol-cream); color: var(--sol-navy); font: 1rem/1.5 var(--sol-font);
+         overflow-wrap: anywhere; }  /* a long unbroken label or chosen line wraps instead of widening the page (NarrowLayoutContract; browser_checks L01, K03, K05) */
   main { max-width: 56rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
   h1 { font-size: 1.6rem; margin: 0 0 .25rem; }
   .brand-rule { height: .25rem; width: 4rem; background: var(--sol-amber); border: 0; margin: 0 0 1.25rem; }
@@ -84,6 +85,7 @@
   var ui = { open: false, active: -1 }, view = null;
 
   function fakeFetch(query, o) {  // synthetic backend: substring match with random latency; never touches the network
+    if (typeof window.G20_TEST_FETCH === "function") return window.G20_TEST_FETCH(query, o);  // set only by browser_checks.py
     return new Promise(function (resolve, reject) {
       var ms = shuffle.checked ? 40 + Math.floor(Math.random() * 900) : 120;
       var t = setTimeout(function () {
@@ -105,7 +107,7 @@
       list.textContent = "";
       next.results.forEach(function (r, i) {
         var li = document.createElement("li");
-        li.id = "opt-" + r.id; li.setAttribute("role", "option"); li.setAttribute("aria-selected", "false");
+        li.id = "opt-" + S.optionDomId(r.id); li.setAttribute("role", "option"); li.setAttribute("aria-selected", "false");
         li.textContent = r.label;
         li.addEventListener("mousedown", function (e) { e.preventDefault(); choose(i); });  // keep focus on the input
         list.appendChild(li);

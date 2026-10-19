@@ -10,7 +10,8 @@
  *   exposed with aria-activedescendant): ArrowDown/ArrowUp (wrap), Home/End, PageDown/PageUp, Enter, Escape, Tab.
  * - Live-region announcements on state changes only, never repeated for the same state.
  * - A narrow/wide layout decision that the demo's CSS media query mirrors (40rem = 640px).
- * Browser rendering, real focus movement and screen-reader output are NOT exercised by any check here.
+ * examples/capabilities/G20/browser_checks.py can render the demo page in headless Chrome (320, 360 and 1280 px) when a
+ * browser is named explicitly; it was not run for this revision. Screen-reader output and other browsers are not covered.
  */
 (function (root) {
   "use strict";
@@ -30,12 +31,27 @@
     var seen = Object.create(null);
     for (var i = 0; i < rows.length && out.length < max; i++) {
       var r = rows[i];
-      if (!r || typeof r.id !== "string" || typeof r.label !== "string" || !r.id || !r.label) continue;
-      if (seen[r.id]) continue; // option ids become element ids: duplicates would break aria-activedescendant
-      seen[r.id] = true;
-      out.push({ id: r.id.slice(0, 64), label: r.label.slice(0, 200) });
+      if (!r || typeof r.id !== "string" || typeof r.label !== "string" || !r.id.trim() || !r.label.trim()) continue;
+      var id = r.id.slice(0, 64);
+      if (seen[id]) continue; // option ids become element ids: duplicates (after the 64-character cut) would break aria-activedescendant
+      seen[id] = true;
+      out.push({ id: id, label: r.label.slice(0, 200) });
     }
     return { rows: out, dropped: rows.length - out.length };
+  }
+
+  // A row id as an HTML id / IDREF token: ASCII letters, digits and "-" pass through; every other character
+  // (spaces, tabs, "_", punctuation, non-ASCII) becomes "_" + its code point in hex + "_". The mapping is one to one,
+  // so distinct row ids stay distinct, and the result has no whitespace and needs no CSS escaping.
+  function optionDomId(id) {
+    var s = String(id), out = "";
+    for (var i = 0; i < s.length; i++) {
+      var cp = s.codePointAt(i);
+      if (cp > 0xffff) i++;
+      var ch = String.fromCodePoint(cp);
+      out += /[A-Za-z0-9-]/.test(ch) ? ch : "_" + cp.toString(16) + "_";
+    }
+    return out;
   }
 
   function createSearchController(opts) {
@@ -186,6 +202,6 @@
   root.SolarisAsyncSearch = {
     VERSION: VERSION, MAX_QUERY: MAX_QUERY, NARROW_MAX_PX: NARROW_MAX_PX, PAGE: PAGE,
     createSearchController: createSearchController, listboxKey: listboxKey, onResults: onResults,
-    announcement: announcement, layoutFor: layoutFor
+    announcement: announcement, layoutFor: layoutFor, optionDomId: optionDomId
   };
 })(typeof globalThis !== "undefined" ? globalThis : this);

@@ -129,5 +129,34 @@
     if (L(1000).minTargetPx < 24) e.push("wide targets under 24px");
     return e;
   });
+  t("option_dom_ids_are_valid_and_one_to_one", function () {
+    var e = [], D = S.optionDomId, seen = {};
+    if (typeof D !== "function") return ["no optionDomId"];
+    var ids = ["Heron Flats 41", "Heron_Flats_41", "Heron-Flats-41", "a b", "a_b", "a\tb", "a\u00a0b", " lead", "lead ", "\u00d8resund 2",
+               "x\ud83d\ude00y", "_20_", "q\"z", "#x.y", "abc"];
+    for (var i = 0; i < ids.length; i++) {
+      var d = D(ids[i]);
+      if (!/^[A-Za-z0-9_-]+$/.test(d)) e.push("invalid token " + JSON.stringify(d));
+      if (seen[d] !== undefined) e.push("collision " + JSON.stringify(ids[i]) + " and " + JSON.stringify(seen[d]));
+      seen[d] = ids[i];
+    }
+    if (D("abc") !== "abc" || D("Heron-1") !== "Heron-1") e.push("plain ids must pass through");
+    if (D("a b") !== "a_20_b" || D("a_b") !== "a_5f_b") e.push("escape form " + D("a b") + " " + D("a_b"));
+    if (D("x\ud83d\ude00y") !== "x_1f600_y") e.push("astral " + D("x\ud83d\ude00y"));
+    return e;
+  });
+  t("row_ids_blank_and_cut_duplicates", function () {
+    var e = [], w = H.world();
+    var long1 = new Array(70).join("k") + "-one", long2 = new Array(70).join("k") + "-two";
+    w.c.input("ab"); w.advance(150);
+    w.calls[0].resolve([{ id: "   ", label: "blank id" }, { id: "\t", label: "tab id" }, { id: "ok", label: "  " }, { id: long1, label: "first long" },
+                        { id: long2, label: "second long, same first 64" }, { id: " a ", label: "spaced id kept" }]);
+    var s = w.c.state();
+    var labels = s.results.map(function (r) { return r.label; });
+    if (JSON.stringify(labels) !== JSON.stringify(["first long", "spaced id kept"])) e.push("kept " + JSON.stringify(labels));
+    if (s.results[0] && s.results[0].id.length !== 64) e.push("id not cut to 64");
+    if (s.rowsDropped !== 4) e.push("rowsDropped " + s.rowsDropped);
+    return e;
+  });
   print("DONE " + n);
 })();

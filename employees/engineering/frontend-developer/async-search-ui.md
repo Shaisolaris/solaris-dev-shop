@@ -1,9 +1,13 @@
 # Accessible asynchronous search (G20)
 
 `async_search_core.js` is a dependency-free, DOM-free core for a search-as-you-type combobox. It was built against
-the synthetic fixture in `examples/capabilities/G20/` and is checked there. Browser behaviour has NOT been run by any
-check: rendering, real focus movement, the CSS media query and screen-reader output are untested. The checks run the
-core in JavaScriptCore (`jsc`) with a virtual clock, and they read the demo page as text.
+the synthetic fixture in `examples/capabilities/G20/` and is checked there. `browser_checks.py` can render the demo in
+headless Chrome at 320, 360 and 1280 px and drive it with real keys (layout overflow, focus ring, option ids,
+keyboard model, long labels, a stale-response regression). It starts a browser only when one is named with
+`--chrome PATH` or `G20_CHROME`, and it was NOT run for this revision. The 320 px overflow contract is checked from
+the demo source without a browser (`NarrowLayoutContract` in the tests). Screen-reader output and other browsers have
+not been run.
+`ui_oracle.py` runs the core in JavaScriptCore (`jsc`) with a virtual clock and reads the demo page as text.
 
 ## What the core guarantees
 - **Stale-response protection.** Every request gets an id, and only the newest may change the UI. A response for older
@@ -43,13 +47,20 @@ also has a "fail the next request" switch.
 ## Checks
 ```bash
 python3 examples/capabilities/G20/ui_oracle.py            # 11 behaviour checks in jsc + 6 static demo checks
+python3 examples/capabilities/G20/browser_checks.py --chrome PATH   # opt-in: 33 rendered checks in headless Chrome (exit 3 if no browser is named)
 python3 -m unittest tests.test_g20_capability
 ```
+Option element ids come from `optionDomId(id)`: letters, digits and hyphens pass through and every other character
+becomes `_hex_`, so ids with spaces or tabs still give valid, distinct `aria-activedescendant` targets. Rows whose id
+or label is blank after trimming are dropped, and duplicates are found after the 64-character id cut. Long unbroken
+labels wrap (`overflow-wrap: anywhere` on the body, inherited by every option and the chosen line) instead of
+widening the page; in an earlier headless Chrome run of the unrepaired page, one 167-character label under plain
+`overflow-wrap: normal` made the 320 px page 1257 px wide.
 `ui_oracle.py` exits 2 when no JavaScript shell is found, and its report always lists what was not run.
 
 ## Limits
-- No browser was run. Treat keyboard, focus, contrast and screen-reader behaviour in the demo as unverified until
-  someone runs it in real browsers with assistive technology. `--sol-ink-2` is not a brand colour, and its contrast was
+- No browser was run for this revision; the narrow layout is checked statically and the rendered checks are opt-in.
+  Screen-reader output, Safari, Firefox, touch and zoom are unverified until someone runs them with assistive technology. `--sol-ink-2` is not a brand colour, and its contrast was
   not measured.
 - JavaScriptCore has no `AbortController`, so aborting a superseded request is skipped in the checks (reported as SKIP).
   Without one, a superseded response is still dropped, but the network request is not cancelled.

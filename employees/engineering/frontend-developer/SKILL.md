@@ -170,7 +170,7 @@ Load `rules.md` before any frontend task - four-assumptions gate (§1), state-ma
 1. **Newest request wins** - give each request an id and drop any response that is not the newest (older text, after clear, after timeout); count the drops. `async_search_core.js` is the reference.
 2. **Name every state** - idle, loading (aria-busy, old rows still listed), results, empty, error with a working Retry; a timeout is an error.
 3. **Keyboard model before styling** - ARIA 1.2 combobox: focus stays on the input, aria-activedescendant moves; Enter selects only an active option; Escape closes then clears; Tab never selects.
-4. **Prove it without claiming a browser run** - run `examples/capabilities/G20/ui_oracle.py` (or the same scenarios in your test runner) with out-of-order responses; label anything not run in a real browser with assistive technology as unverified.
+4. **Prove it, and say what was rendered** - run `examples/capabilities/G20/ui_oracle.py` (or the same scenarios in your test runner) with out-of-order responses, check the narrow-layout contract from source (long unbroken text wraps, nothing demands more than 320 px), and where a browser is allowed render the page at 320, 360 and 1280 px (`browser_checks.py --chrome PATH`) and measure scrollWidth against clientWidth with the longest label shown; derive option ids with `optionDomId`, never the raw id. Label screen readers and browsers you did not run as unverified.
 
 ## QA Loop
 All deliverables follow the canonical QA loop (`docs/QA-LOOP.md`): build → independent review → fix → repeat until clean. No self-certification.
