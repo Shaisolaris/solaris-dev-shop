@@ -9,9 +9,9 @@ All data here is synthetic. Nothing is sent; reports are drafts for the owner.
 ```bash
 python3 employees/product-project/product-manager/evidence_decision.py decide examples/capabilities/G33/fixtures/choice.json
 python3 employees/product-project/product-manager/evidence_decision.py decide examples/capabilities/G33/fixtures/choice.json --json
-python3 examples/capabilities/G33/evidence_oracle.py   # ACCEPTED 9/9
-python3 examples/capabilities/G33/evidence_oracle.py --tool examples/capabilities/G33/naive_decision.py   # REJECTED 1/9
-python3 examples/capabilities/G33/evidence_oracle.py --tool examples/capabilities/G33/noop_decision.py   # REJECTED 1/9
+python3 examples/capabilities/G33/evidence_oracle.py   # ACCEPTED 10/10
+python3 examples/capabilities/G33/evidence_oracle.py --tool examples/capabilities/G33/naive_decision.py   # REJECTED 1/10
+python3 examples/capabilities/G33/evidence_oracle.py --tool examples/capabilities/G33/noop_decision.py   # REJECTED 1/10
 ```
 
 ## The clinic options fixture, worked by hand
@@ -38,5 +38,6 @@ exclusions (o1); snapshot, quote, value and G13 mismatches (o2); preference flip
 (o3); crash-style recovery around `--out` (o4); unknown dimensions, fresh mutable sources, G13-with-gaps
 and top-level TAM refusal (o5); invalid packages write nothing (o6); `--out` / `verify` / tamper / keep
 earlier result (o7); 40 seeded unseen packages whose totals and preference match an independent reference
-(o8); no network, mail or process use and fixtures byte-identical (s1). `--seed N` changes the unseen
+(o8); top-level adoption, adoption_rate, assumed_adoption and tam refused, and a quantity dimension
+scored only from claims with a numeric value in the quote (o9); no network, mail or process use and fixtures byte-identical (s1). `--seed N` changes the unseen
 packages. The naive control (point mean, no source checks) and the no-op control both fail.

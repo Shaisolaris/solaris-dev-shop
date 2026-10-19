@@ -16,7 +16,9 @@ python3 evidence_decision.py verify RESULT PACKAGE                  # 0 identica
 - `options`: [{`id`, `label`}].
 - `dimensions`: [{`id`, `label`, `weight`}] with weights summing to exactly 1. Optional `metric_scale`
   {`thresholds`: five ascending numbers} maps a stated numeric value to scores 1..5. Optional `quantity`
-  requires every claim on that dimension to carry a `value` that appears in its quote.
+  (true or false) requires every claim on that dimension to carry a numeric `value` that appears in its quote;
+  a claim without a value, with a value that is not a number, or whose quote states no number is flagged
+  `value_not_in_quote` and not used.
 - `sources`: [{`id`, `kind` interview|external|g13, `title`, `retrieved_at` ≤ `as_of`, ...}].
   - interview / external: `snapshot` {`path`, `sha256`} of a local file.
   - external: also `url`, `mutable` (bool); when mutable, `max_age_days` (int). A mutable source older than
@@ -24,8 +26,8 @@ python3 evidence_decision.py verify RESULT PACKAGE                  # 0 identica
   - g13: `contract`, `metric`, `group` -- the tool loads `csv_reconcile.reconcile` by file path and reruns
     it; a status other than `reconciled` lowers claim confidence to `low`.
 - `claims`: [{`id`, `option`, `dimension`, `source`, `segment`, `confidence` low|medium|high, optional
-  `score` 0..5, optional `value`, optional `quote`}]. Top-level keys `tam`, `sam`, `som`, `market_size` and
-  `adoption` are refused.
+  `score` 0..5, optional `value`, optional `quote`}]. Top-level keys `tam`, `sam`, `som`, `market_size`,
+  `adoption`, `adoption_rate` and `assumed_adoption` are refused (exit 2, nothing written).
 
 ## Checks before a claim is used
 
@@ -51,8 +53,8 @@ score range ≥ 2 is `conflict`. Contrary evidence is a claim on the other side 
 Per-option totals are the weight × cell aggregates; `point` is omitted when any dimension is unknown.
 `preferred` is set only when one option's low total is strictly greater than every other option's high total;
 otherwise `no_robust_choice` with `deciding_evidence` naming the cells whose ranges (or unknowns) prevent a
-robust win. Findings that block a claim produce `blocked_evidence` and exit 1 when no preferred option
-survives. The report includes `claim_confidence` (after any G13 downgrade) and `estimates_made`.
+robust win. Any finding that blocks a claim withholds the preference: the result is `blocked_evidence`,
+`preferred` is null and the exit is 1, even when the remaining totals would still pick a winner. The report includes `claim_confidence` (after any G13 downgrade) and `estimates_made`.
 
 ## Recovery
 

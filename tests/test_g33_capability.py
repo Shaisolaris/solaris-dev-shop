@@ -134,8 +134,23 @@ class G33Capability(unittest.TestCase):
     def test_quantity_dimension_needs_the_number(self):
         self.p['dimensions'][0]['quantity'] = True
         self.claim('C1')['quote'] = 'I would pay about 40 dollars per provider per month for that alone.'
-        self.assertEqual(self.codes(self.decide(1)), {('value_not_in_quote', 'C1')})
+        # r2: every claim on a quantity dimension needs a numeric value from its quote, not only quotes with digits
+        self.assertEqual(self.codes(self.decide(1)), {('value_not_in_quote', k) for k in ('C1', 'C2', 'C5', 'C11')})
+        r = self.decide(1)
+        why = {f['ref']: f['detail'] for f in r['findings']}
+        self.assertIn('quote states no number', why['C5'])
+        self.assertNotIn('quote states no number', why['C1'])
         self.claim('C1')['value'] = '40'
+        self.claim('C5')['value'] = 'ten minutes'  # in the quote, but not a number
+        r = self.decide(1)
+        self.assertEqual(self.codes(r), {('value_not_in_quote', k) for k in ('C2', 'C5', 'C11')})
+        self.assertIn('is not a number', {f['ref']: f['detail'] for f in r['findings']}['C5'])
+        self.p['claims'] = [c for c in self.p['claims'] if c['id'] not in ('C2', 'C5', 'C11')]
+        r = self.decide(0)
+        self.assertNotIn('C1', {x['claim'] for x in r.get('excluded', [])})
+        self.assertEqual(r['findings'], [])
+        # quantity off (false) keeps the r1 behaviour for qualitative claims
+        self.p = json.loads((self.d / 'choice.json').read_text()); self.p['dimensions'][0]['quantity'] = False
         self.decide(0)
 
     def test_staleness_boundary(self):
@@ -194,7 +209,10 @@ class G33Capability(unittest.TestCase):
                 lambda p: p['claims'][0].update(dimension='cost'), lambda p: p['claims'][0].update(confidence='sure'),
                 lambda p: p['sources'][0].update(kind='blog'), lambda p: p['sources'][0].update(retrieved_at='2026-10-07'),
                 lambda p: p['sources'][3].update(max_age_days='90'), lambda p: p['sources'][3].pop('url'),
-                lambda p: p.update(market_size='18000'), lambda p: p['decision']['icp'].pop('segment'),
+                lambda p: p.update(market_size='18000'), lambda p: p.update(adoption='35%'),
+                lambda p: p.update(adoption_rate='0.2'), lambda p: p.update(assumed_adoption=0.35), lambda p: p.update(tam='1'),
+                lambda p: p['dimensions'][0].update(quantity='yes'), lambda p: p['dimensions'][0].update(quantity=1),
+                lambda p: p['decision']['icp'].pop('segment'),
                 lambda p: p['dimensions'][2]['metric_scale'].update(thresholds=['5', '1', '10', '50', '100']),
                 lambda p: p['claims'].append(dict(p['claims'][0]))]
         orig = json.dumps(self.p)
@@ -224,9 +242,9 @@ class G33Capability(unittest.TestCase):
     def test_oracle_and_controls(self):
         run = lambda *a: subprocess.run([sys.executable, str(EX / 'evidence_oracle.py')] + list(a), capture_output=True, text=True, env=ENV, timeout=600)
         r = run()
-        self.assertEqual(r.stdout.strip().splitlines()[-1], 'ACCEPTED 9/9', r.stdout)
+        self.assertEqual(r.stdout.strip().splitlines()[-1], 'ACCEPTED 10/10', r.stdout)
         for t in ('naive_decision.py', 'noop_decision.py'):
-            self.assertEqual(run('--tool', str(EX / t)).stdout.strip().splitlines()[-1], 'REJECTED 1/9')
+            self.assertEqual(run('--tool', str(EX / t)).stdout.strip().splitlines()[-1], 'REJECTED 1/10')
 
     def test_contracts_declare_tool(self):
         text = (ROOT / 'employees/product-project/product-manager/capability.contract.json').read_text()

@@ -211,6 +211,30 @@ def o8(c, seed):
     return ok, "%d seeded packages (%d with a robust winner) match an independent reference on totals and choice" % (total, robust)
 
 
+def o9(c):
+    """r2: no adoption figure enters the package, and a quantity dimension is scored only from a stated number."""
+    ok = True
+    for key, val in (("adoption", "35%"), ("adoption_rate", "0.2"), ("assumed_adoption", 0.35), ("tam", "1")):
+        p = base(); p[key] = val; d = c.fresh(); q = d / "pkg.json"; q.write_text(json.dumps(p)); o = d / "out.json"
+        r = subprocess.run([sys.executable, str(c.tool), "decide", str(q), "--out", str(o)], capture_output=True, text=True, env=ENV)
+        ok = ok and r.returncode == 2 and not o.exists()
+    p = base(); p["dimensions"][0]["quantity"] = True  # pain: C1 has a number but no value; C2, C5, C11 state no number
+    for cl in p["claims"]:
+        if cl["id"] == "C7":
+            cl["value"] = "board reports"  # appears in its quote but is not a number
+    rc, r = c.run(c.fresh(), p)
+    want = {("value_not_in_quote", k) for k in ("C1", "C2", "C5", "C7", "C11")}
+    ok = ok and rc == 1 and r is not None and codes(r) == want and r.get("preferred") is None
+    p = base(); p["dimensions"][0]["quantity"] = True
+    p["claims"] = [x for x in p["claims"] if x["id"] not in ("C2", "C5", "C11")]
+    for cl in p["claims"]:
+        if cl["id"] == "C1":
+            cl["value"] = "40"
+    rc, r = c.run(c.fresh(), p)
+    ok = ok and rc == 0 and r is not None and not codes(r) and r.get("preferred") == "portal"
+    return ok, "top-level adoption, adoption_rate, assumed_adoption and tam refused; a quantity dimension uses only claims with a numeric value in the quote"
+
+
 def s1(c):
     src = Path(c.tool).read_text() if Path(c.tool).is_file() else ""
     banned = [w for w in ("urllib", "http.client", "import socket", "smtplib", "import subprocess", "os.system") if w in src]
@@ -221,7 +245,7 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--tool", default=str(TOOL)); ap.add_argument("--seed", type=int, default=33)
     a = ap.parse_args(); c = Ctx(a.tool)
     before = {p: p.read_bytes() for p in FIX.rglob("*") if p.is_file()}
-    checks = [("o1", o1), ("o2", o2), ("o3", o3), ("o4", o4), ("o5", o5), ("o6", o6), ("o7", o7), ("o8", lambda c: o8(c, a.seed)), ("s1", s1)]
+    checks = [("o1", o1), ("o2", o2), ("o3", o3), ("o4", o4), ("o5", o5), ("o6", o6), ("o7", o7), ("o8", lambda c: o8(c, a.seed)), ("o9", o9), ("s1", s1)]
     passed = 0
     for nm, fn in checks:
         try:

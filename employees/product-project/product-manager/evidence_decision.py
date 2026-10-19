@@ -127,6 +127,8 @@ def load(path):
     for k, x in P["dims"].items():
         x["_w"] = _dec(x.get("weight"), "dimensions.%s.weight" % k, Decimal(0), Decimal(1))
         tot += x["_w"]
+        if "quantity" in x and not isinstance(x["quantity"], bool):
+            raise Invalid("dimensions.%s.quantity must be true or false" % k)
         sc = x.get("metric_scale")
         if sc is not None:
             th = sc.get("thresholds") if isinstance(sc, dict) else None
@@ -180,7 +182,7 @@ def load(path):
             c["_score"] = _dec(c["score"], w + ".score", LO, HI)
         if c.get("value") is not None and not isinstance(c["value"], str):
             raise Invalid("%s.value must be text exactly as the source states it" % w)
-    for bad in ("tam", "sam", "som", "market_size", "adoption_rate", "assumed_adoption"):
+    for bad in ("tam", "sam", "som", "market_size", "adoption", "adoption_rate", "assumed_adoption"):
         if bad in d:
             raise Invalid("top-level %r is not accepted: market size and adoption come only from sourced claims" % bad)
     return P
@@ -252,9 +254,13 @@ def decide(path):
                 excluded.append({"claim": k, "reason": "segment %s is outside the ICP %s" % (c["segment"], P["icp"])}); continue
             if c.get("value") is None and dim.get("metric_scale") is not None:
                 F.append({"code": "value_not_in_quote", "ref": k, "detail": "dimension %s is scored from a stated value" % dim["id"]}); continue
-            nums = NUM.findall(q)
-            if c.get("value") is None and dim.get("quantity") and nums:
-                F.append({"code": "value_not_in_quote", "ref": k, "detail": "quantity claim must state the number it uses"}); continue
+            if dim.get("quantity") is True:
+                # a quantity dimension is scored only from a number the source states: the claim's value, found in the quote
+                if c.get("value") is None:
+                    F.append({"code": "value_not_in_quote", "ref": k, "detail": "quantity claim must state the number it uses%s"
+                              % ("" if NUM.search(q) else "; the quote states no number")}); continue
+                if not NUM.search(c["value"]):
+                    F.append({"code": "value_not_in_quote", "ref": k, "detail": "quantity value %r is not a number" % c["value"]}); continue
             if s["kind"] == "external" and s["mutable"] and (P["as_of"] - s["_got"]).days > s["max_age_days"]:
                 verify.append({"claim": k, "source": s["id"], "url": s["url"], "retrieved_at": str(s["_got"]),
                                "age_days": (P["as_of"] - s["_got"]).days, "max_age_days": s["max_age_days"]})
