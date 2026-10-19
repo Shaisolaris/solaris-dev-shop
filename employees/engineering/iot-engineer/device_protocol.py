@@ -35,9 +35,9 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-TOOL_VERSION = "1.1.0"
+TOOL_VERSION = "1.2.0"
 REPORT_SCHEMA = "solaris.device-protocol-report/1"
-STATE_SCHEMA = "solaris.device-protocol-state/2"   # /2 adds body_sha256 (M25 S1)
+STATE_SCHEMA = "solaris.device-protocol-state/3"   # /2 added body_sha256 (M25 S1); /3 hashes the whole checkpoint (M25 r2)
 CLAIM_SCOPE = "simulated valve actuations from a synthetic event stream; not hardware evidence"
 MAX_LINE = 64 * 1024            # longer lines are quarantined, never parsed
 MAX_DEVICES = 10000
@@ -352,7 +352,9 @@ def run_ingest(a) -> Tuple[int, Dict[str, Any]]:
                 st = json.loads(spath.read_text(encoding="utf-8"), object_pairs_hook=_no_dupes)
             except (OSError, ValueError, RecursionError):
                 raise Damaged(f"state: {spath.name} is not a readable checkpoint; remove it to start over") from None
-            if not isinstance(st, dict) or st.get("schema") != STATE_SCHEMA or st.get("commands_sha256") != csha:
+            if not isinstance(st, dict):  # valid JSON but not a checkpoint object: damaged, not another tool (M25 r2)
+                raise Damaged(f"state: {spath.name} is not a checkpoint object; remove it to start over")
+            if st.get("schema") != STATE_SCHEMA or st.get("commands_sha256") != csha:
                 raise Invalid(f"state: {spath.name} belongs to another command log or tool; remove it to start over")
             why = None if _int(st.get("offset"), 0, 2 ** 62) and _int(st.get("lines"), 0, 2 ** 62) else "offset or lines is not a count"
             why = why or check_snapshot(st, cmds)
@@ -361,6 +363,10 @@ def run_ingest(a) -> Tuple[int, Dict[str, Any]]:
             prefix = efh.read(st["offset"])
             if len(prefix) != st["offset"] or hashlib.sha256(prefix).hexdigest() != st.get("events_prefix_sha256"):
                 raise Invalid("state: the events file no longer starts with the part already ingested; remove the state to start over")
+            # lines is re-derived from the bytes already ingested, so a forged count fails even with a recomputed
+            # hash: every ingested line ends with a newline, except a last line at the end of the file (M25 r2)
+            if st["lines"] != prefix.count(b"\n") + (1 if prefix and not prefix.endswith(b"\n") else 0):
+                raise Damaged(f"state: {spath.name}: lines does not match the events already ingested; remove it to start over")
             h.update(prefix)
             offset, lines = st["offset"], st["lines"]
         ctl = Controller(cmds, st)
@@ -370,7 +376,8 @@ def run_ingest(a) -> Tuple[int, Dict[str, Any]]:
             if spath:
                 snap = ctl.snapshot()
                 body = dict(schema=STATE_SCHEMA, tool_version=TOOL_VERSION, commands_sha256=csha, offset=offset, lines=lines,
-                            events_prefix_sha256=h.hexdigest(), body_sha256=_body_sha(snap), **snap)
+                            events_prefix_sha256=h.hexdigest(), **snap)
+                body["body_sha256"] = _body_sha(body)
                 _write_atomic(spath, (json.dumps(body, sort_keys=True) + "\n").encode("utf-8"))
 
         if st is None:
@@ -409,14 +416,17 @@ def run_ingest(a) -> Tuple[int, Dict[str, Any]]:
     return (0 if rep["status"] == "clean" else 1), rep
 
 
-def _body_sha(snap: Dict[str, Any]) -> str:
-    return hashlib.sha256(json.dumps(snap, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+def _body_sha(body: Dict[str, Any]) -> str:
+    """sha256 over every checkpoint field except body_sha256 itself: the cursor (offset, lines, prefix hash), the
+    tool version and the controller state (M25 r2: lines sat outside the hash)."""
+    rest = {k: v for k, v in body.items() if k != "body_sha256"}
+    return hashlib.sha256(json.dumps(rest, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
 
 
 def check_snapshot(st: Dict[str, Any], cmds: Dict[str, Dict[str, Any]]) -> Optional[str]:
     """Why a checkpoint's controller state is not one this tool could have written, or None (M25 S1)."""
     snap = {k: st.get(k) for k in ("devices", "claims", "counts", "anomalies")}
-    if st.get("body_sha256") != _body_sha(snap):
+    if st.get("body_sha256") != _body_sha(st):
         return "its body does not match body_sha256 (edited or damaged)"
     devs, claims, counts, anomalies = snap["devices"], snap["claims"], snap["counts"], snap["anomalies"]
     if not isinstance(devs, dict) or len(devs) > MAX_DEVICES:
@@ -521,6 +531,12 @@ def run_simulate(a) -> Tuple[int, Dict[str, Any]]:
     rec = Path(a.record) if a.record else None
     if rec and (rec.is_symlink() or (rec.exists() and not rec.is_dir())):
         raise Invalid(f"--record: {rec} exists and is not a folder")
+    # a file further up the path ("afile/sub") would make mkdir fail after the run (M25 r2 D04)
+    for parent in (rec.parents if rec else ()):
+        if parent.exists() or parent.is_symlink():
+            if not parent.is_dir():
+                raise Invalid(f"--record: {parent} is not a folder, so {rec} cannot be created")
+            break
     rng = random.Random(a.seed)
     devs = [SimDevice(f"valve-{i:03d}") for i in range(a.devices)]
     for d in devs:
@@ -599,9 +615,12 @@ def run_simulate(a) -> Tuple[int, Dict[str, Any]]:
            "claims_match_ground_truth": claimed == truth, "lines_received": len(received),
            "simulator": "synthetic devices and link in this process; no hardware"}
     if rec:
-        rec.mkdir(parents=True, exist_ok=True)  # a fresh folder works as the doc shows (M25 S2)
-        _write_atomic(rec / "commands.jsonl", b"".join(l + b"\n" for l in cmd_log))
-        _write_atomic(rec / "events.jsonl", b"".join(l + b"\n" for l in received))
+        try:
+            rec.mkdir(parents=True, exist_ok=True)  # a fresh folder works as the doc shows (M25 S2)
+            _write_atomic(rec / "commands.jsonl", b"".join(l + b"\n" for l in cmd_log))
+            _write_atomic(rec / "events.jsonl", b"".join(l + b"\n" for l in received))
+        except OSError as exc:
+            raise Invalid(f"--record: cannot write {rec}: {exc.strerror}") from None
     rep = ctl.report({"simulation": sim})
     ok = claimed == truth and not double and not rep["commands_unacknowledged"]
     rep["simulation"]["verdict"] = "claims equal ground truth, exactly once" if ok else "MISMATCH"

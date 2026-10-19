@@ -277,7 +277,7 @@ class M25Rework(unittest.TestCase):
             with self.subTest(forged=name):
                 b = json.loads(json.dumps(st))
                 mutate(b)
-                b["body_sha256"] = dp._body_sha({k: b[k] for k in ("devices", "claims", "counts", "anomalies")})
+                b["body_sha256"] = dp._body_sha(b)  # r3: the hash covers the whole checkpoint
                 code, out, err = self._resume(S, b)
                 self.assertEqual(code, 4, out)
                 self.assertNotIn("Traceback", err)
@@ -333,6 +333,111 @@ class M25Rework(unittest.TestCase):
         ctl.receive(json.dumps(_ev("v1", 2, kind="ack", cmd="c-1", result="done", state="open")).encode(), 2)
         self.assertEqual(ctl.claims, [])
         self.assertEqual(ctl.counts.get("duplicate_acks"), 1)
+
+
+
+class M25R2Rework(unittest.TestCase):
+    """G25 r3: regression tests for the M25 r2 Grok self-validation findings (on a902bc4): lines outside the hash (P3),
+    non-object JSON (P4), --record under a file (P4) and the three guards no test reached (P4)."""
+    setUp = M25Rework.setUp
+    _state = M25Rework._state
+    _resume = M25Rework._resume
+
+    def _refused(self, S, body, want):
+        before = json.dumps(body, sort_keys=True) + "\n"
+        code, out, err = self._resume(S, body)
+        self.assertEqual(code, 4, out)
+        self.assertEqual(json.loads(out)["status"], "damaged_state")
+        self.assertIn(want, json.loads(out)["error"])
+        self.assertNotIn("Traceback", err)
+        self.assertEqual(S.read_text(), before)  # nothing written
+
+    def test_p3_cursor_edits_exit_4(self):
+        S, st = self._state()
+        for name, body in {"lines +1000": dict(st, lines=st["lines"] + 1000), "lines 0": dict(st, lines=0),
+                           "offset +1": dict(st, offset=st["offset"] + 1),
+                           "events_prefix_sha256": dict(st, events_prefix_sha256="0" * 64),
+                           "tool_version": dict(st, tool_version="9.9.9")}.items():
+            with self.subTest(edit=name):
+                self._refused(S, body, "does not match body_sha256")
+        # a forger who recomputes the hash still cannot move the line count away from the ingested bytes
+        for n in (st["lines"] + 1000, 0, st["lines"] - 1):
+            with self.subTest(forged_lines=n):
+                b = dict(st, lines=n)
+                b["body_sha256"] = dp._body_sha(b)
+                self._refused(S, b, "lines does not match the events already ingested")
+        S, st = self._state()  # untouched: resumes with the true line numbers
+        code, got, _ = ingest(self.E, "--state", S, commands=self.C)
+        _, ref, _ = ingest(self.E, commands=self.C)
+        self.assertEqual((got["resumed_from_line"], got["inputs"]["event_lines"]), (st["lines"], ref["inputs"]["event_lines"]))
+        self.assertEqual(got["anomalies"], ref["anomalies"])
+        self.assertEqual(self._resume(S, dict(st, schema="solaris.device-protocol-state/2"))[0], 2)  # the r2 schema
+
+    def test_p4_valid_json_that_is_not_an_object_exits_4(self):
+        S, _ = self._state()
+        for text in ("[]", "null", '"text"', "3", "true"):
+            with self.subTest(text=text):
+                S.write_text(text)
+                code, out, err = cli("ingest", "--commands", self.C, "--events", self.E, "--state", S, "--json")
+                self.assertEqual((code, json.loads(out)["status"]), (4, "damaged_state"), out)
+                self.assertIn("not a checkpoint object", json.loads(out)["error"])
+                self.assertNotIn("Traceback", err)
+                self.assertEqual(S.read_text(), text)
+
+    def test_p4_record_under_a_file_is_a_clean_error(self):
+        afile = self.tmp / "afile"
+        afile.write_text("x")
+        for rec in (afile / "sub", afile / "sub" / "deeper"):
+            with self.subTest(rec=rec.name):
+                code, out, err = cli("simulate", "--steps", 20, "--record", rec)
+                self.assertEqual(code, 2, out)
+                self.assertIn("is not a folder", out)
+                self.assertNotIn("Traceback", err)
+        self.assertEqual(afile.read_text(), "x")
+        real = self.tmp / "realdir"
+        real.mkdir()
+        link = self.tmp / "linkdir"
+        link.symlink_to(real, target_is_directory=True)
+        code, out, err = cli("simulate", "--steps", 20, "--record", link)  # a symlink, even to a folder, is refused
+        self.assertEqual(code, 2, out)
+        self.assertNotIn("Traceback", err)
+        self.assertEqual(list(real.iterdir()), [])
+        self.assertEqual(cli("simulate", "--steps", 20, "--record", self.tmp / "new" / "deep")[0], 0)  # a fresh path still works
+        if not (hasattr(os, "geteuid") and os.geteuid() == 0):  # root can write a read-only folder
+            ro = self.tmp / "ro"
+            ro.mkdir()
+            os.chmod(ro, 0o500)
+            try:
+                code, out, err = cli("simulate", "--steps", 20, "--record", ro / "sub")
+            finally:
+                os.chmod(ro, 0o700)
+            self.assertEqual(code, 2, out)
+            self.assertIn("cannot write", out)
+            self.assertNotIn("Traceback", err)
+
+    def test_p3_a_last_line_without_a_newline_still_resumes(self):
+        E2 = self.tmp / "no-newline.jsonl"
+        E2.write_bytes(self.E.read_bytes().rstrip(b"\n"))
+        S = self.tmp / "eof.json"
+        code1, first, _ = ingest(E2, "--state", S, commands=self.C)
+        code2, again, err = ingest(E2, "--state", S, commands=self.C)  # resumes from the end-of-file checkpoint
+        self.assertEqual((code2, again["resumed_from_line"]), (code1, first["inputs"]["event_lines"]), err)
+        self.assertEqual(claims(again), claims(first))
+
+    def test_p4_three_guards_behind_the_hash(self):
+        S, st = self._state()
+        self.assertTrue(st["claims"], "the cut must fall after some claims")
+        other = next(c for c, v in json.loads(json.dumps({l["cmd"]: l for l in map(json.loads, self.C.read_text().splitlines())})).items()
+                     if v["device"] != "valve-000")
+        cases = {"fewer records applied than effects claimed": lambda b: b["counts"].update(applied=0),
+                 "counts is not a map of non-negative integers": lambda b: b["counts"].update(applied=str(b["counts"]["applied"])),
+                 "lists an ack that is not one of its commands": lambda b: b["devices"]["valve-000"]["acked"].append(other)}
+        for want, mutate in cases.items():
+            with self.subTest(guard=want):
+                b = json.loads(json.dumps(st))
+                mutate(b)
+                b["body_sha256"] = dp._body_sha(b)
+                self._refused(S, b, want)
 
 
 if __name__ == "__main__":

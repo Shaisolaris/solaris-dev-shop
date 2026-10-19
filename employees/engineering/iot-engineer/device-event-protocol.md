@@ -45,17 +45,22 @@ a duplicate command id, unknown field or bad action makes the whole run invalid 
    that same device, whose `state` equals the command's target. Each command id is claimed at most once
    across every session; repeats count as `duplicate_acks`. An ack for an unknown or another device's
    command is `unknown_command`; a done ack with the wrong state is `transition_mismatch`; a rejected
-   ack is counted and makes no claim.
+   ack is counted and makes no claim. Open for the owner (M25 r2 L03): when one command is acked
+   `rejected` and later `done`, the tool claims nothing for it today (the rejected ack wins); which
+   should win is not decided here.
 4. **State** follows the device's own reports. A change no ack explains is `unexplained_transition`.
 5. **Recovery**: with `--state S.json` the controller checkpoints atomically (write temp, fsync,
    rename) every 50 lines and at the end. The checkpoint binds the sha256 of the events prefix already
    read and of the command log; a resume onto changed input is refused (exit 2). It also carries
-   `body_sha256` over its controller state, and on load that state is checked for structure (device
-   records, buffered records inside the window, every claim a logged command its device acknowledged);
-   an edited, truncated or damaged checkpoint exits 4 and nothing is written. Limit: the hash is not a
-   signature; someone who rewrites the body and recomputes it passes the hash, and only the structure
-   checks stand between them and a resumed run. A checkpoint from tool 1.0.0
-   (state schema /1) is refused with exit 2. `--crash-after N`
+   `body_sha256` over every other field of the checkpoint (the read position `offset` and `lines`, the
+   prefix hash, the tool version and the controller state), and on load that state is checked for
+   structure (device records, buffered records inside the window, every claim a logged command its
+   device acknowledged, counts non-negative integers, at least as many records applied as effects
+   claimed) and `lines` is recounted from the events already ingested. An edited, truncated or damaged
+   checkpoint, or a file that is JSON but not a checkpoint object (`[]`, `null`), exits 4 and nothing is
+   written. Limit: the hash is not a signature; someone who rewrites the checkpoint and recomputes it
+   passes the hash, and only the structure checks and the line recount stand between them and a resumed
+   run. A checkpoint from tool 1.0.0 or 1.1.0 (state schema /1 or /2) is refused with exit 2. `--crash-after N`
    drills a crash after N lines (exit 3); rerunning resumes and gives the same report as an unbroken run.
 
 ## Device side (what the simulator models, and what firmware must do)
@@ -71,7 +76,8 @@ a duplicate command id, unknown field or bad action makes the whole run invalid 
     python3 device_protocol.py ingest --commands out/commands.jsonl --events out/events.jsonl --state out/st.json --crash-after 500   # exit 3
     python3 device_protocol.py ingest --commands out/commands.jsonl --events out/events.jsonl --state out/st.json   # resumes, exit 1
 
-These run as written in an empty folder: `--record` creates its folder (an existing file there is exit 2).
+These run as written in an empty folder: `--record` creates its folder (an existing file there, or a
+file anywhere above it such as `afile/sub`, is exit 2).
 The faulted simulation exits 0 (claims equal ground truth) and its stream has anomalies, so `ingest` exits 1.
 
 Exit codes: 0 clean, 1 anomalies listed, 2 invalid invocation or input, 3 crash drill, 4 damaged or edited checkpoint.

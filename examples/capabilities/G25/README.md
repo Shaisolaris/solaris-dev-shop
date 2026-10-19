@@ -31,13 +31,16 @@ gap, and the 32-record window holds exactly next+1 to next+32; o4 old-boot repla
 acks; o6 malformed and over-long lines bounded, ids with a trailing newline refused; o7 unexplained transitions and fault acks; o8 three
 seeds of heavy faults, claims equal ground truth and replay of the record agrees; o9 crash drill at six
 points, resume equals an unbroken run, changed input refuses to resume (exit 2), a checkpoint with
-its claims deleted is refused (exit 4); o10 invalid invocations exit 2
+its claims deleted, its line count edited or a JSON list in its place is refused (exit 4); o10 invalid invocations exit 2
 and write nothing; o11 200 devices under faults, deterministic per seed; o12 unseen generated streams.
 
 Exit codes: 0 clean, 1 anomalies listed, 2 invalid invocation or input, 3 crash drill, 4 damaged or
-edited checkpoint. `--record DIR` creates DIR. The checkpoint's `body_sha256` catches an edit made
-without recomputing it; a deliberate forger can recompute it, and then only the structure checks
-(every claim a logged command its device acknowledged, buffered records inside the window) remain.
+edited checkpoint. `--record DIR` creates DIR (a file at DIR or above it is exit 2). The checkpoint's
+`body_sha256` covers every other field (read position, line count, prefix hash, tool version, controller
+state) and catches an edit made without recomputing it; a deliberate forger can recompute it, and then
+only the structure checks (every claim a logged command its device acknowledged, buffered records inside
+the window, non-negative counts, applied at least the claims) and the line recount remain. Open for the
+owner: a command acked rejected and then done claims nothing today; which wins is not decided.
 A checkpoint is local working state, not a signed record.
 
 What is not covered: real radios, timing, flash wear or power loss on real parts, record

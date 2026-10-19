@@ -319,9 +319,16 @@ def main(argv=None):
                 e.append(f"resume from a checkpoint with its claims deleted: exit {code}, expected 4 (damaged checkpoint)")
         else:
             e.append("the half-way checkpoint holds no claims, so the edit drill cannot run")
+        # r3 (M25 r2): the line count is part of the checkpoint too, and JSON that is not an object is damaged
+        for name, text in (("lines +1000", json.dumps(dict(body, lines=body.get("lines", 0) + 1000)) + "\n"), ("a JSON list", "[]\n")):
+            S3 = d / "statecursor.json"
+            S3.write_text(text)
+            code, out, err = run(a.tool, "ingest", "--commands", Cd, "--events", Ed, "--state", S3, "--json")
+            if code != 4 or "Traceback" in err or S3.read_text() != text:
+                e.append(f"resume from a checkpoint with {name}: exit {code}, expected 4 with the file unchanged")
         return e
     check("o9", "crash drill at six points then resume equals an unbroken run; a changed input refuses to resume (2); "
-          "an edited checkpoint is refused (4)", o9)
+          "an edited checkpoint (claims, line count) or a non-object one is refused (4)", o9)
 
     def o10():
         e = []
