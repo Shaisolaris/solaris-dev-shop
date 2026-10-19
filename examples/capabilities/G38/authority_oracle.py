@@ -95,9 +95,9 @@ def p2(c):
     case("notice missing", lambda d: (d / "vendor" / "parser" / "LICENSE-upstream").unlink(),
          [("notice_path_missing", "NOTICE.md")])
     case("unknown license", lambda d: (d / "LICENSE").write_text("All rights reserved. Internal use only (synthetic)."), [("license_unrecognized", "LICENSE")])
-    case("apache everywhere but LICENSE", lambda d: (d / "LICENSE").write_text(
+    case("apache header only", lambda d: (d / "LICENSE").write_text(
         "Apache License\nVersion 2.0, January 2004\nTERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n"),
-        [("license_mismatch", "README.md"), ("license_mismatch", "README.md"), ("license_mismatch", pj), ("license_mismatch", "pyproject.toml")])
+        [("license_unrecognized", "LICENSE")])  # a header alone is not the license (M38 proposed fix)
     bad = [x for x in cases if not x[1]]
     return not bad, "%d single-cause license drifts each give exactly their finding%s" % (len(cases), "; wrong: %s" % bad[:2] if bad else "")
 

@@ -114,10 +114,12 @@ class G38Provenance(unittest.TestCase):
         j = self.check(1)
         self.assertEqual(self.codes(j), [('license_unrecognized', 'LICENSE')])
         self.assertEqual(j['license'], 'unrecognized')
+        # a license header alone, or MIT with added terms, is not the license (M38 proposed fix)
         (self.r / 'LICENSE').write_text('Apache License\n  Version 2.0, January 2004\nTERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION')
-        j = self.check(1)
-        self.assertEqual(j['license'], 'Apache-2.0')
-        self.assertEqual(self.codes(j), sorted([('license_mismatch', 'pyproject.toml'), ('license_mismatch', PJ), ('license_mismatch', 'README.md'), ('license_mismatch', 'README.md')]))
+        self.assertEqual(self.codes(self.check(1)), [('license_unrecognized', 'LICENSE')])
+        mit0 = (EX / 'fixtures' / 'repo-clean' / 'LICENSE').read_text()
+        (self.r / 'LICENSE').write_text(mit0 + '\nThe Software may not be used for commercial purposes.\n')
+        self.assertEqual(self.codes(self.check(1)), [('license_unrecognized', 'LICENSE')])
         both = (EX / 'fixtures' / 'repo-clean' / 'LICENSE').read_text() + '\nApache License\nVersion 2.0, January 2004\nTerms and conditions for use, reproduction, and distribution'
         (self.r / 'LICENSE').write_text(both)
         self.assertEqual(self.codes(self.check(1)), [('license_unrecognized', 'LICENSE')])
@@ -125,12 +127,41 @@ class G38Provenance(unittest.TestCase):
         (self.r / 'LICENSE').write_text(mit.replace('"AS IS"', '\u201cAS IS\u201d').replace(' ', '  '))
         self.assertEqual(self.check(0)['license'], 'MIT')
 
+    def test_append_after_lost_newline_keeps_both(self):
+        d = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, d, True); log = d / 'nl.jsonl'
+        log.write_bytes((EX / 'fixtures' / 'events.jsonl').read_bytes().rstrip(b'\n'))
+        p = run(EC, 'append', log, '--claimed-by', 'x', '--body', '{}')
+        self.assertEqual(p.returncode, 0, p.stderr)
+        v = run(EC, 'verify', log, '--json')
+        self.assertEqual((v.returncode, json.loads(v.stdout)['verified']), (0, 7))
+
+    def test_readme_comma_license_section_and_root_plugin(self):
+        # P3-2: "GPL, see LICENSE." must be read; P3-1: plugin.json outside employees/ is checked
+        (self.r / 'README.md').write_text('# X\n\n## License\n\nGPL, see LICENSE.\n')
+        j = self.check(1)
+        self.assertIn(('license_mismatch', 'README.md'), self.codes(j))
+        cos = self.r / 'chief-of-staff'; cos.mkdir(); (cos / 'plugin.json').write_text('{"name": "chief-of-staff", "license": "Apache-2.0"}')
+        j = self.check(1)
+        self.assertIn(('license_mismatch', 'chief-of-staff/plugin.json'), self.codes(j))
+
+    def test_out_missing_folder_is_invalid(self):
+        # P4-1: missing --out folder -> exit 2, no traceback
+        missing = self.tmp / 'no-such-dir' / 'report.json'
+        r = run(PC, 'check', self.r, '--out', missing)
+        self.assertEqual(r.returncode, 2); self.assertIn('Nothing was written', r.stderr); self.assertNotIn('Traceback', r.stderr)
+        log = self.tmp / 'e.jsonl'
+        (self.tmp / 'e.jsonl').write_bytes((EX / 'fixtures' / 'events.jsonl').read_bytes())
+        r = run(EC, 'recover', log, '--out', self.tmp / 'no-such-dir' / 'out.jsonl')
+        self.assertEqual(r.returncode, 2); self.assertIn('Nothing was written', r.stderr); self.assertNotIn('Traceback', r.stderr)
+
     def test_manifest_cases(self):
         m = self.r / 'MANIFEST.sha256'; good = m.read_text()
         (self.r / 'src' / 'app.py').write_text('changed\n')
         j = self.check(1, '--manifest', m)
         self.assertEqual(self.codes(j), [('digest_mismatch', 'src/app.py')]); self.assertEqual(j['integrity']['matching'], 7)
-        self.assertNotEqual(j['integrity']['subject']['digests']['src/app.py'], dict(reversed(l.split('  ', 1)) for l in good.splitlines())['src/app.py'])
+        # mismatched digests stay out of the integrity subject (M38 P3-3)
+        self.assertNotIn('src/app.py', (j['integrity']['subject'] or {}).get('digests', {}))
+        self.assertEqual(len(j['integrity']['subject']['digests']), 7)
         (self.r / 'src' / 'app.py').unlink()
         self.assertEqual(self.codes(self.check(1, '--manifest', m)), [('artifact_missing', 'src/app.py')])
         out = self.tmp / 'o.py'; out.write_text('x'); os.symlink(str(out), str(self.r / 'src' / 'app.py'))
@@ -183,6 +214,7 @@ class G38Provenance(unittest.TestCase):
         (self.r / 'employees' / 'demo' / 'node_modules').mkdir()
         (self.r / 'employees' / 'demo' / 'node_modules' / 'plugin.json').write_text('{"license": "GPL"}')
         self.assertEqual(self.check(0)['declarations'], 4)
+
 
 
 class G38EventChain(unittest.TestCase):

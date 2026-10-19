@@ -36,5 +36,10 @@ Each line is `{"seq", "prev", "at", "claimed_by", "body", "hash"}`. `hash` is th
 ## Append and recovery
 
 `append` takes an exclusive lock, re-verifies the whole log and refuses (exit 2, nothing written) when it does not
-verify. `recover` writes only the verified prefix to a new file; it refuses to overwrite the log or any existing
+verify. A verified last event whose newline was lost is kept: the new event goes on its own line. `recover` writes only the verified prefix to a new file; it refuses to overwrite the log or any existing
 file, and when an anchor shows rewritten history it keeps nothing. The original log is never modified.
+
+## Revision note
+
+Appending after a lost trailing newline (leading newline before the new event) generalizes the M38 proposed fix
+(https://github.com/Shaisolaris/solaris-dev-shop/commit/994cb3d4a9a3aef41b1fd3ff872b846e5fb8f717).

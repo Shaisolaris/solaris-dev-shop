@@ -4,9 +4,9 @@
   provenance_check.py check ROOT [--manifest FILE] [--exclude DIR ...] [--json] [--out FILE]
 
 Checks, reading only:
-- the root LICENSE is recognised from its text (MIT or Apache-2.0 fingerprints); anything else is reported
+- the root LICENSE is recognised from its whole text (MIT or Apache-2.0; fragments and added terms are not); anything else is reported
   as unrecognised and nothing is guessed;
-- every license declaration agrees with it: pyproject.toml `license`, each employees/**/plugin.json
+- every license declaration agrees with it: pyproject.toml `license`, every `plugin.json` under ROOT (including chief-of-staff/)
   `license`, the README license badge and `## License` section;
 - NOTICE.md lists every other LICENSE* file in the tree, and every LICENSE path it lists exists;
 - with --manifest ("<sha256>  <relative path>" lines): every listed file exists and has that digest, hashed
@@ -24,6 +24,7 @@ Exit codes: 0 consistent; 1 findings; 2 invalid input (unreadable ROOT, malforme
 --out is written atomically. Python 3.9+, standard library; never runs or edits the files it reads.
 """
 import argparse
+import hashlib
 import importlib.util
 import json
 import os
@@ -34,12 +35,6 @@ from pathlib import Path
 
 G05 = Path(__file__).resolve().parents[1] / "assurance" / "quality_os.py"
 SCHEMA = "solaris.provenance-check/1"
-FINGERPRINTS = {
-    "MIT": ("permission is hereby granted, free of charge, to any person obtaining a copy",
-            "the above copyright notice and this permission notice shall be included",
-            'the software is provided "as is", without warranty of any kind'),
-    "Apache-2.0": ("apache license", "version 2.0, january 2004", "terms and conditions for use, reproduction, and distribution"),
-}
 SPDX_ALIASES = {"mit": "MIT", "mit license": "MIT", "apache-2.0": "Apache-2.0", "apache 2.0": "Apache-2.0",
                 "apache license 2.0": "Apache-2.0", "apache-2": "Apache-2.0"}
 SKIP_DIRS = {".git", "__pycache__", "node_modules", ".venv", "venv", "dist", "build"}
@@ -66,10 +61,38 @@ def _norm(s):
     return " ".join(s.replace("\u201c", '"').replace("\u201d", '"').split()).casefold()
 
 
+MIT_TITLES = {"mit license", "the mit license", "the mit license (mit)", "mit"}
+MIT_BODY = _norm("""Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction, including without
+limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the
+Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of
+the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.""")
+# sha256 of the normalised Apache-2.0 text from its title through "END OF TERMS AND CONDITIONS"
+APACHE_TERMS_SHA = "95cef6332b35354c12f9d666ab9ff47002e6f7ef937924896882b2e0cdb7a0d6"
+APACHE_END = "end of terms and conditions"
+APACHE_APPENDIX = "appendix: how to apply the apache license to your work"
+
+
 def identify(text):
-    t = _norm(text)
-    hits = [k for k, phr in FINGERPRINTS.items() if all(p in t for p in phr)]
-    return hits[0] if len(hits) == 1 else None
+    """The whole text must be the license: a fragment, a header or added terms are not recognised (nothing guessed)."""
+    lines = [l.strip() for l in text.splitlines() if l.strip()]
+    if lines and _norm(lines[0]) in MIT_TITLES:
+        lines.pop(0)
+    while lines and _norm(lines[0]).startswith(("copyright", "(c)")):
+        lines.pop(0)
+    if _norm(" ".join(lines)) == MIT_BODY:
+        return "MIT"
+    t = _norm(text); j = t.find(APACHE_END)
+    if j > 0 and hashlib.sha256(t[:j + len(APACHE_END)].encode("utf-8")).hexdigest() == APACHE_TERMS_SHA:
+        tail = t[j + len(APACHE_END):].strip()
+        if not tail or (tail.startswith(APACHE_APPENDIX) and tail.endswith("limitations under the license.")):
+            return "Apache-2.0"
+    return None
 
 
 def spdx(v):
@@ -133,7 +156,7 @@ def check(root, manifest=None, exclude=()):
     if py is not None:
         m = re.search(r'(?m)^license\s*=\s*(?:\{\s*text\s*=\s*"([^"]*)"\s*\}|"([^"]*)")', py)
         declared("pyproject.toml", (m.group(1) or m.group(2)) if m else None, "pyproject license")
-    for p in _walk(root / "employees", root, ex) if (root / "employees").is_dir() else []:
+    for p in _walk(root, root, ex):
         if p.name != "plugin.json":
             continue
         rel = p.relative_to(root).as_posix()
@@ -146,7 +169,7 @@ def check(root, manifest=None, exclude=()):
     if rd is not None:
         for m in re.finditer(r"img\.shields\.io/badge/license-([A-Za-z0-9.]+)-", rd):
             declared("README.md", m.group(1).replace("--", "-"), "README badge")
-        m = re.search(r"(?m)^## License\s*\n+\s*([A-Za-z0-9.\- ]+?)[.\n]", rd)
+        m = re.search(r"(?m)^## License\s*\n+\s*([A-Za-z0-9]+(?:[.\-][A-Za-z0-9]+)*(?:\s+[A-Za-z0-9]+(?:[.\-][A-Za-z0-9]+)*)*)(?=\s*[,.]|\s*$)", rd)
         if m:
             declared("README.md", m.group(1), "README License section")
     # NOTICE: other license files must be listed, listed ones must exist
@@ -187,7 +210,7 @@ def verify_manifest(root, manifest, F):
     if not want:
         raise Invalid("manifest lists no files")
     g = _g05()
-    got, ok = {}, 0
+    matching, ok = {}, 0
     for rel, h in want.items():
         if os.path.isabs(rel) or ".." in Path(rel).parts:
             F.append({"code": "artifact_refused", "path": rel, "detail": "manifest path must be relative inside ROOT"}); continue
@@ -199,16 +222,18 @@ def verify_manifest(root, manifest, F):
             F.append({"code": "artifact_refused", "path": rel, "detail": str(ex)[:160]}); continue
         if (root / rel).is_dir():
             F.append({"code": "artifact_refused", "path": rel, "detail": "manifest entries must be files"}); continue
-        got[rel] = d[rel]
         if d[rel] != h:
             F.append({"code": "digest_mismatch", "path": rel, "detail": "file bytes differ from the manifest"})
         else:
+            matching[rel] = d[rel]
             ok += 1
-    return {"listed": len(want), "matching": ok, "subject": {"digests": got} if got else None}
+    return {"listed": len(want), "matching": ok, "subject": {"digests": matching} if matching else None}
 
 
 def _atomic(out, data):
     out = Path(out)
+    if not out.parent.is_dir():
+        raise Invalid("--out folder does not exist: %s" % out.parent.as_posix())
     fd, tmp = tempfile.mkstemp(dir=str(out.parent), prefix="." + out.name + ".")
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as f:
@@ -239,12 +264,12 @@ def main(argv=None):
     ns = ap.parse_args(argv)
     try:
         r = check(ns.root, ns.manifest, ns.exclude)
+        text = json.dumps(r, indent=2, sort_keys=True)
+        if ns.out:
+            _atomic(ns.out, text + "\n")
     except Invalid as ex:
         print("invalid: %s. Nothing was written." % ex, file=sys.stderr)
         return 2
-    text = json.dumps(r, indent=2, sort_keys=True)
-    if ns.out:
-        _atomic(ns.out, text + "\n")
     print(text if ns.json else render(r))
     return 0 if r["result"] == "consistent" else 1
 

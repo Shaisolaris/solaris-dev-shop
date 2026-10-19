@@ -130,6 +130,8 @@ def verify(raw, anchor=None):
 
 def _atomic(path, data):
     path = Path(path)
+    if not path.parent.is_dir():
+        raise Invalid("--out folder does not exist: %s" % path.parent.as_posix())
     fd, tmp = tempfile.mkstemp(dir=str(path.parent), prefix="." + path.name + ".")
     try:
         with os.fdopen(fd, "wb") as f:
@@ -179,7 +181,9 @@ def append(log, claimed_by, body_s, at=None):
             at = good[-1]["at"]  # keep time monotonic under clock skew between appenders
         e = {"seq": len(good), "prev": prev, "at": at, "claimed_by": claimed_by.strip(), "body": body}
         e["hash"] = event_hash(e)
-        os.write(fd, (canon(e) + "\n").encode("utf-8")); os.fsync(fd)
+        # a verified last event whose newline was lost (an interrupted write) must not be merged with this one
+        lead = b"\n" if raw and not raw.endswith(b"\n") else b""
+        os.write(fd, lead + (canon(e) + "\n").encode("utf-8")); os.fsync(fd)
         return 0, e
     finally:
         os.close(fd)
