@@ -35,7 +35,7 @@ double-entry journal; exit 0 alone proves nothing:
 
 ```bash
 PY=python3.12
-$PY examples/capabilities/G14/cash_oracle.py -- $PY $T                                  # ACCEPTED 12/12
+$PY examples/capabilities/G14/cash_oracle.py -- $PY $T                                  # ACCEPTED 13/13
 $PY examples/capabilities/G14/cash_oracle.py -- $PY examples/capabilities/G14/naive_stub.py  # REJECTED
 $PY examples/capabilities/G14/cash_oracle.py -- $PY examples/capabilities/G14/noop_stub.py   # REJECTED
 ```
@@ -47,4 +47,5 @@ and the bank control shows the difference; o6 missing amount, negative and sub-c
 every row re-delivered and shuffled gives the same balances, conflicting versions named; o8 bank control
 per currency, and a control difference alone gives exit 1; o9 three seeded 250-invoice books equal to the journal; o10 eight invalid packages exit 2
 and keep the previous report, then recovery; o11 40 000 invoices equal to the journal; o12 no network
-use and the package folder byte-identical.
+use and the package folder byte-identical; o13 refunds above the payments and credit notes above the
+invoice (the M14 K14 book) give exit 1 with over_refunded and over_credited named, equal amounts are not challenged.

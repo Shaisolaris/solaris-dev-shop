@@ -44,9 +44,21 @@ control difference (each listed); 2 invalid package or input, nothing written.
   payments + applied refunds = closing), revenue-to-cash bridge (revenue - net cash = change in AR -
   change in deferred + change in unbilled - change in unapplied), and the cash ledger.
 - **Nothing silently dropped**: rejected rows (with line and reason), late rows, rows without loaded_at,
-  conflicting versions of one id (all excluded), unapplied payments and refunds (with reason: no
-  reference, unknown, void, rejected or late invoice, currency mismatch), unlinked credit notes,
+  conflicting versions of one id (all excluded), unapplied payments and refunds, unlinked credit notes,
   invoices without delivery evidence. Exact repeats of a row count once.
+- **Reason values** (exactly as emitted in `exceptions.unapplied[].reason` and
+  `exceptions.unlinked_credits[].reason`): `no_invoice_reference`, `unknown_invoice`, `currency_mismatch`,
+  and `invoice_<why>` when the invoice itself was excluded: `invoice_void`, `invoice_late`,
+  `invoice_no_loaded_at`, `invoice_conflicting_versions`, `invoice_missing_value`, `invoice_bad_amount`,
+  `invoice_bad_status`. Unlinked credit notes can also carry `credit_note_before_invoice`. Rejected rows
+  use `missing_value`, `bad_amount`, `bad_status`, `bad_kind` (plus the G13 reader's own reasons).
+- **Negative transactions are challenged**: refunds applied to an invoice above the payments applied to
+  it (`exceptions.over_refunded`: paid, refunded, excess) and credit notes above the invoice amount
+  (`exceptions.over_credited`: invoice amount, credit notes, excess) are listed and give exit 1. The
+  arithmetic is still reported as booked (revenue can go negative, the excess shows as AR owed); the
+  exception is what tells the reader it needs an explanation. Equal amounts are not challenged. Totals are
+  taken over every included row known by as_of, including rows dated after the period end, so a refund
+  dated before the payment it returns is not challenged once that payment is in the book.
 - **Bank control**: per currency, statement cash in and out against the ledger; differences and
   currencies present on one side only are reported, never forced.
 

@@ -220,7 +220,7 @@ def reconcile(path: str) -> Tuple[Dict[str, Any], int]:
     P = load_package(path)
     start, end = P["start"], P["end"]
     exc: Dict[str, Any] = {"rejected": [], "late": [], "no_loaded_at": [], "conflicting_versions": [], "unapplied": [],
-                           "unlinked_credits": [], "undelivered": [], "_excluded": {k: {} for k in TABLES}, "_duplicates": 0}
+                           "unlinked_credits": [], "undelivered": [], "over_refunded": [], "over_credited": [], "_excluded": {k: {} for k in TABLES}, "_duplicates": 0}
     facts: List[Dict[str, Any]] = []
     inv = _clean("invoices", P, exc, facts)
     pay = _clean("payments", P, exc, facts)
@@ -308,6 +308,23 @@ def reconcile(path: str) -> Tuple[Dict[str, Any], int]:
             s["unapplied"] = unapplied.get(cur, ZERO)
             s["cum_cash"] = cash.get(cur, ZERO)
         return out
+
+    # negative transactions larger than what they reverse are challenged, never netted silently: refunds
+    # applied to an invoice above the payments applied to it, credit notes above the invoice amount. Judged on
+    # every included row (known by as_of), not at period end: a refund dated before the payment it returns is
+    # timing, not an excess, once that payment is in the book.
+    applied: Dict[str, Dict[str, Decimal]] = {k: {"cn": ZERO, "pay": ZERO, "ref": ZERO} for k in inv}
+    for typ, cur, t, amt, i in events:
+        if typ in applied.get(i or "", {}):
+            applied[i][typ] += amt
+    for k, v in sorted(applied.items()):
+        cur = inv[k]["currency"]
+        if v["ref"] > v["pay"]:
+            exc["over_refunded"].append({"id": k, "currency": cur, "paid": money(v["pay"]), "refunded": money(v["ref"]),
+                                         "excess": money(v["ref"] - v["pay"])})
+        if v["cn"] > inv[k]["amount"]:
+            exc["over_credited"].append({"id": k, "currency": cur, "invoice_amount": money(inv[k]["amount"]),
+                                         "credit_notes": money(v["cn"]), "excess": money(v["cn"] - inv[k]["amount"])})
 
     s0, s1 = state(start), state(end)
     flows: Dict[str, Dict[str, Decimal]] = {}
@@ -399,7 +416,8 @@ def reconcile(path: str) -> Tuple[Dict[str, Any], int]:
     dups = exc.pop("_duplicates")
     for k in exc:
         exc[k].sort(key=lambda x: json.dumps(x, sort_keys=True, default=str))
-    clean = not any(exc[k] for k in ("rejected", "late", "no_loaded_at", "conflicting_versions", "unapplied", "unlinked_credits", "undelivered")) \
+    clean = not any(exc[k] for k in ("rejected", "late", "no_loaded_at", "conflicting_versions", "unapplied", "unlinked_credits", "undelivered",
+                                     "over_refunded", "over_credited")) \
         and all_ok and (controls is None or all(c["ok"] for c in controls.values()))
     rep = {"schema": REPORT_SCHEMA, "package_sha256": P["package_sha256"],
            "period": {"start": start.isoformat(), "end": end.isoformat()}, "as_of": P["as_of"].isoformat() if P["as_of"] else None,

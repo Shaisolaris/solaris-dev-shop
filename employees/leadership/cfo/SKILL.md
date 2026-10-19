@@ -332,7 +332,7 @@ Before any revenue, cash or AR number goes into a board pack or MBR, reconcile t
 `cash_revenue_reconcile.py` (see `cash-revenue-reconciliation.md`): per-currency billed, recognized
 revenue, cash, refunds, AR (owed and customer credit), deferred, unbilled and unapplied cash, with an
 AR roll-forward and a revenue-to-cash bridge that must close to the cent. Quote its exceptions (late,
-unapplied, undelivered, conflicting) next to the number; never combine currencies without a stated rate.
+unapplied, undelivered, conflicting, over-refunded, over-credited) next to the number; never combine currencies without a stated rate.
 
 ## Hand-offs
 

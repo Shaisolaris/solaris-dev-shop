@@ -49,7 +49,7 @@ class G14Capability(unittest.TestCase):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_oracle_accepts_tool_and_rejects_controls(self):
-        for target, want in ((TOOL, 'ACCEPTED: 12/12'), (EX / 'naive_stub.py', 'REJECTED'), (EX / 'noop_stub.py', 'REJECTED')):
+        for target, want in ((TOOL, 'ACCEPTED: 13/13'), (EX / 'naive_stub.py', 'REJECTED'), (EX / 'noop_stub.py', 'REJECTED')):
             p = subprocess.run([sys.executable, str(EX / 'cash_oracle.py')] + (['--quick'] if target != TOOL else []) + ['--', sys.executable, str(target)],
                                capture_output=True, text=True, env=ENV, timeout=600)
             self.assertIn(want, p.stdout.strip().splitlines()[-1], (target.name, p.stdout[-1500:], p.stderr[-800:]))
@@ -84,6 +84,44 @@ class G14Capability(unittest.TestCase):
         self.assertEqual(sorted((x['id'], x['reason']) for x in ex['unapplied']),
                          [('P11', 'invoice_void'), ('P8', 'unknown_invoice'), ('P9', 'currency_mismatch')])
         self.assertEqual([x['id'] for x in ex['undelivered']], ['I4'])
+
+    def test_over_refund_and_over_credit_are_exceptions(self):
+        d = self.tmp / 'k14'
+        d.mkdir()
+        (d / 'invoices.csv').write_text('invoice_id,customer_id,currency,amount,issued_at,delivered_at,status,loaded_at\n'
+                                        'K1,c1,USD,100.00,2026-09-03T00:00:00Z,2026-09-04T00:00:00Z,issued,2026-09-03T00:00:00Z\n'
+                                        'K2,c2,USD,80.00,2026-09-03T00:00:00Z,2026-09-04T00:00:00Z,issued,2026-09-03T00:00:00Z\n'
+                                        'K3,c3,USD,60.00,2026-09-03T00:00:00Z,2026-09-04T00:00:00Z,issued,2026-09-03T00:00:00Z\n')
+        (d / 'payments.csv').write_text('payment_id,invoice_id,currency,amount,received_at,loaded_at\n'
+                                        'KP1,K1,USD,100.00,2026-09-05T00:00:00Z,2026-09-05T00:00:00Z\n'
+                                        'KP2,K2,USD,80.00,2026-09-05T00:00:00Z,2026-09-05T00:00:00Z\n'
+                                        'KP3,K3,USD,60.00,2026-10-01T12:00:00Z,2026-10-01T12:00:00Z\n')  # after the period, before as_of
+        (d / 'credits.csv').write_text('credit_id,invoice_id,kind,currency,amount,issued_at,loaded_at\n'
+                                       'KR1,K1,refund,USD,500.00,2026-09-07T00:00:00Z,2026-09-07T00:00:00Z\n'
+                                       'KC1,K1,credit_note,USD,300.00,2026-09-08T00:00:00Z,2026-09-08T00:00:00Z\n'
+                                       'KR2,K2,refund,USD,80.00,2026-09-07T00:00:00Z,2026-09-07T00:00:00Z\n'
+                                       'KR3,K3,refund,USD,15.00,2026-09-20T00:00:00Z,2026-09-20T00:00:00Z\n')  # refund before its payment: timing, not an excess
+        pkg = json.loads((FIX / 'clean' / 'package.json').read_text())
+        pkg.pop('bank', None)
+        pkg['invoices'] = {'file': 'invoices.csv'}
+        (d / 'package.json').write_text(json.dumps(pkg))
+        r = rep(d / 'package.json', 1)
+        self.assertEqual(r['exceptions']['over_refunded'], [{'id': 'K1', 'currency': 'USD', 'paid': '100.00', 'refunded': '500.00', 'excess': '400.00'}])
+        self.assertEqual(r['exceptions']['over_credited'], [{'id': 'K1', 'currency': 'USD', 'invoice_amount': '100.00', 'credit_notes': '300.00', 'excess': '200.00'}])
+        self.assertEqual(r['result'], 'reconciled_with_exceptions')
+        self.assertEqual(r['currencies']['USD']['recognized_revenue'], '-60.00')  # 100 - 300 + 80 + 60, as booked
+
+    def test_documented_reasons_match_emitted(self):
+        doc = (CFO / 'cash-revenue-reconciliation.md').read_text()
+        r = rep(FIX / 'september' / 'package.json', 1)
+        emitted = {x['reason'] for k in ('unapplied', 'unlinked_credits') for x in r['exceptions'][k]}
+        self.assertTrue(emitted)
+        for why in emitted:
+            self.assertIn('`%s`' % why, doc)
+        src = TOOL.read_text()
+        for why in ('no_invoice_reference', 'unknown_invoice', 'currency_mismatch', 'credit_note_before_invoice'):
+            self.assertIn('"%s"' % why, src)
+            self.assertIn('`%s`' % why, doc)
 
     def test_matches_independent_journal(self):
         o = oracle_module()

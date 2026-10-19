@@ -444,6 +444,32 @@ def main():
         return ok, "runs under a socket-denying guard; package folder byte-identical" if ok else "rc %s" % rc
     check("o12 offline and read-only", o12)
 
+    def o13():
+        # negative transactions larger than what they reverse (the M14 K14 book): invoice 100.00 paid 100.00,
+        # then a 500.00 refund and a 300.00 credit note. The arithmetic stands, but it must be challenged.
+        d = lambda n: START + dt.timedelta(days=n)
+        b = {"invoices": [{"invoice_id": "K1", "customer_id": "c", "currency": "USD", "amount": Decimal("100.00"), "issued_at": d(2),
+                           "delivered_at": d(3), "status": "issued", "loaded_at": d(2)}],
+             "payments": [{"payment_id": "KP1", "invoice_id": "K1", "currency": "USD", "amount": Decimal("100.00"), "received_at": d(4), "loaded_at": d(4)}],
+             "credits": [{"credit_id": "KR1", "invoice_id": "K1", "kind": "refund", "currency": "USD", "amount": Decimal("500.00"), "issued_at": d(6), "loaded_at": d(6)},
+                         {"credit_id": "KC1", "invoice_id": "K1", "kind": "credit_note", "currency": "USD", "amount": Decimal("300.00"), "issued_at": d(7), "loaded_at": d(7)}]}
+        rc, rep, _ = run(write_book(tmp / "o13", b))
+        ex = (rep or {}).get("exceptions", {})
+        bad_ok = rc == 1 and (rep or {}).get("result") == "reconciled_with_exceptions" and cur(rep, "USD", "recognized_revenue") == "-200.00" \
+            and [(x.get("id"), x.get("excess")) for x in ex.get("over_refunded", [])] == [("K1", "400.00")] \
+            and [(x.get("id"), x.get("excess")) for x in ex.get("over_credited", [])] == [("K1", "200.00")] \
+            and all(c["ok"] for c in rep["currencies"]["USD"]["checks"].values())
+        # boundaries: a refund equal to the payment and a credit note equal to the invoice are not challenged
+        b["credits"][0]["amount"] = Decimal("100.00")
+        b["credits"][1]["amount"] = Decimal("100.00")
+        rc2, rep2, _ = run(write_book(tmp / "o13b", b))
+        ex2 = (rep2 or {}).get("exceptions", {})
+        edge_ok = rc2 == 0 and not ex2.get("over_refunded") and not ex2.get("over_credited")
+        ok = bad_ok and edge_ok
+        return ok, "refund 500 on 100 paid and credit 300 on a 100 invoice: exit 1, over_refunded excess 400.00 and over_credited excess 200.00 named, checks still close; equal amounts not challenged" if ok \
+            else "rc %s ex %s / rc %s ex %s" % (rc, {k: ex.get(k) for k in ("over_refunded", "over_credited")}, rc2, {k: ex2.get(k) for k in ("over_refunded", "over_credited")})
+    check("o13 over-refund and over-credit challenged", o13)
+
     passed = sum(1 for _, ok in RESULTS if ok)
     print("%s: %d/%d checks passed (seed %d)" % ("ACCEPTED" if passed == len(RESULTS) else "REJECTED", passed, len(RESULTS), a.seed))
     shutil.rmtree(tmp, ignore_errors=True)
