@@ -17,6 +17,7 @@
 - Provider adapters retain default_deny + require_human for deploy/spend/mutate_external.
 - Evaluation packet: meta/skill-rotation/evaluations/20260724/platform-reliability/.
 - **2026-10-18 - G03 recovery**: A recovery drill is only evidence when the interrupted state is real. The DBA tool's `--simulate-crash-after N` exits after an actual rename, and `recover` is then judged on read-back row values, not on its exit code.
+- **2026-10-19 - G11 incident review**: summing every telemetry row double-counts re-delivered minutes and silently treats a gap as no traffic, and a rollback rule that only looks at burn after a deploy rolls back code for a DNS fault. *Proposed rule: one value per minute, gaps labelled and excluded, and a rollback recommendation only when the impact followed the change and the network diagnosis does not place the fault elsewhere.*
 
 ## Sources
 

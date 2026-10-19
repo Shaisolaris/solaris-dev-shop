@@ -1,0 +1,178 @@
+"""G11: incident timeline, SLO / error budget and rollback decision
+(employees/infrastructure/site-reliability-engineer/incident_slo.py).
+
+Real files and subprocesses; bundles are synthetic. Expected values are computed here with
+decimal arithmetic from the fixture records, not read back from the tool.
+"""
+import copy
+import decimal
+import json
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+SRE = ROOT / 'employees' / 'infrastructure' / 'site-reliability-engineer'
+TOOL = SRE / 'incident_slo.py'
+EX = ROOT / 'examples' / 'capabilities' / 'G11'
+FIX = EX / 'fixtures'
+ENV = dict(os.environ, PYTHONDONTWRITEBYTECODE='1')
+
+
+def cli(*args, env=ENV):
+    return subprocess.run([sys.executable, str(TOOL)] + [str(a) for a in args], capture_output=True, text=True, env=env, timeout=300)
+
+
+def report(path):
+    p = cli('report', path, '--json')
+    assert p.returncode == 0, p.stderr
+    return json.loads(p.stdout)
+
+
+def expected(bundle):
+    """Independent SLO arithmetic: one value per minute, duplicates once, conflicts and gaps out."""
+    seen = {}
+    for r in bundle['telemetry']:
+        seen.setdefault(r['minute'], set()).add((r['good'], r['total']))
+    keep = [next(iter(v)) for v in seen.values() if len(v) == 1]
+    good, total = sum(g for g, _ in keep), sum(t for _, t in keep)
+    o = decimal.Decimal(str(bundle['slo']['objective']))
+    q = decimal.Decimal('0.000001')
+    ctx = decimal.Context(prec=50, rounding=decimal.ROUND_HALF_EVEN)
+    bad = total - good
+    allowed = (1 - o) * total
+    return {'good': good, 'total': total, 'bad': bad,
+            'availability': str(ctx.divide(decimal.Decimal(good), total).quantize(q, context=ctx)),
+            'budget_remaining': str(ctx.divide(allowed - bad, allowed).quantize(q, context=ctx)),
+            'burn_rate': str(ctx.divide(decimal.Decimal(bad), total * (1 - o)).quantize(q, context=ctx))}
+
+
+class G11Capability(unittest.TestCase):
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix='g11-test-'))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_oracle_accepts_the_tool_and_rejects_controls(self):
+        for target, want in ((TOOL, 'ACCEPTED: 12/12'), (EX / 'naive_stub.py', 'REJECTED'), (EX / 'noop_stub.py', 'REJECTED')):
+            p = subprocess.run([sys.executable, str(EX / 'incident_oracle.py'), '--', sys.executable, str(target)],
+                               capture_output=True, text=True, env=ENV, timeout=600)
+            self.assertIn(want, p.stdout.strip().splitlines()[-1], (target.name, p.stdout[-1500:], p.stderr[-800:]))
+
+    def test_fixture_decisions_name_service_window_and_revision(self):
+        want = {'01-clean-control.json': ('met', 'do_not_rollback'), '02-deploy-regression.json': ('breached', 'rollback'),
+                '03-dns-fault-during-impact.json': ('breached', 'do_not_rollback'),
+                '04-impact-before-change.json': ('breached', 'do_not_rollback'),
+                '05-gap-after-change.json': ('insufficient_telemetry', 'insufficient_evidence'),
+                '06-migration-without-snapshot.json': ('breached', 'rollback_blocked'),
+                '07-conflicting-minutes.json': ('breached', 'rollback')}
+        self.assertEqual(sorted(p.name for p in FIX.glob('*.json')), sorted(want))
+        for name, (status, decision) in want.items():
+            r = report(FIX / name)
+            self.assertEqual((r['slo']['status'], r['decision']['decision']), (status, decision), name)
+            reason = r['decision']['reason']
+            for part in ('checkout-api', '2026-10-18T09:00:00Z/2026-10-18T10:00:00Z', 'r42'):
+                self.assertIn(part, reason, name)
+
+    def test_exact_slo_values_and_timeline(self):
+        for name in ('01-clean-control.json', '02-deploy-regression.json', '05-gap-after-change.json', '07-conflicting-minutes.json'):
+            b = json.loads((FIX / name).read_text())
+            r = report(FIX / name)
+            self.assertEqual({k: r['slo'][k] for k in expected(b)}, expected(b), name)
+        r = report(FIX / '02-deploy-regression.json')
+        self.assertEqual((r['impact']['start'], r['impact']['end']), ('2026-10-18T09:22:00Z', '2026-10-18T09:40:00Z'))
+        self.assertEqual(r['response'], {'time_to_detect_s': 135, 'time_to_mitigate_s': 1120, 'time_to_resolve_s': 1800})
+        kinds = [t['kind'] for t in r['timeline']]
+        self.assertEqual(kinds, ['change', 'impact_start', 'detected', 'declared', 'impact_end', 'mitigated', 'resolved'])
+        self.assertTrue([t for t in r['timeline'] if t['kind'] == 'declared'][0]['late'])
+        self.assertEqual(r['import']['event_duplicates'], 1)
+
+    def test_missing_and_conflicting_telemetry_labelled(self):
+        r = report(FIX / '05-gap-after-change.json')
+        self.assertEqual(r['missing_telemetry']['ranges'], [{'start': '2026-10-18T09:25:00Z', 'end': '2026-10-18T09:35:00Z', 'minutes': 10}])
+        self.assertEqual(r['slo']['coverage'], '0.833333')
+        self.assertTrue(any('missing for 10 minute' in x for x in r['labels']))
+        self.assertIn('telemetry_missing', [t['kind'] for t in r['timeline']])
+        r = report(FIX / '07-conflicting-minutes.json')
+        self.assertEqual(r['missing_telemetry']['conflicting_ranges'], [{'start': '2026-10-18T09:50:00Z', 'end': '2026-10-18T09:52:00Z', 'minutes': 2}])
+
+    def test_repeated_import_is_stable(self):
+        b = json.loads((FIX / '02-deploy-regression.json').read_text())
+        b2 = copy.deepcopy(b)
+        b2['telemetry'] = list(reversed(b2['telemetry'])) * 3
+        b2['events'] = b2['events'] * 2
+        (self.tmp / 'again.json').write_text(json.dumps(b2))
+        r1, r2 = report(FIX / '02-deploy-regression.json'), report(self.tmp / 'again.json')
+        for k in ('slo', 'timeline', 'decision', 'impact', 'missing_telemetry', 'response'):
+            self.assertEqual(r1[k], r2[k], k)
+        self.assertEqual(cli('report', FIX / '02-deploy-regression.json', '--json').stdout,
+                         cli('report', FIX / '02-deploy-regression.json', '--json').stdout)
+
+    def test_invalid_input_refused_and_previous_report_kept(self):
+        out = self.tmp / 'report.json'
+        self.assertEqual(cli('report', FIX / '02-deploy-regression.json', '--out', out).returncode, 0)
+        before = out.read_bytes()
+        b = json.loads((FIX / '02-deploy-regression.json').read_text())
+        b['events'].append(dict(b['events'][0], detail='another story'))
+        (self.tmp / 'bad.json').write_text(json.dumps(b))
+        p = cli('report', self.tmp / 'bad.json', '--out', out)
+        self.assertEqual(p.returncode, 2)
+        self.assertIn('different content', p.stderr)
+        self.assertEqual(out.read_bytes(), before)
+        self.assertEqual(sorted(x.name for x in self.tmp.iterdir()), ['bad.json', 'report.json'])
+
+    def test_g10_trace_outside_bundle_refused(self):
+        b = json.loads((FIX / '03-dns-fault-during-impact.json').read_text())
+        b['diagnoses'] = ['../G10/fixtures/02-dns-nxdomain.json']
+        (self.tmp / 'b.json').write_text(json.dumps(b))
+        self.assertEqual(cli('report', self.tmp / 'b.json').returncode, 2)
+
+    def test_loading_g03_and_g10_leaves_no_bytecode_behind(self):
+        """A caller without PYTHONDONTWRITEBYTECODE must not leave __pycache__ in sibling roles."""
+        copy_root = self.tmp / 'repo'
+        for rel in ('employees/infrastructure/site-reliability-engineer', 'employees/infrastructure/network-engineer',
+                    'employees/infrastructure/database-administrator', 'examples/capabilities/G11', 'examples/capabilities/G10'):
+            shutil.copytree(ROOT / rel, copy_root / rel, ignore=shutil.ignore_patterns('__pycache__'))
+        env = {k: v for k, v in os.environ.items() if k != 'PYTHONDONTWRITEBYTECODE'}
+        sys.path.insert(0, str(EX))
+        old = sys.dont_write_bytecode
+        sys.dont_write_bytecode = True
+        try:
+            import incident_oracle as orc  # noqa: E402
+        finally:
+            sys.path.pop(0)
+            sys.dont_write_bytecode = old
+        d = copy_root / 'examples/capabilities/G11/fixtures'
+        sid = orc.make_snapshot(d)
+        b = json.loads((d / '06-migration-without-snapshot.json').read_text())
+        b['change']['data'] = {'snapshot': 'snap', 'databases': ['app.db']}
+        (d / 'mig.json').write_text(json.dumps(b))
+        p = subprocess.run([sys.executable, str(copy_root / 'employees/infrastructure/site-reliability-engineer/incident_slo.py'),
+                            'report', str(d / 'mig.json'), '--json'], capture_output=True, text=True, env=env)
+        self.assertEqual(p.returncode, 0, p.stderr)
+        r = json.loads(p.stdout)
+        self.assertEqual(r['decision']['decision'], 'rollback')
+        self.assertIn(sid, r['decision']['reason'])
+        p = subprocess.run([sys.executable, str(copy_root / 'employees/infrastructure/site-reliability-engineer/incident_slo.py'),
+                            'report', str(d / '03-dns-fault-during-impact.json')], capture_output=True, text=True, env=env)
+        self.assertEqual(p.returncode, 0, p.stderr)
+        left = sorted(str(x.relative_to(copy_root)) for x in copy_root.rglob('__pycache__'))
+        self.assertEqual(left, [])
+
+    def test_contract_declares_script_and_reference(self):
+        c = json.loads((SRE / 'capability.contract.json').read_text())
+        self.assertIn('incident_slo.py', c['dependencies']['scripts'])
+        self.assertIn('incident-slo.md', c['dependencies']['references'])
+        self.assertTrue((SRE / 'incident-slo.md').is_file())
+        self.assertIn('incident-slo.md', json.loads((SRE / 'plugin.json').read_text())['references'])
+        for role in ('product-project/delivery-lead', 'leadership/coo'):
+            self.assertIn('incident_slo.py', (ROOT / 'employees' / role / 'SKILL.md').read_text(), role)
+
+
+if __name__ == '__main__':
+    unittest.main()

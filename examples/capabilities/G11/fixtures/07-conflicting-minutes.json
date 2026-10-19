@@ -1,0 +1,497 @@
+{
+ "change": {
+  "deployed_at": "2026-10-18T09:20:30Z",
+  "migrates_data": false,
+  "previous": "r41",
+  "revision": "r42"
+ },
+ "events": [
+  {
+   "actor": "alerting",
+   "at": "2026-10-18T09:24:15Z",
+   "detail": "error-rate page fired",
+   "id": "ev-detect",
+   "kind": "detected"
+  },
+  {
+   "actor": "oncall-a",
+   "at": "2026-10-18T09:52:00Z",
+   "detail": "error rate back under objective",
+   "id": "ev-resolve",
+   "kind": "resolved"
+  },
+  {
+   "actor": "oncall-a",
+   "at": "2026-10-18T09:40:40Z",
+   "detail": "traffic shed to healthy pool",
+   "id": "ev-mitigate",
+   "kind": "mitigated"
+  },
+  {
+   "actor": "oncall-a",
+   "at": "2026-10-18T09:26:00Z",
+   "detail": "SEV2 declared, IC oncall-a",
+   "id": "ev-declare",
+   "kind": "declared",
+   "received_at": "2026-10-18T09:37:00Z"
+  },
+  {
+   "actor": "alerting",
+   "at": "2026-10-18T09:24:15Z",
+   "detail": "error-rate page fired",
+   "id": "ev-detect",
+   "kind": "detected"
+  }
+ ],
+ "schema": "solaris.incident-bundle/1",
+ "service": "checkout-api",
+ "slo": {
+  "min_coverage": 0.9,
+  "objective": 0.99,
+  "rollback_burn_rate": 5
+ },
+ "telemetry": [
+  {
+   "good": 1148,
+   "minute": "2026-10-18T09:04:00Z",
+   "source": "lb-0",
+   "total": 1148
+  },
+  {
+   "good": 1044,
+   "minute": "2026-10-18T09:12:00Z",
+   "source": "lb-retry",
+   "total": 1044
+  },
+  {
+   "good": 1006,
+   "minute": "2026-10-18T09:11:00Z",
+   "source": "lb-1",
+   "total": 1007
+  },
+  {
+   "good": 998,
+   "minute": "2026-10-18T09:50:00Z",
+   "source": "lb-x",
+   "total": 1050
+  },
+  {
+   "good": 946,
+   "minute": "2026-10-18T09:23:00Z",
+   "received_at": "2026-10-18T09:31:00Z",
+   "source": "lb-1",
+   "total": 1051
+  },
+  {
+   "good": 1053,
+   "minute": "2026-10-18T09:37:00Z",
+   "source": "lb-1",
+   "total": 1169
+  },
+  {
+   "good": 1000,
+   "minute": "2026-10-18T09:00:00Z",
+   "source": "lb-0",
+   "total": 1000
+  },
+  {
+   "good": 1020,
+   "minute": "2026-10-18T09:06:00Z",
+   "source": "lb-retry",
+   "total": 1022
+  },
+  {
+   "good": 1062,
+   "minute": "2026-10-18T09:45:00Z",
+   "source": "lb-1",
+   "total": 1065
+  },
+  {
+   "good": 1072,
+   "minute": "2026-10-18T09:56:00Z",
+   "source": "lb-0",
+   "total": 1072
+  },
+  {
+   "good": 1000,
+   "minute": "2026-10-18T09:00:00Z",
+   "source": "lb-retry",
+   "total": 1000
+  },
+  {
+   "good": 1019,
+   "minute": "2026-10-18T09:36:00Z",
+   "source": "lb-retry",
+   "total": 1132
+  },
+  {
+   "good": 933,
+   "minute": "2026-10-18T09:28:00Z",
+   "source": "lb-0",
+   "total": 1036
+  },
+  {
+   "good": 1124,
+   "minute": "2026-10-18T09:52:00Z",
+   "source": "lb-0",
+   "total": 1124
+  },
+  {
+   "good": 986,
+   "minute": "2026-10-18T09:35:00Z",
+   "source": "lb-1",
+   "total": 1095
+  },
+  {
+   "good": 1033,
+   "minute": "2026-10-18T09:31:00Z",
+   "source": "lb-1",
+   "total": 1147
+  },
+  {
+   "good": 1130,
+   "minute": "2026-10-18T09:09:00Z",
+   "source": "lb-1",
+   "total": 1133
+  },
+  {
+   "good": 1034,
+   "minute": "2026-10-18T09:55:00Z",
+   "source": "lb-1",
+   "total": 1035
+  },
+  {
+   "good": 913,
+   "minute": "2026-10-18T09:22:00Z",
+   "source": "lb-0",
+   "total": 1014
+  },
+  {
+   "good": 919,
+   "minute": "2026-10-18T09:33:00Z",
+   "received_at": "2026-10-18T09:41:00Z",
+   "source": "lb-1",
+   "total": 1021
+  },
+  {
+   "good": 1152,
+   "minute": "2026-10-18T09:42:00Z",
+   "source": "lb-retry",
+   "total": 1154
+  },
+  {
+   "good": 1044,
+   "minute": "2026-10-18T09:12:00Z",
+   "source": "lb-0",
+   "total": 1044
+  },
+  {
+   "good": 1182,
+   "minute": "2026-10-18T09:59:00Z",
+   "source": "lb-1",
+   "total": 1183
+  },
+  {
+   "good": 1106,
+   "minute": "2026-10-18T09:57:00Z",
+   "source": "lb-1",
+   "total": 1109
+  },
+  {
+   "good": 1138,
+   "minute": "2026-10-18T09:47:00Z",
+   "source": "lb-1",
+   "total": 1139
+  },
+  {
+   "good": 1174,
+   "minute": "2026-10-18T09:21:00Z",
+   "source": "lb-1",
+   "total": 1177
+  },
+  {
+   "good": 1048,
+   "minute": "2026-10-18T09:50:00Z",
+   "source": "lb-0",
+   "total": 1050
+  },
+  {
+   "good": 1158,
+   "minute": "2026-10-18T09:53:00Z",
+   "received_at": "2026-10-18T10:01:00Z",
+   "source": "lb-1",
+   "total": 1161
+  },
+  {
+   "good": 1026,
+   "minute": "2026-10-18T09:17:00Z",
+   "source": "lb-1",
+   "total": 1029
+  },
+  {
+   "good": 1154,
+   "minute": "2026-10-18T09:15:00Z",
+   "source": "lb-1",
+   "total": 1155
+  },
+  {
+   "good": 1036,
+   "minute": "2026-10-18T09:51:00Z",
+   "source": "lb-x",
+   "total": 1087
+  },
+  {
+   "good": 1176,
+   "minute": "2026-10-18T09:48:00Z",
+   "source": "lb-retry",
+   "total": 1176
+  },
+  {
+   "good": 1140,
+   "minute": "2026-10-18T09:20:00Z",
+   "source": "lb-0",
+   "total": 1140
+  },
+  {
+   "good": 1064,
+   "minute": "2026-10-18T09:18:00Z",
+   "source": "lb-0",
+   "total": 1066
+  },
+  {
+   "good": 1046,
+   "minute": "2026-10-18T09:26:00Z",
+   "source": "lb-0",
+   "total": 1162
+  },
+  {
+   "good": 1190,
+   "minute": "2026-10-18T09:43:00Z",
+   "received_at": "2026-10-18T09:51:00Z",
+   "source": "lb-1",
+   "total": 1191
+  },
+  {
+   "good": 1072,
+   "minute": "2026-10-18T09:02:00Z",
+   "source": "lb-0",
+   "total": 1074
+  },
+  {
+   "good": 1086,
+   "minute": "2026-10-18T09:51:00Z",
+   "source": "lb-1",
+   "total": 1087
+  },
+  {
+   "good": 1013,
+   "minute": "2026-10-18T09:25:00Z",
+   "source": "lb-1",
+   "total": 1125
+  },
+  {
+   "good": 1116,
+   "minute": "2026-10-18T09:14:00Z",
+   "source": "lb-0",
+   "total": 1118
+  },
+  {
+   "good": 1080,
+   "minute": "2026-10-18T09:40:00Z",
+   "source": "lb-0",
+   "total": 1080
+  },
+  {
+   "good": 1066,
+   "minute": "2026-10-18T09:32:00Z",
+   "source": "lb-0",
+   "total": 1184
+  },
+  {
+   "good": 980,
+   "minute": "2026-10-18T09:24:00Z",
+   "source": "lb-retry",
+   "total": 1088
+  },
+  {
+   "good": 1176,
+   "minute": "2026-10-18T09:48:00Z",
+   "source": "lb-0",
+   "total": 1176
+  },
+  {
+   "good": 1152,
+   "minute": "2026-10-18T09:42:00Z",
+   "source": "lb-0",
+   "total": 1154
+  },
+  {
+   "good": 1028,
+   "minute": "2026-10-18T09:44:00Z",
+   "source": "lb-0",
+   "total": 1028
+  },
+  {
+   "good": 953,
+   "minute": "2026-10-18T09:34:00Z",
+   "source": "lb-0",
+   "total": 1058
+  },
+  {
+   "good": 1019,
+   "minute": "2026-10-18T09:36:00Z",
+   "source": "lb-0",
+   "total": 1132
+  },
+  {
+   "good": 1110,
+   "minute": "2026-10-18T09:03:00Z",
+   "received_at": "2026-10-18T09:11:00Z",
+   "source": "lb-1",
+   "total": 1111
+  },
+  {
+   "good": 1102,
+   "minute": "2026-10-18T09:19:00Z",
+   "source": "lb-1",
+   "total": 1103
+  },
+  {
+   "good": 1010,
+   "minute": "2026-10-18T09:49:00Z",
+   "source": "lb-1",
+   "total": 1013
+  },
+  {
+   "good": 1100,
+   "minute": "2026-10-18T09:46:00Z",
+   "source": "lb-0",
+   "total": 1102
+  },
+  {
+   "good": 1064,
+   "minute": "2026-10-18T09:18:00Z",
+   "source": "lb-retry",
+   "total": 1066
+  },
+  {
+   "good": 1182,
+   "minute": "2026-10-18T09:05:00Z",
+   "source": "lb-1",
+   "total": 1185
+  },
+  {
+   "good": 1192,
+   "minute": "2026-10-18T09:16:00Z",
+   "source": "lb-0",
+   "total": 1192
+  },
+  {
+   "good": 1196,
+   "minute": "2026-10-18T09:54:00Z",
+   "source": "lb-0",
+   "total": 1198
+  },
+  {
+   "good": 999,
+   "minute": "2026-10-18T09:30:00Z",
+   "source": "lb-0",
+   "total": 1110
+  },
+  {
+   "good": 1078,
+   "minute": "2026-10-18T09:13:00Z",
+   "received_at": "2026-10-18T09:21:00Z",
+   "source": "lb-1",
+   "total": 1081
+  },
+  {
+   "good": 1058,
+   "minute": "2026-10-18T09:07:00Z",
+   "source": "lb-1",
+   "total": 1059
+  },
+  {
+   "good": 1034,
+   "minute": "2026-10-18T09:01:00Z",
+   "source": "lb-1",
+   "total": 1037
+  },
+  {
+   "good": 906,
+   "minute": "2026-10-18T09:38:00Z",
+   "source": "lb-0",
+   "total": 1006
+  },
+  {
+   "good": 1096,
+   "minute": "2026-10-18T09:08:00Z",
+   "source": "lb-0",
+   "total": 1096
+  },
+  {
+   "good": 939,
+   "minute": "2026-10-18T09:39:00Z",
+   "source": "lb-1",
+   "total": 1043
+  },
+  {
+   "good": 1080,
+   "minute": "2026-10-18T09:27:00Z",
+   "source": "lb-1",
+   "total": 1199
+  },
+  {
+   "good": 1114,
+   "minute": "2026-10-18T09:41:00Z",
+   "source": "lb-1",
+   "total": 1117
+  },
+  {
+   "good": 966,
+   "minute": "2026-10-18T09:29:00Z",
+   "source": "lb-1",
+   "total": 1073
+  },
+  {
+   "good": 1168,
+   "minute": "2026-10-18T09:10:00Z",
+   "source": "lb-0",
+   "total": 1170
+  },
+  {
+   "good": 999,
+   "minute": "2026-10-18T09:30:00Z",
+   "source": "lb-retry",
+   "total": 1110
+  },
+  {
+   "good": 1196,
+   "minute": "2026-10-18T09:54:00Z",
+   "source": "lb-retry",
+   "total": 1198
+  },
+  {
+   "good": 1020,
+   "minute": "2026-10-18T09:06:00Z",
+   "source": "lb-0",
+   "total": 1022
+  },
+  {
+   "good": 980,
+   "minute": "2026-10-18T09:24:00Z",
+   "source": "lb-0",
+   "total": 1088
+  },
+  {
+   "good": 1144,
+   "minute": "2026-10-18T09:58:00Z",
+   "source": "lb-0",
+   "total": 1146
+  }
+ ],
+ "window": {
+  "end": "2026-10-18T10:00:00Z",
+  "start": "2026-10-18T09:00:00Z"
+ }
+}

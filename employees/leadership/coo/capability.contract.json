@@ -468,7 +468,8 @@
     ],
     "forward_tests": [
       "fixtures/solaris/business/forward/*",
-      "fixtures/evaluation/leadership-operations/coo/"
+      "fixtures/evaluation/leadership-operations/coo/",
+      "reliability read uses site-reliability-engineer incident_slo.py; insufficient telemetry reported as such (tests/test_g11_capability.py)"
     ],
     "adversarial_tests": [
       "fixtures/solaris/business/adversarial/*",
