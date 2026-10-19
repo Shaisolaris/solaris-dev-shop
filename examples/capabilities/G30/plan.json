@@ -1,0 +1,126 @@
+{
+ "schema": "solaris.daily-integration/1",
+ "goal": "G30",
+ "base": "02ba9c571b10ad1dba792d2ac5534bcad3171e67",
+ "writable": [
+  "employees/quality-security/assurance/**",
+  "employees/quality-security/qa-engineer/**",
+  "examples/capabilities/G30/**",
+  "tests/test_g30_capability.py"
+ ],
+ "prerequisites": [
+  {
+   "id": "G13",
+   "commit": "5666e7beb161d1252ddd5dcc0a166aca83255370",
+   "note": "carried by G17 and G22",
+   "tests": [
+    "tests.test_g13_capability"
+   ]
+  },
+  {
+   "id": "G14",
+   "commit": "6f7b23aa18413907c5fbd250daab475dc94e7a1e",
+   "note": "carried by G17 and G22; read by x1 and x2",
+   "tests": [
+    "tests.test_g14_capability"
+   ]
+  },
+  {
+   "id": "G17",
+   "commit": "550f1848a76ad4d5b6688090afc0519354ac3370",
+   "note": "base of the merge chain; read by x1 and x2",
+   "tests": [
+    "tests.test_g17_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G17/decision_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G20",
+   "commit": "174ef33854d51b9345fd606d369a5fc2b8b0a039",
+   "note": "newest repair head (G20 r2, root QA, published 2026-10-19 16:11 PDT); JavaScriptCore shell and source checks only, no browser (rendered checks are opt-in and not run)",
+   "tests": [
+    "tests.test_g20_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G20/ui_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G21",
+   "commit": "822a9c1aaf2da3a0dace1bd0a0640d992406efa0",
+   "note": "carries G19 5606672 (accepted)",
+   "tests": [
+    "tests.test_g21_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G21/sync_oracle.py",
+     "--quick"
+    ]
+   ]
+  },
+  {
+   "id": "G22",
+   "commit": "1faee8d4e529fbbeac7c64292bed324bdced9796",
+   "note": "carries G19 5606672 (accepted), G13 5666e7b, G14 6f7b23a",
+   "tests": [
+    "tests.test_g22_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G22/ledger_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G23",
+   "commit": "0ff2641c56c852d9525adaa71442274d8c8453a6",
+   "tests": [
+    "tests.test_g23_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G23/wp_oracle.py",
+     "--tool",
+     "{python} employees/specialized/wordpress-master/wp_trace_diag.py"
+    ]
+   ]
+  },
+  {
+   "id": "G25",
+   "commit": "eb9c7c47384ec5d8ba951aca72240ed57ca7b383",
+   "tests": [
+    "tests.test_g25_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G25/protocol_oracle.py",
+     "--tool",
+     "{python} employees/engineering/iot-engineer/device_protocol.py"
+    ]
+   ]
+  }
+ ],
+ "external": [],
+ "cross_checks": [
+  [
+   "examples/capabilities/G30/cross_checks.py"
+  ]
+ ],
+ "resolved_overlaps": [
+  {
+   "path": "employees/engineering/full-stack-developer/SKILL.md",
+   "reason": "G22 1faee8d carries the G19 5606672 blob a02222b unchanged; G21 822a9c1 builds on G19 and adds one offline-client line (blob 01a06eb). HEAD is the G21 blob, a strict superset, so nothing from G19 or G22 is lost."
+  },
+  {
+   "path": "employees/engineering/full-stack-developer/learnings.md",
+   "reason": "G22 1faee8d carries the G19 5606672 blob c17671a unchanged; G21 822a9c1 builds on G19 and adds one pending observation (blob 1ad3fa5). HEAD is the G21 blob, a strict superset."
+  }
+ ]
+}
