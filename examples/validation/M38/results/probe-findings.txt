@@ -1,0 +1,33 @@
+== P2-1 MIT text with an added commercial-use restriction
+
+The Software may not be used for commercial purposes without written permission.
+provenance check: consistent; LICENSE MIT; 4 declaration(s) MIT
+consistency of declarations and file digests only; not a legal opinion; no identity is authenticated
+exit 0
+== P2-1b a three-line Apache header alone
+provenance check: findings; LICENSE Apache-2.0; 4 declaration(s) MIT
+== P2-2 append after a verified last event whose newline was lost
+event chain: verified; 6 of 6 event(s) verified; anchor none (self-consistent only)
+appended seq 6 e1a2e5c0d100add9a139bf51387bf9327914ff1fce3bd270a668826cd0c69de0
+append exit 0
+event chain: findings; 5 of 6 event(s) verified; anchor none (self-consistent only)
+head: seq 4 2aa3cf1846eae11d264610cdb42287193b976681634fe5a112c8ddfb31891b86
+  FINDING line_not_json at line 6
+verify exit 1
+== P3-1 a plugin.json outside employees/ (chief-of-staff) is not checked
+provenance check: consistent; LICENSE MIT; 64 declaration(s) MIT
+exit 0
+== P3-2 README '## License' then 'GPL, see LICENSE.' is not read
+## License
+
+GPL, see LICENSE.
+provenance check: consistent; LICENSE MIT; 3 declaration(s) MIT
+exit 0
+== P3-3 integrity.subject carries the digest of a file that does not match the manifest
+findings [('digest_mismatch', 'src/app.py')]
+subject has src/app.py: True e47bb13b16eadda68aaf2aa653bd7376fa222571dfef1724a3ffdeb8c9dc3627
+== P4-1 --out into a missing folder
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/m38pr-22cJkT/nodir/.r.json.3z4x1yed'
+exit 1
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/m38pr-22cJkT/nodir/.e.jsonl.ftg_yf45'
+exit 1

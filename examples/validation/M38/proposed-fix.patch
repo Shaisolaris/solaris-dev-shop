@@ -1,0 +1,137 @@
+diff -ru a/employees/engineering/blockchain-developer/event_chain.py b/employees/engineering/blockchain-developer/event_chain.py
+--- a/employees/engineering/blockchain-developer/event_chain.py	2026-10-19 09:06:05
++++ b/employees/engineering/blockchain-developer/event_chain.py	2026-10-19 09:06:05
+@@ -179,7 +179,9 @@
+             at = good[-1]["at"]  # keep time monotonic under clock skew between appenders
+         e = {"seq": len(good), "prev": prev, "at": at, "claimed_by": claimed_by.strip(), "body": body}
+         e["hash"] = event_hash(e)
+-        os.write(fd, (canon(e) + "\n").encode("utf-8")); os.fsync(fd)
++        # a verified last event whose newline was lost (an interrupted write) must not be merged with this one
++        lead = b"\n" if raw and not raw.endswith(b"\n") else b""
++        os.write(fd, lead + (canon(e) + "\n").encode("utf-8")); os.fsync(fd)
+         return 0, e
+     finally:
+         os.close(fd)
+diff -ru a/employees/engineering/blockchain-developer/immutable-event-validation.md b/employees/engineering/blockchain-developer/immutable-event-validation.md
+--- a/employees/engineering/blockchain-developer/immutable-event-validation.md	2026-10-19 09:06:05
++++ b/employees/engineering/blockchain-developer/immutable-event-validation.md	2026-10-19 09:06:05
+@@ -36,5 +36,5 @@
+ ## Append and recovery
+ 
+ `append` takes an exclusive lock, re-verifies the whole log and refuses (exit 2, nothing written) when it does not
+-verify. `recover` writes only the verified prefix to a new file; it refuses to overwrite the log or any existing
++verify. A verified last event whose newline was lost is kept: the new event goes on its own line. `recover` writes only the verified prefix to a new file; it refuses to overwrite the log or any existing
+ file, and when an anchor shows rewritten history it keeps nothing. The original log is never modified.
+diff -ru a/employees/quality-security/security-auditor/provenance-integrity.md b/employees/quality-security/security-auditor/provenance-integrity.md
+--- a/employees/quality-security/security-auditor/provenance-integrity.md	2026-10-19 09:06:05
++++ b/employees/quality-security/security-auditor/provenance-integrity.md	2026-10-19 09:06:05
+@@ -12,7 +12,7 @@
+ | code | when |
+ |---|---|
+ | license_missing | no readable root LICENSE |
+-| license_unrecognized | the LICENSE text matches neither the MIT nor the Apache-2.0 fingerprint; nothing is guessed and no declaration is compared |
++| license_unrecognized | the LICENSE text is not the whole MIT or Apache-2.0 text (whitespace and quote style aside; MIT may carry its title and copyright lines, Apache its standard appendix); a header, a fragment or added terms are unrecognised, nothing is guessed and no declaration is compared |
+ | license_mismatch | pyproject `license`, a `plugin.json` `license`, the README badge or the README `## License` line names another license than the LICENSE text |
+ | license_undeclared | a pyproject or `plugin.json` has no license value |
+ | upstream_license_unlisted | a LICENSE*, LICENCE* or COPYING file below the root is not named in NOTICE.md |
+diff -ru a/employees/quality-security/security-auditor/provenance_check.py b/employees/quality-security/security-auditor/provenance_check.py
+--- a/employees/quality-security/security-auditor/provenance_check.py	2026-10-19 09:06:05
++++ b/employees/quality-security/security-auditor/provenance_check.py	2026-10-19 09:06:22
+@@ -24,6 +24,7 @@
+ --out is written atomically. Python 3.9+, standard library; never runs or edits the files it reads.
+ """
+ import argparse
++import hashlib
+ import importlib.util
+ import json
+ import os
+@@ -66,10 +67,38 @@
+     return " ".join(s.replace("\u201c", '"').replace("\u201d", '"').split()).casefold()
+ 
+ 
++MIT_TITLES = {"mit license", "the mit license", "the mit license (mit)", "mit"}
++MIT_BODY = _norm("""Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
++associated documentation files (the "Software"), to deal in the Software without restriction, including without
++limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the
++Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
++The above copyright notice and this permission notice shall be included in all copies or substantial portions of
++the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
++LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
++THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
++CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
++THE SOFTWARE.""")
++# sha256 of the normalised Apache-2.0 text from its title through "END OF TERMS AND CONDITIONS"
++APACHE_TERMS_SHA = "95cef6332b35354c12f9d666ab9ff47002e6f7ef937924896882b2e0cdb7a0d6"
++APACHE_END = "end of terms and conditions"
++APACHE_APPENDIX = "appendix: how to apply the apache license to your work"
++
++
+ def identify(text):
+-    t = _norm(text)
+-    hits = [k for k, phr in FINGERPRINTS.items() if all(p in t for p in phr)]
+-    return hits[0] if len(hits) == 1 else None
++    """The whole text must be the license: a fragment, a header or added terms are not recognised (nothing guessed)."""
++    lines = [l.strip() for l in text.splitlines() if l.strip()]
++    if lines and _norm(lines[0]) in MIT_TITLES:
++        lines.pop(0)
++    while lines and _norm(lines[0]).startswith(("copyright", "(c)")):
++        lines.pop(0)
++    if _norm(" ".join(lines)) == MIT_BODY:
++        return "MIT"
++    t = _norm(text); j = t.find(APACHE_END)
++    if j > 0 and hashlib.sha256(t[:j + len(APACHE_END)].encode("utf-8")).hexdigest() == APACHE_TERMS_SHA:
++        tail = t[j + len(APACHE_END):].strip()
++        if not tail or (tail.startswith(APACHE_APPENDIX) and tail.endswith("limitations under the license.")):
++            return "Apache-2.0"
++    return None
+ 
+ 
+ def spdx(v):
+diff -ru a/examples/capabilities/G38/authority_oracle.py b/examples/capabilities/G38/authority_oracle.py
+--- a/examples/capabilities/G38/authority_oracle.py	2026-10-19 09:06:05
++++ b/examples/capabilities/G38/authority_oracle.py	2026-10-19 09:06:05
+@@ -95,9 +95,9 @@
+     case("notice missing", lambda d: (d / "vendor" / "parser" / "LICENSE-upstream").unlink(),
+          [("notice_path_missing", "NOTICE.md")])
+     case("unknown license", lambda d: (d / "LICENSE").write_text("All rights reserved. Internal use only (synthetic)."), [("license_unrecognized", "LICENSE")])
+-    case("apache everywhere but LICENSE", lambda d: (d / "LICENSE").write_text(
++    case("apache header only", lambda d: (d / "LICENSE").write_text(
+         "Apache License\nVersion 2.0, January 2004\nTERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n"),
+-        [("license_mismatch", "README.md"), ("license_mismatch", "README.md"), ("license_mismatch", pj), ("license_mismatch", "pyproject.toml")])
++        [("license_unrecognized", "LICENSE")])  # a header alone is not the license (M38 proposed fix)
+     bad = [x for x in cases if not x[1]]
+     return not bad, "%d single-cause license drifts each give exactly their finding%s" % (len(cases), "; wrong: %s" % bad[:2] if bad else "")
+ 
+diff -ru a/tests/test_g38_capability.py b/tests/test_g38_capability.py
+--- a/tests/test_g38_capability.py	2026-10-19 09:06:05
++++ b/tests/test_g38_capability.py	2026-10-19 09:06:22
+@@ -114,16 +114,26 @@
+         j = self.check(1)
+         self.assertEqual(self.codes(j), [('license_unrecognized', 'LICENSE')])
+         self.assertEqual(j['license'], 'unrecognized')
++        # a license header alone, or MIT with added terms, is not the license (M38 proposed fix)
+         (self.r / 'LICENSE').write_text('Apache License\n  Version 2.0, January 2004\nTERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION')
+-        j = self.check(1)
+-        self.assertEqual(j['license'], 'Apache-2.0')
+-        self.assertEqual(self.codes(j), sorted([('license_mismatch', 'pyproject.toml'), ('license_mismatch', PJ), ('license_mismatch', 'README.md'), ('license_mismatch', 'README.md')]))
++        self.assertEqual(self.codes(self.check(1)), [('license_unrecognized', 'LICENSE')])
++        mit0 = (EX / 'fixtures' / 'repo-clean' / 'LICENSE').read_text()
++        (self.r / 'LICENSE').write_text(mit0 + '\nThe Software may not be used for commercial purposes.\n')
++        self.assertEqual(self.codes(self.check(1)), [('license_unrecognized', 'LICENSE')])
+         both = (EX / 'fixtures' / 'repo-clean' / 'LICENSE').read_text() + '\nApache License\nVersion 2.0, January 2004\nTerms and conditions for use, reproduction, and distribution'
+         (self.r / 'LICENSE').write_text(both)
+         self.assertEqual(self.codes(self.check(1)), [('license_unrecognized', 'LICENSE')])
+         mit = (EX / 'fixtures' / 'repo-clean' / 'LICENSE').read_text()
+         (self.r / 'LICENSE').write_text(mit.replace('"AS IS"', '\u201cAS IS\u201d').replace(' ', '  '))
+         self.assertEqual(self.check(0)['license'], 'MIT')
++
++    def test_append_after_lost_newline_keeps_both(self):
++        d = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, d, True); log = d / 'nl.jsonl'
++        log.write_bytes((EX / 'fixtures' / 'events.jsonl').read_bytes().rstrip(b'\n'))
++        p = run(EC, 'append', log, '--claimed-by', 'x', '--body', '{}')
++        self.assertEqual(p.returncode, 0, p.stderr)
++        v = run(EC, 'verify', log, '--json')
++        self.assertEqual((v.returncode, json.loads(v.stdout)['verified']), (0, 7))
+ 
+     def test_manifest_cases(self):
+         m = self.r / 'MANIFEST.sha256'; good = m.read_text()

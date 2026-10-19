@@ -1,0 +1,386 @@
+{
+ "tool": [
+  "/private/tmp/m38teeth-6s3zqk70/pc_plugins_skipped/employees/quality-security/security-auditor/provenance_check.py",
+  "/private/tmp/m38teeth-6s3zqk70/pc_plugins_skipped/employees/engineering/blockchain-developer/event_chain.py"
+ ],
+ "python": "3.9.6",
+ "rows": [
+  {
+   "row": "P01 clean controls: my synthetic MIT repo is consistent with 4 declarations and a subject equal to my own sha256 of all 8 listed files; the actual repository is consistent with the fixture folder excluded (and the exclusion disclosed) and names exactly the fixture's license files without it; nothing written",
+   "pass": false,
+   "obs": false,
+   "sub": {
+    "clean_consistent": true,
+    "declarations_4": false,
+    "subject_is_my_sha256": true,
+    "upstream_listed": true,
+    "statement_no_opinion_no_auth": true,
+    "root_unchanged": true,
+    "repo_excluded_consistent": true,
+    "OBS_repo_declarations": true,
+    "exclusion_disclosed": true,
+    "repo_unexcluded_names_fixture_files": true
+   },
+   "detail": {
+    "clean_consistent": "(0, [], 'MIT')",
+    "declarations_4": "3",
+    "subject_is_my_sha256": "{'digests': {'LICENSE': '259144873242ba3e2e64609f3198b3aee1f1e91a6fcfc68b70e491be709c3c9c', 'NOTICE.md': 'e7629b17965dd82fd81db23734cda36bd0eca55d5c0ca60a3f457ece44e76655', 'README.md': 'cc05916ffe75dc5a156c3d88bb67d1561bdc1d3f4772ff04ccd8b64fddba1088', 'employees/ops/notes-writer/plugin.json': '777db09262ec4f8523ecee505ac84d14b818909f2de0877c1ec7fa3179562971', 'lib/core.py': '0abae1e0ae728216ee44",
+    "upstream_listed": "['third_party/tok/LICENSE.txt']",
+    "statement_no_opinion_no_auth": "'consistency of declarations and file digests only; not a legal opinion; no identity is authenticated'",
+    "root_unchanged": "''",
+    "repo_excluded_consistent": "(0, [])",
+    "OBS_repo_declarations": "(3, 65)",
+    "exclusion_disclosed": "{'examples/capabilities/G38/fixtures': ['examples/capabilities/G38/fixtures/repo-clean/LICENSE', 'examples/capabilities/G38/fixtures/repo-clean/vendor/parser/LICENSE-upstream']}",
+    "repo_unexcluded_names_fixture_files": "(1, [('upstream_license_unlisted', 'examples/capabilities/G38/fixtures/repo-clean/LICENSE'), ('upstream_license_unlisted', 'examples/capabilities/G38/fixtures/repo-clean/vendor/parser/LICENSE-upstream')], ['examples/capabilities/G38/fixtures/repo-clean/LICENSE', 'examples/capabilities/G38/fixtures/repo-clean/vendor/parser/LICENSE-upstream'])"
+   }
+  },
+  {
+   "row": "P02 single-cause license drifts on my own repo: each gives exactly its documented code at its path (plugin, PEP 639 pyproject string, no pyproject license, badge, section, COPYING, LICENCE spelling, NOTICE naming a missing file, a nested plugin), unrecognised text compares nothing, Apache text against 4 MIT declarations gives 4 mismatches, no LICENSE is named",
+   "pass": false,
+   "obs": false,
+   "sub": {
+    "plugin_apache": false,
+    "pyproject_pep639_string": true,
+    "pyproject_no_license": true,
+    "badge_gpl": true,
+    "section_apache_first_word": true,
+    "unlisted_copying": true,
+    "unlisted_licence_spelling": true,
+    "notice_names_missing": true,
+    "nested_plugin_undeclared": false,
+    "unrecognized_compares_nothing": true,
+    "apache_text_under_mit_declarations": false,
+    "missing_license": true
+   },
+   "detail": {
+    "plugin_apache": "(0, [])",
+    "pyproject_pep639_string": "(1, [('license_mismatch', 'pyproject.toml')])",
+    "pyproject_no_license": "(1, [('license_undeclared', 'pyproject.toml')])",
+    "badge_gpl": "(1, [('license_mismatch', 'README.md')])",
+    "section_apache_first_word": "(1, [('license_mismatch', 'README.md')])",
+    "unlisted_copying": "(1, [('upstream_license_unlisted', 'third_party/tok/COPYING')])",
+    "unlisted_licence_spelling": "(1, [('upstream_license_unlisted', 'lib/LICENCE')])",
+    "notice_names_missing": "(1, [{'code': 'notice_path_missing', 'detail': 'lists third_party/gone/LICENSE, which does not exist', 'path': 'NOTICE.md'}])",
+    "nested_plugin_undeclared": "(0, [])",
+    "unrecognized_compares_nothing": "(1, [('license_unrecognized', 'LICENSE')])",
+    "apache_text_under_mit_declarations": "(1, 'Apache-2.0', [('license_mismatch', 'README.md'), ('license_mismatch', 'README.md'), ('license_mismatch', 'pyproject.toml')])",
+    "missing_license": "(1, [('license_missing', 'LICENSE')])"
+   }
+  },
+  {
+   "row": "P03 unseen license cases: MIT text with an added commercial-use restriction and MIT-0 text are not reported as consistent MIT; a README License section naming Apache in prose is a mismatch; NOTICE naming a longer path that contains the upstream path is not coverage; no NOTICE at all; a symlink loop terminates; a malformed or non-string plugin license is never consistent and never a traceback; a License section 'GPL, see LICENSE.' is read; a plugin.json outside employees/ (my repo, and chief-of-staff in a copy of the actual repo) is checked; --out into a missing folder exits 2",
+   "pass": false,
+   "obs": false,
+   "sub": {
+    "mit_plus_restriction_not_called_mit": false,
+    "mit0_not_called_mit": true,
+    "section_prose_apache_named": true,
+    "notice_substring_not_coverage": true,
+    "symlink_loop_terminates": true,
+    "malformed_plugin_not_consistent": false,
+    "nonstring_license_not_consistent": false,
+    "no_notice_upstream_unlisted": true,
+    "section_name_then_comma_read": false,
+    "root_level_plugin_checked": false,
+    "actual_repo_chief_of_staff_plugin_checked": false,
+    "out_missing_dir_exit2": false
+   },
+   "detail": {
+    "mit_plus_restriction_not_called_mit": "(0, 'MIT', [])",
+    "mit0_not_called_mit": "(1, 'unrecognized', [('license_unrecognized', 'LICENSE')])",
+    "section_prose_apache_named": "(1, [('license_mismatch', 'README.md')])",
+    "notice_substring_not_coverage": "(1, [('upstream_license_unlisted', 'third_party/tok/LICENSE.txt')])",
+    "symlink_loop_terminates": "(0, [], '')",
+    "malformed_plugin_not_consistent": "(0, [], '')",
+    "nonstring_license_not_consistent": "(0, [], '')",
+    "no_notice_upstream_unlisted": "(1, [('upstream_license_unlisted', 'third_party/tok/LICENSE.txt')])",
+    "section_name_then_comma_read": "(0, [], 2)",
+    "root_level_plugin_checked": "(0, [])",
+    "actual_repo_chief_of_staff_plugin_checked": "(0, [])",
+    "out_missing_dir_exit2": "(1, \"    fd = _os.open(file, flags, 0o600)\\nFileNotFoundError: [Errno 2] No such file or directory: '/tmp/m38o-e0rg60c7/nodir-p/.x.json.ja45zw1z'\\n\")"
+   }
+  },
+  {
+   "row": "P04 manifest integrity on my repo: a symlink entry, a path through a symlinked folder leading outside ROOT, a .. escape, an absolute path and a folder are refused; missing and changed files are named; the subject holds only my sha256 of the matching files; a conflicting duplicate entry is named; a malformed manifest exits 2 and keeps the earlier --out report",
+   "pass": false,
+   "obs": false,
+   "sub": {
+    "symlink_entry": true,
+    "symlinked_parent_dir_outside": true,
+    "dotdot_escape": true,
+    "absolute_path": true,
+    "folder_entry": true,
+    "missing_file": true,
+    "changed_bytes": true,
+    "subject_only_matching": false,
+    "duplicate_conflicting_entry_named_or_refused": true,
+    "malformed_manifest_exit2_report_kept": true
+   },
+   "detail": {
+    "symlink_entry": "(1, [('artifact_refused', 'core-link.py')])",
+    "symlinked_parent_dir_outside": "(1, [('artifact_refused', 'lnkdir/secret.txt')])",
+    "dotdot_escape": "(1, [('artifact_refused', '../p04-outside/secret.txt')])",
+    "absolute_path": "(1, [('artifact_refused', '/tmp/m38o-e0rg60c7/p04-outside/secret.txt')])",
+    "folder_entry": "(1, [('artifact_refused', 'lib')])",
+    "missing_file": "(1, [('artifact_missing', 'lib/gone.py')])",
+    "changed_bytes": "(1, [('digest_mismatch', 'NOTICE.md')])",
+    "subject_only_matching": "{'NOTICE.md': 'e7629b17965dd82fd81db23734cda36bd0eca55d5c0ca60a3f457ece44e76655', 'README.md': 'cc05916ffe75dc5a156c3d88bb67d1561bdc1d3f4772ff04ccd8b64fddba1088', 'lib/core.py': '0abae1e0ae728216ee44993c5a3a755f8b1c387d947fc4c4f72cab0e4a84214b', 'lib/data.bin': '40aff2e9d2d8922e47afd4648e6967497158785fbd1da870e7110266bf944880'}",
+    "duplicate_conflicting_entry_named_or_refused": "(2, [], 'invalid: manifest lists lib/core.py twice. Nothing was written.\\n')",
+    "malformed_manifest_exit2_report_kept": "(0, 2, True, \"invalid: manifest line 1 is not '<sha256>  <path>'. Nothing was written.\\n\")"
+   }
+  },
+  {
+   "row": "R09 (v2) documented forms: two license texts together are unrecognised; rewrapped MIT with curly quotes is MIT; 'MIT License' declares MIT; .git is not walked; a mistyped or outside --exclude and a malformed line among good manifest lines exit 2; an empty manifest is never consistent; a renumbered rehashed seq is a gap; bool, string and float seq never verify; a torn last write without newline is torn_tail; loading G05 leaves no bytecode cache when the caller does not disable it",
+   "pass": true,
+   "obs": false,
+   "sub": {
+    "two_license_texts_unrecognized": true,
+    "rewrapped_curly_mit_is_mit": true,
+    "mit_license_wording_is_mit": true,
+    "dot_git_not_walked": true,
+    "exclude_typo_refused": true,
+    "exclude_outside_refused": true,
+    "malformed_line_among_good_exit2": true,
+    "empty_manifest_not_consistent": true,
+    "renumbered_seq_rehashed_is_gap": true,
+    "seq_bool_never_verified": true,
+    "seq_string_never_verified": true,
+    "seq_float_never_verified": true,
+    "torn_last_write_is_torn_tail": true,
+    "no_g05_cache_without_env": true
+   },
+   "detail": {
+    "two_license_texts_unrecognized": "(1, [('license_unrecognized', 'LICENSE')])",
+    "rewrapped_curly_mit_is_mit": "(0, 'MIT', [])",
+    "mit_license_wording_is_mit": "(0, [])",
+    "dot_git_not_walked": "(0, [])",
+    "exclude_typo_refused": "(2, \"invalid: --exclude 'no/such/folder' must be a folder inside ROOT. Nothing was written.\\n\")",
+    "exclude_outside_refused": "(2, \"invalid: --exclude '../r09-alias' must be a folder inside ROOT. Nothing was written.\\n\")",
+    "malformed_line_among_good_exit2": "(2, \"invalid: manifest line 3 is not '<sha256>  <path>'. Nothing was written.\\n\")",
+    "empty_manifest_not_consistent": "(2, 'invalid: manifest lists no files. Nothing was written.\\n')",
+    "renumbered_seq_rehashed_is_gap": "(1, ('seq_gap', 'line 21'))",
+    "seq_bool_never_verified": "(1, ('fields_wrong', 'line 2'))",
+    "seq_string_never_verified": "(1, ('fields_wrong', 'line 2'))",
+    "seq_float_never_verified": "(1, ('fields_wrong', 'line 2'))",
+    "torn_last_write_is_torn_tail": "(1, ('torn_tail', 'line 50'))",
+    "no_g05_cache_without_env": "(0, [])"
+   }
+  },
+  {
+   "row": "O05 (OBS) license and manifest edge forms recorded, not scored: concatenated texts, lowercase and SPDX OR values, pyproject license file form, lowercase license.txt, LICENSE.md only, shasum binary marker, uppercase hex, CRLF, ./ prefix, empty manifest, --out inside ROOT",
+   "pass": true,
+   "obs": true,
+   "sub": {
+    "mit_and_apache_concatenated": true,
+    "plugin_lowercase_mit": true,
+    "plugin_spdx_or": true,
+    "pyproject_license_file_form": true,
+    "lowercase_license_txt_unlisted": true,
+    "root_LICENSE_md_only": true,
+    "manifest_star_binary_marker": true,
+    "manifest_uppercase_hex": true,
+    "manifest_crlf": true,
+    "manifest_dot_slash": true,
+    "manifest_empty": true,
+    "notice_lists_lowercase_file": true,
+    "notice_plain_text_path": true,
+    "out_inside_root": true
+   },
+   "detail": {
+    "mit_and_apache_concatenated": "(1, 'unrecognized', [('license_unrecognized', 'LICENSE')])",
+    "plugin_lowercase_mit": "(0, [])",
+    "plugin_spdx_or": "(0, [])",
+    "pyproject_license_file_form": "(1, [('license_undeclared', 'pyproject.toml')])",
+    "lowercase_license_txt_unlisted": "(1, [('upstream_license_unlisted', 'lib/license.txt')])",
+    "root_LICENSE_md_only": "(1, 'unrecognized', [('license_missing', 'LICENSE')])",
+    "manifest_star_binary_marker": "(0, [], 1)",
+    "manifest_uppercase_hex": "(2, [], None)",
+    "manifest_crlf": "(0, [], 1)",
+    "manifest_dot_slash": "(1, [('artifact_refused', './lib/core.py')], 0)",
+    "manifest_empty": "(2, [])",
+    "notice_lists_lowercase_file": "(1, [('upstream_license_unlisted', 'lib/license.txt')])",
+    "notice_plain_text_path": "(1, [('upstream_license_unlisted', 'third_party/tok/LICENSE.txt')])",
+    "out_inside_root": "(0, True, '')"
+   }
+  },
+  {
+   "row": "E01 clean controls: the fixture's hashes and links recompute with my canonical JSON; anchored verify passes with the head I compute and does not say self-consistent only; my 60-event chain verifies as self-consistent only with claimed_by counts equal to mine and reported as not authenticated",
+   "pass": true,
+   "obs": false,
+   "sub": {
+    "fixture_hashes_recompute": true,
+    "anchored_verify": true,
+    "anchored_not_self_only": true,
+    "my_chain_verifies_self_only": true,
+    "claimed_by_counts_not_authenticated": true,
+    "text_says_not_authenticated": true
+   },
+   "detail": {
+    "fixture_hashes_recompute": "6",
+    "anchored_verify": "(0, 'verified', {'seq': 5, 'hash': '8c1a126aab0c366d87a0e7cd75d871eccb204b565283f52beec350e2fe8ed1ab'})",
+    "anchored_not_self_only": "'matches seq 2'",
+    "my_chain_verifies_self_only": "(0, 'none (self-consistent only)')",
+    "claimed_by_counts_not_authenticated": "{'counts': {'Ops desk (synthetic)': 30, 'Release bot (synthetic)': 30}, 'identity': 'claimed in plain text, not authenticated'}",
+    "text_says_not_authenticated": "'d; anchor none (self-consistent only)\\nhead: seq 59 18172a29289eaed02e8f4292b6538c56effd81d32f291da48bcc8e128a039f23\\nclaimed_by (not authenticated): Ops desk (synthetic) 30, Release bot (synthetic) 30\\n'"
+   }
+  },
+  {
+   "row": "E02 tamper evidence on my seeded chains: an edit, an edit with that event's hash recomputed, a deletion, a swap, a replay, a torn tail, a junk line, a rehashed time regression, a rehashed naive time, extra and missing fields are each named at their line with nothing after trusted; an unanchored rewrite passes only as self-consistent while the original anchor catches it; truncation before the anchor and a tamper after a good anchor are named; bad anchors exit 2; a 10-chain seeded soak",
+   "pass": true,
+   "obs": false,
+   "sub": {
+    "edit_body": true,
+    "edit_rehash_one": true,
+    "delete_middle": true,
+    "swap": true,
+    "replay": true,
+    "torn_tail": true,
+    "torn_tail_no_newline": true,
+    "junk_line": true,
+    "time_regression_rehashed": true,
+    "naive_time_rehashed": true,
+    "extra_field": true,
+    "missing_field": true,
+    "rewrite_unanchored_self_only": true,
+    "rewrite_anchored_mismatch": true,
+    "truncated_before_anchor": true,
+    "anchor_ok_later_tamper_found": true,
+    "anchor_garbage": true,
+    "anchor_short_hash": true,
+    "seeded_soak_10": true
+   },
+   "detail": {
+    "edit_body": "(1, 'hash_mismatch', 'line 21', 20, 30, 50)",
+    "edit_rehash_one": "(1, 'broken_link', 'line 22', 21, 29, 50)",
+    "delete_middle": "(1, 'seq_gap', 'line 21', 20, 29, 49)",
+    "swap": "(1, 'seq_gap', 'line 21', 20, 30, 50)",
+    "replay": "(1, 'seq_repeat', 'line 22', 21, 30, 51)",
+    "torn_tail": "(1, 'line_not_json', 'line 50', 49, 1, 50)",
+    "torn_tail_no_newline": "(1, 'torn_tail', 'line 50', 49)",
+    "junk_line": "(1, 'line_not_json', 'line 31', 30, 21, 51)",
+    "time_regression_rehashed": "(1, 'time_regression', 'line 26', 25, 25, 50)",
+    "naive_time_rehashed": "(1, 'time_invalid', 'line 26', 25, 25, 50)",
+    "extra_field": "(1, 'fields_wrong', 'line 26', 25, 25, 50)",
+    "missing_field": "(1, 'fields_wrong', 'line 26', 25, 25, 50)",
+    "rewrite_unanchored_self_only": "(0, 'none (self-consistent only)')",
+    "rewrite_anchored_mismatch": "(1, [{'code': 'anchor_mismatch', 'detail': 'seq 30 hash differs from the anchor: the history up to it was rewritten'}])",
+    "truncated_before_anchor": "(1, [{'code': 'anchor_not_reached', 'detail': 'anchored seq 30 is beyond the last verified event (19)'}])",
+    "anchor_ok_later_tamper_found": "(1, ('hash_mismatch', 'line 41'))",
+    "anchor_garbage": "(2, 'invalid: --anchor must be SEQ:SHA256 (64 lowercase hex). Nothing was written.\\n')",
+    "anchor_short_hash": "(2, 'invalid: --anchor must be SEQ:SHA256 (64 lowercase hex). Nothing was written.\\n')",
+    "seeded_soak_10": "[]"
+   }
+  },
+  {
+   "row": "O06 (OBS) event edge forms recorded, not scored: seq as bool, string or float with hashes recomputed, a stored uppercase hash, a non-ASCII body written as UTF-8, an empty log, a blank line, a claimed_by that says authenticated",
+   "pass": true,
+   "obs": true,
+   "sub": {
+    "seq_bool": true,
+    "seq_string": true,
+    "seq_float": true,
+    "stored_hash_uppercase": true,
+    "non_ascii_body_utf8_lines": true,
+    "own_append_non_ascii_verifies": true,
+    "empty_log": true,
+    "blank_line_middle": true,
+    "claim_text_saying_authenticated": true
+   },
+   "detail": {
+    "seq_bool": "(1, ('fields_wrong', 'line 2'))",
+    "seq_string": "(1, ('fields_wrong', 'line 2'))",
+    "seq_float": "(1, ('fields_wrong', 'line 2'))",
+    "stored_hash_uppercase": "(1, ('hash_mismatch', 'line 3'))",
+    "non_ascii_body_utf8_lines": "(1, ('hash_mismatch', 'line 3'))",
+    "own_append_non_ascii_verifies": "(0, 0, '{\"at\":\"2026-10-19T16:19:45.712004+00:00\",\"body\":{\"n\":\"caf\u00e9\"},\"claimed_by\":\"Z\u00fcrich desk\",\"hash\":\"8808f811a49a06a1504bdcfe410f0ab4f1401a1b7af61c497525bc7e57d42f0d\",\"prev\":\"000000000000000000000000000000')",
+    "empty_log": "(1, 'findings', [{'code': 'chain_empty'}])",
+    "blank_line_middle": "(1, ('line_not_json', 'line 3'))",
+    "claim_text_saying_authenticated": "(0, {'counts': {'General Counsel (authenticated, signed)': 1, 'Ops desk (synthetic)': 2}, 'identity': 'claimed in plain text, not authenticated'})"
+   }
+  },
+  {
+   "row": "E03 append: from no file it writes seq 0 on 64 zeros and hashes I recompute; a broken log, a naive --at, non-JSON or list bodies and a blank claim are refused with exit 2 and the log byte-identical; a last line without a newline is never merged; a lock I hold gives exit 4 with nothing written; 8 concurrent appenders x 20 keep all 160 events in one verified chain",
+   "pass": false,
+   "obs": false,
+   "sub": {
+    "append_from_empty": true,
+    "append_broken_refused": true,
+    "refused_naive_at": true,
+    "refused_bad_body": true,
+    "refused_list_body": true,
+    "refused_blank_claim": true,
+    "no_trailing_newline_never_merges": false,
+    "lock_held_exit4": true,
+    "concurrent_8x20_all_kept": true,
+    "OBS_earlier_at_clamped": true
+   },
+   "detail": {
+    "append_from_empty": "([0, 0, 0], 3)",
+    "append_broken_refused": "(2, 'invalid: the log does not verify (hash_mismatch); recover it to a new file before appending. Nothing was written.\\n')",
+    "refused_naive_at": "(2, 'invalid: --at must be an ISO time with offset. Nothing was written.\\n')",
+    "refused_bad_body": "(2, 'invalid: --body must be a JSON object. Nothing was written.\\n')",
+    "refused_list_body": "(2, 'invalid: --body must be a JSON object. Nothing was written.\\n')",
+    "refused_blank_claim": "(2, 'invalid: --claimed-by is required (it is recorded as a claim, not checked). Nothing was written.\\n')",
+    "no_trailing_newline_never_merges": "(0, 1, 3, ('line_not_json', 'line 4'))",
+    "lock_held_exit4": "(4, 'another appender holds the lock; nothing written\\n')",
+    "concurrent_8x20_all_kept": "([], 0, 160)",
+    "OBS_earlier_at_clamped": "(0, '2026-10-01T00:04:00-07:00')"
+   }
+  },
+  {
+   "row": "E04 recovery: the verified prefix is written byte-equal to a new file, verifies and accepts an append, and the original is untouched; --out as the log, an existing file, a path alias of the log or a missing folder is refused with exit 2; an anchored rewrite keeps nothing and writes no file; a torn tail recovers 9 of 10",
+   "pass": false,
+   "obs": false,
+   "sub": {
+    "prefix_kept_byte_equal": true,
+    "recovered_verifies_and_appends": true,
+    "out_is_log": true,
+    "out_exists": true,
+    "out_alias_of_log": true,
+    "out_missing_dir": false,
+    "anchored_rewrite_keeps_nothing": true,
+    "torn_tail_recovers_9": true
+   },
+   "detail": {
+    "prefix_kept_byte_equal": "(0, 15)",
+    "recovered_verifies_and_appends": "(0, 0, 0, 16)",
+    "out_is_log": "(2, 'invalid: --out must be a new file; recover never rewrites the log in place. Nothing was written.\\n')",
+    "out_exists": "(2, 'invalid: --out already exists; choose a new file. Nothing was written.\\n')",
+    "out_alias_of_log": "(2, 'invalid: --out must be a new file; recover never rewrites the log in place. Nothing was written.\\n')",
+    "out_missing_dir": "(1, \"ile, flags, 0o600)\\nFileNotFoundError: [Errno 2] No such file or directory: '/tmp/m38o-e0rg60c7/nodir/.x.jsonl.wn4vnbyx'\\n\")",
+    "anchored_rewrite_keeps_nothing": "(1, False)",
+    "torn_tail_recovers_9": "(0, 9)"
+   }
+  },
+  {
+   "row": "C07 claims: across every output of this oracle run no positive legal-validity, compliance, certification, verified-signature or verified-identity claim appears, 'authenticated' only ever appears negated, and the changed docs never say signatures or attestations are verified here",
+   "pass": true,
+   "obs": false,
+   "sub": {
+    "no_positive_legal_or_identity_claim_in_outputs": true,
+    "authenticated_only_negated": true,
+    "docs_never_claim_signature_verification": true
+   },
+   "detail": {
+    "no_positive_legal_or_identity_claim_in_outputs": "[]",
+    "authenticated_only_negated": "[]",
+    "docs_never_claim_signature_verification": "{}"
+   }
+  },
+  {
+   "row": "S08 nothing contacted or changed: the audit hook saw no process, network or mail event in any run; neither tool imports a network, process or chain library; the candidate's G38 and employees trees are byte-identical with no __pycache__",
+   "pass": true,
+   "obs": false,
+   "sub": {
+    "no_process_network_mail": true,
+    "no_network_process_imports": true,
+    "tree_byte_identical_no_pycache": true
+   },
+   "detail": {
+    "no_process_network_mail": "''",
+    "no_network_process_imports": "{'provenance_check.py': [], 'event_chain.py': []}",
+    "tree_byte_identical_no_pycache": "''"
+   }
+  }
+ ]
+}

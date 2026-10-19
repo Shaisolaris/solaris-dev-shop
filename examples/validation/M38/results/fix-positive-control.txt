@@ -1,0 +1,13 @@
+== M38 proposed fix positive control (Grok self-validation), 09:06 PT, patch sha d6c8db308677518b0a0aa68e03e284302101ca4e560574f0f72e3234c4a9e357
+-- 3.9.6 patched: m38 oracle: M38 ORACLE 7/10 core FAIL
+   failing subs: [('P03', 'section_name_then_comma_read'), ('P03', 'root_level_plugin_checked'), ('P03', 'actual_repo_chief_of_staff_plugin_checked'), ('P03', 'out_missing_dir_exit2'), ('P04', 'subject_only_matching'), ('E04', 'out_missing_dir')]
+   g38 tests: Ran 14 tests in 13.780s  OK 
+   full suite: Ran 169 tests in 30.608s  OK 
+   builder oracle: ACCEPTED 8/8 naive: REJECTED 1/8 noop: REJECTED 1/8
+-- 3.13.15 patched: m38 oracle: M38 ORACLE 7/10 core FAIL
+   failing subs: [('P03', 'section_name_then_comma_read'), ('P03', 'root_level_plugin_checked'), ('P03', 'actual_repo_chief_of_staff_plugin_checked'), ('P03', 'out_missing_dir_exit2'), ('P04', 'subject_only_matching'), ('E04', 'out_missing_dir')]
+   g38 tests: Ran 14 tests in 14.147s  OK 
+   full suite: Ran 169 tests in 29.289s  OK 
+   builder oracle: ACCEPTED 8/8 naive: REJECTED 1/8 noop: REJECTED 1/8
+-- negative control: the patched tests on the unpatched tools (3.9.6): FAIL: test_append_after_lost_newline_keeps_both (tests.test_g38_capability.G38Provenance) FAIL: test_unrecognized_or_other_license_text (tests.test_g38_capability.G38Provenance) Ran 14 tests in 14.571s FAILED (failures=2) 
+-- full Apache text under the patch: apache Apache-2.0 | apache+restriction None | repo LICENSE MIT | fixture MIT

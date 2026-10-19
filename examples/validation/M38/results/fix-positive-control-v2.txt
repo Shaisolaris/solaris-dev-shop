@@ -1,0 +1,7 @@
+== v2 oracle on the patched copy (Grok self-validation), 09:16 PT, patch sha d6c8db308677518b0a0aa68e03e284302101ca4e560574f0f72e3234c4a9e357
+-- 3.9.6 patched: M38 ORACLE 8/11 core FAIL
+   failing subs: [('P03', 'section_name_then_comma_read'), ('P03', 'root_level_plugin_checked'), ('P03', 'actual_repo_chief_of_staff_plugin_checked'), ('P03', 'out_missing_dir_exit2'), ('P04', 'subject_only_matching'), ('E04', 'out_missing_dir')]
+-- 3.13.15 patched: M38 ORACLE 8/11 core FAIL
+   failing subs: [('P03', 'section_name_then_comma_read'), ('P03', 'root_level_plugin_checked'), ('P03', 'actual_repo_chief_of_staff_plugin_checked'), ('P03', 'out_missing_dir_exit2'), ('P04', 'subject_only_matching'), ('E04', 'out_missing_dir')]
+-- the same v2 oracle on the unpatched candidate copy (3.9.6): M38 ORACLE 7/11 core FAIL
+   failing subs: [('P03', 'mit_plus_restriction_not_called_mit'), ('P03', 'section_name_then_comma_read'), ('P03', 'root_level_plugin_checked'), ('P03', 'actual_repo_chief_of_staff_plugin_checked'), ('P03', 'out_missing_dir_exit2'), ('P04', 'subject_only_matching'), ('E03', 'no_trailing_newline_never_merges'), ('E04', 'out_missing_dir')]

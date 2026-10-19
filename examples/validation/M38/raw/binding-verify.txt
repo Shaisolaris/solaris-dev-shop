@@ -1,0 +1,15 @@
+Mon Oct 19 08:57:12 PDT 2026
+candidate 41ad34461d0924b34d1d725012825f736ee548a3 parent(s) 8b38a72f2183ad7427594d6557d7e308baf0469b
+02ba9c571b10ad1dba792d2ac5534bcad3171e67	refs/heads/main
+bbe682b28e96296723826c1f113e138ccc39c530	refs/heads/review/grok-g02-activation
+314b4dbf980437cf14bc32438117e5b5b777f942	refs/heads/review/grok-g04-handoff
+8b38a72f2183ad7427594d6557d7e308baf0469b	refs/heads/review/grok-g05-revision-bound-evidence
+861167dd854156f69c6d4a62734ca6c6e45b81d1	refs/heads/review/grok-g33-evidence-decision
+90da27cf1dd3466e34c89b2c4677b9e35dbaba1e	refs/heads/review/grok-g35-campaign-accounting
+41ad34461d0924b34d1d725012825f736ee548a3	refs/heads/review/grok-g38-authority-consistency
+4b491d707651cd5ff4afaf7c5edd8830a84afc6d	refs/heads/review/grok-m33-validation
+base 8b38a72f2183ad7427594d6557d7e308baf0469b is ancestor: yes; direct parent: yes
+diff sha 592a261e1d82d824df1ee249e7610ca06105d0d5dfea51e371d298a65a2394b0 patch file sha 592a261e1d82d824df1ee249e7610ca06105d0d5dfea51e371d298a65a2394b0 handback 592a261e1d82d824df1ee249e7610ca06105d0d5dfea51e371d298a65a2394b0
+manifest entries 32 mismatches 0
+manifest set == diff set
+G05 chain: 314b4dbf980437cf14bc32438117e5b5b777f942 (G04 314b4db expected), G05 remote head above; M05 validated 8b38a72 at 177a42f

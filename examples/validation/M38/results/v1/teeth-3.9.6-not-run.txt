@@ -1,0 +1,1 @@
+v1 3.9.6 teeth run stopped part-way (the v2 oracle file replaced v1 during it); not kept
