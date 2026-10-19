@@ -15,7 +15,8 @@ record breaks the chain (self-consistency only: someone who rewrites every line 
 command has finished; a recorder killed earlier leaves no record and the step is simply run again.
 Output digests come from the G05 assurance engine (artifact_digests) and are compared with binding_state,
 so a changed output or a changed tool makes the contribution stale and names the command to re-run.
-Inputs are bound too (r2): every existing file named in the command that is not an output or a .py tool, plus
+Inputs are bound too (r2, r3): every existing file or folder named in the command (plain, --flag VALUE, --flag=VALUE,
+or an absolute path inside ROOT; a named symlink is refused) that is not an output or a .py tool, plus
 --inputs PATH... for files and folders the tool reads indirectly, is digested after the run; a later change,
 addition or removal makes the contribution stale (inputs_changed). A recorded output file that has disappeared
 is stale (removed). The run log must still exist and match its digest. Exit 1 (disclosed gaps) may be accepted
@@ -188,8 +189,9 @@ def _safe_rel(a):
 
 
 def _named_inputs(root, argv, outputs, explicit):
-    """Explicit --inputs plus every existing regular file named in the command that is not an output or a .py
-    tool (tools are bound separately). Returns a sorted, de-duplicated list of relative paths."""
+    """Explicit --inputs plus every existing file or folder named in the command (plain, --flag VALUE, --flag=VALUE,
+    or absolute inside ROOT) that is not an output or a .py tool (tools are bound separately). A symlink named in
+    the command is refused. Returns a sorted, de-duplicated list of relative paths."""
     outs = {Path(o).as_posix().rstrip("/") for o in outputs}
     named = []
     for i in explicit or []:
@@ -198,14 +200,28 @@ def _named_inputs(root, argv, outputs, explicit):
         if not (root / i).exists() or (root / i).is_symlink():
             raise Invalid("input %r does not exist in ROOT (or is a symlink)" % i[:80])
         named.append(Path(i).as_posix().rstrip("/"))
+    base = Path(os.path.realpath(str(root)))
     for a in argv[1:]:
-        if not a or a.startswith("-") or a.endswith(".py") or not _safe_rel(a):
+        if a.startswith("-"):
+            a = a.split("=", 1)[1] if "=" in a else ""  # --flag=VALUE names VALUE
+        if not a or a.endswith(".py"):
+            continue
+        if os.path.isabs(a):
+            if Path(a).is_symlink():
+                raise Invalid("input %r named in the command is a symlink; name its target" % a[:80])
+            try:
+                a = Path(os.path.realpath(a)).relative_to(base).as_posix()
+            except ValueError:
+                continue  # outside ROOT: cannot be re-checked later
+        if not _safe_rel(a):
             continue
         k = Path(a).as_posix().rstrip("/")
-        if k in outs:
+        if k in outs or k in ("", "."):
             continue
         q = root / a
-        if q.is_file() and not q.is_symlink():
+        if q.is_symlink():
+            raise Invalid("input %r named in the command is a symlink; name its target" % a[:80])
+        if q.is_file() or q.is_dir():
             named.append(k)
     return sorted(set(named))
 
@@ -385,7 +401,8 @@ def _contribution(qos, root, claim, recs, unconfirmed_seq=None):
         return out
     r = mine[-1]
     out.update(record=r["seq"], worker=r.get("worker"), exit=r.get("exit"), argv=r.get("argv"))
-    if not r.get("ok"):
+    oe = r.get("ok_exit") if isinstance(r.get("ok_exit"), list) else [0]
+    if not r.get("ok") or r.get("exit") not in oe or not set(oe) <= OK_EXITS:  # exit 2 never counts, whatever the record says
         out.update(state="failed", reason=r.get("reason"), action="fix the cause and re-run: %s" % " ".join(r["argv"]))
         return out
     if unconfirmed_seq is not None and r.get("seq") == unconfirmed_seq:

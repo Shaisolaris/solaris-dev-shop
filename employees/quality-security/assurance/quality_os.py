@@ -611,7 +611,12 @@ def close_finding(
     updated.status = "closed"
     updated.closed_by_role = closer_role
     updated.evidence = list(finding.evidence) + list(independent_evidence)
-    if finding.status != "waived":
+    if finding.status == "waived":
+        # Waiver-governed closure: keep closed_at_revision empty and record the waiver id
+        # so closure_is_current / reopen_finding treat it as waiver-bound, not UNBOUND_CLOSURE.
+        if waiver is not None and _nonblank(getattr(waiver, "waiver_id", "")):
+            updated.waiver_id = waiver.waiver_id
+    else:
         updated.closed_at_revision = verified_revision or ""
     updated.updated_at = utc_now()
     return updated, []
@@ -620,10 +625,12 @@ def close_finding(
 def closure_is_current(finding: Finding, current_revision: str) -> Tuple[bool, List[str]]:
     """Whether a closed finding's verification covers current_revision.
 
-    (True, []) when it was verified at that revision; otherwise (False, [code]) with STALE_CLOSURE (verified
-    at another revision: re-verify there or reopen), UNBOUND_CLOSURE (closed without a revision),
-    NOT_CLOSED, INVALID_REVISION or INVALID_FINDING. Conservative: any other revision is stale, even if the
-    fix's files did not change; use packet digests for file-level carry-forward.
+    (True, []) when it was verified at that revision, or when the closure is waiver-governed
+    (nonblank waiver_id: covers any revision until the waiver expires). Otherwise (False, [code]) with
+    STALE_CLOSURE (verified at another revision: re-verify there or reopen), UNBOUND_CLOSURE (closed
+    without a revision and without a waiver), NOT_CLOSED, INVALID_REVISION or INVALID_FINDING.
+    Conservative: any other revision is stale, even if the fix's files did not change; use packet digests
+    for file-level carry-forward.
     """
     if _finding_errors(finding):
         return False, ["INVALID_FINDING"]
@@ -631,6 +638,10 @@ def closure_is_current(finding: Finding, current_revision: str) -> Tuple[bool, L
         return False, ["INVALID_REVISION"]
     if finding.status != "closed":
         return False, ["NOT_CLOSED"]
+    if _nonblank(finding.waiver_id):
+        # Waiver-governed closure covers any revision until the waiver expires (checked via
+        # validate_waiver when the waiver record is available). Do not report UNBOUND_CLOSURE.
+        return True, []
     closed_at = finding.closed_at_revision
     if not isinstance(closed_at, str) or not closed_at:
         return False, ["UNBOUND_CLOSURE"]
@@ -652,12 +663,15 @@ def reopen_finding(
 
     The status returns to open and the closer and closure revision are cleared. Its evidence keeps the
     earlier closure evidence plus a reopen note, so closing again needs new independent evidence (the
-    earlier closure evidence now counts as prior). A waived finding is not reopened here; its waiver governs.
+    earlier closure evidence now counts as prior). A waiver-governed closed finding (nonblank waiver_id) is not reopened here (returns WAIVER_GOVERNS); its waiver governs until expiry or revocation.
     """
     if _finding_errors(finding):
         return copy.deepcopy(finding), ["INVALID_FINDING"]
     if finding.status != "closed":
         return copy.deepcopy(finding), ["NOT_CLOSED"]
+    if _nonblank(finding.waiver_id):
+        # Waiver governs until it expires or is revoked; do not reopen through this path.
+        return copy.deepcopy(finding), ["WAIVER_GOVERNS"]
     if not _nonblank(reason) or len(reason.strip()) < MIN_WAIVER_JUSTIFICATION:
         return copy.deepcopy(finding), ["REOPEN_REASON_REQUIRED"]
     if not _nonblank(reopened_by_role):
