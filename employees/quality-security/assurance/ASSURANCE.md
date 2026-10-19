@@ -90,19 +90,40 @@ The fixture runner fails closed on its own contract (added after engine
 - `fixture_kind` (or the legacy `kind`) must be one of `packet`,
   `planted_defect`, `defect`, `legal`, `legal_boundary`, `closure` or
   `self_approval`. A bare planted defect must use `fixture_kind:
-  "planted_defect"` with `defect_kind`, not `kind: "security"`.
+  "planted_defect"` with `defect_kind`, not `kind: "security"`. When both
+  are present, `fixture_kind` wins and `kind` is ignored.
+- Each fixture kind accepts only its own top-level keys. A near miss of a
+  contract key (`fixture-kind`, `Fixture_Kind`, `pakcet`, `expectation`,
+  `txt`, `closer_rol` and similar), a packet that carries closure fields
+  without `fixture_kind`, and a duplicate JSON key all return
+  `INVALID_PACKET`.
+- Field types are checked before evaluation: legal `text` must be a string,
+  `requested_actions` an array of strings, `sources` an array of objects,
+  `freshness_days` a non-negative integer and `defect` an object. Malformed
+  values and JSON nested too deeply to parse return `INVALID_PACKET` for that
+  fixture; the suite keeps going.
 - `expectations` accepts only `outcome` (`pass` or `fail_gate`),
   `gate_codes` (array of strings) and `accountable_role` (nonblank string).
-  An unknown key or value returns `INVALID_PACKET` instead of being ignored.
+  An unknown key or value (including `decision`) returns `INVALID_PACKET`
+  instead of being ignored. `gate_codes` must be non-empty, is allowed only
+  with `outcome: "fail_gate"`, and every listed code must fire. An
+  `accountable_role` that no finding can be checked against fails with
+  `GATE_MISROUTE` rather than passing vacuously. A legal fixture without
+  `expectations` is read as `outcome: "fail_gate"`, so text that the legal
+  boundary does not block fails the fixture.
 - `suite <dir>` reports `ok: false` with an `error` when the directory does
   not exist or contains no fixtures. The repository does not ship assurance
   fixtures, so pass an explicit directory; `suite` with no argument looks for
   `fixtures/solaris/assurance` and fails when it is absent. Files whose names
-  start with `_` are skipped. Router intake fixtures under `fixtures/` are not
+  start with `_` are skipped. The extension match is case-insensitive
+  (`.json`, `.JSON`). Symlinked directories are not followed; each one is
+  listed as a failing `INVALID_PACKET` entry so it cannot vanish from the
+  count. Router intake fixtures under `fixtures/` are not
   assurance fixtures and fail as `INVALID_PACKET`.
 - Unknown top-level packet keys are still ignored by
   `evaluate_artifact_packet`; a misspelled packet field such as `dimenions`
-  is not detected yet.
+  is not detected yet. The fixture runner's near-miss check covers only the
+  fixture contract keys, not packet fields.
 
 ## Findings → orders
 

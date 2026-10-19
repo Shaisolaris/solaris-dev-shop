@@ -6,6 +6,7 @@ Valid positive, negative, planted-defect, closure and legal fixtures keep their
 existing outcomes. These tests drive the real CLI in temporary directories.
 """
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -121,6 +122,161 @@ class FixtureRunner(unittest.TestCase):
         self.assertTrue(q.evaluate_artifact_packet(GATE_DONE).ok)
         blocked = q.evaluate_artifact_packet(dict(GATE_MISSING, expectations={'outcome': 'fail_gate'}))
         self.assertEqual((blocked.ok, blocked.gate_codes), (False, ['MISSING_SPECIALIST_GATE']))
+
+
+class M01Rework(unittest.TestCase):
+    """G01 repair r1 (M01 Grok self-validation of the G01 handback): fixture-contract keys (F1),
+    vacuous expectations (F2), legal fixtures without expectations (F3), malformed fields and
+    deep JSON (F4), skipped files (F5) and the two builder-test gaps M01 found (F6)."""
+    BAD_LEGAL = 'I am your attorney; file this lawsuit now.'
+    CLEAN_LEGAL = 'General information about filing deadlines. Not legal advice.'
+    cli = FixtureRunner.cli
+    run_fixture = FixtureRunner.run_fixture
+
+    def assert_invalid(self, data, raw=None, why=None):
+        if raw is not None:
+            with tempfile.TemporaryDirectory() as tmp:
+                path = Path(tmp) / 'fixture.json'
+                path.write_text(raw, encoding='utf-8')
+                code, out = self.cli('run', str(path))
+        else:
+            code, out = self.run_fixture(data)
+        self.assertEqual((code, out['ok'], out['gate_codes']), (1, False, ['INVALID_PACKET']), data or raw[:80])
+        if why is not None:
+            # the named check refused it, not a later crash caught by the fail-closed wrapper
+            self.assertIn(why, ' '.join(out.get('messages', [])))
+        return out
+
+    def test_f1_misspelled_fixture_contract_keys_are_invalid(self):
+        for key in ('fixture-kind', 'Fixture_Kind', 'fixturekind', 'fixture_knid', 'fixtureKind'):
+            with self.subTest(key=key):
+                self.assert_invalid({key: 'closure', 'finding': FINDING, 'closer_role': 'security-auditor',
+                                     'expect_blocked': False})
+        for key in ('pakcet', 'Packet', 'packets'):
+            with self.subTest(key=key):
+                self.assert_invalid({key: GATE_MISSING, 'expectations': {'outcome': 'pass'}})
+        for key in ('expectation', 'Expectations', 'expected'):
+            with self.subTest(key=key):
+                self.assert_invalid({'packet': GATE_DONE, key: {'outcome': 'fail_gate'}})
+        for key in ('txt', 'Text', 'legal-text'):
+            with self.subTest(key=key):
+                self.assert_invalid({'fixture_kind': 'legal', key: self.BAD_LEGAL})
+        self.assert_invalid({'fixture_kind': 'closure', 'finding': FINDING, 'closer_role': 'security-auditor',
+                             'expect_blocked': False, 'closer_rol': 'x'})
+        # an unwrapped packet that carries closure fields lost its fixture_kind
+        self.assert_invalid(dict(GATE_DONE, finding=FINDING))
+
+    def test_f1_duplicate_keys_are_invalid(self):
+        raw = ('{"fixture_kind": "closure", "finding": %s, "closer_role": "security-auditor", '
+               '"expect_blocked": false, "fixture_kind": "packet"}' % json.dumps(FINDING))
+        out = self.assert_invalid(None, raw=raw)
+        self.assertIn('duplicate key', ' '.join(out.get('messages', []) + out.get('notes', [])))
+        self.assert_invalid(None, raw='{"packet": %s, "expectations": {"outcome": "pass", "outcome": "fail_gate"}}'
+                            % json.dumps(GATE_DONE))
+
+    def test_f2_expectations_that_cannot_be_checked_fail(self):
+        for data in ({'packet': GATE_DONE, 'expectations': {'outcome': 'pass', 'accountable_role': 'nobody'}},
+                     {'fixture_kind': 'legal', 'text': self.BAD_LEGAL,
+                      'expectations': {'outcome': 'fail_gate', 'accountable_role': 'nobody'}}):
+            with self.subTest(data=data):
+                code, out = self.run_fixture(data)
+                self.assertEqual((code, out['ok']), (1, False))
+                self.assertIn('GATE_MISROUTE', out['gate_codes'])
+        for exp in ({'outcome': 'pass', 'gate_codes': ['MISSING_SPECIALIST_GATE']},
+                    {'gate_codes': ['MISSING_SPECIALIST_GATE']},
+                    {'outcome': 'fail_gate', 'gate_codes': []}):
+            with self.subTest(exp=exp):
+                self.assert_invalid({'packet': GATE_DONE, 'expectations': exp})
+        # every listed gate must fire
+        code, out = self.run_fixture({'packet': GATE_MISSING, 'expectations': {
+            'outcome': 'fail_gate', 'gate_codes': ['MISSING_SPECIALIST_GATE', 'SOME_OTHER_GATE']}})
+        self.assertEqual((code, out['ok']), (1, False))
+        code, out = self.run_fixture({'packet': GATE_MISSING, 'expectations': {
+            'outcome': 'fail_gate', 'gate_codes': ['MISSING_SPECIALIST_GATE']}})
+        self.assertEqual((code, out['ok']), (0, True))
+
+    def test_f3_legal_fixture_without_expectations_must_be_blocked(self):
+        self.assertEqual(self.run_fixture({'fixture_kind': 'legal', 'text': self.BAD_LEGAL})[0], 0)
+        code, out = self.run_fixture({'fixture_kind': 'legal', 'text': self.CLEAN_LEGAL})
+        self.assertEqual((code, out['ok']), (1, False))
+        self.assertIn('EXPECTED_GATE_NOT_FIRED', out['gate_codes'])
+        code, out = self.run_fixture({'fixture_kind': 'legal', 'text': self.CLEAN_LEGAL, 'expectations': {'outcome': 'pass'}})
+        self.assertEqual((code, out['ok']), (0, True))
+
+    def test_f4_malformed_fields_and_deep_json_are_invalid_not_a_crash(self):
+        for data, why in (({'fixture_kind': 'legal', 'text': 'x', 'freshness_days': 'abc'}, 'freshness_days'),
+                          ({'fixture_kind': 'legal', 'text': 'x', 'freshness_days': None}, 'freshness_days'),
+                          ({'fixture_kind': 'legal', 'text': 'x', 'freshness_days': True}, 'freshness_days'),
+                          ({'fixture_kind': 'legal', 'text': 'x', 'freshness_days': -1}, 'freshness_days'),
+                          ({'fixture_kind': 'legal', 'text': ['x']}, 'text must be a string'),
+                          ({'fixture_kind': 'legal', 'legal_text': 7}, 'legal_text must be a string'),
+                          ({'fixture_kind': 'legal', 'text': 'x', 'requested_actions': 'legal_file'}, 'requested_actions'),
+                          ({'fixture_kind': 'legal', 'text': 'x', 'sources': ['a']}, 'sources must be'),
+                          ({'fixture_kind': 'legal', 'text': 'x', 'sources': {'url': 'a'}}, 'sources must be'),
+                          ({'fixture_kind': 'planted_defect', 'defect': 'security'}, 'defect must be an object'),
+                          ({'fixture_kind': 'planted_defect', 'defect': ['security']}, 'defect must be an object')):
+            with self.subTest(data=data):
+                self.assert_invalid(data, why=why)
+        self.assert_invalid(None, raw='[' * 200000 + ']' * 200000)
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / 'a.json').write_text(json.dumps(GATE_DONE))
+            (Path(tmp) / 'z.json').write_text(json.dumps({'fixture_kind': 'planted_defect', 'defect': 'security'}))
+            code, out = self.cli('suite', tmp)
+        self.assertEqual((code, out['ok'], out['total'], out['passed']), (1, False, 2, 1))
+
+    def test_f4_unexpected_engine_error_is_invalid_not_a_traceback(self):
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'fixture.json'
+            path.write_text(json.dumps(GATE_DONE))
+            with mock.patch.object(q, '_evaluate_fixture', side_effect=KeyError('boom')):
+                result = q.evaluate_path(path)
+            with mock.patch.object(q, '_evaluate_fixture', side_effect=RecursionError()):
+                deep = q.evaluate_path(path)
+        self.assertEqual((result.ok, result.gate_codes), (False, ['INVALID_PACKET']))
+        self.assertIn('KeyError', ' '.join(result.messages))
+        self.assertEqual((deep.ok, deep.gate_codes), (False, ['INVALID_PACKET']))
+
+    def test_f5_suite_counts_any_json_case_and_reports_symlinked_directories(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / 'fx'
+            root.mkdir()
+            (root / 'a.json').write_text(json.dumps(GATE_DONE))
+            (root / 'B.JSON').write_text(json.dumps({'packet': GATE_MISSING, 'expectations': {'outcome': 'pass'}}))
+            (root / 'C.Json').write_text(json.dumps({'fixture_kind': 'closre'}))
+            (root / '_D.JSON').write_text('not json')
+            code, out = self.cli('suite', str(root))
+            self.assertEqual((code, out['ok'], out['total'], out['passed']), (1, False, 3, 1))
+            for f in ('B.JSON', 'C.Json'):
+                (root / f).unlink()
+            ext = Path(tmp) / 'external'
+            ext.mkdir()
+            (ext / 'bad.json').write_text(json.dumps({'packet': GATE_MISSING, 'expectations': {'outcome': 'pass'}}))
+            os.symlink(ext, root / 'linked')
+            code, out = self.cli('suite', str(root))
+            self.assertEqual((code, out['ok'], out['total'], out['passed']), (1, False, 2, 1))
+            self.assertTrue(any('symlinked directory' in ' '.join(r['notes']) for r in out['results']))
+
+    def test_f6_fixture_kind_takes_precedence_and_decision_is_not_an_expectation(self):
+        # a valid fixture_kind wins over a contradicting legacy kind; reading kind first would refuse these
+        code, out = self.run_fixture({'fixture_kind': 'legal', 'kind': 'closure', 'text': self.BAD_LEGAL,
+                                      'expectations': {'outcome': 'fail_gate'}})
+        self.assertEqual((code, out['ok']), (0, True))
+        code, out = self.run_fixture({'fixture_kind': 'closure', 'kind': 'nonsense', 'finding': FINDING,
+                                      'closer_role': 'security-auditor'})
+        self.assertEqual((code, out['ok']), (0, True))
+        self.assert_invalid({'fixture_kind': 'closre', 'kind': 'closure', 'finding': FINDING})
+        # a present but empty or null fixture_kind still wins; it does not fall back to kind
+        for blank in ('', None, False):
+            with self.subTest(blank=blank):
+                self.assert_invalid({'fixture_kind': blank, 'kind': 'closure', 'finding': FINDING,
+                                     'closer_role': 'security-auditor'}, why='fixture_kind must be one of')
+        self.assert_invalid({'kind': ''}, why='kind must be one of')
+        # "decision" is the key that motivated G01; it is not an expectation key
+        for data in ({'packet': GATE_MISSING, 'expectations': {'decision': 'pass'}},
+                     dict(GATE_MISSING, expectations={'decision': 'fail_gate'})):
+            with self.subTest(data=data):
+                self.assert_invalid(data)
 
 
 if __name__ == '__main__':
