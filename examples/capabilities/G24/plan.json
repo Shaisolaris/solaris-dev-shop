@@ -1,0 +1,118 @@
+{
+ "schema": "solaris.daily-integration/1",
+ "goal": "G24",
+ "base": "02ba9c571b10ad1dba792d2ac5534bcad3171e67",
+ "writable": [
+  "employees/quality-security/assurance/**",
+  "employees/quality-security/qa-engineer/**",
+  "examples/capabilities/G24/**",
+  "tests/test_g24_capability.py"
+ ],
+ "prerequisites": [
+  {
+   "id": "G13",
+   "commit": "5666e7beb161d1252ddd5dcc0a166aca83255370",
+   "note": "carried by G17 and read by G15",
+   "tests": [
+    "tests.test_g13_capability"
+   ]
+  },
+  {
+   "id": "G14",
+   "commit": "6f7b23aa18413907c5fbd250daab475dc94e7a1e",
+   "note": "carried by G17",
+   "tests": [
+    "tests.test_g14_capability"
+   ]
+  },
+  {
+   "id": "G15",
+   "commit": "7e7f361208a40ac55a18a6089c820f92a74147c2",
+   "note": "newest repair head (G15 r4, root QA)",
+   "tests": [
+    "tests.test_g15_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G15/readout_oracle.py",
+     "--quick",
+     "--",
+     "{python}",
+     "employees/data/data-scientist/experiment_readout.py"
+    ]
+   ]
+  },
+  {
+   "id": "G16",
+   "commit": "49aba3fd978a21545f525ad6e82156e39653b257",
+   "tests": [
+    "tests.test_g16_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G16/grounding_oracle.py",
+     "--tool",
+     "{python} employees/engineering/llm-agent-designer/grounded_eval.py"
+    ]
+   ]
+  },
+  {
+   "id": "G17",
+   "commit": "550f1848a76ad4d5b6688090afc0519354ac3370",
+   "tests": [
+    "tests.test_g17_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G17/decision_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G19",
+   "commit": "5606672b464f5daaf08e28cbfa5a8d307f730c27",
+   "note": "accepted revision; the test-shutdown repair is on the docs and CI branch",
+   "tests": [
+    "tests.test_g19_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G19/boundary_oracle.py",
+     "--server",
+     "{python} employees/engineering/backend-developer/ledger_api.py"
+    ]
+   ]
+  }
+ ],
+ "external": [
+  {
+   "id": "P03",
+   "source_commit": "bee80893c03beca8dcff9a7c77df15744ec9f370",
+   "reply_url": "https://github.com/mitsuhiko/insta/pull/949#issuecomment-6273297282",
+   "reply_sha256": "9fe714a4a8208a42cdcec81a612c7a5b11d89fbbc57763d2cbc9fdf9fd7888fe",
+   "validation_id": "R03",
+   "validation_manifest_sha256": "c27e1dd332029ee23c872b2b91e516f4f36584d91594f3900e4c7e6033b7a434",
+   "consumes": "mitsuhiko/insta#949 follow-up at bee80893 (read only; outside this repository)"
+  },
+  {
+   "id": "P04",
+   "source_commit": null,
+   "reply_url": "https://github.com/mangstadt/ez-vcard/pull/166#issuecomment-6272527623",
+   "reply_sha256": "141614ff07b41a413364b04b2e98a6d0aab360942abe43b7464f35187610a020",
+   "validation_id": "R04",
+   "validation_manifest_sha256": "50833cb073944c4471dd0466f034bc21322971a57552f3b7546e4fc21f60b293",
+   "consumes": "mangstadt/ez-vcard#166 design discussion: maintainer chose LaciString in vinnie and asked for no PR code update; no code commit (read only)"
+  }
+ ],
+ "cross_checks": [
+  [
+   "examples/capabilities/G24/cross_checks.py"
+  ]
+ ],
+ "resolved_overlaps": [
+  {
+   "path": "employees/data/data-analyst/SKILL.md",
+   "reason": "G15 7e7f361 carries only the G13 5666e7b lines (same blob a8726ce); G17 550f184 keeps those lines and adds the CFO cash_revenue_reconcile line from G14. HEAD is the G17 blob 91b5625, a strict superset, so nothing from G15 is lost."
+  }
+ ]
+}
