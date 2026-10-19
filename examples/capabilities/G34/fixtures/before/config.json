@@ -1,0 +1,14 @@
+{
+  "base_url": "https://lantern.example",
+  "conversion": {
+    "/pricing.html": {
+      "goal": "/signup.html"
+    }
+  },
+  "entry_pages": [
+    "/index.html"
+  ],
+  "redirects": {
+    "/start": "/signup.html"
+  }
+}

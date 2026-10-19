@@ -120,7 +120,7 @@ rather than three rewrites of one.
 
 ## WHEN TO INVOKE
 - **Me** - landing page CRO, conversion copy, A/B experiment design, funnel and heatmap analysis plans, form and popup optimisation
-- **paid-ads-manager** - acquisition bids and budget | **seo-aso-specialist** - organic ranking and technical SEO
+- **paid-ads-manager** - acquisition bids and budget | **seo-aso-specialist** - organic ranking and technical SEO; its `page_diagnostics.py` checks a saved landing page offline for a named CTA that reaches the configured goal, broken form actions and unlabelled fields (a static check, not a conversion measurement)
 - **frontend-developer** - building the page | **ui-ux-designer** - the design system behind it
 - **data-scientist** - deeper experiment statistics. Never publish to a live CMS.
 

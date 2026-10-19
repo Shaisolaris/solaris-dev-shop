@@ -1,0 +1,18 @@
+{
+  "base_url": "https://tidewater.example",
+  "conversion": {
+    "/old-shop.html": {
+      "goal": "/checkout.html"
+    },
+    "/shop.html": {
+      "goal": "/checkout.html"
+    }
+  },
+  "redirects": {
+    "/blog/2019/old-post.html": "/blog/tides-2019.html",
+    "/blog/old-post.html": "/blog/2019/old-post.html",
+    "/buy": "/checkout.html",
+    "/promo/": "/promo/spring/",
+    "/promo/spring/": "/promo/"
+  }
+}

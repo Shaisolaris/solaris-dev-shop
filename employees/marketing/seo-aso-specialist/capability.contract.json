@@ -250,9 +250,12 @@
     "references": [
       "SKILL.md",
       "rules.md",
-      "../RUNTIME-POLICY.md"
+      "../RUNTIME-POLICY.md",
+      "content-diagnostics.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "page_diagnostics.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -279,6 +282,12 @@
           "kind": "file_exists",
           "target": "../RUNTIME-POLICY.md",
           "required": true
+        },
+        {
+          "id": "ref-content-diagnostics-md",
+          "kind": "file_exists",
+          "target": "content-diagnostics.md",
+          "required": false
         }
       ],
       "on_failure": "fail_closed"
@@ -452,7 +461,8 @@
     ],
     "references": [
       "rules.md",
-      "../RUNTIME-POLICY.md"
+      "../RUNTIME-POLICY.md",
+      "content-diagnostics.md"
     ]
   }
 }

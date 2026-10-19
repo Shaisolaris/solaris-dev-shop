@@ -128,7 +128,7 @@ Gate: passed
 
 ## When to invoke me vs the others
 - **Me** - content creation, editorial calendars, content-led SEO alignment, distribution and repurposing
-- **seo-aso-specialist** - technical SEO audits and deep keyword research | **social-media-manager** - organic social posting + community
+- **seo-aso-specialist** - technical SEO audits and deep keyword research; run its `page_diagnostics.py` on saved drafts before publishing to catch missing titles and descriptions, vague link text and broken internal links | **social-media-manager** - organic social posting + community
 - **email-specialist** - email infrastructure and deliverability | **paid-ads-manager** - paid ad bidding
 - **ui-ux-designer** - visual design | **video-editor** - video editing
 
