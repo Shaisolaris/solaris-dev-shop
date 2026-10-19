@@ -1,0 +1,52 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Solaris site finder</title><link rel="stylesheet" href="_common.css"></head><body><header><b>Solaris</b> site finder</header><main>
+<label for="q">Search sites</label><input id="q" autocomplete="off" aria-controls="results">
+<div id="status" role="status" aria-live="polite"></div><div id="alert" role="alert"></div>
+<h2 id="rh" tabindex="-1">Results</h2><ul id="results" aria-labelledby="rh"></ul></main>
+<script>
+const STALE = 'text';
+const q = document.getElementById('q'), out = document.getElementById('results'), st = document.getElementById('status'),
+      al = document.getElementById('alert'), rh = document.getElementById('rh');
+const transport = (url, opts) => window.SolarisTransport
+  ? window.SolarisTransport({url, method: (opts && opts.method) || 'GET', body: opts && opts.body})
+  : fetch(url, opts);
+let seq = 0, ctl = null;
+function say(t) { st.textContent = t; }
+function setBusy(b) { out.setAttribute('aria-busy', b ? 'true' : 'false'); }
+function render(items) {
+  const inList = out.contains(document.activeElement);
+  const idx = inList ? Array.from(out.querySelectorAll('button')).indexOf(document.activeElement) : -1;
+  out.replaceChildren(...items.map(x => {
+    const li = document.createElement('li'), sp = document.createElement('span'), b = document.createElement('button');
+    sp.textContent = x.name; b.textContent = 'Save'; b.dataset.id = x.id; b.setAttribute('aria-label', 'Save ' + x.name);
+    li.append(sp, b); return li; }));
+  if (inList) { const bs = out.querySelectorAll('button'); (bs[Math.min(idx, bs.length - 1)] || rh).focus(); }
+}
+q.addEventListener('input', () => {
+  const term = q.value.trim(), my = ++seq;
+  /* textcheck stub: no abort; staleness judged only by comparing query text */
+  al.textContent = '';
+  if (!term) { setBusy(false); render([]); say(''); return; }
+  ctl = null;
+  setBusy(true); say('Loading results...');
+  transport('/api/search?q=' + encodeURIComponent(term), ctl ? {signal: ctl.signal} : undefined)
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(d => {
+      if (STALE === 'seq' ? my !== seq : term !== q.value.trim()) return;
+      setBusy(false); const items = (d && d.results) || [];
+      render(items); say(items.length ? items.length + ' results' : 'No results for ' + term);
+    })
+    .catch(e => {
+      if (e && e.name === 'AbortError') return;
+      if (STALE === 'seq' ? my !== seq : term !== q.value.trim()) return;
+      setBusy(false); say(''); al.textContent = 'Search failed. Edit the search to try again.';
+    });
+});
+out.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b || b.getAttribute('aria-disabled') === 'true') return;
+  b.setAttribute('aria-disabled', 'true'); b.setAttribute('aria-busy', 'true'); al.textContent = ''; say('Saving...');
+  transport('/api/save', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({id: b.dataset.id})})
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); say('Saved ' + b.dataset.id); b.textContent = 'Saved'; })
+    .catch(() => { say(''); al.textContent = 'Save failed. Press Save to try again.'; })
+    .finally(() => { b.removeAttribute('aria-disabled'); b.removeAttribute('aria-busy'); });
+});
+</script></body></html>

@@ -1,0 +1,25 @@
+C01 core        PASS         initial state: input, results container, pre-existing live region, Solaris branding, no errors
+C02 core        PASS         typing issues a request and shows a loading state while it is pending
+C03 core        PASS         success renders the returned items and clears loading
+C04 core        PASS         empty response shows and announces an empty state
+C05 core        PASS         server error: announced, loading cleared, recoverable, error cleared on later success
+C06 core        PASS         out-of-order success: the late response for the older query never replaces the newer one
+C07 core        PASS         out-of-order failure: a late error for the older query does not show an error over fresh results
+C08 core        FAIL         keyboard: Tab reaches the input and a save control, no trap, visible focus indicator
+C09 core        FAIL         failed save via keyboard: error announced, focus kept, item not marked saved, control usable again
+C10 core        FAIL         retry save via keyboard after a failure succeeds and is announced
+C11 core        FAIL         focus recovery: results re-render while focus is on a result control; focus is not dropped
+C12 core        PASS         narrow 360px: no horizontal overflow, input and save controls inside the viewport
+C13 core        PASS         wide 1280px: no horizontal overflow, input and save controls inside the viewport
+A01 adversarial PASS         three overlapping requests resolved 3,1,2: only the newest is ever shown after it lands
+A02 adversarial PASS         same query text twice (so, sol, so): the older 'so' response arriving last is still stale
+A03 adversarial PASS         input cleared while requests are pending: late responses do not repopulate results
+A04 adversarial PASS         malformed JSON on 200: error state, no uncaught exception, not an empty state
+A05 adversarial PASS         markup in a returned label is rendered as text (no injected element or handler)
+A06 adversarial FAIL         slow response (4 s): loading stays indicated, no premature empty or error state
+A07 adversarial PASS         320px reflow (WCAG 1.4.10 width): no horizontal overflow
+A08 adversarial FAIL         double Enter on a pending save sends one request (or the control is disabled while pending)
+A09 adversarial PASS         network failure (fetch rejects) on search: error announced, no uncaught rejection
+core 9/13  adversarial findings ['A06', 'A08']  inconclusive []  external 0  verdict_core FAIL
+perf {'width': 360, 'reps': 10, 'median_ms': 24.6, 'p90_ms': 25.6, 'method': 'oracle wall clock from response release to item text visible in DOM (20 items), polled over CDP; includes CDP overhead; same method for every subject'}
+perf {'width': 1280, 'reps': 10, 'median_ms': 25.3, 'p90_ms': 26.0, 'method': 'oracle wall clock from response release to item text visible in DOM (20 items), polled over CDP; includes CDP overhead; same method for every subject'}

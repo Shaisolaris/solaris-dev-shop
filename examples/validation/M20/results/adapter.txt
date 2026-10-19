@@ -1,0 +1,19 @@
+adapter: replaced 674 chars (fakeFetch only); rest of page identical: True
+removed block sha256 d7b459831903aef2
+86,95c86,90
+<   function fakeFetch(query, o) {  // synthetic backend: substring match with random latency; never touches the network
+<     return new Promise(function (resolve, reject) {
+<       var ms = shuffle.checked ? 40 + Math.floor(Math.random() * 900) : 120;
+<       var t = setTimeout(function () {
+<         if (failNext.checked) { failNext.checked = false; reject(new Error("the fixture backend returned 503")); return; }
+<         var needle = query.toLowerCase();
+<         resolve(data.filter(function (r) { return r.label.toLowerCase().indexOf(needle) !== -1; }));
+<       }, ms);
+<       if (o && o.signal) o.signal.addEventListener("abort", function () { clearTimeout(t); });
+<     });
+---
+>   function fakeFetch(query, o) {  // M20 ADAPTER (Grok, not the candidate): the oracle answers every request
+>     return window.__M20_FETCH({ url: '/api/search?q=' + encodeURIComponent(query) }).then(function (r) {
+>       if (!r.ok) throw new Error('the fixture backend returned ' + r.status);
+>       return r.json();
+>     }).then(function (d) { return d.results; });

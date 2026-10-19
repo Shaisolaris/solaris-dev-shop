@@ -1,0 +1,338 @@
+{
+ "label": "Grok self-validation (M20 prep oracle); not independent review",
+ "subject": "G20 8d45038 demo, fakeFetch body swapped for the oracle transport (Grok adapter)",
+ "browser": "Chrome/155.0.8059.80",
+ "transport_mode": "global",
+ "interaction_proof": [
+  {
+   "id": "C01",
+   "kind": "core",
+   "title": "initial state: input, results container, pre-existing live region, Solaris branding, no errors",
+   "result": "PASS",
+   "secs": 0.23,
+   "detail": {
+    "q": true,
+    "res": true,
+    "items": 0,
+    "title": "Solaris help search (G20 fixture demo)",
+    "live_regions": 3,
+    "solaris_brand": true,
+    "error_text_at_load": false,
+    "js_errors": []
+   }
+  },
+  {
+   "id": "C02",
+   "kind": "core",
+   "title": "typing issues a request and shows a loading state while it is pending",
+   "result": "PASS",
+   "secs": 0.42,
+   "detail": {
+    "query": "sol",
+    "loading_text_or_busy": true,
+    "announced": true
+   }
+  },
+  {
+   "id": "C03",
+   "kind": "core",
+   "title": "success renders the returned items and clears loading",
+   "result": "PASS",
+   "secs": 0.44,
+   "detail": {
+    "shown": [
+     "Heron Flats 41",
+     "Kestrel Yard 7",
+     "Marlin Dock 3"
+    ],
+    "loading_cleared": true
+   }
+  },
+  {
+   "id": "C04",
+   "kind": "core",
+   "title": "empty response shows and announces an empty state",
+   "result": "PASS",
+   "secs": 0.43,
+   "detail": {
+    "empty_visible": true,
+    "announced": true,
+    "js_errors": []
+   }
+  },
+  {
+   "id": "C05",
+   "kind": "core",
+   "title": "server error: announced, loading cleared, recoverable, error cleared on later success",
+   "result": "PASS",
+   "secs": 0.47,
+   "detail": {
+    "announced": true,
+    "loading_cleared": true,
+    "recovery_route": "retry control via keyboard",
+    "recovered_and_error_cleared": true,
+    "js_errors": []
+   }
+  },
+  {
+   "id": "C06",
+   "kind": "core",
+   "title": "out-of-order success: the late response for the older query never replaces the newer one",
+   "result": "PASS",
+   "secs": 1.3,
+   "detail": {
+    "queries": [
+     "so",
+     "sol"
+    ],
+    "newer_shown": true,
+    "final_shown": [
+     "Newer Result Bravo"
+    ],
+    "late_fulfil": null
+   }
+  },
+  {
+   "id": "C07",
+   "kind": "core",
+   "title": "out-of-order failure: a late error for the older query does not show an error over fresh results",
+   "result": "PASS",
+   "secs": 1.3,
+   "detail": {
+    "newer_shown": true,
+    "error_shown_after_late_failure": false
+   }
+  },
+  {
+   "id": "C08",
+   "kind": "core",
+   "title": "keyboard: Tab reaches the input and a save control, no trap, visible focus indicator",
+   "result": "FAIL",
+   "secs": 0.47,
+   "detail": {
+    "reached_query": true,
+    "reached_save": false,
+    "trap": false,
+    "visible_focus_all": true,
+    "tab_sequence": [
+     "INPUT#fail:on",
+     "INPUT#shuffle:on",
+     "INPUT#q:sol",
+     "INPUT#fail:on",
+     "INPUT#shuffle:on",
+     "body/none",
+     "INPUT#q:sol",
+     "INPUT#fail:on",
+     "INPUT#shuffle:on",
+     "INPUT#q:sol",
+     "INPUT#fail:on",
+     "INPUT#shuffle:on"
+    ]
+   }
+  },
+  {
+   "id": "C09",
+   "kind": "core",
+   "title": "failed save via keyboard: error announced, focus kept, item not marked saved, control usable again",
+   "result": "FAIL",
+   "secs": 0.46,
+   "detail": {
+    "save_control": "not reachable by Tab"
+   }
+  },
+  {
+   "id": "C10",
+   "kind": "core",
+   "title": "retry save via keyboard after a failure succeeds and is announced",
+   "result": "FAIL",
+   "secs": 0.44,
+   "detail": {
+    "save_control": "not reachable by Tab"
+   }
+  },
+  {
+   "id": "C11",
+   "kind": "core",
+   "title": "focus recovery: results re-render while focus is on a result control; focus is not dropped",
+   "result": "FAIL",
+   "secs": 0.63,
+   "detail": {
+    "save_control": "not reachable by Tab while request pending"
+   }
+  },
+  {
+   "id": "C12",
+   "kind": "core",
+   "title": "narrow 360px: no horizontal overflow, input and save controls inside the viewport",
+   "result": "PASS",
+   "secs": 0.43,
+   "detail": {
+    "W": 433,
+    "scrollW": 433,
+    "controls": 4,
+    "outside": [],
+    "results_shown": true
+   }
+  },
+  {
+   "id": "C13",
+   "kind": "core",
+   "title": "wide 1280px: no horizontal overflow, input and save controls inside the viewport",
+   "result": "PASS",
+   "secs": 0.45,
+   "detail": {
+    "W": 1280,
+    "scrollW": 1280,
+    "controls": 4,
+    "outside": [],
+    "results_shown": true
+   }
+  },
+  {
+   "id": "A01",
+   "kind": "adversarial",
+   "title": "three overlapping requests resolved 3,1,2: only the newest is ever shown after it lands",
+   "result": "PASS",
+   "secs": 1.59,
+   "detail": {
+    "snapshots": [
+     [
+      "Third Gamma"
+     ],
+     [
+      "Third Gamma"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "A02",
+   "kind": "adversarial",
+   "title": "same query text twice (so, sol, so): the older 'so' response arriving last is still stale",
+   "result": "PASS",
+   "secs": 1.79,
+   "detail": {
+    "final_shown": [
+     "Current So Result"
+    ]
+   }
+  },
+  {
+   "id": "A03",
+   "kind": "adversarial",
+   "title": "input cleared while requests are pending: late responses do not repopulate results",
+   "result": "PASS",
+   "secs": 1.72,
+   "detail": {
+    "shown": [
+     ""
+    ],
+    "loading_stuck": false,
+    "value": ""
+   }
+  },
+  {
+   "id": "A04",
+   "kind": "adversarial",
+   "title": "malformed JSON on 200: error state, no uncaught exception, not an empty state",
+   "result": "PASS",
+   "secs": 0.42,
+   "detail": {
+    "error_shown": true,
+    "claims_empty": false,
+    "js_errors": []
+   }
+  },
+  {
+   "id": "A05",
+   "kind": "adversarial",
+   "title": "markup in a returned label is rendered as text (no injected element or handler)",
+   "result": "PASS",
+   "secs": 1.21,
+   "detail": {
+    "xss": false,
+    "img": 0
+   }
+  },
+  {
+   "id": "A06",
+   "kind": "adversarial",
+   "title": "slow response (4 s): loading stays indicated, no premature empty or error state",
+   "result": "FAIL",
+   "secs": 4.39,
+   "detail": {
+    "loading_at_4s": false,
+    "premature_empty_or_error": true
+   }
+  },
+  {
+   "id": "A07",
+   "kind": "adversarial",
+   "title": "320px reflow (WCAG 1.4.10 width): no horizontal overflow",
+   "result": "PASS",
+   "secs": 0.44,
+   "detail": {
+    "W": 434,
+    "scrollW": 434,
+    "controls": 4,
+    "outside": [],
+    "results_shown": true
+   }
+  },
+  {
+   "id": "A08",
+   "kind": "adversarial",
+   "title": "double Enter on a pending save sends one request (or the control is disabled while pending)",
+   "result": "FAIL",
+   "secs": 0.45,
+   "detail": {
+    "save_control": "not reachable"
+   }
+  },
+  {
+   "id": "A09",
+   "kind": "adversarial",
+   "title": "network failure (fetch rejects) on search: error announced, no uncaught rejection",
+   "result": "PASS",
+   "secs": 0.41,
+   "detail": {
+    "announced": true,
+    "js_errors": []
+   }
+  }
+ ],
+ "core_pass": 9,
+ "core_total": 13,
+ "adversarial_findings": [
+  "A06",
+  "A08"
+ ],
+ "inconclusive": [],
+ "external_requests_blocked": [],
+ "performance": [
+  {
+   "width": 360,
+   "reps": 1,
+   "median_ms": 25.4,
+   "p90_ms": 25.4,
+   "method": "oracle wall clock from response release to item text visible in DOM (20 items), polled over CDP; includes CDP overhead; same method for every subject"
+  },
+  {
+   "width": 1280,
+   "reps": 1,
+   "median_ms": 25.4,
+   "p90_ms": 25.4,
+   "method": "oracle wall clock from response release to item text visible in DOM (20 items), polled over CDP; includes CDP overhead; same method for every subject"
+  }
+ ],
+ "screenshot_evidence": {
+  "files": [
+   "screenshot-360.png",
+   "screenshot-1280.png",
+   "screenshot-320.png"
+  ],
+  "note": "screenshots are visual evidence only; they prove nothing about interaction and no visual QA claim is made from them"
+ },
+ "secs": 21.1,
+ "verdict_core": "FAIL"
+}

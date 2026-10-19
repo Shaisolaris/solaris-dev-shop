@@ -1,0 +1,289 @@
+{
+ "label": "Grok self-validation (M20 prep oracle); not independent review",
+ "subject": "G20 8d45038 demo, fakeFetch body swapped for the oracle transport (Grok adapter)",
+ "browser": "Chrome/155.0.8059.80",
+ "transport_mode": "global",
+ "interaction_proof": [
+  {
+   "id": "C01",
+   "kind": "core",
+   "title": "initial state: input, results container, pre-existing live region, Solaris branding, no errors",
+   "result": "PASS",
+   "secs": 0.23,
+   "detail": {
+    "q": true,
+    "res": true,
+    "items": 0,
+    "title": "Solaris help search (G20 fixture demo)",
+    "live_regions": 3,
+    "solaris_brand": true,
+    "error_text_at_load": false,
+    "js_errors": []
+   }
+  },
+  {
+   "id": "C02",
+   "kind": "core",
+   "title": "typing issues a request and shows a loading state while it is pending",
+   "result": "FAIL",
+   "secs": 3.22,
+   "detail": {
+    "request": null
+   }
+  },
+  {
+   "id": "C03",
+   "kind": "core",
+   "title": "success renders the returned items and clears loading",
+   "result": "FAIL",
+   "secs": 3.26,
+   "detail": {
+    "shown": [
+     ""
+    ],
+    "loading_cleared": true
+   }
+  },
+  {
+   "id": "C04",
+   "kind": "core",
+   "title": "empty response shows and announces an empty state",
+   "result": "FAIL",
+   "secs": 3.25,
+   "detail": {
+    "request": null
+   }
+  },
+  {
+   "id": "C05",
+   "kind": "core",
+   "title": "server error: announced, loading cleared, recoverable, error cleared on later success",
+   "result": "FAIL",
+   "secs": 3.27,
+   "detail": {
+    "request": null
+   }
+  },
+  {
+   "id": "C06",
+   "kind": "core",
+   "title": "out-of-order success: the late response for the older query never replaces the newer one",
+   "result": "FAIL",
+   "secs": 3.24,
+   "detail": {
+    "requests": "fewer than 2 (cannot exercise; debounce or no requests)"
+   }
+  },
+  {
+   "id": "C07",
+   "kind": "core",
+   "title": "out-of-order failure: a late error for the older query does not show an error over fresh results",
+   "result": "FAIL",
+   "secs": 3.25,
+   "detail": {
+    "requests": "fewer than 2"
+   }
+  },
+  {
+   "id": "C08",
+   "kind": "core",
+   "title": "keyboard: Tab reaches the input and a save control, no trap, visible focus indicator",
+   "result": "FAIL",
+   "secs": 3.25,
+   "detail": {
+    "results": "not shown"
+   }
+  },
+  {
+   "id": "C09",
+   "kind": "core",
+   "title": "failed save via keyboard: error announced, focus kept, item not marked saved, control usable again",
+   "result": "FAIL",
+   "secs": 3.25,
+   "detail": {
+    "save_control": "not reachable by Tab"
+   }
+  },
+  {
+   "id": "C10",
+   "kind": "core",
+   "title": "retry save via keyboard after a failure succeeds and is announced",
+   "result": "FAIL",
+   "secs": 3.23,
+   "detail": {
+    "save_control": "not reachable by Tab"
+   }
+  },
+  {
+   "id": "C11",
+   "kind": "core",
+   "title": "focus recovery: results re-render while focus is on a result control; focus is not dropped",
+   "result": "FAIL",
+   "secs": 3.25,
+   "detail": {
+    "results": "not shown"
+   }
+  },
+  {
+   "id": "C12",
+   "kind": "core",
+   "title": "narrow 360px: no horizontal overflow, input and save controls inside the viewport",
+   "result": "FAIL",
+   "secs": 3.28,
+   "detail": {
+    "W": 360,
+    "scrollW": 360,
+    "controls": 1,
+    "outside": [],
+    "results_shown": false
+   }
+  },
+  {
+   "id": "C13",
+   "kind": "core",
+   "title": "wide 1280px: no horizontal overflow, input and save controls inside the viewport",
+   "result": "FAIL",
+   "secs": 3.28,
+   "detail": {
+    "W": 1280,
+    "scrollW": 1280,
+    "controls": 1,
+    "outside": [],
+    "results_shown": false
+   }
+  },
+  {
+   "id": "A01",
+   "kind": "adversarial",
+   "title": "three overlapping requests resolved 3,1,2: only the newest is ever shown after it lands",
+   "result": "INCONCLUSIVE",
+   "secs": 9.28,
+   "detail": {
+    "requests": 0,
+    "note": "cannot exercise: page coalesced requests"
+   }
+  },
+  {
+   "id": "A02",
+   "kind": "adversarial",
+   "title": "same query text twice (so, sol, so): the older 'so' response arriving last is still stale",
+   "result": "INCONCLUSIVE",
+   "secs": 9.3,
+   "detail": {
+    "requests": [
+     0,
+     0,
+     0
+    ],
+    "note": "cannot exercise (cache or coalescing); inspect manually"
+   }
+  },
+  {
+   "id": "A03",
+   "kind": "adversarial",
+   "title": "input cleared while requests are pending: late responses do not repopulate results",
+   "result": "PASS",
+   "secs": 4.53,
+   "detail": {
+    "shown": [
+     ""
+    ],
+    "loading_stuck": false,
+    "value": ""
+   }
+  },
+  {
+   "id": "A04",
+   "kind": "adversarial",
+   "title": "malformed JSON on 200: error state, no uncaught exception, not an empty state",
+   "result": "FAIL",
+   "secs": 3.23,
+   "detail": {
+    "request": null
+   }
+  },
+  {
+   "id": "A05",
+   "kind": "adversarial",
+   "title": "markup in a returned label is rendered as text (no injected element or handler)",
+   "result": "FAIL",
+   "secs": 3.25,
+   "detail": {
+    "request": null
+   }
+  },
+  {
+   "id": "A06",
+   "kind": "adversarial",
+   "title": "slow response (4 s): loading stays indicated, no premature empty or error state",
+   "result": "FAIL",
+   "secs": 3.24,
+   "detail": {
+    "request": null
+   }
+  },
+  {
+   "id": "A07",
+   "kind": "adversarial",
+   "title": "320px reflow (WCAG 1.4.10 width): no horizontal overflow",
+   "result": "FAIL",
+   "secs": 3.26,
+   "detail": {
+    "W": 320,
+    "scrollW": 320,
+    "controls": 1,
+    "outside": [],
+    "results_shown": false
+   }
+  },
+  {
+   "id": "A08",
+   "kind": "adversarial",
+   "title": "double Enter on a pending save sends one request (or the control is disabled while pending)",
+   "result": "FAIL",
+   "secs": 3.23,
+   "detail": {
+    "save_control": "not reachable"
+   }
+  },
+  {
+   "id": "A09",
+   "kind": "adversarial",
+   "title": "network failure (fetch rejects) on search: error announced, no uncaught rejection",
+   "result": "FAIL",
+   "secs": 3.22,
+   "detail": {
+    "request": null
+   }
+  }
+ ],
+ "core_pass": 1,
+ "core_total": 13,
+ "adversarial_findings": [
+  "A04",
+  "A05",
+  "A06",
+  "A07",
+  "A08",
+  "A09"
+ ],
+ "inconclusive": [
+  "A01",
+  "A02"
+ ],
+ "external_requests_blocked": [],
+ "performance": [
+  null,
+  null
+ ],
+ "screenshot_evidence": {
+  "files": [
+   "screenshot-360.png",
+   "screenshot-1280.png",
+   "screenshot-320.png"
+  ],
+  "note": "screenshots are visual evidence only; they prove nothing about interaction and no visual QA claim is made from them"
+ },
+ "secs": 88.5,
+ "verdict_core": "FAIL"
+}

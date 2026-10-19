@@ -1,0 +1,20 @@
+{
+ "cand": {
+  "after_4_arrowdown_on_3": [
+   "One A"
+  ],
+  "aria_busy_while_pending": "true"
+ },
+ "wrap_off": {
+  "after_4_arrowdown_on_3": [
+   "Three C"
+  ],
+  "aria_busy_while_pending": "true"
+ },
+ "aria_busy_off": {
+  "after_4_arrowdown_on_3": [
+   "One A"
+  ],
+  "aria_busy_while_pending": "false"
+ }
+}

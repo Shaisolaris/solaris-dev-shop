@@ -1,0 +1,16 @@
+K01 PASS {"tabs": 1, "focus": "q", "fv": true, "outline": "solid 3px"}
+K02 PASS {"focus": "q", "value": "sol", "expanded": "true", "ad": "opt-id-Heron Flats 41", "ad_exists": true, "selected": ["Heron Flats 41"], "listHidden": false, "chosen": "", "fv": true, "outline": "solid 3px"}
+K03 PASS {"up_from_first": ["Marlin Dock 3"], "up_again": ["Kestrel Yard 7"], "home": ["Heron Flats 41"], "end": ["Marlin Dock 3"]}
+K04 PASS {"focus": "q", "value": "Marlin Dock 3", "expanded": "false", "ad": null, "ad_exists": null, "selected": [], "listHidden": true, "chosen": "Chosen: Marlin Dock 3", "fv": true, "outline": "solid 3px"}
+K05 PASS {"first_escape": {"focus": "q", "value": "sol", "expanded": "false", "ad": null, "ad_exists": null, "selected": [], "listHidden": true, "chosen": "", "fv": true, "outline": "solid 3px"}, "second_escape": {"focus": "q", "value": "", "expanded": "false", "ad": n
+K06 PASS {"focus": "fail", "value": "sol", "expanded": "false", "ad": null, "ad_exists": null, "selected": [], "listHidden": true, "chosen": "", "fv": false, "outline": "none 3px"}
+K07 PASS {"before": {"focus": "q", "value": "so", "expanded": "true", "ad": "opt-id-Heron Flats 41", "ad_exists": true, "selected": ["Heron Flats 41"], "listHidden": false, "chosen": "", "fv": true, "outline": "solid 3px"}, "while_pending": {"focus": "q", "value": "sol
+K08 PASS {"before_late": {"focus": "q", "value": "sol", "expanded": "true", "ad": "opt-id-Kestrel Yard 7", "ad_exists": true, "selected": ["Kestrel Yard 7"], "listHidden": false, "chosen": "", "fv": true, "outline": "solid 3px"}, "after_late": {"focus": "q", "value": "
+K09 PASS {"tabs_to_retry": 1, "retry_request": true, "focus_after_retry": "q", "recovered": true}
+K10 PASS {"focus": "q", "value": "", "expanded": "false", "ad": null, "ad_exists": null, "selected": [], "listHidden": true, "chosen": "", "fv": true, "outline": "solid 3px", "js_errors": []}
+S01 PASS {"options": 10, "first": ["Troubleshooting invoices by email", "Understanding invoices", "Understanding invoices by email"]}
+S02 PASS {"focus": "q", "value": "Troubleshooting invoices by email", "expanded": "false", "ad": null, "ad_exists": null, "selected": [], "listHidden": true, "chosen": "Chosen: Troubleshooting invoices by email", "fv": true, "outline": "solid 3px"}
+S03 PASS {"fail_switch_tabs": 2, "checked_by_space": true, "alert_shown": true, "retry_tabs": 1, "recovered": true, "status": "12 results. Use up and down arrows to review."}
+S04 PASS {"final_rows": 13, "sample": ["Troubleshooting card payments", "Changing card payments", "FAQ: card payments"], "note": "random latency; one run, not a proof"}
+S05 PASS {"js_errors": [], "external_requests": []}
+COMBOBOX 15/15 FAILS []

@@ -1,0 +1,16 @@
+K01 PASS {"tabs": 1, "focus": "q", "fv": true, "outline": "solid 3px"}
+K02 FAIL {"focus": "q", "value": "sol", "expanded": "false", "ad": null, "ad_exists": null, "selected": [], "listHidden": true, "chosen": "", "fv": true, "outline": "solid 3px"}
+K03 FAIL {"up_from_first": [], "up_again": [], "home": [], "end": []}
+K04 FAIL {"focus": "q", "value": "sol", "expanded": "false", "ad": null, "ad_exists": null, "selected": [], "listHidden": true, "chosen": "", "fv": true, "outline": "solid 3px"}
+K05 FAIL {"first_escape": {"focus": "q", "value": "sol", "expanded": "false", "ad": null, "ad_exists": null, "selected": [], "listHidden": true, "chosen": "", "fv": true, "outline": "solid 3px"}, "second_escape": {"focus": "q", "value": "sol", "expanded": "false", "ad"
+K06 FAIL {"focus": "fail", "value": "sol", "expanded": "false", "ad": null, "ad_exists": null, "selected": [], "listHidden": true, "chosen": "", "fv": false, "outline": "none 3px"}
+K07 FAIL {"before": {"focus": "q", "value": "so", "expanded": "false", "ad": null, "ad_exists": null, "selected": [], "listHidden": true, "chosen": "", "fv": true, "outline": "solid 3px"}, "while_pending": {"focus": "q", "value": "sol", "expanded": "false", "ad": null,
+K08 FAIL {"requests": "fewer than 2"}
+K09 FAIL {"tabs_to_retry": null, "retry_request": false, "focus_after_retry": "shuffle", "recovered": false}
+K10 PASS {"focus": "q", "value": "", "expanded": "false", "ad": null, "ad_exists": null, "selected": [], "listHidden": true, "chosen": "", "fv": true, "outline": "solid 3px", "js_errors": []}
+S01 FAIL {"options": 0, "first": [""]}
+S02 FAIL {"focus": "q", "value": "invoice", "expanded": "false", "ad": null, "ad_exists": null, "selected": [], "listHidden": true, "chosen": "", "fv": true, "outline": "solid 3px"}
+S03 FAIL {"fail_switch_tabs": 2, "checked_by_space": true, "alert_shown": false, "retry_tabs": null, "recovered": false, "status": ""}
+S04 FAIL {"final_rows": 0, "sample": [], "note": "random latency; one run, not a proof"}
+S05 PASS {"js_errors": [], "external_requests": []}
+COMBOBOX 3/15 FAILS ['K02', 'K03', 'K04', 'K05', 'K06', 'K07', 'K08', 'K09', 'S01', 'S02', 'S03', 'S04']

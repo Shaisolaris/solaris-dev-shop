@@ -1,0 +1,7 @@
+:root { --sol-ink:#14213d; --sol-sun:#fca311; --sol-bg:#f7f7f2; }
+body { font: 16px/1.4 system-ui, sans-serif; margin: 0; background: var(--sol-bg); color: var(--sol-ink); }
+header { background: var(--sol-ink); color: #fff; padding: 12px 16px; } header b { color: var(--sol-sun); }
+main { padding: 16px; max-width: 760px; }
+label { display: block; font-weight: 600; } input { font: inherit; padding: 6px; width: 100%; box-sizing: border-box; }
+ul { list-style: none; padding: 0; } li { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid #ddd; }
+li span { flex: 1 1 12rem; overflow-wrap: anywhere; } button { font: inherit; }

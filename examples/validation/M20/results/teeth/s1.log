@@ -1,0 +1,5 @@
+{"mutant": "supersede_no_bump_EQUIV?", "file": "core", "anchors": [1], "oracle_kills": [], "combobox_kills": []}
+{"mutant": "onresults_keeps_active", "file": "core", "anchors": [1], "oracle_kills": [], "combobox_kills": []}
+{"mutant": "live_region_off", "file": "page", "anchors": [1, 1], "oracle_kills": ["C04"], "combobox_kills": []}
+{"mutant": "aria_busy_off", "file": "page", "anchors": [1, 1], "oracle_kills": [], "combobox_kills": []}
+DONE

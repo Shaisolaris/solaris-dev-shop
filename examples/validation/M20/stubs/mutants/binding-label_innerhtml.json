@@ -1,0 +1,30 @@
+{
+ "name": "mutant:label_innerhtml (of Grok reference)",
+ "page": {
+  "serve_dir": "..",
+  "path": "mutants/label_innerhtml.html"
+ },
+ "transport": {
+  "mode": "network",
+  "search_url_regex": "/api/search\\?",
+  "save_url_regex": "/api/save",
+  "query_from": "param:q"
+ },
+ "search_response": {
+  "items_key": "results",
+  "item_template": {
+   "id": "{id}",
+   "name": "{label}"
+  }
+ },
+ "save_response": {
+  "ok": true
+ },
+ "selectors": {
+  "query": "#q",
+  "results": "#results",
+  "item": "#results li",
+  "save": "#results li button",
+  "status": "#status"
+ }
+}

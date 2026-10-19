@@ -1,0 +1,106 @@
+python3 = 3.9.6; env vars: 8
+# G20 README "Commands" block, transcribed by hand before the run (Grok self-validation)
+    # expect: 17/17 checks passed, exit 0
+$ python3 examples/capabilities/G20/ui_oracle.py
+PASS o1
+PASS o2
+PASS o3
+PASS o4
+PASS o5
+PASS o6
+PASS o7
+PASS o8
+PASS o9
+PASS o10
+PASS o11
+PASS s1
+PASS s2
+PASS s3
+PASS s4
+PASS s5
+PASS s6
+scale: {"worlds": 150, "stale_shown": 0, "worlds_ms": 2, "keys": 20000, "options": 10000, "keys_ms": 1}
+17/17 checks passed
+not run: browser rendering, real keyboard focus, the CSS media query at 40rem, colour contrast as rendered, and screen-reader output. Only the DOM-free core (in JavaScriptCore) and the demo source text were checked.
+[exit 0]
+    # expect: exit 1 (naive core rejected)
+$ python3 examples/capabilities/G20/ui_oracle.py --core examples/capabilities/G20/naive_core.js
+FAIL o1 ["requested before the debounce elapsed","announcements [\"loading\",\"3 results\"]"]
+FAIL o2 ["an older response replaced the newer one: [{\"id\":\"ca0\",\"label\":\"ca #0\"}]","results for 'ca' were shown after 'cat' was requested","results for 'ref' shown although the input already says 'refund'"]
+FAIL o3 ["typing 7 characters 60 ms apart made requests [\"b\",\"ba\",\"bac\",\"back\",\"backu\",\"backup\",\"backups\"]","trailing space (same trimmed query, still pending) made another request"]
+FAIL o4 ["empty announcement \"empty\""]
+FAIL o5 ["no timeout error: loading","a response after its timeout changed the state to results"]
+FAIL o6 ["a response after clear was shown","clear announcement \"3 results\"","clear during the debounce still sent a request"]
+FAIL o7 ["a non-list response gave empty","expected 5 clean rows (cap 5), got 0"]
+FAIL o8 ["ArrowDown should wrap to the first option, got 4","ArrowUp from the first option should wrap to the last, got 3","Home","End"]
+FAIL o9 ["singular: 1 results","the same results were announced twice","loading announced twice","initial idle should be silent"]
+FAIL o10 ["640 -> {\"mode\":\"narrow\",\"columns\":1,\"minTargetPx\":32}","NaN -> {\"mode\":\"wide\",\"columns\":2,\"minTargetPx\":32}","narrow touch targets under 44 px"]
+FAIL o11 ["world 0 step 7: showing {\"id\":\"tea0\",\"label\":\"tea #0\"} for input \"ref\"","world 0 step 15: showing {\"id\":\"teams0\",\"label\":\"teams #0\"} for input \"inv\"","world 0 step 16: showing {\"id\":\"teams0\",\"label\":\"teams #0\"} for input \"inv\""]
+scale: {"worlds": 150, "stale_shown": 447, "worlds_ms": 2, "keys": 20000, "options": 10000, "keys_ms": 1}
+0/11 checks passed
+not run: browser rendering, real keyboard focus, the CSS media query at 40rem, colour contrast as rendered, and screen-reader output. Only the DOM-free core (in JavaScriptCore) and the demo source text were checked.
+[exit 1]
+    # expect: unseen sessions, larger run, exit 0
+$ python3 examples/capabilities/G20/ui_oracle.py --seed 2026 --scale 10
+PASS o1
+PASS o2
+PASS o3
+PASS o4
+PASS o5
+PASS o6
+PASS o7
+PASS o8
+PASS o9
+PASS o10
+PASS o11
+PASS s1
+PASS s2
+PASS s3
+PASS s4
+PASS s5
+PASS s6
+scale: {"worlds": 1500, "stale_shown": 0, "worlds_ms": 7, "keys": 20000, "options": 100000, "keys_ms": 1}
+17/17 checks passed
+not run: browser rendering, real keyboard focus, the CSS media query at 40rem, colour contrast as rendered, and screen-reader output. Only the DOM-free core (in JavaScriptCore) and the demo source text were checked.
+[exit 0]
+    # expect: tests OK
+$ python3 -m unittest tests.test_g20_capability
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.343s
+
+OK
+[exit 0]
+    # expect: exit 2 for an invalid argument (README exit codes)
+$ python3 examples/capabilities/G20/ui_oracle.py --scale banana
+usage: ui_oracle.py [-h] [--core CORE] [--jsc JSC] [--seed SEED]
+                    [--scale SCALE] [--json]
+ui_oracle.py: error: argument --scale: invalid int value: 'banana'
+[exit 2]
+    # expect: exit 2 when no JavaScript shell (G20_JSC pointing at a missing binary)
+$ G20_JSC=/nonexistent/jsc python3 examples/capabilities/G20/ui_oracle.py
+PASS o1
+PASS o2
+PASS o3
+PASS o4
+PASS o5
+PASS o6
+PASS o7
+PASS o8
+PASS o9
+PASS o10
+PASS o11
+PASS s1
+PASS s2
+PASS s3
+PASS s4
+PASS s5
+PASS s6
+scale: {"worlds": 150, "stale_shown": 0, "worlds_ms": 2, "keys": 20000, "options": 10000, "keys_ms": 1}
+17/17 checks passed
+not run: browser rendering, real keyboard focus, the CSS media query at 40rem, colour contrast as rendered, and screen-reader output. Only the DOM-free core (in JavaScriptCore) and the demo source text were checked.
+[exit 0]
+    # expect: offline guard refuses a non-loopback connect
+$ python3 -c "import socket; s=socket.socket(); s.connect(('93.184.215.14', 80))" 2>&1 | tail -1
+OSError: offline guard: non-loopback connect refused: ('93.184.215.14', 80)
+[exit 0]

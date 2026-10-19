@@ -1,0 +1,47 @@
+[
+ {
+  "mutant": "wrap_off",
+  "file": "core",
+  "anchors": [
+   1
+  ],
+  "oracle_kills": [],
+  "combobox_kills": []
+ },
+ {
+  "mutant": "timeout_off",
+  "file": "core",
+  "anchors": [
+   1
+  ],
+  "oracle_kills": [
+   "A06"
+  ],
+  "combobox_kills": []
+ },
+ {
+  "mutant": "activedescendant_off",
+  "file": "page",
+  "anchors": [
+   1,
+   1
+  ],
+  "oracle_kills": [],
+  "combobox_kills": [
+   "K02",
+   "K08"
+  ]
+ },
+ {
+  "mutant": "focus_outline_off",
+  "file": "page",
+  "anchors": [
+   1,
+   1
+  ],
+  "oracle_kills": [],
+  "combobox_kills": [
+   "K01"
+  ]
+ }
+]

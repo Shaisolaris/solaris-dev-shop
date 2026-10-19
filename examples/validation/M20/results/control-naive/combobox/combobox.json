@@ -1,0 +1,234 @@
+{
+ "label": "Grok self-validation; not independent review",
+ "checks": [
+  {
+   "id": "K01",
+   "result": "PASS",
+   "detail": {
+    "tabs": 1,
+    "focus": "q",
+    "fv": true,
+    "outline": "solid 3px"
+   }
+  },
+  {
+   "id": "K02",
+   "result": "FAIL",
+   "detail": {
+    "focus": "q",
+    "value": "",
+    "expanded": "false",
+    "ad": null,
+    "ad_exists": null,
+    "selected": [],
+    "listHidden": true,
+    "chosen": "",
+    "fv": true,
+    "outline": "solid 3px"
+   }
+  },
+  {
+   "id": "K03",
+   "result": "FAIL",
+   "detail": {
+    "up_from_first": [],
+    "up_again": [],
+    "home": [],
+    "end": []
+   }
+  },
+  {
+   "id": "K04",
+   "result": "FAIL",
+   "detail": {
+    "focus": "q",
+    "value": "",
+    "expanded": "false",
+    "ad": null,
+    "ad_exists": null,
+    "selected": [],
+    "listHidden": true,
+    "chosen": "",
+    "fv": true,
+    "outline": "solid 3px"
+   }
+  },
+  {
+   "id": "K05",
+   "result": "FAIL",
+   "detail": {
+    "first_escape": {
+     "focus": "q",
+     "value": "",
+     "expanded": "false",
+     "ad": null,
+     "ad_exists": null,
+     "selected": [],
+     "listHidden": true,
+     "chosen": "",
+     "fv": true,
+     "outline": "solid 3px"
+    },
+    "second_escape": {
+     "focus": "q",
+     "value": "",
+     "expanded": "false",
+     "ad": null,
+     "ad_exists": null,
+     "selected": [],
+     "listHidden": true,
+     "chosen": "",
+     "fv": true,
+     "outline": "solid 3px"
+    }
+   }
+  },
+  {
+   "id": "K06",
+   "result": "FAIL",
+   "detail": {
+    "focus": "q",
+    "value": "",
+    "expanded": "false",
+    "ad": null,
+    "ad_exists": null,
+    "selected": [],
+    "listHidden": true,
+    "chosen": "",
+    "fv": true,
+    "outline": "solid 3px"
+   }
+  },
+  {
+   "id": "K07",
+   "result": "FAIL",
+   "detail": {
+    "before": {
+     "focus": "q",
+     "value": "",
+     "expanded": "false",
+     "ad": null,
+     "ad_exists": null,
+     "selected": [],
+     "listHidden": true,
+     "chosen": "",
+     "fv": true,
+     "outline": "solid 3px"
+    },
+    "while_pending": {
+     "focus": "q",
+     "value": "",
+     "expanded": "false",
+     "ad": null,
+     "ad_exists": null,
+     "selected": [],
+     "listHidden": true,
+     "chosen": "",
+     "fv": true,
+     "outline": "solid 3px"
+    },
+    "after_rerender": {
+     "focus": "q",
+     "value": "",
+     "expanded": "false",
+     "ad": null,
+     "ad_exists": null,
+     "selected": [],
+     "listHidden": true,
+     "chosen": "",
+     "fv": true,
+     "outline": "solid 3px"
+    }
+   }
+  },
+  {
+   "id": "K08",
+   "result": "FAIL",
+   "detail": {
+    "requests": "fewer than 2"
+   }
+  },
+  {
+   "id": "K09",
+   "result": "FAIL",
+   "detail": {
+    "tabs_to_retry": null,
+    "retry_request": false,
+    "focus_after_retry": "q",
+    "recovered": false
+   }
+  },
+  {
+   "id": "K10",
+   "result": "PASS",
+   "detail": {
+    "focus": "q",
+    "value": "",
+    "expanded": "false",
+    "ad": null,
+    "ad_exists": null,
+    "selected": [],
+    "listHidden": true,
+    "chosen": "",
+    "fv": true,
+    "outline": "solid 3px",
+    "js_errors": []
+   }
+  },
+  {
+   "id": "S01",
+   "result": "FAIL",
+   "detail": {
+    "options": 0,
+    "first": [
+     ""
+    ]
+   }
+  },
+  {
+   "id": "S02",
+   "result": "PASS",
+   "detail": {
+    "focus": "q",
+    "value": "",
+    "expanded": "false",
+    "ad": null,
+    "ad_exists": null,
+    "selected": [],
+    "listHidden": true,
+    "chosen": "",
+    "fv": true,
+    "outline": "solid 3px"
+   }
+  },
+  {
+   "id": "S03",
+   "result": "FAIL",
+   "detail": {
+    "fail_switch_tabs": null,
+    "checked_by_space": false,
+    "alert_shown": false,
+    "retry_tabs": null,
+    "recovered": false,
+    "status": ""
+   }
+  },
+  {
+   "id": "S04",
+   "result": "FAIL",
+   "detail": {
+    "final_rows": 0,
+    "sample": [],
+    "note": "random latency; one run, not a proof"
+   }
+  },
+  {
+   "id": "S05",
+   "result": "PASS",
+   "detail": {
+    "js_errors": [],
+    "external_requests": []
+   }
+  }
+ ]
+}

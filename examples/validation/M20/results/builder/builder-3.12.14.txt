@@ -1,0 +1,50 @@
+=== 3.12.14 23:50:43 PDT
+$ python3 examples/capabilities/G20/ui_oracle.py
+PASS s2
+PASS s3
+PASS s4
+PASS s5
+PASS s6
+scale: {"worlds": 150, "stale_shown": 0, "worlds_ms": 2, "keys": 20000, "options": 10000, "keys_ms": 1}
+17/17 checks passed
+not run: browser rendering, real keyboard focus, the CSS media query at 40rem, colour contrast as rendered, and screen-reader output. Only the DOM-free core (in JavaScriptCore) and the demo source text were checked.
+[exit 0]
+$ python3 examples/capabilities/G20/ui_oracle.py --core examples/capabilities/G20/naive_core.js
+FAIL o7 ["a non-list response gave empty","expected 5 clean rows (cap 5), got 0"]
+FAIL o8 ["ArrowDown should wrap to the first option, got 4","ArrowUp from the first option should wrap to the last, got 3","Home","End"]
+FAIL o9 ["singular: 1 results","the same results were announced twice","loading announced twice","initial idle should be silent"]
+FAIL o10 ["640 -> {\"mode\":\"narrow\",\"columns\":1,\"minTargetPx\":32}","NaN -> {\"mode\":\"wide\",\"columns\":2,\"minTargetPx\":32}","narrow touch targets under 44 px"]
+FAIL o11 ["world 0 step 7: showing {\"id\":\"tea0\",\"label\":\"tea #0\"} for input \"ref\"","world 0 step 15: showing {\"id\":\"teams0\",\"label\":\"teams #0\"} for input \"inv\"","world 0 step 16: showing {\"id\":\"teams0\",\"label\":\"teams #0\"} for input \"inv\""]
+scale: {"worlds": 150, "stale_shown": 447, "worlds_ms": 2, "keys": 20000, "options": 10000, "keys_ms": 1}
+0/11 checks passed
+not run: browser rendering, real keyboard focus, the CSS media query at 40rem, colour contrast as rendered, and screen-reader output. Only the DOM-free core (in JavaScriptCore) and the demo source text were checked.
+[exit 1]
+$ python3 examples/capabilities/G20/ui_oracle.py --core examples/capabilities/G20/noop_core.js
+FAIL o7 ["exception: undefined is not an object (evaluating 'w.calls[0].ok')"]
+FAIL o8 ["closed ArrowDown should open on the first option","ArrowDown should wrap to the first option, got -1","ArrowUp from the first option should wrap to the last, got -1","Home"]
+FAIL o9 ["exception: null is not an object (evaluating 'N(null, res(1)).indexOf')"]
+FAIL o10 ["320 -> {\"mode\":\"wide\",\"columns\":2,\"minTargetPx\":32}","639 -> {\"mode\":\"wide\",\"columns\":2,\"minTargetPx\":32}","NaN -> {\"mode\":\"wide\",\"columns\":2,\"minTargetPx\":32}","-5 -> {\"mode\":\"wide\",\"columns\":2,\"minTargetPx\":32}"]
+FAIL o11 ["world 0 final: idle for \"teams\"","world 1 final: idle for \"invoice\"","world 2 final: idle for \"tea\""]
+scale: {"worlds": 150, "stale_shown": 132, "worlds_ms": 1, "keys": 20000, "options": 10000, "keys_ms": 0}
+0/11 checks passed
+not run: browser rendering, real keyboard focus, the CSS media query at 40rem, colour contrast as rendered, and screen-reader output. Only the DOM-free core (in JavaScriptCore) and the demo source text were checked.
+[exit 1]
+$ python3 examples/capabilities/G20/ui_oracle.py --seed 2026 --scale 10
+PASS s2
+PASS s3
+PASS s4
+PASS s5
+PASS s6
+scale: {"worlds": 1500, "stale_shown": 0, "worlds_ms": 7, "keys": 20000, "options": 100000, "keys_ms": 1}
+17/17 checks passed
+not run: browser rendering, real keyboard focus, the CSS media query at 40rem, colour contrast as rendered, and screen-reader output. Only the DOM-free core (in JavaScriptCore) and the demo source text were checked.
+[exit 0]
+$ unittest tests.test_g20_capability
+----------------------------------------------------------------------
+Ran 8 tests in 0.305s
+
+OK
+$ unittest discover (full suite)
+[output of my invalid discover form removed (ImportError: Start directory is not importable; a traceback with local interpreter paths). Corrected run appended below.]
+files changed by the run: 0 (newer than README.md)
+3.12.14 full suite (discover -s tests -p test*.py, corrected command): Ran 92 tests in 1.658s OK  skipped 0

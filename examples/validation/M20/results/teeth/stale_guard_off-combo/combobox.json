@@ -1,0 +1,277 @@
+{
+ "label": "Grok self-validation; not independent review",
+ "checks": [
+  {
+   "id": "K01",
+   "result": "PASS",
+   "detail": {
+    "tabs": 1,
+    "focus": "q",
+    "fv": true,
+    "outline": "solid 3px"
+   }
+  },
+  {
+   "id": "K02",
+   "result": "PASS",
+   "detail": {
+    "focus": "q",
+    "value": "sol",
+    "expanded": "true",
+    "ad": "opt-id-Heron Flats 41",
+    "ad_exists": true,
+    "selected": [
+     "Heron Flats 41"
+    ],
+    "listHidden": false,
+    "chosen": "",
+    "fv": true,
+    "outline": "solid 3px"
+   }
+  },
+  {
+   "id": "K03",
+   "result": "PASS",
+   "detail": {
+    "up_from_first": [
+     "Marlin Dock 3"
+    ],
+    "up_again": [
+     "Kestrel Yard 7"
+    ],
+    "home": [
+     "Heron Flats 41"
+    ],
+    "end": [
+     "Marlin Dock 3"
+    ]
+   }
+  },
+  {
+   "id": "K04",
+   "result": "PASS",
+   "detail": {
+    "focus": "q",
+    "value": "Marlin Dock 3",
+    "expanded": "false",
+    "ad": null,
+    "ad_exists": null,
+    "selected": [],
+    "listHidden": true,
+    "chosen": "Chosen: Marlin Dock 3",
+    "fv": true,
+    "outline": "solid 3px"
+   }
+  },
+  {
+   "id": "K05",
+   "result": "PASS",
+   "detail": {
+    "first_escape": {
+     "focus": "q",
+     "value": "sol",
+     "expanded": "false",
+     "ad": null,
+     "ad_exists": null,
+     "selected": [],
+     "listHidden": true,
+     "chosen": "",
+     "fv": true,
+     "outline": "solid 3px"
+    },
+    "second_escape": {
+     "focus": "q",
+     "value": "",
+     "expanded": "false",
+     "ad": null,
+     "ad_exists": null,
+     "selected": [],
+     "listHidden": true,
+     "chosen": "",
+     "fv": true,
+     "outline": "solid 3px"
+    }
+   }
+  },
+  {
+   "id": "K06",
+   "result": "PASS",
+   "detail": {
+    "focus": "fail",
+    "value": "sol",
+    "expanded": "false",
+    "ad": null,
+    "ad_exists": null,
+    "selected": [],
+    "listHidden": true,
+    "chosen": "",
+    "fv": false,
+    "outline": "none 3px"
+   }
+  },
+  {
+   "id": "K07",
+   "result": "PASS",
+   "detail": {
+    "before": {
+     "focus": "q",
+     "value": "so",
+     "expanded": "true",
+     "ad": "opt-id-Heron Flats 41",
+     "ad_exists": true,
+     "selected": [
+      "Heron Flats 41"
+     ],
+     "listHidden": false,
+     "chosen": "",
+     "fv": true,
+     "outline": "solid 3px"
+    },
+    "while_pending": {
+     "focus": "q",
+     "value": "sol",
+     "expanded": "true",
+     "ad": null,
+     "ad_exists": null,
+     "selected": [],
+     "listHidden": false,
+     "chosen": "",
+     "fv": true,
+     "outline": "solid 3px"
+    },
+    "after_rerender": {
+     "focus": "q",
+     "value": "sol",
+     "expanded": "true",
+     "ad": null,
+     "ad_exists": null,
+     "selected": [],
+     "listHidden": false,
+     "chosen": "",
+     "fv": true,
+     "outline": "solid 3px"
+    }
+   }
+  },
+  {
+   "id": "K08",
+   "result": "FAIL",
+   "detail": {
+    "before_late": {
+     "focus": "q",
+     "value": "sol",
+     "expanded": "true",
+     "ad": "opt-id-Kestrel Yard 7",
+     "ad_exists": true,
+     "selected": [
+      "Kestrel Yard 7"
+     ],
+     "listHidden": false,
+     "chosen": "",
+     "fv": true,
+     "outline": "solid 3px"
+    },
+    "after_late": {
+     "focus": "q",
+     "value": "sol",
+     "expanded": "true",
+     "ad": null,
+     "ad_exists": null,
+     "selected": [],
+     "listHidden": false,
+     "chosen": "",
+     "fv": true,
+     "outline": "solid 3px"
+    }
+   }
+  },
+  {
+   "id": "K09",
+   "result": "PASS",
+   "detail": {
+    "tabs_to_retry": 1,
+    "retry_request": true,
+    "focus_after_retry": "q",
+    "recovered": true
+   }
+  },
+  {
+   "id": "K10",
+   "result": "PASS",
+   "detail": {
+    "focus": "q",
+    "value": "",
+    "expanded": "false",
+    "ad": null,
+    "ad_exists": null,
+    "selected": [],
+    "listHidden": true,
+    "chosen": "",
+    "fv": true,
+    "outline": "solid 3px",
+    "js_errors": []
+   }
+  },
+  {
+   "id": "S01",
+   "result": "PASS",
+   "detail": {
+    "options": 10,
+    "first": [
+     "Troubleshooting invoices by email",
+     "Understanding invoices",
+     "Understanding invoices by email"
+    ]
+   }
+  },
+  {
+   "id": "S02",
+   "result": "PASS",
+   "detail": {
+    "focus": "q",
+    "value": "Troubleshooting invoices by email",
+    "expanded": "false",
+    "ad": null,
+    "ad_exists": null,
+    "selected": [],
+    "listHidden": true,
+    "chosen": "Chosen: Troubleshooting invoices by email",
+    "fv": true,
+    "outline": "solid 3px"
+   }
+  },
+  {
+   "id": "S03",
+   "result": "PASS",
+   "detail": {
+    "fail_switch_tabs": 2,
+    "checked_by_space": true,
+    "alert_shown": true,
+    "retry_tabs": 1,
+    "recovered": true,
+    "status": "12 results. Use up and down arrows to review."
+   }
+  },
+  {
+   "id": "S04",
+   "result": "PASS",
+   "detail": {
+    "final_rows": 13,
+    "sample": [
+     "Troubleshooting card payments",
+     "Changing card payments",
+     "FAQ: card payments"
+    ],
+    "note": "random latency; one run, not a proof"
+   }
+  },
+  {
+   "id": "S05",
+   "result": "PASS",
+   "detail": {
+    "js_errors": [],
+    "external_requests": []
+   }
+  }
+ ]
+}

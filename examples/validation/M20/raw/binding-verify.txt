@@ -1,0 +1,10 @@
+# binding 2026-10-18 23:48:56 PDT
+head 8d45038b82a13bf5d360e5969ed2da72b80ce467 parent 02ba9c571b10ad1dba792d2ac5534bcad3171e67
+diff 54aa432606583e0fa02447f0a9686f4a312f02b3bc23746ba2ab28f545b317ce
+patch ab0e8993406666438b929b925858aa83bd6523d9333488f41c21f4472a87c25d
+identical: no
+manifest: 18 OK, 0 not OK
+manifest set == diff set: yes
+ 18 files changed, 2170 insertions(+), 5 deletions(-)
+per-file chunks: git diff 18, G20.patch 18, same set True, every chunk byte-identical True
+note: the whole-file hashes differ only because G20.patch lists files in another order (checked per file above)

@@ -1,0 +1,6 @@
+# Demo command list for the stub tree (for a candidate, transcribe the documented commands instead)
+# expect: python3 resolves to the shim and the stub page is present
+python3 -c "import sys; print(sys.version.split()[0])"
+ls reference.html binding-reference.json
+# expect: offline guard refuses a non-loopback connect
+python3 -c "import socket; s=socket.socket(); s.connect(('93.184.215.14', 80))" 2>&1 | tail -1

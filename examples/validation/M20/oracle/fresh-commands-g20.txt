@@ -1,0 +1,15 @@
+# G20 README "Commands" block, transcribed by hand before the run (Grok self-validation)
+# expect: 17/17 checks passed, exit 0
+python3 examples/capabilities/G20/ui_oracle.py
+# expect: exit 1 (naive core rejected)
+python3 examples/capabilities/G20/ui_oracle.py --core examples/capabilities/G20/naive_core.js
+# expect: unseen sessions, larger run, exit 0
+python3 examples/capabilities/G20/ui_oracle.py --seed 2026 --scale 10
+# expect: tests OK
+python3 -m unittest tests.test_g20_capability
+# expect: exit 2 for an invalid argument (README exit codes)
+python3 examples/capabilities/G20/ui_oracle.py --scale banana
+# expect: exit 2 when no JavaScript shell (G20_JSC pointing at a missing binary)
+G20_JSC=/nonexistent/jsc python3 examples/capabilities/G20/ui_oracle.py
+# expect: offline guard refuses a non-loopback connect
+python3 -c "import socket; s=socket.socket(); s.connect(('93.184.215.14', 80))" 2>&1 | tail -1
