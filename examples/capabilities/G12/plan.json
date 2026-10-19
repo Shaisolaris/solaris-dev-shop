@@ -1,0 +1,107 @@
+{
+ "schema": "solaris.daily-integration/1",
+ "goal": "G12",
+ "base": "02ba9c571b10ad1dba792d2ac5534bcad3171e67",
+ "writable": [
+  "employees/quality-security/assurance/**",
+  "employees/quality-security/qa-engineer/**",
+  "examples/capabilities/G12/**",
+  "tests/test_g12_capability.py"
+ ],
+ "prerequisites": [
+  {
+   "id": "G04",
+   "commit": "155fc33ad284b8c8f79c235d96f240abcd64f662",
+   "note": "newest repair head (G04 r2, root QA); carries G04 314b4db and G02 bbe682b",
+   "tests": [
+    "tests.test_g04_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G04/handoff_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G05",
+   "commit": "30563781f175d3f012e881fe8d302f5a7aed5c20",
+   "note": "newest repair head (G05 r2, root QA)",
+   "tests": [
+    "tests.test_g05_capability",
+    "tests.test_closure_hardening"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G05/binding_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G07",
+   "commit": "0d6a78d56cdb4c3b8d87ed25bb41704e99bc5382",
+   "note": "carries G04 314b4db",
+   "tests": [
+    "tests.test_g07_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G07/registry_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G08",
+   "commit": "ddebe98707219aa2638cd424777b1255413d9ceb",
+   "note": "carried by G09; carries G03 d4d98f2",
+   "tests": [
+    "tests.test_g08_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G08/deploy_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G09",
+   "commit": "edfa64d4d86532d18164e37175c7b0e4d734d0e0",
+   "note": "base of the merge chain",
+   "tests": [
+    "tests.test_g09_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G09/k8s_oracle.py"
+    ]
+   ]
+  }
+ ],
+ "external": [],
+ "cross_checks": [
+  [
+   "examples/capabilities/G12/cross_checks.py"
+  ]
+ ],
+ "resolved_overlaps": [
+  {
+   "path": "employees/infrastructure/fleet-dispatcher/SKILL.md",
+   "reason": "G05 30563781 carries G04 314b4db unchanged (same blob); G04 r2 leaves it as 314b4db; only G07 0d6a78d changed it. HEAD is the G07 blob a4655043."
+  },
+  {
+   "path": "employees/infrastructure/fleet-dispatcher/capability.contract.json",
+   "reason": "G05 30563781 carries G04 314b4db unchanged (same blob); G04 r2 leaves it as 314b4db; only G07 0d6a78d changed it. HEAD is the G07 blob b00741e0."
+  },
+  {
+   "path": "tests/test_g04_capability.py",
+   "reason": "G05 30563781 carries G04 314b4db unchanged (same blob); G07 leaves it as 314b4db; only G04 r2 155fc33 changed it. HEAD is the G04 r2 blob 9751498e."
+  },
+  {
+   "path": "employees/infrastructure/fleet-dispatcher/handoff.py",
+   "reason": "G05 30563781 carries G04 314b4db unchanged (same blob); G04 r2 (owner in activate/brief receipt inputs) and G07 (fleet claim check) change disjoint hunks from 314b4db; git merged them without conflict. Both test modules, both oracles and cross-check x1 pass on HEAD."
+  },
+  {
+   "path": "employees/infrastructure/fleet-dispatcher/handoff-work-orders.md",
+   "reason": "G05 30563781 carries G04 314b4db unchanged (same blob); G04 r2 (owner rows) and G07 (fleet section, exit 2 line) change disjoint lines from 314b4db; git merged them without conflict and HEAD keeps both texts."
+  }
+ ]
+}
