@@ -15,7 +15,9 @@ What it guarantees:
     assignment or at or after assignment + horizon do not count; events of unassigned units are ignored
     and counted; a sample-ratio mismatch (chi-square against the planned split, p < 0.001) invalidates
     the readout, and so does allocation drift: a per-week sample-ratio test (Bonferroni over the weeks)
-    or a split that differs between weeks (arm x week chi-square, p < 0.001).
+    or a split that differs between weeks (arm x week chi-square, p < 0.001), or any run of assignments
+    whose split departs from the plan (sliding windows of 20, 40, 80, ... units in assignment order,
+    Bonferroni at 0.002 over the windows), which does not depend on where the 7-day blocks fall.
   * Uncertainty: per-arm rates, difference with a 95% (1 - alpha) Wald interval and a two-sided
     two-proportion z test. A difference is claimed only when the interval excludes 0, both arms meet
     the minimum sample and assignment was randomized; observational data gets "association only".
@@ -29,6 +31,7 @@ Exit codes: 0 analysed (any outcome), 2 invalid package or input (nothing writte
 from __future__ import annotations
 
 import argparse
+import bisect
 import datetime as dt
 import hashlib
 import importlib.util
@@ -46,6 +49,9 @@ REPORT_SCHEMA = "solaris.experiment-readout/1"
 HERE = Path(__file__).resolve().parent
 G13 = HERE.parent / "data-engineer" / "csv_reconcile.py"
 SRM_P = 0.001
+SCAN_ALPHA = 0.002  # family-wise level of the sliding-window allocation scan (Bonferroni over its windows)
+SCAN_MIN = 20  # smallest window, in units
+SCAN_EXACT_MAX = 1280  # windows up to this size use the exact binomial test, larger ones chi-square
 ASSIGN_COLS = {"unit_id": "str", "arm": "str", "assigned_at": "timestamp"}
 EVENT_COLS = {"unit_id": "str", "event": "str", "occurred_at": "timestamp", "session_id": "str"}
 
@@ -140,6 +146,61 @@ def chi2_sf(x: float, df: int) -> float:
         if abs(d * c - 1) < 1e-15:
             break
     return min(1.0, math.exp(-z + a * math.log(z) - lg) * h)
+
+
+def binom_two_sided(m: int, q: float) -> List[float]:
+    """Exact two-sided binomial p-values for k = 0..m treatment units out of m at planned share q:
+    the total probability of counts no more likely than k (the small-window chi-square overstates
+    significance)."""
+    lq, l1q = math.log(q), math.log(1 - q)
+    lm = math.lgamma(m + 1)
+    pmf = [math.exp(lm - math.lgamma(k + 1) - math.lgamma(m - k + 1) + k * lq + (m - k) * l1q) for k in range(m + 1)]
+    srt = sorted(pmf)
+    cum, acc = [], 0.0
+    for x in srt:
+        acc += x
+        cum.append(acc)
+    return [min(1.0, cum[bisect.bisect_right(srt, x * (1 + 1e-9)) - 1]) for x in pmf]
+
+
+def allocation_scan(units: Dict[str, Dict[str, Any]], arms: List[str], split: List[float]) -> Optional[Dict[str, Any]]:
+    """Sliding-window sample-ratio scan in assignment order, independent of any calendar blocks.
+
+    Units are ordered by (assigned_at, unit_id). Windows of 20, 40, 80, ... units (up to half the cohort)
+    slide by an eighth of their length, plus one window ending at the last unit for each length; each is
+    tested against the planned split (exact binomial up to 1,280 units, chi-square with 1 df above) and the smallest p-value must clear
+    SCAN_ALPHA / windows tested (Bonferroni, conservative for overlapping windows)."""
+    c, t = arms
+    order = sorted(units.items(), key=lambda kv: (kv[1]["at"], kv[0]))
+    N = len(order)
+    if N < 2 * SCAN_MIN:
+        return None
+    pre = [0]
+    for _, v in order:
+        pre.append(pre[-1] + (v["arm"] == t))
+    q = split[1]
+    worst, K, sizes, m = None, 0, [], SCAN_MIN
+    while m <= N // 2:
+        sizes.append(m)
+        step = max(1, m // 8)
+        starts = list(range(0, N - m + 1, step))
+        if starts[-1] != N - m:
+            starts.append(N - m)
+        exact = binom_two_sided(m, q) if m <= SCAN_EXACT_MAX else None
+        for i in starts:
+            k = pre[i + m] - pre[i]
+            pv = exact[k] if exact is not None else chi2_sf_df1((k - m * q) ** 2 / (m * q * (1 - q)))
+            K += 1
+            if worst is None or pv < worst[0]:
+                worst = (pv, i, m, k)
+        m *= 2
+    pv, i, m, k = worst
+    return {"windows_tested": K, "window_units": sizes, "family_alpha": SCAN_ALPHA,
+            "threshold": "%.3e" % (SCAN_ALPHA / K),
+            "worst": {"units": m, "first_assigned": order[i][1]["at"].isoformat(),
+                      "last_assigned": order[i + m - 1][1]["at"].isoformat(),
+                      "arm_counts": [m - k, k], "p_value": "%.3e" % pv},
+            "mismatch": pv < SCAN_ALPHA / K}
 
 
 def r6(x: Optional[float]) -> Optional[str]:
@@ -317,6 +378,7 @@ def analyse(path: str) -> Dict[str, Any]:
                 ph = chi2_sf(hom, len(tested) - 1)
                 drift["homogeneity_p_value"] = r6(ph)
                 drift["mismatch"] = drift["mismatch"] or ph < SRM_P
+    scan = allocation_scan(units, P["arms"], P["split"]) if total and P["randomized"] else None
     effect = None
     trace: List[str] = []
     if n[c] and n[t]:
@@ -338,6 +400,10 @@ def analyse(path: str) -> Dict[str, Any]:
     elif P["randomized"] and drift is not None and drift["mismatch"]:
         outcome = "invalid_experiment"
         trace.append(f"allocation drifted over the cohort: week {drift['worst_week']} has {drift['worst_week_units'][0]}/{drift['worst_week_units'][1]} against planned {P['split'][0]}/{P['split'][1]} (p {drift['p_value']}, Bonferroni over {drift['weeks_tested']} weeks; split homogeneity across weeks p {drift.get('homogeneity_p_value')}); the pooled comparison mixes periods with different base rates, no effect is read")
+    elif P["randomized"] and scan is not None and scan["mismatch"]:
+        outcome = "invalid_experiment"
+        w = scan["worst"]
+        trace.append(f"allocation changed within the cohort: the {w['units']} units assigned {w['first_assigned']} to {w['last_assigned']} split {w['arm_counts'][0]}/{w['arm_counts'][1]} against planned {P['split'][0]}/{P['split'][1]} (p {w['p_value']}, below {scan['threshold']} = {SCAN_ALPHA} over {scan['windows_tested']} sliding windows); no effect is read")
     elif P["randomized"] and len(contaminated) > 0.05 * (total + len(contaminated)):
         outcome = "invalid_experiment"
         trace.append(f"{len(contaminated)} units were exposed to both arms (over 5% of the cohort); no effect is read")
@@ -357,7 +423,7 @@ def analyse(path: str) -> Dict[str, Any]:
             "unit_of_analysis": "unit_id", "assignment": P["doc"]["assignment"],
             "cohort": {"start": P["cs"].isoformat(), "end": P["ce"].isoformat(), "as_of": P["as_of"].isoformat(),
                        "outcome_event": P["event"], "horizon_days": P["hz"]},
-            "arms": arms_out, "srm": srm, "allocation_by_week": drift, "effect": effect, "outcome": outcome, "claims_allowed": claims_allowed,
+            "arms": arms_out, "srm": srm, "allocation_by_week": drift, "allocation_scan": scan, "effect": effect, "outcome": outcome, "claims_allowed": claims_allowed,
             "trace": trace, "exclusions": excl,
             "inputs": [{"file": f["file"], "sha256": f["sha256"], "data_rows": f["data_rows"]} for f in (af, ef)],
             "read_only": "local files only; nothing was changed or sent"}

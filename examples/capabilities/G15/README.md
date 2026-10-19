@@ -34,6 +34,9 @@ checks 12 properties:
 | o11 | 120 000 units (skipped by `--quick`) |
 | o12 | no bytecode or files written next to the inputs; local only |
 | o13 | allocation drift (Simpson): three ramps and one gradual drift with a balanced pooled split are invalid_experiment with no claim; a steady planned 30/70 split with a falling base rate reads the true positive difference |
+| o14 | one-day allocation burst: nine one-day all-variant bursts (40, 60, 90 units; day-aligned, across midnight, across a 7-day block boundary) inside healthy weeks with zero true effect are invalid_experiment with no claim |
+| o15 | alignment independence: the same burst with the cohort start moved by 0, 30, 75 and 150 hours gives the same invalid verdict and the same worst sliding window |
+| o16 | false invalidations: at most about 1% of healthy 50/50 runs with no allocation change are invalidated (200 runs; 40 with `--quick`) |
 
 Controls (both must be REJECTED): `naive_stub.py` (dashboard read: event rows as units, no cohort,
 no leakage or SRM checks, any positive gap called a causal win) and `noop_stub.py`.

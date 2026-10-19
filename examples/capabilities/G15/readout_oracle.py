@@ -107,6 +107,35 @@ def periods(rng, plan, split=(0.5, 0.5)):
     return pkg, A, E
 
 
+def bursty(rng, vol, start_h, days=28, per_day=60, rate=0.10, burst_rate=0.90, cs=None):
+    """Healthy 50/50 traffic per_day units a day with a true effect of zero, except that for 24 hours from
+    start_h (hours after the cohort start) every one of vol units goes to the treatment and converts at
+    burst_rate. The M15 r2 O08 shape, placed anywhere against the 7-day blocks."""
+    A, E, k = [], [], 0
+    b0, b1 = start_h * 60, start_h * 60 + 1440
+    for d in range(days):
+        for _ in range(per_day):
+            m = d * 1440 + rng.randrange(0, 1440)
+            if b0 <= m < b1:
+                continue  # the burst replaces this day's normal traffic
+            A.append(("control" if rng.random() < 0.5 else "treatment", m, rate))
+    for _ in range(vol):
+        A.append(("treatment", rng.randrange(b0, b1), burst_rate))
+    rows, ev = [], []
+    for arm, m, r in A:
+        u = "b%06d" % k
+        k += 1
+        t = CS + dt.timedelta(minutes=m)
+        rows.append([u, arm, iso(t)])
+        if rng.random() < r:
+            ev.append([u, "retained", iso(t + dt.timedelta(hours=3)), "s0"])
+    rng.shuffle(rows)
+    pkg = experiment(rng, n=(1, 1))[0]
+    if cs is not None:
+        pkg["cohort"]["start"] = iso(cs)
+    return pkg, rows, ev
+
+
 def write(d, pkg, A, E):
     d = Path(d)
     d.mkdir(parents=True, exist_ok=True)
@@ -345,6 +374,51 @@ def main():
         return ok, "four drifting allocations (three ramps, one gradual) with a balanced pooled split are invalid_experiment with no claim; a steady planned 30/70 split with a falling base rate reads the true positive difference" if ok \
             else "ramps not caught %s; steady control %s" % (bad, (rep or {}).get("outcome"))
     check("o13 allocation drift (Simpson)", o13)
+
+    def o14():
+        # a one-day burst sent wholly to the variant inside otherwise healthy weeks (true effect zero), at
+        # several sizes and positions against the 7-day blocks: aligned to a day, across midnight, and
+        # straddling a block boundary so each block's own test is diluted
+        bad = []
+        for vol in (40, 60, 90):
+            for where, h in (("day9", 9 * 24), ("across_midnight", 9 * 24 + 13), ("block_boundary", 6 * 24 + 12)):
+                pkg, A, E = bursty(rng, vol, h)
+                rc, rep, _ = run(write(tmp / ("o14-%d-%s" % (vol, where)), pkg, A, E))
+                if not (rc == 0 and (rep or {}).get("outcome") == "invalid_experiment"
+                        and (rep or {}).get("claims_allowed") == {"causal": False, "significance": False}):
+                    bad.append((vol, where, rc, (rep or {}).get("outcome"), ((rep or {}).get("effect") or {}).get("difference")))
+        return not bad, "nine one-day all-variant bursts (40/60/90 units; day-aligned, across midnight, across a 7-day block boundary) are invalid_experiment with no claim" if not bad else "bursts read as valid: %s" % bad
+    check("o14 one-day allocation burst, any alignment", o14)
+
+    def o15():
+        # alignment independence: the same burst data with the cohort start moved earlier (no unit before it),
+        # which moves every 7-day block; the drift verdict must not change, and the sliding scan must give
+        # the same window and p-value
+        pkg, A, E = bursty(rng, 40, 6 * 24 + 12)
+        res = []
+        for shift_h in (0, 30, 75, 150):
+            pk = json.loads(json.dumps(pkg))
+            pk["cohort"]["start"] = iso(CS - dt.timedelta(hours=shift_h))
+            rc, rep, _ = run(write(tmp / ("o15-%d" % shift_h), pk, A, E))
+            sc = (rep or {}).get("allocation_scan") or {}
+            res.append((rc, (rep or {}).get("outcome"), sc.get("worst"), sc.get("mismatch")))
+        ok = all(r[0] == 0 and r[1] == "invalid_experiment" and r[3] is True for r in res) and len({json.dumps(r[2], sort_keys=True) for r in res}) == 1
+        return ok, "cohort start moved by 0, 30, 75 and 150 hours: same invalid verdict, same worst window and p-value" if ok else "alignment dependent: %s" % res
+    check("o15 drift verdict independent of block alignment", o15)
+
+    def o16():
+        # false invalidations of healthy runs: 50/50 as planned, no allocation change, 28 days of 30 units a day
+        n = 40 if a.quick else 200
+        inv = 0
+        for k in range(n):
+            r2 = random.Random(a.seed * 1000 + k)
+            pkg, A, E = bursty(r2, 0, 0, per_day=30, rate=0.2)
+            rc, rep, _ = run(write(tmp / ("o16-%d" % k), pkg, A, E))
+            inv += (rep or {}).get("outcome") == "invalid_experiment"
+            shutil.rmtree(str(tmp / ("o16-%d" % k)), ignore_errors=True)
+        ok = inv <= max(1, n // 100)
+        return ok, "%d of %d healthy runs invalidated (limit about 1%%)" % (inv, n)
+    check("o16 healthy runs rarely invalidated", o16)
 
     n = sum(RESULTS)
     print("%s: %d/%d checks passed (seed %d)" % ("ACCEPTED" if n == len(RESULTS) else "REJECTED", n, len(RESULTS), a.seed))

@@ -43,6 +43,20 @@ previous report is left unchanged.
    p < 0.001) catches a gradual drift in which no single week fails its own test.
    `allocation_by_week` in the JSON shows the worst week and both p-values. Weeks are 7-day blocks
    from `cohort.start`, not calendar weeks.
+   Because those blocks are fixed, a short burst can be diluted by the block it falls in or split
+   across two. A sliding-window scan closes that gap: units in assignment order (`assigned_at`, then
+   `unit_id`), windows of 20, 40, 80, ... units up to half the cohort, each moved by an eighth of its
+   length plus one window ending at the last unit; each window gets an exact two-sided binomial test
+   against the planned split (chi-square, 1 df, above 1,280 units). The experiment is invalid when the
+   smallest p-value is below 0.002 divided by the number of windows (Bonferroni, conservative for
+   overlapping windows). The scan does not use `cohort.start`, so moving the start does not change it.
+   `allocation_scan` in the JSON shows the windows tested, the threshold and the worst window
+   (first and last assignment time, arm counts, p-value). Together the four tests keep false
+   invalidations of a healthy run at or below about 0.5% (0.001 + 0.001 + 0.001 + 0.002 by the union
+   bound). Power limit: an all-variant burst of about 30 units or fewer can pass, depending on how much
+   normal traffic is interleaved with it (with 60 units a day, 30 units in one day are caught when
+   they replace the day's traffic and can be missed when they straddle midnight); the scan is a
+   guard against allocation changes, not proof that none happened.
 6. Effect: difference in rates with a (1 - alpha) Wald interval and a pooled two-proportion z test.
 
 ## Outcomes

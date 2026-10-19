@@ -49,7 +49,7 @@ class G15Capability(unittest.TestCase):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_oracle_accepts_tool_and_rejects_controls(self):
-        for target, want in ((TOOL, 'ACCEPTED: 13/13'), (EX / 'naive_stub.py', 'REJECTED'), (EX / 'noop_stub.py', 'REJECTED')):
+        for target, want in ((TOOL, 'ACCEPTED: 16/16'), (EX / 'naive_stub.py', 'REJECTED'), (EX / 'noop_stub.py', 'REJECTED')):
             p = subprocess.run([sys.executable, str(EX / 'readout_oracle.py')] + (['--quick'] if target != TOOL else []) + ['--', sys.executable, str(target)],
                                capture_output=True, text=True, env=ENV, timeout=600)
             self.assertIn(want, p.stdout.strip().splitlines()[-1], (target.name, p.stdout[-1500:], p.stderr[-800:]))
@@ -97,6 +97,60 @@ class G15Capability(unittest.TestCase):
             self.assertIn('allocation drifted', r['trace'][0])
         for f in ('clean-aa', 'retention-lift', 'sample-ratio-mismatch'):
             self.assertFalse(rep(FIX / f / 'package.json')['allocation_by_week']['mismatch'], f)
+
+    def test_one_day_burst_invalid_at_any_alignment(self):
+        # M15 r2 O08: one day sends every unit to the variant inside healthy weeks; true effect zero
+        o = oracle_module()
+        weekly_missed = 0
+        for k, h in enumerate((9 * 24, 9 * 24 + 13, 6 * 24 + 12)):
+            pkg, A, E = o.bursty(random.Random(40 + k), 40, h)
+            r = rep(o.write(self.tmp / ('b%d' % k), pkg, A, E))
+            self.assertEqual(r['outcome'], 'invalid_experiment')
+            self.assertEqual(r['claims_allowed'], {'causal': False, 'significance': False})
+            self.assertTrue(r['allocation_scan']['mismatch'])
+            self.assertEqual(r['allocation_scan']['worst']['units'], 40)
+            weekly_missed += not r['allocation_by_week']['mismatch']
+            self.assertTrue(any('allocation changed within the cohort' in x or 'allocation drifted' in x for x in r['trace']))
+        self.assertGreaterEqual(weekly_missed, 1)  # the 7-day block test alone misses at least one of them
+
+    def test_scan_independent_of_cohort_start(self):
+        o = oracle_module()
+        pkg, A, E = o.bursty(random.Random(3), 40, 6 * 24 + 12)
+        seen = set()
+        for sh in (0, 30, 150):
+            pk = json.loads(json.dumps(pkg))
+            pk['cohort']['start'] = o.iso(o.CS - o.dt.timedelta(hours=sh))
+            r = rep(o.write(self.tmp / ('a%d' % sh), pk, A, E))
+            self.assertEqual(r['outcome'], 'invalid_experiment')
+            seen.add(json.dumps(r['allocation_scan'], sort_keys=True))
+        self.assertEqual(len(seen), 1)
+
+    def test_scan_exact_binomial_and_quiet_on_fixtures(self):
+        sys.path.insert(0, str(DS))
+        old = sys.dont_write_bytecode
+        sys.dont_write_bytecode = True
+        try:
+            import experiment_readout as er
+        finally:
+            sys.path.pop(0)
+            sys.dont_write_bytecode = old
+        self.assertEqual([round(x, 6) for x in er.binom_two_sided(4, 0.5)], [0.125, 0.625, 1.0, 0.625, 0.125])
+        self.assertAlmostEqual(er.binom_two_sided(20, 0.5)[0], 2 * 0.5 ** 20, places=15)
+        self.assertAlmostEqual(er.binom_two_sided(3, 0.7)[3], 0.343 + 0.189 + 0.027, places=12)  # P(3) and the less likely P(1), P(0)
+        # hand-built runs: 20 consecutive treatment units at the start of 40, and at the very end of 45
+        # (only the extra window ending at the last unit covers it whole); exact p = 2 * 0.5 ** 20
+        t0 = er.dt.datetime(2026, 8, 1, tzinfo=er.dt.timezone.utc)
+        for n, run_at in ((40, range(0, 20)), (45, range(25, 45))):
+            units = {'u%02d' % i: {'arm': 'treatment' if (i in run_at or i % 2) else 'control',
+                                   'at': t0 + er.dt.timedelta(hours=i)} for i in range(n)}
+            sc = er.allocation_scan(units, ['control', 'treatment'], [0.5, 0.5])
+            self.assertEqual(sc['window_units'], [20])
+            self.assertEqual((sc['worst']['units'], sc['worst']['arm_counts'], sc['worst']['p_value']), (20, [0, 20], '1.907e-06'))
+            self.assertEqual(sc['worst']['last_assigned'], (t0 + er.dt.timedelta(hours=run_at[-1])).isoformat())
+        for f in ('clean-aa', 'retention-lift'):
+            sc = rep(FIX / f / 'package.json')['allocation_scan']
+            self.assertFalse(sc['mismatch'], f)
+            self.assertEqual(sc['family_alpha'], 0.002)
 
     def test_chi2_tail(self):
         sys.path.insert(0, str(DS))
