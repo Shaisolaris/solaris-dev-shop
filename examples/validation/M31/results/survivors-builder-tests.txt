@@ -1,0 +1,1 @@
+unknown_trace_ok builder tests: KILL FAILED (failures=1) FAIL: test_untraced_requirement (tests.test_g31_capability.G31Capability.test_untraced_requirement)

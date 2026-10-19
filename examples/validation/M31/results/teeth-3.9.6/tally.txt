@@ -1,0 +1,42 @@
+future_input_ok KILLED K08 invalid or late input is never ready
+float_ok KILLED K08 invalid or late input is never ready
+cycle_ok KILLED K12 (v2) other-kind commitment with no refs, capability without demo, fixed price not hours x rate, criterion-level escalation, dependency cycle
+untraced_ok KILLED K03 traceability: untraced, missing dependency, silent exclusion, no acceptance criteria; an optional unlisted requirement is fine,K09 acceptance: changed or missing evidence, a failed criterion, a blocked scope; unknown or repeated criteria invalid; a late result never accepts,K10 recovery: --out refuses the package path, an invalid run keeps the earlier result, verify names an edited or truncated result
+unknown_trace_ok SURVIVED 
+deps_unchecked KILLED K03 traceability: untraced, missing dependency, silent exclusion, no acceptance criteria; an optional unlisted requirement is fine
+demo_hash_ignored KILLED K04 demo evidence: changed, missing, failing, late, wrong capability, none; a re-pinned passing record is fine
+demo_result_ignored KILLED K04 demo evidence: changed, missing, failing, late, wrong capability, none; a re-pinned passing record is fine
+demo_cap_ignored KILLED K04 demo evidence: changed, missing, failing, late, wrong capability, none; a re-pinned passing record is fine
+demo_future_ok KILLED K04 demo evidence: changed, missing, failing, late, wrong capability, none; a re-pinned passing record is fine
+no_demo_ok KILLED K12 (v2) other-kind commitment with no refs, capability without demo, fixed price not hours x rate, criterion-level escalation, dependency cycle
+no_ac_ok KILLED K03 traceability: untraced, missing dependency, silent exclusion, no acceptance criteria; an optional unlisted requirement is fine
+vague_ignored KILLED K05 ambiguity: vague words and missing measures need an escalation; an open one blocks and is listed with its owner; no false hit on 'breakfast'
+measure_ignored KILLED K05 ambiguity: vague words and missing measures need an escalation; an open one blocks and is listed with its owner; no false hit on 'breakfast'
+vague_substring KILLED K05 ambiguity: vague words and missing measures need an escalation; an open one blocks and is listed with its owner; no false hit on 'breakfast'
+open_ok KILLED K05 ambiguity: vague words and missing measures need an escalation; an open one blocks and is listed with its owner; no false hit on 'breakfast'
+criterion_amb_ignored KILLED K12 (v2) other-kind commitment with no refs, capability without demo, fixed price not hours x rate, criterion-level escalation, dependency cycle
+silent_ok KILLED K03 traceability: untraced, missing dependency, silent exclusion, no acceptance criteria; an optional unlisted requirement is fine
+hours_unchecked KILLED K06 estimates: exact sums, half-up cents, stale hours after a scope change; fixed estimates only at the high sum, confirmed, no open ambiguity
+price_unchecked KILLED K06 estimates: exact sums, half-up cents, stale hours after a scope change; fixed estimates only at the high sum, confirmed, no open ambiguity,K11 seeded soak: 12 random estimate sets reconcile exactly; one cent off is a mismatch
+round_half_even KILLED K06 estimates: exact sums, half-up cents, stale hours after a scope change; fixed estimates only at the high sum, confirmed, no open ambiguity,K11 seeded soak: 12 random estimate sets reconcile exactly; one cent off is a mismatch
+fixed_below_high_ok KILLED K06 estimates: exact sums, half-up cents, stale hours after a scope change; fixed estimates only at the high sum, confirmed, no open ambiguity
+fixed_unconfirmed_ok KILLED K06 estimates: exact sums, half-up cents, stale hours after a scope change; fixed estimates only at the high sum, confirmed, no open ambiguity
+fixed_open_ok KILLED K06 estimates: exact sums, half-up cents, stale hours after a scope change; fixed estimates only at the high sum, confirmed, no open ambiguity
+fixed_price_unchecked KILLED K12 (v2) other-kind commitment with no refs, capability without demo, fixed price not hours x rate, criterion-level escalation, dependency cycle
+invented_ok KILLED K12 (v2) other-kind commitment with no refs, capability without demo, fixed price not hours x rate, criterion-level escalation, dependency cycle
+outside_ok KILLED K02 invented and out-of-scope commitments block
+kind_scope_ok KILLED K02 invented and out-of-scope commitments block
+cascade_off KILLED K05 ambiguity: vague words and missing measures need an escalation; an open one blocks and is listed with its owner; no false hit on 'breakfast'
+date_late_ok KILLED K07 dates: downside finish boundary (2027-02-07 ok, 02-06 blocked), no capacity, an edited stored G17 result, an infeasible option
+date_off_by_one KILLED K07 dates: downside finish boundary (2027-02-07 ok, 02-06 blocked), no capacity, an edited stored G17 result, an infeasible option
+g17_diff_ignored KILLED K07 dates: downside finish boundary (2027-02-07 ok, 02-06 blocked), no capacity, an edited stored G17 result, an infeasible option
+g17_infeasible_ok KILLED K07 dates: downside finish boundary (2027-02-07 ok, 02-06 blocked), no capacity, an edited stored G17 result, an infeasible option
+no_capacity_ok KILLED K07 dates: downside finish boundary (2027-02-07 ok, 02-06 blocked), no capacity, an edited stored G17 result, an infeasible option
+accept_hash_ignored KILLED K09 acceptance: changed or missing evidence, a failed criterion, a blocked scope; unknown or repeated criteria invalid; a late result never accepts
+accept_fail_ok KILLED K09 acceptance: changed or missing evidence, a failed criterion, a blocked scope; unknown or repeated criteria invalid; a late result never accepts
+accept_missing_ok KILLED K09 acceptance: changed or missing evidence, a failed criterion, a blocked scope; unknown or repeated criteria invalid; a late result never accepts
+accept_ignores_check KILLED K09 acceptance: changed or missing evidence, a failed criterion, a blocked scope; unknown or repeated criteria invalid; a late result never accepts
+dup_result_ok KILLED K09 acceptance: changed or missing evidence, a failed criterion, a blocked scope; unknown or repeated criteria invalid; a late result never accepts
+out_overwrites_input KILLED K10 recovery: --out refuses the package path, an invalid run keeps the earlier result, verify names an edited or truncated result
+verify_always_identical KILLED K10 recovery: --out refuses the package path, an invalid run keeps the earlier result, verify names an edited or truncated result
+TEETH 40/41 killed (python 3.9.6)

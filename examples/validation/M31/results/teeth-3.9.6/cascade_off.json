@@ -1,0 +1,656 @@
+{
+ "tool": "/tmp/m31teeth-pvks7ves/cascade_off/employees/product-project/business-analyst/scope_acceptance.py",
+ "python": "3.9.6",
+ "rows": [
+  {
+   "row": "K01 clean control: ready, hours and price reconcile with an independent Decimal sum, A2 a condition; delivery accepted",
+   "pass": true,
+   "detail": {
+    "rc": 0,
+    "est": {
+     "hours": {
+      "high": "440",
+      "likely": "310",
+      "low": "230"
+     },
+     "price": {
+      "high": "66000.00",
+      "low": "34500.00"
+     },
+     "rate_per_hour": "150.00",
+     "type": "range"
+    },
+    "mine": {
+     "low": "230",
+     "likely": "310",
+     "high": "440"
+    },
+    "accept_rc": 0
+   }
+  },
+  {
+   "row": "K02 invented and out-of-scope commitments block",
+   "pass": true,
+   "detail": {
+    "sla_no_refs": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "invented_commitment"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "unknown_ref": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "invented_commitment"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "sla_input_only": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "invented_commitment"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "feature_input_only": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "invented_commitment"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "out_of_scope_R5": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "invented_commitment",
+       "out_of_scope_commitment"
+      ],
+      "status": "blocked"
+     }
+    ]
+   }
+  },
+  {
+   "row": "K03 traceability: untraced, missing dependency, silent exclusion, no acceptance criteria; an optional unlisted requirement is fine",
+   "pass": true,
+   "detail": {
+    "untraced_empty": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "untraced_requirement"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "untraced_unknown": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "untraced_requirement"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "missing_dependency": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "missing_dependency"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "silent_exclusion": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "silent_exclusion"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "optional_not_listed_ok": [
+     true,
+     {
+      "rc": 0,
+      "codes": [],
+      "status": "ready"
+     }
+    ],
+    "no_acceptance": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "no_acceptance_criteria"
+      ],
+      "status": "blocked"
+     }
+    ]
+   }
+  },
+  {
+   "row": "K04 demo evidence: changed, missing, failing, late, wrong capability, none; a re-pinned passing record is fine",
+   "pass": true,
+   "detail": {
+    "demo_file_changed": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "undemonstrated_capability"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "demo_missing": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "undemonstrated_capability"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "demo_failed_exit": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "undemonstrated_capability"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "demo_result_fail": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "undemonstrated_capability"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "demo_after_as_of": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "undemonstrated_capability"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "demo_other_capability": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "undemonstrated_capability"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "no_capability": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "undemonstrated_capability"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "resigned_pass_ok": [
+     true,
+     {
+      "rc": 0,
+      "codes": [],
+      "status": "ready"
+     }
+    ]
+   }
+  },
+  {
+   "row": "K05 ambiguity: vague words and missing measures need an escalation; an open one blocks and is listed with its owner; no false hit on 'breakfast'",
+   "pass": false,
+   "detail": {
+    "vague_seamless": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "unescalated_ambiguity"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "vague_in_criterion": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "unescalated_ambiguity"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "vague_tbd": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "unescalated_ambiguity"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "no_measure": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "unescalated_ambiguity"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "breakfast_not_vague": [
+     true,
+     {
+      "rc": 0,
+      "codes": [],
+      "status": "ready"
+     }
+    ],
+    "vague_resolved_ok": [
+     true,
+     {
+      "rc": 0,
+      "codes": [],
+      "status": "ready"
+     }
+    ],
+    "open_ambiguity": [
+     false,
+     {
+      "codes": [
+       "open_ambiguity"
+      ],
+      "escalations": [
+       {
+        "about": [
+         "R2"
+        ],
+        "escalated_to": "Clinic operations manager",
+        "id": "AMB1",
+        "question": "What does real-time mean for the front desk view?"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "row": "K06 estimates: exact sums, half-up cents, stale hours after a scope change; fixed estimates only at the high sum, confirmed, no open ambiguity",
+   "pass": true,
+   "detail": {
+    "hours_off_by_one": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "estimate_mismatch"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "price_off_by_cent": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "estimate_mismatch"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "half_up_8.63_ok": [
+     true,
+     {
+      "rc": 0,
+      "codes": [],
+      "status": "ready"
+     }
+    ],
+    "half_even_8.62_mismatch": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "estimate_mismatch"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "scope_shrunk_hours_stale": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "estimate_mismatch"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "fixed_on_unconfirmed": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "unsupported_fixed_estimate"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "fixed_confirmed_ok": [
+     true,
+     {
+      "rc": 0,
+      "codes": [],
+      "status": "ready"
+     }
+    ],
+    "fixed_below_high": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "unsupported_fixed_estimate"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "fixed_with_open_ambiguity": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "open_ambiguity",
+       "unsupported_fixed_estimate"
+      ],
+      "status": "blocked"
+     }
+    ]
+   }
+  },
+  {
+   "row": "K07 dates: downside finish boundary (2027-02-07 ok, 02-06 blocked), no capacity, an edited stored G17 result, an infeasible option",
+   "pass": true,
+   "detail": {
+    "before_downside_finish": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "unsupported_date"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "on_downside_finish_ok": [
+     true,
+     {
+      "rc": 0,
+      "codes": [],
+      "status": "ready"
+     }
+    ],
+    "no_capacity": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "unsupported_date"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "stored_result_edited": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "unsupported_date"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "infeasible_option": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "unsupported_date"
+      ],
+      "status": "blocked"
+     }
+    ]
+   }
+  },
+  {
+   "row": "K08 invalid or late input is never ready",
+   "pass": true,
+   "detail": {
+    "input_after_as_of": [
+     true,
+     {
+      "rc": 2
+     }
+    ],
+    "unknown_kind": [
+     true,
+     {
+      "rc": 2
+     }
+    ],
+    "float_hours": [
+     true,
+     {
+      "rc": 2
+     }
+    ]
+   }
+  },
+  {
+   "row": "K09 acceptance: changed or missing evidence, a failed criterion, a blocked scope; unknown or repeated criteria invalid; a late result never accepts",
+   "pass": true,
+   "detail": {
+    "evidence_mismatch": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "evidence_mismatch"
+      ],
+      "status": "not_accepted"
+     }
+    ],
+    "criterion_failed": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "criterion_failed"
+      ],
+      "status": "not_accepted"
+     }
+    ],
+    "missing_evidence": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "missing_evidence"
+      ],
+      "status": "not_accepted"
+     }
+    ],
+    "evidence_file_gone": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "evidence_mismatch"
+      ],
+      "status": "not_accepted"
+     }
+    ],
+    "scope_not_ready": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "scope_not_ready"
+      ],
+      "status": "not_accepted"
+     }
+    ],
+    "unknown_criterion": [
+     true,
+     {
+      "rc": 2
+     }
+    ],
+    "repeated_criterion": [
+     true,
+     {
+      "rc": 2
+     }
+    ],
+    "result_after_as_of": [
+     true,
+     {
+      "rc": 2
+     }
+    ]
+   }
+  },
+  {
+   "row": "K10 recovery: --out refuses the package path, an invalid run keeps the earlier result, verify names an edited or truncated result",
+   "pass": true,
+   "detail": {
+    "check_out": 0,
+    "verify_clean": 0,
+    "out_over_package": 2,
+    "package_unchanged": true,
+    "blocked_rc": 1,
+    "invalid_rc": 2,
+    "earlier_kept": true,
+    "verify_edited": 1,
+    "verify_truncated": 2
+   }
+  },
+  {
+   "row": "K11 seeded soak: 12 random estimate sets reconcile exactly; one cent off is a mismatch",
+   "pass": true,
+   "detail": {
+    "bad": []
+   }
+  },
+  {
+   "row": "O12 contradictory requirements (OBS)",
+   "pass": true,
+   "obs": true,
+   "detail": {
+    "rc": 0,
+    "status": "ready",
+    "codes": []
+   }
+  },
+  {
+   "row": "K12 (v2) other-kind commitment with no refs, capability without demo, fixed price not hours x rate, criterion-level escalation, dependency cycle",
+   "pass": true,
+   "detail": {
+    "other_no_refs": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "invented_commitment"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "capability_without_demo": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "undemonstrated_capability"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "fixed_price_not_hours_x_rate": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "estimate_mismatch"
+      ],
+      "status": "blocked"
+     }
+    ],
+    "vague_criterion_escalated_by_id_ok": [
+     true,
+     {
+      "rc": 0,
+      "codes": [],
+      "status": "ready"
+     }
+    ],
+    "dependency_cycle_never_ready": [
+     true,
+     {
+      "rc": 2,
+      "codes": []
+     }
+    ]
+   }
+  },
+  {
+   "row": "O13 mixed known and unknown trace (OBS, doc ambiguous)",
+   "pass": true,
+   "obs": true,
+   "detail": {
+    "rc": 1,
+    "codes": [
+     "untraced_requirement"
+    ]
+   }
+  }
+ ]
+}

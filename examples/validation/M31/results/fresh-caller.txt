@@ -1,0 +1,362 @@
+== 3.9.6 demo exit 1
+check clinic-portal: READY (owner Account lead (synthetic role))
+estimate range: hours {'low': '230', 'likely': '310', 'high': '440'}, price {'low': '34500.00', 'high': '66000.00'} at 150.00/h
+  C1 (scope) -> A1, A2, IN1, IN2, IN3 [conditional on A2]
+  C2 (estimate) -> A1, A2, IN1, IN2, IN3 [conditional on A2]
+  C3 (date) -> A1, A2, IN1, IN2, IN3, IN4 [conditional on A2]
+  C4 (feature) -> IN3
+{
+ "as_of": "2026-10-06",
+ "capacity_finish": "2027-02-07",
+ "command": "check",
+ "conditions": [
+  "A2"
+ ],
+ "engagement": "clinic-portal",
+ "escalations": [],
+ "estimate": {
+  "hours": {
+   "high": "440",
+   "likely": "310",
+   "low": "230"
+  },
+  "price": {
+   "high": "66000.00",
+   "low": "34500.00"
+  },
+  "rate_per_hour": "150.00",
+  "type": "range"
+ },
+ "excluded": [
+  "R5"
+ ],
+ "findings": [],
+ "note": "draft for the owner; no commitment is made, sent or signed by this tool",
+ "owner": "Account lead (synthetic role)",
+ "package_sha256": "e269bdf60a89582a02a7ad50430c7eafb3c84077ee0462cf92ef80597ed1e9ed",
+ "read_only": true,
+ "schema": "solaris.scope-report/1",
+ "scope": [
+  "R1",
+  "R2",
+  "R3",
+  "R4"
+ ],
+ "status": "ready",
+ "trace_matrix": [
+  {
+   "commitment": "C1",
+   "conditional_on": [
+    "A2"
+   ],
+   "kind": "scope",
+   "refs": [
+    "R1",
+    "R2",
+    "R3",
+    "R4"
+   ],
+   "sources": [
+    "A1",
+    "A2",
+    "IN1",
+    "IN2",
+    "IN3"
+   ]
+  },
+  {
+   "commitment": "C2",
+   "conditional_on": [
+    "A2"
+   ],
+   "kind": "estimate",
+   "refs": [
+    "R1",
+    "R2",
+    "R3",
+    "R4"
+   ],
+   "sources": [
+    "A1",
+    "A2",
+    "IN1",
+    "IN2",
+    "IN3"
+   ]
+  },
+  {
+   "commitment": "C3",
+   "conditional_on": [
+    "A2"
+   ],
+   "kind": "date",
+   "refs": [
+    "IN4",
+    "R1",
+    "R2",
+    "R3",
+    "R4"
+   ],
+   "sources": [
+    "A1",
+    "A2",
+    "IN1",
+    "IN2",
+    "IN3",
+    "IN4"
+   ]
+  },
+  {
+   "commitment": "C4",
+   "conditional_on": [],
+   "kind": "feature",
+   "refs": [
+    "R3"
+   ],
+   "sources": [
+    "IN3"
+   ]
+  }
+ ]
+}
+accept clinic-portal: ACCEPTED (owner Account lead (synthetic role))
+  R1: accepted
+  R2: accepted
+  R3: accepted
+  R4: accepted
+PASS o1 clean fixture ready with exact totals, trace matrix and G17 finish
+PASS o2 invented and out-of-scope commitments blocked
+PASS o3 estimate reconciles to the cent; fixed price needs high bound and confirmed assumptions
+PASS o4 vague wording and unmeasured criteria escalated; open escalation blocks commitments
+PASS o5 capability without passing, unchanged, dated demo evidence is not offered
+PASS o6 delivery date needs an identical G17 rerun with a feasible downside finish on or before it
+PASS o7 acceptance needs passing, unchanged evidence for every criterion of a ready scope
+PASS o8 11 invalid packages and an unknown delivery criterion refused, nothing written
+PASS o9 --out and verify; tampered or truncated results detected; failed run keeps the earlier result
+PASS o10 12 seeded unseen packages (120 to 200 requirements, planted flaws) match exactly
+PASS s1 no network, mail or process use in the tool; fixtures byte-identical
+ACCEPTED 11/11
+FAIL o1 clean fixture ready with exact totals, trace matrix and G17 finish
+FAIL o2 invented and out-of-scope commitments blocked
+FAIL o3 estimate reconciles to the cent; fixed price needs high bound and confirmed assumptions
+FAIL o4 vague wording and unmeasured criteria escalated; open escalation blocks commitments
+FAIL o5 capability without passing, unchanged, dated demo evidence is not offered
+FAIL o6 delivery date needs an identical G17 rerun with a feasible downside finish on or before it
+FAIL o7 acceptance needs passing, unchanged evidence for every criterion of a ready scope
+FAIL o8 11 invalid packages and an unknown delivery criterion refused, nothing written
+FAIL o9 --out and verify; tampered or truncated results detected; failed run keeps the earlier result
+    unseen 3 (n=171, flaws ['vague', 'silent', 'untrace', 'open', 'nodemo']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CF70'), ('commitment_on_blocked_requirement', 'CS')]
+    unseen 4 (n=138, flaws ['untrace', 'missing_dep']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('missing_dependency', 'R20')]
+    unseen 5 (n=164, flaws ['unknown_trace', 'noac', 'untrace', 'vague']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CF40'), ('commitment_on_blocked_requirement', 'CS')]
+    unseen 6 (n=170, flaws ['missing_dep', 'resolved', 'price_off']): rc 0 want 1; extra [] missing [('estimate_mismatch', 'price.low'), ('missing_dependency', 'R61')]
+    unseen 7 (n=193, flaws ['vague', 'early', 'nodemo', 'tamper']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('undemonstrated_capability', 'R84')]
+    unseen 8 (n=156, flaws ['open', 'invented', 'fixed_ok']): rc 1 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('open_ambiguity', 'R128')]
+    unseen 9 (n=152, flaws ['nodemo', 'fixed_ok']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('undemonstrated_capability', 'R66')]
+    unseen 10 (n=189, flaws ['invented', 'nodemo', 'open', 'vague', 'noac']): rc 1 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('no_acceptance_criteria', 'R85')]
+    unseen 11 (n=121, flaws ['open', 'noac', 'resolved', 'silent']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('no_acceptance_criteria', 'R90')]
+FAIL o10 12 seeded unseen packages (120 to 200 requirements, planted flaws) match exactly
+PASS s1 no network, mail or process use in the tool; fixtures byte-identical
+REJECTED 1/11
+FAIL o1 clean fixture ready with exact totals, trace matrix and G17 finish
+FAIL o2 invented and out-of-scope commitments blocked
+FAIL o3 estimate reconciles to the cent; fixed price needs high bound and confirmed assumptions
+FAIL o4 vague wording and unmeasured criteria escalated; open escalation blocks commitments
+FAIL o5 capability without passing, unchanged, dated demo evidence is not offered
+FAIL o6 delivery date needs an identical G17 rerun with a feasible downside finish on or before it
+FAIL o7 acceptance needs passing, unchanged evidence for every criterion of a ready scope
+FAIL o8 11 invalid packages and an unknown delivery criterion refused, nothing written
+FAIL o9 --out and verify; tampered or truncated results detected; failed run keeps the earlier result
+    unseen 3 (n=171, flaws ['vague', 'silent', 'untrace', 'open', 'nodemo']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CF70'), ('commitment_on_blocked_requirement', 'CS')]
+    unseen 4 (n=138, flaws ['untrace', 'missing_dep']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('missing_dependency', 'R20')]
+    unseen 5 (n=164, flaws ['unknown_trace', 'noac', 'untrace', 'vague']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CF40'), ('commitment_on_blocked_requirement', 'CS')]
+    unseen 6 (n=170, flaws ['missing_dep', 'resolved', 'price_off']): rc 0 want 1; extra [] missing [('estimate_mismatch', 'price.low'), ('missing_dependency', 'R61')]
+    unseen 7 (n=193, flaws ['vague', 'early', 'nodemo', 'tamper']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('undemonstrated_capability', 'R84')]
+    unseen 8 (n=156, flaws ['open', 'invented', 'fixed_ok']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('invented_commitment', 'CX')]
+    unseen 9 (n=152, flaws ['nodemo', 'fixed_ok']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('undemonstrated_capability', 'R66')]
+    unseen 10 (n=189, flaws ['invented', 'nodemo', 'open', 'vague', 'noac']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('invented_commitment', 'CX')]
+    unseen 11 (n=121, flaws ['open', 'noac', 'resolved', 'silent']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('no_acceptance_criteria', 'R90')]
+FAIL o10 12 seeded unseen packages (120 to 200 requirements, planted flaws) match exactly
+PASS s1 no network, mail or process use in the tool; fixtures byte-identical
+REJECTED 1/11
+-- pycache dirs in copy: 0; tree changed: no; HOME entries: ./Library ./Library/Caches ./Library/Caches/com.apple.python 
+== 3.13.15 demo exit 1
+check clinic-portal: READY (owner Account lead (synthetic role))
+estimate range: hours {'low': '230', 'likely': '310', 'high': '440'}, price {'low': '34500.00', 'high': '66000.00'} at 150.00/h
+  C1 (scope) -> A1, A2, IN1, IN2, IN3 [conditional on A2]
+  C2 (estimate) -> A1, A2, IN1, IN2, IN3 [conditional on A2]
+  C3 (date) -> A1, A2, IN1, IN2, IN3, IN4 [conditional on A2]
+  C4 (feature) -> IN3
+{
+ "as_of": "2026-10-06",
+ "capacity_finish": "2027-02-07",
+ "command": "check",
+ "conditions": [
+  "A2"
+ ],
+ "engagement": "clinic-portal",
+ "escalations": [],
+ "estimate": {
+  "hours": {
+   "high": "440",
+   "likely": "310",
+   "low": "230"
+  },
+  "price": {
+   "high": "66000.00",
+   "low": "34500.00"
+  },
+  "rate_per_hour": "150.00",
+  "type": "range"
+ },
+ "excluded": [
+  "R5"
+ ],
+ "findings": [],
+ "note": "draft for the owner; no commitment is made, sent or signed by this tool",
+ "owner": "Account lead (synthetic role)",
+ "package_sha256": "e269bdf60a89582a02a7ad50430c7eafb3c84077ee0462cf92ef80597ed1e9ed",
+ "read_only": true,
+ "schema": "solaris.scope-report/1",
+ "scope": [
+  "R1",
+  "R2",
+  "R3",
+  "R4"
+ ],
+ "status": "ready",
+ "trace_matrix": [
+  {
+   "commitment": "C1",
+   "conditional_on": [
+    "A2"
+   ],
+   "kind": "scope",
+   "refs": [
+    "R1",
+    "R2",
+    "R3",
+    "R4"
+   ],
+   "sources": [
+    "A1",
+    "A2",
+    "IN1",
+    "IN2",
+    "IN3"
+   ]
+  },
+  {
+   "commitment": "C2",
+   "conditional_on": [
+    "A2"
+   ],
+   "kind": "estimate",
+   "refs": [
+    "R1",
+    "R2",
+    "R3",
+    "R4"
+   ],
+   "sources": [
+    "A1",
+    "A2",
+    "IN1",
+    "IN2",
+    "IN3"
+   ]
+  },
+  {
+   "commitment": "C3",
+   "conditional_on": [
+    "A2"
+   ],
+   "kind": "date",
+   "refs": [
+    "IN4",
+    "R1",
+    "R2",
+    "R3",
+    "R4"
+   ],
+   "sources": [
+    "A1",
+    "A2",
+    "IN1",
+    "IN2",
+    "IN3",
+    "IN4"
+   ]
+  },
+  {
+   "commitment": "C4",
+   "conditional_on": [],
+   "kind": "feature",
+   "refs": [
+    "R3"
+   ],
+   "sources": [
+    "IN3"
+   ]
+  }
+ ]
+}
+accept clinic-portal: ACCEPTED (owner Account lead (synthetic role))
+  R1: accepted
+  R2: accepted
+  R3: accepted
+  R4: accepted
+PASS o1 clean fixture ready with exact totals, trace matrix and G17 finish
+PASS o2 invented and out-of-scope commitments blocked
+PASS o3 estimate reconciles to the cent; fixed price needs high bound and confirmed assumptions
+PASS o4 vague wording and unmeasured criteria escalated; open escalation blocks commitments
+PASS o5 capability without passing, unchanged, dated demo evidence is not offered
+PASS o6 delivery date needs an identical G17 rerun with a feasible downside finish on or before it
+PASS o7 acceptance needs passing, unchanged evidence for every criterion of a ready scope
+PASS o8 11 invalid packages and an unknown delivery criterion refused, nothing written
+PASS o9 --out and verify; tampered or truncated results detected; failed run keeps the earlier result
+PASS o10 12 seeded unseen packages (120 to 200 requirements, planted flaws) match exactly
+PASS s1 no network, mail or process use in the tool; fixtures byte-identical
+ACCEPTED 11/11
+FAIL o1 clean fixture ready with exact totals, trace matrix and G17 finish
+FAIL o2 invented and out-of-scope commitments blocked
+FAIL o3 estimate reconciles to the cent; fixed price needs high bound and confirmed assumptions
+FAIL o4 vague wording and unmeasured criteria escalated; open escalation blocks commitments
+FAIL o5 capability without passing, unchanged, dated demo evidence is not offered
+FAIL o6 delivery date needs an identical G17 rerun with a feasible downside finish on or before it
+FAIL o7 acceptance needs passing, unchanged evidence for every criterion of a ready scope
+FAIL o8 11 invalid packages and an unknown delivery criterion refused, nothing written
+FAIL o9 --out and verify; tampered or truncated results detected; failed run keeps the earlier result
+    unseen 3 (n=171, flaws ['vague', 'silent', 'untrace', 'open', 'nodemo']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CF70'), ('commitment_on_blocked_requirement', 'CS')]
+    unseen 4 (n=138, flaws ['untrace', 'missing_dep']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('missing_dependency', 'R20')]
+    unseen 5 (n=164, flaws ['unknown_trace', 'noac', 'untrace', 'vague']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CF40'), ('commitment_on_blocked_requirement', 'CS')]
+    unseen 6 (n=170, flaws ['missing_dep', 'resolved', 'price_off']): rc 0 want 1; extra [] missing [('estimate_mismatch', 'price.low'), ('missing_dependency', 'R61')]
+    unseen 7 (n=193, flaws ['vague', 'early', 'nodemo', 'tamper']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('undemonstrated_capability', 'R84')]
+    unseen 8 (n=156, flaws ['open', 'invented', 'fixed_ok']): rc 1 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('open_ambiguity', 'R128')]
+    unseen 9 (n=152, flaws ['nodemo', 'fixed_ok']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('undemonstrated_capability', 'R66')]
+    unseen 10 (n=189, flaws ['invented', 'nodemo', 'open', 'vague', 'noac']): rc 1 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('no_acceptance_criteria', 'R85')]
+    unseen 11 (n=121, flaws ['open', 'noac', 'resolved', 'silent']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('no_acceptance_criteria', 'R90')]
+FAIL o10 12 seeded unseen packages (120 to 200 requirements, planted flaws) match exactly
+PASS s1 no network, mail or process use in the tool; fixtures byte-identical
+REJECTED 1/11
+FAIL o1 clean fixture ready with exact totals, trace matrix and G17 finish
+FAIL o2 invented and out-of-scope commitments blocked
+FAIL o3 estimate reconciles to the cent; fixed price needs high bound and confirmed assumptions
+FAIL o4 vague wording and unmeasured criteria escalated; open escalation blocks commitments
+FAIL o5 capability without passing, unchanged, dated demo evidence is not offered
+FAIL o6 delivery date needs an identical G17 rerun with a feasible downside finish on or before it
+FAIL o7 acceptance needs passing, unchanged evidence for every criterion of a ready scope
+FAIL o8 11 invalid packages and an unknown delivery criterion refused, nothing written
+FAIL o9 --out and verify; tampered or truncated results detected; failed run keeps the earlier result
+    unseen 3 (n=171, flaws ['vague', 'silent', 'untrace', 'open', 'nodemo']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CF70'), ('commitment_on_blocked_requirement', 'CS')]
+    unseen 4 (n=138, flaws ['untrace', 'missing_dep']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('missing_dependency', 'R20')]
+    unseen 5 (n=164, flaws ['unknown_trace', 'noac', 'untrace', 'vague']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CF40'), ('commitment_on_blocked_requirement', 'CS')]
+    unseen 6 (n=170, flaws ['missing_dep', 'resolved', 'price_off']): rc 0 want 1; extra [] missing [('estimate_mismatch', 'price.low'), ('missing_dependency', 'R61')]
+    unseen 7 (n=193, flaws ['vague', 'early', 'nodemo', 'tamper']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('undemonstrated_capability', 'R84')]
+    unseen 8 (n=156, flaws ['open', 'invented', 'fixed_ok']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('invented_commitment', 'CX')]
+    unseen 9 (n=152, flaws ['nodemo', 'fixed_ok']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('undemonstrated_capability', 'R66')]
+    unseen 10 (n=189, flaws ['invented', 'nodemo', 'open', 'vague', 'noac']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('invented_commitment', 'CX')]
+    unseen 11 (n=121, flaws ['open', 'noac', 'resolved', 'silent']): rc 0 want 1; extra [] missing [('commitment_on_blocked_requirement', 'CD'), ('commitment_on_blocked_requirement', 'CE'), ('commitment_on_blocked_requirement', 'CS'), ('no_acceptance_criteria', 'R90')]
+FAIL o10 12 seeded unseen packages (120 to 200 requirements, planted flaws) match exactly
+PASS s1 no network, mail or process use in the tool; fixtures byte-identical
+REJECTED 1/11
+-- pycache dirs in copy: 0; tree changed: no; HOME entries: 
