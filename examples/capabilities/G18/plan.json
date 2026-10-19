@@ -1,0 +1,104 @@
+{
+ "schema": "solaris.daily-integration/1",
+ "goal": "G18",
+ "base": "02ba9c571b10ad1dba792d2ac5534bcad3171e67",
+ "writable": [
+  "employees/quality-security/assurance/**",
+  "employees/quality-security/qa-engineer/**",
+  "examples/capabilities/G18/**",
+  "tests/test_g18_capability.py"
+ ],
+ "prerequisites": [
+  {
+   "id": "G03",
+   "commit": "d4d98f2180ed9b92fd058a2350285f60f83b877d",
+   "note": "carried by G11 (snapshot verification)",
+   "tests": [
+    "tests.test_g03_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G03/recovery_oracle.py",
+     "--",
+     "{python}",
+     "employees/infrastructure/database-administrator/sqlite_recovery.py"
+    ]
+   ]
+  },
+  {
+   "id": "G10",
+   "commit": "f79be61580dec0911f6aba56c3bdc746a30898e7",
+   "tests": [
+    "tests.test_g10_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G10/diagnosis_oracle.py",
+     "--",
+     "{python}",
+     "employees/infrastructure/network-engineer/netdiag.py"
+    ]
+   ]
+  },
+  {
+   "id": "G11",
+   "commit": "13ba7055537e305732856aea3c74ff28f0848be8",
+   "tests": [
+    "tests.test_g11_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G11/incident_oracle.py",
+     "--",
+     "{python}",
+     "employees/infrastructure/site-reliability-engineer/incident_slo.py"
+    ]
+   ]
+  },
+  {
+   "id": "G13",
+   "commit": "5666e7beb161d1252ddd5dcc0a166aca83255370",
+   "tests": [
+    "tests.test_g13_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G13/reconcile_oracle.py",
+     "--tool",
+     "{python} employees/data/data-engineer/csv_reconcile.py"
+    ]
+   ]
+  },
+  {
+   "id": "G14",
+   "commit": "6f7b23aa18413907c5fbd250daab475dc94e7a1e",
+   "tests": [
+    "tests.test_g14_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G14/cash_oracle.py",
+     "--",
+     "{python}",
+     "employees/leadership/cfo/cash_revenue_reconcile.py"
+    ]
+   ]
+  }
+ ],
+ "external": [
+  {
+   "id": "P03",
+   "source_commit": "bee80893c03beca8dcff9a7c77df15744ec9f370",
+   "reply_url": "https://github.com/mitsuhiko/insta/pull/949#issuecomment-6273297282",
+   "reply_sha256": "9fe714a4a8208a42cdcec81a612c7a5b11d89fbbc57763d2cbc9fdf9fd7888fe",
+   "validation_id": "R03",
+   "validation_manifest_sha256": "c27e1dd332029ee23c872b2b91e516f4f36584d91594f3900e4c7e6033b7a434",
+   "consumes": "mitsuhiko/insta#949 follow-up: narrowed normalization keeps both maintainer counterexamples failing (read only; outside this repository)"
+  }
+ ],
+ "cross_checks": [
+  [
+   "examples/capabilities/G18/cross_checks.py"
+  ]
+ ]
+}
