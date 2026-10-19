@@ -184,6 +184,13 @@ NOT assessed: DAST on prod (no authz), mobile client, social-eng. Gate: passed
 20. Prioritized remediation plan (P0 / P1 / P2 / P3)
 21. Retest schedule
 
+### Duplicate-effect and tenant-boundary probe (local instance only)
+For an API that follows the ledger contract in `engineering/backend-developer/duplicate-safe-api.md` (reference: `ledger_api.py`).
+1. Start a **disposable** local instance with synthetic principals; never a live or shared target. The probe refuses any non-loopback URL before it sends a request.
+2. `python3 boundary_probe.py --base-url http://127.0.0.1:PORT --principals FILE --json --out REPORT`. B1-B10: concurrent and sequential replay, overspend race, cross-tenant read/list/pay/void, tenant smuggling, per-tenant keys, key reuse, 401/403.
+3. Exit 1 lists findings with CWE, severity and evidence from this run; exit 3 means the target did not behave like a working API, so report "inconclusive", not "secure".
+4. After a fix, re-run the probe and the backend `check`; report CLOSED/REOPEN per check.
+
 ### SOC 2 readiness pass
 1. Gap assessment against TSC controls
 2. Policy + procedure inventory
@@ -230,6 +237,7 @@ For a quick check, a prototype, an early-stage repo, or a time-boxed spot-review
 | Incident response | SRE + DevOps | Containment + recovery |
 | Legal / privacy | Legal Advisor | Data protection |
 | Mobile security | Mobile Developer | MASVS compliance |
+| Replay or cross-tenant finding from `boundary_probe.py` | Backend Developer | Fix with Workflow I (`duplicate-safe-api.md`), then re-probe |
 
 ---
 

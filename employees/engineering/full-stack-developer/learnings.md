@@ -22,6 +22,10 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 
 ---
 
+- **2026-10-18 - G19 duplicate-safe API**: a retried UI action must reuse its `Idempotency-Key`; a new key per click makes a second payment on the server even when the server is correct. *Proposed rule: generate the key once per user action and keep it across retries.* Tags: [#api], [#backend]
+
+---
+
 ## Promotion log
 
 | Date | Observation → Promoted rule | Rule location |

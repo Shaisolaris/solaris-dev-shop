@@ -24,6 +24,10 @@
 - Doctrine: vendor diversity (Trivy + OSV-Scanner side by side) is itself a supply-chain control - do not let one scanner's supply chain be a single point of failure.
 
 - **2026-08-13 - named-heading protocol**: measured D5 gap was job-two omitting contract-required artifact headings; closed by named-heading protocol in `job-two-improvement.md`.
+## 2026-10-18 - G19 duplicate-effect and tenant-boundary probe
+- `boundary_probe.py` (B1-B10) against a local instance only; non-loopback URLs are refused before any request.
+- A lost update can hide a duplicate payment under concurrency (two replays overwrite each other and the total looks right). B2 adds sequential replays after the parallel burst.
+- Report exit 3 as inconclusive: a target that does not persist anything passes every "nothing leaked" check.
 ## Sources
 
 - Upstream: Semgrep (license not recorded); OSV (license not recorded); gitleaks (license not recorded); OWASP pytm (license not recorded); Nuclei (license not recorded)

@@ -15,7 +15,8 @@
     "jvm-and-nestjs-language-packs.md",
     "cursor-rules-scaffolds.md",
     "python-toolchain-and-typed-api-stack.md",
-    "codemod-migration-playbook.md"
+    "codemod-migration-playbook.md",
+    "duplicate-safe-api.md"
   ],
   "tags": [
     "engineering",
