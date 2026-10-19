@@ -1,0 +1,14 @@
+Mon Oct 19 03:05:05 PDT 2026
+candidate 6c51c3c07558d766d49ad25bd0953285c4568455 parent 78daf30ff479c35a5cb59d9a544ee89e530cd100
+02ba9c571b10ad1dba792d2ac5534bcad3171e67	refs/heads/main
+5666e7beb161d1252ddd5dcc0a166aca83255370	refs/heads/review/grok-g13-csv-reconciliation
+6c51c3c07558d766d49ad25bd0953285c4568455	refs/heads/review/grok-g15-experiment-readout
+fast-forward from r1 78daf30: yes
+patch sha 096d098d6f738ae9d014343cde57e80f54efe06ec014bb4c86c9a514b6b5b1cd diff sha 096d098d6f738ae9d014343cde57e80f54efe06ec014bb4c86c9a514b6b5b1cd
+manifest entries 7 mismatches 0
+manifest set == diff set
+M15 patch applies to r1
+MISSING:    different base rates can reverse the sign of the effect (Simpson). `allocation_by_week` in the
+MISSING:    JSON shows the worst week.
+MISSING:         trace.append(f"allocation drifted over the cohort: week {drift['worst_week']} has {drift['worst_week_units'][0]}/{drift['worst_week_units'][1]} against planned {P['split'][0]}/{P['split'][1]} (p {drift['p_value']}, Bonferroni over {drift['weeks_tested']} weeks); the pooled comparison mixes periods with different base rates, no effect is read")
+added-line check done
