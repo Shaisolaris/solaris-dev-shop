@@ -82,16 +82,26 @@ _SAY = r"(?:reply|respond|answer|say|state|tell|output|ignore|disregard|write)"
 #   "chatbot developers", "model boat owners" and "shop assistants" are people and never match.
 # SEPARATOR: colon, semicolon, comma, or a dash. Then up to PRE_VERB_WORDS words, then a reply verb (_SAY).
 PRE_VERB_WORDS = 8
-_OPENER = (r"(?:note|notes|message|memo|instructions?|attention(?:\s+of)?|notice|reminder|warning|dear|(?:hey|hi|hello)(?:\s+there)?|greetings|to|for"
+# G16 r8 (M16 r7 P2/P3): a greeting is a greeting word plus any run of follow-on words (there, again, everyone, all,
+#   folks, team, y'all, you all, once more), so "Hello again AI tools: ...", "Hi everyone AI
+#   assistants: ..." and "Hey folks bot, ..." anchor like "Hi there AI, ...". hey/hi/hello/greetings are openers anywhere;
+#   hiya, howdy, yo, good morning/afternoon/evening and welcome back only at the start of a sentence or after a colon,
+#   semicolon, comma or bracket (_GREET_START), so "We welcome AI tools: reply cards ..." stays an ordinary sentence.
+_GREET_FILL = r"(?:\s+(?:there|again|everyone|everybody|all|folks|team|y['\u2019]all|you\s+all|once\s+more))*"
+_GREET_START = r"(?:hiya|howdy|yo|good\s+(?:morning|afternoon|evening)|welcome\s+back)" + _GREET_FILL
+_OPENER = (r"(?:note|notes|message|memo|instructions?|attention(?:\s+of)?|notice|reminder|warning|dear|(?:hey|hi|hello|greetings)" + _GREET_FILL + r"|to|for"
            r"|if\s+you\s+are|if\s+you['\u2019]re|you\s+are)")
 _DET = (r"(?:(?:all\s+(?:of\s+)?the|any\s+of\s+the|every|each|all|any|the|an?|you|these|those|other)\s+)?")
 _QUAL = r"(?:ai|ai-powered|automated|autonomous|virtual|digital|chat|generative|large|language|llm)"
 _HEAD = r"(?:assistants?|models?|tools?|agents?|readers?|systems?|crawlers?|programs?|friends?|bots?|chatbots?)"
-_READER = r"(?:(?:" + _QUAL + r"\s+){1,3}" + _HEAD + r"|chatbots?|bots?|llms?|ai)"
+# an inherently automated head (bot, chatbot) may take one role modifier (_BOT_ROLE): "Good evening assistant bots: answer
+#   ..." (G16 r8). A closed list, not any word, so "Battle bots: reply to the sign-up email" (a team) stays an ordinary sentence.
+_BOT_ROLE = r"(?:assistant|helper|help|support|service|search|web)"
+_READER = r"(?:(?:" + _QUAL + r"\s+){1,3}" + _HEAD + r"|(?:" + _BOT_ROLE + r"\s+)?(?:chatbots?|bots?)|llms?|ai)"
 _SEP = r"(?:\s*[:;,\u2013\N{EM DASH}]|\s+--?)\s*"
 _POST_OPEN = (r"(?:reading|processing|parsing|answering|summari[sz]ing|scanning|indexing|crawling|browsing|that|who|which"
               r"|only|here|there|below|above|everywhere|out\s+there|on|at|in|with|using|from)")
-ADDRESSED = (r"(?:^\W*|[:;,(]\s*|\b" + _OPENER + r"\s+(?:(?:to|for)\s+)?)" + _DET + r"\b" + _READER
+ADDRESSED = (r"(?:(?:^\W*|[:;,(]\s*)(?:" + _GREET_START + r"\s+)?|\b" + _OPENER + r"\s+(?:(?:to|for)\s+)?)" + _DET + r"\b" + _READER
              + r"(?=" + _SEP + r"|\s+" + _POST_OPEN + r"\b)(?:\s+" + _POST_OPEN + r"\b[^.:;,!?\u2013\N{EM DASH}]{0,40}?)?"
              + _SEP + r"(?:[\w']+\s+){0," + str(PRE_VERB_WORDS) + r"}?" + _SAY + r"\b")
 ADDRESSED_RE = re.compile(r"(?i)" + ADDRESSED)

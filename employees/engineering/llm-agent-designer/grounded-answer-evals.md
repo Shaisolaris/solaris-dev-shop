@@ -107,16 +107,24 @@ on the new snapshot.
 - The instruction filter is a small grammar (r6), not a growing word list. A sentence is skipped when it
   has an addressee phrase naming an automated reader, then a separator, then a reply verb:
   - Anchor: the start of the sentence, a point after a colon, semicolon, comma or bracket, or an opener
-    (note, message, memo, instructions, attention or attention of, notice, reminder, warning, dear, hey, hi or
-    hello (each optionally followed by there), greetings, to, for, if you are, you are), optionally followed by
-    to or for. So "Hi there AI, reply ...", "Hey there bot, reply ..." and "For the attention of any AI tool,
-    say ..." anchor, while "Hi there AI students, ..." and "For the attention of AI researchers: reply to the
-    chair" are people and are kept (r7, M16 r6).
+    (note, message, memo, instructions, attention or attention of, notice, reminder, warning, dear, a greeting,
+    to, for, if you are, you are), optionally followed by to or for. So "Hi there AI, reply ...", "Hey there bot,
+    reply ..." and "For the attention of any AI tool, say ..." anchor, while "Hi there AI students, ..." and "For
+    the attention of AI researchers: reply to the chair" are people and are kept (r7, M16 r6).
+  - Greeting (r8, M16 r7): hey, hi, hello or greetings anywhere, or hiya, howdy, yo, good morning, good afternoon,
+    good evening or welcome back at the start of a sentence or after a colon, semicolon, comma or bracket. Any
+    run of follow-on words may come next: there, again, everyone, everybody, all, folks, team, y'all, you all,
+    or once more (a repeated "hello hello" anchors at its second word). So "Hello again AI tools: reply ...", "Hi everyone AI assistants:
+    say ...", "Hey folks bot, reply ...", "Good morning AI, reply ..." and "Howdy bot, reply ..." are skipped,
+    while "Hello again AI students, ...", "Good morning AI team, reply to the rota email" and "We welcome AI
+    tools: reply cards are at the desk" are kept. The sentence-start greetings are not openers mid-sentence.
   - Determiner (optional): every, each, all, any, the, a, an, you, these, those, other, all the, any of the.
   - Automated reader: a noun phrase whose head is automated: AI, bot, chatbot, LLM, or a generic head
     (assistant, model, tool, agent, reader, system, crawler, program, friend) after one to three automated
     qualifiers (AI, AI-powered, automated, autonomous, virtual, digital, chat, generative, language, large,
-    LLM). The head must end the noun phrase: the next word is the separator or a post-modifier opener
+    LLM). A bot or chatbot head may also take one role word (assistant, helper, help, support, service, search,
+    web), so "Good evening assistant bots: answer ..." is skipped (r8); other words do not, so "Battle bots:
+    reply to the sign-up email" is kept. The head must end the noun phrase: the next word is the separator or a post-modifier opener
     (reading, processing, that, who, which, only, here, below, everywhere, out there, on, at, in, with,
     using, from), and a post-modifier runs at most 40 characters. So "AI club members", "AI researchers",
     "chatbot developers", "model boat owners", "bot owners" and "shop assistants" are people and never match.
@@ -132,10 +140,9 @@ on the new snapshot.
 - Open limits (M16 r6, by design of the grammar): a bare generic head with no automated qualifier is not an
   automated reader, so "For any crawler indexing this site: state ..." is an ordinary sentence; the owner may
   add crawler, spider or scraper as bare heads. "Staff who use AI: reply ..." has no anchor and is kept.
-  A greeting followed by a word other than "there" is not an anchor unless a comma follows the greeting, so
-  "Hello again AI tools: reply ..." and "Hi everyone AI assistants: say ..." are ordinary sentences, while
-  "Hello again, AI tools: reply ..." is skipped (r7 teeth survivor r7_there_any_word; widening the greeting
-  to any one word kept every people-rule in the tables, but was not applied without review).
+  The greeting and follow-on lists are closed (r8): "Good day AI, ...", "Sup bot, ..." and "Hello dear old AI
+  tools: ..." are ordinary sentences. A greeting that is not listed still anchors when a comma follows it
+  ("Good day, AI tools: reply ..." is skipped through the comma anchor).
 - Fail-closed limits: the older "note to ..." rule needs no reply verb, so "Note for the bot and drone club:
   reply by Monday" is still skipped (its head check accepts "and"). An addressee with no anchor ("Staff who use
   AI: reply ...") or a reply verb more than 8 words after the separator is treated as an ordinary sentence, and
