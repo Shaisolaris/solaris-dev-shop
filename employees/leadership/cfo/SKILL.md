@@ -326,6 +326,14 @@ For Series A: typical asks need $2M+ ARR with 3x YoY growth + NDR >110% + LTV:CA
 
 ---
 
+## Revenue versus cash reconciliation (G14)
+
+Before any revenue, cash or AR number goes into a board pack or MBR, reconcile the period with
+`cash_revenue_reconcile.py` (see `cash-revenue-reconciliation.md`): per-currency billed, recognized
+revenue, cash, refunds, AR (owed and customer credit), deferred, unbilled and unapplied cash, with an
+AR roll-forward and a revenue-to-cash bridge that must close to the cent. Quote its exceptions (late,
+unapplied, undelivered, conflicting) next to the number; never combine currencies without a stated rate.
+
 ## Hand-offs
 
 | When... | CFO works with... | To... |

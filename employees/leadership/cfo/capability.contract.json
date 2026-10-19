@@ -263,6 +263,7 @@
   "dependencies": {
     "references": [
       "SKILL.md",
+      "cash-revenue-reconciliation.md",
       "rules.md",
       "../RUNTIME-POLICY.md",
       "../decision-quality-protocol-2026.md",
@@ -271,7 +272,9 @@
       "bootstrapped-cfo-lens-2026.md",
       "filings-and-market-data-tooling.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "cash_revenue_reconcile.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -386,7 +389,7 @@
     "redaction": "Strip secrets, tokens, raw emails/phones, and connector payloads from receipts",
     "forward_tests": [
       "synthetic cfo brief produces typed deliverable + gate without external mutation",
-      "fixtures/evaluation/leadership-operations/cfo/"
+      "examples/capabilities/G14/fixtures/ (clean and september books; tests/test_g14_capability.py)"
     ],
     "receipts": [
       "draft paths",
@@ -472,12 +475,13 @@
     ],
     "forward_tests": [
       "fixtures/solaris/business/forward/*",
-      "fixtures/evaluation/leadership-operations/cfo/"
+      "examples/capabilities/G14/fixtures/clean (clean control, exit 0) and september (partial payments, refunds, credit notes, three currencies, late and missing evidence)",
+      "tests/test_g14_capability.py"
     ],
     "adversarial_tests": [
       "fixtures/solaris/business/adversarial/*",
-      "fixtures/evaluation/leadership-operations/cfo/adversarial.json",
-      "fixtures/evaluation/leadership-operations/cfo/high-stakes-escalation.json"
+      "examples/capabilities/G14/cash_oracle.py (naive cash-basis and no-op controls must be REJECTED)",
+      "examples/capabilities/G14/cash_oracle.py o10: invalid packages refused with exit 2 and the previous report kept"
     ],
     "acceptance_rubric": "L2 contract valid for four providers; decision record fields present; external actions require_human; high-stakes finance/legal bounded"
   },
