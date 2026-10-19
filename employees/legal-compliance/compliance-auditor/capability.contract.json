@@ -270,6 +270,7 @@
   "dependencies": {
     "references": [
       "SKILL.md",
+      "privacy-inventory.md",
       "rules.md",
       "learnings.md",
       "plugin.json",
@@ -278,7 +279,9 @@
       "probo-grc-patterns.md",
       "../../quality-security/QUALITY-SECURITY-STANDARD.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "privacy_inventory.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -376,7 +379,8 @@
     "redaction": "Strip secrets, client private counsel materials, emails/phones",
     "forward_tests": [
       "synthetic SOC2/ISO gap fixture produces matrix with evidence columns",
-      "missing evidence forces Gap/Unknown not Compliant"
+      "missing evidence forces Gap/Unknown not Compliant",
+      "synthetic privacy inventory: every actual field mapped, retention due by anchor, access/deletion/correction traced to records, unverified requests disclose nothing, qualified-review items visible (tests/test_g37_capability.py)"
     ],
     "receipts": [
       "matrix path",
@@ -491,7 +495,8 @@
       "depth-2026-06.md",
       "healthcare-dev-compliance.md",
       "probo-grc-patterns.md",
-      "../../quality-security/QUALITY-SECURITY-STANDARD.md"
+      "../../quality-security/QUALITY-SECURITY-STANDARD.md",
+      "privacy-inventory.md"
     ]
   }
 }

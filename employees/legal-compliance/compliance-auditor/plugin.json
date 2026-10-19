@@ -9,6 +9,7 @@
   ],
   "references": [
     "rules.md",
+    "privacy-inventory.md",
     "learnings.md",
     "probo-grc-patterns.md",
     "healthcare-dev-compliance.md",

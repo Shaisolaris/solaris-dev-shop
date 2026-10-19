@@ -1,0 +1,10 @@
+{"request_id": "R1", "type": "access", "subject": "K1", "received_at": "2026-09-10T09:00:00Z", "identity_verified": true, "jurisdiction": "EU-GDPR", "closed_at": "2026-09-20T09:00:00Z"}
+{"request_id": "R1", "type": "access", "subject": "K1", "received_at": "2026-09-10T09:00:00Z", "identity_verified": true, "jurisdiction": "EU-GDPR", "closed_at": "2026-09-20T09:00:00Z"}
+{"request_id": "R2", "type": "deletion", "subject": "K2", "received_at": "2026-08-01T09:00:00Z", "identity_verified": true, "jurisdiction": "US-CA-CCPA"}
+{"request_id": "R3", "type": "access", "subject": "K3", "received_at": "2026-09-25T09:00:00Z", "identity_verified": false, "jurisdiction": "EU-GDPR"}
+{"request_id": "R4", "type": "correction", "subject": "K4", "received_at": "2026-01-31T09:00:00Z", "identity_verified": true, "jurisdiction": "EU-GDPR", "closed_at": "2026-03-01T09:00:00Z"}
+{"request_id": "R5", "type": "deletion", "subject": "K404", "received_at": "2026-09-28T09:00:00Z", "identity_verified": true, "jurisdiction": "EU-GDPR"}
+{"request_id": "R6", "type": "access", "subject": "K1", "received_at": "2026-09-29T09:00:00Z", "identity_verified": true, "jurisdiction": "BR-LGPD"}
+{"request_id": "R7", "type": "access", "subject": "K4", "received_at": "2026-09-29T09:00:00Z", "identity_verified": true, "jurisdiction": "EU-GDPR"}
+{"request_id": "R7", "type": "deletion", "subject": "K4", "received_at": "2026-09-29T09:00:00Z", "identity_verified": true, "jurisdiction": "EU-GDPR"}
+{"request_id": "R8", "type": "erase-everything"}

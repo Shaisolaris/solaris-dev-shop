@@ -1,6 +1,7 @@
 # Legal Advisor - Learnings (Pending)
 
 ## Pending observations
+- **2026-10-19 - G37 privacy handoff**: response clocks differ in kind, not only length (one month that clamps to the month end versus 45 days). *Proposed rule: keep clocks as sourced configuration and send each to counsel, never hard-code them.*
 - **2026-04-25 - Clean rebuild from msitarzewski legal pod**: Engagement letter + conflict check + redline-with-risk-assessment + IP assignment (for every contractor) are the consistent legal disciplines.
 - **2026-04-25 - Limitation of Liability with carve-outs** (IP indemnification + confidentiality + gross negligence) is the most negotiated and most-critical contract clause.
 
