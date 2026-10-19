@@ -16,9 +16,11 @@ the state lock (nothing written); 75 crash drill (`--fail-at drafted|ledgered`).
 
 - Account (schema `solaris.cs-account/1`): `account_id`, `owner`, `contacts` [{id, name, handle, consent
   granted|unknown}]. Handles are opaque ids; the sending system maps them to addresses. Every contact
-  needs a handle, and the handle names the person: two contacts whose handles match once case, spacing and
-  character width are ignored are one person imported twice, and the account is refused (exit 2, nothing
-  written) until the duplicate import is merged.
+  needs a handle, and the handle names the person: two contacts whose handles match once case, spacing,
+  character width and Unicode format characters (zero-width space, soft hyphen, ...) are ignored are one
+  person imported twice, and the account is refused (exit 2, nothing written) until the duplicate import
+  is merged. Plus-addressing, dots inside the local part, Cyrillic/Greek look-alikes and domain aliases
+  are NOT matched; resolve those in the CRM before import.
 - Events: JSON lines with `id`, `type`, `at` (ISO time with offset) and, by type, `contact`, `thread`,
   `scope`, `kind` or `owner`. Types: signup, ticket_opened, agent_response, reply_received, ticket_closed,
   opt_out (scope all|marketing), opt_in, bounce (kind hard|soft), owner_change. An exact redelivered line
@@ -37,7 +39,9 @@ the state lock (nothing written); 75 crash drill (`--fail-at drafted|ledgered`).
   contact record carrying that handle), not only the record id the event named; an
   opt-out with scope marketing suppresses onboarding and feedback but not support replies to the customer's own
   ticket. Contacts with consent `unknown` get no onboarding or feedback. Suppression is permanent: a later
-  `opt_in` is reported as `consent_review_required` and changes nothing.
+  `opt_in` is reported as `consent_review_required` and changes nothing. Suppressions are also written to
+  `person_suppressions.jsonl` in the state folder, so a CRM identity or history merge that drops the old
+  opt-out event still keeps the person suppressed on the next run.
 - **Reply state**: a reply on the thread after our response cancels that response's nudge; a closed ticket
   cancels it too; a reply on the onboarding thread cancels the check-in (not the training invite).
 - **Withdrawal**: a draft already written for an action that is now suppressed or cancelled is rewritten with

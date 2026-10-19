@@ -220,8 +220,10 @@ class G32Capability(unittest.TestCase):
         self.assertEqual(sorted(k for k in self.drafts() if k[0] == 'c-ana'), [('c-ana', 'welcome', 'E01')])
         self.ev = [e for e in self.ev if e['id'] != 'E09']  # the opt-out line is later lost from the log
         r = self.run_(N2)
-        self.assertEqual([(x['contact'], x['action'], x['reason']) for x in r['withdrawn']], [('c-dee', 'welcome', 'withdrawn earlier; never redrafted')])
+        # Durable person_suppressions keep the opt-out; no new draft for c-dee, withdrawn file kept.
+        self.assertEqual(r['drafted'], [])
         self.assertEqual(self.drafts()[('c-dee', 'welcome', 'E04')]['status'], 'withdrawn')
+        self.assertIn(('c-dee', 'welcome'), self.acts(r, 'suppressed') + self.acts(r, 'withdrawn'))
 
     def test_status(self):
         self.run_(N1, 'w1'); self.run_(N2, 'w2')
@@ -285,6 +287,31 @@ class G32Capability(unittest.TestCase):
         self.assertIn('consent-follow-through.md', c['dependencies']['references'])
         for role in ('sales-outreach/outreach-specialist', 'marketing/email-specialist'):
             self.assertIn('followthrough.py', (ROOT / 'employees' / role / 'SKILL.md').read_text())
+
+
+    def test_format_chars_and_durable_suppression(self):
+        """Format characters do not mint a new person; CRM merge without opt-out history stays suppressed."""
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('g32_ft', str(TOOL)); m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        self.assertEqual(m.person_key('ana@clinic.example'), m.person_key('ana\u200b@clinic.example'))
+        self.assertEqual(m.person_key('ana@clinic.example'), m.person_key('ana\u00ad@clinic.example'))
+        self.acc = {"schema": "solaris.cs-account/1", "account_id": "ac1", "owner": "ops",
+                    "contacts": [{"id": "c-ana", "name": "Ana", "handle": "ana@clinic.example", "consent": "granted"}]}
+        self.ev = [
+            {"id": "e1", "type": "signup", "contact": "c-ana", "at": "2026-05-01T00:00:00+00:00"},
+            {"id": "e2", "type": "opt_out", "contact": "c-ana", "scope": "all", "at": "2026-05-02T00:00:00+00:00"},
+        ]
+        r1 = self.run_("2026-06-01T00:00:00+00:00")
+        self.assertEqual(r1["drafted"], [])
+        self.assertEqual(r1["suppressed_contacts"], ["c-ana"])
+        self.assertTrue((self.s / "person_suppressions.jsonl").is_file())
+        self.acc = {"schema": "solaris.cs-account/1", "account_id": "ac1", "owner": "ops",
+                    "contacts": [{"id": "c-ana2", "name": "Ana", "handle": "ana\u200b@clinic.example", "consent": "granted"}]}
+        self.ev = [{"id": "e3", "type": "signup", "contact": "c-ana2", "at": "2026-05-01T00:00:00+00:00"}]
+        r2 = self.run_("2026-06-01T00:00:00+00:00", "w2")
+        self.assertEqual(r2["drafted"], [])
+        self.assertEqual(r2["suppressed_contacts"], ["c-ana2"])
 
 
 if __name__ == '__main__':

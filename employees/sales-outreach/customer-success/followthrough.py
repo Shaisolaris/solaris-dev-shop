@@ -8,10 +8,12 @@ follow-up the playbook calls for (onboarding welcome, check-in and training invi
 a nudge when a customer has not replied to our response; a feedback request after a ticket closes), then
 applies consent and reply state:
 
-- every contact needs a handle; a second contact with the same handle (ignoring case, spacing and width) is
-  the same person imported twice and the account is refused until it is merged;
-- an opt-out (scope all or marketing) or a hard bounce suppresses the person from then on, for good; a
-  later opt_in is flagged for human review and the contact stays suppressed;
+- every contact needs a handle; a second contact with the same handle (ignoring case, spacing, width and
+  Unicode format characters) is the same person imported twice and the account is refused until it is merged;
+  plus-addressing, dots, look-alikes and domain aliases are not matched;
+- an opt-out (scope all or marketing) or a hard bounce suppresses the person from then on, for good, and the
+  suppression is also stored in the state folder so a CRM identity/history merge that drops the old event
+  still keeps the person suppressed; a later opt_in is flagged for human review and the contact stays suppressed;
 - a reply from the customer cancels the nudge or check-in it would have triggered;
 - a draft already written for an action that is now suppressed or cancelled is withdrawn (its file says so);
 - an owner change re-renders unsent drafts under the new owner (reassigned).
@@ -59,8 +61,72 @@ class Invalid(Exception):
 
 
 def person_key(handle):
-    """One person, however the import spelled the handle: NFKC, whitespace collapsed, case folded."""
-    return " ".join(unicodedata.normalize("NFKC", handle).split()).casefold()
+    """One person, however the import spelled the handle.
+
+    NFKC, Unicode format characters (category Cf: zero-width space, soft hyphen, ...) stripped,
+    whitespace collapsed, case folded. Format characters cannot mint a new identity for an opted-out
+    person. Plus-addressing, dots, look-alike scripts and domain aliases are NOT matched: the importer
+    must resolve those before the account is loaded.
+    """
+    folded = unicodedata.normalize("NFKC", handle)
+    cleaned = "".join(ch for ch in folded if unicodedata.category(ch) != "Cf")
+    return " ".join(cleaned.split()).casefold()
+
+
+def load_person_suppressions(state):
+    """Read durable per-person suppressions from state/person_suppressions.jsonl (missing = empty)."""
+    path = Path(state) / "person_suppressions.jsonl"
+    out = {}
+    if not path.exists():
+        return out
+    try:
+        data = path.read_bytes()
+    except OSError:
+        return out
+    if data and not data.endswith(b"\n"):
+        data = data[: data.rfind(b"\n") + 1]
+    for line in data.splitlines():
+        if not line.strip():
+            continue
+        try:
+            rec = json.loads(line.decode("utf-8"))
+        except (ValueError, UnicodeDecodeError):
+            continue
+        if not isinstance(rec, dict):
+            continue
+        pk, scope, why = rec.get("person"), rec.get("scope"), rec.get("reason")
+        at = rec.get("at")
+        if not isinstance(pk, str) or not pk or scope not in ("all", "marketing") or not isinstance(why, str):
+            continue
+        try:
+            t = _time(at, "suppression at") if isinstance(at, str) else dt.datetime.min.replace(tzinfo=dt.timezone.utc)
+        except Invalid:
+            t = dt.datetime.min.replace(tzinfo=dt.timezone.utc)
+        out.setdefault(pk, []).append((t, scope, why))
+    return out
+
+
+def save_person_suppressions(state, supp, H):
+    """Merge current suppressions into state/person_suppressions.jsonl (append new rows only)."""
+    path = Path(state) / "person_suppressions.jsonl"
+    existing = load_person_suppressions(state)
+    seen = {(pk, scope, why) for pk, rows in existing.items() for (_t, scope, why) in rows}
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "ab") as f:
+        for pk, rows in sorted(supp.items()):
+            for (t, scope, why) in rows:
+                key = (pk, scope, why)
+                if key in seen:
+                    continue
+                seen.add(key)
+                rec = {"person": pk, "scope": scope, "reason": why,
+                       "at": t.isoformat() if hasattr(t, "isoformat") else str(t)}
+                f.write((H.canon(rec) + "\n").encode("utf-8"))
+        f.flush()
+        os.fsync(f.fileno())
+
+
+
 
 
 def _g04():
@@ -162,10 +228,16 @@ def load_events(path, contacts):
     return out, raw
 
 
-def derive(account, contacts, events, now):
-    """Pure function of the inputs: desired actions with their state at `now`."""
+def derive(account, contacts, events, now, durable_supp=None):
+    """Pure function of the inputs: desired actions with their state at `now`.
+
+    durable_supp maps person_key -> list of (time, scope, why) suppressions kept in the state folder so a
+    CRM merge that drops opt-out history cannot revive a suppressed person.
+    """
     acts, notes = [], []
     supp = {}  # person (normalized handle) -> list of (time, scope, event); follows the person, not the record id
+    for pk, rows in (durable_supp or {}).items():
+        supp[pk] = list(rows)
     who = lambda cid: contacts[cid]["_person"]
     owner = account["owner"].strip()
     replies = {}  # (contact, thread) -> [times]
@@ -279,7 +351,21 @@ def run(state, account_path, events_path, now_s, worker, fail_at=None):
         for r in recs:
             if r.get("event") in ("drafted", "reassigned", "withdrawn"):
                 drafted.setdefault(r["key"], []).append(r)
-        acts, notes, cur_owner = derive(account, contacts, events, now)
+        durable = load_person_suppressions(state)
+        acts, notes, cur_owner = derive(account, contacts, events, now, durable_supp=durable)
+        # Rebuild supp map for persistence (person -> rows) from events + durable already applied in derive
+        who = lambda cid: contacts[cid]["_person"]
+        supp_map = dict(durable)
+        for e in events:
+            if e["_t"] > now:
+                continue
+            if e["type"] == "opt_out":
+                supp_map.setdefault(who(e["contact"]), []).append(
+                    (e["_t"], e["scope"], "%s (opt-out %s)" % (e["id"], e["scope"])))
+            elif e["type"] == "bounce" and e.get("kind") == "hard":
+                supp_map.setdefault(who(e["contact"]), []).append(
+                    (e["_t"], "all", "%s (hard bounce)" % e["id"]))
+        save_person_suppressions(state, supp_map, H)
         rep = {"drafted": [], "duplicate_suppressed": [], "withdrawn": [], "reassigned": [], "suppressed": [],
                "cancelled": [], "scheduled": []}
         (state / "drafts").mkdir(parents=True, exist_ok=True)
