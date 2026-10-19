@@ -1,0 +1,9 @@
+# binding 2026-10-18 22:54:28 PDT
+head a069a79ca6f57672fa92b0a86bfbcb46eff99ddb parent 1621c8207ccd85970cdcf2b8c841146dcf33ae89
+diff d55fdcb69fca21710a310ac32b3a8f0921dc5a2791602d4f1936fbc4f79d17a2
+patch d55fdcb69fca21710a310ac32b3a8f0921dc5a2791602d4f1936fbc4f79d17a2
+identical: yes
+<D>/grok-output/G01/MANIFEST.1621c82.sha256
+<D>/grok-output/G01/MANIFEST.r1.sha256
+<D>/grok-output/G01/MANIFEST.r2.sha256
+<D>/grok-output/G01/MANIFEST.sha256

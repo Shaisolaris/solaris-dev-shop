@@ -1,0 +1,29 @@
+z01 GAP   unwrapped packet with legal_text + requested_actions + sources (all G05 packet fields), benign text: passes as a packet
+      observed: (1, False, ['INVALID_PACKET'], ['packet fixture has non-packet fields requested_actions, sources; set fixture_kind'], False)
+z02 GAP   unwrapped packet with requested_actions only: passes as a packet
+      observed: (1, False, ['INVALID_PACKET'], ['packet fixture has non-packet fields requested_actions; set fixture_kind'], False)
+z03 HOLDS control: the z01 packet wrapped with fixture_kind packet passes
+      observed: (0, True, [], [''], False)
+z04 INFO  unwrapped negative legal packet (blocked text + requested_actions) with a fail_gate expectation
+      observed: (1, False, ['INVALID_PACKET'], ['packet fixture has non-packet fields requested_actions, sources; set fixture_kind'], False)
+z05 HOLDS kind synonym with upper-case value on blocked legal text is not a pass
+      observed: (1, False, ['INVALID_PACKET'], ['packet fixture has non-packet fields text; set fixture_kind'], False)
+z06 HOLDS kind under a non kind/type name ('category') on blocked legal text is not a pass
+      observed: (1, False, ['INVALID_PACKET'], ['packet fixture has non-packet fields text; set fixture_kind'], False)
+z07 HOLDS bare planted defect with kind under 'fixture_type'='planted_defect': refused or same as the fixture_kind form (True, ['SELF_APPROVAL_FORBIDDEN'])
+      observed: (1, False, ['INVALID_PACKET'], ["fixture key 'fixture_type' names a fixture kind but is not fixture_kind; rename it to fixture_kind"], False)
+z08 HOLDS bare planted defect with kind under 'fixture_type'='Planted_Defect': refused or same as the fixture_kind form (True, ['SELF_APPROVAL_FORBIDDEN'])
+      observed: (1, False, ['INVALID_PACKET'], ['evidence must be an object keyed by gate'], False)
+z09 HOLDS bare planted defect with kind under 'category'='planted_defect': refused or same as the fixture_kind form (True, ['SELF_APPROVAL_FORBIDDEN'])
+      observed: (1, False, ['INVALID_PACKET'], ['evidence must be an object keyed by gate'], False)
+z13 GAP   bare planted defect without evidence, kind under 'fixture_type'='Planted_Defect': refused or same as the fixture_kind form (True, ['SELF_APPROVAL_FORBIDDEN'])
+      observed: (0, True, [], [''], False)
+z14 GAP   bare planted defect without evidence, kind under 'category'='planted_defect': refused or same as the fixture_kind form (True, ['SELF_APPROVAL_FORBIDDEN'])
+      observed: (0, True, [], [''], False)
+z10 HOLDS suite whose root folder is unreadable is not ok and has no traceback
+      observed: (1, False, 0, 1, None, False)
+z11 HOLDS suite with an unreadable folder two levels down is not ok and names that folder
+      observed: (1, False, 1, 1, ['/private/tmp/m01r3p-tc3n2uce/s11/a/b'])
+z12 HOLDS suite with an unreadable fixture FILE is not ok and has no traceback
+      observed: (1, False, 1, 1, False)
+PROBES-M01R3 9/13 hold

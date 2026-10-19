@@ -1,0 +1,66 @@
+baselines equal: True
+control_noop                   -        -        -        -        -        -       
+rv_kind_check                  -        -        -        -        KILL     KILL    
+rv_unknown_exp                 KILL     -        -        -        KILL     KILL    
+rv_role                        KILL     -        -        -        KILL     KILL    
+mut_ok_error                   KILL     -        -        -        KILL     KILL    
+f1_stray_off                   -        KILL     -        KILL     KILL     KILL    
+f2_gate_nonempty_off           KILL     -        -        -        KILL     KILL    
+f4_fresh_bool                  -        -        -        -        KILL     KILL    
+f4_generic_except_off          -        -        -        -        KILL     KILL    
+r3_legal_fields_off            -        KILL     -        KILL     KILL     KILL    
+r3_unreadable_count_off        -        KILL     KILL     -        KILL     KILL    
+r4_marker_off                  -        -        KILL     KILL     KILL     KILL    
+r4_alias_isstr_off             KILL     -        KILL     KILL     KILL     KILL    
+rv_kind_or                     -        -        -        -        KILL     KILL    
+mut_exp_keys                   KILL     -        -        -        KILL     KILL    
+mut_role_strip                 KILL     -        -        -        KILL     KILL    
+f1_near_off                    KILL     -        -        -        KILL     KILL    
+f1_extra_off                   KILL     -        -        KILL     KILL     KILL    
+f2_gate_outcome_off            KILL     -        -        -        KILL     KILL    
+f4_fresh_neg                   -        -        -        -        KILL     KILL    
+f4_outer_recursion_off_EQUIV   -        -        -        -        -        -       
+r3_alias_off                   -        -        KILL     KILL     KILL     KILL    
+r3_unreadable_ok_true          -        -        KILL     -        KILL     KILL    
+r4_marker_no_evidence          -        -        -        -        -        -       
+r4_kinds_drop_pd               -        -        KILL     KILL     KILL     KILL    
+mut_kind_precedence            KILL     -        -        -        KILL     KILL    
+rv_outcome                     KILL     -        -        -        KILL     KILL    
+rv_missing_dir                 KILL     -        -        -        KILL     KILL    
+f1_norm_only                   KILL     -        -        -        KILL     KILL    
+f1_dup_off                     -        -        -        -        KILL     KILL    
+f2_role_vacuous                -        -        -        -        KILL     KILL    
+f4_text_type_off               -        -        -        -        KILL     KILL    
+f5_case_suffix                 KILL     -        -        -        KILL     KILL    
+r3_alias_contract_off          -        -        -        -        KILL     KILL    
+r4_alias_exact_case            -        -        KILL     KILL     KILL     KILL    
+r4_marker_no_legal_text        -        -        -        -        -        -       
+r4_norm_no_dash                -        -        -        KILL     KILL     KILL    
+mut_kinds_empty                -        -        -        -        KILL     KILL    
+mut_outcome_set                -        -        -        -        KILL     KILL    
+rv_empty                       KILL     -        -        -        KILL     KILL    
+f1_ratio_095                   KILL     -        -        -        KILL     KILL    
+f2_gate_any                    KILL     -        -        -        KILL     KILL    
+f3_legal_default_off           -        -        -        -        KILL     KILL    
+f4_defect_type_off             -        -        -        -        KILL     KILL    
+f5_symlink_report_off          -        -        -        -        KILL     KILL    
+r3_onerror_off                 -        KILL     KILL     -        KILL     KILL    
+r4_alias_notes_off             -        -        -        KILL     KILL     KILL    
+r4_legal_keys_one              -        -        KILL     KILL     KILL     KILL    
+r4_norm_no_space               -        -        -        KILL     -        -       
+errors: []
+oracle: 18/47
+probes_r2: 4/47
+probes_r3: 9/47
+probes_r4: 12/47
+fixture_tests: 44/47
+suite: 44/47
+builder (fixture tests or suite): 44/47
+fixture tests alone: 44/47
+grok (oracle or probes): 31/47
+union: 45/47
+survivors: ['r4_marker_no_evidence', 'r4_marker_no_legal_text']
+controls: [('control_noop', 'survived'), ('f4_outer_recursion_off_EQUIV', 'survived')]
+killed only by Grok: ['r4_norm_no_space']
+killed only by builder: ['rv_kind_check', 'f4_fresh_bool', 'f4_generic_except_off', 'rv_kind_or', 'f4_fresh_neg', 'f1_dup_off', 'f2_role_vacuous', 'f4_text_type_off', 'r3_alias_contract_off', 'mut_kinds_empty', 'mut_outcome_set', 'f3_legal_default_off', 'f4_defect_type_off', 'f5_symlink_report_off']
+r4_* : 10, union 8, builder 7, grok 8

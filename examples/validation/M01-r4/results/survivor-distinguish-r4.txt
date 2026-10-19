@@ -1,0 +1,2 @@
+r4_marker_no_legal_text DIFFERENT {"base": [0, true, []], "mutant": [1, false, ["INVALID_PACKET"]]}
+r4_marker_no_evidence SAME {"base": [1, false, ["INVALID_PACKET"]], "mutant": [1, false, ["INVALID_PACKET"]]}
