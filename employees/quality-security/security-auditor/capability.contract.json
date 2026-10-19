@@ -277,7 +277,9 @@
       "trivy-and-dast.md",
       "job-two-improvement.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "boundary_probe.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],

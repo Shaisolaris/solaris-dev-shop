@@ -8,6 +8,9 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 
 ## Pending observations
 
+- **2026-10-19 - G21 offline client against the G19 API**: a server that stores 409 answers per idempotency key means a client "retry" of a refused change must use a new key, or it only replays the refusal.
+  *Proposed rule: document for client teams which answers are stored per key and which are not.* Tags: [#api], [#state]
+
 - **2026-04-24 - FS Developer rebuild**: State management decision order (local → lifted → Context → Zustand → React Query → Redux → XState) is the single most important piece of React methodology absorbed from lodetomasi. Most dev sessions default to overusing Context; the ordered hierarchy prevents that.
   *Proposed rule: When React state question comes up, always show the 7-tier decision order. Don't let the default jump to Redux or Context when local state or React Query would suffice.*
   Tags: [#state], [#react], [#promoted?]
@@ -19,6 +22,10 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 - **2026-04-24 - FS Developer rebuild**: msitarzewski's minimal-change-engineer concept unique to that source. Inherited codebase work dominates Solaris client book (Upwork rescues, takeovers). This mode should default on.
   *Proposed rule: When the project is an inherited codebase (determined by: 'rescue', 'takeover', 'inherited', or the /Desktop/CTO/skills/codebase-onboarding pattern active), switch to Minimal-change mode by default. Broader refactors require explicit CTO approval.*
   Tags: [#inherited-work], [#promoted?]
+
+---
+
+- **2026-10-18 - G19 duplicate-safe API**: a retried UI action must reuse its `Idempotency-Key`; a new key per click makes a second payment on the server even when the server is correct. *Proposed rule: generate the key once per user action and keep it across retries.* Tags: [#api], [#backend]
 
 ---
 

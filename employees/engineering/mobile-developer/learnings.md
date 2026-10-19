@@ -8,6 +8,9 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 
 ## Pending observations
 
+- **2026-10-19 - G21 offline sync slice**: the duplicate a client causes is usually a retry with a fresh idempotency key (one per attempt instead of one per user change), and the loss is usually a 409 marked "done". A pay queued against an invoice voided on another device must stay visible until a person decides.
+  *Proposed rule: fix the key when the change is recorded, send oldest first, keep every refusal as a named conflict, and accept server state only by version.* Tags: [#native], [#rn], [#offline]
+
 - **2026-04-24 - Mobile Developer rebuild**: wshobson's mobile-developer agent is the richest capability matrix in the 6-repo set (200 lines, covers everything from Fabric to ARKit to WidgetKit to App Clips). Absorbed as primary. Sickn33's 8-ref mobile-design suite adds depth on typography, color, testing, performance, navigation, debugging - complementary rather than overlapping.
   *Proposed rule: For engineering employees, capability matrices (wshobson style) are better primary sources than narrative skills. Designers/analysts get narrative; developers get structured lists.*
   Tags: [#source-selection], [#promoted?]
