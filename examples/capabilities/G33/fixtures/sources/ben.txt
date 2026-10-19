@@ -1,0 +1,2 @@
+Interviewer: Walk me through a busy morning.
+Ben (front desk, mid-size clinics): Patients call and we write times by hand. A day view that refreshes within a minute would cut the callbacks. An AI that auto-schedules without a person reviewing it - that is a hard no for me.

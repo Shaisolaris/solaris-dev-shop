@@ -1,0 +1,252 @@
+{
+ "schema": "solaris.evidence-decision/1",
+ "decision": {
+  "question": "Which product bet for mid-size clinics (5-20 providers) should we fund next?",
+  "owner": "Product lead (synthetic role)",
+  "as_of": "2026-10-06",
+  "icp": {
+   "segment": "mid-size clinics",
+   "definition": "clinics with 5 to 20 providers that book appointments by phone or paper today"
+  }
+ },
+ "options": [
+  {
+   "id": "portal",
+   "label": "Patient self-service booking portal"
+  },
+  {
+   "id": "ai-schedule",
+   "label": "AI auto-scheduler with no human review"
+  },
+  {
+   "id": "reports",
+   "label": "Board reporting pack"
+  }
+ ],
+ "dimensions": [
+  {
+   "id": "pain",
+   "label": "Solves the named top pain",
+   "weight": "0.45"
+  },
+  {
+   "id": "fit",
+   "label": "Fits how the ICP works today",
+   "weight": "0.30"
+  },
+  {
+   "id": "proof",
+   "label": "Evidence the market already pays for this",
+   "weight": "0.25",
+   "metric_scale": {
+    "thresholds": [
+     "1",
+     "5",
+     "10",
+     "50",
+     "100"
+    ],
+    "unit": "orders (G13 count_distinct)"
+   }
+  }
+ ],
+ "sources": [
+  {
+   "id": "S-ana",
+   "kind": "interview",
+   "title": "Interview with Ana, clinic ops",
+   "retrieved_at": "2026-09-15",
+   "snapshot": {
+    "path": "sources/ana.txt",
+    "sha256": "cfc9f197ada8f24de41bcb09f67770f553d4ffc0bc773381ff95b8d4793c0228"
+   }
+  },
+  {
+   "id": "S-ben",
+   "kind": "interview",
+   "title": "Interview with Ben, front desk",
+   "retrieved_at": "2026-09-18",
+   "snapshot": {
+    "path": "sources/ben.txt",
+    "sha256": "088d9c3a2627bf59c9848591887afbdfb1a8da226572869639ebb9fe943c8cb3"
+   }
+  },
+  {
+   "id": "S-cy",
+   "kind": "interview",
+   "title": "Interview with Cy, ops lead",
+   "retrieved_at": "2026-09-22",
+   "snapshot": {
+    "path": "sources/cy.txt",
+    "sha256": "add161dbf9a63dfe677b117ee7a5fa9bc7a7ba738cdc1c63196ef2fa261370d3"
+   }
+  },
+  {
+   "id": "S-rev",
+   "kind": "external",
+   "title": "reviews.example.invalid mid-size survey",
+   "url": "https://reviews.example.invalid/tools/booking",
+   "mutable": true,
+   "max_age_days": 90,
+   "retrieved_at": "2026-09-20",
+   "snapshot": {
+    "path": "sources/reviews.txt",
+    "sha256": "0d52bfadf3579d31a5856ed83f45de03a0553ca1a7d34f1d6107f43b7544a94a"
+   }
+  },
+  {
+   "id": "S-mkt",
+   "kind": "external",
+   "title": "analyst.example.invalid market page",
+   "url": "https://analyst.example.invalid/market/clinic-software",
+   "mutable": true,
+   "max_age_days": 30,
+   "retrieved_at": "2026-06-01",
+   "snapshot": {
+    "path": "sources/market.txt",
+    "sha256": "043ba6452abbd087c6d76803747a386c1b9ea8b328a09bbe3ad74489a4cde924"
+   }
+  },
+  {
+   "id": "S-g13",
+   "kind": "g13",
+   "title": "G13 clean orders reconciliation",
+   "contract": "g13/contract.json",
+   "metric": "orders",
+   "group": {}
+  }
+ ],
+ "claims": [
+  {
+   "id": "C1",
+   "option": "portal",
+   "dimension": "pain",
+   "source": "S-ana",
+   "segment": "mid-size clinics",
+   "confidence": "high",
+   "score": "5",
+   "quote": "If a portal let patients book and move their own slots, I would pay about 40 dollars per provider per month for that alone."
+  },
+  {
+   "id": "C2",
+   "option": "reports",
+   "dimension": "pain",
+   "source": "S-ana",
+   "segment": "mid-size clinics",
+   "confidence": "high",
+   "score": "1",
+   "quote": "Nice to have. Booking is the pain."
+  },
+  {
+   "id": "C3",
+   "option": "portal",
+   "dimension": "fit",
+   "source": "S-ben",
+   "segment": "mid-size clinics",
+   "confidence": "high",
+   "score": "4",
+   "quote": "A day view that refreshes within a minute would cut the callbacks."
+  },
+  {
+   "id": "C4",
+   "option": "ai-schedule",
+   "dimension": "fit",
+   "source": "S-ben",
+   "segment": "mid-size clinics",
+   "confidence": "high",
+   "score": "0",
+   "quote": "An AI that auto-schedules without a person reviewing it - that is a hard no for me."
+  },
+  {
+   "id": "C5",
+   "option": "portal",
+   "dimension": "pain",
+   "source": "S-cy",
+   "segment": "mid-size clinics",
+   "confidence": "medium",
+   "score": "4",
+   "quote": "Their portal was fast to book but the day view lagged by ten minutes. Real-time for us means under one minute."
+  },
+  {
+   "id": "C6",
+   "option": "portal",
+   "dimension": "pain",
+   "source": "S-rev",
+   "segment": "mid-size clinics",
+   "confidence": "medium",
+   "score": "5",
+   "quote": "Share of clinics citing double booking as the top pain: 62%.",
+   "value": "62%"
+  },
+  {
+   "id": "C7",
+   "option": "reports",
+   "dimension": "pain",
+   "source": "S-rev",
+   "segment": "mid-size clinics",
+   "confidence": "medium",
+   "score": "1",
+   "quote": "Share citing board reports as the top pain: 8%.",
+   "value": "8%"
+  },
+  {
+   "id": "C8",
+   "option": "portal",
+   "dimension": "proof",
+   "source": "S-g13",
+   "segment": "mid-size clinics",
+   "confidence": "high",
+   "value": "5"
+  },
+  {
+   "id": "C9",
+   "option": "ai-schedule",
+   "dimension": "fit",
+   "source": "S-ana",
+   "segment": "enterprise hospital system",
+   "confidence": "high",
+   "score": "5",
+   "quote": "If a portal let patients book and move their own slots, I would pay about 40 dollars per provider per month for that alone."
+  },
+  {
+   "id": "C10",
+   "option": "portal",
+   "dimension": "proof",
+   "source": "S-mkt",
+   "segment": "mid-size clinics",
+   "confidence": "low",
+   "score": "4",
+   "quote": "Headline figure: addressable clinics in North America: 18,000.",
+   "value": "18,000"
+  },
+  {
+   "id": "C11",
+   "option": "ai-schedule",
+   "dimension": "pain",
+   "source": "S-ben",
+   "segment": "mid-size clinics",
+   "confidence": "high",
+   "score": "1",
+   "quote": "Patients call and we write times by hand."
+  },
+  {
+   "id": "C12",
+   "option": "ai-schedule",
+   "dimension": "proof",
+   "source": "S-g13",
+   "segment": "mid-size clinics",
+   "confidence": "high",
+   "value": "5"
+  },
+  {
+   "id": "C13",
+   "option": "reports",
+   "dimension": "fit",
+   "source": "S-ana",
+   "segment": "mid-size clinics",
+   "confidence": "medium",
+   "score": "2",
+   "quote": "Nice to have. Booking is the pain."
+  }
+ ]
+}

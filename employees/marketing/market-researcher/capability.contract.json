@@ -425,7 +425,8 @@
       "python3 scripts/skill_runtime_contract.py validate solaris/employees/marketing/market-researcher/capability.contract.json"
     ],
     "forward_tests": [
-      "fixtures/solaris/business/forward/*"
+      "fixtures/solaris/business/forward/*",
+      "product-manager evidence_decision.py for ICP-scoped product choice (tests/test_g33_capability.py)"
     ],
     "adversarial_tests": [
       "fixtures/solaris/business/adversarial/*"

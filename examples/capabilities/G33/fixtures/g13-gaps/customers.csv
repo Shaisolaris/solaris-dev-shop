@@ -1,0 +1,7 @@
+customer_id,region,updated_at
+C1,west,2026-01-01T00:00:00Z
+C2,east,2026-01-01T00:00:00Z
+C3,west,2026-01-01T00:00:00Z
+C3,west,2026-01-01T00:00:00Z
+C4,north,2026-02-01T00:00:00Z
+C4,south,2026-02-01T00:00:00Z

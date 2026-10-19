@@ -1,0 +1,2 @@
+Interviewer: Why did you leave the last vendor?
+Cy (ops lead, mid-size clinics): Their portal was fast to book but the day view lagged by ten minutes. Real-time for us means under one minute. We also saw a review site claim they had 5,000 clinics; when I called three references only one was still a customer.

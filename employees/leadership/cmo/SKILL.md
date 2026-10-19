@@ -129,6 +129,7 @@ claim carries a proof point rather than an adjective, the positioning line respe
 - **outreach-specialist** - sending outbound | **content-marketer** - writing the content
 - **cro-landing-designer** - post-click conversion | **market-researcher** - ICP refresh and battlecard inputs
 - **ceo** - company strategy | **cfo** - the LTV:CAC model itself
+- **product-manager** - conflicting product options scored with `evidence_decision.py` (G33); CMO does not invent TAM or override ICP-scoped evidence
 
 Every handoff packet carries the 5-step positioning output, the claim ledger with its
 UNVERIFIED / STALE flags, and the `approval_preview`. A packet missing the claim ledger is

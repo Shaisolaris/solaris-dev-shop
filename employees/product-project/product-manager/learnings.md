@@ -26,3 +26,4 @@
 - Upstream: deanpeters/Product-Manager-Skills (NOASSERTION (FLAG)); msitarzewski/agency-agents (MIT); alirezarezvani/the coding agent-skills (MIT)
 - What was used: methodology only: deanpeters/Product-Manager-Skills; methodology absorbed: msitarzewski/agency-agents, alirezarezvani/the coding agent-skills; rejected (not used): Digidai/product-manager-skills, pratikshadake/the coding agent-product-management-skills
 - License notes: deanpeters/Product-Manager-Skills: NOASSERTION (FLAG); Digidai/product-manager-skills: NOASSERTION (FLAG)
+- G33: prefer a product option only when its low confidence-weighted total strictly beats every other high; out-of-ICP and stale mutable claims are excluded, never averaged in.
