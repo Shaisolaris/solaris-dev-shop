@@ -279,5 +279,79 @@ class M01Rework(unittest.TestCase):
                 self.assert_invalid(data)
 
 
+
+class M01R2Rework(unittest.TestCase):
+    """G01 repair r2 (M01 r2 Grok self-validation of deb06f6): a legal fixture whose kind key is a
+    synonym or missing must not pass (S1), and a suite must report a subfolder it cannot read (S2).
+    The F3 reading (a legal fixture without expectations must be blocked) is kept."""
+    BAD_LEGAL = M01Rework.BAD_LEGAL
+    CLEAN_LEGAL = M01Rework.CLEAN_LEGAL
+    cli = FixtureRunner.cli
+    run_fixture = FixtureRunner.run_fixture
+    assert_invalid = M01Rework.assert_invalid
+
+    def test_s1_synonym_or_missing_kind_key_cannot_pass_blocked_legal_text(self):
+        cases = {'y01 fixture_type': {'fixture_type': 'legal', 'text': self.BAD_LEGAL},
+                 'y03 no kind key': {'text': self.BAD_LEGAL},
+                 'type': {'type': 'legal', 'text': self.BAD_LEGAL},
+                 'fixtureType': {'fixtureType': 'legal_boundary', 'text': self.BAD_LEGAL},
+                 'requested_actions only': {'requested_actions': ['file the lawsuit']},
+                 'sources only': {'sources': [{'url': 'https://example.com', 'age_days': 3}]},
+                 'freshness_days only': {'freshness_days': 3},
+                 'type names closure': {'type': 'closure'},
+                 'subject_kind on a legal_text packet': {'subject_kind': 'legal', 'legal_text': self.BAD_LEGAL,
+                                                         'expectations': {'outcome': 'pass'}},
+                 'expectations pass': {'fixture_type': 'legal', 'text': self.BAD_LEGAL,
+                                       'expectations': {'outcome': 'pass'}}}
+        for name, data in cases.items():
+            with self.subTest(case=name):
+                self.assert_invalid(data, why='fixture')
+        # the y01 suite through the documented command: ok false, not 2/2
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'y01.json').write_text(json.dumps(cases['y01 fixture_type']))
+            (root / 'neg.json').write_text(json.dumps({'packet': GATE_MISSING, 'expectations': {'outcome': 'fail_gate'}}))
+            code, out = self.cli('suite', str(root))
+            self.assertEqual((code, out['ok'], out['total'], out['passed']), (1, False, 2, 1))
+
+    def test_s1_controls_still_behave(self):
+        # y02: legal_text is a packet field and triggers the legal gate on an unwrapped packet
+        code, out = self.run_fixture({'legal_text': self.BAD_LEGAL, 'expectations': {'outcome': 'fail_gate'}})
+        self.assertEqual((code, out['ok']), (0, True))
+        # the proper legal fixture: blocked text passes as a negative fixture, F3 kept
+        code, out = self.run_fixture({'fixture_kind': 'legal', 'text': self.BAD_LEGAL})
+        self.assertEqual((code, out['ok']), (0, True))
+        code, out = self.run_fixture({'fixture_kind': 'legal', 'text': self.CLEAN_LEGAL})
+        self.assertEqual((code, out['ok'], out['gate_codes']), (1, False, ['EXPECTED_GATE_NOT_FIRED']))
+        code, out = self.run_fixture({'fixture_kind': 'legal', 'text': self.CLEAN_LEGAL, 'expectations': {'outcome': 'pass'}})
+        self.assertEqual((code, out['ok']), (0, True))
+        # note keys and packets whose other keys merely end in "type" with a non-kind value are untouched
+        for data in ({'packet': GATE_DONE, 'description': 'legal review', 'expectations': {'outcome': 'pass'}},
+                     dict(GATE_DONE, artifact_type='report', expectations={'outcome': 'pass'}),
+                     dict(GATE_DONE, expectations={'outcome': 'pass'})):
+            with self.subTest(data=sorted(data)):
+                code, out = self.run_fixture(data)
+                self.assertEqual((code, out['ok']), (0, True), out)
+
+    @unittest.skipIf(hasattr(os, 'geteuid') and os.geteuid() == 0, 'root can read a mode-000 folder')
+    def test_s2_suite_reports_an_unreadable_subfolder(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / 'fx'
+            (root / 'locked').mkdir(parents=True)
+            (root / 'a.json').write_text(json.dumps(GATE_DONE))
+            (root / 'locked' / 'bad.json').write_text(json.dumps({'packet': GATE_MISSING, 'expectations': {'outcome': 'pass'}}))
+            os.chmod(root / 'locked', 0)
+            try:
+                code, out = self.cli('suite', str(root))
+            finally:
+                os.chmod(root / 'locked', 0o755)
+            self.assertEqual((code, out['ok'], out['total'], out['passed'], out['failed']), (1, False, 2, 1, 1))
+            bad = [r for r in out['results'] if not r['ok']][0]
+            self.assertEqual((Path(bad['path']).name, bad['gate_codes']), ('locked', ['INVALID_PACKET']))
+            self.assertIn('could not be read', ' '.join(bad['notes']))
+            code, out = self.cli('suite', str(root))  # readable again: the real fixture is evaluated and fails
+            self.assertEqual((code, out['ok'], out['total'], out['passed']), (1, False, 2, 1))
+
+
 if __name__ == '__main__':
     unittest.main()

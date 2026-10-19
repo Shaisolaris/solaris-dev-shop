@@ -1142,8 +1142,13 @@ FIXTURE_KIND_KEYS = {
     "legal": ("text", "legal_text", "requested_actions", "sources", "freshness_days"),
     "planted_defect": ("defect",),
 }
+# Fields of a closure, planted-defect or legal fixture. An unwrapped packet carrying one has
+# lost its fixture_kind (missing, or written as a synonym such as fixture_type), so it is
+# refused instead of evaluated as a packet that ignores the field (M01 r2 S1). legal_text is
+# not listed: it is a real packet field and triggers the legal gate on a packet.
 NON_PACKET_FIXTURE_KEYS = ("finding", "waiver", "closer_role", "independent_evidence",
-                           "expect_blocked", "defect")
+                           "expect_blocked", "defect",
+                           "text", "requested_actions", "sources", "freshness_days")
 
 
 def _norm_key(key: str) -> str:
@@ -1165,8 +1170,13 @@ def _fixture_key_problem(data: Dict[str, Any], kind: str) -> Optional[str]:
         # Unwrapped packet: packet fields are G05's allowlist; only refuse fields that
         # belong to another fixture kind, which means its fixture_kind key was lost.
         stray = [k for k in NON_PACKET_FIXTURE_KEYS if k in data]
-        return ("packet fixture has non-packet fields " + ", ".join(stray)
-                + "; set fixture_kind") if stray else None
+        if stray:
+            return "packet fixture has non-packet fields " + ", ".join(stray) + "; set fixture_kind"
+        # a kind written under another name ("fixture_type": "legal", "type": "closure")
+        alias = [k for k in data if isinstance(k, str) and k not in FIXTURE_CONTRACT_KEYS
+                 and _norm_key(k).endswith(("kind", "type")) and data[k] in FIXTURE_KINDS[1:]]
+        return (f"fixture key {alias[0]!r} names a fixture kind but is not fixture_kind; "
+                "rename it to fixture_kind") if alias else None
     if group == "planted_defect" and "defect" not in data:
         return None  # the fixture object itself is the defect
     allowed = set(FIXTURE_CONTRACT_KEYS) | set(FIXTURE_NOTE_KEYS) | set(FIXTURE_KIND_KEYS.get(group, ()))
@@ -1335,8 +1345,9 @@ def run_suite(root: Path) -> Dict[str, Any]:
     """Run every fixture under root. A missing directory or zero fixtures is not a pass."""
     if not root.is_dir():
         return _suite_report([], 0, 0, error=f"fixture directory not found: {root}")
-    paths, linked_dirs = [], []
-    for dirpath, dirnames, filenames in os.walk(root):  # never follows directory symlinks
+    paths, linked_dirs, unreadable = [], [], []
+    # never follows directory symlinks; a folder it cannot list is reported, not skipped (M01 r2 S2)
+    for dirpath, dirnames, filenames in os.walk(root, onerror=unreadable.append):
         for d in dirnames:
             if os.path.islink(os.path.join(dirpath, d)):
                 linked_dirs.append(Path(dirpath, d))
@@ -1344,6 +1355,12 @@ def run_suite(root: Path) -> Dict[str, Any]:
         paths.extend(Path(dirpath, f) for f in filenames if f.lower().endswith(".json"))
     results = []
     passed = failed = 0
+    for err in sorted(unreadable, key=lambda e: str(getattr(e, "filename", "") or "")):
+        results.append({"path": str(getattr(err, "filename", None) or root), "ok": False, "status": "blocked",
+                        "gate_codes": ["INVALID_PACKET"], "risk_level": "standard",
+                        "notes": [f"directory could not be read ({getattr(err, 'strerror', None) or err}); "
+                                  "its fixtures were not evaluated"]})
+        failed += 1
     for link in sorted(linked_dirs):
         # a symlinked directory is not followed; report it so its fixtures are not silently skipped
         results.append({"path": str(link), "ok": False, "status": "blocked", "gate_codes": ["INVALID_PACKET"],

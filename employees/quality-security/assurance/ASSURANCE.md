@@ -96,7 +96,14 @@ The fixture runner fails closed on its own contract (added after engine
   contract key (`fixture-kind`, `Fixture_Kind`, `pakcet`, `expectation`,
   `txt`, `closer_rol` and similar), a packet that carries closure fields
   without `fixture_kind`, and a duplicate JSON key all return
-  `INVALID_PACKET`.
+  `INVALID_PACKET`. A fixture without a usable kind key is read as an
+  unwrapped packet, so it is also `INVALID_PACKET` when it carries a field
+  of another fixture kind (closure fields, `defect`, or the legal fields
+  `text`, `requested_actions`, `sources`, `freshness_days`), or a key such
+  as `fixture_type` or `type` whose value names a fixture kind. Blocked
+  legal text therefore cannot pass because its kind key was misspelled,
+  renamed or left out. `legal_text` stays a packet field: on a packet it
+  triggers the legal gate.
 - Field types are checked before evaluation: legal `text` must be a string,
   `requested_actions` an array of strings, `sources` an array of objects,
   `freshness_days` a non-negative integer and `defect` an object. Malformed
@@ -118,7 +125,8 @@ The fixture runner fails closed on its own contract (added after engine
   start with `_` are skipped. The extension match is case-insensitive
   (`.json`, `.JSON`). Symlinked directories are not followed; each one is
   listed as a failing `INVALID_PACKET` entry so it cannot vanish from the
-  count. Router intake fixtures under `fixtures/` are not
+  count. A subfolder the suite cannot list (for example no read permission)
+  is listed the same way, with the reason in its notes. Router intake fixtures under `fixtures/` are not
   assurance fixtures and fail as `INVALID_PACKET`.
 - Unknown top-level packet keys are still ignored by
   `evaluate_artifact_packet`; a misspelled packet field such as `dimenions`
