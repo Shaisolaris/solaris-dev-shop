@@ -1,0 +1,5 @@
+{"mutant": "s2_end_no_reading", "builder_tests": true, "builder_oracle": false, "m16_oracle": false, "m16r3_adversarial": [], "m16r4_adversarial": []}
+{"mutant": "e01_off", "builder_tests": true, "builder_oracle": true, "m16_oracle": false, "m16r3_adversarial": ["e01"], "m16r4_adversarial": []}
+{"mutant": "t1_window_2", "builder_tests": false, "builder_oracle": false, "m16_oracle": true, "m16r3_adversarial": [], "m16r4_adversarial": []}
+{"mutant": "t1_no_note", "builder_tests": true, "builder_oracle": false, "m16_oracle": false, "m16r3_adversarial": [], "m16r4_adversarial": ["f01", "f06"]}
+DONE

@@ -1,0 +1,5 @@
+{"mutant": "s1_count_ge2", "builder_tests": true, "builder_oracle": true, "m16_oracle": true, "m16r3_adversarial": ["b01", "b02"], "m16r4_adversarial": ["g04"]}
+{"mutant": "s3_unanchored", "builder_tests": true, "builder_oracle": false, "m16_oracle": false, "m16r3_adversarial": [], "m16r4_adversarial": []}
+{"mutant": "end_reorder_EQUIV", "builder_tests": false, "builder_oracle": false, "m16_oracle": false, "m16r3_adversarial": [], "m16r4_adversarial": []}
+{"mutant": "t1_colon_only", "builder_tests": true, "builder_oracle": true, "m16_oracle": true, "m16r3_adversarial": [], "m16r4_adversarial": ["f03", "f04"]}
+DONE

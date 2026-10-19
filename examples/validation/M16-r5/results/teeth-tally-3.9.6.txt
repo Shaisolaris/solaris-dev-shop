@@ -1,0 +1,21 @@
+Grok self-validation. M16 r5 teeth on G16 r5 1d2ec0f, /usr/bin/python3 3.9.6, 4 shards. Kill = deviation from the candidate baseline.
+baseline: builder_tests OK, builder_oracle 15/15 checks passed
+s1_count_off           builder_tests=K builder_oracle=K m16_oracle=K m16r3_adversarial=K m16r4_adversarial=K
+s2_end_no_comma        builder_tests=K builder_oracle=- m16_oracle=- m16r3_adversarial=- m16r4_adversarial=-
+e01_no_any             builder_tests=K builder_oracle=- m16_oracle=- m16r3_adversarial=- m16r4_adversarial=-
+t1_desc_0              builder_tests=K builder_oracle=K m16_oracle=K m16r3_adversarial=- m16r4_adversarial=K
+s1_count_ge2           builder_tests=K builder_oracle=K m16_oracle=K m16r3_adversarial=K m16r4_adversarial=K
+s3_unanchored          builder_tests=K builder_oracle=- m16_oracle=- m16r3_adversarial=- m16r4_adversarial=-
+end_reorder_EQUIV      builder_tests=- builder_oracle=- m16_oracle=- m16r3_adversarial=- m16r4_adversarial=-
+t1_colon_only          builder_tests=K builder_oracle=K m16_oracle=K m16r3_adversarial=- m16r4_adversarial=K
+s2_end_off             builder_tests=K builder_oracle=K m16_oracle=- m16r3_adversarial=K m16r4_adversarial=K
+s3_window_1            builder_tests=K builder_oracle=- m16_oracle=- m16r3_adversarial=- m16r4_adversarial=-
+t1_branch_off          builder_tests=K builder_oracle=K m16_oracle=K m16r3_adversarial=- m16r4_adversarial=K
+t1_no_if_you_are       builder_tests=K builder_oracle=K m16_oracle=K m16r3_adversarial=- m16r4_adversarial=K
+s2_end_no_reading      builder_tests=K builder_oracle=- m16_oracle=- m16r3_adversarial=- m16r4_adversarial=-
+e01_off                builder_tests=K builder_oracle=K m16_oracle=- m16r3_adversarial=K m16r4_adversarial=-
+t1_window_2            builder_tests=- builder_oracle=- m16_oracle=K m16r3_adversarial=- m16r4_adversarial=-
+t1_no_note             builder_tests=K builder_oracle=- m16_oracle=- m16r3_adversarial=- m16r4_adversarial=K
+
+mutants 16; kills: builder_tests 14, builder_oracle 8, m16_oracle 7, m16r3_adversarial 4, m16r4_adversarial 8; union 15
+survivors: ['end_reorder_EQUIV']

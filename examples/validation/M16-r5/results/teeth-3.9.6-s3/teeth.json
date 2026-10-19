@@ -1,0 +1,63 @@
+[
+ {
+  "mutant": "s2_end_no_reading",
+  "kills": {
+   "builder_tests": true,
+   "builder_oracle": false,
+   "m16_oracle": false,
+   "m16r3_adversarial": [],
+   "m16r4_adversarial": []
+  },
+  "raw": {
+   "builder_tests": "FAIL",
+   "builder_oracle": "15/15 checks passed"
+  }
+ },
+ {
+  "mutant": "e01_off",
+  "kills": {
+   "builder_tests": true,
+   "builder_oracle": true,
+   "m16_oracle": false,
+   "m16r3_adversarial": [
+    "e01"
+   ],
+   "m16r4_adversarial": []
+  },
+  "raw": {
+   "builder_tests": "FAIL",
+   "builder_oracle": "14/15 checks passed"
+  }
+ },
+ {
+  "mutant": "t1_window_2",
+  "kills": {
+   "builder_tests": false,
+   "builder_oracle": false,
+   "m16_oracle": true,
+   "m16r3_adversarial": [],
+   "m16r4_adversarial": []
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "15/15 checks passed"
+  }
+ },
+ {
+  "mutant": "t1_no_note",
+  "kills": {
+   "builder_tests": true,
+   "builder_oracle": false,
+   "m16_oracle": false,
+   "m16r3_adversarial": [],
+   "m16r4_adversarial": [
+    "f01",
+    "f06"
+   ]
+  },
+  "raw": {
+   "builder_tests": "FAIL",
+   "builder_oracle": "15/15 checks passed"
+  }
+ }
+]

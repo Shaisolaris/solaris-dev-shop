@@ -1,0 +1,20 @@
+# binding check 2026-10-18 22:16:18 PDT
+parent 5f41338bdc0a137a3d0fbefd627fc75af88366e1
+diff r4..r5 6af7ce0bad95bac765d5a44b538c9411f6498ee7137f00617e3d332c68333a15
+G16-r5.patch 6af7ce0bad95bac765d5a44b538c9411f6498ee7137f00617e3d332c68333a15
+identical: yes
+ .../llm-agent-designer/grounded-answer-evals.md    | 10 +++-
+ .../llm-agent-designer/grounded_eval.py            |  6 +++
+ .../engineering/llm-agent-designer/learnings.md    |  1 +
+ examples/capabilities/G16/README.md                |  2 +-
+ examples/capabilities/G16/grounding_oracle.py      | 10 ++--
+ tests/test_g16_capability.py                       | 59 ++++++++++++++++++++++
+ 6 files changed, 82 insertions(+), 6 deletions(-)
+manifest:   28 OK 
+manifest set == diff set: yes
+r4 proposed fix vs r5 tool:
+82c82
+<     # verb after the colon or comma (proposed in M16 r4, Grok self-validation; not applied)
+---
+>     # verb after the colon or comma (M16 r4 T1: the Grok self-validation's proposed fix, applied in G16 r5)
+(diff rc 1)

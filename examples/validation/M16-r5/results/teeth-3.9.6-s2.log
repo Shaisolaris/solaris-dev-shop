@@ -1,0 +1,5 @@
+{"mutant": "s2_end_off", "builder_tests": true, "builder_oracle": true, "m16_oracle": false, "m16r3_adversarial": ["e04"], "m16r4_adversarial": ["h01"]}
+{"mutant": "s3_window_1", "builder_tests": true, "builder_oracle": false, "m16_oracle": false, "m16r3_adversarial": [], "m16r4_adversarial": []}
+{"mutant": "t1_branch_off", "builder_tests": true, "builder_oracle": true, "m16_oracle": true, "m16r3_adversarial": [], "m16r4_adversarial": ["f01", "f02", "f03", "f04", "f05", "f06", "f07", "f08"]}
+{"mutant": "t1_no_if_you_are", "builder_tests": true, "builder_oracle": true, "m16_oracle": true, "m16r3_adversarial": [], "m16r4_adversarial": ["f03"]}
+DONE

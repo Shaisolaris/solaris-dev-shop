@@ -1,0 +1,72 @@
+[
+ {
+  "mutant": "s1_count_off",
+  "kills": {
+   "builder_tests": true,
+   "builder_oracle": true,
+   "m16_oracle": true,
+   "m16r3_adversarial": [
+    "b01",
+    "b02"
+   ],
+   "m16r4_adversarial": [
+    "g04"
+   ]
+  },
+  "raw": {
+   "builder_tests": "FAIL",
+   "builder_oracle": "14/15 checks passed"
+  }
+ },
+ {
+  "mutant": "s2_end_no_comma",
+  "kills": {
+   "builder_tests": true,
+   "builder_oracle": false,
+   "m16_oracle": false,
+   "m16r3_adversarial": [],
+   "m16r4_adversarial": []
+  },
+  "raw": {
+   "builder_tests": "FAIL",
+   "builder_oracle": "15/15 checks passed"
+  }
+ },
+ {
+  "mutant": "e01_no_any",
+  "kills": {
+   "builder_tests": true,
+   "builder_oracle": false,
+   "m16_oracle": false,
+   "m16r3_adversarial": [],
+   "m16r4_adversarial": []
+  },
+  "raw": {
+   "builder_tests": "FAIL",
+   "builder_oracle": "15/15 checks passed"
+  }
+ },
+ {
+  "mutant": "t1_desc_0",
+  "kills": {
+   "builder_tests": true,
+   "builder_oracle": true,
+   "m16_oracle": true,
+   "m16r3_adversarial": [],
+   "m16r4_adversarial": [
+    "f01",
+    "f02",
+    "f03",
+    "f04",
+    "f05",
+    "f06",
+    "f07",
+    "f08"
+   ]
+  },
+  "raw": {
+   "builder_tests": "FAIL",
+   "builder_oracle": "14/15 checks passed"
+  }
+ }
+]
