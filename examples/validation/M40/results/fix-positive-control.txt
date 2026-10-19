@@ -1,0 +1,14 @@
+== M40 proposed fix positive control (fix applied to a copy only, never to the candidate)
+patch applies cleanly to 0f593a1
+(eval):4: no matches found: /tmp/m40-out-f*
+host portability: pass (wheel-smoke) wheel solaris_dev_shop-0.61-py3-none-any.whl; employees_in_wheel=False; findings=0 exit 0
+entries added to REPO: 0
+stale build/ in REPO: smoke exit 0
+result pass stale in wheel []
+invalid: --outside must be a folder outside the checkout. Nothing was written.
+outside inside the checkout: exit 2; created: 
+-- builder G40 tests and portability oracle on the fixed copy
+OK
+ACCEPTED 8/8
+OK (skipped=1)
+ACCEPTED 8/8

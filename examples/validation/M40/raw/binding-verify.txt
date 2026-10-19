@@ -1,0 +1,27 @@
+Mon Oct 19 11:38:09 PDT 2026
+candidate 0f593a1d1903aa05c126473c2310364310856147 parents: 0f593a1 b0c5737 G40 follow-up: python-bounds compiles in memory, writes no bytecode (review only);b0c5737 8428c90 05378c4 G40: merge G39 r2 prerequisite (review only, Grok build);05378c4 f04d34d G39 r2: bind specialist inputs, catch removed outputs (review only, Grok build);
+merge b0c5737 parents: b0c5737ff8033b1e3b8f41f7c68ce3aab35c59ce 8428c90ed6c22f64e81209fa989c278a5d4390b8 05378c4ed33525e4c1dcafdfd0a2bb01506f9c6e
+G39 r2 is ancestor: yes
+remerge check: merge-tree d35e4169c0202e7fc8a459c15d313a231db5fa87 vs b0c5737^{tree} d35e4169c0202e7fc8a459c15d313a231db5fa87
+G40-on-G39r2.patch sha 79c67074a60c4116cca92cbeced788e3a6d5326874865437069b6a45bc18b6fe vs diff 05378c4..b0c5737 0ff4d7da40518cfc2341c45556e016ed6e664d440d9d48a17b9f3c7b8266928f
+followup.patch sha 609dc954fbe6df69d10a8ae86ae7e80e8bda3cd112cd05946911badda66d3917 vs diff b0c5737..0f593a1d1903aa05c126473c2310364310856147 609dc954fbe6df69d10a8ae86ae7e80e8bda3cd112cd05946911badda66d3917
+manifest 17 entries, 0 mismatches
+manifest set == diff G39r2..candidate
+prerequisite note: G39 r2's own base fabed6a predates G05 r2 3056378 and G19 h1 350d175 (see M39-r2/raw/prerequisite-heads.txt)
+diff 05378c4ed33525e4c1dcafdfd0a2bb01506f9c6e b0c5737 -> 0ff4d7da40518cfc
+diff --binary 05378c4ed33525e4c1dcafdfd0a2bb01506f9c6e 0f593a1 -> 79c67074a60c4116
+diff 05378c4ed33525e4c1dcafdfd0a2bb01506f9c6e 0f593a1 -> 79c67074a60c4116
+diff 8428c90 b0c5737 -> 4e6d66da86435717
+diff --binary 8428c90 b0c5737 -> 4e6d66da86435717
+diff --binary fabed6a 8428c90 -> fddc41d8dc178e5d
+diff fabed6a 8428c90 -> fddc41d8dc178e5d
+diff --binary f04d34dbf41364b6dcdb03104a647c2e499bccac 8428c90 -> 0ff4d7da40518cfc
+diff --git a/docs/architecture.md b/docs/architecture.md
+index 2186fe9..4edca54 100644
+--- a/docs/architecture.md
+      17
+      17
+applied
+Files /tmp/m40-papply/employees/quality-security/qa-engineer/host_portability.py and /tmp/m40-papply2/employees/quality-security/qa-engineer/host_portability.py differ
+Files /tmp/m40-papply/tests/test_g40_capability.py and /tmp/m40-papply2/tests/test_g40_capability.py differ
+binding note: G40-on-G39r2.patch (79c67074) is diff 05378c4..0f593a1, the whole final candidate over G39 r2 including the follow-up; applied to G39 r2 it reproduces the 0f593a1 tree exactly (the handback calls it G40's change on the new base)

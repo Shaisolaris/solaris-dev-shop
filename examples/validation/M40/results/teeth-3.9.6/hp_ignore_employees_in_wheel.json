@@ -1,0 +1,224 @@
+{
+ "python": "3.9.6",
+ "can_wheel": false,
+ "rows": [
+  {
+   "row": "A01 python-bounds: requires-python and the 3.10+/3.9+ split are reported truthfully, every employee script is parsed, nothing is written, a 3.10-only script is caught on 3.9",
+   "pass": true,
+   "sub": {
+    "exit_0": true,
+    "requires_python_from_pyproject": true,
+    "wheel_3_10_source_3_9": true,
+    "every_employee_script_parsed": true,
+    "interpreter_reported": true,
+    "no_file_written_in_repo": true,
+    "py310_syntax_reported_on_3_9": true
+   },
+   "detail": {
+    "exit_0": [
+     true,
+     0
+    ],
+    "requires_python_from_pyproject": [
+     true,
+     ">=3.10"
+    ],
+    "wheel_3_10_source_3_9": [
+     true,
+     [
+      "3.10+",
+      "3.9+"
+     ]
+    ],
+    "every_employee_script_parsed": [
+     true,
+     [
+      13,
+      13
+     ]
+    ],
+    "interpreter_reported": [
+     true,
+     "3.9.6"
+    ],
+    "no_file_written_in_repo": [
+     true,
+     0
+    ],
+    "py310_syntax_reported_on_3_9": [
+     true,
+     [
+      1,
+      [
+       "employees/quality-security/qa-engineer/zz_probe.py"
+      ]
+     ]
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "A02 skill-copy: a lone qa-engineer copy is broken (exit 1) and names the shared standard and assurance paths it lost; bad roles and repos exit 2",
+   "pass": true,
+   "sub": {
+    "lone_qa_engineer_copy_broken_exit_1": true,
+    "names_missing_standard_and_assurance": true,
+    "copy_really_made": true,
+    "missing_paths_really_missing_in_copy": true,
+    "bad_role_dotdot_exit_2": true,
+    "bad_role_absolute_exit_2": true,
+    "bad_role_missing_exit_2": true,
+    "bad_role_no_contract_exit_2": true,
+    "bad_repo_exit_2": true
+   },
+   "detail": {
+    "lone_qa_engineer_copy_broken_exit_1": [
+     true,
+     [
+      1,
+      "broken"
+     ]
+    ],
+    "names_missing_standard_and_assurance": [
+     true,
+     [
+      "../QUALITY-SECURITY-STANDARD.md",
+      "../QUALITY-SECURITY-STANDARD.md",
+      "../assurance/ASSURANCE.md",
+      "../assurance/quality_os.py"
+     ]
+    ],
+    "copy_really_made": [
+     true,
+     "<TMPDIR>/m40o-qzgc3dlc/host"
+    ],
+    "missing_paths_really_missing_in_copy": [
+     true,
+     4
+    ],
+    "bad_role_dotdot_exit_2": [
+     true,
+     [
+      2,
+      "alid: ROLE must be a relative employees path like quality-security/qa-engineer. Nothing was written."
+     ]
+    ],
+    "bad_role_absolute_exit_2": [
+     true,
+     [
+      2,
+      "invalid: ROLE path does not exist under employees/: etc. Nothing was written."
+     ]
+    ],
+    "bad_role_missing_exit_2": [
+     true,
+     [
+      2,
+      "invalid: ROLE path does not exist under employees/: quality-security/nope. Nothing was written."
+     ]
+    ],
+    "bad_role_no_contract_exit_2": [
+     true,
+     [
+      2,
+      "invalid: ROLE has no capability.contract.json. Nothing was written."
+     ]
+    ],
+    "bad_repo_exit_2": [
+     true,
+     2
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "A03 --out is written atomically and equals the JSON report; a missing --out folder or a bad repo exits 2 with nothing written",
+   "pass": true,
+   "sub": {
+    "out_written_equals_stdout": true,
+    "out_missing_folder_exit_2_nothing": true,
+    "bad_repo_exit_2": true
+   },
+   "detail": {
+    "out_written_equals_stdout": [
+     true,
+     0
+    ],
+    "out_missing_folder_exit_2_nothing": [
+     true,
+     2
+    ],
+    "bad_repo_exit_2": [
+     true,
+     2
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "A04 wheel member inspection flags bytecode, employee skills, a missing control-plane policy and checkout layout, and passes a clean member list",
+   "pass": false,
+   "sub": {
+    "clean_names_no_findings": true,
+    "pyc_found": true,
+    "employees_found": false,
+    "missing_policy_found": true,
+    "checkout_layout_found": true
+   },
+   "detail": {
+    "clean_names_no_findings": [
+     true,
+     []
+    ],
+    "pyc_found": [
+     true,
+     0
+    ],
+    "employees_found": [
+     false,
+     0
+    ],
+    "missing_policy_found": [
+     true,
+     0
+    ],
+    "checkout_layout_found": [
+     true,
+     0
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "A09 on 3.9 wheel-smoke refuses with exit 2, names 3.10+, and creates nothing",
+   "pass": true,
+   "sub": {
+    "py39_wheel_smoke_exit_2_names_3_10": true,
+    "py39_nothing_created": true
+   },
+   "detail": {
+    "py39_wheel_smoke_exit_2_names_3_10": [
+     true,
+     2
+    ],
+    "py39_nothing_created": [
+     true,
+     false
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "O05 wheel rows A05-A08 skipped on this interpreter (recorded, not scored)",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "skipped": "no offline wheel build on this interpreter (3.9.6; needs 3.10+ and setuptools importable)",
+    "exit": 2,
+    "stderr_tail": "invalid: wheel-smoke needs Python 3.10+ to build and install the wheel (this interpreter is 3.9); source tools still run on 3.9+. Nothing was written.",
+    "outside_created": false
+   },
+   "scored": false
+  }
+ ]
+}

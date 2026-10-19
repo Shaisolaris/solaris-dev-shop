@@ -1,0 +1,34 @@
+== P1 wheel-smoke on a clean copy, 3.11.16, offline (PIP_NO_INDEX=1) with the interpreter's own setuptools (PIP_NO_BUILD_ISOLATION=0): does it edit REPO?
+exit 0
+result pass wheel solaris_dev_shop-0.61-py3-none-any.whl employees_in_wheel False findings []
+entries added to REPO by wheel-smoke:
+> ./build
+> ./build/bdist.macosx-11.0-arm64
+> ./build/lib
+> ./build/lib/solaris_intake
+> ./build/lib/solaris_intake/__init__.py
+> ./build/lib/solaris_intake/control_plane
+> ./build/lib/solaris_intake/control_plane/__init__.py
+> ./build/lib/solaris_intake/control_plane/budgets.json
+> ./build/lib/solaris_intake/control_plane/meta_control_plane.py
+> ./build/lib/solaris_intake/control_plane/policy.json
+> ./build/lib/solaris_intake/control_plane/roster.json
+> ./build/lib/solaris_intake/control_plane/routing-probes.md
+count added: 19
+== P2 wheel-smoke offline with default build isolation, 3.12.14 (no setuptools in the interpreter)
+note: This error originates from a subprocess, and is likely not a problem with pip.
+. Nothing was written.
+exit 2
+== P3 --outside inside the checkout
+host portability: pass (wheel-smoke)
+wheel solaris_dev_shop-0.61-py3-none-any.whl; employees_in_wheel=False; findings=0
+wheel install and intake smoke outside the checkout; employee skills are not in the wheel and need a full checkout or a complete skill bundle
+exit 0
+venv wheels == P4 a stale build/ left by an earlier smoke: does the next smoke's wheel carry it?
+/tmp/m40-src-a/build /tmp/m40-src-a/solaris_dev_shop.egg-info 
+exit 0
+result pass findings []
+stale file in the smoked wheel: ['solaris_intake/stale_leftover.py']
+__init__.py __pycache__ control_plane stale_leftover.py 
+== P2b after the offline failure: what was left
+wheels (eval):9: no matches found: /tmp/m40-src-b/*.egg-info

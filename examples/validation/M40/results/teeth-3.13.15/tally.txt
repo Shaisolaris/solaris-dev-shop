@@ -1,0 +1,10 @@
+hp_skill_always_complete KILLED A02 skill-copy: a lone qa-engineer copy is broken (exit 1) and names the shared standard and assurance paths it lost; bad roles and repos exit 2
+hp_ignore_employees_in_wheel KILLED A04 wheel member inspection flags bytecode, employee skills, a missing control-plane policy and checkout layout, and passes a clean member list
+hp_no_pyc_check KILLED A04 wheel member inspection flags bytecode, employee skills, a missing control-plane policy and checkout layout, and passes a clean member list
+hp_bounds_hide_source KILLED A01 python-bounds: requires-python and the 3.10+/3.9+ split are reported truthfully, every employee script is parsed, nothing is written, a 3.10-only script is caught on 3.9
+hp_skill_rc0 KILLED A02 skill-copy: a lone qa-engineer copy is broken (exit 1) and names the shared standard and assurance paths it lost; bad roles and repos exit 2
+hp_out_missing_ok KILLED A03 --out is written atomically and equals the JSON report; a missing --out folder or a bad repo exits 2 with nothing written
+hp_skip_policy KILLED A04 wheel member inspection flags bytecode, employee skills, a missing control-plane policy and checkout layout, and passes a clean member list
+hp_role_escape_ok SURVIVED 
+hp_bytecode_written KILLED A01 python-bounds: requires-python and the 3.10+/3.9+ split are reported truthfully, every employee script is parsed, nothing is written, a 3.10-only script is caught on 3.9
+TEETH 8/9 killed (python 3.13.15)

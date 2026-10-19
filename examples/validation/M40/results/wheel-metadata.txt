@@ -1,0 +1,19 @@
+PASS name ['solaris-dev-shop']
+PASS version_matches_pyproject ['0.61']
+PASS requires_python_matches ['>=3.10']
+PASS license_present ['MIT']
+PASS summary_matches ['61 portable specialist skills with searchable discovery and an explainable deterministic intake router.']
+PASS no_runtime_requires []
+PASS entry_point [console_scripts]
+solaris-intake = solaris_intake:main
+PASS record_hashes_true []
+PASS record_lists_every_member []
+PASS no_bytecode 0
+PASS no_employees_or_tests 0
+PASS members_equal_source_package_files {'extra': [], 'missing': []}
+PASS member_bytes_equal_source []
+PASS wheel_tag_pure solaris_dev_shop-0.61-py3-none-any.whl
+M40 WHEEL META 14/14
+stale-build wheel from wheel-smoke (P4 probe): FAIL members_equal_source_package_files {'extra': ['solaris_intake/stale_leftover.py'], 'missing': []}
+stale-build wheel from wheel-smoke (P4 probe): FAIL member_bytes_equal_source ['solaris_intake/stale_leftover.py']
+stale-build wheel from wheel-smoke (P4 probe): M40 WHEEL META 12/14

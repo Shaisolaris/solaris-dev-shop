@@ -1,0 +1,2 @@
+authoring fix before teeth (disclosed): the O05 skip text mislabelled the version check as the setuptools check; detail text only
+authoring fix in m40_wheel_meta.py (disclosed): members not in the source are skipped in the byte comparison instead of crashing

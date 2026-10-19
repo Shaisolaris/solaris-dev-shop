@@ -1,0 +1,22 @@
+{
+  "command": "wheel-smoke",
+  "employees_in_wheel": false,
+  "findings": [],
+  "outside": "/tmp/m40-out-a",
+  "requires_python": ">=3.10",
+  "result": "pass",
+  "schema": "solaris.host-portability/1",
+  "statement": "wheel install and intake smoke outside the checkout; employee skills are not in the wheel and need a full checkout or a complete skill bundle",
+  "wheel": "solaris_dev_shop-0.61-py3-none-any.whl",
+  "wheel_files_sample": [
+    "solaris_dev_shop-0.61.dist-info/licenses/NOTICE.md",
+    "solaris_intake/__init__.py",
+    "solaris_intake/control_plane/__init__.py",
+    "solaris_intake/control_plane/budgets.json",
+    "solaris_intake/control_plane/meta_control_plane.py",
+    "solaris_intake/control_plane/policy.json",
+    "solaris_intake/control_plane/roster.json",
+    "solaris_intake/control_plane/routing-probes.md",
+    "solaris_intake/control_plane/skills.json"
+  ]
+}

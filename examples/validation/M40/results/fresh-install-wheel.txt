@@ -1,0 +1,29 @@
+== fresh install (Grok self-validation): wheel built offline from a clean git archive of 0f593a1 with 3.11.16 setuptools 82.0.1, no build isolation, no index
+solaris_dev_shop-0.61-py3-none-any.whl
+wheel sha256 192ea7b41e925cf5483c87a22fc37af9bf89bdaf39ef44b4200e2e53fb8ba295
+-- 3.9.6 install exit 1 ERROR: Package 'solaris-dev-shop' requires a different Python: 3.9.6 not in '>=3.10'
+-- 3.11.16 install exit 0 
+   solaris-intake self-test -> exit 0 | meta control-plane selftest: OK (engine 1.3.0, providers list trimmed for the publication scan) 
+   solaris-intake intake --explain review this code -> exit 0 | {   "schema_version": "1.3.0",   "engine_version": "1.3.0",   "decision": "assign",   "coordinator": "meta.chief-of-staff",   "request_summary": "review this code",   "domains": [     "engineering"   ],   "risk": "low", 
+   solaris-intake skills playwright --json -> exit 0 | {   "count": 2,   "skills": [     {       "id": "solaris.frontend-developer",       "name": "frontend-developer",       "department": "engineering",       "summary": "Repository-aware frontend UI implementation with a11y
+   solaris-intake --version -> exit 2 | usage: meta_control_plane.py [-h]                              {intake,context,self-test,roster,budgets,policy,skills}                              ... meta_control_plane.py: error: the following arguments are required: 
+   solaris-intake intake --explain deploy a database migration with zero downtime -> exit 0 | {   "schema_version": "1.3.0",   "engine_version": "1.3.0",   "decision": "clarify",   "coordinator": "meta.chief-of-staff",   "request_summary": "deploy a database migration with zero downtime",   "domains": [     "infr
+   import location: /tmp/m40-fi/venv-3.11.16/lib/python3.11/site-packages/solaris_intake
+   python -m solaris_intake self-test: exit 1
+-- 3.12.14 install exit 0 
+   solaris-intake self-test -> exit 0 | meta control-plane selftest: OK (engine 1.3.0, providers list trimmed for the publication scan) 
+   solaris-intake intake --explain review this code -> exit 0 | {   "schema_version": "1.3.0",   "engine_version": "1.3.0",   "decision": "assign",   "coordinator": "meta.chief-of-staff",   "request_summary": "review this code",   "domains": [     "engineering"   ],   "risk": "low", 
+   solaris-intake skills playwright --json -> exit 0 | {   "count": 2,   "skills": [     {       "id": "solaris.frontend-developer",       "name": "frontend-developer",       "department": "engineering",       "summary": "Repository-aware frontend UI implementation with a11y
+   solaris-intake --version -> exit 2 | usage: meta_control_plane.py [-h]                              {intake,context,self-test,roster,budgets,policy,skills}                              ... meta_control_plane.py: error: the following arguments are required: 
+   solaris-intake intake --explain deploy a database migration with zero downtime -> exit 0 | {   "schema_version": "1.3.0",   "engine_version": "1.3.0",   "decision": "clarify",   "coordinator": "meta.chief-of-staff",   "request_summary": "deploy a database migration with zero downtime",   "domains": [     "infr
+   import location: /tmp/m40-fi/venv-3.12.14/lib/python3.12/site-packages/solaris_intake
+   python -m solaris_intake self-test: exit 1
+-- 3.13.15 install exit 0 
+   solaris-intake self-test -> exit 0 | meta control-plane selftest: OK (engine 1.3.0, providers list trimmed for the publication scan) 
+   solaris-intake intake --explain review this code -> exit 0 | {   "schema_version": "1.3.0",   "engine_version": "1.3.0",   "decision": "assign",   "coordinator": "meta.chief-of-staff",   "request_summary": "review this code",   "domains": [     "engineering"   ],   "risk": "low", 
+   solaris-intake skills playwright --json -> exit 0 | {   "count": 2,   "skills": [     {       "id": "solaris.frontend-developer",       "name": "frontend-developer",       "department": "engineering",       "summary": "Repository-aware frontend UI implementation with a11y
+   solaris-intake --version -> exit 2 | usage: meta_control_plane.py [-h]                              {intake,context,self-test,roster,budgets,policy,skills} ... meta_control_plane.py: error: the following arguments are required: cmd 
+   solaris-intake intake --explain deploy a database migration with zero downtime -> exit 0 | {   "schema_version": "1.3.0",   "engine_version": "1.3.0",   "decision": "clarify",   "coordinator": "meta.chief-of-staff",   "request_summary": "deploy a database migration with zero downtime",   "domains": [     "infr
+   import location: /tmp/m40-fi/venv-3.13.15/lib/python3.13/site-packages/solaris_intake
+   python -m solaris_intake self-test: exit 1
+run dir after: 0 entries; clean source archive changed by build: /tmp/m40-fi/src/build /tmp/m40-fi/src/solaris_dev_shop.egg-info 
