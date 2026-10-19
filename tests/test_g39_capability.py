@@ -325,5 +325,59 @@ class Direct(unittest.TestCase):
         self.assertEqual((rc, json.loads(out)["ledger"]["chain"]), (1, "broken"))
 
 
+    # ---- r3 (M39 r2 P2-1 explicit inputs in four spellings, P3-1 exit 2 never counts whatever the record says)
+    def _bound_then_stale(self, arg, change):
+        cmd = [sys.executable, "-c", "open('a.txt','w').write('x')", arg]
+        self.assertEqual(self.rec(cmd=cmd)[0], 0, arg)
+        r = json.loads((self.root / ".delivery/contributions.jsonl").read_text().splitlines()[-1])
+        self.assertEqual(self.claims(self._body())[0], 0, arg)
+        change()
+        rc, out = self.claims(self._body())
+        c = json.loads(out)["contributions"][0]
+        self.assertEqual((rc, c["state"]), (1, "stale"), (arg, r.get("claimed_inputs")))
+        return r["claimed_inputs"]
+
+    def test_flag_equals_value_input_is_bound(self):
+        (self.root / "inp").mkdir()
+        (self.root / "inp/a.csv").write_text("v1")
+        got = self._bound_then_stale("--src=inp/a.csv", lambda: (self.root / "inp/a.csv").write_text("v2"))
+        self.assertEqual(got, ["inp/a.csv"])
+
+    def test_folder_named_in_command_is_bound(self):
+        (self.root / "db").mkdir()
+        (self.root / "db/t1.csv").write_text("v1")
+        got = self._bound_then_stale("db", lambda: (self.root / "db/t1.csv").write_text("v2"))
+        self.assertEqual(got, ["db"])
+
+    def test_absolute_path_inside_root_is_bound_relative(self):
+        (self.root / "b.csv").write_text("v1")
+        got = self._bound_then_stale(str((self.root / "b.csv").resolve()), lambda: (self.root / "b.csv").write_text("v2"))
+        self.assertEqual(got, ["b.csv"])
+
+    def test_symlink_named_in_command_is_refused_before_running(self):
+        (self.root / "real.csv").write_text("v1")
+        os.symlink("real.csv", str(self.root / "link.csv"))
+        cmd = [sys.executable, "-c", "open('ran.txt','w')", "link.csv"]
+        self.assertEqual(self.rec(cmd=cmd)[0], 2)
+        self.assertFalse((self.root / "ran.txt").exists())
+
+    def test_rewritten_record_with_exit_2_is_never_go(self):
+        self.assertEqual(self.rec()[0], 0)
+        led = self.root / ".delivery/contributions.jsonl"
+        recs = [json.loads(l) for l in led.read_text().splitlines()]
+        recs[-1].update(exit=2, ok_exit=[0, 1, 2], ok=True)
+        prev, out = "0" * 64, []
+        for r in recs:  # a consistent full rewrite: re-chain every record and move the head with it
+            line = json.dumps(dict(r, prev=prev), sort_keys=True, separators=(",", ":")).encode()
+            out.append(line)
+            prev = hashlib.sha256(line).hexdigest()
+        led.write_bytes(b"\n".join(out) + b"\n")
+        (self.root / ".delivery/head.json").write_text(json.dumps({"seq": len(out) - 1, "sha256": prev}))
+        rc, txt = self.claims(self._body())
+        rep = json.loads(txt)
+        self.assertEqual(rep["ledger"]["chain"], "intact", txt)
+        self.assertEqual((rc, rep["verdict"], rep["contributions"][0]["state"]), (1, "NO_GO", "failed"))
+
+
 if __name__ == "__main__":
     unittest.main()

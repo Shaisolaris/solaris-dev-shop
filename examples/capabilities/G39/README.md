@@ -45,5 +45,8 @@ o4 now expects exit 1 to give `evidenced_with_gaps`: NO_GO unless the claim acce
 delivery counts); `noop_evidence.py` records nothing and answers GO.
 
 r2 follows the M39 self-validation (P2-1 inputs not bound, P2-2 removed output unnoticed, P3-1 to P3-3, P4-2)
-and generalises its proposed fix. Not run: workers on different machines or a network folder (local `fcntl` locks only), a live customer,
+and generalises its proposed fix. r3 applies the M39 r2 proposed fix (P2-1, P3-1): explicit inputs named as
+`--flag=VALUE`, a folder or an absolute path inside ROOT are bound, a symlink named in the command is refused, and
+`verify` treats a record whose exit is not in its `ok_exit` (or whose `ok_exit` is not 0 or 0,1) as failed. r3 is
+stacked on G05 r2 `3056378` and G19 h1 `350d175`. Not run: workers on different machines or a network folder (local `fcntl` locks only), a live customer,
 any external service. Worker names are plain-text claims. POSIX, Python 3.9+.

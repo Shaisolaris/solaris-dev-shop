@@ -19,7 +19,9 @@ What it checks, reading and running only local packaging commands:
 
 Exit codes: 0 pass / complete report; 1 findings (smoke failed or skill-copy broken);
 2 invalid input (nothing written). --out is written atomically. Python 3.9+, standard library
-plus the pip/wheel already available to the interpreter. Never edits REPO.
+plus the pip/wheel already available to the interpreter. Never edits REPO: wheel-smoke builds from a private copy
+under its work folder (build/, dist/, *.egg-info, caches and bytecode skipped) and refuses an --outside folder at or
+under REPO; a wheel member with no source file is a finding (wheel_member_not_in_source).
 """
 from __future__ import annotations
 
@@ -101,13 +103,22 @@ def wheel_smoke(root, outside=None):
         raise Invalid("wheel-smoke needs Python 3.10+ to build and install the wheel (this interpreter is %d.%d); source tools still run on 3.9+" % (py.major, py.minor))
     findings = []
     work = Path(outside) if outside else Path(tempfile.mkdtemp(prefix="g40-wheel-"))
+    wr = Path(os.path.realpath(str(work)))
+    if wr == root or root in wr.parents:
+        raise Invalid("--outside must be a folder outside the checkout")
     work.mkdir(parents=True, exist_ok=True)
+    # build from a private copy: pip/setuptools write build/ and *.egg-info next to the source, and a stale
+    # build/lib left in REPO would be packed into the wheel
+    srcdir = work / "src"
+    if srcdir.exists():
+        shutil.rmtree(srcdir)
+    shutil.copytree(root, srcdir, ignore=shutil.ignore_patterns(*sorted(SKIP_DIRS), "*.egg-info", "*.pyc"))
     wheels = work / "wheels"
     venv = work / "venv"
     wheels.mkdir(exist_ok=True)
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
     # build
-    b = subprocess.run([sys.executable, "-m", "pip", "wheel", str(root), "--no-deps", "--wheel-dir", str(wheels)],
+    b = subprocess.run([sys.executable, "-m", "pip", "wheel", str(srcdir), "--no-deps", "--wheel-dir", str(wheels)],
                        capture_output=True, text=True, env=env, timeout=300)
     if b.returncode != 0:
         raise Invalid("pip wheel failed: %s" % ((b.stderr or b.stdout)[-400:]))
@@ -119,6 +130,11 @@ def wheel_smoke(root, outside=None):
     with zipfile.ZipFile(wheel) as zf:
         names = zf.namelist()
         findings.extend(inspect_wheel_names(names))
+        extra = [n for n in names if n.startswith("solaris_intake/") and not (
+            (root / "solaris_intake" / n[len("solaris_intake/"):]).is_file() or
+            (root / "control-plane" / n[len("solaris_intake/control_plane/"):]).is_file())]
+        if extra:
+            findings.append({"code": "wheel_member_not_in_source", "detail": ", ".join(sorted(extra)[:10])})
         if "solaris_intake/control_plane/policy.json" in names:
             packaged = zf.read("solaris_intake/control_plane/meta_control_plane.py")
             source = (root / "control-plane" / "meta_control_plane.py").read_bytes()

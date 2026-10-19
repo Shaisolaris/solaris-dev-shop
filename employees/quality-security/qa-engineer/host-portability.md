@@ -17,7 +17,10 @@ python3 host_portability.py report REPO [--out FILE]
 | Source checkout `employees/**/*.py` tools | 3.9+ | Capability scripts; need the full checkout (or every referenced shared standard) |
 | Lone copied skill folder | any | Often **broken**: relative `../` department standards and preflight targets do not resolve |
 
-`wheel-smoke` mirrors `.github/workflows/ci.yml`: build with `pip wheel --no-deps`, install outside the checkout, run `solaris-intake self-test`, `intake --explain`, and `skills playwright --json`. The wheel must not ship `employees/` or `.pyc` files.
+`wheel-smoke` mirrors `.github/workflows/ci.yml`: build with `pip wheel --no-deps`, install outside the checkout, run `solaris-intake self-test`, `intake --explain`, and `skills playwright --json`. The wheel must not ship `employees/` or `.pyc` files. The build runs on a private copy of REPO under the work
+folder (build/, dist/, *.egg-info, caches and bytecode left out), so the checkout gains nothing and a stale
+`build/lib` file in it cannot reach the wheel; a `solaris_intake/` member with no source file is a finding
+(`wheel_member_not_in_source`). `--outside` at or under REPO is refused (exit 2).
 
 `skill-copy` copies only the role folder and lists missing references. It does not invent a host agent API.
 
