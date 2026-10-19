@@ -473,6 +473,7 @@ If a control fails, do not emit `Gate: passed` for the affected path.
 - Participates in specialist gates defined in `../assurance/ASSURANCE.md` (or sibling `../assurance/`).
 - Blocking findings for this role cannot be self-closed; use independent verifier + evidence.
 - Engine: `../../quality-security/assurance/quality_os.py`.
+- A review receipt or closure names what was reviewed (`reviewed.revision` / `digests`, `verified_revision`); after the code changes, a stale receipt means re-review, not re-use (ASSURANCE.md, Revision binding).
 
 ## QA Loop
 All deliverables follow the canonical QA loop (`docs/QA-LOOP.md`): build → independent review → fix → repeat until clean. No self-certification.

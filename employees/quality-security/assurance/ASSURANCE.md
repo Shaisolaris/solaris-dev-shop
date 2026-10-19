@@ -73,7 +73,8 @@ Legacy summary-only, string, or artifact-only receipts must be corrected.
 
 A `pass` is a check of declared receipts against declared risk and dimensions.
 It does **not** authenticate the role, inspect referenced artifacts, prove tests
-ran, bind a receipt to the current revision, or authorize an external action.
+ran, or authorize an external action. A receipt is tied to the current revision
+only when the packet names its `subject` (see Revision binding below).
 The host must assess actual risk, execute the specialist work, inspect its output,
 and obtain the owner's approval where required. No files, URLs or commands named
 in a receipt are opened or executed by this validator. Omitted blockers and false
@@ -83,6 +84,53 @@ risk declarations cannot be detected from syntax alone.
 make a negative fixture succeed when the expected gate fires. That suite success
 is test evidence, never permission to release. Call `evaluate_artifact_packet`
 for the underlying packet decision; it does not apply fixture expectations.
+
+## Revision binding (changed source invalidates a prior pass)
+
+A packet may name the artifact it is about, and each receipt what its reviewer examined:
+
+```json
+{
+  "subject": {"revision": "9b3e7d1c5a2f...", "digests": {"src/auth.py": "<sha256>", "ui/index.html": "<sha256>"}},
+  "evidence": {"security": {"gate": "security", "role": "security-auditor", "summary": "...",
+                            "artifacts": ["reports/sec.md"],
+                            "reviewed": {"revision": "4f1c2a9e0b7d...", "digests": {"src/auth.py": "<sha256>"}}}}
+}
+```
+
+A revision is a lowercase git commit id (7-64 hex; an abbreviated id of 7+ characters matches the full id)
+or `sha256:<64 hex>`. Digests map relative paths to sha256. With a `subject`, each receipt is:
+
+| State | When | Result |
+|-------|------|--------|
+| current | `reviewed.revision` is the subject revision and no listed digest differs | passes |
+| carried_forward | another revision, but every file in `reviewed.digests` is unchanged in the subject | passes, noted |
+| stale | a listed file's digest differs (even under the same revision label), or the revisions differ without digest cover | `STALE_GATE_EVIDENCE` |
+| unbound | no `reviewed`, or nothing comparable with the subject | `UNBOUND_GATE_EVIDENCE` |
+
+`evidence.revision_binding.gates` gives each gate's state, both revisions, the changed files (first 20) and
+an `action` naming the gate to re-run and the revision to run it on. Without a `subject`, receipts that name
+different revisions are `REVISION_CONFLICT`; packets with no binding at all behave exactly as before.
+A malformed `subject` is `INVALID_PACKET`; a malformed `reviewed` is `INVALID_GATE_EVIDENCE` (bounded
+messages; at most 10000 paths). Evaluation still opens nothing: digests are declared values.
+
+`quality_os.py digest ROOT PATH... [--revision REV]` prints the sha256 of actual files (a folder is walked in
+sorted order) as a binding object for `subject` or `reviewed`. It refuses with exit 2 a path that leaves
+ROOT, any symlink, a non-regular or oversized file (64 MiB), and an empty result. It reads; it runs nothing.
+
+Findings: `can_close_finding` / `close_finding` take `subject_revision` and `verified_revision`. With a
+subject, a non-waived closure needs `verified_revision` (else `MISSING_VERIFIED_REVISION`) matching the
+subject (else `STALE_CLOSURE_EVIDENCE`; a malformed one is `INVALID_REVISION`); the closure records
+`closed_at_revision`. `closure_is_current(finding, revision)` reports `STALE_CLOSURE` (verified at another
+revision; conservative, any other revision counts), `UNBOUND_CLOSURE` (closed without a revision and
+without a waiver), or `NOT_CLOSED`. A closure that records a `waiver_id` is waiver-governed: `closure_is_current` returns current at any revision, and `reopen_finding` refuses with `WAIVER_GOVERNS`.
+`reopen_finding` returns a non-waiver closed finding to open with a reason of 12+ characters
+(`REOPEN_REASON_REQUIRED`), clearing the closer and revision and keeping the earlier evidence plus a reopen
+note, so closing again needs new independent evidence. A valid waiver closes a waived finding at any
+revision until it expires; expiry and revocation stay with `validate_waiver`.
+
+What this cannot do: tell whether a reviewer really examined the named revision (receipts stay
+declarations), or run git; callers supply revisions and digests from the artifact they release.
 
 ## Findings → orders
 
@@ -170,6 +218,7 @@ python3 employees/quality-security/assurance/quality_os.py self-test
 python3 employees/quality-security/assurance/quality_os.py run packet.json
 python3 employees/quality-security/assurance/quality_os.py audit
 python3 employees/quality-security/assurance/quality_os.py route security
+python3 employees/quality-security/assurance/quality_os.py digest PROJECT src ui --revision COMMIT
 python3 -m unittest discover -s tests -v
 ```
 

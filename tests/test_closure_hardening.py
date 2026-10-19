@@ -397,6 +397,34 @@ class ReviewRound1Cli(_CliHelpers, unittest.TestCase):
                                       'waiver': waiver(expires_at='2099-01-01T00:00:00Z').to_dict()})
         self.assertEqual((code, out['ok'], out['evidence']['allowed']), (0, True, True))
 
+class WaiverGovernedClosure(unittest.TestCase):
+    """Root G05: waiver-closed findings stay current and are not reopened via reopen_finding."""
+
+    def test_waiver_closure_is_current_and_not_reopened(self):
+        f = finding(status='waived')
+        w = waiver()
+        closed, codes = q.close_finding(f, closer_role='release-manager', independent_evidence=[],
+                                        waiver=w, as_of=AS_OF)
+        self.assertEqual(codes, [])
+        self.assertEqual(closed.status, 'closed')
+        self.assertEqual(closed.waiver_id, w.waiver_id)
+        self.assertEqual(closed.closed_at_revision, '')
+        self.assertEqual(q.closure_is_current(closed, 'a' * 40), (True, []))
+        self.assertEqual(q.closure_is_current(closed, 'b' * 40), (True, []))
+        reopened, rcodes = q.reopen_finding(closed, reason='should not reopen waiver',
+                                            current_revision='a' * 40, reopened_by_role='release-manager')
+        self.assertEqual(rcodes, ['WAIVER_GOVERNS'])
+        self.assertEqual(reopened.status, 'closed')
+        # Non-waiver unbound closure still reports UNBOUND_CLOSURE
+        bare = finding(status='open')
+        closed2, c2 = q.close_finding(bare, closer_role='code-reviewer', independent_evidence=['verified ok'],
+                                      subject_revision=None, verified_revision=None)
+        # without subject, non-waived close may still work for non-blocking - use S2 carefully
+        # Instead craft a closed finding without revision or waiver:
+        unbound = finding(status='closed')
+        unbound.closed_at_revision = ''
+        unbound.waiver_id = ''
+        self.assertEqual(q.closure_is_current(unbound, 'a' * 40), (False, ['UNBOUND_CLOSURE']))
 
 if __name__ == '__main__':
     unittest.main()

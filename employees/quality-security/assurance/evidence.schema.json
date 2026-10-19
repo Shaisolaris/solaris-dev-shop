@@ -55,6 +55,21 @@
     },
     "timestamp": {
       "type": "string"
+    },
+    "reviewed": {
+      "description": "What the reviewer examined: the artifact revision and/or per-file sha256 (G05 revision binding)",
+      "type": "object",
+      "properties": {
+        "revision": { "type": "string", "pattern": "^(?:[0-9a-f]{7,64}|sha256:[0-9a-f]{64})$" },
+        "digests": {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 10000,
+          "additionalProperties": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      },
+      "anyOf": [{ "required": ["revision"] }, { "required": ["digests"] }],
+      "additionalProperties": false
     }
   },
   "additionalProperties": true

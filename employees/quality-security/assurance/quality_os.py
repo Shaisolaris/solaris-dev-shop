@@ -21,6 +21,7 @@ import html
 import copy
 import hashlib
 import json
+import os
 import re
 import sys
 import uuid
@@ -187,6 +188,7 @@ class Finding:
     waiver_id: str = ""
     created_at: str = ""
     updated_at: str = ""
+    closed_at_revision: str = ""  # artifact revision the closing verification reviewed (G05)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -519,8 +521,15 @@ def can_close_finding(
     independent_evidence: Sequence[str],
     waiver: Optional[Waiver] = None,
     as_of: Optional[datetime] = None,
+    subject_revision: Optional[str] = None,
+    verified_revision: Optional[str] = None,
 ) -> Tuple[bool, List[str]]:
     """Return (allowed, gate_codes). Blocking findings cannot be self-closed.
+
+    When subject_revision (the artifact revision being closed against) is given, a non-waived closure
+    needs verified_revision, the revision the verification examined, and the two must match
+    (STALE_CLOSURE_EVIDENCE otherwise, MISSING_VERIFIED_REVISION when absent). A valid waiver closes
+    regardless of revision: it accepts a known risk for the finding until it expires.
 
     Fails closed on unknown severity or status, blank closer, malformed or
     non-independent evidence, and unusable waivers. Evidence strings are
@@ -538,6 +547,9 @@ def can_close_finding(
         return False, ["INVALID_CLOSER_ROLE"]
     if not _evidence_shape_ok(independent_evidence):
         return False, ["INVALID_CLOSURE_EVIDENCE"]
+    for value in (subject_revision, verified_revision):
+        if value is not None and revision_error(value):
+            return False, ["INVALID_REVISION"]
 
     if finding.status == "waived":
         # Valid waiver closure: any well-formed closer, evidence may be empty.
@@ -565,6 +577,12 @@ def can_close_finding(
     if evidence_code:
         return False, [evidence_code]
 
+    if subject_revision is not None:
+        if verified_revision is None:
+            return False, ["MISSING_VERIFIED_REVISION"]
+        if not same_revision(verified_revision, subject_revision):
+            return False, ["STALE_CLOSURE_EVIDENCE"]
+
     return True, []
 
 
@@ -575,6 +593,8 @@ def close_finding(
     independent_evidence: Sequence[str],
     waiver: Optional[Waiver] = None,
     as_of: Optional[datetime] = None,
+    subject_revision: Optional[str] = None,
+    verified_revision: Optional[str] = None,
 ) -> Tuple[Finding, List[str]]:
     allowed, codes = can_close_finding(
         finding,
@@ -582,6 +602,8 @@ def close_finding(
         independent_evidence=independent_evidence,
         waiver=waiver,
         as_of=as_of,
+        subject_revision=subject_revision,
+        verified_revision=verified_revision,
     )
     updated = copy.deepcopy(finding)
     if not allowed:
@@ -589,6 +611,80 @@ def close_finding(
     updated.status = "closed"
     updated.closed_by_role = closer_role
     updated.evidence = list(finding.evidence) + list(independent_evidence)
+    if finding.status == "waived":
+        # Waiver-governed closure: keep closed_at_revision empty and record the waiver id
+        # so closure_is_current / reopen_finding treat it as waiver-bound, not UNBOUND_CLOSURE.
+        if waiver is not None and _nonblank(getattr(waiver, "waiver_id", "")):
+            updated.waiver_id = waiver.waiver_id
+    else:
+        updated.closed_at_revision = verified_revision or ""
+    updated.updated_at = utc_now()
+    return updated, []
+
+
+def closure_is_current(finding: Finding, current_revision: str) -> Tuple[bool, List[str]]:
+    """Whether a closed finding's verification covers current_revision.
+
+    (True, []) when it was verified at that revision, or when the closure is waiver-governed
+    (nonblank waiver_id: covers any revision until the waiver expires). Otherwise (False, [code]) with
+    STALE_CLOSURE (verified at another revision: re-verify there or reopen), UNBOUND_CLOSURE (closed
+    without a revision and without a waiver), NOT_CLOSED, INVALID_REVISION or INVALID_FINDING.
+    Conservative: any other revision is stale, even if the fix's files did not change; use packet digests
+    for file-level carry-forward.
+    """
+    if _finding_errors(finding):
+        return False, ["INVALID_FINDING"]
+    if revision_error(current_revision):
+        return False, ["INVALID_REVISION"]
+    if finding.status != "closed":
+        return False, ["NOT_CLOSED"]
+    if _nonblank(finding.waiver_id):
+        # Waiver-governed closure covers any revision until the waiver expires (checked via
+        # validate_waiver when the waiver record is available). Do not report UNBOUND_CLOSURE.
+        return True, []
+    closed_at = finding.closed_at_revision
+    if not isinstance(closed_at, str) or not closed_at:
+        return False, ["UNBOUND_CLOSURE"]
+    if revision_error(closed_at):
+        return False, ["INVALID_REVISION"]
+    if not same_revision(closed_at, current_revision):
+        return False, ["STALE_CLOSURE"]
+    return True, []
+
+
+def reopen_finding(
+    finding: Finding,
+    *,
+    reason: str,
+    current_revision: str,
+    reopened_by_role: str,
+) -> Tuple[Finding, List[str]]:
+    """Reopen a closed finding (for example after closure_is_current reports STALE_CLOSURE).
+
+    The status returns to open and the closer and closure revision are cleared. Its evidence keeps the
+    earlier closure evidence plus a reopen note, so closing again needs new independent evidence (the
+    earlier closure evidence now counts as prior). A waiver-governed closed finding (nonblank waiver_id) is not reopened here (returns WAIVER_GOVERNS); its waiver governs until expiry or revocation.
+    """
+    if _finding_errors(finding):
+        return copy.deepcopy(finding), ["INVALID_FINDING"]
+    if finding.status != "closed":
+        return copy.deepcopy(finding), ["NOT_CLOSED"]
+    if _nonblank(finding.waiver_id):
+        # Waiver governs until it expires or is revoked; do not reopen through this path.
+        return copy.deepcopy(finding), ["WAIVER_GOVERNS"]
+    if not _nonblank(reason) or len(reason.strip()) < MIN_WAIVER_JUSTIFICATION:
+        return copy.deepcopy(finding), ["REOPEN_REASON_REQUIRED"]
+    if not _nonblank(reopened_by_role):
+        return copy.deepcopy(finding), ["INVALID_ROLE"]
+    if revision_error(current_revision):
+        return copy.deepcopy(finding), ["INVALID_REVISION"]
+    updated = copy.deepcopy(finding)
+    note = (f"reopened at {current_revision} by {reopened_by_role.strip()}: {reason.strip()}"
+            f" (was closed by {finding.closed_by_role or 'unknown'} at {finding.closed_at_revision or 'no revision'})")
+    updated.status = "open"
+    updated.closed_by_role = ""
+    updated.closed_at_revision = ""
+    updated.evidence = list(finding.evidence) + [note]
     updated.updated_at = utc_now()
     return updated, []
 
@@ -871,6 +967,164 @@ def _string_list(value: Any) -> bool:
     )
 
 
+# ---------------------------------------------------------------------------
+# Revision binding (G05): receipts and closures name the artifact revision they reviewed
+# ---------------------------------------------------------------------------
+
+REVISION_RE = re.compile(r"^(?:[0-9a-f]{7,64}|sha256:[0-9a-f]{64})$")
+DIGEST_RE = re.compile(r"^[0-9a-f]{64}$")
+MAX_BOUND_ARTIFACTS = 10000
+MAX_DIGEST_FILE_BYTES = 64 * 1024 * 1024
+BINDING_KEYS = ("revision", "digests")
+
+
+def revision_error(value: Any, where: str = "revision") -> Optional[str]:
+    """None when value is a lowercase git commit id (7-64 hex) or sha256:<64 hex>; else a message."""
+    if not isinstance(value, str) or not REVISION_RE.match(value):
+        return f"{where} must be a lowercase git commit id (7-64 hex) or sha256:<64 hex>"
+    return None
+
+
+def _artifact_path_ok(path: Any) -> bool:
+    return (isinstance(path, str) and 0 < len(path) <= 1024 and path.strip() == path
+            and not path.startswith("/") and "\\" not in path and "\x00" not in path
+            and all(part not in ("", ".", "..") for part in path.split("/")))
+
+
+def binding_errors(value: Any, where: str) -> List[str]:
+    """Errors for a binding object {revision?, digests?}; at least one key is required."""
+    if not isinstance(value, dict):
+        return [f"{where} must be an object with revision and/or digests"]
+    errors = []
+    extra = sorted(str(k) for k in value if k not in BINDING_KEYS)
+    if extra:
+        errors.append(f"{where} has unknown keys: {', '.join(extra)[:120]}")
+    if not any(k in value for k in BINDING_KEYS):
+        errors.append(f"{where} must name a revision or digests")
+    if "revision" in value:
+        message = revision_error(value["revision"], f"{where}.revision")
+        if message:
+            errors.append(message)
+    if "digests" in value:
+        digests = value["digests"]
+        if not isinstance(digests, dict) or not digests or len(digests) > MAX_BOUND_ARTIFACTS:
+            errors.append(f"{where}.digests must be a nonempty object of at most {MAX_BOUND_ARTIFACTS} "
+                          "artifact paths")
+        else:
+            bad = [k for k, v in digests.items()
+                   if not _artifact_path_ok(k) or not isinstance(v, str) or not DIGEST_RE.match(v)]
+            if bad:
+                errors.append(f"{where}.digests: {len(bad)} entr{'y' if len(bad) == 1 else 'ies'} need a "
+                              f"relative path and a 64-hex sha256 (first: {str(bad[0])[:80]!r})")
+    return errors
+
+
+def same_revision(a: str, b: str) -> bool:
+    """Equal revisions; a git id of 7+ characters also matches the full id it abbreviates."""
+    if a == b:
+        return True
+    if a.startswith("sha256:") or b.startswith("sha256:"):
+        return False
+    short, full = sorted((a, b), key=len)
+    return len(short) >= 7 and full.startswith(short)
+
+
+def binding_state(reviewed: Optional[Dict[str, Any]], subject: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
+    """Compare what a receipt reviewed with the packet subject (both already validated).
+
+    current          the receipt names the subject revision and no digest it lists differs
+    carried_forward  another revision, but every artifact digest it lists is unchanged in the subject
+    stale            a listed artifact's digest differs, or the revisions differ without digest cover
+    unbound          no reviewed binding, or nothing comparable with the subject
+    """
+    if reviewed is None:
+        return "unbound", {"reason": "the receipt names no reviewed revision"}
+    rd, sd = reviewed.get("digests") or {}, subject.get("digests") or {}
+    changed = sorted(p for p in rd if p in sd and rd[p] != sd[p])
+    if changed:
+        return "stale", {"changed": changed[:20], "changed_count": len(changed)}
+    rr, sr = reviewed.get("revision"), subject.get("revision")
+    if rr and sr and same_revision(rr, sr):
+        return "current", {}
+    if rd and all(p in sd for p in rd):
+        return "carried_forward", {"unchanged": len(rd)}
+    if rr and sr:
+        return "stale", {"revision_changed": True}
+    missing = sorted(p for p in rd if p not in sd)
+    if missing:
+        return "unbound", {"reason": "reviewed artifacts are not in the subject digests",
+                           "not_in_subject": missing[:20]}
+    return "unbound", {"reason": "the receipt and the subject share no revision or digest to compare"}
+
+
+def artifact_digests(root: Path, paths: Sequence[str]) -> Dict[str, str]:
+    """sha256 of actual files under root (a directory is walked, sorted). Raises ValueError on a path
+    that leaves root, a symlink, a special file, an oversized file or an empty result. Reads, never runs."""
+    root = Path(root)
+    if not root.is_dir():
+        raise ValueError("root is not a directory")
+    base = root.resolve()
+    out: Dict[str, str] = {}
+
+    def add(p: Path) -> None:
+        rel = p.relative_to(root).as_posix()
+        if p.is_symlink():
+            raise ValueError(f"{rel} is a symlink; digest the file it points to inside the root instead")
+        if not p.is_file():
+            raise ValueError(f"{rel} is not a regular file")
+        if p.stat().st_size > MAX_DIGEST_FILE_BYTES:
+            raise ValueError(f"{rel} is larger than {MAX_DIGEST_FILE_BYTES} bytes")
+        h = hashlib.sha256()
+        with open(p, "rb") as f:
+            for chunk in iter(lambda: f.read(1 << 20), b""):
+                h.update(chunk)
+        out[rel] = h.hexdigest()
+        if len(out) > MAX_BOUND_ARTIFACTS:
+            raise ValueError(f"more than {MAX_BOUND_ARTIFACTS} files")
+
+    for raw in paths:
+        if not _artifact_path_ok(raw.rstrip("/") if isinstance(raw, str) else raw):
+            raise ValueError(f"{str(raw)[:80]!r} must be a relative path inside the root")
+        p = root / raw.rstrip("/")
+        if p.is_symlink() or (base not in p.resolve().parents and p.resolve() != base):
+            raise ValueError(f"{raw} is a symlink or leaves the root")
+        if p.is_dir():
+            for dirpath, dirnames, filenames in os.walk(p):
+                dirnames.sort()
+                for name in sorted(filenames):
+                    add(Path(dirpath) / name)
+                for name in dirnames:
+                    if (Path(dirpath) / name).is_symlink():
+                        raise ValueError(f"{(Path(dirpath) / name).relative_to(root).as_posix()} is a symlink")
+        else:
+            add(p)
+    if not out:
+        raise ValueError("no files to digest")
+    return dict(sorted(out.items()))
+
+
+def _binding_diagnostic(gate: str, state: str, detail: Dict[str, Any], reviewed: Optional[Dict[str, Any]],
+                        subject: Dict[str, Any]) -> Dict[str, Any]:
+    target = subject.get("revision") or "the subject digests"
+    rr = (reviewed or {}).get("revision")
+    diag = {"gate": gate, "state": state, "reviewed_revision": rr, "subject_revision": subject.get("revision")}
+    diag.update(detail)
+    if state == "stale":
+        what = (f"artifacts changed since review: {', '.join(detail['changed'])}" if detail.get("changed")
+                else f"reviewed {rr}, subject is {subject.get('revision')}")
+        diag["message"] = f"Gate {gate} receipt is stale ({what})"
+        diag["action"] = (f"re-run the {gate} gate on {target} and attach a receipt with reviewed.revision "
+                          "(or reviewed.digests for the files it covered)")
+    elif state == "unbound":
+        diag["message"] = f"Gate {gate} receipt cannot be tied to the subject ({detail.get('reason')})"
+        diag["action"] = (f"attach reviewed.revision or reviewed.digests to the {gate} receipt, from the "
+                          "revision the reviewer actually examined")
+    elif state == "carried_forward":
+        diag["message"] = (f"Gate {gate} receipt reviewed {rr or 'an earlier revision'}; its "
+                           f"{detail['unchanged']} artifact digest(s) are unchanged in the subject")
+    return diag
+
+
 def evaluate_artifact_packet(packet: Dict[str, Any]) -> AssuranceResult:
     """Validate declared gate receipts; does not verify execution or grant authority."""
     if not isinstance(packet, dict):
@@ -911,6 +1165,10 @@ def evaluate_artifact_packet(packet: Dict[str, Any]) -> AssuranceResult:
         return _invalid_packet("sources must be an array of objects")
     if any(g not in packet.get("completed_gates", []) for g in packet.get("evidence", {})):
         return _invalid_packet("Every evidence key must appear in completed_gates")
+    if "subject" in packet:
+        subject_errors = binding_errors(packet["subject"], "subject")
+        if subject_errors:
+            return _invalid_packet("; ".join(subject_errors))
     for defect in packet.get("planted_defects", []):
         for key in ("defect_kind", "kind", "severity", "title", "reporter_role",
                     "closure_criteria", "finding_id", "expected_accountable_role", "expected_gate"):
@@ -1005,12 +1263,49 @@ def evaluate_artifact_packet(packet: Dict[str, Any]) -> AssuranceResult:
                     errors.append(f"schema_version must be {SCHEMA_VERSION}")
                 if "timestamp" in art and not isinstance(art["timestamp"], str):
                     errors.append("timestamp must be a string")
+                if "reviewed" in art:
+                    errors.extend(binding_errors(art["reviewed"], "reviewed"))
             if errors:
                 codes.append("INVALID_GATE_EVIDENCE")
                 messages.append(f"Gate {g} evidence: {'; '.join(errors)}")
     if reported_blocking:
         codes.append("OPEN_BLOCKING_FINDINGS")
         messages.append(f"Gate receipts report {reported_blocking} open blocking finding(s)")
+
+    # Revision binding (G05): only when the packet names its subject or a receipt names what it reviewed.
+    binding: Dict[str, Any] = {}
+    reviewed_by_gate = {g: evidence[g].get("reviewed") for g in sorted(present_gates)
+                        if isinstance(evidence.get(g), dict) and isinstance(evidence[g].get("reviewed"), dict)
+                        and not binding_errors(evidence[g]["reviewed"], "reviewed")}
+    subject = packet.get("subject")
+    if subject is not None:
+        gates = {}
+        for g in sorted(present_gates):
+            if g not in ACCOUNTABLE_GATES or not isinstance(evidence.get(g), dict):
+                continue
+            if "reviewed" in evidence[g] and g not in reviewed_by_gate:
+                continue  # malformed binding already reported as INVALID_GATE_EVIDENCE
+            state, detail = binding_state(reviewed_by_gate.get(g), subject)
+            diag = _binding_diagnostic(g, state, detail, reviewed_by_gate.get(g), subject)
+            gates[g] = diag
+            if state == "stale":
+                codes.append("STALE_GATE_EVIDENCE")
+                messages.append(diag["message"] + "; " + diag["action"])
+            elif state == "unbound":
+                codes.append("UNBOUND_GATE_EVIDENCE")
+                messages.append(diag["message"] + "; " + diag["action"])
+        binding = {"subject": subject, "gates": gates}
+    elif reviewed_by_gate:
+        revisions = sorted({r["revision"] for r in reviewed_by_gate.values() if "revision" in r})
+        binding = {"subject": None, "reviewed_revisions": revisions}
+        distinct = []
+        for r in revisions:
+            if not any(same_revision(r, d) for d in distinct):
+                distinct.append(r)
+        if len(distinct) > 1:
+            codes.append("REVISION_CONFLICT")
+            messages.append(f"Gate receipts reviewed different revisions ({', '.join(distinct)}) and the packet "
+                            "names no subject; add subject.revision for the artifact being released")
 
     # Planted defects inside packet
     for planted in packet.get("planted_defects") or []:
@@ -1056,11 +1351,11 @@ def evaluate_artifact_packet(packet: Dict[str, Any]) -> AssuranceResult:
         orders=[o.to_dict() for o in orders],
         required_gates=required,
         risk_level=risk,
-        evidence={
+        evidence=dict({
             "completed_gates": sorted(present_gates),
             "missing_gates": missing,
             "blocking_open": len(open_blocking) + reported_blocking,
-        },
+        }, **({"revision_binding": binding} if binding else {})),
     )
 
 
@@ -1164,11 +1459,16 @@ def evaluate_path(path: Path) -> AssuranceResult:
             return _invalid_packet("closer_role must be a string")
         if "expect_blocked" in data and not isinstance(data["expect_blocked"], bool):
             return _invalid_packet("expect_blocked must be a boolean")
+        for key in ("subject_revision", "verified_revision"):
+            if key in data and not isinstance(data[key], str):
+                return _invalid_packet(f"{key} must be a string")
         allowed, codes = can_close_finding(
             finding,
             closer_role=closer_role,
             independent_evidence=data.get("independent_evidence", []),
             waiver=waiver_obj,
+            subject_revision=data.get("subject_revision"),
+            verified_revision=data.get("verified_revision"),
         )
         expect_block = bool(data.get("expect_blocked", True))
         ok = (not allowed) if expect_block else allowed
@@ -1379,6 +1679,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p_route = sub.add_parser("route", help="Show gate route for a defect kind")
     p_route.add_argument("defect_kind")
 
+    p_digest = sub.add_parser("digest", help="sha256 of actual files, as a subject or reviewed binding")
+    p_digest.add_argument("root", type=Path)
+    p_digest.add_argument("paths", nargs="+")
+    p_digest.add_argument("--revision", help="also record this revision (git commit id or sha256:<hex>)")
+
     sub.add_parser("self-test", help="Built-in smoke checks")
 
     args = parser.parse_args(argv)
@@ -1401,6 +1706,20 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         if args.html:
             args.html.write_text(render_audit_html(report), encoding="utf-8")
         print(json.dumps(report, indent=2))
+        return 0
+
+    if args.cmd == "digest":
+        if args.revision is not None and revision_error(args.revision):
+            print(f"error: {revision_error(args.revision, '--revision')}", file=sys.stderr)
+            return 2
+        try:
+            digests = artifact_digests(args.root, args.paths)
+        except (OSError, ValueError) as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 2
+        out = {"revision": args.revision} if args.revision else {}
+        out["digests"] = digests
+        print(json.dumps(out, indent=2, sort_keys=True))
         return 0
 
     if args.cmd == "route":
@@ -1445,6 +1764,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         f.status = "open"
         if can_close_finding(f, closer_role="code-reviewer", independent_evidence=[" "])[0]:
             failures.append("blank closure evidence accepted")
+        # revision binding: a receipt reviewed at one revision does not pass another
+        stale = evaluate_artifact_packet({"completed_gates": ["functional"], "subject": {"revision": "b" * 40},
+                                          "evidence": {"functional": {"gate": "functional", "role": "qa-engineer",
+                                                                      "summary": "pass", "artifacts": ["r.txt"],
+                                                                      "reviewed": {"revision": "a" * 40}}}})
+        if stale.ok or "STALE_GATE_EVIDENCE" not in stale.gate_codes:
+            failures.append("stale receipt accepted")
         # legal
         legal = check_legal_boundaries(
             "I am your attorney; file this lawsuit now.",
