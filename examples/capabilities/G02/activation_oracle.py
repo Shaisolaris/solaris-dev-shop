@@ -289,6 +289,37 @@ class Oracle:
         self.docs_ok(root, "Rowan", "manual")
         return f"3000 owner files identical; activation {dt:.2f}s"
 
+    # O11 -----------------------------------------------------------------
+    def o11_ambiguous_deploy_and_corrupt_journal(self):
+        """Blank-looking / disguised UNRESOLVED stay unresolved; deep journal is blocked, not a crash."""
+        for label, dm in (
+            ("hangul", "\u3164"),
+            ("braille", "\u2800"),
+            ("zw-unresolved", "\u200bUNRESOLVED"),
+            ("fw-unresolved", "\uff35\uff2e\uff32\uff25\uff33\uff2f\uff2c\uff36\uff25\uff24"),
+        ):
+            root = self.fresh(f"amb-{label}") / "proj"
+            p = self.run("activate", root, "--name", "Willow", "--type", "web app", "--deploy-model", dm, "--json")
+            need(p.returncode == 0, f"{label}: unexpected exit {p.returncode}")
+            data = json.loads(p.stdout)
+            need(data.get("status") == "partial", f"{label}: status {data.get('status')}, expected partial")
+            need("DEPLOY-MODEL: UNRESOLVED (no answer recorded" in (root / "STATUS.md").read_text(),
+                 f"{label}: deploy line not unresolved")
+        deep = self.fresh("deep-j") / "proj"
+        deep.mkdir(parents=True)
+        planted = deep / ".solaris-activation.json"
+        planted.write_text("[" * 20000, encoding="utf-8")
+        before = planted.read_bytes()
+        p = self.run("activate", deep, "--name", "Deep", "--type", "web app", "--deploy-model", "main", "--json")
+        need(p.returncode != 0, "deep journal was accepted")
+        need("Traceback" not in p.stderr, "deep journal raised a traceback")
+        data = json.loads(p.stdout) if p.stdout.strip().startswith("{") else {}
+        need(data.get("status") == "blocked", f"deep journal status {data.get('status')}")
+        need(planted.read_bytes() == before, "deep journal file was modified")
+        names = sorted(x.name for x in deep.iterdir())
+        need(names == [planted.name], f"extra files written beside corrupted journal: {names}")
+        return "blank-looking/disguised UNRESOLVED -> partial; deep journal blocked, file preserved"
+
 
 def main(argv):
     if "--" not in argv or argv.index("--") == len(argv) - 1:
