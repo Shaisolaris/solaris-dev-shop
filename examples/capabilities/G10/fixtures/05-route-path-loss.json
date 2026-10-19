@@ -1,0 +1,72 @@
+{
+  "captured_at": "2026-10-18T16:00:00Z",
+  "config": {
+    "addresses": [
+      {
+        "cidr": "10.20.0.15/24",
+        "dev": "eth0"
+      }
+    ],
+    "expected_addresses": [
+      "203.0.113.10"
+    ],
+    "resolvers": [
+      "10.20.0.2",
+      "10.20.0.3"
+    ],
+    "routes": [
+      {
+        "dev": "eth0",
+        "dst": "default",
+        "via": "10.20.0.1"
+      }
+    ]
+  },
+  "observations": [
+    {
+      "answers": [
+        "203.0.113.10"
+      ],
+      "qname": "api.shop.example",
+      "rcode": "NOERROR",
+      "resolver": "10.20.0.2",
+      "stage": "dns"
+    },
+    {
+      "dst": "203.0.113.10",
+      "hops": [
+        {
+          "addr": "10.20.0.1",
+          "ttl": 1
+        },
+        {
+          "addr": "198.51.100.1",
+          "ttl": 2
+        },
+        {
+          "addr": null,
+          "ttl": 3
+        },
+        {
+          "addr": null,
+          "ttl": 4
+        }
+      ],
+      "reached": false,
+      "stage": "route"
+    },
+    {
+      "dst": "203.0.113.10",
+      "port": 443,
+      "result": "timeout",
+      "stage": "tcp"
+    }
+  ],
+  "schema": "solaris.net-trace/1",
+  "target": {
+    "host": "api.shop.example",
+    "path": "/health",
+    "port": 443,
+    "scheme": "https"
+  }
+}

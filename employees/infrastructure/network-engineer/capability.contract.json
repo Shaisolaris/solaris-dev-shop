@@ -242,9 +242,12 @@
       "plugin.json",
       "enterprise-network-ops.md",
       "homelab-and-network-ops.md",
-      "server-hardening-tls-headers.md"
+      "server-hardening-tls-headers.md",
+      "offline-trace-diagnosis.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "netdiag.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -306,6 +309,12 @@
           "id": "ref-server-hardening-tls-headers-md",
           "kind": "file_exists",
           "target": "server-hardening-tls-headers.md",
+          "required": false
+        },
+        {
+          "id": "ref-offline-trace-diagnosis-md",
+          "kind": "file_exists",
+          "target": "offline-trace-diagnosis.md",
           "required": false
         }
       ],
@@ -530,7 +539,8 @@
       "plugin.json",
       "enterprise-network-ops.md",
       "homelab-and-network-ops.md",
-      "server-hardening-tls-headers.md"
+      "server-hardening-tls-headers.md",
+      "offline-trace-diagnosis.md"
     ]
   }
 }
