@@ -409,5 +409,57 @@ class ProbeAndOracle(Base):
             self.assertNotEqual(p.returncode, 0, stub)
 
 
+
+class OracleServerStop(unittest.TestCase):
+    """The oracle's Server.stop() on a server that exited after poll() but before the group signal.
+
+    o8 (crash after commit) makes the server exit by design. If it exits between stop()'s poll() and
+    os.killpg(), the session leader is an unreaped zombie and macOS answers killpg with EPERM. Both tests pin
+    that window deterministically: the child has exited, poll() reports it still running once, and stop()
+    must treat it as stopped and reap it. Source: M39 P4-1 root cause (Grok self-validation)."""
+
+    def _exited_unreaped(self):
+        sys.path.insert(0, str(EX))
+        try:
+            import boundary_oracle
+        finally:
+            sys.path.pop(0)
+        proc = subprocess.Popen([sys.executable, "-c", "pass"], stdout=subprocess.DEVNULL,
+                                stderr=subprocess.PIPE, start_new_session=True, env=ENV)
+        # wait for exit without reaping, so the pid stays a zombie session leader (macOS has no os.waitid)
+        end = time.time() + 20
+        while subprocess.run(["ps", "-o", "stat=", "-p", str(proc.pid)], capture_output=True,
+                             text=True).stdout.strip()[:1] != "Z":
+            self.assertLess(time.time(), end, "child did not exit")
+            time.sleep(0.02)
+        real_poll, calls = proc.poll, []
+
+        def racy_poll():
+            calls.append(1)
+            return None if len(calls) == 1 else real_poll()
+        proc.poll = racy_poll
+        srv = boundary_oracle.Server.__new__(boundary_oracle.Server)
+        srv.proc = proc
+        return boundary_oracle, srv
+
+    def test_stop_after_exit_race_real_zombie(self):
+        mod, srv = self._exited_unreaped()
+        srv.stop()  # macOS: os.killpg on the zombie group raises PermissionError before the fix
+        self.assertEqual(srv.proc.returncode, 0)
+
+    def test_stop_after_exit_race_eperm_any_platform(self):
+        mod, srv = self._exited_unreaped()
+        real_killpg = mod.os.killpg
+
+        def eperm(pid, sig):
+            raise PermissionError(1, "Operation not permitted")
+        mod.os.killpg = eperm
+        try:
+            srv.stop()
+        finally:
+            mod.os.killpg = real_killpg
+        self.assertEqual(srv.proc.returncode, 0)
+
+
 if __name__ == "__main__":
     unittest.main()

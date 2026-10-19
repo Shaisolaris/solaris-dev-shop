@@ -34,3 +34,5 @@ data and the load order.
 
 The probe for auditors is `employees/quality-security/security-auditor/boundary_probe.py`.
 Nothing here contacts a host other than 127.0.0.1. POSIX, Python 3.9+.
+The oracle sends canonical single `Authorization` and `Idempotency-Key` headers only; repeated-header
+handling and anything behind a proxy are outside what it checks (see duplicate-safe-api.md, Boundaries).
