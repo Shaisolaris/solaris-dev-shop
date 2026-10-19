@@ -99,11 +99,19 @@ The fixture runner fails closed on its own contract (added after engine
   `INVALID_PACKET`. A fixture without a usable kind key is read as an
   unwrapped packet, so it is also `INVALID_PACKET` when it carries a field
   of another fixture kind (closure fields, `defect`, or the legal fields
-  `text`, `requested_actions`, `sources`, `freshness_days`), or a key such
-  as `fixture_type` or `type` whose value names a fixture kind. Blocked
-  legal text therefore cannot pass because its kind key was misspelled,
-  renamed or left out. `legal_text` stays a packet field: on a packet it
-  triggers the legal gate.
+  `text`, `freshness_days`, and `requested_actions` or `sources` when the
+  object has no packet key), or any top-level key other than `fixture_kind`,
+  `kind`, `name`, `description` and `notes` whose string value names a
+  non-packet fixture kind in any case or spelling (`"fixture_type":
+  "legal"`, `"category": "planted_defect"`, `"type": "Planted-Defect"`).
+  Blocked legal text or a planted defect therefore cannot pass because its
+  kind key was misspelled, renamed or left out. `legal_text`,
+  `requested_actions` and `sources` stay packet fields: an unwrapped packet
+  (one with `legal_text`, `risk_level`, `dimensions`, `completed_gates`,
+  `evidence` or `planted_defects`) carrying them is evaluated, and the legal
+  gate runs on them. This fails closed: a packet field whose value is
+  exactly a fixture kind word (`"category": "legal"`) is refused; wrap the
+  packet as `{"fixture_kind": "packet", "packet": ...}`.
 - Field types are checked before evaluation: legal `text` must be a string,
   `requested_actions` an array of strings, `sources` an array of objects,
   `freshness_days` a non-negative integer and `defect` an object. Malformed

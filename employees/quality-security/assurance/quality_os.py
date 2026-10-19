@@ -1151,8 +1151,19 @@ NON_PACKET_FIXTURE_KEYS = ("finding", "waiver", "closer_role", "independent_evid
                            "text", "requested_actions", "sources", "freshness_days")
 
 
+# requested_actions and sources are also G05 packet fields (evaluate_packet validates them and passes them
+# to the legal check), so they only count as stray legal fields on an object that has no packet key.
+PACKET_LEGAL_KEYS = ("requested_actions", "sources")
+PACKET_MARKER_KEYS = ("legal_text", "risk_level", "dimensions", "completed_gates", "evidence", "planted_defects")
+
+
 def _norm_key(key: str) -> str:
     return key.lower().replace("_", "").replace("-", "").replace(" ", "")
+
+
+# Non-packet fixture kinds, normalised: a top-level value that reads as one of these ("Planted_Defect",
+# "planted-defect", "LEGAL") under any key other than fixture_kind means the kind key was lost (M01 r3 z13, z14).
+_NON_PACKET_KIND_NORMS = frozenset(_norm_key(k) for k in FIXTURE_KINDS[1:])
 
 
 def _fixture_key_problem(data: Dict[str, Any], kind: str) -> Optional[str]:
@@ -1169,13 +1180,15 @@ def _fixture_key_problem(data: Dict[str, Any], kind: str) -> Optional[str]:
     if group == "packet" and "packet" not in data:
         # Unwrapped packet: packet fields are G05's allowlist; only refuse fields that
         # belong to another fixture kind, which means its fixture_kind key was lost.
-        stray = [k for k in NON_PACKET_FIXTURE_KEYS if k in data]
+        stray = [k for k in NON_PACKET_FIXTURE_KEYS if k in data
+                 and not (k in PACKET_LEGAL_KEYS and any(m in data for m in PACKET_MARKER_KEYS))]
         if stray:
             return "packet fixture has non-packet fields " + ", ".join(stray) + "; set fixture_kind"
-        # a kind written under another name ("fixture_type": "legal", "type": "closure")
-        alias = [k for k in data if isinstance(k, str) and k not in FIXTURE_CONTRACT_KEYS
-                 and _norm_key(k).endswith(("kind", "type")) and data[k] in FIXTURE_KINDS[1:]]
-        return (f"fixture key {alias[0]!r} names a fixture kind but is not fixture_kind; "
+        # a kind written under another name or in another case ("fixture_type": "legal", "type": "closure",
+        # "category": "planted_defect", "fixture_type": "Planted_Defect"); note keys (name, description) are prose
+        alias = [k for k in data if isinstance(k, str) and k not in FIXTURE_CONTRACT_KEYS and k not in FIXTURE_NOTE_KEYS
+                 and isinstance(data[k], str) and _norm_key(data[k]) in _NON_PACKET_KIND_NORMS]
+        return (f"fixture key {alias[0]!r} names a fixture kind ({data[alias[0]]!r}) but is not fixture_kind; "
                 "rename it to fixture_kind") if alias else None
     if group == "planted_defect" and "defect" not in data:
         return None  # the fixture object itself is the defect

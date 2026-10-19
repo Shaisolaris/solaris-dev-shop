@@ -353,5 +353,65 @@ class M01R2Rework(unittest.TestCase):
             self.assertEqual((code, out['ok'], out['total'], out['passed']), (1, False, 2, 1))
 
 
+
+class M01R3Rework(unittest.TestCase):
+    """G01 repair r3 (M01 r3 Grok self-validation of 1621c82): valid packets carrying requested_actions or
+    sources are evaluated, not refused (P2; M01 r3 proposed-fix-r3.patch); a planted defect whose kind is a case
+    variant or sits under another key is refused even without evidence (P4, z13 z14); fixture_kind wins over kind (P4)."""
+    BAD_LEGAL = M01Rework.BAD_LEGAL
+    CLEAN_LEGAL = M01Rework.CLEAN_LEGAL
+    cli = FixtureRunner.cli
+    run_fixture = FixtureRunner.run_fixture
+    assert_invalid = M01Rework.assert_invalid
+    # dated, and allowed any age, so the test does not depend on today's date
+    SRC = [{'title': 'Statute text', 'url': 'https://example.gov/statute', 'retrieved_at': '2026-10-17',
+            'max_age_days': 100000}]
+
+    def test_p2_packet_fields_requested_actions_and_sources_are_not_refused(self):
+        for name, data in {'z01 legal_text, requested_actions, sources': dict(GATE_DONE, legal_text=self.CLEAN_LEGAL,
+                                                                             requested_actions=['summarize the statute'], sources=self.SRC),
+                           'z02 requested_actions only': dict(GATE_DONE, requested_actions=['summarize the statute']),
+                           'sources only': dict(GATE_DONE, sources=self.SRC)}.items():
+            with self.subTest(case=name):
+                code, out = self.run_fixture(data)
+                self.assertEqual((code, out['ok']), (0, True), out)
+        # z04: a negative legal packet meets fail_gate with the legal codes, not INVALID_PACKET
+        code, out = self.run_fixture(dict(GATE_DONE, legal_text=self.BAD_LEGAL, requested_actions=['file the lawsuit'],
+                                          sources=self.SRC, expectations={'outcome': 'fail_gate'}))
+        self.assertEqual((code, out['ok']), (0, True), out)
+        self.assertIn('LEGAL_BINDING_PROHIBITED', out['gate_codes'])
+        self.assertNotIn('INVALID_PACKET', out['gate_codes'])
+        # without any packet key they are still stray legal fields (M01 r2 S1 kept)
+        self.assert_invalid({'requested_actions': ['file the lawsuit']}, why='fixture')
+        self.assert_invalid({'sources': self.SRC, 'text': self.BAD_LEGAL}, why='fixture')
+
+    def test_p4_case_variant_or_other_key_kind_is_refused_without_evidence(self):
+        pd = {'defect_kind': 'security', 'severity': 'S1', 'title': 'IDOR', 'accountable_role': 'security-auditor'}
+        for k, v in (('fixture_type', 'Planted_Defect'), ('category', 'planted_defect'), ('fixture_type', 'planted-defect'),
+                     ('category', 'LEGAL'), ('group', 'Self_Approval'), ('fixture_type', 'Closure')):
+            with self.subTest(key=k, value=v):
+                self.assert_invalid(dict(pd, **{k: v}), why='fixture')
+        self.assert_invalid({'category': 'legal', 'legal_text': self.BAD_LEGAL, 'requested_actions': ['file the lawsuit'],
+                             'risk_level': 'elevated'}, why='fixture')
+        # the fixture_kind form is the documented one and still evaluates
+        code, out = self.run_fixture(dict(pd, fixture_kind='planted_defect'))
+        self.assertNotIn('INVALID_PACKET', out['gate_codes'])
+        # prose note keys and ordinary packet values are not kinds
+        for data in (dict(GATE_DONE, name='closure', expectations={'outcome': 'pass'}),
+                     dict(GATE_DONE, description='Legal', expectations={'outcome': 'pass'}),
+                     dict(GATE_DONE, artifact_type='report', expectations={'outcome': 'pass'})):
+            with self.subTest(data=sorted(data)):
+                code, out = self.run_fixture(data)
+                self.assertEqual((code, out['ok']), (0, True), out)
+
+    def test_p4_fixture_kind_wins_and_kind_is_ignored(self):
+        # documented: fixture_kind wins, kind is ignored (kills r3_alias_contract_off)
+        code, out = self.run_fixture({'fixture_kind': 'packet', 'kind': 'closure', 'packet': GATE_DONE,
+                                      'expectations': {'outcome': 'pass'}})
+        self.assertEqual((code, out['ok']), (0, True), out)
+        code, out = self.run_fixture(dict(GATE_DONE, fixture_kind='packet', kind='legal', expectations={'outcome': 'pass'}))
+        self.assertEqual((code, out['ok']), (0, True), out)
+
+
 if __name__ == '__main__':
     unittest.main()
