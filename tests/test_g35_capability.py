@@ -177,6 +177,60 @@ class G35CampaignLedger(unittest.TestCase):
         self.assertEqual(st, {"K1": "ready_for_human_review", "K2": "blocked", "K3": "blocked", "K4": "blocked"})
         self.assertEqual(rc, 1)
 
+    def fresh_copy(self, name):
+        d = Path(tempfile.mkdtemp(dir=str(self.tmp))) / name
+        shutil.copytree(FIX / name, d)
+        return d
+
+    def _edit_json(self, path, fn):
+        d = json.loads(path.read_text())
+        fn(d)
+        path.write_text(json.dumps(d))
+
+    def test_r2_mixed_windows_and_cutoffs_refused(self):
+        # M35 P2-1 (validator finding; fix generalized from its proposed patch): both G13 contracts must carry
+        # the package window and as_of, or periods and cutoffs mix silently into spend, CPA and ROAS.
+        cases = [("spend-contract.json", lambda d: d["window"].update(start="2026-08-01T00:00:00Z"), "spend contract window"),
+                 ("spend-contract.json", lambda d: d.update(as_of="2026-10-20T00:00:00Z"), "spend contract as_of"),
+                 ("spend-contract.json", lambda d: d.pop("as_of"), "spend contract as_of"),
+                 ("orders-contract.json", lambda d: d.update(as_of="2026-10-05T00:00:00Z"), "orders contract as_of"),
+                 ("orders-contract.json", lambda d: d["window"].update(end="2026-10-02T00:00:00Z"), "orders contract window")]
+        for name, fn, msg in cases:
+            d = self.fresh_copy("clean")
+            self._edit_json(d / name, fn)
+            rc, rep, err = run(d / "campaign.json")
+            self.assertEqual(rc, 2, (name, msg, err))
+            self.assertIn(msg, err)
+        d = self.fresh_copy("clean")  # same instant written with another offset is the same basis
+        self._edit_json(d / "spend-contract.json", lambda d: d.update(as_of="2026-10-01T17:00:00-07:00"))
+        self.assertEqual(run(d / "campaign.json")[0], 0)
+
+    def test_r2_cpa_null_without_spend(self):
+        # M35 P3-1: conversions but no spend gives CPA null (and ROAS null), never 0.00.
+        d = self.fresh_copy("clean")
+        lines = (d / "spend.csv").read_text().splitlines()
+        (d / "spend.csv").write_text(lines[0] + "\n")
+        ctl = d / "spend-contract.json"
+        c = json.loads(ctl.read_text())
+        if c.get("controls"):
+            cf = d / c["controls"]["file"]
+            cf.write_text("file,rows,sum\nspend.csv,0,0.00\n")
+        rc, rep, err = run(d / "campaign.json")
+        self.assertIsNotNone(rep, err)
+        sp, n, rev, cpa, roas = figs(rep, "C-search")
+        self.assertEqual((sp, n, cpa, roas), ("0.00", 2, None, None))
+
+    def test_r2_prohibited_wording_dash_and_width_variants(self):
+        # M35 P4-1: dash variants, NFKC width forms and case cannot hide a prohibited phrase.
+        for head in ["Risk\u2011free search", "Risk\u2013free search", "RISK\u2212FREE search", "Risk\u00adfree search",
+                     "\uff27\uff35\uff21\uff32\uff21\uff2e\uff34\uff25\uff25\uff24 returns", "Risk  free search"]:
+            d = self.fresh_copy("clean")
+            self._edit_json(d / "creatives.json", lambda c: c["creatives"][0].update(headline=head))
+            rc, rep, err = run(d / "campaign.json")
+            k = rep["creatives"][0]
+            self.assertNotEqual(k["status"], "ready_for_human_review", head)
+            self.assertIn("prohibited_claim", json.dumps(k), head)
+
     def test_oracle_accepts_tool_and_rejects_controls(self):
         def oracle(*tool):
             r = subprocess.run([sys.executable, str(EX / "campaign_oracle.py"), "--seeds", "1", "--"] + list(tool),

@@ -19,6 +19,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import unicodedata
 from decimal import Decimal, ROUND_HALF_EVEN
 from pathlib import Path
 
@@ -286,6 +287,7 @@ def build(P):
     win0, win1 = P["window"]
     # spend export via G13
     srep = run_tool(G13, P["spend"], "csv_reconcile.py (spend export)")
+    _same_basis(srep, "spend", P)
     sgroups = metric(srep, "spend", ["campaign_id", "day", "currency"], "spend")
     if srep.get("status") != "reconciled":
         F.append({"code": "spend_export_gaps", "gaps": srep.get("gaps", [])})
@@ -310,9 +312,7 @@ def build(P):
     # order book via G13
     orep = run_tool(G13, P["orders"], "csv_reconcile.py (order book)")
     ogroups = metric(orep, "revenue", ["order_id", "currency"], "orders")
-    ow = orep.get("window", {})
-    need(_iso_eq(ow.get("start"), win0) and _iso_eq(ow.get("end"), win1),
-         "orders contract window must equal the package window")
+    _same_basis(orep, "orders", P)
     if orep.get("status") != "reconciled":
         F.append({"code": "order_book_gaps", "gaps": orep.get("gaps", [])})
     book = {}
@@ -435,7 +435,7 @@ def build(P):
                       "spend": m2(s["spend"]), "budget_remaining": m2(c["budget_total"] - s["spend"]),
                       "conversions": n, "click_conversions": a["click"], "view_conversions": a["view"],
                       "attributed_revenue": m2(a["revenue"]),
-                      "cpa": None if n == 0 else m2(s["spend"] / n),
+                      "cpa": None if n == 0 or s["spend"] == 0 else m2(s["spend"] / n),
                       "roas": fmt_ratio(a["revenue"], s["spend"], RATIO),
                       "orders": sorted(a["orders"])})
         t = totals.setdefault(c["currency"], {"spend": Decimal(0), "attributed": Decimal(0)})
@@ -489,6 +489,25 @@ def build(P):
     rep["findings"] = F
     rep["status"] = "reconciled" if not F else "reconciled_with_findings"
     return rep
+
+
+def _same_basis(rep, label, P):
+    """One window and one as_of per package (r2, from M35 P2-1): each G13 report must carry exactly the
+    package window and as_of, or spend, revenue, CPA and ROAS would mix periods or cutoffs."""
+    w = rep.get("window") or {}
+    need(_iso_eq(w.get("start"), P["window"][0]) and _iso_eq(w.get("end"), P["window"][1]),
+         "%s contract window must equal the package window (no mixed windows in CPA or ROAS)" % label)
+    need(_iso_eq(rep.get("as_of"), P["as_of"]), "%s contract as_of must equal the package as_of" % label)
+
+
+_DASHES = dict.fromkeys(map(ord, "\u2010\u2011\u2012\u2013\u2014\u2015\u2212\ufe58\ufe63\uff0d\u00ad"), "-")
+
+
+def _fold(text):
+    """Case-fold and NFKC-normalize copy, map every dash variant to '-' and collapse whitespace, so a
+    prohibited phrase cannot hide behind a non-breaking hyphen, an en dash or a wide character (r2, M35 P4-1)."""
+    t = unicodedata.normalize("NFKC", text).translate(_DASHES).casefold()
+    return " ".join(t.split())
 
 
 def _iso_eq(s, t):
@@ -550,7 +569,7 @@ def review_creatives(P, rep, F):
             reasons.append({"code": "copy_not_text"})
             head, body = "", ""
         copy = head + "\n" + body
-        low = copy.lower()
+        low = _fold(copy)
         bad = [w for w in PROHIBITED if w in low]
         if bad:
             reasons.append({"code": "prohibited_claim", "detail": bad})

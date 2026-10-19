@@ -8,8 +8,8 @@ files in one campaign package.
 | Key | Meaning |
 |---|---|
 | `as_of`, `window` | reporting cutoff and the conversion window (timestamps with Z or an offset) |
-| `spend.contract` | a G13 `csv_reconcile.py` contract over the platform spend export; it must define a `sum` metric `spend` by `campaign_id`, `day`, `currency`, so copies, restatements and late rows are settled by G13 |
-| `orders.contract` | a G13 contract over the order book with a `sum` metric `revenue` by `order_id`, `currency`; its window must equal the package window |
+| `spend.contract` | a G13 `csv_reconcile.py` contract over the platform spend export; it must define a `sum` metric `spend` by `campaign_id`, `day`, `currency`, so copies, restatements and late rows are settled by G13; its window and as_of must equal the package's (r2) |
+| `orders.contract` | a G13 contract over the order book with a `sum` metric `revenue` by `order_id`, `currency`; its window and as_of must equal the package's (r2) |
 | `finance.g14_package` | optional: the CFO's G14 `cash_revenue_reconcile.py` package, for the tie-out to recognized revenue |
 | `campaigns` | `id`, `currency`, `flight_start`/`flight_end` (dates, inclusive), `budget_total`, `budget_daily` (two-decimal strings; floats are refused), `click_window_days` (1-90), `view_window_days` (0-30, 0 = no view-through) |
 | `touches` | JSON lines: `touch_id`, `campaign_id`, `user`, `kind` (`click`/`view`), `at`, `loaded_at` |
@@ -38,7 +38,7 @@ Paths are relative and must stay inside the package folder. Unknown keys are sch
    Spend outside the flight is `spend_outside_flight`; spend for an unknown campaign is unassigned and named.
    These are accounting findings; the tool cannot pause or change anything.
 6. **Ratios.** CPA = spend / conversions (2 decimals), ROAS = attributed revenue / spend (4 decimals), half-even.
-   No conversions or no spend gives `null`, never 0 or infinity.
+   No conversions or no spend gives `null`, never 0 or infinity (CPA included, r2).
 7. **Finance tie-out (G14).** Order value is compared with the CFO's recognized revenue per currency; a credit
    note shows as `order_value_differs_from_recognized_revenue` with the difference. ROAS stays on order value
    and says so; read it next to that difference.
@@ -50,7 +50,7 @@ budget_total), optional `material_connection` (`none`, `paid`, `gifted`, `employ
 and `disclosure`. Blocked when: any publish field (`publish_at`, `scheduled_at`, `ad_id`, `post_id`, ...) or a
 status other than `draft`; a number in the copy outside a declared claim; a claim whose figure, rounded
 half-even to the decimals written, differs from the computed one (2.4658 supports "2.47", not "2.46"); an
-unknown figure; prohibited wording (guaranteed, risk-free, #1, ...); a paid, gifted, employee or affiliate
+unknown figure; prohibited wording (guaranteed, risk-free, #1, ...), matched after NFKC normalization, case folding, mapping every dash variant to `-` and collapsing spaces (r2); a paid, gifted, employee or affiliate
 connection without a disclosure that appears in the copy; a social creative with no or unknown connection
 status. A clean creative is `ready_for_human_review`; when the report has other findings it is
 `held_unverified` until they are cleared. Nothing here publishes: a human does that in the platform.
