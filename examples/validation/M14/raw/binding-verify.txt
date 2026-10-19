@@ -1,0 +1,11 @@
+Mon Oct 19 02:16:40 PDT 2026
+candidate 76b9c669359214c5dbe06768c78229beb54a4eae parent 5666e7beb161d1252ddd5dcc0a166aca83255370
+02ba9c571b10ad1dba792d2ac5534bcad3171e67	refs/heads/main
+5666e7beb161d1252ddd5dcc0a166aca83255370	refs/heads/review/grok-g13-csv-reconciliation
+76b9c669359214c5dbe06768c78229beb54a4eae	refs/heads/review/grok-g14-cash-revenue
+patch sha 067d1a8f9dc71f9f5b5bb6b0776b67fc9fa975fb247c165b89a35aeb49b7d535 diff sha 067d1a8f9dc71f9f5b5bb6b0776b67fc9fa975fb247c165b89a35aeb49b7d535
+diff files 23
+manifest entries 23 mismatches 0
+manifest set == diff set
+M13 r3 published db6028e validated 5666e7b PASS
+G13 r3 on main 02ba9c5

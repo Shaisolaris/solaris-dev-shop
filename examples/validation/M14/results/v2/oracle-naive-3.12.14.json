@@ -1,0 +1,394 @@
+[
+ {
+  "id": "K01_clean_control_exit0_exact",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "diffs": [
+    [
+     "CHF",
+     "missing"
+    ],
+    [
+     "extra currencies",
+     [
+      "USD"
+     ]
+    ]
+   ]
+  }
+ },
+ {
+  "id": "K02_seeded_books_equal_journal",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "11": {
+    "rc": 0,
+    "diffs": [
+     [
+      "EUR",
+      "missing"
+     ],
+     [
+      "JPY",
+      "missing"
+     ],
+     [
+      "USD",
+      "billed",
+      "633735.30",
+      "11670.04"
+     ],
+     [
+      "USD",
+      "credit_notes",
+      "0.00",
+      "637.69"
+     ],
+     [
+      "USD",
+      "recognized_revenue",
+      "287584.00",
+      "9910.99"
+     ],
+     [
+      "USD",
+      "cash_received",
+      "287584.00",
+      "2526.93"
+     ]
+    ],
+    "exceptions": {},
+    "stderr": ""
+   },
+   "12": {
+    "rc": 0,
+    "diffs": [
+     [
+      "EUR",
+      "missing"
+     ],
+     [
+      "JPY",
+      "missing"
+     ],
+     [
+      "USD",
+      "billed",
+      "812482.24",
+      "12462.61"
+     ],
+     [
+      "USD",
+      "credit_notes",
+      "0.00",
+      "422.09"
+     ],
+     [
+      "USD",
+      "recognized_revenue",
+      "492854.98",
+      "5689.99"
+     ],
+     [
+      "USD",
+      "cash_received",
+      "492854.98",
+      "6579.58"
+     ]
+    ],
+    "exceptions": {},
+    "stderr": ""
+   },
+   "13": {
+    "rc": 0,
+    "diffs": [
+     [
+      "EUR",
+      "missing"
+     ],
+     [
+      "JPY",
+      "missing"
+     ],
+     [
+      "USD",
+      "billed",
+      "933783.24",
+      "8158.72"
+     ],
+     [
+      "USD",
+      "credit_notes",
+      "0.00",
+      "348.33"
+     ],
+     [
+      "USD",
+      "recognized_revenue",
+      "419875.74",
+      "7885.18"
+     ],
+     [
+      "USD",
+      "cash_received",
+      "419875.74",
+      "5025.11"
+     ]
+    ],
+    "exceptions": {},
+    "stderr": ""
+   }
+  }
+ },
+ {
+  "id": "K03_settlement_timing_period_edges",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "diffs": [
+    [
+     "USD",
+     "billed",
+     "1300.00",
+     "800.00"
+    ],
+    [
+     "USD",
+     "recognized_revenue",
+     "1300.00",
+     "800.00"
+    ],
+    [
+     "USD",
+     "cash_received",
+     "1300.00",
+     "300.00"
+    ],
+    [
+     "USD",
+     "net_cash",
+     "1300.00",
+     "300.00"
+    ],
+    [
+     "USD",
+     "opening",
+     "ar_net",
+     null,
+     "300.00"
+    ],
+    [
+     "USD",
+     "opening",
+     "deferred",
+     null,
+     "0.00"
+    ],
+    [
+     "USD",
+     "opening",
+     "unbilled",
+     null,
+     "0.00"
+    ],
+    [
+     "USD",
+     "opening",
+     "unapplied",
+     null,
+     "0.00"
+    ],
+    [
+     "USD",
+     "closing",
+     "ar_net",
+     "0.00",
+     "800.00"
+    ]
+   ],
+   "journal": {
+    "open": "300.00",
+    "cash": "300.00",
+    "close": "800.00"
+   }
+  }
+ },
+ {
+  "id": "K04_negative_and_duplicate_transactions",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "cash": "480.00",
+   "closing_ar": "-80.00",
+   "rejected": null,
+   "conflicting": [],
+   "counts": {}
+  }
+ },
+ {
+  "id": "K05_mixed_currencies_not_combined",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "currencies": [
+    "USD"
+   ],
+   "usd": {
+    "cash_received": "500.00",
+    "recognized_revenue": "500.00"
+   },
+   "unapplied": []
+  }
+ },
+ {
+  "id": "K06_missing_documents_explicit",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "unapplied": [],
+   "unlinked": [],
+   "no_loaded_at": [],
+   "undelivered": [],
+   "usd": {
+    "recognized_revenue": "100.00",
+    "closing": {
+     "ar_net": "300.00",
+     "ar_owed": "300.00",
+     "customer_credit": "0.00",
+     "deferred": "0.00",
+     "unapplied": "0.00",
+     "unbilled": "0.00"
+    }
+   }
+  }
+ },
+ {
+  "id": "K07_crash",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: AttributeError(\"'NoneType' object has no attribute 'get'\")"
+ },
+ {
+  "id": "K08_credit_note_timing_overpay_unbilled",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "got": {
+    "recognized_revenue": "950.00",
+    "credit_notes": "0.00",
+    "billed": "1950.00",
+    "closing": {
+     "ar_net": "1000.00",
+     "ar_owed": "1000.00",
+     "customer_credit": "0.00",
+     "deferred": "0.00",
+     "unapplied": "0.00",
+     "unbilled": "0.00"
+    }
+   },
+   "want": {
+    "recognized_revenue": "1250.00",
+    "credit_notes": "160.00",
+    "billed": "1600.00",
+    "closing": {
+     "ar_net": "490.00",
+     "ar_owed": "540.00",
+     "customer_credit": "50.00",
+     "deferred": "540.00",
+     "unbilled": "350.00",
+     "unapplied": "0.00"
+    }
+   },
+   "checks_ok": true
+  }
+ },
+ {
+  "id": "K09_redelivered_shuffled_stable",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rcs": [
+    0,
+    0
+   ],
+   "same_figures": false,
+   "rerun_identical": true
+  }
+ },
+ {
+  "id": "K10_invalid_exit2_keeps_out_recovers",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "wrong_schema": 0,
+   "end_before_start": 0,
+   "missing_file": 1,
+   "bad_timezone": 0,
+   "file_outside": 1,
+   "unknown_field": 0,
+   "first": 0,
+   "kept": true,
+   "recover": 0
+  }
+ },
+ {
+  "id": "K11_amount_formats",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "rejected": null,
+   "jpy_rev": null
+  }
+ },
+ {
+  "id": "K12_crash",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: AttributeError(\"'NoneType' object has no attribute 'get'\")"
+ },
+ {
+  "id": "K13_reads_only_no_bytecode",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "new_pycache": []
+  }
+ },
+ {
+  "id": "K14_obs_edge_probes",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "over_refund_over_credit": {
+    "rc": 0,
+    "closing": {
+     "ar_net": "0.00",
+     "ar_owed": "0.00",
+     "customer_credit": "0.00",
+     "deferred": "0.00",
+     "unapplied": "0.00",
+     "unbilled": "0.00"
+    },
+    "revenue": "100.00",
+    "exceptions": {}
+   },
+   "currency_with_spaces": {
+    "rc": 0,
+    "currencies": [
+     "USD"
+    ],
+    "rejected": null
+   }
+  }
+ }
+]
