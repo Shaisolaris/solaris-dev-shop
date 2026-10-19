@@ -73,6 +73,8 @@ Every dispatched branch carries `WORK-ORDER.md`: scope, interface contract, defi
 When work may be stopped by one worker and finished by another on the same machine, run it as a work order
 with `handoff.py` (see `handoff-work-orders.md`): explicit owner, revision, hashed inputs, per-step receipts,
 one delivery per revision even after a crash. It launches no worker and does not involve the router.
+An order with a `fleet` block runs only on the machine registered under that alias, for its current owner
+and owner_epoch (fleet-provisioner `registry.py`, G07); other machines and stale owners are refused.
 
 ## Monitoring (project-local only)
 

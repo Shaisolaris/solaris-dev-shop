@@ -57,11 +57,20 @@ python3 handoff.py status ORDER.json [--json]
 not yet redone counts as pending), every delivery of the order across revisions, and whether the last worker
 stopped without releasing the order. `run` notes earlier revisions' deliveries as superseded.
 
+## Orders bound to a fleet machine (G07)
+
+Optional: `"fleet": {"machine": "<alias>", "owner_epoch": <n>}` plus `"registry": "<path inside the order
+folder>"` or `$SOLARIS_FLEET_ROOT`. Run with `--identity <identity file>` (or `$SOLARIS_MACHINE_IDENTITY`).
+The order runs only if fleet-provisioner `registry.py` admits the claim: the identity is the machine
+registered under that alias, it is active, and the order's `owner` is its owner at that owner_epoch. The check
+runs before anything is created and again under the worker lock; a refusal exits 2. After an ownership
+transfer, reissue the order for the new owner and epoch. Orders without `fleet` behave as before.
+
 ## Exit codes
 
 - `0` every step is done (finished now or reused).
 - `1` a step failed; the journal records why. Fix the cause and run again.
-- `2` invalid order, intake hash mismatch, a revision older than one already worked, a journal belonging to
+- `2` invalid order, a refused fleet claim (G07), intake hash mismatch, a revision older than one already worked, a journal belonging to
   another order, or a journal that does not verify. Nothing runs and nothing is written.
 - `3` stopped on request after `--stop-after`; another worker can resume.
 - `4` another worker holds the order; nothing is written.

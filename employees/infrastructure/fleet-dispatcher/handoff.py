@@ -38,6 +38,7 @@ STEPS = ("activate", "brief", "deliver")
 ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 ACTIVATE = Path(__file__).resolve().parents[2] / "product-project" / "project-onboarding" / "activate.py"
+REGISTRY = Path(__file__).resolve().parents[1] / "fleet-provisioner" / "registry.py"
 CRASH_EXIT = 75
 
 
@@ -113,7 +114,20 @@ def load_order(path):
     ip, isha = inputs["intake"].get("path"), inputs["intake"].get("sha256")
     if not isinstance(isha, str) or not HEX64.match(isha):
         raise OrderError("inputs.intake.sha256 must be 64 lowercase hex characters")
-    return {"order_id": oid, "revision": rev, "owner": owner.strip(), "base": base,
+    fleet = order.get("fleet")
+    if fleet is not None:
+        if not isinstance(fleet, dict) or not set(fleet) <= {"registry", "machine", "owner_epoch"}:
+            raise OrderError("fleet must be {machine, owner_epoch[, registry]}")
+        if not isinstance(fleet.get("machine"), str) or type(fleet.get("owner_epoch")) is not int \
+                or fleet["owner_epoch"] < 1:
+            raise OrderError("fleet needs machine (registered alias) and owner_epoch (whole number of at least 1)")
+        reg = fleet.get("registry")
+        if reg is None and not os.environ.get("SOLARIS_FLEET_ROOT"):
+            raise OrderError("fleet.registry or SOLARIS_FLEET_ROOT is required")
+        fleet = {"machine": fleet["machine"], "owner_epoch": fleet["owner_epoch"],
+                 "registry": inside(base, reg, "fleet.registry") if reg is not None
+                 else Path(os.environ["SOLARIS_FLEET_ROOT"]).resolve()}
+    return {"order_id": oid, "revision": rev, "owner": owner.strip(), "base": base, "fleet": fleet,
             "intake": inside(base, ip, "inputs.intake.path"), "intake_sha": isha,
             "project_root": inside(base, order.get("project_root"), "project_root"),
             "outbox": inside(base, order.get("outbox"), "outbox"), "order_sha": sha_bytes(raw)}
@@ -214,8 +228,28 @@ def check_intake(o):
                          "editing the input")
 
 
-def run(o, state, worker, stop_after=None, fail_at=None):
+def check_fleet(o, identity):
+    """G07: only the registered machine, for the order's owner at the current owner_epoch, may take the order."""
+    if not o.get("fleet"):
+        return
+    if not identity:
+        raise OrderError("this order is bound to fleet machine %s; pass --identity (or SOLARIS_MACHINE_IDENTITY)"
+                         % o["fleet"]["machine"])
+    import importlib.util
+    if not REGISTRY.is_file():
+        raise OrderError("fleet registry (G07) not found at %s" % REGISTRY)
+    spec = importlib.util.spec_from_file_location("solaris_fleet_registry", str(REGISTRY))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    try:
+        mod.check_claim(o["fleet"]["registry"], o["fleet"]["machine"], identity, o["owner"], o["fleet"]["owner_epoch"])
+    except mod.Refused as e:
+        raise OrderError("fleet claim refused: %s" % e)
+
+
+def run(o, state, worker, stop_after=None, fail_at=None, identity=None):
     check_intake(o)  # before anything is created; checked again under the lock
+    check_fleet(o, identity)  # likewise
     sdir = state / o["order_id"]
     sdir.mkdir(parents=True, exist_ok=True)
     fd = try_lock(sdir / ".worker.lock")
@@ -223,6 +257,7 @@ def run(o, state, worker, stop_after=None, fail_at=None):
         holder = (sdir / "holder.json").read_text(encoding="utf-8") if (sdir / "holder.json").exists() else "{}"
         return 4, {"status": "held", "holder": json.loads(holder or "{}"), "steps": {}}
     try:
+        check_fleet(o, identity)
         return _run(o, sdir, worker, stop_after, fail_at)
     finally:
         os.close(fd)
@@ -381,6 +416,8 @@ def main(argv=None):
         p.add_argument("--json", action="store_true")
     r.add_argument("--worker", required=True, help="name of the worker running this command")
     r.add_argument("--stop-after", choices=STEPS[:-1], help="stop cleanly after this step (handoff drill)")
+    r.add_argument("--identity", default=os.environ.get("SOLARIS_MACHINE_IDENTITY"),
+                   help="machine identity file, required for orders with a fleet block (G07)")
     r.add_argument("--fail-at", choices=STEPS, help="crash after this step's effect, before its receipt (drill)")
     try:
         a = ap.parse_args(argv)
@@ -392,7 +429,7 @@ def main(argv=None):
         if a.cmd == "run":
             if not a.worker.strip() or len(a.worker) > 80:
                 raise OrderError("--worker must be 1-80 characters")
-            code, rep = run(o, state, a.worker.strip(), a.stop_after, a.fail_at)
+            code, rep = run(o, state, a.worker.strip(), a.stop_after, a.fail_at, a.identity)
         else:
             code, rep = 0, status(o, state)
     except OrderError as e:
