@@ -66,6 +66,36 @@ class G40Direct(unittest.TestCase):
         self.assertEqual(j["result"], "pass")
         self.assertFalse(j["employees_in_wheel"])
 
+    def test_outside_inside_the_checkout_is_refused(self):
+        # M40 P3-1: --outside at or under REPO would put the venv and wheels in the checkout
+        d = Path(tempfile.mkdtemp(prefix="g40o-")); self.addCleanup(shutil.rmtree, d, True)
+        repo = d / "repo"
+        shutil.copytree(ROOT, repo, ignore=shutil.ignore_patterns(".git", "__pycache__", "build", "dist", "*.egg-info"))
+        for inside in (repo, repo / "work"):
+            r = run("wheel-smoke", repo, "--outside", inside, "--json")
+            self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+        self.assertFalse((repo / "work").exists())
+
+    @unittest.skipIf(sys.version_info < (3, 10), "wheel-smoke needs 3.10+")
+    def test_wheel_smoke_never_edits_repo_and_ignores_a_stale_build(self):
+        # M40 P2-1: building in REPO wrote build/ and *.egg-info there, and a stale build/lib file was shipped
+        d = Path(tempfile.mkdtemp(prefix="g40s-")); self.addCleanup(shutil.rmtree, d, True)
+        repo = d / "repo"
+        shutil.copytree(ROOT, repo, ignore=shutil.ignore_patterns(".git", "__pycache__", "build", "dist", "*.egg-info"))
+        stale = repo / "build/lib/solaris_intake/stale_removed_module.py"
+        stale.parent.mkdir(parents=True)
+        stale.write_text("REMOVED = True\n")
+        before = sorted(str(x.relative_to(repo)) for x in repo.rglob("*"))
+        r = run("wheel-smoke", repo, "--outside", d / "work", "--json", timeout=600)
+        self.assertEqual(r.returncode, 0, r.stderr + r.stdout)
+        self.assertEqual(json.loads(r.stdout)["result"], "pass")
+        after = sorted(str(x.relative_to(repo)) for x in repo.rglob("*"))
+        self.assertEqual(after, before)
+        wheels = list((d / "work" / "wheels").glob("*.whl"))
+        self.assertEqual(len(wheels), 1)
+        import zipfile
+        self.assertNotIn("solaris_intake/stale_removed_module.py", zipfile.ZipFile(wheels[0]).namelist())
+
     def test_docs_state_bounds(self):
         install = (ROOT / "docs/install.md").read_text()
         self.assertIn("3.10+", install); self.assertIn("3.9+", install)
