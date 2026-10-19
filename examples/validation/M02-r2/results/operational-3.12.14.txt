@@ -1,0 +1,6 @@
+# 2026-10-19 01:22:06 PDT operational at bbe682b, Python 3.12.14
+{"iters": 150, "killed_mid": 24, "finished_before_kill": 126, "stale_lock_deleted": 6, "mixed_after_kill": 3, "temps_after_kill": 3, "conv_beta": 144, "conv_alpha": 6, "bad": 0, "tracebacks": 0}
+activate_vs_resume_races 12 bad 0
+template_copies 30 parallel: live deploy leaked or complete in 0
+OPERATIONAL PASS
+[exit 0]

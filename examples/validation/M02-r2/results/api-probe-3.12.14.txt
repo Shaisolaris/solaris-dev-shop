@@ -1,0 +1,3 @@
+# 2026-10-19 01:23:51 PDT API probe at bbe682b (same activate.py as G05 8b38a72), Python 3.12.14
+lone_surrogate_name_from_json: RAISED UnicodeEncodeError: 'utf-8' codec can't encode character '\udcff' in position 21: surrogates not all  (root created: False)
+deep_journal: RAISED RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode stri  (root created: n/a)

@@ -1,0 +1,32 @@
+# m02r2_oracle candidate: <PY312> /tmp/m02r2-mutants/path_length_off.py
+PASS C01_clean_twice (0.1s): 2 activations + resume byte-identical, 1 verbatim DEPLOY-MODEL line, 3 docs name project
+PASS C02_owner_docs (0.1s): owner STATUS/plan/asset byte-identical over 2 runs, conflict reported, not complete
+PASS C03_git_unchanged (0.6s): existing repo x3 runs and unborn staged repo: refs/HEAD/index/objects/config identical, no commit
+PASS C04_journal_binding_F1 (0.3s): copied folder x2, report, resume refused, journal-only, rootless journal: UNRESOLVED; same-folder control carried over
+PASS C05_blank_deploy_F2_F3 (0.7s): 15 blank/invisible/UNRESOLVED answers -> UNRESOLVED not complete; 2 positive controls verbatim; invisible name refused
+FAIL C06_bounded_errors_F4 (0.8s): 7 unbounded: deep/activate: traceback RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicod | deep/resume: traceback RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicod | deep_obj/activate: traceback RecursionError: maximum recursion depth exceeded while decoding a JSON object from a unico | deep_obj/resume: traceback RecursionError: maximum recursion depth exceeded while decoding a JSON object from a unico | deep_lock: traceback RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicod | 300-byte component: traceback OSError: [Errno 63] File name too long: '<TMPDIR>/... | non-UTF-8 name: rc=1 traceback ["UnicodeEncodeError: 'utf-8' codec can't encode character '\\udcff' in position 21: surrogates not allowed"]
+PASS C07_sigkill_temps_F5 (1.6s): changed-intake SIGKILL before os.replace 1..9: 1:KA 2:KB 3:KB 4:KB 5:KB 6:KB 7:KB 8:KB 9:-B; no temp left; decoys kept; mid-outage owner edit kept
+PASS C08_locks_F6 (0.2s): empty and dead-pid locks stale; live holder not stale; pid 0/-1/true never signalled; recovery complete
+PASS C09_marker_F7 (0.2s): 5 marker injections refused (rc 2, nothing written); first DEPLOY-MODEL: match is the anchored line in 3 accepted runs
+PASS C10_commit_ids_F8 (0.4s): 5 commit-id briefs accepted verbatim; bare hex, token after commit, assignment, credential field refused
+PASS C11_escape (0.2s): 5 link/type escapes blocked with trees unchanged; --within escape refused
+PASS C12_failure_resume (0.1s): EACCES between writes -> failed, plan absent; resume complete; stable
+PASS C13_concurrency (0.5s): 5 rounds x 16 racers on one root (winners [6, 7, 6, 6, 7]) one consistent project, no lock; 40 parallel projects complete
+PASS C14_scale (0.8s): 4000 owner files kept byte-identical; activation 0.03s
+PASS C15_secrets (0.1s): 3 secret shapes refused, not echoed, nothing written
+REC c04 moved-folder resume: rc=1 status=blocked
+REC c05 hangul_filler: status=complete deploy_recorded='ㅤ'
+REC c05 braille_blank: status=complete deploy_recorded='⠀'
+REC c05 combining_acute: status=complete deploy_recorded='́'
+REC c05 zw_then_UNRESOLVED: status=complete deploy_recorded='\u200bUNRESOLVED'
+REC c05 fullwidth_UNRESOLVED: status=complete deploy_recorded='ＵＮＲＥＳＯＬＶＥＤ'
+REC c05 quoted_UNRESOLVED: status=complete deploy_recorded="'UNRESOLVED'"
+REC c05 TBD: status=complete deploy_recorded='TBD'
+REC c06 non-utf8 name: rc=1 status=None exists=False
+REC c09 proj: rc=0 status=partial
+REC c09 bidi: rc=0 status=partial
+REC c09 colon: rc=0 status=partial
+REC c10 sha256_word: rc=2 status=invalid
+REC c10 sha256_colon: rc=2 status=invalid
+REC c10 short_sha: rc=0 status=complete
+SUMMARY 14/15 pass; oracle REJECTS candidate

@@ -1,0 +1,65 @@
+# fresh caller: env -i, HOME empty temp dir, Python 3.12.14
+## 1 existing live client project is used as a template for a new client (the F1 scenario)
+$ activate.py activate <FCHOME>/clients/acme --name Acme --type web app --deploy-model production: main=live
+Folder: /private<FCHOME>/clients/acme (complete)
+Deploy model: production: main=live
+Credential reference rows: 0 (locations only)
+Repo: skipped
+Needs a human: nothing beyond owner-approved external steps
+[rc 0]
+$ activate.py activate <FCHOME>/clients/bolt --name Bolt --type website
+Folder: /private<FCHOME>/clients/bolt (partial)
+Deploy model: UNRESOLVED
+Credential reference rows: 0 (locations only)
+Repo: skipped
+Needs a human: .solaris-activation.json was written for another folder (/private<FCHOME>/clients/acme); nothing was inherited from it (deploy model, brief, credentials). State them again if they apply here.; Deploy model unresolved: recorded as UNRESOLVED; nothing may deploy until the owner states one.
+[rc 0]
+STATUS deploy line: DEPLOY-MODEL: UNRESOLVED (no answer recorded; nothing may deploy until the owner states one)
+$ activate.py resume <FCHOME>/clients/bolt
+Folder: /private<FCHOME>/clients/bolt (partial)
+Deploy model: UNRESOLVED
+Credential reference rows: 0 (locations only)
+Repo: skipped
+Needs a human: Deploy model unresolved: recorded as UNRESOLVED; nothing may deploy until the owner states one.
+[rc 0]
+## 2 owner then states Bolt's own deploy model
+$ activate.py activate <FCHOME>/clients/bolt --name Bolt --type website --deploy-model preview only
+Folder: /private<FCHOME>/clients/bolt (complete)
+Deploy model: preview only
+Credential reference rows: 0 (locations only)
+Repo: skipped
+Needs a human: nothing beyond owner-approved external steps
+[rc 0]
+## 3 a killed run left a lock and a temp file; follow the message
+$ activate.py resume <FCHOME>/clients/bolt
+Folder: /private<FCHOME>/clients/bolt (blocked)
+Deploy model: preview only
+Credential reference rows: 0 (locations only)
+Repo: not checked
+Needs a human: another activation holds .solaris-activation.lock (empty lock: the run that created it was most likely killed before recording itself (stale lock)); nothing written. If no activation is running, delete .solaris-activation.lock and rerun.
+[rc 1]
+$ activate.py resume <FCHOME>/clients/bolt
+Folder: /private<FCHOME>/clients/bolt (complete)
+Deploy model: preview only
+Credential reference rows: 0 (locations only)
+Repo: skipped
+Needs a human: nothing beyond owner-approved external steps
+[rc 0]
+temp files left: 0
+## 4 a commit id in the brief and a pasted token
+$ activate.py activate <FCHOME>/clients/bolt --name Bolt --brief fork of 41132041afeb2cce63a68554caf18cf6992a11ae
+Folder: /private<FCHOME>/clients/bolt (complete)
+Deploy model: preview only (carried over from this folder's earlier activation, not restated)
+Credential reference rows: 0 (locations only)
+Repo: skipped
+Needs a human: nothing beyond owner-approved external steps
+[rc 0]
+$ activate.py activate <FCHOME>/clients/bolt --name Bolt --credential system=github;location=ghp_<synthetic>
+Folder: /private<FCHOME>/clients/bolt (invalid)
+Deploy model: UNRESOLVED
+Credential reference rows: 0 (locations only)
+Repo: not checked
+Needs a human: fix the invalid input listed below; nothing was written
+  invalid credentials[1].location: looks like a secret value (GitHub token); record where the secret lives, not the secret
+[rc 2]
+temp HOME removed: yes

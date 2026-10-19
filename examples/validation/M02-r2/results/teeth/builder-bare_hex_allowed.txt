@@ -1,0 +1,14 @@
+.....................................F.........
+======================================================================
+FAIL: test_deploy_marker_only_in_the_deploy_field_and_commit_ids_in_briefs (test_g02_capability.M02Rework.test_deploy_marker_only_in_the_deploy_field_and_commit_ids_in_briefs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 642, in test_deploy_marker_only_in_the_deploy_field_and_commit_ids_in_briefs
+    self.assertTrue(act.normalize_intake({'name': 'Acme', 'brief': brief})[1])  # no commit context: refused
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true
+
+----------------------------------------------------------------------
+Ran 47 tests in 2.960s
+
+FAILED (failures=1)

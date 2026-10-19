@@ -1,0 +1,20 @@
+# 2026-10-19 01:19:15 PDT positive control: pre-fix G02 r1 41132041, Python 3.12.14
+# m02r2_oracle candidate: <PY312> employees/product-project/project-onboarding/activate.py
+PASS C01_clean_twice (0.1s): 2 activations + resume byte-identical, 1 verbatim DEPLOY-MODEL line, 3 docs name project
+PASS C02_owner_docs (0.1s): owner STATUS/plan/asset byte-identical over 2 runs, conflict reported, not complete
+PASS C03_git_unchanged (0.6s): existing repo x3 runs and unborn staged repo: refs/HEAD/index/objects/config identical, no commit
+FAIL C04_journal_binding_F1 (0.1s): copied folder: status complete deploy ['DEPLOY-MODEL: production: main=live']
+FAIL C05_blank_deploy_F2_F3 (0.1s): deploy '\u200b': status complete lines ['DEPLOY-MODEL: \u200b']
+FAIL C06_bounded_errors_F4 (0.7s): 17 unbounded: files_list/activate: traceback AttributeError: 'list' object has no attribute 'get' | files_list/resume: traceback AttributeError: 'list' object has no attribute 'get' | pending_list/activate: traceback TypeError: unhashable type: 'list' | pending_list/resume: traceback TypeError: unhashable type: 'list' | root_int/activate: rc=0 status=complete | root_int/resume: rc=0 status=complete | files_null/activate: rc=0 status=complete | files_null/resume: rc=0 status=complete | deep/activate: traceback RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicod | deep/resume: traceback RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicod | deep_obj/activate: traceback RecursionError: maximum recursion depth exceeded while decoding a JSON object from a unico | deep_obj/resume: traceback RecursionError: maximum recursion depth exceeded while decoding a JSON object from a unico | deep_lock: traceback RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicod | read-only root: traceback PermissionError: [Errno 13] Permission denied: '<TMPDIR>/... | 300-byte component: traceback OSError: [Errno 63] File name too long: '<TMPDIR>/... | root over 900 bytes: traceback OSError: [Errno 63] File name too long: '<TMPDIR>/... | non-UTF-8 name: rc=1 traceback ["UnicodeEncodeError: 'utf-8' codec can't encode character '\\udcff' in position 21: surrogates not allowed"]
+FAIL C07_sigkill_temps_F5 (0.1s): kill@1: temp files survive recovery ['..solaris-activation.json.8ef4d3acd989b9f1.activation-tmp']
+FAIL C08_locks_F6 (0.1s): empty lock: ['another activation holds .solaris-activation.lock (unknown holder); nothing written. If no activation is running, delete .solaris-activation.lock and rerun.']
+FAIL C09_marker_F7 (0.0s): marker in --name 'Acme DEPLOY-MODEL: main=live': rc=0 partial
+FAIL C10_commit_ids_F8 (0.0s): commit id brief 'fork of 4113204aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa': rc=2 invalid
+PASS C11_escape (0.1s): 5 link/type escapes blocked with trees unchanged; --within escape refused
+PASS C12_failure_resume (0.1s): EACCES between writes -> failed, plan absent; resume complete; stable
+PASS C13_concurrency (0.5s): 5 rounds x 16 racers on one root (winners [6, 7, 7, 6, 6]) one consistent project, no lock; 40 parallel projects complete
+PASS C14_scale (0.8s): 4000 owner files kept byte-identical; activation 0.03s
+PASS C15_secrets (0.1s): 3 secret shapes refused, not echoed, nothing written
+REC c06 non-utf8 name: rc=1 status=None exists=False
+SUMMARY 8/15 pass; oracle REJECTS candidate
+[exit 1]

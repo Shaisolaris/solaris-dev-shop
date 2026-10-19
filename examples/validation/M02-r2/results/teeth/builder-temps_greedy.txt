@@ -1,0 +1,34 @@
+........................................F......
+======================================================================
+FAIL: test_leftover_temp_files_are_removed_but_nothing_else (test_g02_capability.M02Rework.test_leftover_temp_files_are_removed_but_nothing_else)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 611, in test_leftover_temp_files_are_removed_but_nothing_else
+    self.assertEqual(sorted(r['removed_temp_files']), sorted(own))
+AssertionError: Lists differ: ['..s[99 chars]p', '.notes.md.ab12ab12ab12ab12.activation-tmp[225 chars]tmp'] != ['..s[99 chars]p', 'Delivery/.CREDENTIALS.md.ab12ab12ab12ab12[68 chars]tmp']
+
+First differing element 2:
+'.notes.md.ab12ab12ab12ab12.activation-tmp'
+'Delivery/.CREDENTIALS.md.ab12ab12ab12ab12.activation-tmp'
+
+First list contains 3 additional elements.
+First extra element 4:
+'Delivery/.CREDENTIALS.md.cd34cd34cd34cd34.activation-tmp'
+
+  ['..solaris-activation.json.ab12ab12ab12ab12.activation-tmp',
+   '.STATUS.md.ab12ab12ab12ab12.activation-tmp',
+-  '.notes.md.ab12ab12ab12ab12.activation-tmp',
+   'Delivery/.CREDENTIALS.md.ab12ab12ab12ab12.activation-tmp',
+-  'Delivery/.CREDENTIALS.md.cd34cd34cd34cd34.activation-tmp',
+-  'Scope/.ROUND-PLAN.md.ab12ab12ab12ab12.activation-tmp',
+?                                                        ^
+
++  'Scope/.ROUND-PLAN.md.ab12ab12ab12ab12.activation-tmp']
+?                                                        ^
+
+-  'Scope/.STATUS.md.ab12ab12ab12ab12.activation-tmp']
+
+----------------------------------------------------------------------
+Ran 47 tests in 1.752s
+
+FAILED (failures=1)

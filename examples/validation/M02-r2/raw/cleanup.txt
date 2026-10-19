@@ -1,0 +1,17 @@
+# cleanup 2026-10-19 01:25:07 PDT
+/tmp/m02r2-eval dirty entries before removal: 0, pycache: 0
+removed /tmp/m02r2-eval
+/tmp/m02r2-r1 dirty entries before removal: 0, pycache: 0
+removed /tmp/m02r2-r1
+/tmp/m02r2-g05 dirty entries before removal: 0, pycache: 0
+removed /tmp/m02r2-g05
+removed mutants, mutant tree, diff copy
+remaining m02r2 worktrees: 0
+remaining /tmp/m02r2-*: 0
+# cleanup after re-run 2026-10-19 01:30:40 PDT
+/tmp/m02r2-eval dirty entries before removal: 0, pycache: 0
+removed /tmp/m02r2-eval
+/tmp/m02r2-r1 dirty entries before removal: 0, pycache: 0
+removed /tmp/m02r2-r1
+removed mutants, mutant tree
+remaining m02r2 worktrees: 0

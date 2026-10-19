@@ -1,0 +1,11 @@
+Preparing worktree (detached HEAD bbe682b)
+HEAD is now at bbe682b G02 rework: M02 self-validation findings F1 to F8 (review only)
+Preparing worktree (detached HEAD 4113204)
+HEAD is now at 4113204 G02: safe project activation and ownership preservation (review only)
+Preparing worktree (detached HEAD 8b38a72)
+HEAD is now at 8b38a72 G05: revision-bound assurance evidence (review only)
+# re-run after public-safety literal edits 2026-10-19 01:27:35 PDT
+Preparing worktree (detached HEAD bbe682b)
+HEAD is now at bbe682b G02 rework: M02 self-validation findings F1 to F8 (review only)
+Preparing worktree (detached HEAD 4113204)
+HEAD is now at 4113204 G02: safe project activation and ownership preservation (review only)

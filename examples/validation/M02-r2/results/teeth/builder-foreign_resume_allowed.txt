@@ -1,0 +1,16 @@
+..................................F............
+======================================================================
+FAIL: test_copied_folder_or_journal_inherits_nothing (test_g02_capability.M02Rework.test_copied_folder_or_journal_inherits_nothing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 532, in test_copied_folder_or_journal_inherits_nothing
+    self.assertEqual(r['status'], 'blocked')
+AssertionError: 'partial' != 'blocked'
+- partial
++ blocked
+
+
+----------------------------------------------------------------------
+Ran 47 tests in 2.511s
+
+FAILED (failures=1)

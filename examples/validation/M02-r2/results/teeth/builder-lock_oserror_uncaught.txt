@@ -1,0 +1,16 @@
+...........................................F...
+======================================================================
+FAIL: test_read_only_root_gives_a_bounded_result (test_g02_capability.M02Rework.test_read_only_root_gives_a_bounded_result)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 589, in test_read_only_root_gives_a_bounded_result
+    code, r = self.cli_json('activate', self.project, '--name', 'RO')
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 507, in cli_json
+    self.assertNotIn('Traceback', p.stderr)
+AssertionError: 'Traceback' unexpectedly found in 'Traceback (most recent call last):\n  File "/private/tmp/m02r2-muttree/employees/product-project/project-onboarding/activate.py", line 803, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File "/private/tmp/m02r2-muttree/employees/product-project/project-onboarding/activate.py", line 788, in main\n    res = activate(args.project_root, raw, within=args.within, init_git=args.init_git, dry_run=args.dry_run)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/private/tmp/m02r2-muttree/employees/product-project/project-onboarding/activate.py", line 516, in activate\n    held = _acquire_lock(root)\n           ^^^^^^^^^^^^^^^^^^^\n  File "/private/tmp/m02r2-muttree/employees/product-project/project-onboarding/activate.py", line 460, in _acquire_lock\n    fd = os.open(root / LOCK, flags, 0o644)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nPermissionError: [Errno 13] Permission denied: \'<TMPDIR>/g02test-i0uv66q6/project/.solaris-activation.lock\'\n'
+
+----------------------------------------------------------------------
+Ran 47 tests in 2.121s
+
+FAILED (failures=1)

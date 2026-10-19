@@ -1,0 +1,64 @@
+.......................................FFFFF.......
+======================================================================
+FAIL: test_invisible_or_literal_unresolved_answers_stay_unresolved (test_g02_capability.M02Rework.test_invisible_or_literal_unresolved_answers_stay_unresolved) (deploy='\u200b')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 552, in test_invisible_or_literal_unresolved_answers_stay_unresolved
+    self.assertEqual(r['status'], 'partial')
+AssertionError: 'complete' != 'partial'
+- complete
++ partial
+
+
+======================================================================
+FAIL: test_invisible_or_literal_unresolved_answers_stay_unresolved (test_g02_capability.M02Rework.test_invisible_or_literal_unresolved_answers_stay_unresolved) (deploy='\ufeff')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 552, in test_invisible_or_literal_unresolved_answers_stay_unresolved
+    self.assertEqual(r['status'], 'partial')
+AssertionError: 'complete' != 'partial'
+- complete
++ partial
+
+
+======================================================================
+FAIL: test_invisible_or_literal_unresolved_answers_stay_unresolved (test_g02_capability.M02Rework.test_invisible_or_literal_unresolved_answers_stay_unresolved) (deploy=' \u200b\u200d\u2060 ')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 552, in test_invisible_or_literal_unresolved_answers_stay_unresolved
+    self.assertEqual(r['status'], 'partial')
+AssertionError: 'complete' != 'partial'
+- complete
++ partial
+
+
+======================================================================
+FAIL: test_invisible_or_literal_unresolved_answers_stay_unresolved (test_g02_capability.M02Rework.test_invisible_or_literal_unresolved_answers_stay_unresolved) (deploy='\xa0\u200b')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 552, in test_invisible_or_literal_unresolved_answers_stay_unresolved
+    self.assertEqual(r['status'], 'partial')
+AssertionError: 'complete' != 'partial'
+- complete
++ partial
+
+
+======================================================================
+FAIL: test_invisible_or_literal_unresolved_answers_stay_unresolved (test_g02_capability.M02Rework.test_invisible_or_literal_unresolved_answers_stay_unresolved)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 559, in test_invisible_or_literal_unresolved_answers_stay_unresolved
+    self.assertEqual(problems, [{'field': 'name', 'problem': 'must not be blank'}])
+AssertionError: Lists differ: [] != [{'field': 'name', 'problem': 'must not be blank'}]
+
+Second list contains 1 additional elements.
+First extra element 0:
+{'field': 'name', 'problem': 'must not be blank'}
+
+- []
++ [{'field': 'name', 'problem': 'must not be blank'}]
+
+----------------------------------------------------------------------
+Ran 47 tests in 1.751s
+
+FAILED (failures=5)

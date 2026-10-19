@@ -1,0 +1,92 @@
+...FF..F.........................F.FF.F....F...
+======================================================================
+FAIL: test_concurrent_processes_leave_one_consistent_state (test_g02_capability.ConcurrencyAndScale.test_concurrent_processes_leave_one_consistent_state)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 463, in test_concurrent_processes_leave_one_consistent_state
+    self.assertTrue(all(r['status'] in ('complete', 'blocked', 'failed') for r in results))
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_held_lock_blocks_without_writes_and_names_the_holder (test_g02_capability.ConcurrencyAndScale.test_held_lock_blocks_without_writes_and_names_the_holder)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 422, in test_held_lock_blocks_without_writes_and_names_the_holder
+    self.assertEqual(r['status'], 'blocked')
+AssertionError: 'complete' != 'blocked'
+- complete
++ blocked
+
+
+======================================================================
+FAIL: test_stale_lock_is_reported_and_symlinked_lock_never_followed (test_g02_capability.ConcurrencyAndScale.test_stale_lock_is_reported_and_symlinked_lock_never_followed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 435, in test_stale_lock_is_reported_and_symlinked_lock_never_followed
+    self.assertEqual(r['status'], 'blocked')
+AssertionError: 'complete' != 'blocked'
+- complete
++ blocked
+
+
+======================================================================
+FAIL: test_a_second_activation_during_a_write_is_blocked_by_the_lock (test_g02_capability.M02Rework.test_a_second_activation_during_a_write_is_blocked_by_the_lock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 689, in test_a_second_activation_during_a_write_is_blocked_by_the_lock
+    self.assertEqual(inner[0]['status'], 'blocked')
+AssertionError: 'complete' != 'blocked'
+- complete
++ blocked
+
+
+======================================================================
+FAIL: test_crash_during_changed_intake_then_new_intake_is_not_mistaken_for_owner_content (test_g02_capability.M02Rework.test_crash_during_changed_intake_then_new_intake_is_not_mistaken_for_owner_content)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 673, in test_crash_during_changed_intake_then_new_intake_is_not_mistaken_for_owner_content
+    self.kill_beta_after('STATUS.md')
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 651, in kill_beta_after
+    self.assertTrue(lock.exists())
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_crash_during_changed_intake_then_resume_converges_on_the_new_intake (test_g02_capability.M02Rework.test_crash_during_changed_intake_then_resume_converges_on_the_new_intake)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 659, in test_crash_during_changed_intake_then_resume_converges_on_the_new_intake
+    self.kill_beta_after('STATUS.md')
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 651, in kill_beta_after
+    self.assertTrue(lock.exists())
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_empty_lock_is_reported_as_stale (test_g02_capability.M02Rework.test_empty_lock_is_reported_as_stale)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 624, in test_empty_lock_is_reported_as_stale
+    self.assertEqual(r['status'], 'blocked')
+AssertionError: 'complete' != 'blocked'
+- complete
++ blocked
+
+
+======================================================================
+FAIL: test_read_only_root_gives_a_bounded_result (test_g02_capability.M02Rework.test_read_only_root_gives_a_bounded_result)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 590, in test_read_only_root_gives_a_bounded_result
+    self.assertEqual((code, r['status']), (1, 'blocked'))
+AssertionError: Tuples differ: (1, 'failed') != (1, 'blocked')
+
+First differing element 1:
+'failed'
+'blocked'
+
+- (1, 'failed')
++ (1, 'blocked')
+
+----------------------------------------------------------------------
+Ran 47 tests in 1.739s
+
+FAILED (failures=8)

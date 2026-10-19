@@ -1,0 +1,16 @@
+..........................................F....
+======================================================================
+FAIL: test_overlong_path_component_is_invalid_input (test_g02_capability.M02Rework.test_overlong_path_component_is_invalid_input)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 578, in test_overlong_path_component_is_invalid_input
+    code, r = self.cli_json('activate', self.tmp / ('x' * 300), '--name', 'Long')
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 507, in cli_json
+    self.assertNotIn('Traceback', p.stderr)
+AssertionError: 'Traceback' unexpectedly found in 'Traceback (most recent call last):\n  File "/private/tmp/m02r2-muttree/employees/product-project/project-onboarding/activate.py", line 803, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File "/private/tmp/m02r2-muttree/employees/product-project/project-onboarding/activate.py", line 788, in main\n    res = activate(args.project_root, raw, within=args.within, init_git=args.init_git, dry_run=args.dry_run)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/private/tmp/m02r2-muttree/employees/product-project/project-onboarding/activate.py", line 502, in activate\n    pre = _activate(root_arg, intake_raw, dry_run=True, **kwargs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/private/tmp/m02r2-muttree/employees/product-project/project-onboarding/activate.py", line 559, in _activate\n    root_kind = _kind(_lstat(root_path))\n                      ^^^^^^^^^^^^^^^^^\n  File "/private/tmp/m02r2-muttree/employees/product-project/project-onboarding/activate.py", line 78, in _lstat\n    return os.lstat(path)\n           ^^^^^^^^^^^^^^\nOSError: [Errno 63] File name too long: \'<TMPDIR>/g02test-7666l5q8/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\'\n'
+
+----------------------------------------------------------------------
+Ran 47 tests in 1.662s
+
+FAILED (failures=1)

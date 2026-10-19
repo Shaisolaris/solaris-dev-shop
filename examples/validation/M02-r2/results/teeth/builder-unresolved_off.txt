@@ -1,0 +1,38 @@
+.......................................FFF.......
+======================================================================
+FAIL: test_invisible_or_literal_unresolved_answers_stay_unresolved (test_g02_capability.M02Rework.test_invisible_or_literal_unresolved_answers_stay_unresolved) (deploy='UNRESOLVED')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 552, in test_invisible_or_literal_unresolved_answers_stay_unresolved
+    self.assertEqual(r['status'], 'partial')
+AssertionError: 'complete' != 'partial'
+- complete
++ partial
+
+
+======================================================================
+FAIL: test_invisible_or_literal_unresolved_answers_stay_unresolved (test_g02_capability.M02Rework.test_invisible_or_literal_unresolved_answers_stay_unresolved) (deploy='unresolved')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 552, in test_invisible_or_literal_unresolved_answers_stay_unresolved
+    self.assertEqual(r['status'], 'partial')
+AssertionError: 'complete' != 'partial'
+- complete
++ partial
+
+
+======================================================================
+FAIL: test_invisible_or_literal_unresolved_answers_stay_unresolved (test_g02_capability.M02Rework.test_invisible_or_literal_unresolved_answers_stay_unresolved) (deploy='Unresolved (ask the owner)')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 552, in test_invisible_or_literal_unresolved_answers_stay_unresolved
+    self.assertEqual(r['status'], 'partial')
+AssertionError: 'complete' != 'partial'
+- complete
++ partial
+
+
+----------------------------------------------------------------------
+Ran 47 tests in 1.748s
+
+FAILED (failures=3)

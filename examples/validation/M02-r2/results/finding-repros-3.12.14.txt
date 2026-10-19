@@ -1,0 +1,58 @@
+# note: non-UTF-8 bytes in this log are shown as \xNN escapes (the P3-1c input byte)
+# 2026-10-19 01:24:38 PDT residual repros at bbe682b, Python 3.12.14
+## P3-1a deeply nested journal: traceback instead of a blocked result
+$ activate <T>/deep --name Deep --json
+RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string
+[rc 1]
+$ resume <T>/deep --json
+RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string
+[rc 1]
+## P3-1b deeply nested lock file
+$ activate <T>/dlock --name D --json
+RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string
+[rc 1]
+## P3-1c non-UTF-8 byte in the name (shell paste from a Latin-1 source)
+$ activate <T>/bad --name Caf\xe9 --type web app --json
+UnicodeEncodeError: 'utf-8' codec can't encode character '\udce9' in position 21: surrogates not allowed
+[rc 1]
+root created: no
+## P4-1 visually blank deploy answers still count as resolved
+$ activate <T>/ve385a4 --name V --type web app --deploy-model ㅤ --json
+  "status": "complete"
+}
+[rc 0]
+$ activate <T>/ve2a080 --name V --type web app --deploy-model ⠀ --json
+  "status": "complete"
+}
+[rc 0]
+$ activate <T>/vcc81 --name V --type web app --deploy-model ́ --json
+  "status": "complete"
+}
+[rc 0]
+0000000    D   E   P   L   O   Y   -   M   O   D   E   L   :     314 201
+0000020   \n   D   E   P   L   O   Y   -   M   O   D   E   L   :     342
+0000040  240 200  \n   D   E   P   L   O   Y   -   M   O   D   E   L   :
+0000060      343 205 244  \n                                            
+## P4-2 UNRESOLVED behind an invisible or fullwidth character is accepted as an answer
+$ activate <T>/u1 --name U --type web app --deploy-model ​UNRESOLVED
+Needs a human: nothing beyond owner-approved external steps
+[rc 0]
+DEPLOY-MODEL: ​UNRESOLVED
+$ activate <T>/u2 --name U --type web app --deploy-model ＵＮＲＥＳＯＬＶＥＤ
+Needs a human: nothing beyond owner-approved external steps
+[rc 0]
+DEPLOY-MODEL: ＵＮＲＥＳＯＬＶＥＤ
+## P4-3 sha256 + 64-hex in the brief is refused (the doc's sha + 64 hex works)
+$ activate <T>/s1 --name S --brief sha256 62614bb3a1e36aa009a623e9b40600349c0e6b8fc2b3a8b506a941f43db3cd74
+  invalid brief: looks like a secret value (long opaque string); record where the secret lives, not the secret
+[rc 2]
+$ activate <T>/s2 --name S --brief sha 62614bb3a1e36aa009a623e9b40600349c0e6b8fc2b3a8b506a941f43db3cd74
+Needs a human: Deploy model unresolved: recorded as UNRESOLVED; nothing may deploy until the owner states one.; Project type not stated.
+[rc 0]
+## P4-4 a moved project folder can no longer resume (journal bound to the old path)
+$ activate <T>/m --name M --type web app --deploy-model main
+Needs a human: nothing beyond owner-approved external steps
+[rc 0]
+$ resume <T>/m2
+Needs a human: .solaris-activation.json was written for another folder (/private<T>/m); resume refused, nothing written. Run activate with thi
+[rc 1]

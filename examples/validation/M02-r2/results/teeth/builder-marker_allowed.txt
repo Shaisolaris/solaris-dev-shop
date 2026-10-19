@@ -1,0 +1,44 @@
+.....................................FFE.........
+======================================================================
+ERROR: test_deploy_marker_only_in_the_deploy_field_and_commit_ids_in_briefs (test_g02_capability.M02Rework.test_deploy_marker_only_in_the_deploy_field_and_commit_ids_in_briefs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 636, in test_deploy_marker_only_in_the_deploy_field_and_commit_ids_in_briefs
+    self.assertEqual(problems[0]['field'], 'credentials[1].location')
+                     ~~~~~~~~^^^
+IndexError: list index out of range
+
+======================================================================
+FAIL: test_deploy_marker_only_in_the_deploy_field_and_commit_ids_in_briefs (test_g02_capability.M02Rework.test_deploy_marker_only_in_the_deploy_field_and_commit_ids_in_briefs) (field='name')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 633, in test_deploy_marker_only_in_the_deploy_field_and_commit_ids_in_briefs
+    self.assertEqual(problems, [{'field': field, 'problem': 'must not contain a DEPLOY-MODEL: marker'}])
+AssertionError: Lists differ: [] != [{'field': 'name', 'problem': 'must not contain a DEPLOY-MODEL: marker'}]
+
+Second list contains 1 additional elements.
+First extra element 0:
+{'field': 'name', 'problem': 'must not contain a DEPLOY-MODEL: marker'}
+
+- []
++ [{'field': 'name', 'problem': 'must not contain a DEPLOY-MODEL: marker'}]
+
+======================================================================
+FAIL: test_deploy_marker_only_in_the_deploy_field_and_commit_ids_in_briefs (test_g02_capability.M02Rework.test_deploy_marker_only_in_the_deploy_field_and_commit_ids_in_briefs) (field='brief')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 633, in test_deploy_marker_only_in_the_deploy_field_and_commit_ids_in_briefs
+    self.assertEqual(problems, [{'field': field, 'problem': 'must not contain a DEPLOY-MODEL: marker'}])
+AssertionError: Lists differ: [] != [{'field': 'brief', 'problem': 'must not contain a DEPLOY-MODEL: marker'}]
+
+Second list contains 1 additional elements.
+First extra element 0:
+{'field': 'brief', 'problem': 'must not contain a DEPLOY-MODEL: marker'}
+
+- []
++ [{'field': 'brief', 'problem': 'must not contain a DEPLOY-MODEL: marker'}]
+
+----------------------------------------------------------------------
+Ran 47 tests in 1.741s
+
+FAILED (failures=2, errors=1)

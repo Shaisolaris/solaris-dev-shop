@@ -1,0 +1,29 @@
+.........................................FFF.....
+======================================================================
+FAIL: test_malformed_journal_entries_give_a_bounded_result (test_g02_capability.M02Rework.test_malformed_journal_entries_give_a_bounded_result) (files={'STATUS.md': ['a']})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 573, in test_malformed_journal_entries_give_a_bounded_result
+    self.assertIn('malformed entry', r['errors'][0])
+AssertionError: 'malformed entry' not found in ".solaris-activation.json does not record which folder it belongs to; resume refused, nothing written. Run activate with this project's intake, or move the journal aside."
+
+======================================================================
+FAIL: test_malformed_journal_entries_give_a_bounded_result (test_g02_capability.M02Rework.test_malformed_journal_entries_give_a_bounded_result) (files={'STATUS.md': {'pending': ['x']}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 573, in test_malformed_journal_entries_give_a_bounded_result
+    self.assertIn('malformed entry', r['errors'][0])
+AssertionError: 'malformed entry' not found in ".solaris-activation.json does not record which folder it belongs to; resume refused, nothing written. Run activate with this project's intake, or move the journal aside."
+
+======================================================================
+FAIL: test_malformed_journal_entries_give_a_bounded_result (test_g02_capability.M02Rework.test_malformed_journal_entries_give_a_bounded_result) (files={'STATUS.md': {'written': 5}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 573, in test_malformed_journal_entries_give_a_bounded_result
+    self.assertIn('malformed entry', r['errors'][0])
+AssertionError: 'malformed entry' not found in ".solaris-activation.json does not record which folder it belongs to; resume refused, nothing written. Run activate with this project's intake, or move the journal aside."
+
+----------------------------------------------------------------------
+Ran 47 tests in 2.624s
+
+FAILED (failures=3)

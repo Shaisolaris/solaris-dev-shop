@@ -1,0 +1,13 @@
+......................................F........
+======================================================================
+FAIL: test_empty_lock_is_reported_as_stale (test_g02_capability.M02Rework.test_empty_lock_is_reported_as_stale)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 625, in test_empty_lock_is_reported_as_stale
+    self.assertIn('stale lock', r['errors'][0])
+AssertionError: 'stale lock' not found in 'another activation holds .solaris-activation.lock (unknown holder); nothing written. If no activation is running, delete .solaris-activation.lock and rerun.'
+
+----------------------------------------------------------------------
+Ran 47 tests in 2.891s
+
+FAILED (failures=1)

@@ -1,0 +1,20 @@
+..................................F............
+======================================================================
+FAIL: test_copied_folder_or_journal_inherits_nothing (test_g02_capability.M02Rework.test_copied_folder_or_journal_inherits_nothing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m02r2-muttree/tests/test_g02_capability.py", line 517, in test_copied_folder_or_journal_inherits_nothing
+    self.assertEqual(r['inherited'], [])
+AssertionError: Lists differ: ['deploy_model', 'brief', 'credentials', 'code_project'] != []
+
+First list contains 4 additional elements.
+First extra element 0:
+'deploy_model'
+
+- ['deploy_model', 'brief', 'credentials', 'code_project']
++ []
+
+----------------------------------------------------------------------
+Ran 47 tests in 2.526s
+
+FAILED (failures=1)

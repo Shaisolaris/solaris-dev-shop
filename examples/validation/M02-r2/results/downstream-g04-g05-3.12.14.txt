@@ -1,0 +1,9 @@
+# 2026-10-19 01:23:02 PDT downstream stack G05 8b38a72 (on G04 314b4db on G02 bbe682b), Python 3.12.14
+ancestry: 8b38a72 314b4db bbe682b 4113204 
+files under project-onboarding/ or G02 changed after bbe682b: 0 
+activate.py at 8b38a72 identical to bbe682b: yes
+grep for activate.py / project-onboarding in G04/G05 diff: 4
+Ran 155 tests in 10.328s
+
+OK
+status lines after:        0

@@ -1,0 +1,17 @@
+candidate baseline: failing ['C06'] C06 unbounded 6
+bare_hex_allowed         KILLED new_failing=['C10'] C06_unbounded=6 builder_tests=FAILED (failures=1)
+bind_off                 KILLED new_failing=['C04'] C06_unbounded=6 builder_tests=FAILED (failures=1)
+commit_ids_everywhere    KILLED new_failing=['C10'] C06_unbounded=6 builder_tests=FAILED (failures=1)
+empty_lock_not_stale     KILLED new_failing=['C08'] C06_unbounded=6 builder_tests=FAILED (failures=1)
+foreign_resume_allowed   KILLED new_failing=['C04'] C06_unbounded=6 builder_tests=FAILED (failures=1)
+inherit_on_foreign       KILLED new_failing=['C04'] C06_unbounded=6 builder_tests=FAILED (failures=1)
+journal_entry_types_off  KILLED new_failing=[] C06_unbounded=12 builder_tests=FAILED (failures=3)
+lock_oserror_uncaught    KILLED new_failing=[] C06_unbounded=7 builder_tests=FAILED (failures=1)
+marker_allowed           KILLED new_failing=['C09'] C06_unbounded=6 builder_tests=FAILED (failures=2, errors=1)
+no_lock                  KILLED new_failing=['C08', 'C13'] C06_unbounded=-1 builder_tests=FAILED (failures=8)
+path_length_off          KILLED new_failing=[] C06_unbounded=7 builder_tests=FAILED (failures=1)
+temps_greedy             KILLED new_failing=['C07'] C06_unbounded=6 builder_tests=FAILED (failures=1)
+temps_not_removed        KILLED new_failing=['C07'] C06_unbounded=6 builder_tests=FAILED (failures=1)
+unresolved_off           KILLED new_failing=['C05'] C06_unbounded=6 builder_tests=FAILED (failures=3)
+visible_is_strip         KILLED new_failing=['C05'] C06_unbounded=6 builder_tests=FAILED (failures=5)
+TEETH my oracle kills 15/15

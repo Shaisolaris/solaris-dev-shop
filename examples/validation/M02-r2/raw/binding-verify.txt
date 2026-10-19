@@ -1,0 +1,32 @@
+# binding verify 2026-10-19 01:12:51 PDT (Grok self-validation)
+remote head review/grok-g02-activation: bbe682b28e96296723826c1f113e138ccc39c530	refs/heads/review/grok-g02-activation
+commit: bbe682b28e96296723826c1f113e138ccc39c530 parents 41132041afeb2cce63a68554caf18cf6992a11ae author <66793913+Shaisolaris@users.noreply.github.com>
+## git diff 41132041 bbe682b sha256 vs G02-r2.patch
+diff sha256 62614bb3a1e36aa009a623e9b40600349c0e6b8fc2b3a8b506a941f43db3cd74
+patch sha256 62614bb3a1e36aa009a623e9b40600349c0e6b8fc2b3a8b506a941f43db3cd74
+DIFF_EQUALS_G02_R2_PATCH
+## diffstat 41132041..bbe682b
+ 5 files changed, 331 insertions(+), 24 deletions(-)
+## manifest check at bbe682b
+employees/product-project/project-onboarding/SKILL.md: OK
+employees/product-project/project-onboarding/capability.contract.json: OK
+employees/product-project/project-onboarding/learnings.md: OK
+employees/product-project/project-onboarding/plugin.json: OK
+employees/product-project/project-onboarding/rules.md: OK
+employees/product-project/project-onboarding/activate.py: OK
+examples/capabilities/G02/README.md: OK
+examples/capabilities/G02/activation_oracle.py: OK
+examples/capabilities/G02/noop_stub.py: OK
+examples/capabilities/G02/partial_stub.py: OK
+tests/test_g02_capability.py: OK
+manifest entries 11 ; full diff fileset vs base 02ba9c5:
+MANIFEST_FILESET_EQUALS_DIFF_FILESET_vs_02ba9c5
+ 11 files changed, 1944 insertions(+), 42 deletions(-)
+## files changed in r2 (41132041..bbe682b)
+M	employees/product-project/project-onboarding/SKILL.md
+M	employees/product-project/project-onboarding/activate.py
+M	employees/product-project/project-onboarding/learnings.md
+M	employees/product-project/project-onboarding/rules.md
+M	tests/test_g02_capability.py
+## manifest sha 1c6a4fe6ee663326  r2 patch sha 62614bb3a1e36aa0
+## main: 02ba9c571b10ad1dba792d2ac5534bcad3171e67	refs/heads/main
