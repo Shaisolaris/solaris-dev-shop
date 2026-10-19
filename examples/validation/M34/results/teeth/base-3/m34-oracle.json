@@ -1,0 +1,620 @@
+[
+ {
+  "id": "C00",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "findings": [],
+   "note": "clean control incl. decorative alt, aria-label link/button, wrapped label, #top, noindex without canonical, relative ../ link, uppercase tags"
+  }
+ },
+ {
+  "id": "D01",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "want": [
+    [
+     "title_missing",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D02",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "want": [
+    [
+     "title_duplicate",
+     "/about.html"
+    ],
+    [
+     "title_duplicate",
+     "/thanks.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D03",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "want": [
+    [
+     "description_length",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D04",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "want": [
+    [
+     "canonical_relative",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D05",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "want": [
+    [
+     "canonical_foreign",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D06",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "want": [
+    [
+     "canonical_target_missing",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D07",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "want": [
+    [
+     "html_lang_missing",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D08",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "want": [
+    [
+     "jsonld_invalid",
+     "/index.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D09",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "want": [
+    [
+     "jsonld_restricted_type",
+     "/index.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D10",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "want": [
+    [
+     "heading_skip",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D11",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "want": [
+    [
+     "img_alt_missing",
+     "/index.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D12",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "want": [
+    [
+     "link_name_missing",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D13",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "want": [
+    [
+     "control_label_missing",
+     "/signup.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D14",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "want": [
+    [
+     "duplicate_id",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D15",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "want": [
+    [
+     "broken_link",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D16",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "want": [
+    [
+     "broken_link",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D17",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "want": [
+    [
+     "redirected_link",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D18",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "want": [
+    [
+     "redirect_chain",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D19",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "want": [
+    [
+     "redirect_loop",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D20",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "want": [
+    [
+     "fragment_missing",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D21",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "want": [
+    [
+     "orphan_page",
+     "/lost.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D22",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "want": [
+    [
+     "form_action_broken",
+     "/contact.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D23",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "want": [
+    [
+     "cta_missing",
+     "/pricing.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D24",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "want": [
+    [
+     "conversion_goal_missing",
+     "/pricing.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D25",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "want": [
+    [
+     "sitemap_noindex",
+     "/privacy.html"
+    ]
+   ],
+   "missing": [
+    [
+     "sitemap_noindex",
+     "/privacy.html"
+    ]
+   ],
+   "unexpected": [
+    [
+     "sitemap_noindex",
+     "/sitemap.xml"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "D26",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "want": [
+    [
+     "not_in_sitemap",
+     "/thanks.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D27",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "want": [
+    [
+     "sitemap_foreign_host",
+     "/sitemap.xml"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D28",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "want": [
+    [
+     "link_text_vague",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D29",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "want": [
+    [
+     "encoding_not_utf8",
+     "/about.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D30",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "want": [
+    [
+     "redirected_link",
+     "/pricing.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "D31",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "want": [
+    [
+     "cta_missing",
+     "/pricing.html"
+    ],
+    [
+     "link_name_missing",
+     "/pricing.html"
+    ]
+   ],
+   "missing": [],
+   "unexpected": []
+  }
+ },
+ {
+  "id": "X01",
+  "result": "PASS",
+  "detail": {
+   "note": "two runs byte-identical"
+  }
+ },
+ {
+  "id": "X02",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "msg": "error: --out must not be inside the snapshot"
+  }
+ },
+ {
+  "id": "X03",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "out_kept": true,
+   "msg": "error: config base_url must be a string"
+  }
+ },
+ {
+  "id": "X04",
+  "result": "PASS",
+  "detail": {
+   "rc": 3,
+   "skipped": [
+    {
+     "outside_root": true,
+     "path": "/leak.html",
+     "reason": "symlink points outside the snapshot"
+    }
+   ]
+  }
+ },
+ {
+  "id": "X05",
+  "result": "PASS",
+  "detail": {
+   "rc": 3,
+   "note": "symlinked folder not followed"
+  }
+ },
+ {
+  "id": "X06",
+  "result": "PASS",
+  "detail": {
+   "rc": 3,
+   "skipped_n": 8
+  }
+ },
+ {
+  "id": "X07",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "fixed": null,
+   "new": null
+  }
+ },
+ {
+  "id": "X08",
+  "result": "PASS",
+  "detail": {
+   "default": 0,
+   "fail_on_low": 1,
+   "fail_on_none": 0
+  }
+ },
+ {
+  "id": "X09",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "msg": "error: config /tmp/m34o-xqk4occ2/nope.json unreadable: FileNotFoundError"
+  }
+ },
+ {
+  "id": "X10",
+  "result": "PASS",
+  "detail": {
+   "rc": 3,
+   "note": "3 outranks 1 and the rest is still scanned"
+  }
+ },
+ {
+  "id": "X11",
+  "result": "PASS",
+  "detail": {
+   "note": "clean snapshot unchanged by every run"
+  }
+ },
+ {
+  "id": "D25b",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "sitemap_noindex": [
+    [
+     "/sitemap.xml",
+     "https://kite.example/privacy.html"
+    ]
+   ],
+   "names_privacy": true
+  }
+ },
+ {
+  "id": "X07b",
+  "result": "OBS",
+  "detail": {
+   "rc": 0,
+   "diff_keys": [
+    "fixed",
+    "new",
+    "persisting"
+   ],
+   "fixed": [
+    "broken_link|/about.html|link /abuot-us.html"
+   ],
+   "new": [],
+   "persisting_n": 0
+  }
+ }
+]

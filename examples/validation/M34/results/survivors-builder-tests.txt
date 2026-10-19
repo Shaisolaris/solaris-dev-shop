@@ -1,0 +1,22 @@
+a_name_not_anchor tests_rc=1 failing: test_oracle_accepts_the_tool 
+base_url_scheme_unchecked tests_rc=1 failing: test_config_and_baseline_validation 
+baseline_schema_unchecked tests_rc=1 failing: test_config_and_baseline_validation 
+case_hint_off tests_rc=1 failing: test_oracle_accepts_the_tool 
+dir_index_off tests_rc=1 failing: test_internal_path_rules test_oracle_accepts_the_tool 
+dir_symlink_filter_off_EQUIV tests_rc=0 failing: none
+dup_titles_include_noindex tests_rc=1 failing: test_oracle_accepts_the_tool 
+findings_unsorted tests_rc=1 failing: test_text_report_names_evidence_fix_and_unrun 
+fragment_top_flagged tests_rc=1 failing: test_oracle_accepts_the_tool 
+graph_types_missed tests_rc=1 failing: test_oracle_accepts_the_tool 
+hidden_needs_label tests_rc=1 failing: test_oracle_accepts_the_tool test_oracle_rejects_both_controls_for_the_right_reasons 
+host_case_sensitive tests_rc=1 failing: test_internal_path_rules 
+img_alt_not_name tests_rc=1 failing: test_oracle_accepts_the_tool 
+labelledby_ignored tests_rc=1 failing: test_oracle_accepts_the_tool 
+loop_by_hop_limit_EQUIV tests_rc=0 failing: none
+orphan_counts_self tests_rc=1 failing: test_oracle_accepts_the_tool 
+replace_error_uncaught tests_rc=1 failing: test_failed_replace_keeps_old_report_and_removes_temp 
+temp_not_cleaned tests_rc=1 failing: test_failed_replace_keeps_old_report_and_removes_temp 
+title_range_wide tests_rc=1 failing: test_oracle_accepts_the_tool 
+unquote_off tests_rc=1 failing: test_internal_path_rules test_oracle_accepts_the_tool 
+write_not_atomic tests_rc=1 failing: test_failed_replace_keeps_old_report_and_removes_temp 
+restored ok

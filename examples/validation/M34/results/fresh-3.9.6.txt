@@ -1,0 +1,50 @@
+python3 = 3.9.6
+$ T=employees/marketing/seo-aso-specialist/page_diagnostics.py; F=examples/capabilities/G34/fixtures
+[set]
+$ python3 $T $F/before/site --config $F/before/config.json --out /tmp/m34-fresh-ZOEJZ0/tmp/before.json      # exit 1: 29 findings
+low | redirected_link | /pricing.html | link /start -> /signup.html | fix: Link straight to the final URL.
+low | title_length | /spring-offer.html | 82 characters | fix: Rewrite the title to 50-60 characters, keyword first.
+external links not checked: 0
+not run: No network: external links, live pages, rendering, Core Web Vitals and search-engine indexing are not checked. Findings describe the snapshot only.
+[exit 1]  expected:  exit 1: 29 findings
+$ python3 $T $F/after/site --config $F/after/config.json --baseline /tmp/m34-fresh-ZOEJZ0/tmp/before.json   # exit 0: fixed 29, new 0
+g34-page-diagnostics 1.0.0: 9 pages, 0 findings (high 0, medium 0, low 0)
+versus baseline: fixed 29, new 0, persisting 0
+external links not checked: 0
+not run: No network: external links, live pages, rendering, Core Web Vitals and search-engine indexing are not checked. Findings describe the snapshot only.
+[exit 0]  expected:  exit 0: fixed 29, new 0
+$ python3 $T $F/unseen/site --config $F/unseen/config.json --fail-on medium            # exit 1: 14 findings
+low | not_in_sitemap | /legacy.html | indexable page not in sitemap.xml | fix: Add the indexable page to sitemap.xml.
+low | redirected_link | /shop.html | link /buy -> /checkout.html | fix: Link straight to the final URL.
+external links not checked: 1
+not run: No network: external links, live pages, rendering, Core Web Vitals and search-engine indexing are not checked. Findings describe the snapshot only.
+[exit 1]  expected:  exit 1: 14 findings
+$ python3 examples/capabilities/G34/diag_oracle.py                                     # exit 0: 14/14
+PASS s1   static: the tool imports no network module
+scale: {"pages": 2000, "seconds": 0.22, "findings": 469}
+14/14 checks passed
+not run: fetching live pages or external links, browser rendering, Core Web Vitals, screen-reader output and search-engine indexing. Only saved HTML snapshots were read.
+[exit 0]  expected:  exit 0: 14/14
+$ python3 examples/capabilities/G34/diag_oracle.py --tool examples/capabilities/G34/noop_diagnostics.py   # exit 1
+PASS s1   static: the tool imports no network module
+scale: {"pages": 2000, "seconds": 0.02, "findings": 0}
+3/14 checks passed
+not run: fetching live pages or external links, browser rendering, Core Web Vitals, screen-reader output and search-engine indexing. Only saved HTML snapshots were read.
+[exit 1]  expected:  exit 1
+$ python3 examples/capabilities/G34/diag_oracle.py --tool examples/capabilities/G34/naive_diagnostics.py  # exit 1
+PASS s1   static: the tool imports no network module
+scale: {"pages": 2000, "seconds": 4.44, "findings": 469}
+9/14 checks passed
+not run: fetching live pages or external links, browser rendering, Core Web Vitals, screen-reader output and search-engine indexing. Only saved HTML snapshots were read.
+[exit 1]  expected:  exit 1
+$ python3 -m unittest tests.test_g34_capability                                        # 10 tests
+----------------------------------------------------------------------
+Ran 10 tests in 3.660s
+
+OK
+[exit 0]  expected:  10 tests
+$ python3 examples/capabilities/G34/make_fixtures.py /tmp/m34-fresh-ZOEJZ0/tmp/g34-fixtures                 # regenerates the fixtures
+wrote clean, before, after, unseen under /tmp/m34-fresh-ZOEJZ0/tmp/g34-fixtures
+[exit 0]  expected:  regenerates the fixtures
+regenerated fixtures identical to committed: yes
+pycache left in tree: 0

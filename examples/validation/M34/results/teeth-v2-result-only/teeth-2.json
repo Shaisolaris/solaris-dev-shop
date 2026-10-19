@@ -1,0 +1,59 @@
+[
+ {
+  "mutant": "baseline_schema_unchecked",
+  "kills": []
+ },
+ {
+  "mutant": "cta_unnamed_counts",
+  "kills": [
+   "D31"
+  ]
+ },
+ {
+  "mutant": "empty_alt_flagged",
+  "kills": [
+   "C00",
+   "D11",
+   "X08"
+  ]
+ },
+ {
+  "mutant": "findings_unsorted",
+  "kills": []
+ },
+ {
+  "mutant": "graph_types_missed",
+  "kills": []
+ },
+ {
+  "mutant": "labelledby_ignored",
+  "kills": []
+ },
+ {
+  "mutant": "out_inside_allowed",
+  "kills": [
+   "X02",
+   "X11"
+  ]
+ },
+ {
+  "mutant": "size_cap_off",
+  "kills": [
+   "X06"
+  ]
+ },
+ {
+  "mutant": "threshold_gt",
+  "kills": [
+   "X08"
+  ]
+ },
+ {
+  "mutant": "wrapped_label_ignored",
+  "kills": [
+   "C00",
+   "D13",
+   "X08"
+  ]
+ }
+]

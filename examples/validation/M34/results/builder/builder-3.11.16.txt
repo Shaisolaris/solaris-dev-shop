@@ -1,0 +1,15 @@
+=== 3.11.16 00:05:28 PDT
+$ diag_oracle.py
+scale: {"pages": 2000, "seconds": 0.16, "findings": 469}
+14/14 checks passed
+not run: fetching live pages or external links, browser rendering, Core Web Vitals, screen-reader output and search-engine indexing. Only saved HTML snapshots were read.
+[exit 0]
+$ unittest tests.test_g34_capability
+Ran 10 tests in 2.692s
+
+OK
+$ full suite
+Ran 94 tests in 4.148s
+
+OK
+snapshot tree unchanged: yes

@@ -1,0 +1,46 @@
+C00  PASS {"rc": 0, "findings": [], "note": "clean control incl. decorative alt, aria-label link/button, wrapped label, #top, noindex without canonical, relative ../ link, uppercase tags"}
+D01  FAIL {"rc": 0, "want": [["title_missing", "/about.html"]], "missing": [["title_missing", "/about.html"]], "unexpected": []}
+D02  FAIL {"rc": 0, "want": [["title_duplicate", "/about.html"], ["title_duplicate", "/thanks.html"]], "missing": [["title_duplicate", "/about.html"], ["title_duplicate", "/thanks.html"]], "unexpected": []}
+D03  FAIL {"rc": 0, "want": [["description_length", "/about.html"]], "missing": [["description_length", "/about.html"]], "unexpected": []}
+D04  FAIL {"rc": 0, "want": [["canonical_relative", "/about.html"]], "missing": [["canonical_relative", "/about.html"]], "unexpected": []}
+D05  FAIL {"rc": 0, "want": [["canonical_foreign", "/about.html"]], "missing": [["canonical_foreign", "/about.html"]], "unexpected": []}
+D06  FAIL {"rc": 0, "want": [["canonical_target_missing", "/about.html"]], "missing": [["canonical_target_missing", "/about.html"]], "unexpected": []}
+D07  FAIL {"rc": 0, "want": [["html_lang_missing", "/about.html"]], "missing": [["html_lang_missing", "/about.html"]], "unexpected": []}
+D08  FAIL {"rc": 0, "want": [["jsonld_invalid", "/index.html"]], "missing": [["jsonld_invalid", "/index.html"]], "unexpected": []}
+D09  FAIL {"rc": 0, "want": [["jsonld_restricted_type", "/index.html"]], "missing": [["jsonld_restricted_type", "/index.html"]], "unexpected": []}
+D10  FAIL {"rc": 0, "want": [["heading_skip", "/about.html"]], "missing": [["heading_skip", "/about.html"]], "unexpected": []}
+D11  FAIL {"rc": 0, "want": [["img_alt_missing", "/index.html"]], "missing": [["img_alt_missing", "/index.html"]], "unexpected": []}
+D12  FAIL {"rc": 0, "want": [["link_name_missing", "/about.html"]], "missing": [["link_name_missing", "/about.html"]], "unexpected": []}
+D13  FAIL {"rc": 0, "want": [["control_label_missing", "/signup.html"]], "missing": [["control_label_missing", "/signup.html"]], "unexpected": []}
+D14  FAIL {"rc": 0, "want": [["duplicate_id", "/about.html"]], "missing": [["duplicate_id", "/about.html"]], "unexpected": []}
+D15  FAIL {"rc": 0, "want": [["broken_link", "/about.html"]], "missing": [["broken_link", "/about.html"]], "unexpected": []}
+D16  FAIL {"rc": 0, "want": [["broken_link", "/about.html"]], "missing": [["broken_link", "/about.html"]], "unexpected": []}
+D17  FAIL {"rc": 0, "want": [["redirected_link", "/about.html"]], "missing": [["redirected_link", "/about.html"]], "unexpected": []}
+D18  FAIL {"rc": 0, "want": [["redirect_chain", "/about.html"]], "missing": [["redirect_chain", "/about.html"]], "unexpected": []}
+D19  FAIL {"rc": 0, "want": [["redirect_loop", "/about.html"]], "missing": [["redirect_loop", "/about.html"]], "unexpected": []}
+D20  FAIL {"rc": 0, "want": [["fragment_missing", "/about.html"]], "missing": [["fragment_missing", "/about.html"]], "unexpected": []}
+D21  FAIL {"rc": 0, "want": [["orphan_page", "/lost.html"]], "missing": [["orphan_page", "/lost.html"]], "unexpected": []}
+D22  FAIL {"rc": 0, "want": [["form_action_broken", "/contact.html"]], "missing": [["form_action_broken", "/contact.html"]], "unexpected": []}
+D23  FAIL {"rc": 0, "want": [["cta_missing", "/pricing.html"]], "missing": [["cta_missing", "/pricing.html"]], "unexpected": []}
+D24  FAIL {"rc": 0, "want": [["conversion_goal_missing", "/pricing.html"]], "missing": [["conversion_goal_missing", "/pricing.html"]], "unexpected": []}
+D25  FAIL {"rc": 0, "want": [["sitemap_noindex", "/privacy.html"]], "missing": [["sitemap_noindex", "/privacy.html"]], "unexpected": []}
+D26  FAIL {"rc": 0, "want": [["not_in_sitemap", "/thanks.html"]], "missing": [["not_in_sitemap", "/thanks.html"]], "unexpected": []}
+D27  FAIL {"rc": 0, "want": [["sitemap_foreign_host", "/sitemap.xml"]], "missing": [["sitemap_foreign_host", "/sitemap.xml"]], "unexpected": []}
+D28  FAIL {"rc": 0, "want": [["link_text_vague", "/about.html"]], "missing": [["link_text_vague", "/about.html"]], "unexpected": []}
+D29  FAIL {"rc": 0, "want": [["encoding_not_utf8", "/about.html"]], "missing": [["encoding_not_utf8", "/about.html"]], "unexpected": []}
+D30  FAIL {"rc": 0, "want": [["redirected_link", "/pricing.html"]], "missing": [["redirected_link", "/pricing.html"]], "unexpected": []}
+D31  FAIL {"rc": 0, "want": [["cta_missing", "/pricing.html"], ["link_name_missing", "/pricing.html"]], "missing": [["cta_missing", "/pricing.html"], ["link_name_missing", "/pricing.html"]], "unexpected": []}
+X01  PASS {"note": "two runs byte-identical"}
+X02  FAIL {"rc": 0, "msg": "{\"schema\": \"g34/1\", \"pages_scanned\": 0, \"complete\": true, \"skipped\": [], \"findings\": []}"}
+X03  FAIL {"rc": 0, "out_kept": false, "msg": "{\"schema\": \"g34/1\", \"pages_scanned\": 0, \"complete\": true, \"skipped\": [], \"findings\": []}"}
+X04  FAIL {"rc": 0, "skipped": []}
+X05  PASS {"rc": 0, "note": "symlinked folder not followed"}
+X06  FAIL {"rc": 0, "skipped_n": 0}
+X07  FAIL {"rc": 0, "fixed": null, "new": null}
+X08  FAIL {"default": 0, "fail_on_low": 0, "fail_on_none": 0}
+X09  FAIL {"rc": 0, "msg": "{\"schema\": \"g34/1\", \"pages_scanned\": 0, \"complete\": true, \"skipped\": [], \"findings\": []}"}
+X10  FAIL {"rc": 0, "note": "3 outranks 1 and the rest is still scanned"}
+X11  PASS {"note": "clean snapshot unchanged by every run"}
+D25b OBS  {"rc": 0, "sitemap_noindex": [], "names_privacy": false}
+X07b OBS  {"rc": 0, "diff_keys": [], "fixed": null, "new": null, "persisting_n": 0}
+M34 ORACLE 4/43 FAILS ['D01', 'D02', 'D03', 'D04', 'D05', 'D06', 'D07', 'D08', 'D09', 'D10', 'D11', 'D12', 'D13', 'D14', 'D15', 'D16', 'D17', 'D18', 'D19', 'D20', 'D21', 'D22', 'D23', 'D24', 'D25', 'D26', 'D27', 'D28', 'D29', 'D30', 'D31', 'X02', 'X03', 'X04', 'X06', 'X07', 'X08', 'X09', 'X10']

@@ -1,0 +1,44 @@
+M34 teeth tally (Grok self-validation). Builder's 40 mutants scored by Grok's oracle (v3 kill = row result or recorded detail differs from unmutated tool).
+mutants 40, killed by Grok oracle 19 (18 by a row result, 1 by detail only)
+  a_name_not_anchor              SURVIVED; builder tests: tests_rc=1 failing: test_oracle_accepts_the_tool
+  base_url_scheme_unchecked      SURVIVED; builder tests: tests_rc=1 failing: test_config_and_baseline_validation
+  baseline_schema_unchecked      SURVIVED; builder tests: tests_rc=1 failing: test_config_and_baseline_validation
+  case_hint_off                  SURVIVED; builder tests: tests_rc=1 failing: test_oracle_accepts_the_tool
+  chain_as_single                KILLED result=D18 detail_only=-
+  cta_redirect_not_followed      KILLED result=D30 detail_only=-
+  cta_unnamed_counts             KILLED result=D31 detail_only=-
+  dir_index_off                  SURVIVED; builder tests: tests_rc=1 failing: test_internal_path_rules test_oracle_accepts_the_tool
+  dir_symlink_filter_off_EQUIV   SURVIVED; builder tests: tests_rc=0 failing: none
+  dup_titles_include_noindex     SURVIVED; builder tests: tests_rc=1 failing: test_oracle_accepts_the_tool
+  empty_alt_flagged              KILLED result=C00,D11,X08 detail_only=D02,D03,D04,D07,D09,D10,D14,D17,D18,D20,D21,D26,D27,D28,D29,D30,X07,X07b
+  encoding_flag_off              KILLED result=D29 detail_only=-
+  exit3_after_1                  KILLED result=X10 detail_only=-
+  faq_not_restricted             KILLED result=D09 detail_only=-
+  findings_unsorted              SURVIVED; builder tests: tests_rc=1 failing: test_text_report_names_evidence_fix_and_unrun
+  foreign_canonical_ok           KILLED result=D05 detail_only=-
+  fragment_check_off             KILLED result=D20 detail_only=-
+  fragment_top_flagged           SURVIVED; builder tests: tests_rc=1 failing: test_oracle_accepts_the_tool
+  graph_types_missed             SURVIVED; builder tests: tests_rc=1 failing: test_oracle_accepts_the_tool
+  hidden_needs_label             SURVIVED; builder tests: tests_rc=1 failing: test_oracle_accepts_the_tool test_oracle_rejects_both_controls_for_the_right_reasons
+  host_case_sensitive            SURVIVED; builder tests: tests_rc=1 failing: test_internal_path_rules
+  img_alt_not_name               SURVIVED; builder tests: tests_rc=1 failing: test_oracle_accepts_the_tool
+  labelledby_ignored             SURVIVED; builder tests: tests_rc=1 failing: test_oracle_accepts_the_tool
+  loop_by_hop_limit_EQUIV        SURVIVED; builder tests: tests_rc=0 failing: none
+  noindex_needs_canonical        KILLED result=C00 detail_only=X07b
+  orphan_counts_self             SURVIVED; builder tests: tests_rc=1 failing: test_oracle_accepts_the_tool
+  out_inside_allowed             KILLED result=X02,X11 detail_only=-
+  redirects_ignored              KILLED result=D17,D18,D19,D30 detail_only=-
+  replace_error_uncaught         SURVIVED; builder tests: tests_rc=1 failing: test_failed_replace_keeps_old_report_and_removes_temp
+  sitemap_noindex_off            KILLED result=- detail_only=D25,D25b
+  size_cap_off                   KILLED result=X06 detail_only=-
+  skipped_not_incomplete         KILLED result=X04,X06,X10 detail_only=X05
+  symlink_escape_followed        KILLED result=X04,X10 detail_only=-
+  temp_not_cleaned               SURVIVED; builder tests: tests_rc=1 failing: test_failed_replace_keeps_old_report_and_removes_temp
+  threshold_gt                   KILLED result=X08 detail_only=D01,D05,D06,D08,D11,D12,D13,D15,D16,D19,D22,D23,D24,D25,D25b,D31
+  title_range_wide               SURVIVED; builder tests: tests_rc=1 failing: test_oracle_accepts_the_tool
+  unquote_off                    SURVIVED; builder tests: tests_rc=1 failing: test_internal_path_rules test_oracle_accepts_the_tool
+  vague_off                      KILLED result=D28 detail_only=-
+  wrapped_label_ignored          KILLED result=C00,D13,X08 detail_only=D02,D03,D04,D07,D09,D10,D14,D17,D18,D20,D21,D26,D27,D28,D29,D30,X07,X07b
+  write_not_atomic               SURVIVED; builder tests: tests_rc=1 failing: test_failed_replace_keeps_old_report_and_removes_temp
+survivors not marked EQUIV: 19, all shown non-equivalent by a failing builder test: True
+EQUIV-marked: 2, both survive my oracle AND the builder tests (consistent with the builder's equivalence argument; not independently proven).

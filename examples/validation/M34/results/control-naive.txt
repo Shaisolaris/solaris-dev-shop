@@ -1,0 +1,46 @@
+C00  PASS {"rc": 0, "findings": [], "note": "clean control incl. decorative alt, aria-label link/button, wrapped label, #top, noindex without canonical, relative ../ link, uppercase tags"}
+D01  PASS {"rc": 1, "want": [["title_missing", "/about.html"]], "missing": [], "unexpected": []}
+D02  PASS {"rc": 0, "want": [["title_duplicate", "/about.html"], ["title_duplicate", "/thanks.html"]], "missing": [], "unexpected": []}
+D03  PASS {"rc": 0, "want": [["description_length", "/about.html"]], "missing": [], "unexpected": []}
+D04  PASS {"rc": 0, "want": [["canonical_relative", "/about.html"]], "missing": [], "unexpected": []}
+D05  PASS {"rc": 1, "want": [["canonical_foreign", "/about.html"]], "missing": [], "unexpected": []}
+D06  PASS {"rc": 1, "want": [["canonical_target_missing", "/about.html"]], "missing": [], "unexpected": []}
+D07  PASS {"rc": 0, "want": [["html_lang_missing", "/about.html"]], "missing": [], "unexpected": []}
+D08  PASS {"rc": 1, "want": [["jsonld_invalid", "/index.html"]], "missing": [], "unexpected": []}
+D09  PASS {"rc": 0, "want": [["jsonld_restricted_type", "/index.html"]], "missing": [], "unexpected": []}
+D10  PASS {"rc": 0, "want": [["heading_skip", "/about.html"]], "missing": [], "unexpected": []}
+D11  PASS {"rc": 1, "want": [["img_alt_missing", "/index.html"]], "missing": [], "unexpected": []}
+D12  PASS {"rc": 1, "want": [["link_name_missing", "/about.html"]], "missing": [], "unexpected": []}
+D13  PASS {"rc": 1, "want": [["control_label_missing", "/signup.html"]], "missing": [], "unexpected": []}
+D14  PASS {"rc": 0, "want": [["duplicate_id", "/about.html"]], "missing": [], "unexpected": []}
+D15  PASS {"rc": 1, "want": [["broken_link", "/about.html"]], "missing": [], "unexpected": []}
+D16  PASS {"rc": 1, "want": [["broken_link", "/about.html"]], "missing": [], "unexpected": []}
+D17  FAIL {"rc": 1, "want": [["redirected_link", "/about.html"]], "missing": [["redirected_link", "/about.html"]], "unexpected": [["broken_link", "/about.html"]]}
+D18  FAIL {"rc": 1, "want": [["redirect_chain", "/about.html"]], "missing": [["redirect_chain", "/about.html"]], "unexpected": [["broken_link", "/about.html"]]}
+D19  FAIL {"rc": 1, "want": [["redirect_loop", "/about.html"]], "missing": [["redirect_loop", "/about.html"]], "unexpected": [["broken_link", "/about.html"]]}
+D20  PASS {"rc": 0, "want": [["fragment_missing", "/about.html"]], "missing": [], "unexpected": []}
+D21  PASS {"rc": 0, "want": [["orphan_page", "/lost.html"]], "missing": [], "unexpected": []}
+D22  PASS {"rc": 1, "want": [["form_action_broken", "/contact.html"]], "missing": [], "unexpected": []}
+D23  PASS {"rc": 1, "want": [["cta_missing", "/pricing.html"]], "missing": [], "unexpected": []}
+D24  PASS {"rc": 1, "want": [["conversion_goal_missing", "/pricing.html"]], "missing": [], "unexpected": []}
+D25  FAIL {"rc": 1, "want": [["sitemap_noindex", "/privacy.html"]], "missing": [["sitemap_noindex", "/privacy.html"]], "unexpected": [["sitemap_noindex", "/sitemap.xml"]]}
+D26  PASS {"rc": 0, "want": [["not_in_sitemap", "/thanks.html"]], "missing": [], "unexpected": []}
+D27  PASS {"rc": 0, "want": [["sitemap_foreign_host", "/sitemap.xml"]], "missing": [], "unexpected": []}
+D28  PASS {"rc": 0, "want": [["link_text_vague", "/about.html"]], "missing": [], "unexpected": []}
+D29  PASS {"rc": 0, "want": [["encoding_not_utf8", "/about.html"]], "missing": [], "unexpected": []}
+D30  FAIL {"rc": 1, "want": [["redirected_link", "/pricing.html"]], "missing": [["redirected_link", "/pricing.html"]], "unexpected": [["broken_link", "/pricing.html"], ["cta_missing", "/pricing.html"]]}
+D31  PASS {"rc": 1, "want": [["cta_missing", "/pricing.html"], ["link_name_missing", "/pricing.html"]], "missing": [], "unexpected": []}
+X01  PASS {"note": "two runs byte-identical"}
+X02  PASS {"rc": 2, "msg": "error: --out must not be inside the snapshot"}
+X03  PASS {"rc": 2, "out_kept": true, "msg": "error: config base_url must be a string"}
+X04  FAIL {"rc": 0, "skipped": []}
+X05  PASS {"rc": 3, "note": "symlinked folder not followed"}
+X06  FAIL {"rc": 0, "skipped_n": 0}
+X07  FAIL {"rc": 0, "fixed": null, "new": null}
+X08  PASS {"default": 0, "fail_on_low": 1, "fail_on_none": 0}
+X09  PASS {"rc": 2, "msg": "error: config /tmp/m34o-xnjm6ou9/nope.json unreadable: FileNotFoundError"}
+X10  FAIL {"rc": 1, "note": "3 outranks 1 and the rest is still scanned"}
+X11  PASS {"note": "clean snapshot unchanged by every run"}
+D25b OBS  {"rc": 1, "sitemap_noindex": [["/sitemap.xml", "https://kite.example/privacy.html"]], "names_privacy": true}
+X07b OBS  {"rc": 0, "diff_keys": ["fixed", "new", "persisting"], "fixed": ["broken_link|/about.html|link /abuot-us.html"], "new": [], "persisting_n": 0}
+M34 ORACLE 34/43 FAILS ['D17', 'D18', 'D19', 'D25', 'D30', 'X04', 'X06', 'X07', 'X10']

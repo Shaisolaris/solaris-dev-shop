@@ -1,0 +1,12 @@
+symlink_escape_followed dir_symlink_filter_off_EQUIV size_cap_off skipped_not_incomplete exit3_after_1 threshold_gt out_inside_allowed write_not_atomic temp_not_cleaned replace_error_uncaught baseline_schema_unchecked base_url_scheme_unchecked redirects_ignored loop_by_hop_limit_EQUIV chain_as_single case_hint_off fragment_check_off fragment_top_flagged a_name_not_anchor dir_index_off unquote_off host_case_sensitive empty_alt_flagged img_alt_not_name labelledby_ignored wrapped_label_ignored hidden_needs_label vague_off cta_unnamed_counts cta_redirect_not_followed orphan_counts_self noindex_needs_canonical foreign_canonical_ok graph_types_missed faq_not_restricted encoding_flag_off sitemap_noindex_off title_range_wide dup_titles_include_noindex findings_unsorted
+{"mutant": "base_url_scheme_unchecked", "kills_result": [], "kills_detail_only": []}
+{"mutant": "cta_redirect_not_followed", "kills_result": ["D30"], "kills_detail_only": []}
+{"mutant": "dup_titles_include_noindex", "kills_result": [], "kills_detail_only": []}
+{"mutant": "faq_not_restricted", "kills_result": ["D09"], "kills_detail_only": []}
+{"mutant": "fragment_top_flagged", "kills_result": [], "kills_detail_only": []}
+{"mutant": "img_alt_not_name", "kills_result": [], "kills_detail_only": []}
+{"mutant": "orphan_counts_self", "kills_result": [], "kills_detail_only": []}
+{"mutant": "sitemap_noindex_off", "kills_result": [], "kills_detail_only": ["D25", "D25b"]}
+{"mutant": "temp_not_cleaned", "kills_result": [], "kills_detail_only": []}
+{"mutant": "vague_off", "kills_result": ["D28"], "kills_detail_only": []}
+DONE

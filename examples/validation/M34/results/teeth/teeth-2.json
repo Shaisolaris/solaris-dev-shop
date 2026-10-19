@@ -1,0 +1,124 @@
+[
+ {
+  "mutant": "baseline_schema_unchecked",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "cta_unnamed_counts",
+  "kills_result": [
+   "D31"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "empty_alt_flagged",
+  "kills_result": [
+   "C00",
+   "D11",
+   "X08"
+  ],
+  "kills_detail_only": [
+   "D02",
+   "D03",
+   "D04",
+   "D07",
+   "D09",
+   "D10",
+   "D14",
+   "D17",
+   "D18",
+   "D20",
+   "D21",
+   "D26",
+   "D27",
+   "D28",
+   "D29",
+   "D30",
+   "X07",
+   "X07b"
+  ]
+ },
+ {
+  "mutant": "findings_unsorted",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "graph_types_missed",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "labelledby_ignored",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "out_inside_allowed",
+  "kills_result": [
+   "X02",
+   "X11"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "size_cap_off",
+  "kills_result": [
+   "X06"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "threshold_gt",
+  "kills_result": [
+   "X08"
+  ],
+  "kills_detail_only": [
+   "D01",
+   "D05",
+   "D06",
+   "D08",
+   "D11",
+   "D12",
+   "D13",
+   "D15",
+   "D16",
+   "D19",
+   "D22",
+   "D23",
+   "D24",
+   "D25",
+   "D25b",
+   "D31"
+  ]
+ },
+ {
+  "mutant": "wrapped_label_ignored",
+  "kills_result": [
+   "C00",
+   "D13",
+   "X08"
+  ],
+  "kills_detail_only": [
+   "D02",
+   "D03",
+   "D04",
+   "D07",
+   "D09",
+   "D10",
+   "D14",
+   "D17",
+   "D18",
+   "D20",
+   "D21",
+   "D26",
+   "D27",
+   "D28",
+   "D29",
+   "D30",
+   "X07",
+   "X07b"
+  ]
+ }
+]

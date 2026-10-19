@@ -1,0 +1,53 @@
+[
+ {
+  "mutant": "a_name_not_anchor",
+  "kills": []
+ },
+ {
+  "mutant": "chain_as_single",
+  "kills": [
+   "D18"
+  ]
+ },
+ {
+  "mutant": "dir_symlink_filter_off_EQUIV",
+  "kills": []
+ },
+ {
+  "mutant": "exit3_after_1",
+  "kills": [
+   "X10"
+  ]
+ },
+ {
+  "mutant": "fragment_check_off",
+  "kills": [
+   "D20"
+  ]
+ },
+ {
+  "mutant": "host_case_sensitive",
+  "kills": []
+ },
+ {
+  "mutant": "noindex_needs_canonical",
+  "kills": [
+   "C00"
+  ]
+ },
+ {
+  "mutant": "replace_error_uncaught",
+  "kills": []
+ },
+ {
+  "mutant": "symlink_escape_followed",
+  "kills": [
+   "X04",
+   "X10"
+  ]
+ },
+ {
+  "mutant": "unquote_off",
+  "kills": []
+ }
+]

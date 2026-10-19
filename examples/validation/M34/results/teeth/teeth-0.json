@@ -1,0 +1,65 @@
+[
+ {
+  "mutant": "a_name_not_anchor",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "chain_as_single",
+  "kills_result": [
+   "D18"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "dir_symlink_filter_off_EQUIV",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "exit3_after_1",
+  "kills_result": [
+   "X10"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "fragment_check_off",
+  "kills_result": [
+   "D20"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "host_case_sensitive",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "noindex_needs_canonical",
+  "kills_result": [
+   "C00"
+  ],
+  "kills_detail_only": [
+   "X07b"
+  ]
+ },
+ {
+  "mutant": "replace_error_uncaught",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "symlink_escape_followed",
+  "kills_result": [
+   "X04",
+   "X10"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "unquote_off",
+  "kills_result": [],
+  "kills_detail_only": []
+ }
+]

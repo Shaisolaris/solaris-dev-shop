@@ -1,0 +1,61 @@
+[
+ {
+  "mutant": "base_url_scheme_unchecked",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "cta_redirect_not_followed",
+  "kills_result": [
+   "D30"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "dup_titles_include_noindex",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "faq_not_restricted",
+  "kills_result": [
+   "D09"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "fragment_top_flagged",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "img_alt_not_name",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "orphan_counts_self",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "sitemap_noindex_off",
+  "kills_result": [],
+  "kills_detail_only": [
+   "D25",
+   "D25b"
+  ]
+ },
+ {
+  "mutant": "temp_not_cleaned",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "vague_off",
+  "kills_result": [
+   "D28"
+  ],
+  "kills_detail_only": []
+ }
+]

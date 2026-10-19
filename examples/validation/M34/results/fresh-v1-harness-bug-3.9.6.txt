@@ -1,0 +1,41 @@
+python3 = 3.9.6
+$ T=employees/marketing/seo-aso-specialist/page_diagnostics.py; F=examples/capabilities/G34/fixtures
+[exit 0]  expected: T=employees/marketing/seo-aso-specialist/page_diagnostics.py; F=examples/capabilities/G34/fixtures
+$ python3 $T $F/before/site --config $F/before/config.json --out /tmp/m34-fresh-5HhHns/tmp/before.json      # exit 1: 29 findings
+/Applications/Xcode.app/Contents/Developer/usr/bin/python3: can't open file '/before/site': [Errno 2] No such file or directory
+[exit 2]  expected:  exit 1: 29 findings
+$ python3 $T $F/after/site --config $F/after/config.json --baseline /tmp/m34-fresh-5HhHns/tmp/before.json   # exit 0: fixed 29, new 0
+/Applications/Xcode.app/Contents/Developer/usr/bin/python3: can't open file '/after/site': [Errno 2] No such file or directory
+[exit 2]  expected:  exit 0: fixed 29, new 0
+$ python3 $T $F/unseen/site --config $F/unseen/config.json --fail-on medium            # exit 1: 14 findings
+/Applications/Xcode.app/Contents/Developer/usr/bin/python3: can't open file '/unseen/site': [Errno 2] No such file or directory
+[exit 2]  expected:  exit 1: 14 findings
+$ python3 examples/capabilities/G34/diag_oracle.py                                     # exit 0: 14/14
+PASS s1   static: the tool imports no network module
+scale: {"pages": 2000, "seconds": 0.25, "findings": 469}
+14/14 checks passed
+not run: fetching live pages or external links, browser rendering, Core Web Vitals, screen-reader output and search-engine indexing. Only saved HTML snapshots were read.
+[exit 0]  expected:  exit 0: 14/14
+$ python3 examples/capabilities/G34/diag_oracle.py --tool examples/capabilities/G34/noop_diagnostics.py   # exit 1
+PASS s1   static: the tool imports no network module
+scale: {"pages": 2000, "seconds": 0.02, "findings": 0}
+3/14 checks passed
+not run: fetching live pages or external links, browser rendering, Core Web Vitals, screen-reader output and search-engine indexing. Only saved HTML snapshots were read.
+[exit 1]  expected:  exit 1
+$ python3 examples/capabilities/G34/diag_oracle.py --tool examples/capabilities/G34/naive_diagnostics.py  # exit 1
+PASS s1   static: the tool imports no network module
+scale: {"pages": 2000, "seconds": 4.51, "findings": 469}
+9/14 checks passed
+not run: fetching live pages or external links, browser rendering, Core Web Vitals, screen-reader output and search-engine indexing. Only saved HTML snapshots were read.
+[exit 1]  expected:  exit 1
+$ python3 -m unittest tests.test_g34_capability                                        # 10 tests
+----------------------------------------------------------------------
+Ran 10 tests in 3.384s
+
+OK
+[exit 0]  expected:  10 tests
+$ python3 examples/capabilities/G34/make_fixtures.py /tmp/m34-fresh-5HhHns/tmp/g34-fixtures                 # regenerates the fixtures
+wrote clean, before, after, unseen under /tmp/m34-fresh-5HhHns/tmp/g34-fixtures
+[exit 0]  expected:  regenerates the fixtures
+regenerated fixtures identical to committed: yes
+pycache left in tree: 0

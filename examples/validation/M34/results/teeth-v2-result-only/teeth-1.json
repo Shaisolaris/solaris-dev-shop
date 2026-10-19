@@ -1,0 +1,48 @@
+[
+ {
+  "mutant": "base_url_scheme_unchecked",
+  "kills": []
+ },
+ {
+  "mutant": "cta_redirect_not_followed",
+  "kills": [
+   "D30"
+  ]
+ },
+ {
+  "mutant": "dup_titles_include_noindex",
+  "kills": []
+ },
+ {
+  "mutant": "faq_not_restricted",
+  "kills": [
+   "D09"
+  ]
+ },
+ {
+  "mutant": "fragment_top_flagged",
+  "kills": []
+ },
+ {
+  "mutant": "img_alt_not_name",
+  "kills": []
+ },
+ {
+  "mutant": "orphan_counts_self",
+  "kills": []
+ },
+ {
+  "mutant": "sitemap_noindex_off",
+  "kills": []
+ },
+ {
+  "mutant": "temp_not_cleaned",
+  "kills": []
+ },
+ {
+  "mutant": "vague_off",
+  "kills": [
+   "D28"
+  ]
+ }
+]

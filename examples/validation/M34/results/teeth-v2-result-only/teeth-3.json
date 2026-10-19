@@ -1,0 +1,55 @@
+[
+ {
+  "mutant": "case_hint_off",
+  "kills": []
+ },
+ {
+  "mutant": "dir_index_off",
+  "kills": []
+ },
+ {
+  "mutant": "encoding_flag_off",
+  "kills": [
+   "D29"
+  ]
+ },
+ {
+  "mutant": "foreign_canonical_ok",
+  "kills": [
+   "D05"
+  ]
+ },
+ {
+  "mutant": "hidden_needs_label",
+  "kills": []
+ },
+ {
+  "mutant": "loop_by_hop_limit_EQUIV",
+  "kills": []
+ },
+ {
+  "mutant": "redirects_ignored",
+  "kills": [
+   "D17",
+   "D18",
+   "D19",
+   "D30"
+  ]
+ },
+ {
+  "mutant": "skipped_not_incomplete",
+  "kills": [
+   "X04",
+   "X06",
+   "X10"
+  ]
+ },
+ {
+  "mutant": "title_range_wide",
+  "kills": []
+ },
+ {
+  "mutant": "write_not_atomic",
+  "kills": []
+ }
+]

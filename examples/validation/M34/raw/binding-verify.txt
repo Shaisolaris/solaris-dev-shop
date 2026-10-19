@@ -1,0 +1,11 @@
+# binding 2026-10-19 00:05:05 PDT
+head de76fae516c3aab8adc5df7bfcaac2d751dc92d9 parent 02ba9c571b10ad1dba792d2ac5534bcad3171e67
+diff aca8b475b2274a9bc2dffac2f3689ee997f039b03846312df184776aac3e525d
+patch 2c985589a52c3bc89bb87486d2f99dc9ff4ec14e5f45ec0626202c29ed696383
+identical: no (see per-file)
+per-file chunks: git diff 59, G34.patch 59, every chunk byte-identical True
+manifest: 59 OK, 0 not OK
+manifest set == diff set: no
+# 00:17 PDT recheck with core.quotepath=false -z (Grok): the earlier 'no' was git octal-quoting the non-ASCII path
+manifest set == diff set (unquoted, NFC): True  (diff 59, manifest 59)
+only in diff: [] only in manifest: []
