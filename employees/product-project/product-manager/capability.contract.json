@@ -23,7 +23,8 @@
       "PRD or product requirements",
       "roadmap and prioritization",
       "discovery and JTBD",
-      "launch gates and success metrics"
+      "launch gates and success metrics",
+      "product choice from conflicting interview, market or G13 evidence"
     ],
     "exclusions": [
       "sprint facilitation alone (project-manager)",
@@ -265,11 +266,14 @@
   "dependencies": {
     "references": [
       "SKILL.md",
+      "evidence-product-decision.md",
       "rules.md",
       "../RUNTIME-POLICY.md",
       "../../design/PRODUCT-DESIGN-CREATIVE-STANDARD.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "evidence_decision.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -452,7 +456,8 @@
       "python3 scripts/skill_runtime_contract.py validate solaris/employees/product-project/product-manager/capability.contract.json"
     ],
     "forward_tests": [
-      "fixtures/evaluation/product-design-creative/forward/*"
+      "fixtures/evaluation/product-design-creative/forward/*",
+      "product choice from conflicting evidence: ICP, snapshots, G13 rerun, robust preference (tests/test_g33_capability.py)"
     ],
     "adversarial_tests": [
       "fixtures/evaluation/product-design-creative/adversarial/*"

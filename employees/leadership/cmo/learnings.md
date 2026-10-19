@@ -14,3 +14,4 @@
 - Upstream: coreyhaines31/marketingskills (MIT); alirezarezvani/the coding agent-skills (MIT)
 - What was used: methodology absorbed: coreyhaines31/marketingskills, alirezarezvani/the coding agent-skills; rejected (not used): kostja94/marketing-skills, AICMO/AiCMO-Marketing-Prompt-Collection, timescale/marketing-skills, syntax-syndicate/marketing-skills
 - License notes: absorbed sources permissive (MIT/Apache-2.0); no code vendored
+- G33: a product preference that rests on conflicting evidence is a product-manager evidence_decision.py result, not a CMO override of ICP or sources.

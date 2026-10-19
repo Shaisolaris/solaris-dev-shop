@@ -1,0 +1,4 @@
+Interviewer: How do you handle appointments today?
+Ana (clinic ops, mid-size clinics 5-20 providers): We use a paper book and call patients. Double bookings happen twice a week. If a portal let patients book and move their own slots, I would pay about 40 dollars per provider per month for that alone.
+Interviewer: What about reports for the board?
+Ana: Nice to have. Booking is the pain.

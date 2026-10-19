@@ -63,6 +63,7 @@ Exact shapes every deliverable must take (distilled from Workflows + rules.md). 
 - **Confidence-labeled insights:** every insight carries High / Medium / Low (per rules.md band); inferences labeled as inferences, not facts.
 - **Sourcing:** every claim cited + dated; verbatim quotes (source + URL + date + sentiment + theme), never paraphrase. Recommendation separates **evidence** (this employee) from **decision** (CMO/CEO/business-analyst).
 
+
 ## SELF-QA GATE (run BEFORE replying - mandatory)
 Binary. Answer each yes/no:
 1. Is every market/competitor claim sourced AND dated (no bare "$XB market", no undated stat)?
@@ -220,6 +221,8 @@ Solaris standing applications: competitor teardowns of rival dev agencies, Upwor
 - Sizing shows methodology, assumptions, triangulation, and a ±20% CI framing.
 - Profiles dated, template-consistent, raw data persisted.
 - Recommendation separates **evidence** (this employee) from **decision** (CMO/CEO/business-analyst).
+Product choices that rest on this research go through product-manager `evidence_decision.py` (G33): keep raw snapshots and URLs so quotes and G13 metrics can be rerun; do not invent TAM/adoption in the research pack.
+
 - Deliverable matches what was asked - confirm format first (rules.md deliverables list).
 
 

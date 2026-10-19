@@ -175,6 +175,15 @@ Gate: passed
 5. Dashboard: one owner + target + threshold + decision rule per KPI; cohorts not blended averages.
 6. Output: one clear product action per major metric risk/opportunity - never a numbers dump.
 
+## Evidence-backed product choice (G33)
+
+Before naming a preferred option from conflicting interviews, market notes or G13 metrics, run
+`evidence_decision.py decide` (see `evidence-product-decision.md`): ICP-scoped claims only; every quote in
+its pinned snapshot; values in their quotes; mutable external sources within `max_age_days` or listed for
+verify-before-use; G13 metrics rerun by path; confidence-weighted ranges with contrary evidence; prefer an
+option only when its low total beats every other high. Invented TAM/SAM/SOM/adoption is refused. `verify`
+reruns a stored result.
+
 ## Workflow 6 - Opportunity assessment ("should we build X", "feature request from sales")
 Why now → user evidence (interviews n=X, behavioral data, support signal) → business case (revenue/cost/strategic fit vs OKR) → RICE score table → options considered (build full / MVP / buy / defer) → recommendation: **build / explore / defer / kill** with rationale and next step.
 
@@ -202,7 +211,7 @@ For sub-hour asks, skip the full workflow: (1) "spec one feature" -> the house s
 - Experiment design done here; statistical analysis → Data Scientist.
 
 ## References
-- `rules.md` (full prescriptive detail + formulas), `learnings.md`, `positioning-phase-2026.md`, `spec-driven-2026.md` (spec-driven + BMAD planning)
+- `rules.md` (full prescriptive detail + formulas), `learnings.md`, `positioning-phase-2026.md`, `spec-driven-2026.md` (spec-driven + BMAD planning), `evidence-product-decision.md` (G33)
 
 ## Quality OS assurance (product-quality hardening)
 
