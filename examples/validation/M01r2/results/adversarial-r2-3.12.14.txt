@@ -1,0 +1,17 @@
+y01 GAP   F1 residual: kind key 'fixture_type' (synonym) on blocked legal text is not a pass
+      observed: (0, True, [], '')
+y02 HOLDS F1 residual: kind key 'type' on blocked legal_text + requested_actions is not a pass
+      observed: (1, False, ['LEGAL_BINDING_PROHIBITED', 'LEGAL_DISCLAIMER_MISSING'], '')
+y03 GAP   F1 residual: legal text with no kind key at all is not a pass
+      observed: (0, True, [], '')
+y04 HOLDS control: synonym kind key on a closure fixture is INVALID_PACKET
+      observed: (1, False, ['INVALID_PACKET'])
+y05 HOLDS control: notes/description/name accepted on a wrapped passing packet
+      observed: (0, True, [])
+y06 HOLDS control: negative packet fixture with its firing gate passes
+      observed: (0, True, ['MISSING_SPECIALIST_GATE'])
+y07 GAP   F5 residual: suite with an unreadable subfolder (holding a failing fixture) is not ok
+      observed: (0, True, 1, 0, None)
+y08 INFO  suite counts a symlinked fixture file from outside the folder: ok=True passed=1 failed=0
+y09 INFO  bare planted defect with misspelled 'severty': rc=1 ok=False gates=['SELF_APPROVAL_FORBIDDEN', 'EXPECTED_GATE_NOT_FIRED']
+ADVERSARIAL-M01R2 4/7 hold

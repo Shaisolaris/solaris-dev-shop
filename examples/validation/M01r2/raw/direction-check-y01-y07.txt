@@ -1,0 +1,13 @@
+# direction check (Grok self-validation), NOT a proposed fix, not applied to the candidate
+OK
+core: 12 / 12  gaps open: 0 / 14
+y01 HOLDS F1 residual: kind key 'fixture_type' (synonym) on blocked legal text is not a pass
+y02 HOLDS F1 residual: kind key 'type' on blocked legal_text + requested_actions is not a pass
+y03 HOLDS F1 residual: legal text with no kind key at all is not a pass
+y04 HOLDS control: synonym kind key on a closure fixture is INVALID_PACKET
+y05 HOLDS control: notes/description/name accepted on a wrapped passing packet
+y06 HOLDS control: negative packet fixture with its firing gate passes
+y07 HOLDS F5 residual: suite with an unreadable subfolder (holding a failing fixture) is not ok
+y08 INFO  suite counts a symlinked fixture file from outside the folder: ok=True passed=1 failed=0
+y09 INFO  bare planted defect with misspelled 'severty': rc=1 ok=False gates=['SELF_APPROVAL_FORBIDDEN', 'EXPECTED_GATE_NOT_FIRED']
+ADVERSARIAL-M01R2 7/7 hold

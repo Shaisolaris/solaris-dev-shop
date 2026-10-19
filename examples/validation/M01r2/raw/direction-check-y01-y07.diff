@@ -1,0 +1,35 @@
+diff --git a/employees/quality-security/assurance/quality_os.py b/employees/quality-security/assurance/quality_os.py
+index 72e7047..8a2ed95 100644
+--- a/employees/quality-security/assurance/quality_os.py
++++ b/employees/quality-security/assurance/quality_os.py
+@@ -1143,7 +1143,8 @@ FIXTURE_KIND_KEYS = {
+     "planted_defect": ("defect",),
+ }
+ NON_PACKET_FIXTURE_KEYS = ("finding", "waiver", "closer_role", "independent_evidence",
+-                           "expect_blocked", "defect")
++                           "expect_blocked", "defect",
++                           "text", "requested_actions", "sources", "freshness_days")
+ 
+ 
+ def _norm_key(key: str) -> str:
+@@ -1336,7 +1337,8 @@ def run_suite(root: Path) -> Dict[str, Any]:
+     if not root.is_dir():
+         return _suite_report([], 0, 0, error=f"fixture directory not found: {root}")
+     paths, linked_dirs = [], []
+-    for dirpath, dirnames, filenames in os.walk(root):  # never follows directory symlinks
++    walk_errors = []
++    for dirpath, dirnames, filenames in os.walk(root, onerror=walk_errors.append):  # never follows directory symlinks
+         for d in dirnames:
+             if os.path.islink(os.path.join(dirpath, d)):
+                 linked_dirs.append(Path(dirpath, d))
+@@ -1344,6 +1346,10 @@ def run_suite(root: Path) -> Dict[str, Any]:
+         paths.extend(Path(dirpath, f) for f in filenames if f.lower().endswith(".json"))
+     results = []
+     passed = failed = 0
++    for err in walk_errors:
++        results.append({"path": str(getattr(err, "filename", root)), "ok": False, "status": "blocked", "gate_codes": ["INVALID_PACKET"],
++                        "risk_level": "standard", "notes": [f"directory could not be read: {err}"]})
++        failed += 1
+     for link in sorted(linked_dirs):
+         # a symlinked directory is not followed; report it so its fixtures are not silently skipped
+         results.append({"path": str(link), "ok": False, "status": "blocked", "gate_codes": ["INVALID_PACKET"],

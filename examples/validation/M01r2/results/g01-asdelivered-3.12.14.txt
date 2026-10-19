@@ -1,0 +1,27 @@
+c01 HOLDS unknown fixture_kind values are INVALID_PACKET
+c02 HOLDS unknown legacy kind values are INVALID_PACKET
+c03 HOLDS fixture_kind takes precedence over kind; invalid fixture_kind is not rescued by a valid kind
+c04 HOLDS non-object expectations are INVALID_PACKET
+c05 HOLDS unknown expectation keys are INVALID_PACKET (wrapped and unwrapped)
+c06 HOLDS outcome outside {pass, fail_gate} is INVALID_PACKET
+c07 HOLDS gate_codes not an array of strings is INVALID_PACKET
+c08 HOLDS accountable_role not a nonblank string is INVALID_PACKET
+c09 HOLDS unreadable or non-object fixture files are INVALID_PACKET without traceback
+c10 HOLDS valid fixtures keep their outcome
+c11 HOLDS suite: missing dir, empty dir, only _-files, only non-.json files all fail with error
+c12 HOLDS suite: one bad fixture among good fails the suite with correct counts; nested dirs are counted
+x01 GAP   misspelled fixture_kind KEY on a closure self-approval fixture is not a pass
+x02 GAP   misspelled packet WRAPPER key holding a blocked packet is not a pass
+x03 GAP   misspelled expectations KEY is not silently dropped
+x04 GAP   misspelled legal text key on a legal fixture is not a vacuous pass
+x05 GAP   accountable_role expectation is enforced when the result has no findings
+x06 GAP   gate_codes expectation is not silently ignored when outcome is pass or absent
+x07 GAP   fail_gate gate_codes: every listed gate must fire; empty list is not a wildcard
+x08 GAP   legal fixture with no expectations is not an unconditional pass
+x09 GAP   malformed field types fail as INVALID_PACKET, not a traceback
+x10 GAP   deeply nested JSON fails as INVALID_PACKET, not a traceback
+x11 GAP   one crashing fixture does not destroy the whole suite report
+x12 GAP   duplicate fixture_kind key does not silently change the fixture kind
+x13 GAP   suite does not silently skip .JSON / .Json fixture files
+x14 HOLDS suite behaviour on a symlinked fixture subdirectory (reported, not scored as gap)
+core: 12 / 12  gaps open: 13 / 14

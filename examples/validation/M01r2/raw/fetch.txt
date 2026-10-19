@@ -1,0 +1,3 @@
+From https://github.com/Shaisolaris/solaris-dev-shop
+ * branch            review/grok-g01-fixture-runner -> FETCH_HEAD
+FETCH_HEAD deb06f66201f1752a659214a2e1c915a4a7991af

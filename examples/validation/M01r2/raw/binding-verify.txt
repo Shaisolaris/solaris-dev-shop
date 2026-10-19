@@ -1,0 +1,12 @@
+# binding check 2026-10-18 18:53:59 PDT
+45e779b diff vs 02ba9c5 sha256 85a506e6f3fcc43c15184d3d229c9b4fa34313da1d6555af683b4e407257a6e0
+G01.patch sha256            85a506e6f3fcc43c15184d3d229c9b4fa34313da1d6555af683b4e407257a6e0
+identical bytes: yes
+G01-r1.patch == diff 45e779b..deb06f6: yes
+M01 r1 per-file binding (raw/candidate-binding.txt) vs 45e779b blobs:
+  employees/quality-security/assurance/quality_os.py 2c55de60
+  tests/test_fixture_runner.py 2d0563ce
+  employees/quality-security/assurance/ASSURANCE.md c4ac6f69
+  docs/install.md ee9ea539
+MANIFEST.sha256 at deb06f6: entries 4 ok 4
+manifest set == diff set 02ba9c5..deb06f6: yes
