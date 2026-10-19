@@ -1,0 +1,79 @@
+done candidate
+done r3-be36f86
+done stub-noop
+done stub-naive
+done builder-noop_stub
+done builder-naive_stub
+done answers_unsorted
+done chain_ignored
+done dns_entry_covers_ip
+done expiry_ignored
+done host_not_lowercased
+done ip_compared_as_text
+rsync(85916): error: mkstempat: 'employees/product-project/.RUNTIME-POLICY.md.BmSqg5oTwH': No such file or directory
+rsync(85916): error: employees/product-project/RUNTIME-POLICY.md: utimensat (2): No such file or directory
+rsync(85915): error: unexpected end of file
+grep: /tmp/m10r3-tc-teeth-3.12.14/ip_entry_covers_names.log: No such file or directory
+done ip_entry_covers_names
+done ip_entry_covers_names
+done no_dns_ambiguity_on_mismatch
+done no_dns_ambiguity_on_mismatch
+done no_middlebox_ambiguity
+done no_middlebox_ambiguity
+done prefix_strip3
+done prefix_strip3
+done probable_promoted
+done probable_promoted
+done refused_not_app
+done refused_not_app
+done rg1_note_dropped
+done rg1_note_dropped
+done rg1_other_alone_mismatches
+done rg1_other_alone_mismatches
+done rg1_split_every_comma
+done rg1_split_every_comma
+done rg3_no_truncate
+done rg3_no_truncate
+done rg3_rounded
+done rg3_rounded
+done rv_f1_no_list_split
+done rv_f1_no_list_split
+done rv_f1_unknown_bare
+done rv_f1_unknown_bare
+done rv_f2_one_label
+done rv_f2_one_label
+done rv_f2_public_suffix
+done rv_f2_public_suffix
+rm: /tmp/m10r3-tc-teeth-3.12.14/rv_f3_fold/employees/specialized/wordpress-master/diagnostics: Directory not empty
+rm: /tmp/m10r3-tc-teeth-3.12.14/rv_f3_fold/employees/specialized/wordpress-master: Directory not empty
+rm: /tmp/m10r3-tc-teeth-3.12.14/rv_f3_fold/employees/specialized: Directory not empty
+rsync(7214): error: mkstempat: '.github/.PULL_REQUEST_TEMPLATE.md.AbBuBVCNvN': No such file or directory
+rsync(7214): error: .github/PULL_REQUEST_TEMPLATE.md: utimensat (2): No such file or directory
+rsync(7213): error: unexpected end of file
+rm: /tmp/m10r3-tc-teeth-3.12.14/rv_f3_fold/employees: Directory not empty
+rm: /tmp/m10r3-tc-teeth-3.12.14/rv_f3_fold: Directory not empty
+cp: /tmp/m10r3-tc-teeth-3.12.14/rv_f3_fold/employees/infrastructure/network-engineer/netdiag.py: No such file or directory
+rsync(7224): error: README.md: fchmodat (1) 2: No such file or directory
+rsync(7224): error: ROADMAP.md: fchownat: No such file or directory
+rm: /tmp/m10r3-tc-teeth-3.12.14/rv_f3_fold/employees: Directory not empty
+rm: /tmp/m10r3-tc-teeth-3.12.14/rv_f3_fold: Directory not empty
+rsync(7224): error: mkstempat: 'employees/creative-media/.RUNTIME-POLICY.md.RB1iiwDXTm': No such file or directory
+rsync(7224): error: employees/creative-media/RUNTIME-POLICY.md: utimensat (2): No such file or directory
+rsync(7223): error: unexpected end of file
+done rv_f3_fold
+done rv_f3_fold
+rsync(8673): error: mkstempat: 'employees/engineering/mobile-developer/.SKILL.md.QZUpiOj5vY': No such file or directory
+rsync(8673): error: employees/engineering/mobile-developer/SKILL.md: utimensat (2): No such file or directory
+rsync(8671): error: unexpected end of file
+cp: /tmp/m10r3-tc-teeth-3.12.14/rv_f4_sni/employees/infrastructure/network-engineer/netdiag.py: No such file or directory
+<D>/grok-output/M10/r3/oracle/m10r3_teeth.sh:cd:21: no such file or directory: /tmp/m10r3-tc-teeth-3.12.14/rv_f4_sni
+grep: /tmp/m10r3-tc-teeth-3.12.14/rv_f4_sni.log: No such file or directory
+done rv_f4_sni
+done rv_f4_sni
+rm: /tmp/m10r3-tc-teeth-3.12.14/rv_f5_recursion/employees: Directory not empty
+rm: /tmp/m10r3-tc-teeth-3.12.14/rv_f5_recursion: Directory not empty
+done rv_f5_recursion
+done rv_f5_recursion
+done rv_f7_fromisoformat
+done rv_f7_fromisoformat
+done rv_rg1_other_blocks

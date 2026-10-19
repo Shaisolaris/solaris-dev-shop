@@ -1,0 +1,2 @@
+Preparing worktree (detached HEAD 69c6081)
+HEAD is now at 69c6081 G10 rework r4: M10 r2 findings RG1, RG3/RG4, E1 (review only)

@@ -1,0 +1,21 @@
+# Does r4 netdiag.py == be36f86 + M10 r2 proposed-fix-r2.patch, apart from the RG3 hunks? 2026-10-18 17:37:11 PDT
+proposed-fix-r2.patch sha256 2a42f51a63cb6c77a94e2c8491c667a11655c2fc1b00ed5309ebace587f6054d
+diff (patched be36f86) vs (69c6081):
+108c108
+< RFC3339_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})[Tt ](\d{2}:\d{2}:\d{2})(?:\.(\d{1,6}))?([Zz]|[+-]\d{2}:\d{2})$")
+---
+> RFC3339_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})[Tt ](\d{2}:\d{2}:\d{2})(?:\.(\d+))?([Zz]|[+-]\d{2}:\d{2})$")
+113c113,115
+<     forms, such as +0000, basic or week dates, that 3.9 refuses, so they are refused everywhere)."""
+---
+>     forms, such as +0000, basic or week dates, that 3.9 refuses, so they are refused everywhere).
+>     RFC 3339 allows any number of fraction digits (Go, Kubernetes and journald write 9); digits past
+>     the sixth are truncated, since datetime keeps microseconds."""
+119c121
+<     return dt.datetime.fromisoformat(f"{day}T{clock}" + (f".{frac.ljust(6, '0')}" if frac else "") + zone)
+---
+>     return dt.datetime.fromisoformat(f"{day}T{clock}" + (f".{frac[:6].ljust(6, '0')}" if frac else "") + zone)
+127c129
+<         raise Invalid(f"{where}: {s!r} is not an RFC 3339 time (YYYY-MM-DDTHH:MM:SS[.ffffff] with Z or +HH:MM)") from None
+---
+>         raise Invalid(f"{where}: {s!r} is not an RFC 3339 time (YYYY-MM-DDTHH:MM:SS[.fraction] with Z or +HH:MM)") from None

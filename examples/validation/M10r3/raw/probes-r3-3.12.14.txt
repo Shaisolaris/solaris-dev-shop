@@ -1,0 +1,93 @@
+# m10r3_probes v2 on 3.12.14 2026-10-18 17:39:39 PDT (Grok self-validation)
+q01 RG1 with the non-host SAN spellings other tools print (cert DNS:other.example does not cover api.shop.example)
+GAP   q01 keytool URIName
+    r4 rc=1 localized/tls [TLS_ALERT]
+    r3 rc=1 localized/tls [TLS_ALERT]
+HOLDS q01 keytool RFC822Name
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r3 rc=1 localized/tls [TLS_ALERT]
+GAP   q01 keytool OIDName
+    r4 rc=1 localized/tls [TLS_ALERT]
+    r3 rc=1 localized/tls [TLS_ALERT]
+GAP   q01 keytool Other-Name
+    r4 rc=1 localized/tls [TLS_ALERT]
+    r3 rc=1 localized/tls [TLS_ALERT]
+HOLDS q01 keytool EDIPartyName
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r3 rc=1 localized/tls [TLS_ALERT]
+HOLDS q01 keytool X400Address
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r3 rc=1 localized/tls [TLS_ALERT]
+GAP   q01 certutil URL=
+    r4 rc=1 localized/tls [TLS_ALERT]
+    r3 rc=1 localized/tls [TLS_ALERT]
+HOLDS q01 certutil RFC822 Name=
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r3 rc=1 localized/tls [TLS_ALERT]
+HOLDS q01 certutil Other Name:
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r3 rc=1 localized/tls [TLS_ALERT]
+HOLDS q01 certutil Directory Address:
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r3 rc=1 localized/tls [TLS_ALERT]
+HOLDS q01 certutil Registered ID=
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r3 rc=1 localized/tls [TLS_ALERT]
+HOLDS q01 openssl one-line list, URI middle
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r3 rc=1 localized/tls [TLS_ALERT]
+HOLDS q01 control: keytool DNSName covering + URIName
+    r4 rc=1 localized/tls [TLS_ALERT]
+    r3 rc=1 localized/tls [TLS_ALERT]
+q02 typed comma lists after the RG1 split change (split only before a known type prefix)
+GAP   q02 mixed list 'DNS:a.example, api.shop.example' (bare second name covers the host)
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r3 rc=1 localized/tls [TLS_ALERT]
+HOLDS q02 untyped list 'a.example, api.shop.example'
+    r4 rc=1 localized/tls [TLS_ALERT]
+    r3 rc=1 localized/tls [TLS_ALERT]
+HOLDS q02 typed list no space 'DNS:a.example,DNS:api.shop.example'
+    r4 rc=1 localized/tls [TLS_ALERT]
+    r3 rc=1 localized/tls [TLS_ALERT]
+HOLDS q02 DirName first with commas, then DNS covering
+    r4 rc=1 localized/tls [TLS_ALERT]
+    r3 rc=1 localized/tls [TLS_ALERT]
+HOLDS q02 email first, then DNS not covering
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r3 rc=1 localized/tls [TLS_ALERT]
+HOLDS q02 IP list, target name not covered
+    r4 rc=1 localized/tls [TLS_NAME_MISMATCH]
+    r3 rc=1 localized/tls [TLS_NAME_MISMATCH]
+q03 RG3 fraction edges (captured_at); expected: invalid exit 2 for non-ASCII digits, the same on every interpreter
+HOLDS q03 Arabic-Indic digits in the fraction
+    r4 rc=2 invalid/None []
+    r3 rc=2 invalid/None []
+HOLDS q03 full-width digits in the fraction
+    r4 rc=2 invalid/None []
+    r3 rc=2 invalid/None []
+HOLDS q03 full-width year
+    r4 rc=2 invalid/None []
+    r3 rc=2 invalid/None []
+HOLDS q03 10000 fraction digits (over the documented 64-character field limit)
+    r4 rc=2 invalid/None []
+    r3 rc=2 invalid/None []
+HOLDS q03 40 fraction digits (within the field limit)
+    r4 rc=0 healthy/None []
+    r3 rc=2 invalid/None []
+HOLDS q03 bare '.' then Z
+    r4 rc=2 invalid/None []
+    r3 rc=2 invalid/None []
+HOLDS q03 one digit
+    r4 rc=0 healthy/None []
+    r3 rc=0 healthy/None []
+HOLDS q03x cross-interpreter Arabic-Indic digits in the fraction: {'3.12.14': (2, 'invalid/None []'), '3.9.6': (2, 'invalid/None []'), '3.11.16': (2, 'invalid/None []'), '3.13.15': (2, 'invalid/None []')}
+HOLDS q03x cross-interpreter full-width digits in the fraction: {'3.12.14': (2, 'invalid/None []'), '3.9.6': (2, 'invalid/None []'), '3.11.16': (2, 'invalid/None []'), '3.13.15': (2, 'invalid/None []')}
+HOLDS q03x cross-interpreter full-width year: {'3.12.14': (2, 'invalid/None []'), '3.9.6': (2, 'invalid/None []'), '3.11.16': (2, 'invalid/None []'), '3.13.15': (2, 'invalid/None []')}
+HOLDS q03x cross-interpreter 10000 fraction digits (over the documented 64-character field limit): {'3.12.14': (2, 'invalid/None []'), '3.9.6': (2, 'invalid/None []'), '3.11.16': (2, 'invalid/None []'), '3.13.15': (2, 'invalid/None []')}
+HOLDS q03x cross-interpreter 40 fraction digits (within the field limit): {'3.12.14': (0, 'healthy/None []'), '3.9.6': (0, 'healthy/None []'), '3.11.16': (0, 'healthy/None []'), '3.13.15': (0, 'healthy/None []')}
+HOLDS q03x cross-interpreter bare '.' then Z: {'3.12.14': (2, 'invalid/None []'), '3.9.6': (2, 'invalid/None []'), '3.11.16': (2, 'invalid/None []'), '3.13.15': (2, 'invalid/None []')}
+HOLDS q03x cross-interpreter one digit: {'3.12.14': (0, 'healthy/None []'), '3.9.6': (0, 'healthy/None []'), '3.11.16': (0, 'healthy/None []'), '3.13.15': (0, 'healthy/None []')}
+q04 documented limit: digits past the sixth are dropped (expiry decided below a microsecond)
+OBS q04 not_after .9999995Z, captured .9999999Z (truly after expiry): r4 rc=1 localized/tls [TLS_ALERT]
+OBS q04 not_after .999999999Z, captured 16:00:00Z (after expiry): r4 rc=1 localized/tls [TLS_CERT_EXPIRED]
+SUMMARY HOLDS=28 GAP=5

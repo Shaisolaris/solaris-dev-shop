@@ -1,0 +1,11 @@
+# M10 r3 mutant generation (v2: rv_f1_no_list_split re-pointed) 2026-10-18 17:40:26 PDT
+23 mutants (2 ported, 8 fix-revert) in /tmp/m10r3-mut
+--- r3 fix-revert mutants
+rv_rg1_other_blocks: ok
+rg1_other_alone_mismatches: ok
+rg1_note_dropped: ok
+rg1_split_every_comma: ok
+rv_rg3_six_digits: ok
+rg3_rounded: ok
+rg3_no_truncate: ok
+      30

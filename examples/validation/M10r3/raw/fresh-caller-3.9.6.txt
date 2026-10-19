@@ -1,0 +1,37 @@
+Hand answer (written before running; M10 r3):
+a-mtls-mismatch: one-line openssl list, DNS ledger-old.example does not cover pay.ledger.example; the URI and email entries are
+  not host names and must not hide it -> TLS_NAME_MISMATCH, layer tls, exit 1, with an "ignored" note.
+b-mtls-covering: DNS covers the host, URI beside it -> no TLS_NAME_MISMATCH; generic TLS_ALERT (bad_certificate), exit 1.
+c-ns-expired: not_after 15:59:59.999999999Z before captured_at 16:00:00.000000001Z -> TLS_CERT_EXPIRED, exit 1.
+d-ns-healthy: 9-digit captured_at parses -> healthy, exit 0.
+batch: 4 traces, none invalid.
+# m10r3 fresh caller 2026-10-18 18:05:06 PDT; python3 shim -> 3.9.6; offline guard on (M10_NET_LOG)
+$ python3 $T diagnose traces/a-mtls-mismatch.json
+diagnosis: localized at tls (confidence high)
+  target https://pay.ledger.example:443/health; 3 observations; input sha256 6e577455f3772d81
+  candidate layers: tls
+  layers: dns=ok, route=ok, tls=failed, application=not_reached
+  finding TLS_NAME_MISMATCH (tls): certificate names ['dns:ledger-old.example, uri:spiffe://ledger.example/ns/pay, email:security-team'] do not cover pay.ledger.example
+  note: certificate SAN entries that are not host names were ignored: ['email:security-team', 'uri:spiffe://ledger.example/ns/pay']
+  next (read-only, not run): openssl s_client -connect pay.ledger.example:443 -servername pay.ledger.example </dev/null | openssl x509 -noout -ext subjectAltName
+  next (read-only, not run): confirm DNS points pay.ledger.example at the server that owns this certificate
+[exit 1]
+$ python3 $T diagnose traces/a-mtls-mismatch.json --json --out a-mtls-mismatch.report.json > /dev/null
+[exit 1]
+a-mtls-mismatch: localized tls ['TLS_NAME_MISMATCH'] ["certificate SAN entries that are not host names were ignored: ['email:"]
+$ python3 $T diagnose traces/b-mtls-covering.json --json --out b-mtls-covering.report.json > /dev/null
+[exit 1]
+b-mtls-covering: localized tls ['TLS_ALERT'] ["certificate SAN entries that are not host names were ignored: ['uri:sp"]
+$ python3 $T diagnose traces/c-ns-expired.json --json --out c-ns-expired.report.json > /dev/null
+[exit 1]
+c-ns-expired: localized tls ['TLS_CERT_EXPIRED'] []
+$ python3 $T diagnose traces/d-ns-healthy.json --json --out d-ns-healthy.report.json > /dev/null
+[exit 0]
+d-ns-healthy: healthy None [] []
+$ python3 $T batch traces/ --workers 4
+batch: 4 traces; healthy=1, localized:tls=3
+[exit 1]
+matches the hand answer: True
+network attempts logged: 0
+stray files: 
+HOME after: 0 entries

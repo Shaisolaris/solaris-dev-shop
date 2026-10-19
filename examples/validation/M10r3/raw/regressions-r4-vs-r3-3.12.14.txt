@@ -1,0 +1,110 @@
+# m10r2_regressions on 3.12.14: r4 (labelled r3 in the script) vs r3 (labelled r2) 2026-10-18 17:37:28 PDT
+RG1 real name mismatch on a certificate that also carries a URI, email, othername or DirName entry
+[RG1] URI SPIFFE + DNS:other.example (does not cover api.shop.example)
+    r3 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+[RG1] email + DNS:other.example (does not cover api.shop.example)
+    r3 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+[RG1] othername UPN + DNS:other.example (does not cover api.shop.example)
+    r3 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+[RG1] DirName with comma + DNS:other.example (does not cover api.shop.example)
+    r3 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+[RG1] Registered ID + DNS:other.example (does not cover api.shop.example)
+    r3 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+[RG1] control: DNS:other.example only
+    r3 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+[RG1] covering DNS + URI (must not be a mismatch)
+    r3 rc=1 localized/tls/high [TLS_ALERT]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+RG2 SNI spelling variants that name the same host
+[RG2] sni=API.Shop.Example, handshake ok
+    r3 rc=1 undetermined/None/low []
+    r2 rc=1 undetermined/None/low []
+[RG2] sni=api.shop.example., handshake ok
+    r3 rc=1 undetermined/None/low []
+    r2 rc=1 undetermined/None/low []
+[RG2] sni=www.other.example, handshake ok
+    r3 rc=1 localized/tls/high [TLS_SNI_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_SNI_MISMATCH]
+RG3 RFC 3339 timestamps (captured_at)
+[RG3] 2026-10-18T16:00:00.123456789Z
+    r3 rc=0 healthy/None/high []
+    r2 rc=2 invalid/None/None []
+[RG3] 2026-10-18T16:00:00.1234567Z
+    r3 rc=0 healthy/None/high []
+    r2 rc=2 invalid/None/None []
+[RG3] 2026-10-18T16:00:00.123Z
+    r3 rc=0 healthy/None/high []
+    r2 rc=0 healthy/None/high []
+[RG3] 2026-10-18t16:00:00z
+    r3 rc=0 healthy/None/high []
+    r2 rc=0 healthy/None/high []
+[RG3] 2026-10-18 16:00:00Z
+    r3 rc=0 healthy/None/high []
+    r2 rc=0 healthy/None/high []
+[RG3] 2026-10-18T16:00:00-00:00
+    r3 rc=0 healthy/None/high []
+    r2 rc=0 healthy/None/high []
+[RG3] 2026-12-31T23:59:60Z
+    r3 rc=2 invalid/None/None []
+    r2 rc=2 invalid/None/None []
+[RG3] 2026-10-18T16:00:00+0000
+    r3 rc=2 invalid/None/None []
+    r2 rc=2 invalid/None/None []
+[RG3] 20261018T160000Z
+    r3 rc=2 invalid/None/None []
+    r2 rc=2 invalid/None/None []
+[RG3] 2026-10-18T16:00:00
+    r3 rc=2 invalid/None/None []
+    r2 rc=2 invalid/None/None []
+RG4 certificate dates with nanosecond fractions (not_after), expired vs valid
+[RG4] not_after 2026-10-18T15:59:59.999999999Z
+    r3 rc=1 localized/tls/high [TLS_CERT_EXPIRED]
+    r2 rc=2 invalid/None/None []
+[RG4] not_after 2027-01-01T00:00:00.000000001Z
+    r3 rc=1 localized/tls/high [TLS_ALERT]
+    r2 rc=2 invalid/None/None []
+RG5 wildcards and suffixes after the F2 fix
+[RG5] api.shop.github.io vs DNS:*.shop.github.io
+    r3 rc=1 localized/tls/high [TLS_ALERT]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+[RG5] shop.github.io vs DNS:*.github.io
+    r3 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+[RG5] api.example.com vs DNS:*.example.com
+    r3 rc=1 localized/tls/high [TLS_ALERT]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+[RG5] a.b.example.com vs DNS:*.example.com
+    r3 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+[RG5] api.shop.example vs DNS:*.shop.example
+    r3 rc=1 localized/tls/high [TLS_ALERT]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+[RG5] shop.example vs DNS:*.example
+    r3 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+RG6 SAN list forms
+[RG6] ['DNS:api.shop.example,DNS:www.shop.example']
+    r3 rc=1 localized/tls/high [TLS_ALERT]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+[RG6] ['api.shop.example, www.shop.example']
+    r3 rc=1 localized/tls/high [TLS_ALERT]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+[RG6] ['IP Address:198.51.100.77, DNS:www.shop.example']
+    r3 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+    r2 rc=1 localized/tls/high [TLS_NAME_MISMATCH]
+[RG6] ['DNS: api.shop.example']
+    r3 rc=1 localized/tls/high [TLS_ALERT]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+[RG6] ['dns:API.SHOP.EXAMPLE']
+    r3 rc=1 localized/tls/high [TLS_ALERT]
+    r2 rc=1 localized/tls/high [TLS_ALERT]
+RG7 nesting depth that real traces use (must still parse)
+[RG7] 6-deep extra metadata
+    r3 rc=0 healthy/None/high []
+    r2 rc=0 healthy/None/high []

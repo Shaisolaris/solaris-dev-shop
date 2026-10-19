@@ -1,0 +1,6 @@
+commit 69c60819eccadd6c7df4fcc514914efa11d86742 status-lines 0
+== 3.12.14_sqlite3.53.1  g10 rc=0 Ran 43 tests in 2.080s OK | original rc=0 Ran 84 tests in 1.660s OK | full rc=0 Ran 127 tests in 3.619s OK |
+== 3.9.6_sqlite3.54.0  g10 rc=0 Ran 43 tests in 2.533s OK | original rc=0 Ran 84 tests in 1.986s OK | full rc=0 Ran 127 tests in 4.762s OK |
+== 3.11.16_sqlite3.53.1  g10 rc=0 Ran 43 tests in 1.989s OK | original rc=0 Ran 84 tests in 1.610s OK | full rc=0 Ran 127 tests in 3.477s OK |
+== 3.13.15_sqlite3.53.1  g10 rc=0 Ran 43 tests in 2.105s OK | original rc=0 Ran 84 tests in 1.595s OK | full rc=0 Ran 127 tests in 3.909s OK |
+after: status-lines 0
