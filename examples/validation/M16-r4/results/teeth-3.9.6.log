@@ -1,0 +1,11 @@
+{"mutant": "s1_count_off", "builder_tests": true, "builder_oracle": true, "m16_oracle": false, "m16r3_adversarial": ["b01", "b02"], "m16r4_adversarial": ["g04"]}
+{"mutant": "s1_count_ge2", "builder_tests": true, "builder_oracle": true, "m16_oracle": false, "m16r3_adversarial": ["b01", "b02"], "m16r4_adversarial": ["g04"]}
+{"mutant": "s2_end_off", "builder_tests": true, "builder_oracle": true, "m16_oracle": false, "m16r3_adversarial": ["e04"], "m16r4_adversarial": ["f01", "f02", "f03", "f04", "f05", "f06", "f07", "f08", "h01"]}
+{"mutant": "s2_end_no_reading", "builder_tests": true, "builder_oracle": false, "m16_oracle": false, "m16r3_adversarial": [], "m16r4_adversarial": []}
+{"mutant": "s2_end_no_comma", "builder_tests": true, "builder_oracle": false, "m16_oracle": false, "m16r3_adversarial": [], "m16r4_adversarial": []}
+{"mutant": "s3_unanchored", "builder_tests": true, "builder_oracle": false, "m16_oracle": false, "m16r3_adversarial": [], "m16r4_adversarial": []}
+{"mutant": "s3_window_1", "builder_tests": false, "builder_oracle": false, "m16_oracle": false, "m16r3_adversarial": [], "m16r4_adversarial": []}
+{"mutant": "e01_off", "builder_tests": true, "builder_oracle": true, "m16_oracle": false, "m16r3_adversarial": ["e01"], "m16r4_adversarial": []}
+{"mutant": "e01_no_any", "builder_tests": false, "builder_oracle": false, "m16_oracle": false, "m16r3_adversarial": [], "m16r4_adversarial": []}
+{"mutant": "end_reorder_EQUIV", "builder_tests": false, "builder_oracle": false, "m16_oracle": false, "m16r3_adversarial": [], "m16r4_adversarial": []}
+DONE

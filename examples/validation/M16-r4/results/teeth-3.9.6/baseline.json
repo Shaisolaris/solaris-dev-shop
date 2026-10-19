@@ -1,0 +1,31 @@
+{
+ "builder_tests": "OK",
+ "builder_oracle": "15/15 checks passed",
+ "m16_oracle": "PASS x16_instruction_in_source (0.1s): answered from plots.md\nPASS x17_report_echoes_claims (0.2s): ok\nSUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversarial 17/17 rejected the attack (0 findings)",
+ "m16r3_adversarial": [
+  "b01",
+  "b02",
+  "b03",
+  "c01",
+  "c02",
+  "c03",
+  "c04",
+  "e01",
+  "e02",
+  "e03",
+  "e04",
+  "e04c",
+  "e05"
+ ],
+ "m16r4_adversarial": [
+  "c01",
+  "c02",
+  "g01",
+  "g02",
+  "g03",
+  "g04",
+  "g05",
+  "g06",
+  "h01"
+ ]
+}

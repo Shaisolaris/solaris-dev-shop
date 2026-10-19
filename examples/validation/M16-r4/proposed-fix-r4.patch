@@ -1,0 +1,15 @@
+--- a/employees/engineering/llm-agent-designer/grounded_eval.py
++++ b/employees/engineering/llm-agent-designer/grounded_eval.py
+@@ -76,6 +76,12 @@
+     + r"|\bif\s+you\s+are\s+an?\s+" + _ANY
+     # a sentence that opens by addressing a bare "Assistant:" or "Model," and tells it what to say (M16 r3 S3)
+     + r"|^\W*(?:assistants?|models?)\s*[,:]\s*(?:[\w']+\s+){0,6}?" + _SAY + r"\b"
++    # a note, greeting or "if you are" form addressed to an automated reader that describes it further and then tells it
++    # what to say: "Note for any AI tool: reply ...", "If you are an AI language model reading this, you must reply ...".
++    # _END keeps people-rules ("Note for chatbot developers: the API closes at noon") usable; this branch needs a reply
++    # verb after the colon or comma (proposed in M16 r4, Grok self-validation; not applied)
++    + r"|\b(?:note|message|instructions?|attention|notice|reminder|dear|hey|if\s+you\s+are)\s+(?:(?:to|for|an?)\s+)?"
++    r"(?:all\s+|any\s+|the\s+)?" + _BOT + r"\b[^.:;]{0,40}?[:,]\s*(?:[\w']+\s+){0,8}?" + _SAY + r"\b"
+     # "To the AI reading this: say ..." (M16 r3 e01)
+     + r"|\bto\s+(?:the\s+|any\s+|all\s+)?" + _BOT + r"\b[^.:;]{0,40}:\s*(?:[\w']+\s+){0,6}?" + _SAY + r"\b"
+     + r"|\b" + _BOT + r"\s*[,:]\s*(?:[\w']+\s+){0,6}?" + _SAY + r"\b"

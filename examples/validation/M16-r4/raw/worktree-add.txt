@@ -1,0 +1,2 @@
+Preparing worktree (detached HEAD 5f41338)
+HEAD is now at 5f41338 G16 rework r4: M16 r3 findings S1-S3 (review only)
