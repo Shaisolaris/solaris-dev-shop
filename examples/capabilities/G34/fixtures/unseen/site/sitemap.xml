@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://tidewater.example/</loc></url>
+  <url><loc>https://tidewater.example/Guides/</loc></url>
+  <url><loc>https://tidewater.example/Guides/knots.html</loc></url>
+  <url><loc>https://tidewater.example/docs/</loc></url>
+  <url><loc>https://tidewater.example/blog/tides-2019.html</loc></url>
+  <url><loc>https://tidewater.example/caf%C3%A9.html</loc></url>
+  <url><loc>https://tidewater.example/shop.html</loc></url>
+  <url><loc>https://tidewater.example/kits.html</loc></url>
+  <url><loc>https://tidewater.example/checkout.html</loc></url>
+  <url><loc>https://other.example/tides.html</loc></url>
+</urlset>

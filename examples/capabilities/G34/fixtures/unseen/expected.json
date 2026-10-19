@@ -1,0 +1,16 @@
+[
+ "broken_link|/index.html|link /guides/knots.html (differs only in case from /Guides/knots.html)",
+ "canonical_foreign|/legacy.html|canonical https://mirror.example/legacy.html",
+ "canonical_multiple|/kits.html|2 canonical links",
+ "conversion_page_missing|/old-shop.html|configured conversion page not in snapshot",
+ "encoding_not_utf8|/legacy.html|bytes are not valid UTF-8",
+ "form_action_broken|/checkout.html|form /order/submit.html",
+ "jsonld_restricted_type|/draft.html|FAQPage",
+ "not_in_sitemap|/legacy.html|indexable page not in sitemap.xml",
+ "orphan_page|/draft.html|no internal link from another page",
+ "orphan_page|/legacy.html|no internal link from another page",
+ "redirect_chain|/index.html|link /blog/old-post.html -> /blog/tides-2019.html (2 hops)",
+ "redirect_loop|/index.html|link /promo/",
+ "redirected_link|/shop.html|link /buy -> /checkout.html",
+ "sitemap_foreign_host|/sitemap.xml|https://other.example/tides.html"
+]

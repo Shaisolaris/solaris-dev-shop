@@ -45,3 +45,9 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 - Upstream: AminForou/mcp-gsc (MIT); Auriti-Labs/geo-optimizer-skill (MIT); facundoolano/google-play-scraper (MIT); dataforseo/mcp-server-typescript (Apache-2.0); appreply-co/mcp-appstore (MIT)
 - What was used: methodology absorbed: AminForou/mcp-gsc, Auriti-Labs/geo-optimizer-skill; connected as external reference: AminForou/mcp-gsc, facundoolano/google-play-scraper, dataforseo/mcp-server-typescript, appreply-co/mcp-appstore; methodology only: facundoolano/google-play-scraper
 - License notes: absorbed sources permissive (MIT/Apache-2.0); no code vendored
+
+## 2026-10-18 - Offline page diagnostics with a measured before/after (G34)
+- `page_diagnostics.py` + `content-diagnostics.md`: one pass over saved HTML for metadata, sitemap, links and configured redirects, accessibility basics and the conversion path; JSON keys diff against a baseline so "fixed" is counted, not claimed.
+- Lessons from building the fixtures: (1) declare each seeded defect's expected finding where the defect is injected, so the oracle is not copied from the tool's output; (2) keep traps of *correct* but unusual markup (empty alt, image-only link named by alt, aria-labelledby, wrapped label, `#top`, `/docs` without the slash, unquoted upper-case tags, percent-encoded names) next to the defects, because false positives are what make teams ignore an audit; (3) a case-only link mismatch passes on a laptop and 404s on most servers, so report it with the hint.
+  *Proposed rule: an audit row without the page, the evidence string and a fix is not a finding. Capture the JSON baseline before a change and cite the diff after it.*
+  Tags: [#technical-seo], [#a11y], [#baseline], [#promoted?]

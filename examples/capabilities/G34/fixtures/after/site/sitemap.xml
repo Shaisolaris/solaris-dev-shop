@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://lantern.example/</loc></url>
+  <url><loc>https://lantern.example/features.html</loc></url>
+  <url><loc>https://lantern.example/pricing.html</loc></url>
+  <url><loc>https://lantern.example/signup.html</loc></url>
+  <url><loc>https://lantern.example/about.html</loc></url>
+  <url><loc>https://lantern.example/contact.html</loc></url>
+  <url><loc>https://lantern.example/blog/</loc></url>
+  <url><loc>https://lantern.example/blog/decision-logs.html</loc></url>
+</urlset>

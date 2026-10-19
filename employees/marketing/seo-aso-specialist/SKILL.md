@@ -120,7 +120,7 @@ Any check fails → fix first. End every deliverable with the literal line: Gate
 ---
 
 ## When to invoke me vs the others
-- **Me** - technical SEO, on-page, keyword research, schema, Core Web Vitals, AEO, and ASO strategy
+- **Me** - technical SEO, on-page, keyword research, schema, Core Web Vitals, AEO, and ASO strategy; offline metadata/link/accessibility/conversion-path diagnostics of saved pages with a before/after delta (`page_diagnostics.py`, `content-diagnostics.md`)
 - **content-marketer** - writes the content; I provide the brief | **cro-landing-designer** - builds landing pages
 - **full-stack-developer** - codes the site; I provide requirements | **ui-ux-designer** - designs app screenshots; I provide strategy
 - **paid-ads-manager** - runs paid ads
@@ -440,6 +440,7 @@ After every SEO/ASO session:
 | `seo-audit-6-phase.md` | Any SEO audit engagement |
 | `aeo-ai-visibility.md` | Any AEO / GEO / AI-visibility work (now includes the GEO citability rubric) |
 | `live-search-data-tooling.md` | When live GSC / SERP / App Store data is needed |
+| `content-diagnostics.md` | Baseline and re-check of saved pages: metadata, sitemap, links, redirects, accessibility basics, conversion path (run `page_diagnostics.py`) |
 | `elite-technical-geo-2026.md` | Elite tier: GEO citation-measurement (fixed prompt panel + SoV), server log-file / crawl-budget analysis + AI-crawler split, entity / topical-authority depth |
 
 Canonical alirezarezvani marketing SEO (external upstream; absorbed into this skill)
