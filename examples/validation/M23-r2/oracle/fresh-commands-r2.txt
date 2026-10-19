@@ -1,0 +1,26 @@
+# Hand-transcribed from wp-trace-diagnosis.md "Commands" (0ff2641, r2 additions at the end). Bundles written by hand per the bundle table.
+cd employees/specialized/wordpress-master
+python3 -c 'import json; json.dump({"schema":"solaris.wp-trace/1","site":"fresh","environment":"production","source":"hand-written fresh-caller bundle","php_errors":["[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Cannot redeclare f_x() (previously declared in /srv/www/wp-content/plugins/alpha/a.php:4) in /srv/www/wp-content/plugins/beta/b.php on line 9"]}, open("/tmp/m23r2-freshb.json","w"))'
+python3 wp_trace_diag.py diagnose /tmp/m23r2-freshb.json
+# expect: exit 1, PLUGIN_CONFLICT naming plugin:alpha and plugin:beta, text output
+python3 wp_trace_diag.py diagnose /tmp/m23r2-freshb.json --json
+# expect: exit 1, JSON with findings[0].code PLUGIN_CONFLICT
+python3 wp_trace_diag.py diagnose /tmp/m23r2-freshb.json --out /tmp/m23r2-freshr.json; python3 -c 'import json; print([f["code"] for f in json.load(open("/tmp/m23r2-freshr.json"))["findings"]])'
+# expect: exit 1, report file holds ['PLUGIN_CONFLICT']
+python3 wp_trace_diag.py diagnose /tmp/m23r2-freshb.json --out /tmp/m23r2-freshb.json
+# expect: exit 2, refuses to overwrite the input
+python3 -c 'import json; m={"tool":"curl loop","warm_cache":False,"runs_per_url":5,"concurrency":1}; b=lambda v,w: {"schema":"solaris.wp-trace/1","site":"fresh","environment":"production","source":"hand","env":{"php":"8.3","wp":"6.6","host":"h"},"measurement":dict(m,warm_cache=w),"requests":[{"id":"r%d"%i,"url":"/","total_ms":x} for i,x in enumerate(v)]}; json.dump(b([800,810,790,805,795],False),open("/tmp/m23r2-freshB.json","w")); json.dump(b([400,410,390,405,395],False),open("/tmp/m23r2-freshA.json","w")); json.dump(b([40,41,39,40,42],True),open("/tmp/m23r2-freshH.json","w"))'
+python3 wp_trace_diag.py compare /tmp/m23r2-freshB.json /tmp/m23r2-freshA.json --json
+# expect: exit 0, speedup_claimed true, medians 800 and 400
+python3 wp_trace_diag.py compare /tmp/m23r2-freshB.json /tmp/m23r2-freshH.json
+# expect: exit 3, not comparable (warm_cache differs), no speedup
+python3 wp_trace_diag.py compare /tmp/m23r2-freshB.json /tmp/m23r2-freshA.json --json --out /tmp/m23r2-freshc.json | python3 -c 'import json,sys; print("stdout claimed", json.load(sys.stdin)["speedup_claimed"])'; python3 -c 'import json; print("file claimed", json.load(open("/tmp/m23r2-freshc.json"))["speedup_claimed"])'
+# expect: stdout claimed True, file claimed True (compare --out is new in the synopsis)
+mkdir -p /tmp/m23r2-freshdir; python3 wp_trace_diag.py diagnose /tmp/m23r2-freshb.json --out /tmp/m23r2-freshdir
+# expect: exit 2, --out is a folder
+python3 -c 'import json; json.dump({"schema":"solaris.wp-trace/1","site":"fresh","environment":"production","source":"hand-written fresh-caller bundle, r2","env":{"php":"8.3.0","wp":"6.6.2","host":"h"},"measurement":{"tool":"qm","warm_cache":False,"runs_per_url":5,"concurrency":1},"wp_config":{"WP_MEMORY_LIMIT":"256M"},"dropins":[],"active_plugins":["alpha"],"autoload_bytes":10,"autoload_top":[],"system_cron":True,"requests":[{"id":"r1","url":"/","total_ms":300,"queries":[{"sql":"SELECT * FROM wp_x WHERE a = 1","ms":120,"source_file":"mysql-slow.log","source_line":1204}],"hooks":[]}],"php_errors":["[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 20480 bytes) in /srv/www/wp-content/plugins/alpha/r.php on line 3"],"bisect":[]}, open("/tmp/m23r2-freshm.json","w"))'
+python3 wp_trace_diag.py diagnose /tmp/m23r2-freshm.json
+# expect: exit 1, CONFIG_MEMORY_LIMIT [core] saying WP_MEMORY_LIMIT 256M is above where PHP stopped (32 MiB); SLOW_QUERY [unknown] not tied to a plugin, sources mysql-slow.log:1204
+python3 wp_trace_diag.py diagnose /tmp/m23r2-freshm.json --json --out /tmp/m23r2-freshr.json | python3 -c 'import json,sys; print("stdout json", [f["code"] for f in json.load(sys.stdin)["findings"]])'
+# expect: stdout json ['CONFIG_MEMORY_LIMIT', 'SLOW_QUERY'] (S4: --json with --out). v2: moved here; v1 used freshb.json, which freshB.json overwrites on the case-insensitive macOS disk (Grok's own command error)
+rm -rf /tmp/m23r2-freshb.json /tmp/m23r2-freshr.json /tmp/m23r2-freshB.json /tmp/m23r2-freshA.json /tmp/m23r2-freshH.json /tmp/m23r2-freshc.json /tmp/m23r2-freshm.json /tmp/m23r2-freshdir

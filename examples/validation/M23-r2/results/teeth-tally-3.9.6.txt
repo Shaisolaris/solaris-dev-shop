@@ -1,0 +1,69 @@
+mutant                         probes        prep          builder_tests builder_oracl
+min_samples_4                  KILL          -             KILL          -            
+secret_re_no_key               -             -             KILL          -            
+nan_allowed                    -             -             -             -            
+dupes_allowed                  KILL          -             KILL          KILL         
+bool_as_number                 KILL          -             KILL          KILL         
+symlink_allowed                KILL          -             KILL          KILL         
+env_unchecked                  KILL          -             KILL          -            
+redeclare_same_comp            KILL          -             KILL          -            
+bisect_single_inverted         KILL          -             KILL          KILL         
+bisect_pair_or                 KILL          -             KILL          KILL         
+repeat_gt                      KILL          -             KILL          -            
+slow_gt                        KILL          -             KILL          -            
+hook_gt                        KILL          -             KILL          -            
+debug_display_default_false    KILL          -             KILL          KILL         
+debug_any_env                  KILL          -             KILL          -            
+savequeries_any_env            KILL          -             KILL          KILL         
+mem_warn_95                    KILL          -             KILL          -            
+cache_disabled_only_false      KILL          -             KILL          -            
+cron_null_judged               KILL          -             KILL          -            
+autoload_ge                    KILL          -             KILL          -            
+cmp_no_measurement             KILL          -             KILL          KILL         
+cmp_no_site                    KILL          -             KILL          -            
+cmp_no_env                     KILL          -             KILL          KILL         
+cmp_url_sets                   KILL          -             KILL          KILL         
+cmp_sample_count               KILL          -             KILL          KILL         
+cmp_min_2                      KILL          -             KILL          KILL         
+cmp_le                         KILL          -             KILL          -            
+cmp_median                     KILL          -             KILL          KILL         
+cmp_claim_any                  KILL          -             KILL          KILL         
+out_overwrite_input            KILL          -             KILL          KILL         
+out_folder_unchecked           KILL          -             KILL          KILL         
+out_symlink_allowed            KILL          -             KILL          KILL         
+component_no_unknown           KILL          -             KILL          -            
+secret_kept                    -             -             KILL          -            
+pair_skip_unknown_side         KILL          -             KILL          -            
+atomic_rename_EQUIV            -             -             -             -            
+r2_mem_comp_where              KILL          -             KILL          KILL         
+r2_mem_gt_ge                   KILL          -             KILL          -            
+r2_mem_eq_off                  KILL          -             KILL          -            
+r2_mem_no_ev                   KILL          -             KILL          -            
+r2_mem_missing_msg             KILL          -             KILL          -            
+r2_size_case                   KILL          -             -             -            
+r2_size_G_1000                 -             -             KILL          -            
+r2_src_newline                 KILL          -             KILL          -            
+r2_src_257                     KILL          -             -             -            
+r2_src_line_0                  KILL          -             KILL          -            
+r2_src_line_1e10               KILL          -             -             -            
+r2_line_needs_file_off         KILL          -             KILL          -            
+r2_slowest_ge                  -             -             -             -            
+r2_slowest_first_only          KILL          -             KILL          -            
+r2_sources_cap_10              KILL          -             -             -            
+r2_not_tied_off                KILL          -             KILL          -            
+r2_src_ev_drop                 KILL          -             KILL          -            
+r2_json_out_text               KILL          -             KILL          KILL         
+r2_outside_other_a             KILL          -             KILL          -            
+r2_text_sources_off            KILL          KILL          KILL          KILL         
+r2_text_more_6                 -             -             -             -            
+probes: 50/56
+prep: 1/56
+builder_tests: 49/56
+builder_oracle: 20/56
+builder (tests or oracle): 49/56
+grok (probes or prep): 50/56
+union: 53/56
+survivors: ['nan_allowed', 'r2_slowest_ge', 'r2_text_more_6']
+EQUIV controls: [('atomic_rename_EQUIV', 'survived')]
+killed only by Grok: ['r2_size_case', 'r2_src_257', 'r2_src_line_1e10', 'r2_sources_cap_10']
+killed only by builder: ['secret_re_no_key', 'secret_kept', 'r2_size_G_1000']

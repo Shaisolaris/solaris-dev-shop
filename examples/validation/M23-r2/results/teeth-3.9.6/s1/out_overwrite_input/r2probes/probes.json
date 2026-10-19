@@ -1,0 +1,761 @@
+[
+ {
+  "id": "A01",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "f": [
+    {
+     "code": "CONFIG_MEMORY_LIMIT",
+     "components": [
+      "core"
+     ],
+     "detail": "PHP ran out of memory at 32 MiB (1 log lines); that is the configured WP_MEMORY_LIMIT 32M; the last allocation was in plugin:alpha, which shows where memory ran out, not what used it",
+     "evidence": [
+      "[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 20480 bytes) in /srv/www/wp-content/plugins/alpha/r.php on line 3",
+      "WP_MEMORY_LIMIT=32M"
+     ],
+     "fix": "find what uses the memory first (a profile of the failing request); raise WP_MEMORY_LIMIT only with that evidence",
+     "severity": "high"
+    }
+   ]
+  }
+ },
+ {
+  "id": "A02",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "detail": "PHP ran out of memory at 32 MiB (1 log lines); WP_MEMORY_LIMIT is 1G (1024 MiB) but PHP stopped at 32 MiB: PHP's memory_limit is lower and WordPress could not raise it (php.ini or the host caps it); the last allocation was in plugin:alpha, which shows where memory ran out, not what used it",
+   "ev": [
+    "[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 20480 bytes) in /srv/www/wp-content/plugins/alpha/r.php on line 3",
+    "WP_MEMORY_LIMIT=1G"
+   ]
+  }
+ },
+ {
+  "id": "A03",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "detail": "PHP ran out of memory at 1024 MiB (1 log lines); that is the configured WP_MEMORY_LIMIT 1024M; the last allocation was in plugin:alpha, which shows where memory ran out, not what used it",
+   "note": "1024M equals 1 GiB died-at"
+  }
+ },
+ {
+  "id": "A03b",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "detail": "PHP ran out of memory at 1024 MiB (1 log lines); that is the configured WP_MEMORY_LIMIT 1G; the last allocation was in plugin:alpha, which shows where memory ran out, not what used it"
+  }
+ },
+ {
+  "id": "A04",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "detail": "PHP ran out of memory at 32 MiB (1 log lines); that is the configured WP_MEMORY_LIMIT 32m; the last allocation was in plugin:alpha, which shows where memory ran out, not what used it",
+   "note": "lowercase m, PHP shorthand is case-insensitive"
+  }
+ },
+ {
+  "id": "A05",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "detail": "PHP ran out of memory at 32 MiB (1 log lines); above WP_MEMORY_LIMIT 16M, so a higher limit applied (WP_MAX_MEMORY_LIMIT on admin and cron requests, or PHP memory_limit set higher); the last allocation was in plugin:alpha, which shows where memory ran out, not what used it",
+   "note": "died above the configured limit: must not claim the PHP cap is lower"
+  }
+ },
+ {
+  "id": "A06",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "detail": "PHP ran out of memory at 32 MiB (1 log lines); WP_MEMORY_LIMIT is not in the bundle, so the configured limit cannot be compared; the last allocation was in plugin:alpha, which shows where memory ran out, not what used it"
+  }
+ },
+ {
+  "id": "A07",
+  "kind": "obs",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "detail": "PHP ran out of memory at 32 MiB (1 log lines); WP_MEMORY_LIMIT '-1' is not a size, so it cannot be compared; the last allocation was in plugin:alpha, which shows where memory ran out, not what used it",
+   "note": "-1 is PHP's unlimited"
+  }
+ },
+ {
+  "id": "A07b",
+  "kind": "obs",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "tb": false,
+   "detail": "PHP ran out of memory at 32 MiB (1 log lines); above WP_MEMORY_LIMIT -1, so a higher limit applied (WP_MAX_MEMORY_LIMIT on admin and cron requests, or PHP memory_limit set higher); the last allocation was in plugin:alpha, which shows where memory ran out, not what used it",
+   "note": "JSON int -1"
+  }
+ },
+ {
+  "id": "A08",
+  "kind": "obs",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "detail": "PHP ran out of memory at 32 MiB (1 log lines); WP_MEMORY_LIMIT '256MB' is not a size, so it cannot be compared; the last allocation was in plugin:alpha, which shows where memory ran out, not what used it"
+  }
+ },
+ {
+  "id": "A09",
+  "kind": "obs",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "detail": "PHP ran out of memory at 32 MiB (1 log lines); that is the configured WP_MEMORY_LIMIT 33554432; the last allocation was in plugin:alpha, which shows where memory ran out, not what used it",
+   "note": "JSON int bytes"
+  }
+ },
+ {
+  "id": "A10",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "detail": "PHP ran out of memory at 32 MiB (1 log lines); WP_MEMORY_LIMIT 'abc' is not a size, so it cannot be compared; the last allocation was in plugin:alpha, which shows where memory ran out, not what used it",
+   "note": "not a size: still a finding, no crash"
+  }
+ },
+ {
+  "id": "A11",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "f": [
+    {
+     "code": "CONFIG_MEMORY_LIMIT",
+     "components": [
+      "core"
+     ],
+     "detail": "PHP ran out of memory at 32 MiB (2 log lines); that is the configured WP_MEMORY_LIMIT 32M; the last allocation was in plugin:alpha, which shows where memory ran out, not what used it",
+     "evidence": [
+      "[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 20480 bytes) in /srv/www/wp-content/plugins/alpha/r.php on line 3",
+      "WP_MEMORY_LIMIT=32M"
+     ],
+     "fix": "find what uses the memory first (a profile of the failing request); raise WP_MEMORY_LIMIT only with that evidence",
+     "severity": "high"
+    }
+   ],
+   "note": "two plugins in two lines: one core finding"
+  }
+ },
+ {
+  "id": "A12",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "f": [
+    {
+     "code": "CONFIG_MEMORY_LIMIT",
+     "components": [
+      "core"
+     ],
+     "detail": "peak 95 MiB on / is 95% of WP_MEMORY_LIMIT 100M",
+     "evidence": [
+      "WP_MEMORY_LIMIT=100M"
+     ],
+     "fix": "find the request's memory use first; raise the limit only with headroom evidence",
+     "severity": "medium"
+    }
+   ],
+   "note": "peak-90% path: the doc says the component is core"
+  }
+ },
+ {
+  "id": "A13",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "ev": [
+    "[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 20480 bytes) in /srv/www/wp-content/plugins/alpha/r.php on line 3",
+    "WP_MEMORY_LIMIT=32M"
+   ],
+   "note": "line's file still reported as where memory ran out"
+  }
+ },
+ {
+  "id": "B01",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "f": [
+    {
+     "code": "SLOW_QUERY",
+     "components": [
+      "unknown"
+     ],
+     "detail": "1 runs, max 200.0 ms, total 200.0 ms (100% of query time); no caller or component recorded, so it is not tied to a plugin",
+     "evidence": [
+      "select * from wp_acme_index where term like ?",
+      "source mysql-slow.log:1204"
+     ],
+     "fix": "add an index or cache the result; check EXPLAIN on a copy of the database",
+     "severity": "high",
+     "sources": [
+      "mysql-slow.log:1204"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "B02",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "detail": "1 runs, max 200.0 ms, total 200.0 ms (100% of query time); no caller or component recorded, so it is not tied to a plugin",
+   "comp": [
+    "unknown"
+   ],
+   "note": "wp_acme_ table in SQL must not become plugin:acme"
+  }
+ },
+ {
+  "id": "B03",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "src": [
+    "source A.log:10",
+    "source B.log:20"
+   ],
+   "note": "evidence leads with the slowest run"
+  }
+ },
+ {
+  "id": "B03b",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "src": [
+    "source A.log:10",
+    "source B.log:20"
+   ],
+   "note": "evidence leads with the slowest run"
+  }
+ },
+ {
+  "id": "B04",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "n": 20
+  }
+ },
+ {
+  "id": "B05",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "f": [
+    {
+     "code": "SLOW_QUERY",
+     "components": [
+      "unknown"
+     ],
+     "detail": "1 runs, max 200.0 ms, total 200.0 ms (100% of query time); no caller or component recorded, so it is not tied to a plugin",
+     "evidence": [
+      "select * from wp_acme_index where term like ?",
+      "source mysql-slow.log"
+     ],
+     "fix": "add an index or cache the result; check EXPLAIN on a copy of the database",
+     "severity": "high",
+     "sources": [
+      "mysql-slow.log"
+     ]
+    }
+   ],
+   "note": "source_file without a line is allowed (both optional)"
+  }
+ },
+ {
+  "id": "B06",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "case": "B06_line_no_file",
+   "rc": 2,
+   "tb": false,
+   "stderr": "invalid: requests[0].queries[0]: source_line needs source_file"
+  }
+ },
+ {
+  "id": "B07",
+  "kind": "claim",
+  "result": "PASS",
+  "detail": {
+   "case": "B07_newline",
+   "rc": 2,
+   "tb": false,
+   "stderr": "invalid: requests[0].queries[0].source_file: a file name on one line"
+  }
+ },
+ {
+  "id": "B08",
+  "kind": "claim",
+  "result": "PASS",
+  "detail": {
+   "case": "B08_257",
+   "rc": 2,
+   "tb": false,
+   "stderr": "invalid: requests[0].queries[0].source_file: needs text of at most 256 characters"
+  }
+ },
+ {
+  "id": "B09",
+  "kind": "claim",
+  "result": "PASS",
+  "detail": {
+   "case": "B09_line0",
+   "rc": 2,
+   "tb": false,
+   "stderr": "invalid: requests[0].queries[0].source_line: needs a number from 1 to 1e+09"
+  }
+ },
+ {
+  "id": "B10",
+  "kind": "claim",
+  "result": "PASS",
+  "detail": {
+   "case": "B10_line_1e9p1",
+   "rc": 2,
+   "tb": false,
+   "stderr": "invalid: requests[0].queries[0].source_line: needs a number from 1 to 1e+09"
+  }
+ },
+ {
+  "id": "B11",
+  "kind": "claim",
+  "result": "PASS",
+  "detail": {
+   "case": "B11_line_str",
+   "rc": 2,
+   "tb": false,
+   "stderr": "invalid: requests[0].queries[0].source_line: needs a number from 1 to 1e+09"
+  }
+ },
+ {
+  "id": "B12",
+  "kind": "claim",
+  "result": "PASS",
+  "detail": {
+   "case": "B12_empty_file",
+   "rc": 2,
+   "tb": false,
+   "stderr": "invalid: requests[0].queries[0].source_file: a file name on one line"
+  }
+ },
+ {
+  "id": "B13",
+  "kind": "claim",
+  "result": "PASS",
+  "detail": {
+   "case": "B13_file_num",
+   "rc": 2,
+   "tb": false,
+   "stderr": "invalid: requests[0].queries[0].source_file: needs text of at most 256 characters"
+  }
+ },
+ {
+  "id": "B14",
+  "kind": "claim",
+  "result": "PASS",
+  "detail": {
+   "case": "B14_line_nan_bool",
+   "rc": 2,
+   "tb": false,
+   "stderr": "invalid: requests[0].queries[0].source_line: needs a number from 1 to 1e+09"
+  }
+ },
+ {
+  "id": "B15",
+  "kind": "claim",
+  "result": "PASS",
+  "detail": {
+   "case": "B15_256",
+   "rc": 1
+  }
+ },
+ {
+  "id": "B16",
+  "kind": "claim",
+  "result": "PASS",
+  "detail": {
+   "case": "B16_line_1e9",
+   "rc": 1
+  }
+ },
+ {
+  "id": "B17",
+  "kind": "claim",
+  "result": "PASS",
+  "detail": {
+   "case": "B17_line_1",
+   "rc": 1
+  }
+ },
+ {
+  "id": "B18",
+  "kind": "obs",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "sources": [
+    [
+     "a.log:12"
+    ]
+   ],
+   "note": "non-integer line"
+  }
+ },
+ {
+  "id": "B19",
+  "kind": "obs",
+  "result": "OBS",
+  "detail": {
+   "detail": [
+    "1 runs, max 200.0 ms, total 200.0 ms (100% of query time)"
+   ],
+   "note": "unknown component with a caller"
+  }
+ },
+ {
+  "id": "B20",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "f": [
+    {
+     "code": "REPEATED_QUERY",
+     "components": [
+      "plugin:beta"
+     ],
+     "detail": "the same query ran up to 12 times from one caller in one request (1 requests); an N+1 loop",
+     "evidence": [
+      "select meta from wp_postmeta where post_id = ?",
+      "loop()",
+      "source qm:40"
+     ],
+     "fix": "batch the lookups (one query with IN, or prime the cache before the loop)",
+     "severity": "medium",
+     "sources": [
+      "qm:40"
+     ]
+    }
+   ],
+   "note": "REPEATED_QUERY keeps source"
+  }
+ },
+ {
+  "id": "B21",
+  "kind": "claim",
+  "result": "PASS",
+  "detail": {
+   "out": [
+    "         sources: s.log:1, s.log:2, s.log:3, s.log:4, s.log:5 and 2 more"
+   ]
+  }
+ },
+ {
+  "id": "B22",
+  "kind": "claim",
+  "result": "PASS",
+  "detail": {
+   "rc": 2
+  }
+ },
+ {
+  "id": "B23",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "f": [
+    {
+     "code": "SLOW_QUERY",
+     "components": [
+      "plugin:alpha"
+     ],
+     "detail": "1 runs, max 200.0 ms, total 200.0 ms (100% of query time)",
+     "evidence": [
+      "select * from wp_acme_index where term like ?",
+      "a()",
+      "source mysql-slow.log:1204"
+     ],
+     "fix": "add an index or cache the result; check EXPLAIN on a copy of the database",
+     "severity": "high",
+     "sources": [
+      "mysql-slow.log:1204"
+     ]
+    }
+   ],
+   "note": "QM attribution still used when present"
+  }
+ },
+ {
+  "id": "C01",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "stdout_json": true
+  }
+ },
+ {
+  "id": "C02",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "head": "verdict: faults_found (1 findings)\n  medium CONFIG_CACHE_DROPIN_MISSING [core] W"
+  }
+ },
+ {
+  "id": "C03",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "stdout_json": true,
+   "file": true
+  }
+ },
+ {
+  "id": "C04",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "head": "comparable: True\n  /: median 800.0 -> 400.0 ms over 5 sample"
+  }
+ },
+ {
+  "id": "C05",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0
+  }
+ },
+ {
+  "id": "C06",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "rc": 3,
+   "file": true,
+   "note": "not comparable is a valid run: report written"
+  }
+ },
+ {
+  "id": "D01",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "tb": false,
+   "stderr": "invalid: --out dir: exists and is not a regular file",
+   "note": "--out is a folder"
+  }
+ },
+ {
+  "id": "D02",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "tb": false,
+   "stderr": "invalid: --out ln.json: exists and is not a regular file",
+   "note": "symlink to another file"
+  }
+ },
+ {
+  "id": "D03",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "tb": false,
+   "stderr": "invalid: --out dang.json: exists and is not a regular file",
+   "note": "dangling symlink"
+  }
+ },
+ {
+  "id": "D04",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "tb": false,
+   "stderr": "invalid: --out o.json: its folder does not exist",
+   "note": "folder missing"
+  }
+ },
+ {
+  "id": "D05",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "tb": false,
+   "stderr": "",
+   "note": "hardlink to input"
+  }
+ },
+ {
+  "id": "D06",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "tb": false,
+   "stderr": "invalid: --out lb.json: exists and is not a regular file",
+   "note": "symlink to input"
+  }
+ },
+ {
+  "id": "D07",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "tb": false,
+   "stderr": "",
+   "note": "input reached through a symlinked folder and ..: input must stay intact"
+  }
+ },
+ {
+  "id": "D08",
+  "kind": "obs",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "tb": false,
+   "stderr": "",
+   "note": "parent folder is a symlink (doc silent)"
+  }
+ },
+ {
+  "id": "D09",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "tb": false,
+   "stderr": "invalid: --out x.json: exists and is not a regular file",
+   "note": "symlinked folder holding a symlink to the input"
+  }
+ },
+ {
+  "id": "D10",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "note": "component unknown accepted"
+  }
+ },
+ {
+  "id": "D11",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "codes": [
+    "PLUGIN_FATAL"
+   ],
+   "f": [
+    {
+     "code": "PLUGIN_FATAL",
+     "components": [
+      "plugin:beta"
+     ],
+     "detail": "f_x() is declared both in plugin:beta and outside wp-content; no second plugin or theme to name",
+     "evidence": [
+      "[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Cannot redeclare f_x() (previously declared in /srv/www/lib/compat.php:4) in /srv/www/wp-content/plugins/beta/b.php on line 9"
+     ],
+     "fix": "find the other declaration (a copied library or custom code outside wp-content) and guard it with function_exists",
+     "severity": "high"
+    }
+   ]
+  }
+ },
+ {
+  "id": "D11b",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "codes": [
+    "PLUGIN_FATAL"
+   ],
+   "f": [
+    {
+     "code": "PLUGIN_FATAL",
+     "components": [
+      "plugin:beta"
+     ],
+     "detail": "f_x() is declared both in plugin:beta and outside wp-content; no second plugin or theme to name",
+     "evidence": [
+      "[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Cannot redeclare f_x() (previously declared in /srv/www/wp-content/plugins/beta/b.php:4) in /srv/www/lib/compat.php on line 9"
+     ],
+     "fix": "find the other declaration (a copied library or custom code outside wp-content) and guard it with function_exists",
+     "severity": "high"
+    }
+   ]
+  }
+ },
+ {
+  "id": "D12",
+  "kind": "obs",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "findings": [
+    {
+     "code": "PLUGIN_FATAL",
+     "components": [
+      "unknown"
+     ],
+     "detail": "f_x() declared twice inside unknown (two copies loaded?)",
+     "evidence": [
+      "[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Cannot redeclare f_x() (previously declared in /srv/www/lib/a.php:4) in /srv/www/lib/b.php on line 9"
+     ],
+     "fix": "remove the duplicate copy of the plugin, then reinstall it once",
+     "severity": "high"
+    }
+   ],
+   "note": "both declarers outside wp-content"
+  }
+ },
+ {
+  "id": "D13",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "f": [
+    {
+     "code": "PLUGIN_FATAL",
+     "components": [
+      "theme:t1"
+     ],
+     "detail": "f_x() is declared both in theme:t1 and outside wp-content; no second plugin or theme to name",
+     "evidence": [
+      "[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Cannot redeclare f_x() (previously declared in /srv/www/wp-content/themes/t1/functions.php:4) in /srv/www/lib/b.php on line 9"
+     ],
+     "fix": "find the other declaration (a copied library or custom code outside wp-content) and guard it with function_exists",
+     "severity": "high"
+    }
+   ],
+   "note": "theme vs outside"
+  }
+ }
+]

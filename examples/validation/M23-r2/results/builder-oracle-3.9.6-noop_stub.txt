@@ -1,0 +1,44 @@
+PASS o1 clean control: healthy bundle has no findings and states that no WordPress was run
+FAIL o2 PHP fatal redeclare (both PHP spellings) and class clash localize the plugins involved
+     - redeclare between blue-gallery and blue-seo (Cannot redeclare {f}() (...): exit 0, []
+     - redeclare between blue-gallery and blue-seo (Cannot redeclare functio...): exit 0, []
+     - class already in use in blue-seo: []
+FAIL o3 bisect runs: a unique pair is a conflict, a lone culprit is not, ambiguity is reported unresolved, all-pass is clean
+     - bisect pinning blue-forms+blue-gallery: []
+     - blue-seo fails alone: must be blamed alone, not as a conflict: []
+     - ambiguous bisect: a failure must be reported without naming one culprit: exit 0, []
+FAIL o4 a slow query is localized to the component that ran it; the threshold is respected; fast queries stay clean
+     - one slow query from nova-cart: []
+FAIL o5 an N+1 loop (same query shape from one caller) is localized; a few repeats are not flagged
+     - 30 per-item lookups from opal-cache: []
+FAIL o6 each configuration fault injected alone gives exactly its code; valid look-alikes stay clean; memory exhaustion is the limit, not the allocating plugin
+     - CONFIG_DEBUG_DISPLAY injected alone: exit 0, codes []
+     - CONFIG_SAVEQUERIES injected alone: exit 0, codes []
+     - CONFIG_CACHE_DROPIN_MISSING injected alone: exit 0, codes []
+     - CONFIG_CACHE_DISABLED injected alone: exit 0, codes []
+     - CONFIG_CRON_NOT_RUNNING injected alone: exit 0, codes []
+     - CONFIG_AUTOLOAD_BLOAT injected alone: exit 0, codes []
+FAIL o7 same measurements: speedup claimed from the samples' own medians; overlapping ranges claim nothing
+     - per-URL results missing: []
+     - overlapping before and after ranges were claimed as a speedup
+FAIL o8 different sample counts, cache state, stack, URLs, environment or too few samples: not comparable, no claim
+     - fewer samples: exit 0, claimed True
+     - cold cache: exit 0, claimed True
+     - other PHP: exit 0, claimed True
+     - other URLs: exit 0, claimed True
+     - other environment: exit 0, claimed True
+     - 3 samples per URL: exit 0, a speedup needs at least 5
+FAIL o9 invalid bundles exit 2 and leave the previous report intact; --out onto the input, a symlink or a missing folder refused; next good run recovers; --json with --out prints JSON
+     - oracle error: FileNotFoundError: [Errno 2] No such file or directory: '<TMPDIR>/g23-oracle-nsti1irl/report.json'
+PASS o10 wp_config secret values (DB_PASSWORD, AUTH_KEY) never appear in any output
+FAIL o11 scale: 3000 requests and about 27000 queries in budget; one slow query still localized; request order irrelevant
+     - scale: slow query from opal-forms among 27000 fast ones: []
+FAIL o12 unseen generated bundles (random plugins, random mix of faults) give exactly the injected fault codes
+     - unseen trial 0: codes [], expected ['PLUGIN_CONFLICT']
+     - unseen trial 0: exit 0
+     - unseen trial 1: codes [], expected ['CONFIG_AUTOLOAD_BLOAT', 'CONFIG_DEBUG_DISPLAY', 'CONFIG_MEMORY_LIMIT', 'PLUGIN_CONFLICT']
+     - unseen trial 1: exit 0
+     - unseen trial 2: codes [], expected ['CONFIG_CACHE_DROPIN_MISSING']
+     - unseen trial 2: exit 0
+scale: {'requests': 3000, 'queries': 27060, 'seconds': 0.04}
+2/12 checks passed

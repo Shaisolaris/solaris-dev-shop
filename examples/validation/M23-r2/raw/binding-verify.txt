@@ -1,0 +1,14 @@
+# binding check 2026-10-18 22:32:39 PDT
+parent d6be00e9fcfb1b15f047df096a27073e4b2b8e42
+diff r1..r2 1d33737d1c202aada2e41fd84071b15236ab3b9e7ebc24e89b0707ed6f61443d
+G23-r2.patch 1d33737d1c202aada2e41fd84071b15236ab3b9e7ebc24e89b0707ed6f61443d
+identical: yes
+ .../specialized/wordpress-master/learnings.md      |   1 +
+ .../wordpress-master/wp-trace-diagnosis.md         |  24 ++-
+ .../specialized/wordpress-master/wp_trace_diag.py  |  90 ++++++++---
+ examples/capabilities/G23/README.md                |   9 +-
+ examples/capabilities/G23/wp_oracle.py             |  33 +++-
+ tests/test_g23_capability.py                       | 170 ++++++++++++++++++++-
+ 6 files changed, 296 insertions(+), 31 deletions(-)
+manifest:   23 OK 
+manifest set == diff set: yes

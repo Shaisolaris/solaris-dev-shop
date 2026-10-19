@@ -1,0 +1,16 @@
+K1_conflict_redeclare                  core        PASS
+K2_slow_query_custom_table             core        FAIL
+K3_config_memory_limit                 core        FAIL
+K4_config_wp_cache_without_dropin      core        PASS
+K5_slow_query_theme_qm                 core        FAIL
+C0_control_clean                       core        PASS
+C1_control_cache_ok                    core        PASS
+X1_cache_masks_conflict                adversarial PASS
+X2_speedup_not_comparable              adversarial PASS
+X3_speedup_comparable                  adversarial FAIL
+X4_slug_substring_trap                 adversarial FAIL
+X5_historical_fatal_removed_plugin     adversarial PASS
+X6_malformed_inputs                    adversarial PASS
+X7_no_runtime_data                     adversarial PASS
+R1_no_crash_all_bundles                core        PASS
+core 5/8  adversarial findings ['X3_speedup_comparable', 'X4_slug_substring_trap']  inconclusive []  verdict_core FAIL

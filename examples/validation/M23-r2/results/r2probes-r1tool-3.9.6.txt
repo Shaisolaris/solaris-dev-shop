@@ -1,0 +1,60 @@
+A01  doc   FAIL  {"f": [{"code": "CONFIG_MEMORY_LIMIT", "components": ["plugin:alpha"], "detail": "PHP ran out of memory at 32 MiB (1 log lines); last allocation in plugin:alpha", "evidence": ["[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 20480 bytes
+A02  doc   FAIL  {"detail": "PHP ran out of memory at 32 MiB (1 log lines); last allocation in plugin:alpha", "ev": ["[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 20480 bytes) in /srv/www/wp-content/plugins/alpha/r.php on line 3"]}
+A03  doc   FAIL  {"detail": "PHP ran out of memory at 1024 MiB (1 log lines); last allocation in plugin:alpha", "note": "1024M equals 1 GiB died-at"}
+A03b doc   PASS  {"detail": "PHP ran out of memory at 1024 MiB (1 log lines); last allocation in plugin:alpha"}
+A04  doc   FAIL  {"detail": "PHP ran out of memory at 32 MiB (1 log lines); last allocation in plugin:alpha", "note": "lowercase m, PHP shorthand is case-insensitive"}
+A05  doc   FAIL  {"detail": "PHP ran out of memory at 32 MiB (1 log lines); last allocation in plugin:alpha", "note": "died above the configured limit: must not claim the PHP cap is lower"}
+A06  doc   FAIL  {"detail": "PHP ran out of memory at 32 MiB (1 log lines); last allocation in plugin:alpha"}
+A07  obs   OBS  {"rc": 1, "detail": "PHP ran out of memory at 32 MiB (1 log lines); last allocation in plugin:alpha", "note": "-1 is PHP's unlimited"}
+A07b obs   OBS  {"rc": 1, "tb": false, "detail": "PHP ran out of memory at 32 MiB (1 log lines); last allocation in plugin:alpha", "note": "JSON int -1"}
+A08  obs   OBS  {"rc": 1, "detail": "PHP ran out of memory at 32 MiB (1 log lines); last allocation in plugin:alpha"}
+A09  obs   OBS  {"rc": 1, "detail": "PHP ran out of memory at 32 MiB (1 log lines); last allocation in plugin:alpha", "note": "JSON int bytes"}
+A10  doc   PASS  {"rc": 1, "detail": "PHP ran out of memory at 32 MiB (1 log lines); last allocation in plugin:alpha", "note": "not a size: still a finding, no crash"}
+A11  doc   FAIL  {"f": [{"code": "CONFIG_MEMORY_LIMIT", "components": ["plugin:alpha"], "detail": "PHP ran out of memory at 32 MiB (2 log lines); last allocation in plugin:alpha", "evidence": ["[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 20480 bytes
+A12  doc   PASS  {"f": [{"code": "CONFIG_MEMORY_LIMIT", "components": ["core"], "detail": "peak 95 MiB on / is 95% of WP_MEMORY_LIMIT 100M", "evidence": ["WP_MEMORY_LIMIT=100M"], "fix": "find the request's memory use first; raise the limit only with headroom evidence", "severity": "medium"}], "note": "peak-90% path:
+A13  doc   PASS  {"ev": ["[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 20480 bytes) in /srv/www/wp-content/plugins/alpha/r.php on line 3"], "note": "line's file still reported as where memory ran out"}
+B01  doc   FAIL  {"f": []}
+B02  doc   FAIL  {"detail": [], "comp": [], "note": "wp_acme_ table in SQL must not become plugin:acme"}
+B03  doc   FAIL  {"src": [], "note": "evidence leads with the slowest run"}
+B03b doc   FAIL  {"src": [], "note": "evidence leads with the slowest run"}
+B04  doc   FAIL  {"n": []}
+B05  doc   FAIL  {"rc": 2, "f": [], "note": "source_file without a line is allowed (both optional)"}
+B06  doc   PASS  {"case": "B06_line_no_file", "rc": 2, "tb": false, "stderr": "invalid: requests[0].queries[0]: unknown field 'source_line'"}
+B07  claim PASS  {"case": "B07_newline", "rc": 2, "tb": false, "stderr": "invalid: requests[0].queries[0]: unknown field 'source_file'"}
+B08  claim PASS  {"case": "B08_257", "rc": 2, "tb": false, "stderr": "invalid: requests[0].queries[0]: unknown field 'source_file'"}
+B09  claim PASS  {"case": "B09_line0", "rc": 2, "tb": false, "stderr": "invalid: requests[0].queries[0]: unknown field 'source_file'"}
+B10  claim PASS  {"case": "B10_line_1e9p1", "rc": 2, "tb": false, "stderr": "invalid: requests[0].queries[0]: unknown field 'source_file'"}
+B11  claim PASS  {"case": "B11_line_str", "rc": 2, "tb": false, "stderr": "invalid: requests[0].queries[0]: unknown field 'source_file'"}
+B12  claim PASS  {"case": "B12_empty_file", "rc": 2, "tb": false, "stderr": "invalid: requests[0].queries[0]: unknown field 'source_file'"}
+B13  claim PASS  {"case": "B13_file_num", "rc": 2, "tb": false, "stderr": "invalid: requests[0].queries[0]: unknown field 'source_file'"}
+B14  claim PASS  {"case": "B14_line_nan_bool", "rc": 2, "tb": false, "stderr": "invalid: requests[0].queries[0]: unknown field 'source_file'"}
+B15  claim FAIL  {"case": "B15_256", "rc": 2}
+B16  claim FAIL  {"case": "B16_line_1e9", "rc": 2}
+B17  claim FAIL  {"case": "B17_line_1", "rc": 2}
+B18  obs   OBS  {"rc": 2, "sources": [], "note": "non-integer line"}
+B19  obs   OBS  {"detail": ["1 runs, max 200.0 ms, total 200.0 ms (100% of query time)"], "note": "unknown component with a caller"}
+B20  doc   FAIL  {"f": [], "note": "REPEATED_QUERY keeps source"}
+B21  claim FAIL  {"out": []}
+B22  claim PASS  {"rc": 2}
+B23  doc   FAIL  {"f": [], "note": "QM attribution still used when present"}
+C01  doc   FAIL  {"rc": 1, "stdout_json": false}
+C02  doc   PASS  {"rc": 1, "head": "verdict: faults_found (1 findings)\n  medium CONFIG_CACHE_DROPIN_MISSING [core] W"}
+C03  doc   FAIL  {"rc": 0, "stdout_json": false, "file": true}
+C04  doc   PASS  {"rc": 0, "head": "comparable: True\n  /: median 800.0 -> 400.0 ms over 5 sample"}
+C05  doc   PASS  {"rc": 2}
+C06  doc   FAIL  {"rc": 3, "file": true, "note": "not comparable is a valid run: report written"}
+D01  doc   PASS  {"rc": 2, "tb": false, "stderr": "invalid: --out dir: exists and is not a regular file", "note": "--out is a folder"}
+D02  doc   PASS  {"rc": 2, "tb": false, "stderr": "invalid: --out ln.json: exists and is not a regular file", "note": "symlink to another file"}
+D03  doc   PASS  {"rc": 2, "tb": false, "stderr": "invalid: --out dang.json: exists and is not a regular file", "note": "dangling symlink"}
+D04  doc   PASS  {"rc": 2, "tb": false, "stderr": "invalid: --out o.json: its folder does not exist", "note": "folder missing"}
+D05  doc   PASS  {"rc": 2, "tb": false, "stderr": "invalid: --out hl.json: would overwrite an input", "note": "hardlink to input"}
+D06  doc   PASS  {"rc": 2, "tb": false, "stderr": "invalid: --out lb.json: exists and is not a regular file", "note": "symlink to input"}
+D07  doc   PASS  {"rc": 2, "tb": false, "stderr": "invalid: --out b.json: would overwrite an input", "note": "input reached through a symlinked folder and ..: input must stay intact"}
+D08  obs   OBS  {"rc": 1, "tb": false, "stderr": "", "note": "parent folder is a symlink (doc silent)"}
+D09  doc   PASS  {"rc": 2, "tb": false, "stderr": "invalid: --out x.json: exists and is not a regular file", "note": "symlinked folder holding a symlink to the input"}
+D10  doc   PASS  {"rc": 1, "note": "component unknown accepted"}
+D11  doc   FAIL  {"codes": ["PLUGIN_FATAL"], "f": [{"code": "PLUGIN_FATAL", "components": ["plugin:beta"], "detail": "f_x() declared twice inside plugin:beta (two copies loaded?)", "evidence": ["[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Cannot redeclare f_x() (previously declared in /srv/www/lib/compat.php:4) in 
+D11b doc   FAIL  {"codes": ["PLUGIN_FATAL"], "f": [{"code": "PLUGIN_FATAL", "components": ["unknown"], "detail": "f_x() declared twice inside unknown (two copies loaded?)", "evidence": ["[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Cannot redeclare f_x() (previously declared in /srv/www/wp-content/plugins/beta/b.php
+D12  obs   OBS  {"rc": 1, "findings": [{"code": "PLUGIN_FATAL", "components": ["unknown"], "detail": "f_x() declared twice inside unknown (two copies loaded?)", "evidence": ["[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Cannot redeclare f_x() (previously declared in /srv/www/lib/a.php:4) in /srv/www/lib/b.php on li
+D13  doc   FAIL  {"f": [{"code": "PLUGIN_FATAL", "components": ["unknown"], "detail": "f_x() declared twice inside unknown (two copies loaded?)", "evidence": ["[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Cannot redeclare f_x() (previously declared in /srv/www/wp-content/themes/t1/functions.php:4) in /srv/www/lib/b.
+TOTAL 26/51 scored (doc 17/38, claim 9/13), obs 8

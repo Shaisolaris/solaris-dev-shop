@@ -1,0 +1,2 @@
+r2_slowest_ge DIFFERENT {"base": [["select * from wp_x where a = ?", "source A.log:1", "source B.log:2"]], "mutant": [["select * from wp_x where a = ?", "source B.log:2", "source A.log:1"]]}
+r2_text_more_6 DIFFERENT {"base": ["sources: s.log:1, s.log:2, s.log:3, s.log:4, s.log:5 and 1 more"], "mutant": ["sources: s.log:1, s.log:2, s.log:3, s.log:4, s.log:5"]}

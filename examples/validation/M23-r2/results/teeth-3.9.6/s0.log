@@ -1,0 +1,16 @@
+{"mutant": "min_samples_4", "probes": ["P06"], "prep": [], "bt": true, "bo": false}
+{"mutant": "bool_as_number", "probes": ["S05", "r2:B14"], "prep": [], "bt": true, "bo": true}
+{"mutant": "bisect_single_inverted", "probes": ["N04", "N05", "N06"], "prep": [], "bt": true, "bo": true}
+{"mutant": "hook_gt", "probes": ["N13"], "prep": [], "bt": true, "bo": false}
+{"mutant": "mem_warn_95", "probes": ["N16"], "prep": [], "bt": true, "bo": false}
+{"mutant": "cmp_no_measurement", "probes": ["P02", "P04", "P13", "P14", "P16"], "prep": [], "bt": true, "bo": true}
+{"mutant": "cmp_sample_count", "probes": ["P07"], "prep": [], "bt": true, "bo": true}
+{"mutant": "cmp_claim_any", "probes": ["P09"], "prep": [], "bt": true, "bo": true}
+{"mutant": "component_no_unknown", "probes": ["r2:B19", "r2:D10"], "prep": [], "bt": true, "bo": false}
+{"mutant": "r2_mem_comp_where", "probes": ["N21", "r2:A01", "r2:A02", "r2:A05", "r2:A06", "r2:A11"], "prep": [], "bt": true, "bo": true}
+{"mutant": "r2_mem_missing_msg", "probes": ["r2:A06"], "prep": [], "bt": true, "bo": false}
+{"mutant": "r2_src_257", "probes": ["r2:B08"], "prep": [], "bt": false, "bo": false}
+{"mutant": "r2_slowest_ge", "probes": [], "prep": [], "bt": false, "bo": false}
+{"mutant": "r2_src_ev_drop", "probes": ["r2:B01", "r2:B03", "r2:B03b"], "prep": [], "bt": true, "bo": false}
+{"mutant": "r2_text_more_6", "probes": [], "prep": [], "bt": false, "bo": false}
+DONE

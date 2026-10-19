@@ -1,0 +1,730 @@
+[
+ {
+  "id": "N01",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "codes": [
+    "PLUGIN_CONFLICT"
+   ]
+  }
+ },
+ {
+  "id": "N02",
+  "result": "PASS",
+  "detail": {
+   "codes": [
+    "PLUGIN_FATAL"
+   ]
+  }
+ },
+ {
+  "id": "N03",
+  "result": "PASS",
+  "detail": {
+   "codes": [
+    "PLUGIN_CONFLICT"
+   ],
+   "c": [
+    [
+     "plugin:beta"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "N04",
+  "result": "PASS",
+  "detail": {
+   "codes": [
+    "PLUGIN_CONFLICT"
+   ],
+   "c": [
+    [
+     "plugin:alpha",
+     "plugin:beta"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "N05",
+  "result": "PASS",
+  "detail": {
+   "codes": [
+    "PLUGIN_FAULT"
+   ],
+   "c": [
+    [
+     "plugin:gamma"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "N06",
+  "result": "PASS",
+  "detail": {
+   "codes": [
+    "PLUGIN_FAILURE_UNLOCALIZED"
+   ]
+  }
+ },
+ {
+  "id": "N07",
+  "result": "PASS",
+  "detail": {
+   "c": [
+    [
+     "plugin:acme-search",
+     "plugin:acme-search-legacy"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "N08",
+  "result": "PASS",
+  "detail": {
+   "c": [
+    [
+     "mu-plugin:ops",
+     "plugin:beta"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "N09",
+  "result": "PASS",
+  "detail": {
+   "c": [
+    [
+     "plugin:beta",
+     "theme:solaris-child"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "N10",
+  "result": "PASS",
+  "detail": {
+   "at50": [
+    "SLOW_QUERY"
+   ],
+   "at49.99": []
+  }
+ },
+ {
+  "id": "N11",
+  "result": "PASS",
+  "detail": {
+   "10": [
+    "REPEATED_QUERY"
+   ],
+   "9": [],
+   "5+5 callers": []
+  }
+ },
+ {
+  "id": "N12",
+  "result": "PASS",
+  "detail": {
+   "codes": [
+    "REPEATED_QUERY"
+   ]
+  }
+ },
+ {
+  "id": "N13",
+  "result": "PASS",
+  "detail": {
+   "100": [
+    "SLOW_HOOK_CALLBACK"
+   ],
+   "99.9": []
+  }
+ },
+ {
+  "id": "N14",
+  "result": "PASS",
+  "detail": {
+   "prod_absent": true,
+   "prod_true": true,
+   "prod_false": false,
+   "staging_absent": false
+  }
+ },
+ {
+  "id": "N15",
+  "result": "FAIL",
+  "detail": {
+   "prod": true,
+   "staging": true
+  }
+ },
+ {
+  "id": "N16",
+  "result": "PASS",
+  "detail": {
+   "90pct": true,
+   "89pct": false
+  }
+ },
+ {
+  "id": "N17",
+  "result": "PASS",
+  "detail": {
+   "on_nodropin": [
+    "CONFIG_CACHE_DROPIN_MISSING"
+   ],
+   "off_dropin": [
+    "CONFIG_CACHE_DISABLED"
+   ],
+   "absent_dropin": [
+    "CONFIG_CACHE_DISABLED"
+   ]
+  }
+ },
+ {
+  "id": "N18",
+  "result": "PASS",
+  "detail": {
+   "false": [
+    "CONFIG_CRON_NOT_RUNNING"
+   ],
+   "null": [],
+   "null_notes": [
+    "DISABLE_WP_CRON is on and the bundle does not say whether a system cron runs; cron not judged"
+   ]
+  }
+ },
+ {
+  "id": "N19",
+  "result": "PASS",
+  "detail": {
+   "800001": true,
+   "800000": false
+  }
+ },
+ {
+  "id": "N20",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "codes": []
+  }
+ },
+ {
+  "id": "N21",
+  "result": "PASS",
+  "detail": {
+   "finding": [
+    {
+     "code": "CONFIG_MEMORY_LIMIT",
+     "components": [
+      "core"
+     ],
+     "detail": "PHP ran out of memory at 32 MiB (1 log lines); that is the configured WP_MEMORY_LIMIT 32M; the last allocation was in plugin:alpha, which shows where memory ran out, not what used it",
+     "evidence": [
+      "[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 20480 bytes) in /srv/www/wp-content/plugins/alpha/r.php on line 3",
+      "WP_MEMORY_LIMIT=32M"
+     ],
+     "fix": "find what uses the memory first (a profile of the failing request); raise WP_MEMORY_LIMIT only with that evidence",
+     "severity": "high"
+    }
+   ],
+   "note": "config-rooted fault: is core/config named as a component, or only the allocating plugin"
+  }
+ },
+ {
+  "id": "N22",
+  "result": "PASS",
+  "detail": {
+   "note": "configured 256M but PHP died at 32 MiB (php memory_limit cap); is the mismatch surfaced",
+   "findings": [
+    {
+     "code": "CONFIG_MEMORY_LIMIT",
+     "components": [
+      "core"
+     ],
+     "detail": "PHP ran out of memory at 32 MiB (1 log lines); WP_MEMORY_LIMIT is 256M (256 MiB) but PHP stopped at 32 MiB: PHP's memory_limit is lower and WordPress could not raise it (php.ini or the host caps it); the last allocation was in plugin:alpha, which shows where memory ran out, not what used it",
+     "evidence": [
+      "[18-Oct-2026 10:00:00 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 20480 bytes) in /srv/www/wp-content/plugins/alpha/r.php on line 3",
+      "WP_MEMORY_LIMIT=256M"
+     ],
+     "fix": "raise PHP memory_limit (php.ini or the host's panel) to 256M, or set WP_MEMORY_LIMIT to what the host allows; then find what uses the memory",
+     "severity": "high"
+    }
+   ]
+  }
+ },
+ {
+  "id": "S01",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "invalid: b.json: unknown field 'extra_field'\n"
+  }
+ },
+ {
+  "id": "S02",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "invalid: b.json: not valid JSON (duplicate key 'site')\n"
+  }
+ },
+ {
+  "id": "S03",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "invalid: b.json: not valid JSON (NaN is not a number)\n"
+  }
+ },
+ {
+  "id": "S04",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "invalid: b.json: not valid JSON (Infinity is not a number)\n"
+  }
+ },
+ {
+  "id": "S05",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "invalid: requests[0].total_ms: needs a number from 0 to 3.6e+06\n"
+  }
+ },
+ {
+  "id": "S06",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "invalid: b.json: nested too deeply\n"
+  }
+ },
+ {
+  "id": "S07",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "invalid: requests[0].queries[0].component: component must be core, unknown, plugin:<slug>, mu-plugin:<slug> or theme:<slug>\n"
+  }
+ },
+ {
+  "id": "S08",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "invalid: b.json: not valid JSON (Expecting value: line 1 column 1 (char 0))\n"
+  }
+ },
+ {
+  "id": "S09",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "invalid: b.json: not UTF-8\n"
+  }
+ },
+ {
+  "id": "S10",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "invalid: missing.json: not a regular file\n"
+  }
+ },
+ {
+  "id": "S11",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "invalid: environment: one of production, staging, local\n"
+  }
+ },
+ {
+  "id": "S12",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "invalid: b.json: schema must be solaris.wp-trace/1\n"
+  }
+ },
+ {
+  "id": "S13",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "invalid: requests[0].queries[0].ms: needs a number from 0 to 3.6e+06\n"
+  }
+ },
+ {
+  "id": "S14",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "invalid: env: unknown field 'os'\n"
+  }
+ },
+ {
+  "id": "S15",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "stderr": "invalid: link.json: not a regular file\n"
+  }
+ },
+ {
+  "id": "E01",
+  "result": "PASS",
+  "detail": {
+   "leaked_json": [],
+   "leaked_text": [],
+   "note": "SMTP_PASS is not matched by the doc's secret list; value also placed in a SQL literal"
+  }
+ },
+ {
+  "id": "O01a",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "out_codes": [
+    "CONFIG_CACHE_DROPIN_MISSING"
+   ]
+  }
+ },
+ {
+  "id": "O01b",
+  "result": "PASS",
+  "detail": {
+   "stdout_is_json": true,
+   "stdout_head": "{\n  \"counts\": {\n    \"bisect_runs\": 0,\n    \"php_error_lines\": 0,\n    \"queries\": 0",
+   "note": "doc synopsis allows --json with --out; is stdout still JSON"
+  }
+ },
+ {
+  "id": "O02",
+  "result": "PASS",
+  "detail": {
+   "rc": 2
+  }
+ },
+ {
+  "id": "O03",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "note": "same input via another path spelling"
+  }
+ },
+ {
+  "id": "O04",
+  "result": "PASS",
+  "detail": {
+   "rc": 2
+  }
+ },
+ {
+  "id": "O05",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "traceback": false,
+   "stderr": "invalid: --out out.json: its folder does not exist\n"
+  }
+ },
+ {
+  "id": "O06",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "input_intact": true,
+   "note": "--out is a symlink to the input"
+  }
+ },
+ {
+  "id": "P01",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [
+    {
+     "median_after_ms": 400.0,
+     "median_before_ms": 800.0,
+     "ratio": 2.0,
+     "result": "faster",
+     "samples": 5,
+     "url": "/"
+    }
+   ],
+   "note": ""
+  }
+ },
+ {
+  "id": "P02",
+  "result": "PASS",
+  "detail": {
+   "rc": 3,
+   "claimed": false,
+   "why": [
+    "measurement differs: {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"probe\", \"warm_cache\": false} vs {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"probe\", \"warm_cache\": true}"
+   ],
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P03",
+  "result": "PASS",
+  "detail": {
+   "rc": 3,
+   "claimed": false,
+   "why": [
+    "env differs: {\"host\": \"probe\", \"php\": \"8.3.0\", \"wp\": \"6.6.2\"} vs {\"host\": \"probe\", \"php\": \"8.2.0\", \"wp\": \"6.6.2\"}"
+   ],
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P04",
+  "result": "PASS",
+  "detail": {
+   "rc": 3,
+   "claimed": false,
+   "why": [
+    "measurement differs: {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"probe\", \"warm_cache\": false} vs {\"concurrency\": 4, \"runs_per_url\": 5, \"tool\": \"probe\", \"warm_cache\": false}"
+   ],
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P05",
+  "result": "PASS",
+  "detail": {
+   "rc": 3,
+   "claimed": false,
+   "why": [
+    "different URL sets: only before ['/'], only after ['/shop/']"
+   ],
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P06",
+  "result": "PASS",
+  "detail": {
+   "rc": 3,
+   "claimed": false,
+   "why": [
+    "/: 4 samples, at least 5 needed"
+   ],
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P07",
+  "result": "PASS",
+  "detail": {
+   "rc": 3,
+   "claimed": false,
+   "why": [
+    "/: 5 samples before, 6 after"
+   ],
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P08",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "claimed": false,
+   "why": [],
+   "urls": [
+    {
+     "median_after_ms": 405.0,
+     "median_before_ms": 800.0,
+     "ratio": 1.975,
+     "result": "inconclusive (ranges overlap)",
+     "samples": 5,
+     "url": "/"
+    }
+   ],
+   "note": "overlap: inconclusive, no claim"
+  }
+ },
+ {
+  "id": "P09",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "claimed": false,
+   "why": [],
+   "urls": [
+    {
+     "median_after_ms": 400.0,
+     "median_before_ms": 800.0,
+     "ratio": 2.0,
+     "result": "faster",
+     "samples": 5,
+     "url": "/"
+    },
+    {
+     "median_after_ms": 800.0,
+     "median_before_ms": 800.0,
+     "ratio": 1.0,
+     "result": "inconclusive (ranges overlap)",
+     "samples": 5,
+     "url": "/a"
+    }
+   ],
+   "note": "one URL unchanged: no overall claim"
+  }
+ },
+ {
+  "id": "P10",
+  "result": "PASS",
+  "detail": {
+   "rc": 3,
+   "claimed": false,
+   "why": [
+    "site differs: \"probe-site\" vs \"other\""
+   ],
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P11",
+  "result": "PASS",
+  "detail": {
+   "rc": 3,
+   "claimed": false,
+   "why": [
+    "environment differs: \"production\" vs \"staging\""
+   ],
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P12",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "claimed": false,
+   "why": [],
+   "urls": [
+    {
+     "median_after_ms": 400.0,
+     "median_before_ms": 800.0,
+     "ratio": 2.0,
+     "result": "inconclusive (ranges overlap)",
+     "samples": 5,
+     "url": "/"
+    }
+   ],
+   "note": "max(after)=790 equals min(before)=790: not every after beats every before"
+  }
+ },
+ {
+  "id": "P13",
+  "result": "PASS",
+  "detail": {
+   "rc": 3,
+   "claimed": false,
+   "why": [
+    "measurement differs: {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"probe\", \"warm_cache\": false} vs {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"other\", \"warm_cache\": false}"
+   ],
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P14",
+  "result": "PASS",
+  "detail": {
+   "rc": 3,
+   "claimed": false,
+   "why": [
+    "measurement differs: {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"probe\", \"warm_cache\": false} vs {\"concurrency\": 1, \"runs_per_url\": 7, \"tool\": \"probe\", \"warm_cache\": false}"
+   ],
+   "urls": null,
+   "note": "declared runs_per_url differs; samples equal"
+  }
+ },
+ {
+  "id": "P15",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "claimed": true,
+   "why": [],
+   "urls": [
+    {
+     "median_after_ms": 400.0,
+     "median_before_ms": 800.0,
+     "ratio": 2.0,
+     "result": "faster",
+     "samples": 5,
+     "url": "/"
+    }
+   ],
+   "note": "source text is not in the comparability list; finding-only if refused"
+  }
+ },
+ {
+  "id": "P16",
+  "result": "PASS",
+  "detail": {
+   "rc": 3,
+   "claimed": false,
+   "why": [
+    "measurement differs: {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"probe\", \"warm_cache\": false} vs {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"probe\", \"warm_cache\": null}"
+   ],
+   "urls": null,
+   "note": "after warm_cache unknown (null) vs false: is unknown treated as the same measurement"
+  }
+ }
+]

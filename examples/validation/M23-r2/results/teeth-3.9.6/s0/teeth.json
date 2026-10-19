@@ -1,0 +1,238 @@
+[
+ {
+  "mutant": "min_samples_4",
+  "kills": {
+   "probes": [
+    "P06"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=1)",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "bool_as_number",
+  "kills": {
+   "probes": [
+    "S05",
+    "r2:B14"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=3)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "bisect_single_inverted",
+  "kills": {
+   "probes": [
+    "N04",
+    "N05",
+    "N06"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=4)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "hook_gt",
+  "kills": {
+   "probes": [
+    "N13"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=1)",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "mem_warn_95",
+  "kills": {
+   "probes": [
+    "N16"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=1)",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "cmp_no_measurement",
+  "kills": {
+   "probes": [
+    "P02",
+    "P04",
+    "P13",
+    "P14",
+    "P16"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=2)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "cmp_sample_count",
+  "kills": {
+   "probes": [
+    "P07"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=2)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "cmp_claim_any",
+  "kills": {
+   "probes": [
+    "P09"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=2)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "component_no_unknown",
+  "kills": {
+   "probes": [
+    "r2:B19",
+    "r2:D10"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (errors=1)",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "r2_mem_comp_where",
+  "kills": {
+   "probes": [
+    "N21",
+    "r2:A01",
+    "r2:A02",
+    "r2:A05",
+    "r2:A06",
+    "r2:A11"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=3)",
+   "builder_oracle": "11/12 checks passed"
+  }
+ },
+ {
+  "mutant": "r2_mem_missing_msg",
+  "kills": {
+   "probes": [
+    "r2:A06"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (errors=1)",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "r2_src_257",
+  "kills": {
+   "probes": [
+    "r2:B08"
+   ],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "r2_slowest_ge",
+  "kills": {
+   "probes": [],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "r2_src_ev_drop",
+  "kills": {
+   "probes": [
+    "r2:B01",
+    "r2:B03",
+    "r2:B03b"
+   ],
+   "prep": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "FAIL FAILED (failures=1)",
+   "builder_oracle": "12/12 checks passed"
+  }
+ },
+ {
+  "mutant": "r2_text_more_6",
+  "kills": {
+   "probes": [],
+   "prep": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  },
+  "raw": {
+   "builder_tests": "OK",
+   "builder_oracle": "12/12 checks passed"
+  }
+ }
+]

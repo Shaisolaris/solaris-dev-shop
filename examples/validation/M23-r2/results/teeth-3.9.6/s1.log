@@ -1,0 +1,15 @@
+{"mutant": "secret_re_no_key", "probes": [], "prep": [], "bt": true, "bo": false}
+{"mutant": "symlink_allowed", "probes": ["S15"], "prep": [], "bt": true, "bo": true}
+{"mutant": "bisect_pair_or", "probes": ["N04"], "prep": [], "bt": true, "bo": true}
+{"mutant": "debug_display_default_false", "probes": ["N14"], "prep": [], "bt": true, "bo": true}
+{"mutant": "cache_disabled_only_false", "probes": ["N17"], "prep": [], "bt": true, "bo": false}
+{"mutant": "cmp_no_site", "probes": ["P10", "r2:C06"], "prep": [], "bt": true, "bo": false}
+{"mutant": "cmp_min_2", "probes": ["P06"], "prep": [], "bt": true, "bo": true}
+{"mutant": "out_overwrite_input", "probes": ["O02", "O03", "r2:C05", "r2:D05", "r2:D07"], "prep": [], "bt": true, "bo": true}
+{"mutant": "secret_kept", "probes": [], "prep": [], "bt": true, "bo": false}
+{"mutant": "r2_mem_gt_ge", "probes": ["r2:A03", "r2:A03b", "r2:A04", "r2:A09"], "prep": [], "bt": true, "bo": false}
+{"mutant": "r2_size_case", "probes": ["r2:A04"], "prep": [], "bt": false, "bo": false}
+{"mutant": "r2_src_line_0", "probes": ["r2:B09"], "prep": [], "bt": true, "bo": false}
+{"mutant": "r2_slowest_first_only", "probes": ["r2:B03b"], "prep": [], "bt": true, "bo": false}
+{"mutant": "r2_json_out_text", "probes": ["O01b", "r2:C01", "r2:C03", "r2:C06"], "prep": [], "bt": true, "bo": true}
+DONE

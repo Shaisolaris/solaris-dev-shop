@@ -1,0 +1,2 @@
+{"name": "stub:reference (Grok-made, not a candidate)", "cmd": ["<UV>/python/cpython-3.11.16-macos-aarch64-none/bin/python3", "{binding_dir}/reference_diag.py", "{bundle}"], "cwd": ".",
+ "output": "stdout", "findings_path": "", "severity_field": "severity", "benign_severities": ["info", "pass", "ok", "clean", "skip"], "timeout_s": 30}

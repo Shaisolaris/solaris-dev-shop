@@ -1,0 +1,15 @@
+{"mutant": "dupes_allowed", "probes": ["S02"], "prep": [], "bt": true, "bo": true}
+{"mutant": "redeclare_same_comp", "probes": ["N02"], "prep": [], "bt": true, "bo": false}
+{"mutant": "slow_gt", "probes": ["N10"], "prep": [], "bt": true, "bo": false}
+{"mutant": "savequeries_any_env", "probes": ["N15"], "prep": [], "bt": true, "bo": true}
+{"mutant": "autoload_ge", "probes": ["N19"], "prep": [], "bt": true, "bo": false}
+{"mutant": "cmp_url_sets", "probes": ["P05"], "prep": [], "bt": true, "bo": true}
+{"mutant": "cmp_median", "probes": ["P08", "P12"], "prep": [], "bt": true, "bo": true}
+{"mutant": "out_symlink_allowed", "probes": ["r2:D02", "r2:D03"], "prep": [], "bt": true, "bo": true}
+{"mutant": "atomic_rename_EQUIV", "probes": [], "prep": [], "bt": false, "bo": false}
+{"mutant": "r2_mem_no_ev", "probes": ["r2:A02"], "prep": [], "bt": true, "bo": false}
+{"mutant": "r2_src_newline", "probes": ["r2:B07"], "prep": [], "bt": true, "bo": false}
+{"mutant": "r2_line_needs_file_off", "probes": ["r2:B06"], "prep": [], "bt": true, "bo": false}
+{"mutant": "r2_not_tied_off", "probes": ["r2:B02"], "prep": [], "bt": true, "bo": false}
+{"mutant": "r2_text_sources_off", "probes": ["N01", "N02", "N03", "N04", "N05", "N06"], "prep": ["C1_control_cache_ok", "K1_conflict_redeclare", "K4_config_wp_cache_without_dropin", "X1_cache_masks_conflict", "X2_speedup_not_comparable", "X3_speedup_comparable", "X5_historical_fatal_removed_plugin"], "bt": true, "bo": true}
+DONE

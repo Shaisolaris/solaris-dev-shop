@@ -1,0 +1,62 @@
+N01  PASS  {"rc": 1, "codes": ["PLUGIN_CONFLICT"]}
+N02  PASS  {"codes": ["PLUGIN_FATAL"]}
+N03  PASS  {"codes": ["PLUGIN_CONFLICT"], "c": [["plugin:beta"]]}
+N04  PASS  {"codes": ["PLUGIN_CONFLICT"], "c": [["plugin:alpha", "plugin:beta"]]}
+N05  PASS  {"codes": ["PLUGIN_FAULT"], "c": [["plugin:gamma"]]}
+N06  PASS  {"codes": ["PLUGIN_FAILURE_UNLOCALIZED"]}
+N07  PASS  {"c": [["plugin:acme-search", "plugin:acme-search-legacy"]]}
+N08  PASS  {"c": [["mu-plugin:ops", "plugin:beta"]]}
+N09  PASS  {"c": [["plugin:beta", "theme:solaris-child"]]}
+N10  PASS  {"at50": ["SLOW_QUERY"], "at49.99": []}
+N11  PASS  {"10": ["REPEATED_QUERY"], "9": [], "5+5 callers": []}
+N12  PASS  {"codes": ["REPEATED_QUERY"]}
+N13  PASS  {"100": ["SLOW_HOOK_CALLBACK"], "99.9": []}
+N14  PASS  {"prod_absent": true, "prod_true": true, "prod_false": false, "staging_absent": false}
+N15  PASS  {"prod": true, "staging": false}
+N16  PASS  {"90pct": true, "89pct": false}
+N17  PASS  {"on_nodropin": ["CONFIG_CACHE_DROPIN_MISSING"], "off_dropin": ["CONFIG_CACHE_DISABLED"], "absent_dropin": ["CONFIG_CACHE_DISABLED"]}
+N18  PASS  {"false": ["CONFIG_CRON_NOT_RUNNING"], "null": [], "null_notes": ["DISABLE_WP_CRON is on and the bundle does not say whether a system cron runs; cron not judged"]}
+N19  PASS  {"800001": true, "800000": false}
+N20  PASS  {"rc": 0, "codes": []}
+N21  PASS  {"finding": [{"code": "CONFIG_MEMORY_LIMIT", "components": ["core"], "detail": "PHP ran out of memory at 32 MiB (1 log lines); that is the configured WP_MEMORY_LIMIT 32M; the last allocation was in plugin:alpha, which shows where memory ran out, not what used 
+N22  PASS  {"note": "configured 256M but PHP died at 32 MiB (php memory_limit cap); is the mismatch surfaced", "findings": [{"code": "CONFIG_MEMORY_LIMIT", "components": ["core"], "detail": "PHP ran out of memory at 32 MiB (1 log lines); WP_MEMORY_LIMIT is 256M (256 MiB)
+S01  PASS  {"rc": 2, "traceback": false, "out_written": false, "stderr": "invalid: b.json: unknown field 'extra_field'\n"}
+S02  PASS  {"rc": 2, "traceback": false, "out_written": false, "stderr": "invalid: b.json: not valid JSON (duplicate key 'site')\n"}
+S03  PASS  {"rc": 2, "traceback": false, "out_written": false, "stderr": "invalid: b.json: not valid JSON (NaN is not a number)\n"}
+S04  PASS  {"rc": 2, "traceback": false, "out_written": false, "stderr": "invalid: b.json: not valid JSON (Infinity is not a number)\n"}
+S05  PASS  {"rc": 2, "traceback": false, "out_written": false, "stderr": "invalid: requests[0].total_ms: needs a number from 0 to 3.6e+06\n"}
+S06  PASS  {"rc": 2, "traceback": false, "out_written": false, "stderr": "invalid: b.json: needs an object\n"}
+S07  PASS  {"rc": 2, "traceback": false, "out_written": false, "stderr": "invalid: requests[0].queries[0].component: component must be core, unknown, plugin:<slug>, mu-plugin:<slug> or theme:<slug>\n"}
+S08  PASS  {"rc": 2, "traceback": false, "out_written": false, "stderr": "invalid: b.json: not valid JSON (Expecting value: line 1 column 1 (char 0))\n"}
+S09  PASS  {"rc": 2, "traceback": false, "out_written": false, "stderr": "invalid: b.json: not UTF-8\n"}
+S10  PASS  {"rc": 2, "traceback": false, "out_written": false, "stderr": "invalid: missing.json: not a regular file\n"}
+S11  PASS  {"rc": 2, "traceback": false, "out_written": false, "stderr": "invalid: environment: one of production, staging, local\n"}
+S12  PASS  {"rc": 2, "traceback": false, "out_written": false, "stderr": "invalid: b.json: schema must be solaris.wp-trace/1\n"}
+S13  PASS  {"rc": 2, "traceback": false, "out_written": false, "stderr": "invalid: requests[0].queries[0].ms: needs a number from 0 to 3.6e+06\n"}
+S14  PASS  {"rc": 2, "traceback": false, "out_written": false, "stderr": "invalid: env: unknown field 'os'\n"}
+S15  PASS  {"rc": 2, "stderr": "invalid: link.json: not a regular file\n"}
+E01  PASS  {"leaked_json": [], "leaked_text": [], "note": "SMTP_PASS is not matched by the doc's secret list; value also placed in a SQL literal"}
+O01a PASS  {"rc": 1, "out_codes": ["CONFIG_CACHE_DROPIN_MISSING"]}
+O01b PASS  {"stdout_is_json": true, "stdout_head": "{\n  \"counts\": {\n    \"bisect_runs\": 0,\n    \"php_error_lines\": 0,\n    \"queries\": 0", "note": "doc synopsis allows --json with --out; is stdout still JSON"}
+O02  PASS  {"rc": 2}
+O03  PASS  {"rc": 2, "note": "same input via another path spelling"}
+O04  PASS  {"rc": 2}
+O05  PASS  {"rc": 2, "traceback": false, "stderr": "invalid: --out out.json: its folder does not exist\n"}
+O06  PASS  {"rc": 2, "input_intact": true, "note": "--out is a symlink to the input"}
+P01  PASS  {"rc": 0, "claimed": true, "why": [], "urls": [{"median_after_ms": 400.0, "median_before_ms": 800.0, "ratio": 2.0, "result": "faster", "samples": 5, "url": "/"}], "note": ""}
+P02  PASS  {"rc": 3, "claimed": false, "why": ["measurement differs: {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"probe\", \"warm_cache\": false} vs {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"probe\", \"warm_cache\": true}"], "urls": null, "note": ""}
+P03  PASS  {"rc": 3, "claimed": false, "why": ["env differs: {\"host\": \"probe\", \"php\": \"8.3.0\", \"wp\": \"6.6.2\"} vs {\"host\": \"probe\", \"php\": \"8.2.0\", \"wp\": \"6.6.2\"}"], "urls": null, "note": ""}
+P04  PASS  {"rc": 3, "claimed": false, "why": ["measurement differs: {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"probe\", \"warm_cache\": false} vs {\"concurrency\": 4, \"runs_per_url\": 5, \"tool\": \"probe\", \"warm_cache\": false}"], "urls": null, "note": ""
+P05  PASS  {"rc": 3, "claimed": false, "why": ["different URL sets: only before ['/'], only after ['/shop/']"], "urls": null, "note": ""}
+P06  PASS  {"rc": 3, "claimed": false, "why": ["/: 4 samples, at least 5 needed"], "urls": null, "note": ""}
+P07  PASS  {"rc": 3, "claimed": false, "why": ["/: 5 samples before, 6 after"], "urls": null, "note": ""}
+P08  PASS  {"rc": 0, "claimed": false, "why": [], "urls": [{"median_after_ms": 405.0, "median_before_ms": 800.0, "ratio": 1.975, "result": "inconclusive (ranges overlap)", "samples": 5, "url": "/"}], "note": "overlap: inconclusive, no claim"}
+P09  PASS  {"rc": 0, "claimed": false, "why": [], "urls": [{"median_after_ms": 400.0, "median_before_ms": 800.0, "ratio": 2.0, "result": "faster", "samples": 5, "url": "/"}, {"median_after_ms": 800.0, "median_before_ms": 800.0, "ratio": 1.0, "result": "inconclusive (rang
+P10  PASS  {"rc": 3, "claimed": false, "why": ["site differs: \"probe-site\" vs \"other\""], "urls": null, "note": ""}
+P11  PASS  {"rc": 3, "claimed": false, "why": ["environment differs: \"production\" vs \"staging\""], "urls": null, "note": ""}
+P12  PASS  {"rc": 0, "claimed": false, "why": [], "urls": [{"median_after_ms": 400.0, "median_before_ms": 800.0, "ratio": 2.0, "result": "inconclusive (ranges overlap)", "samples": 5, "url": "/"}], "note": "max(after)=790 equals min(before)=790: not every after beats eve
+P13  PASS  {"rc": 3, "claimed": false, "why": ["measurement differs: {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"probe\", \"warm_cache\": false} vs {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"other\", \"warm_cache\": false}"], "urls": null, "note": ""
+P14  PASS  {"rc": 3, "claimed": false, "why": ["measurement differs: {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"probe\", \"warm_cache\": false} vs {\"concurrency\": 1, \"runs_per_url\": 7, \"tool\": \"probe\", \"warm_cache\": false}"], "urls": null, "note": "d
+P15  PASS  {"rc": 0, "claimed": true, "why": [], "urls": [{"median_after_ms": 400.0, "median_before_ms": 800.0, "ratio": 2.0, "result": "faster", "samples": 5, "url": "/"}], "note": "source text is not in the comparability list; finding-only if refused"}
+P16  PASS  {"rc": 3, "claimed": false, "why": ["measurement differs: {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"probe\", \"warm_cache\": false} vs {\"concurrency\": 1, \"runs_per_url\": 5, \"tool\": \"probe\", \"warm_cache\": null}"], "urls": null, "note": "af
+TOTAL 61/61

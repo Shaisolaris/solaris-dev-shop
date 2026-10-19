@@ -1,0 +1,567 @@
+[
+ {
+  "id": "N01",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "codes": []
+  }
+ },
+ {
+  "id": "N02",
+  "result": "FAIL",
+  "detail": {
+   "codes": []
+  }
+ },
+ {
+  "id": "N03",
+  "result": "FAIL",
+  "detail": {
+   "codes": [],
+   "c": []
+  }
+ },
+ {
+  "id": "N04",
+  "result": "FAIL",
+  "detail": {
+   "codes": [],
+   "c": []
+  }
+ },
+ {
+  "id": "N05",
+  "result": "FAIL",
+  "detail": {
+   "codes": [],
+   "c": []
+  }
+ },
+ {
+  "id": "N06",
+  "result": "FAIL",
+  "detail": {
+   "codes": []
+  }
+ },
+ {
+  "id": "N07",
+  "result": "FAIL",
+  "detail": {
+   "c": []
+  }
+ },
+ {
+  "id": "N08",
+  "result": "FAIL",
+  "detail": {
+   "c": []
+  }
+ },
+ {
+  "id": "N09",
+  "result": "FAIL",
+  "detail": {
+   "c": []
+  }
+ },
+ {
+  "id": "N10",
+  "result": "FAIL",
+  "detail": {
+   "at50": [],
+   "at49.99": []
+  }
+ },
+ {
+  "id": "N11",
+  "result": "FAIL",
+  "detail": {
+   "10": [],
+   "9": [],
+   "5+5 callers": []
+  }
+ },
+ {
+  "id": "N12",
+  "result": "FAIL",
+  "detail": {
+   "codes": []
+  }
+ },
+ {
+  "id": "N13",
+  "result": "FAIL",
+  "detail": {
+   "100": [],
+   "99.9": []
+  }
+ },
+ {
+  "id": "N14",
+  "result": "FAIL",
+  "detail": {
+   "prod_absent": false,
+   "prod_true": false,
+   "prod_false": false,
+   "staging_absent": false
+  }
+ },
+ {
+  "id": "N15",
+  "result": "FAIL",
+  "detail": {
+   "prod": false,
+   "staging": false
+  }
+ },
+ {
+  "id": "N16",
+  "result": "FAIL",
+  "detail": {
+   "90pct": false,
+   "89pct": false
+  }
+ },
+ {
+  "id": "N17",
+  "result": "FAIL",
+  "detail": {
+   "on_nodropin": [],
+   "off_dropin": [],
+   "absent_dropin": []
+  }
+ },
+ {
+  "id": "N18",
+  "result": "FAIL",
+  "detail": {
+   "false": [],
+   "null": [],
+   "null_notes": null
+  }
+ },
+ {
+  "id": "N19",
+  "result": "FAIL",
+  "detail": {
+   "800001": false,
+   "800000": false
+  }
+ },
+ {
+  "id": "N20",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "codes": []
+  }
+ },
+ {
+  "id": "N21",
+  "result": "FAIL",
+  "detail": {
+   "finding": [],
+   "note": "config-rooted fault: is core/config named as a component, or only the allocating plugin"
+  }
+ },
+ {
+  "id": "N22",
+  "result": "FAIL",
+  "detail": {
+   "note": "configured 256M but PHP died at 32 MiB (php memory_limit cap); is the mismatch surfaced",
+   "findings": null
+  }
+ },
+ {
+  "id": "S01",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "ized/wordpress-master/wp_trace_diag.py\", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax\n"
+  }
+ },
+ {
+  "id": "S02",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "ized/wordpress-master/wp_trace_diag.py\", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax\n"
+  }
+ },
+ {
+  "id": "S03",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "ized/wordpress-master/wp_trace_diag.py\", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax\n"
+  }
+ },
+ {
+  "id": "S04",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "ized/wordpress-master/wp_trace_diag.py\", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax\n"
+  }
+ },
+ {
+  "id": "S05",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "ized/wordpress-master/wp_trace_diag.py\", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax\n"
+  }
+ },
+ {
+  "id": "S06",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "ized/wordpress-master/wp_trace_diag.py\", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax\n"
+  }
+ },
+ {
+  "id": "S07",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "ized/wordpress-master/wp_trace_diag.py\", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax\n"
+  }
+ },
+ {
+  "id": "S08",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "ized/wordpress-master/wp_trace_diag.py\", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax\n"
+  }
+ },
+ {
+  "id": "S09",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "ized/wordpress-master/wp_trace_diag.py\", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax\n"
+  }
+ },
+ {
+  "id": "S10",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "ized/wordpress-master/wp_trace_diag.py\", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax\n"
+  }
+ },
+ {
+  "id": "S11",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "ized/wordpress-master/wp_trace_diag.py\", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax\n"
+  }
+ },
+ {
+  "id": "S12",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "ized/wordpress-master/wp_trace_diag.py\", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax\n"
+  }
+ },
+ {
+  "id": "S13",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "ized/wordpress-master/wp_trace_diag.py\", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax\n"
+  }
+ },
+ {
+  "id": "S14",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "traceback": false,
+   "out_written": false,
+   "stderr": "ized/wordpress-master/wp_trace_diag.py\", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax\n"
+  }
+ },
+ {
+  "id": "S15",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "stderr": "ized/wordpress-master/wp_trace_diag.py\", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax\n"
+  }
+ },
+ {
+  "id": "E01",
+  "result": "PASS",
+  "detail": {
+   "leaked_json": [],
+   "leaked_text": [],
+   "note": "SMTP_PASS is not matched by the doc's secret list; value also placed in a SQL literal"
+  }
+ },
+ {
+  "id": "O01a",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "out_codes": []
+  }
+ },
+ {
+  "id": "O01b",
+  "result": "FAIL",
+  "detail": {
+   "stdout_is_json": false,
+   "stdout_head": "",
+   "note": "doc synopsis allows --json with --out; is stdout still JSON"
+  }
+ },
+ {
+  "id": "O02",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1
+  }
+ },
+ {
+  "id": "O03",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "note": "same input via another path spelling"
+  }
+ },
+ {
+  "id": "O04",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1
+  }
+ },
+ {
+  "id": "O05",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "traceback": false,
+   "stderr": "ized/wordpress-master/wp_trace_diag.py\", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax\n"
+  }
+ },
+ {
+  "id": "O06",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "input_intact": true,
+   "note": "--out is a symlink to the input"
+  }
+ },
+ {
+  "id": "P01",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "claimed": null,
+   "why": null,
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P02",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "claimed": null,
+   "why": null,
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P03",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "claimed": null,
+   "why": null,
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P04",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "claimed": null,
+   "why": null,
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P05",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "claimed": null,
+   "why": null,
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P06",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "claimed": null,
+   "why": null,
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P07",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "claimed": null,
+   "why": null,
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P08",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "claimed": null,
+   "why": null,
+   "urls": null,
+   "note": "overlap: inconclusive, no claim"
+  }
+ },
+ {
+  "id": "P09",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "claimed": null,
+   "why": null,
+   "urls": null,
+   "note": "one URL unchanged: no overall claim"
+  }
+ },
+ {
+  "id": "P10",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "claimed": null,
+   "why": null,
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P11",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "claimed": null,
+   "why": null,
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P12",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "claimed": null,
+   "why": null,
+   "urls": null,
+   "note": "max(after)=790 equals min(before)=790: not every after beats every before"
+  }
+ },
+ {
+  "id": "P13",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "claimed": null,
+   "why": null,
+   "urls": null,
+   "note": ""
+  }
+ },
+ {
+  "id": "P14",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "claimed": null,
+   "why": null,
+   "urls": null,
+   "note": "declared runs_per_url differs; samples equal"
+  }
+ },
+ {
+  "id": "P15",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "claimed": null,
+   "why": null,
+   "urls": null,
+   "note": "source text is not in the comparability list; finding-only if refused"
+  }
+ },
+ {
+  "id": "P16",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "claimed": null,
+   "why": null,
+   "urls": null,
+   "note": "after warm_cache unknown (null) vs false: is unknown treated as the same measurement"
+  }
+ }
+]

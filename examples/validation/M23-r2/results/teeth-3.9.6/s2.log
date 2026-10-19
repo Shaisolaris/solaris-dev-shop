@@ -1,0 +1,15 @@
+{"mutant": "nan_allowed", "probes": [], "prep": [], "bt": false, "bo": false}
+{"mutant": "env_unchecked", "probes": ["S11"], "prep": [], "bt": true, "bo": false}
+{"mutant": "repeat_gt", "probes": ["N11", "N12"], "prep": [], "bt": true, "bo": false}
+{"mutant": "debug_any_env", "probes": ["N14"], "prep": [], "bt": true, "bo": false}
+{"mutant": "cron_null_judged", "probes": ["N18"], "prep": [], "bt": true, "bo": false}
+{"mutant": "cmp_no_env", "probes": ["P03"], "prep": [], "bt": true, "bo": true}
+{"mutant": "cmp_le", "probes": ["P12"], "prep": [], "bt": true, "bo": false}
+{"mutant": "out_folder_unchecked", "probes": ["O05", "r2:D04"], "prep": [], "bt": true, "bo": true}
+{"mutant": "pair_skip_unknown_side", "probes": ["r2:D11", "r2:D11b", "r2:D13"], "prep": [], "bt": true, "bo": false}
+{"mutant": "r2_mem_eq_off", "probes": ["r2:A03", "r2:A04", "r2:A09"], "prep": [], "bt": true, "bo": false}
+{"mutant": "r2_size_G_1000", "probes": [], "prep": [], "bt": true, "bo": false}
+{"mutant": "r2_src_line_1e10", "probes": ["r2:B10"], "prep": [], "bt": false, "bo": false}
+{"mutant": "r2_sources_cap_10", "probes": ["r2:B04"], "prep": [], "bt": false, "bo": false}
+{"mutant": "r2_outside_other_a", "probes": ["r2:D11"], "prep": [], "bt": true, "bo": false}
+DONE

@@ -1,0 +1,572 @@
+[
+ {
+  "id": "A01",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "f": []
+  }
+ },
+ {
+  "id": "A02",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "detail": [],
+   "ev": []
+  }
+ },
+ {
+  "id": "A03",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "detail": [],
+   "note": "1024M equals 1 GiB died-at"
+  }
+ },
+ {
+  "id": "A03b",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "detail": []
+  }
+ },
+ {
+  "id": "A04",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "detail": [],
+   "note": "lowercase m, PHP shorthand is case-insensitive"
+  }
+ },
+ {
+  "id": "A05",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "detail": [],
+   "note": "died above the configured limit: must not claim the PHP cap is lower"
+  }
+ },
+ {
+  "id": "A06",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "detail": []
+  }
+ },
+ {
+  "id": "A07",
+  "kind": "obs",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "detail": [],
+   "note": "-1 is PHP's unlimited"
+  }
+ },
+ {
+  "id": "A07b",
+  "kind": "obs",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "tb": false,
+   "detail": [],
+   "note": "JSON int -1"
+  }
+ },
+ {
+  "id": "A08",
+  "kind": "obs",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "detail": []
+  }
+ },
+ {
+  "id": "A09",
+  "kind": "obs",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "detail": [],
+   "note": "JSON int bytes"
+  }
+ },
+ {
+  "id": "A10",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "detail": [],
+   "note": "not a size: still a finding, no crash"
+  }
+ },
+ {
+  "id": "A11",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "f": [],
+   "note": "two plugins in two lines: one core finding"
+  }
+ },
+ {
+  "id": "A12",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "f": [],
+   "note": "peak-90% path: the doc says the component is core"
+  }
+ },
+ {
+  "id": "A13",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "ev": [],
+   "note": "line's file still reported as where memory ran out"
+  }
+ },
+ {
+  "id": "B01",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "f": []
+  }
+ },
+ {
+  "id": "B02",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "detail": [],
+   "comp": [],
+   "note": "wp_acme_ table in SQL must not become plugin:acme"
+  }
+ },
+ {
+  "id": "B03",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "src": [],
+   "note": "evidence leads with the slowest run"
+  }
+ },
+ {
+  "id": "B03b",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "src": [],
+   "note": "evidence leads with the slowest run"
+  }
+ },
+ {
+  "id": "B04",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "n": []
+  }
+ },
+ {
+  "id": "B05",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "f": [],
+   "note": "source_file without a line is allowed (both optional)"
+  }
+ },
+ {
+  "id": "B06",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "case": "B06_line_no_file",
+   "rc": 1,
+   "tb": false,
+   "stderr": ", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax"
+  }
+ },
+ {
+  "id": "B07",
+  "kind": "claim",
+  "result": "FAIL",
+  "detail": {
+   "case": "B07_newline",
+   "rc": 1,
+   "tb": false,
+   "stderr": ", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax"
+  }
+ },
+ {
+  "id": "B08",
+  "kind": "claim",
+  "result": "FAIL",
+  "detail": {
+   "case": "B08_257",
+   "rc": 1,
+   "tb": false,
+   "stderr": ", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax"
+  }
+ },
+ {
+  "id": "B09",
+  "kind": "claim",
+  "result": "FAIL",
+  "detail": {
+   "case": "B09_line0",
+   "rc": 1,
+   "tb": false,
+   "stderr": ", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax"
+  }
+ },
+ {
+  "id": "B10",
+  "kind": "claim",
+  "result": "FAIL",
+  "detail": {
+   "case": "B10_line_1e9p1",
+   "rc": 1,
+   "tb": false,
+   "stderr": ", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax"
+  }
+ },
+ {
+  "id": "B11",
+  "kind": "claim",
+  "result": "FAIL",
+  "detail": {
+   "case": "B11_line_str",
+   "rc": 1,
+   "tb": false,
+   "stderr": ", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax"
+  }
+ },
+ {
+  "id": "B12",
+  "kind": "claim",
+  "result": "FAIL",
+  "detail": {
+   "case": "B12_empty_file",
+   "rc": 1,
+   "tb": false,
+   "stderr": ", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax"
+  }
+ },
+ {
+  "id": "B13",
+  "kind": "claim",
+  "result": "FAIL",
+  "detail": {
+   "case": "B13_file_num",
+   "rc": 1,
+   "tb": false,
+   "stderr": ", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax"
+  }
+ },
+ {
+  "id": "B14",
+  "kind": "claim",
+  "result": "FAIL",
+  "detail": {
+   "case": "B14_line_nan_bool",
+   "rc": 1,
+   "tb": false,
+   "stderr": ", line 603\n    if False:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax"
+  }
+ },
+ {
+  "id": "B15",
+  "kind": "claim",
+  "result": "PASS",
+  "detail": {
+   "case": "B15_256",
+   "rc": 1
+  }
+ },
+ {
+  "id": "B16",
+  "kind": "claim",
+  "result": "PASS",
+  "detail": {
+   "case": "B16_line_1e9",
+   "rc": 1
+  }
+ },
+ {
+  "id": "B17",
+  "kind": "claim",
+  "result": "PASS",
+  "detail": {
+   "case": "B17_line_1",
+   "rc": 1
+  }
+ },
+ {
+  "id": "B18",
+  "kind": "obs",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "sources": [],
+   "note": "non-integer line"
+  }
+ },
+ {
+  "id": "B19",
+  "kind": "obs",
+  "result": "OBS",
+  "detail": {
+   "detail": [],
+   "note": "unknown component with a caller"
+  }
+ },
+ {
+  "id": "B20",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "f": [],
+   "note": "REPEATED_QUERY keeps source"
+  }
+ },
+ {
+  "id": "B21",
+  "kind": "claim",
+  "result": "FAIL",
+  "detail": {
+   "out": []
+  }
+ },
+ {
+  "id": "B22",
+  "kind": "claim",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1
+  }
+ },
+ {
+  "id": "B23",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "f": [],
+   "note": "QM attribution still used when present"
+  }
+ },
+ {
+  "id": "C01",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "stdout_json": false
+  }
+ },
+ {
+  "id": "C02",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "head": ""
+  }
+ },
+ {
+  "id": "C03",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "stdout_json": false,
+   "file": false
+  }
+ },
+ {
+  "id": "C04",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "head": ""
+  }
+ },
+ {
+  "id": "C05",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1
+  }
+ },
+ {
+  "id": "C06",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "file": false,
+   "note": "not comparable is a valid run: report written"
+  }
+ },
+ {
+  "id": "D01",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "tb": false,
+   "stderr": "lse:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax",
+   "note": "--out is a folder"
+  }
+ },
+ {
+  "id": "D02",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "tb": false,
+   "stderr": "lse:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax",
+   "note": "symlink to another file"
+  }
+ },
+ {
+  "id": "D03",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "tb": false,
+   "stderr": "lse:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax",
+   "note": "dangling symlink"
+  }
+ },
+ {
+  "id": "D04",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "tb": false,
+   "stderr": "lse:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax",
+   "note": "folder missing"
+  }
+ },
+ {
+  "id": "D05",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "tb": false,
+   "stderr": "lse:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax",
+   "note": "hardlink to input"
+  }
+ },
+ {
+  "id": "D06",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "tb": false,
+   "stderr": "lse:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax",
+   "note": "symlink to input"
+  }
+ },
+ {
+  "id": "D07",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "tb": false,
+   "stderr": "lse:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax",
+   "note": "input reached through a symlinked folder and ..: input must stay intact"
+  }
+ },
+ {
+  "id": "D08",
+  "kind": "obs",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "tb": false,
+   "stderr": "lse:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax",
+   "note": "parent folder is a symlink (doc silent)"
+  }
+ },
+ {
+  "id": "D09",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "tb": false,
+   "stderr": "lse:: where the record came from, in the text summary too\n             ^\nSyntaxError: invalid syntax",
+   "note": "symlinked folder holding a symlink to the input"
+  }
+ },
+ {
+  "id": "D10",
+  "kind": "doc",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "note": "component unknown accepted"
+  }
+ },
+ {
+  "id": "D11",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "codes": null,
+   "f": []
+  }
+ },
+ {
+  "id": "D11b",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "codes": null,
+   "f": []
+  }
+ },
+ {
+  "id": "D12",
+  "kind": "obs",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "findings": null,
+   "note": "both declarers outside wp-content"
+  }
+ },
+ {
+  "id": "D13",
+  "kind": "doc",
+  "result": "FAIL",
+  "detail": {
+   "f": [],
+   "note": "theme vs outside"
+  }
+ }
+]

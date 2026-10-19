@@ -1,0 +1,6 @@
+# Demo command list for the stub tree (for a candidate, transcribe its documented commands instead)
+# expect: python3 is the shim; the reference stub prints a JSON array for an empty bundle (one Info clean or skip finding)
+python3 -c "import sys; print(sys.version.split()[0])"
+mkdir -p empty-bundle && python3 reference_diag.py empty-bundle
+# expect: offline guard refuses a non-loopback connect
+python3 -c "import socket; s=socket.socket(); s.connect(('93.184.215.14', 80))" 2>&1 | tail -1
