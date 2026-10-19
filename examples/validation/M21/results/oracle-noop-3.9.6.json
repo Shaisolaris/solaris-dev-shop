@@ -1,0 +1,306 @@
+[
+ {
+  "id": "A01_clean_batch",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "enqueue_rcs": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "sync_rc": 0,
+   "server": [],
+   "post_order": [],
+   "check": 0,
+   "ledger_check": [
+    0,
+    "consistent: 0 invoices, 0 idempotency records, 0 audit rows"
+   ]
+  }
+ },
+ {
+  "id": "a02_crash",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: IndexError('list index out of range')"
+ },
+ {
+  "id": "A03_transient_stops_and_resumes",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "503": {
+    "first_rc": 0,
+    "pending_after": null,
+    "then": [
+     0
+    ],
+    "server": [],
+    "same_key_and_body": false
+   },
+   "drop": {
+    "first_rc": 0,
+    "pending_after": null,
+    "then": [
+     0
+    ],
+    "server": [],
+    "same_key_and_body": false
+   }
+  }
+ },
+ {
+  "id": "A04_crash_drills_effect_once",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "--crash-before-send 1": {
+    "rc": 0,
+    "then": [
+     0
+    ],
+    "server": [],
+    "check": 0
+   },
+   "--crash-before-send 2": {
+    "rc": 0,
+    "then": [
+     0
+    ],
+    "server": [],
+    "check": 0
+   },
+   "--crash-before-send 3": {
+    "rc": 0,
+    "then": [
+     0
+    ],
+    "server": [],
+    "check": 0
+   },
+   "--crash-before-send 4": {
+    "rc": 0,
+    "then": [
+     0
+    ],
+    "server": [],
+    "check": 0
+   },
+   "--crash-after-send 1": {
+    "rc": 0,
+    "then": [
+     0
+    ],
+    "server": [],
+    "check": 0
+   },
+   "--crash-after-send 2": {
+    "rc": 0,
+    "then": [
+     0
+    ],
+    "server": [],
+    "check": 0
+   },
+   "--crash-after-send 3": {
+    "rc": 0,
+    "then": [
+     0
+    ],
+    "server": [],
+    "check": 0
+   },
+   "--crash-after-send 4": {
+    "rc": 0,
+    "then": [
+     0
+    ],
+    "server": [],
+    "check": 0
+   }
+  }
+ },
+ {
+  "id": "A05_order_of_intent",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "first_rc": 0,
+   "pending": null,
+   "rc2": 0,
+   "sent": [],
+   "server": []
+  }
+ },
+ {
+  "id": "a06_crash",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: IndexError('list index out of range')"
+ },
+ {
+  "id": "a07_crash",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: IndexError('list index out of range')"
+ },
+ {
+  "id": "a08_crash",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: IndexError('list index out of range')"
+ },
+ {
+  "id": "A09_concurrent_syncs_one_runs",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rcs": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "then": [
+    0
+   ],
+   "server": [],
+   "posts": 0
+  }
+ },
+ {
+  "id": "A10_refused_key_stops_nothing_changed",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "bad": {
+    "rc": 0,
+    "pending": null,
+    "keys_kept": true,
+    "then": 0,
+    "server": []
+   },
+   "ben": {
+    "rc": 0,
+    "pending": null,
+    "keys_kept": true,
+    "then": 0,
+    "server": []
+   }
+  }
+ },
+ {
+  "id": "A11_invalid_input_exit2_nothing_recorded",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rcs": {
+    "amount_zero": 0,
+    "amount_float": 0,
+    "currency": 0,
+    "unknown_ref": 0,
+    "dup_ref": 0,
+    "customer_long": 0
+   },
+   "ops_after": 0
+  }
+ },
+ {
+  "id": "a12_crash",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: IndexError('list index out of range')"
+ },
+ {
+  "id": "A13_check_names_tampered_outbox",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "before": 0,
+   "tamper": null,
+   "after_ack_without_answer": 0,
+   "after_foreign_key": 0,
+   "read_only": true
+  }
+ },
+ {
+  "id": "A14_seeded_soak_with_faults",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "syncs": {
+    "0": [
+     0
+    ],
+    "1": [
+     0
+    ],
+    "2": [
+     0
+    ]
+   },
+   "match": false,
+   "server_n": 0,
+   "want_n": 9,
+   "ledger_check": [
+    0,
+    "consistent: 0 invoices, 0 idempotency records, 0 audit rows"
+   ]
+  }
+ },
+ {
+  "id": "o15_crash",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: IndexError('list index out of range')"
+ },
+ {
+  "id": "A15_refusals_rejected_conflict_wait_resolve_cascade",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "ops": {},
+   "waiting2": null,
+   "posts": 0,
+   "server": [],
+   "resolve_pending": 0,
+   "resolve_acked": 0,
+   "discard": 0,
+   "after_discard": {},
+   "rc2": 0,
+   "posts2": 0,
+   "404": [
+    0,
+    {}
+   ]
+  }
+ },
+ {
+  "id": "a16_crash",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: FileNotFoundError(2, 'No such file or directory')"
+ },
+ {
+  "id": "a17_crash",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: OperationalError('no such table: ops')"
+ },
+ {
+  "id": "a18_crash",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: IndexError('list index out of range')"
+ },
+ {
+  "id": "a19_crash",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: IndexError('list index out of range')"
+ }
+]

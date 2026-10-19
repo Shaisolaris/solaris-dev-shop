@@ -1,0 +1,2 @@
+no_wait_for_create builder tests: KILL FAILED (failures=1) FAIL: test_pull_is_tenant_scoped_and_discarding_a_create_names_its_dependents (tests.test_g21_capability.G21Capability)
+network_error_swallowed builder tests: KILL FAILED (failures=1) FAIL: test_server_crash_after_commit_and_transient_failure_keep_one_effect_and_order (tests.test_g21_capability.G21Capability)

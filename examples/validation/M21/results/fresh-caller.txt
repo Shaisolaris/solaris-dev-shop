@@ -1,0 +1,24 @@
+== 3.9.6 demo exit 0
+listening on http://127.0.0.1:62859 (loopback only, db ledger.db)
+{"db": "<TMPDIR>/tmp.UdmBXFzwR3/phone.db", "device": "phone", "install": "phone-b3cfa6cb"}
+{"seq": 1, "kind": "create", "ref": "r1", "idempotency_key": "phone-b3cfa6cb:000001", "state": "pending"}
+{"seq": 2, "kind": "pay", "ref": "r1", "idempotency_key": "phone-b3cfa6cb:000002", "state": "pending"}
+{"seq": 3, "kind": "pay", "ref": "r1", "idempotency_key": "phone-b3cfa6cb:000003", "state": "pending"}
+crash drill exit 70
+{"counts": {"acked": 3, "conflict": 0, "discarded": 0, "pending": 0, "rejected": 0, "superseded": 0}, "open_problems": 0, "pending": 0, "pulled": {"applied": 0, "stale_ignored": 1}, "result": "ok", "sent": 2}
+phone: 0 pending, 3 acked, 0 conflict, 0 rejected
+consistent
+consistent: 1 invoices, 3 idempotency records, 3 audit rows
+-- pycache dirs in copy: 0; tree changed: no; HOME entries: ./Library ./Library/Caches ./Library/Caches/com.apple.python 
+== 3.13.15 demo exit 0
+listening on http://127.0.0.1:62961 (loopback only, db ledger.db)
+{"db": "<TMPDIR>/tmp.pB7gJQl9mi/phone.db", "device": "phone", "install": "phone-f88c7309"}
+{"seq": 1, "kind": "create", "ref": "r1", "idempotency_key": "phone-f88c7309:000001", "state": "pending"}
+{"seq": 2, "kind": "pay", "ref": "r1", "idempotency_key": "phone-f88c7309:000002", "state": "pending"}
+{"seq": 3, "kind": "pay", "ref": "r1", "idempotency_key": "phone-f88c7309:000003", "state": "pending"}
+crash drill exit 70
+{"counts": {"acked": 3, "conflict": 0, "discarded": 0, "pending": 0, "rejected": 0, "superseded": 0}, "open_problems": 0, "pending": 0, "pulled": {"applied": 0, "stale_ignored": 1}, "result": "ok", "sent": 2}
+phone: 0 pending, 3 acked, 0 conflict, 0 rejected
+consistent
+consistent: 1 invoices, 3 idempotency records, 3 audit rows
+-- pycache dirs in copy: 0; tree changed: no; HOME entries: 

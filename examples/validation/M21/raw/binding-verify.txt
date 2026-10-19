@@ -1,0 +1,12 @@
+Mon Oct 19 05:54:57 PDT 2026
+candidate 822a9c1aaf2da3a0dace1bd0a0640d992406efa0 parent(s) 5606672b464f5daaf08e28cbfa5a8d307f730c27
+02ba9c571b10ad1dba792d2ac5534bcad3171e67	refs/heads/main
+6f7b23aa18413907c5fbd250daab475dc94e7a1e	refs/heads/review/grok-g14-cash-revenue
+5606672b464f5daaf08e28cbfa5a8d307f730c27	refs/heads/review/grok-g19-duplicate-safe-api
+822a9c1aaf2da3a0dace1bd0a0640d992406efa0	refs/heads/review/grok-g21-offline-sync
+1faee8d4e529fbbeac7c64292bed324bdced9796	refs/heads/review/grok-g22-payment-ledger
+base 5606672b464f5daaf08e28cbfa5a8d307f730c27 is ancestor: yes
+patch sha 08d7b6611756384b97f466818a33ea29e8bd86514762e8fb3eac2bbb64bba00c diff sha 08d7b6611756384b97f466818a33ea29e8bd86514762e8fb3eac2bbb64bba00c
+manifest entries 14 mismatches 0
+manifest set == diff set
+G19 5606672 validated by M19 f2e52da (PASS with adversarial findings)

@@ -1,0 +1,689 @@
+[
+ {
+  "id": "A01_clean_batch",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "enqueue_rcs": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "sync_rc": 1,
+   "server": [
+    [
+     "Blue Fern",
+     1000,
+     0,
+     "open"
+    ],
+    [
+     "Oak",
+     500,
+     0,
+     "open"
+    ]
+   ],
+   "post_order": [
+    "/api/v1/invoices",
+    "/api/v1/invoices/r1/payments",
+    "/api/v1/invoices",
+    "/api/v1/invoices/r2/void"
+   ],
+   "check": 0,
+   "ledger_check": [
+    0,
+    "consistent: 2 invoices, 2 idempotency records, 2 audit rows"
+   ]
+  }
+ },
+ {
+  "id": "a02_crash",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: IndexError('list index out of range')"
+ },
+ {
+  "id": "A03_transient_stops_and_resumes",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "503": {
+    "first_rc": 4,
+    "pending_after": 1,
+    "then": [
+     1
+    ],
+    "server": [
+     [
+      "Fern",
+      1000,
+      0,
+      "open"
+     ]
+    ],
+    "same_key_and_body": true
+   },
+   "drop": {
+    "first_rc": 4,
+    "pending_after": 1,
+    "then": [
+     1
+    ],
+    "server": [
+     [
+      "Fern",
+      1000,
+      0,
+      "open"
+     ]
+    ],
+    "same_key_and_body": true
+   }
+  }
+ },
+ {
+  "id": "A04_crash_drills_effect_once",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "--crash-before-send 1": {
+    "rc": 70,
+    "then": [
+     1
+    ],
+    "server": [
+     [
+      "Fern",
+      900,
+      0,
+      "open"
+     ]
+    ],
+    "check": 0
+   },
+   "--crash-before-send 2": {
+    "rc": 70,
+    "then": [
+     1
+    ],
+    "server": [
+     [
+      "Fern",
+      900,
+      0,
+      "open"
+     ]
+    ],
+    "check": 0
+   },
+   "--crash-before-send 3": {
+    "rc": 1,
+    "then": [
+     1
+    ],
+    "server": [
+     [
+      "Fern",
+      900,
+      0,
+      "open"
+     ]
+    ],
+    "check": 0
+   },
+   "--crash-before-send 4": {
+    "rc": 1,
+    "then": [
+     1
+    ],
+    "server": [
+     [
+      "Fern",
+      900,
+      0,
+      "open"
+     ]
+    ],
+    "check": 0
+   },
+   "--crash-after-send 1": {
+    "rc": 70,
+    "then": [
+     1
+    ],
+    "server": [
+     [
+      "Fern",
+      900,
+      0,
+      "open"
+     ]
+    ],
+    "check": 0
+   },
+   "--crash-after-send 2": {
+    "rc": 70,
+    "then": [
+     1
+    ],
+    "server": [
+     [
+      "Fern",
+      900,
+      0,
+      "open"
+     ]
+    ],
+    "check": 0
+   },
+   "--crash-after-send 3": {
+    "rc": 1,
+    "then": [
+     1
+    ],
+    "server": [
+     [
+      "Fern",
+      900,
+      0,
+      "open"
+     ]
+    ],
+    "check": 0
+   },
+   "--crash-after-send 4": {
+    "rc": 1,
+    "then": [
+     1
+    ],
+    "server": [
+     [
+      "Fern",
+      900,
+      0,
+      "open"
+     ]
+    ],
+    "check": 0
+   }
+  }
+ },
+ {
+  "id": "A05_order_of_intent",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "first_rc": 4,
+   "pending": 5,
+   "rc2": 1,
+   "sent": [
+    "create",
+    "create",
+    "payments",
+    "void"
+   ],
+   "server": [
+    [
+     "A",
+     100,
+     0,
+     "open"
+    ],
+    [
+     "B",
+     200,
+     0,
+     "open"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A06_overpay_conflict_held_not_dropped",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "pay": [
+    {
+     "attempts": 1,
+     "body": {
+      "amount_cents": 600
+     },
+     "http_status": 409,
+     "idempotency_key": "phone-0a8b565e:000001",
+     "kind": "pay",
+     "reason": "exceeds_balance",
+     "ref": "inv_2f0ba33c3be6b4c7",
+     "replayed": false,
+     "retry_of": null,
+     "seq": 1,
+     "state": "conflict",
+     "superseded_by": null
+    }
+   ],
+   "void": [
+    {
+     "attempts": 0,
+     "body": {
+      "amount_cents": 300
+     },
+     "http_status": null,
+     "idempotency_key": "phone-0a8b565e:000002",
+     "kind": "pay",
+     "reason": null,
+     "ref": "inv_2f0ba33c3be6b4c7",
+     "replayed": false,
+     "retry_of": null,
+     "seq": 2,
+     "state": "pending",
+     "superseded_by": null,
+     "waiting": "held behind op 1 (conflict) on the same invoice"
+    }
+   ],
+   "other_create": [
+    {
+     "attempts": 1,
+     "body": {
+      "amount_cents": 10,
+      "currency": "USD",
+      "customer": "Other"
+     },
+     "http_status": 201,
+     "idempotency_key": "phone-0a8b565e:000003",
+     "kind": "create",
+     "reason": null,
+     "ref": "n",
+     "replayed": false,
+     "retry_of": null,
+     "seq": 3,
+     "state": "acked",
+     "superseded_by": null
+    }
+   ],
+   "server": [
+    [
+     "Other",
+     10,
+     0,
+     "open"
+    ],
+    [
+     "Shared",
+     1000,
+     700,
+     "open"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A06b_discard_then_held_change_sent",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "resolve_rc": 0,
+   "rc": 0,
+   "server": [
+    [
+     "Other",
+     10,
+     0,
+     "open"
+    ],
+    [
+     "Shared",
+     1000,
+     1000,
+     "paid"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A07_void_vs_pay_conflict_and_retry_new_key",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "resolve_rc": 0,
+   "keys": [
+    "phone-68ddaa0b:000001",
+    "phone-68ddaa0b:000002"
+   ],
+   "retry_of": [
+    null,
+    1
+   ],
+   "rc2": 1,
+   "server": [
+    [
+     "Shared",
+     1000,
+     0,
+     "void"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A08_stale_snapshot_never_rolls_back",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "apply_old_rc": 0,
+   "after_old": [
+    2,
+    100
+   ],
+   "apply_newer_rc": 0,
+   "after_newer": [
+    3,
+    300
+   ]
+  }
+ },
+ {
+  "id": "A09_concurrent_syncs_one_runs",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rcs": [
+    1,
+    5,
+    5,
+    5
+   ],
+   "then": [
+    1
+   ],
+   "server": [
+    [
+     "C",
+     800,
+     0,
+     "open"
+    ]
+   ],
+   "posts": 2
+  }
+ },
+ {
+  "id": "A10_refused_key_stops_nothing_changed",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "bad": {
+    "rc": 3,
+    "pending": 2,
+    "keys_kept": true,
+    "then": 1,
+    "server": [
+     [
+      "C",
+      800,
+      0,
+      "open"
+     ]
+    ]
+   },
+   "ben": {
+    "rc": 3,
+    "pending": 2,
+    "keys_kept": true,
+    "then": 1,
+    "server": [
+     [
+      "C",
+      800,
+      0,
+      "open"
+     ]
+    ]
+   }
+  }
+ },
+ {
+  "id": "A11_invalid_input_exit2_nothing_recorded",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rcs": {
+    "amount_zero": 2,
+    "amount_float": 2,
+    "currency": 2,
+    "unknown_ref": 2,
+    "dup_ref": 2,
+    "customer_long": 2
+   },
+   "ops_after": 1
+  }
+ },
+ {
+  "id": "A12_key_format_and_unique_install",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "k1": "phone-4f10e5b4:000001",
+   "k2": "phone-1a1bc3b7:000001"
+  }
+ },
+ {
+  "id": "A13_check_names_tampered_outbox",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "before": 0,
+   "tamper": "pending->acked",
+   "after_ack_without_answer": 1,
+   "after_foreign_key": 1,
+   "read_only": true
+  }
+ },
+ {
+  "id": "A14_seeded_soak_with_faults",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "syncs": {
+    "0": [
+     0
+    ],
+    "1": [
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     1
+    ],
+    "2": [
+     4,
+     1
+    ]
+   },
+   "match": false,
+   "server_n": 9,
+   "want_n": 9,
+   "ledger_check": [
+    0,
+    "consistent: 9 invoices, 9 idempotency records, 9 audit rows"
+   ]
+  }
+ },
+ {
+  "id": "O15_held_behind_conflict_view",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "ops": [
+    {
+     "seq": 1,
+     "kind": "pay",
+     "state": "conflict",
+     "http_status": 409,
+     "waiting": null,
+     "reason": "exceeds_balance"
+    },
+    {
+     "seq": 2,
+     "kind": "pay",
+     "state": "pending",
+     "http_status": null,
+     "waiting": "held behind op 1 (conflict) on the same invoice",
+     "reason": null
+    }
+   ]
+  }
+ },
+ {
+  "id": "A15_refusals_rejected_conflict_wait_resolve_cascade",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "ops": {
+    "1": [
+     "rejected",
+     422
+    ],
+    "2": [
+     "pending",
+     null
+    ],
+    "3": [
+     "acked",
+     201
+    ],
+    "4": [
+     "conflict",
+     404
+    ]
+   },
+   "waiting2": "waits for create op 1 (rejected)",
+   "posts": 3,
+   "server": [
+    [
+     "R2",
+     500,
+     0,
+     "open"
+    ]
+   ],
+   "resolve_pending": 2,
+   "resolve_acked": 2,
+   "discard": 0,
+   "after_discard": {
+    "1": "discarded",
+    "2": "discarded",
+    "3": "acked",
+    "4": "conflict"
+   },
+   "rc2": 1,
+   "posts2": 3,
+   "404": [
+    1,
+    {
+     "1": [
+      "conflict",
+      404
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "A16_transport_failures_loopback_and_reinit",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "drop": [
+    4,
+    "pending",
+    null,
+    0
+   ],
+   "unreachable": [
+    4,
+    "pending",
+    null,
+    0
+   ],
+   "non_loopback": [
+    2,
+    0.1,
+    2
+   ],
+   "reinit": [
+    2,
+    true,
+    1
+   ],
+   "end": [
+    0,
+    [
+     [
+      "C",
+      10,
+      0,
+      "open"
+     ]
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A17_check_each_invariant_alone",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "clean": 0,
+   "tampers": {
+    "pending_with_answer": 1,
+    "key_wrong_seq": 1,
+    "key_other_install": 1,
+    "mapping_other_id": 1
+   }
+  }
+ },
+ {
+  "id": "A18_projected_balance_counts_pending",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "offline_create": 500,
+   "pulled_with_pending": 750
+  }
+ },
+ {
+  "id": "A19_apply_snapshot_counts",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "old": [
+    0,
+    {
+     "applied": 0,
+     "stale_ignored": 1
+    }
+   ],
+   "newer": [
+    0,
+    {
+     "applied": 1,
+     "stale_ignored": 0
+    }
+   ]
+  }
+ }
+]

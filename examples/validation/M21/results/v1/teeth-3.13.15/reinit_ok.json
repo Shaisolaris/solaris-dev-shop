@@ -1,0 +1,610 @@
+[
+ {
+  "id": "A01_clean_batch",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "enqueue_rcs": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "sync_rc": 0,
+   "server": [
+    [
+     "Blue Fern",
+     1000,
+     1000,
+     "paid"
+    ],
+    [
+     "Oak",
+     500,
+     0,
+     "void"
+    ]
+   ],
+   "post_order": [
+    "/api/v1/invoices",
+    "/api/v1/invoices/inv_f3fbba16abc48166/payments",
+    "/api/v1/invoices/inv_f3fbba16abc48166/payments",
+    "/api/v1/invoices",
+    "/api/v1/invoices/inv_0c130c3badec69c8/void"
+   ],
+   "check": 0,
+   "ledger_check": [
+    0,
+    "consistent: 2 invoices, 5 idempotency records, 5 audit rows"
+   ]
+  }
+ },
+ {
+  "id": "A02_lost_ack_replayed_once",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "lost_ack_on_1": {
+    "first_rc": 4,
+    "then": [
+     0
+    ],
+    "server": [
+     [
+      "Fern",
+      1000,
+      1000,
+      "paid"
+     ]
+    ],
+    "sends_of_lost_key": 2,
+    "replayed": [
+     true
+    ],
+    "ledger_check": 0
+   },
+   "lost_ack_on_2": {
+    "first_rc": 4,
+    "then": [
+     0
+    ],
+    "server": [
+     [
+      "Fern",
+      1000,
+      1000,
+      "paid"
+     ]
+    ],
+    "sends_of_lost_key": 2,
+    "replayed": [
+     true
+    ],
+    "ledger_check": 0
+   },
+   "lost_ack_on_3": {
+    "first_rc": 4,
+    "then": [
+     0
+    ],
+    "server": [
+     [
+      "Fern",
+      1000,
+      1000,
+      "paid"
+     ]
+    ],
+    "sends_of_lost_key": 2,
+    "replayed": [
+     true
+    ],
+    "ledger_check": 0
+   }
+  }
+ },
+ {
+  "id": "A03_transient_stops_and_resumes",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "503": {
+    "first_rc": 4,
+    "pending_after": 1,
+    "then": [
+     0
+    ],
+    "server": [
+     [
+      "Fern",
+      1000,
+      250,
+      "open"
+     ]
+    ],
+    "same_key_and_body": true
+   },
+   "drop": {
+    "first_rc": 4,
+    "pending_after": 1,
+    "then": [
+     0
+    ],
+    "server": [
+     [
+      "Fern",
+      1000,
+      250,
+      "open"
+     ]
+    ],
+    "same_key_and_body": true
+   }
+  }
+ },
+ {
+  "id": "A04_crash_drills_effect_once",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "--crash-before-send 1": {
+    "rc": 70,
+    "then": [
+     0
+    ],
+    "server": [
+     [
+      "Fern",
+      900,
+      900,
+      "paid"
+     ]
+    ],
+    "check": 0
+   },
+   "--crash-before-send 2": {
+    "rc": 70,
+    "then": [
+     0
+    ],
+    "server": [
+     [
+      "Fern",
+      900,
+      900,
+      "paid"
+     ]
+    ],
+    "check": 0
+   },
+   "--crash-before-send 3": {
+    "rc": 70,
+    "then": [
+     0
+    ],
+    "server": [
+     [
+      "Fern",
+      900,
+      900,
+      "paid"
+     ]
+    ],
+    "check": 0
+   },
+   "--crash-before-send 4": {
+    "rc": 70,
+    "then": [
+     0
+    ],
+    "server": [
+     [
+      "Fern",
+      900,
+      900,
+      "paid"
+     ]
+    ],
+    "check": 0
+   },
+   "--crash-after-send 1": {
+    "rc": 70,
+    "then": [
+     0
+    ],
+    "server": [
+     [
+      "Fern",
+      900,
+      900,
+      "paid"
+     ]
+    ],
+    "check": 0
+   },
+   "--crash-after-send 2": {
+    "rc": 70,
+    "then": [
+     0
+    ],
+    "server": [
+     [
+      "Fern",
+      900,
+      900,
+      "paid"
+     ]
+    ],
+    "check": 0
+   },
+   "--crash-after-send 3": {
+    "rc": 70,
+    "then": [
+     0
+    ],
+    "server": [
+     [
+      "Fern",
+      900,
+      900,
+      "paid"
+     ]
+    ],
+    "check": 0
+   },
+   "--crash-after-send 4": {
+    "rc": 70,
+    "then": [
+     0
+    ],
+    "server": [
+     [
+      "Fern",
+      900,
+      900,
+      "paid"
+     ]
+    ],
+    "check": 0
+   }
+  }
+ },
+ {
+  "id": "A05_order_of_intent",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "first_rc": 4,
+   "pending": 5,
+   "rc2": 0,
+   "sent": [
+    "create",
+    "create",
+    "payments",
+    "payments",
+    "void"
+   ],
+   "server": [
+    [
+     "A",
+     100,
+     100,
+     "paid"
+    ],
+    [
+     "B",
+     200,
+     0,
+     "void"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A06_overpay_conflict_held_not_dropped",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "pay": [
+    {
+     "attempts": 1,
+     "body": {
+      "amount_cents": 600
+     },
+     "http_status": 409,
+     "idempotency_key": "phone-0b22ba56:000001",
+     "kind": "pay",
+     "reason": "exceeds_balance",
+     "ref": "inv_00bc5d75f8210745",
+     "replayed": false,
+     "retry_of": null,
+     "seq": 1,
+     "state": "conflict",
+     "superseded_by": null
+    }
+   ],
+   "void": [
+    {
+     "attempts": 0,
+     "body": {
+      "amount_cents": 300
+     },
+     "http_status": null,
+     "idempotency_key": "phone-0b22ba56:000002",
+     "kind": "pay",
+     "reason": null,
+     "ref": "inv_00bc5d75f8210745",
+     "replayed": false,
+     "retry_of": null,
+     "seq": 2,
+     "state": "pending",
+     "superseded_by": null,
+     "waiting": "held behind op 1 (conflict) on the same invoice"
+    }
+   ],
+   "other_create": [
+    {
+     "attempts": 1,
+     "body": {
+      "amount_cents": 10,
+      "currency": "USD",
+      "customer": "Other"
+     },
+     "http_status": 201,
+     "idempotency_key": "phone-0b22ba56:000003",
+     "kind": "create",
+     "reason": null,
+     "ref": "n",
+     "replayed": false,
+     "retry_of": null,
+     "seq": 3,
+     "state": "acked",
+     "superseded_by": null
+    }
+   ],
+   "server": [
+    [
+     "Other",
+     10,
+     0,
+     "open"
+    ],
+    [
+     "Shared",
+     1000,
+     700,
+     "open"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A06b_discard_then_held_change_sent",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "resolve_rc": 0,
+   "rc": 0,
+   "server": [
+    [
+     "Other",
+     10,
+     0,
+     "open"
+    ],
+    [
+     "Shared",
+     1000,
+     1000,
+     "paid"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A07_void_vs_pay_conflict_and_retry_new_key",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 1,
+   "resolve_rc": 0,
+   "keys": [
+    "phone-5f28a919:000001",
+    "phone-5f28a919:000002"
+   ],
+   "retry_of": [
+    null,
+    1
+   ],
+   "rc2": 1,
+   "server": [
+    [
+     "Shared",
+     1000,
+     0,
+     "void"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "A08_stale_snapshot_never_rolls_back",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "apply_old_rc": 0,
+   "after_old": [
+    2,
+    100
+   ],
+   "apply_newer_rc": 0,
+   "after_newer": [
+    3,
+    300
+   ]
+  }
+ },
+ {
+  "id": "A09_concurrent_syncs_one_runs",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rcs": [
+    0,
+    5,
+    5,
+    5
+   ],
+   "then": [
+    0
+   ],
+   "server": [
+    [
+     "C",
+     800,
+     400,
+     "open"
+    ]
+   ],
+   "posts": 5
+  }
+ },
+ {
+  "id": "A10_refused_key_stops_nothing_changed",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "bad": {
+    "rc": 3,
+    "pending": 2,
+    "keys_kept": true,
+    "then": 0,
+    "server": [
+     [
+      "C",
+      800,
+      100,
+      "open"
+     ]
+    ]
+   },
+   "ben": {
+    "rc": 3,
+    "pending": 2,
+    "keys_kept": true,
+    "then": 0,
+    "server": [
+     [
+      "C",
+      800,
+      100,
+      "open"
+     ]
+    ]
+   }
+  }
+ },
+ {
+  "id": "A11_invalid_input_exit2_nothing_recorded",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rcs": {
+    "amount_zero": 2,
+    "amount_float": 2,
+    "currency": 2,
+    "unknown_ref": 2,
+    "dup_ref": 2,
+    "customer_long": 2
+   },
+   "ops_after": 1
+  }
+ },
+ {
+  "id": "A12_key_format_and_unique_install",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "k1": "phone-f4606c8e:000001",
+   "k2": "phone-9418f623:000001"
+  }
+ },
+ {
+  "id": "A13_check_names_tampered_outbox",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "before": 0,
+   "tamper": "pending->acked",
+   "after_ack_without_answer": 1,
+   "after_foreign_key": 1,
+   "read_only": true
+  }
+ },
+ {
+  "id": "A14_seeded_soak_with_faults",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "syncs": {
+    "0": [
+     0
+    ],
+    "1": [
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     0
+    ],
+    "2": [
+     4,
+     0
+    ]
+   },
+   "match": true,
+   "server_n": 9,
+   "want_n": 9,
+   "ledger_check": [
+    0,
+    "consistent: 9 invoices, 14 idempotency records, 14 audit rows"
+   ]
+  }
+ },
+ {
+  "id": "O15_held_behind_conflict_view",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "rc": 1,
+   "ops": [
+    {
+     "seq": 1,
+     "kind": "pay",
+     "state": "conflict",
+     "http_status": 409,
+     "waiting": null,
+     "reason": "exceeds_balance"
+    },
+    {
+     "seq": 2,
+     "kind": "pay",
+     "state": "pending",
+     "http_status": null,
+     "waiting": "held behind op 1 (conflict) on the same invoice",
+     "reason": null
+    }
+   ]
+  }
+ }
+]
