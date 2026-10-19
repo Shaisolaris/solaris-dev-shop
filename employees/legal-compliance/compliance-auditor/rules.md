@@ -63,7 +63,9 @@ Write into the client compliance profile:
   1. Data inventory mapping (what personal data, where, why)
   2. Lawful basis documented per processing activity
   3. Consent management implemented (capture, withdraw, audit)
-  4. Data-subject rights implementation - access / deletion / portability, 30-day DSAR response
+  4. Data-subject rights implementation - access / deletion / portability; GDPR response within one month of receipt,
+     extendable by two further months where necessary (Art. 12(3)); other jurisdictions use their own
+     configured clock with its source, confirmed by a qualified reviewer
   5. Privacy notices current and accurate
   6. Third-party / processor assessments complete
   7. Cross-border transfer mechanism valid

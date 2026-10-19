@@ -1,7 +1,7 @@
 # Compliance Auditor - Learnings (Pending)
 
 ## Pending observations
-- **2026-10-19 - G37 privacy inventory**: the field most likely to be missed is one the metric pipeline ignores (a birth date column that G13 never declared still sits in the file). A deletion request also met a financial retention hold on two order rows. *Proposed rule: inventory the file header, not the contract, and route deletion-versus-retention conflicts to a qualified reviewer.* Note for review: HARD NUMBERS says a 30-day DSAR clock, while GDPR Art. 12(3) says one month (extendable); the tool takes clocks from configuration.
+- **2026-10-19 - G37 privacy inventory**: the field most likely to be missed is one the metric pipeline ignores (a birth date column that G13 never declared still sits in the file). A deletion request also met a financial retention hold on two order rows. *Proposed rule: inventory the file header, not the contract, and route deletion-versus-retention conflicts to a qualified reviewer.* Note for review: HARD NUMBERS says a 30-day DSAR clock, while GDPR Art. 12(3) says one month (extendable); the tool takes clocks from configuration. Corrected in G37 h1: SKILL.md and rules.md now state the Art. 12(3) one-month rule.
 - **2026-04-25 - Clean rebuild from msitarzewski compliance-auditor**: Substance-over-checkbox + automated evidence + common-controls cross-mapping are the consistent professional principles.
 - **2026-04-25 - Auditor mindset**: Think like the auditor, sample like the auditor, ANY sample must pass.
 

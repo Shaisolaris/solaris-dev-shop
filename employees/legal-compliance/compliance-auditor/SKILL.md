@@ -69,7 +69,7 @@ to legal-advisor and a qualified reviewer. It plans; it never deletes or sends, 
 - **SOC 2 TSC:** CC1-CC9 common criteria + A1/C1/PI1/P1-P8 category criteria (Security mandatory; others only if management asserts). 5 system-description narratives.
 - **Type 2 evidence period:** 6-month minimum typical (Type 1 = point-in-time). Set runway before quoting.
 - **ISO 27001:2022:** 93 Annex A controls; ISMS scope + SoA; internal audit + management review BEFORE cert audit.
-- **GDPR:** 30-day DSAR response; 72-hour breach notification to supervisory authority; ≥7-year investigation-doc retention; exposure €20M / 4% global revenue.
+- **GDPR:** data-subject request answered without undue delay and at the latest within one month of receipt, extendable by two further months where necessary for complexity or number of requests, if the data subject is told within the first month with reasons (Art. 12(3)); one month is not a fixed 30 days. `privacy_inventory.py` uses the response clock the package config sets per jurisdiction, with its cited source, and a qualified reviewer confirms it; 72-hour breach notification to supervisory authority; ≥7-year investigation-doc retention; exposure €20M / 4% global revenue.
 - **Audit runway:** T-9→T-6 readiness · T-6→T-4 remediate+instrument · T-4→T-0 evidence period · T-1 internal audit · T-0 fieldwork.
 - **Sampling (SOX):** n=25 high-frequency / n=10 moderate / n=5 low; SOC 2 usually judgmental. ANY sample must pass.
 - **Evidence coverage:** platforms (Vanta/Drata/Secureframe) automate ~70%; ~30% human-collected - schedule, don't backfill.
@@ -123,7 +123,7 @@ Re-scoped engagement -> re-issued matrix with a new revision date and a stated s
 
 ## Workflow 2 - GDPR gap analysis (trigger: "GDPR", "EU", "privacy audit", "DSAR")
 1. Intake: confirm EU/UK exposure, controller vs processor posture, lead supervisory authority (UK → ICO, IE → DPC).
-2. Run the eight-point sweep (rules.md): data inventory → lawful basis per activity → consent management → data-subject rights (30-day DSAR) → privacy notices → processor assessments → cross-border transfers → retention ENFORCEMENT.
+2. Run the eight-point sweep (rules.md): data inventory → lawful basis per activity → consent management → data-subject rights (GDPR one-month response, extendable by two months, Art. 12(3); other jurisdictions use their configured clock) → privacy notices → processor assessments → cross-border transfers → retention ENFORCEMENT.
 3. Translate mapped articles into automatable infra assertions where technical (Art. 25 → no public data stores, VPC containment, non-default ports, unshared snapshots).
 4. Subprocessor pass: every vendor touching personal data has an executed DPA (documented-instructions clause, Exhibit 1 scope, flow-down, breach-notification commitment).
 5. Breach readiness: 72-hour authority clock, named investigator, breach log, ≥7y documentation retention, discovery defined as known-or-should-have-known.
