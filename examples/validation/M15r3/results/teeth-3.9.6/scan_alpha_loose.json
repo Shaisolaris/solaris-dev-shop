@@ -1,0 +1,1663 @@
+[
+ {
+  "id": "X15_missing_values_excluded",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "units": {
+    "base": 160,
+    "variant": 160
+   },
+   "missing": 3,
+   "rejected": 0
+  }
+ },
+ {
+  "id": "X16_unknown_arm_excluded",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "units": {
+    "base": 160,
+    "variant": 160
+   },
+   "unknown_arm": 4
+  }
+ },
+ {
+  "id": "X17_first_assignment_fixes_cohort",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "units": {
+    "base": 160,
+    "variant": 160
+   },
+   "outside": 6,
+   "repeat_rows": 6
+  }
+ },
+ {
+  "id": "X01_aa_no_claim",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "units": {
+    "base": 300,
+    "variant": 300
+   },
+   "converted": {
+    "base": 90,
+    "variant": 90
+   },
+   "outcome": "no_detectable_difference",
+   "claims": {
+    "causal": false,
+    "significance": false
+   }
+  }
+ },
+ {
+  "id": "X02_lift_exact_interval",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "converted": {
+    "base": 60,
+    "variant": 96
+   },
+   "effect_mismatch": {},
+   "effect": {
+    "ci_high": "0.144554",
+    "ci_low": "0.035446",
+    "confidence": "0.950000",
+    "difference": "0.090000",
+    "p_value": "0.001316"
+   },
+   "outcome": "difference_detected"
+  }
+ },
+ {
+  "id": "X03_repeated_users_once",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "units": {
+    "base": 250,
+    "variant": 250
+   },
+   "converted": {
+    "base": 50,
+    "variant": 50
+   },
+   "exclusions": {
+    "events_after_horizon": 0,
+    "events_before_assignment": 0,
+    "events_unassigned_units": 0,
+    "immature": 0,
+    "missing_values": 0,
+    "multiple_arms": [],
+    "outside_cohort": 0,
+    "rejected_rows": 0,
+    "repeat_assignment_rows": 40,
+    "unknown_arm": 0
+   }
+  }
+ },
+ {
+  "id": "X04_leakage_windows",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "converted": {
+    "base": 0,
+    "variant": 12
+   },
+   "exclusions": {
+    "events_after_horizon": 18,
+    "events_before_assignment": 30,
+    "events_unassigned_units": 7,
+    "immature": 0,
+    "missing_values": 0,
+    "multiple_arms": [],
+    "outside_cohort": 0,
+    "rejected_rows": 0,
+    "repeat_assignment_rows": 0,
+    "unknown_arm": 0
+   }
+  }
+ },
+ {
+  "id": "X04b_horizon_end_boundary",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "event_exactly_at_assignment_plus_horizon_counted": false
+  }
+ },
+ {
+  "id": "X05_contamination_threshold",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "at5": {
+    "rc": 0,
+    "outcome": "no_detectable_difference",
+    "named": 20,
+    "units": {
+     "base": 180,
+     "variant": 200
+    },
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "over5": {
+    "rc": 0,
+    "outcome": "invalid_experiment",
+    "named": 21,
+    "units": {
+     "base": 179,
+     "variant": 200
+    },
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   }
+  }
+ },
+ {
+  "id": "X06_underpowered",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "below_min": [
+    "insufficient_information",
+    {
+     "causal": false,
+     "significance": false
+    }
+   ],
+   "at_min": "difference_detected"
+  }
+ },
+ {
+  "id": "X07_srm",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "srm": {
+    "rc": 0,
+    "outcome": "invalid_experiment",
+    "chi_ok": true,
+    "p": 1.733679663961263e-05,
+    "tool_p": "0.000017"
+   },
+   "mild": {
+    "rc": 0,
+    "outcome": "no_detectable_difference",
+    "chi_ok": true,
+    "p": 0.15729920705028516,
+    "tool_p": "0.157299"
+   },
+   "planned_30_70": {
+    "rc": 0,
+    "outcome": "no_detectable_difference",
+    "chi_ok": true,
+    "p": 1.0,
+    "tool_p": "1.000000"
+   }
+  }
+ },
+ {
+  "id": "X08_observational_association_only",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "outcome": "association_only",
+   "claims": {
+    "causal": false,
+    "significance": true
+   }
+  }
+ },
+ {
+  "id": "X09_cohort_and_immature",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "units": {
+    "base": 200,
+    "variant": 200
+   },
+   "outside": 13,
+   "immature_run": {
+    "units": {
+     "base": 200,
+     "variant": 200
+    },
+    "immature": 5,
+    "converted": {
+     "base": 50,
+     "variant": 50
+    }
+   }
+  }
+ },
+ {
+  "id": "X10_invalid_refused_out_kept",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "split_not_one": 2,
+   "three_arms": 2,
+   "unit_not_unit_id": 2,
+   "alpha_one": 2,
+   "unknown_field": 2,
+   "missing_file": 2,
+   "cohort_reversed": 2,
+   "bad_assignment_kind": 2,
+   "duplicate_key": 2,
+   "first": 0,
+   "kept": true,
+   "recover": 0
+  }
+ },
+ {
+  "id": "X11_order_stable",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "equal": true
+  }
+ },
+ {
+  "id": "X12_reads_only_no_bytecode",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0
+  }
+ },
+ {
+  "id": "X13b_simpson_ramp_reversal",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "rc": 0,
+   "units": {
+    "base": 500,
+    "variant": 500
+   },
+   "converted": {
+    "base": 210,
+    "variant": 115
+   },
+   "outcome": "invalid_experiment",
+   "effect": {
+    "ci_high": "-0.133148",
+    "ci_low": "-0.246852",
+    "confidence": "0.950000",
+    "difference": "-0.190000",
+    "p_value": "0.000000"
+   },
+   "claims": {
+    "causal": false,
+    "significance": false
+   },
+   "truth": "variant +0.05 in each period; pooled sign reversed"
+  }
+ },
+ {
+  "id": "X13_simpson_ramp",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "rc": 0,
+   "units": {
+    "base": 500,
+    "variant": 500
+   },
+   "converted": {
+    "base": 90,
+    "variant": 235
+   },
+   "outcome": "invalid_experiment",
+   "effect": {
+    "ci_high": "0.345207",
+    "ci_low": "0.234793",
+    "confidence": "0.950000",
+    "difference": "0.290000",
+    "p_value": "0.000000"
+   },
+   "claims": {
+    "causal": false,
+    "significance": false
+   },
+   "truth": "variant +0.05 in each period (0.50 vs 0.55, then 0.10 vs 0.15)",
+   "srm": {
+    "chi_square": "0.000000",
+    "mismatch": false,
+    "p_value": "1.000000",
+    "planned_split": [
+     0.5,
+     0.5
+    ]
+   }
+  }
+ },
+ {
+  "id": "X14_wald_near_zero",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "rc": 0,
+   "outcome": "difference_detected",
+   "effect": {
+    "ci_high": "0.071359",
+    "ci_low": "0.008641",
+    "confidence": "0.950000",
+    "difference": "0.040000",
+    "p_value": "0.013348"
+   },
+   "my_wald": {
+    "difference": 0.04,
+    "ci_low": 0.008641,
+    "ci_high": 0.071359,
+    "p_value": 0.013348
+   }
+  }
+ },
+ {
+  "id": "D01_m15_ramps_still_invalid",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "x13": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "invalid_experiment",
+    "weeks": [
+     4,
+     4
+    ],
+    "tool_p": [
+     "0.000000",
+     "0.000000"
+    ],
+    "my_p": [
+     0.0,
+     0.0
+    ],
+    "srm_p": 0.950785,
+    "diff": 0.2922,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "x13b": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "invalid_experiment",
+    "weeks": [
+     4,
+     4
+    ],
+    "tool_p": [
+     "0.000000",
+     "0.000000"
+    ],
+    "my_p": [
+     0.0,
+     0.0
+    ],
+    "srm_p": 1.0,
+    "diff": -0.2095,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   }
+  }
+ },
+ {
+  "id": "D02_gradual_ramps_follow_doc_rule",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "0.50->0.50": {
+    "rc": 0,
+    "tool": "no_detectable_difference",
+    "doc_rule": "no_detectable_difference",
+    "weeks": [
+     8,
+     8
+    ],
+    "tool_p": [
+     "0.008551",
+     "0.038433"
+    ],
+    "my_p": [
+     0.008551,
+     0.038433
+    ],
+    "srm_p": 0.472522,
+    "diff": 0.0266,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "0.47->0.53": {
+    "rc": 0,
+    "tool": "no_detectable_difference",
+    "doc_rule": "no_detectable_difference",
+    "weeks": [
+     8,
+     8
+    ],
+    "tool_p": [
+     "0.023151",
+     "0.340851"
+    ],
+    "my_p": [
+     0.023151,
+     0.340851
+    ],
+    "srm_p": 0.932647,
+    "diff": -0.0118,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "0.44->0.56": {
+    "rc": 0,
+    "tool": "no_detectable_difference",
+    "doc_rule": "no_detectable_difference",
+    "weeks": [
+     8,
+     8
+    ],
+    "tool_p": [
+     "0.012074",
+     "0.014404"
+    ],
+    "my_p": [
+     0.012074,
+     0.014404
+    ],
+    "srm_p": 0.290766,
+    "diff": -0.0185,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "0.40->0.60": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "invalid_experiment",
+    "weeks": [
+     8,
+     8
+    ],
+    "tool_p": [
+     "0.000131",
+     "0.000000"
+    ],
+    "my_p": [
+     0.000131,
+     0.0
+    ],
+    "srm_p": 0.398025,
+    "diff": -0.0193,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "0.30->0.70": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "invalid_experiment",
+    "weeks": [
+     8,
+     8
+    ],
+    "tool_p": [
+     "0.000000",
+     "0.000000"
+    ],
+    "my_p": [
+     0.0,
+     0.0
+    ],
+    "srm_p": 0.832662,
+    "diff": -0.0528,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   }
+  }
+ },
+ {
+  "id": "D03_single_bad_day_follows_doc_rule",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "bad_day_60_units": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "invalid_experiment",
+    "weeks": [
+     4,
+     4
+    ],
+    "tool_p": [
+     "0.000095",
+     "0.001881"
+    ],
+    "my_p": [
+     9.5e-05,
+     0.001881
+    ],
+    "srm_p": 0.241567,
+    "diff": 0.0372,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "bad_day_120_units": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "invalid_experiment",
+    "weeks": [
+     4,
+     4
+    ],
+    "tool_p": [
+     "0.000000",
+     "0.000003"
+    ],
+    "my_p": [
+     0.0,
+     3e-06
+    ],
+    "srm_p": 0.05513,
+    "diff": 0.0753,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "bad_day_300_units": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "invalid_experiment",
+    "weeks": [
+     4,
+     4
+    ],
+    "tool_p": [
+     "0.000000",
+     "0.000000"
+    ],
+    "my_p": [
+     0.0,
+     0.0
+    ],
+    "srm_p": 0.0,
+    "diff": 0.219,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   }
+  }
+ },
+ {
+  "id": "D04_many_short_weeks_follow_doc_rule",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "2_per_day": {
+    "rc": 0,
+    "tool": "no_detectable_difference",
+    "doc_rule": "no_detectable_difference",
+    "weeks": [
+     null,
+     0
+    ],
+    "tool_p": [
+     null,
+     null
+    ],
+    "my_p": [
+     null,
+     null
+    ],
+    "srm_p": 0.904861,
+    "diff": -0.0177,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "3_per_day": {
+    "rc": 0,
+    "tool": "no_detectable_difference",
+    "doc_rule": "no_detectable_difference",
+    "weeks": [
+     20,
+     20
+    ],
+    "tool_p": [
+     "0.001063",
+     "0.100472"
+    ],
+    "my_p": [
+     0.001063,
+     0.100472
+    ],
+    "srm_p": 0.494525,
+    "diff": 0.0313,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "6_per_day": {
+    "rc": 0,
+    "tool": "no_detectable_difference",
+    "doc_rule": "no_detectable_difference",
+    "weeks": [
+     20,
+     20
+    ],
+    "tool_p": [
+     "0.000060",
+     "0.102560"
+    ],
+    "my_p": [
+     6e-05,
+     0.10256
+    ],
+    "srm_p": 0.038434,
+    "diff": -0.0137,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   }
+  }
+ },
+ {
+  "id": "D05_unequal_plan_drift",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "tool": "invalid_experiment",
+   "doc_rule": "invalid_experiment",
+   "weeks": [
+    4,
+    4
+   ],
+   "tool_p": [
+    "0.000000",
+    "0.000000"
+   ],
+   "my_p": [
+    0.0,
+    0.0
+   ],
+   "srm_p": 0.0,
+   "diff": -0.014,
+   "claims": {
+    "causal": false,
+    "significance": false
+   }
+  }
+ },
+ {
+  "id": "D06_random_shapes_property",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "run": 30,
+   "mismatches": [
+    {
+     "rc": 0,
+     "tool": "invalid_experiment",
+     "doc_rule": "no_detectable_difference",
+     "weeks": [
+      7,
+      7
+     ],
+     "tool_p": [
+      "0.000333",
+      "0.025813"
+     ],
+     "my_p": [
+      0.000333,
+      0.025813
+     ],
+     "srm_p": 0.230227,
+     "diff": 0.0049,
+     "claims": {
+      "causal": false,
+      "significance": false
+     },
+     "shape": "spike",
+     "days": 49,
+     "per": 30
+    },
+    {
+     "rc": 0,
+     "tool": "invalid_experiment",
+     "doc_rule": "no_detectable_difference",
+     "weeks": [
+      4,
+      4
+     ],
+     "tool_p": [
+      "0.063709",
+      "0.314589"
+     ],
+     "my_p": [
+      0.063709,
+      0.314589
+     ],
+     "srm_p": 0.434967,
+     "diff": -0.004,
+     "claims": {
+      "causal": false,
+      "significance": false
+     },
+     "shape": "spike",
+     "days": 28,
+     "per": 15
+    },
+    {
+     "rc": 0,
+     "tool": "invalid_experiment",
+     "doc_rule": "no_detectable_difference",
+     "weeks": [
+      5,
+      5
+     ],
+     "tool_p": [
+      "0.072786",
+      "0.571105"
+     ],
+     "my_p": [
+      0.072786,
+      0.571105
+     ],
+     "srm_p": 0.294057,
+     "diff": 0.0351,
+     "claims": {
+      "causal": false,
+      "significance": false
+     },
+     "shape": "spike",
+     "days": 35,
+     "per": 30
+    }
+   ]
+  }
+ },
+ {
+  "id": "O08_bad_day_claim",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "40": {
+    "outcome": "invalid_experiment",
+    "claims": {
+     "causal": false,
+     "significance": false
+    },
+    "effect": {
+     "ci_high": "0.086493",
+     "ci_low": "0.026345",
+     "confidence": "0.950000",
+     "difference": "0.056419",
+     "p_value": "0.000292"
+    },
+    "drift": {
+     "homogeneity_p_value": "0.154993",
+     "mismatch": false,
+     "p_value": "0.012419",
+     "weeks_tested": 4,
+     "worst_week": 1,
+     "worst_week_units": [
+      175,
+      225
+     ]
+    },
+    "true_effect": 0.0
+   },
+   "60": {
+    "outcome": "invalid_experiment",
+    "claims": {
+     "causal": false,
+     "significance": false
+    },
+    "effect": {
+     "ci_high": "0.089973",
+     "ci_low": "0.025385",
+     "confidence": "0.950000",
+     "difference": "0.057679",
+     "p_value": "0.000556"
+    },
+    "drift": {
+     "homogeneity_p_value": "0.534827",
+     "mismatch": false,
+     "p_value": "0.031795",
+     "weeks_tested": 4,
+     "worst_week": 2,
+     "worst_week_units": [
+      188,
+      232
+     ]
+    },
+    "true_effect": 0.0
+   },
+   "90": {
+    "outcome": "invalid_experiment",
+    "claims": {
+     "causal": false,
+     "significance": false
+    },
+    "effect": {
+     "ci_high": "0.114718",
+     "ci_low": "0.054153",
+     "confidence": "0.950000",
+     "difference": "0.084435",
+     "p_value": "0.000000"
+    },
+    "drift": {
+     "homogeneity_p_value": "0.002935",
+     "mismatch": true,
+     "p_value": "0.000001",
+     "weeks_tested": 4,
+     "worst_week": 1,
+     "worst_week_units": [
+      173,
+      277
+     ]
+    },
+    "true_effect": 0.0
+   }
+  }
+ },
+ {
+  "id": "S01_bursts_replacing_traffic_follow_doc_rule",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "burst_10_replace": {
+    "rc": 0,
+    "tool": "difference_detected",
+    "doc_rule": "difference_detected",
+    "tool_scan": {
+     "K": 1447,
+     "p": "4.025e-04",
+     "units": 20,
+     "mismatch": false,
+     "threshold": "3.455e-05"
+    },
+    "my_scan": {
+     "K": 1447,
+     "p": "4.025e-04",
+     "units": 20,
+     "mismatch": false
+    },
+    "block": false,
+    "srm_p": 0.204559,
+    "diff": 0.0285,
+    "claims": {
+     "causal": true,
+     "significance": true
+    }
+   },
+   "burst_20_replace": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "no_detectable_difference",
+    "tool_scan": {
+     "K": 1447,
+     "p": "1.907e-06",
+     "units": 20,
+     "mismatch": true,
+     "threshold": "3.455e-05"
+    },
+    "my_scan": {
+     "K": 1447,
+     "p": "1.907e-06",
+     "units": 20,
+     "mismatch": false
+    },
+    "block": false,
+    "srm_p": 0.09711,
+    "diff": 0.0048,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "burst_25_replace": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "invalid_experiment",
+    "tool_scan": {
+     "K": 1447,
+     "p": "1.947e-08",
+     "units": 40,
+     "mismatch": true,
+     "threshold": "3.455e-05"
+    },
+    "my_scan": {
+     "K": 1447,
+     "p": "1.947e-08",
+     "units": 40,
+     "mismatch": true
+    },
+    "block": false,
+    "srm_p": 0.80725,
+    "diff": 0.0247,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "burst_30_replace": {
+    "rc": 0,
+    "tool": "no_detectable_difference",
+    "doc_rule": "no_detectable_difference",
+    "tool_scan": {
+     "K": 1447,
+     "p": "4.005e-05",
+     "units": 20,
+     "mismatch": false,
+     "threshold": "3.455e-05"
+    },
+    "my_scan": {
+     "K": 1447,
+     "p": "4.005e-05",
+     "units": 20,
+     "mismatch": false
+    },
+    "block": false,
+    "srm_p": 0.241567,
+    "diff": 0.03,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "burst_35_replace": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "invalid_experiment",
+    "tool_scan": {
+     "K": 1447,
+     "p": "7.458e-11",
+     "units": 40,
+     "mismatch": true,
+     "threshold": "3.455e-05"
+    },
+    "my_scan": {
+     "K": 1447,
+     "p": "7.458e-11",
+     "units": 40,
+     "mismatch": true
+    },
+    "block": false,
+    "srm_p": 0.283051,
+    "diff": 0.0119,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "burst_40_replace": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "invalid_experiment",
+    "tool_scan": {
+     "K": 1447,
+     "p": "1.493e-09",
+     "units": 40,
+     "mismatch": true,
+     "threshold": "3.455e-05"
+    },
+    "my_scan": {
+     "K": 1447,
+     "p": "1.493e-09",
+     "units": 40,
+     "mismatch": true
+    },
+    "block": false,
+    "srm_p": 0.80725,
+    "diff": 0.0288,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "burst_60_replace": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "invalid_experiment",
+    "tool_scan": {
+     "K": 1447,
+     "p": "5.795e-15",
+     "units": 80,
+     "mismatch": true,
+     "threshold": "3.455e-05"
+    },
+    "my_scan": {
+     "K": 1447,
+     "p": "5.795e-15",
+     "units": 80,
+     "mismatch": true
+    },
+    "block": false,
+    "srm_p": 0.006285,
+    "diff": 0.0668,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   }
+  }
+ },
+ {
+  "id": "S01b_bursts_of_40_and_more_caught",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "10": false,
+   "20": true,
+   "25": true,
+   "30": false,
+   "35": true,
+   "40": true,
+   "60": true
+  }
+ },
+ {
+  "id": "S02_interleaved_and_midnight_bursts_follow_doc_rule",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "interleaved_20": {
+    "rc": 0,
+    "tool": "no_detectable_difference",
+    "doc_rule": "no_detectable_difference",
+    "tool_scan": {
+     "K": 1466,
+     "p": "5.735e-04",
+     "units": 640,
+     "mismatch": false,
+     "threshold": "3.411e-05"
+    },
+    "my_scan": {
+     "K": 1466,
+     "p": "5.735e-04",
+     "units": 640,
+     "mismatch": false
+    },
+    "block": false,
+    "srm_p": 0.560509,
+    "diff": 0.0288,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "midnight_20": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "no_detectable_difference",
+    "tool_scan": {
+     "K": 1466,
+     "p": "1.907e-06",
+     "units": 20,
+     "mismatch": true,
+     "threshold": "3.411e-05"
+    },
+    "my_scan": {
+     "K": 1466,
+     "p": "1.907e-06",
+     "units": 20,
+     "mismatch": false
+    },
+    "block": false,
+    "srm_p": 0.560509,
+    "diff": 0.0288,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "interleaved_30": {
+    "rc": 0,
+    "tool": "no_detectable_difference",
+    "doc_rule": "no_detectable_difference",
+    "tool_scan": {
+     "K": 1475,
+     "p": "2.325e-03",
+     "units": 80,
+     "mismatch": false,
+     "threshold": "3.390e-05"
+    },
+    "my_scan": {
+     "K": 1475,
+     "p": "2.325e-03",
+     "units": 80,
+     "mismatch": false
+    },
+    "block": false,
+    "srm_p": 0.309788,
+    "diff": 0.0177,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "midnight_30": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "invalid_experiment",
+    "tool_scan": {
+     "K": 1475,
+     "p": "1.857e-07",
+     "units": 40,
+     "mismatch": true,
+     "threshold": "3.390e-05"
+    },
+    "my_scan": {
+     "K": 1475,
+     "p": "1.857e-07",
+     "units": 40,
+     "mismatch": true
+    },
+    "block": false,
+    "srm_p": 0.309788,
+    "diff": 0.0177,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "interleaved_40": {
+    "rc": 0,
+    "tool": "difference_detected",
+    "doc_rule": "difference_detected",
+    "tool_scan": {
+     "K": 1483,
+     "p": "2.577e-03",
+     "units": 20,
+     "mismatch": false,
+     "threshold": "3.372e-05"
+    },
+    "my_scan": {
+     "K": 1483,
+     "p": "2.577e-03",
+     "units": 20,
+     "mismatch": false
+    },
+    "block": false,
+    "srm_p": 0.699649,
+    "diff": 0.0477,
+    "claims": {
+     "causal": true,
+     "significance": true
+    }
+   },
+   "midnight_40": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "invalid_experiment",
+    "tool_scan": {
+     "K": 1483,
+     "p": "1.493e-09",
+     "units": 40,
+     "mismatch": true,
+     "threshold": "3.372e-05"
+    },
+    "my_scan": {
+     "K": 1483,
+     "p": "1.493e-09",
+     "units": 40,
+     "mismatch": true
+    },
+    "block": false,
+    "srm_p": 0.699649,
+    "diff": 0.0477,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "interleaved_60": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "invalid_experiment",
+    "tool_scan": {
+     "K": 1501,
+     "p": "1.053e-06",
+     "units": 160,
+     "mismatch": true,
+     "threshold": "3.331e-05"
+    },
+    "my_scan": {
+     "K": 1501,
+     "p": "1.053e-06",
+     "units": 160,
+     "mismatch": true
+    },
+    "block": false,
+    "srm_p": 0.533086,
+    "diff": 0.0297,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "midnight_60": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "invalid_experiment",
+    "tool_scan": {
+     "K": 1501,
+     "p": "4.374e-13",
+     "units": 80,
+     "mismatch": true,
+     "threshold": "3.331e-05"
+    },
+    "my_scan": {
+     "K": 1501,
+     "p": "4.374e-13",
+     "units": 80,
+     "mismatch": true
+    },
+    "block": false,
+    "srm_p": 0.533086,
+    "diff": 0.0297,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   }
+  }
+ },
+ {
+  "id": "S03_scan_independent_of_cohort_start",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "distinct_scans": 1,
+   "runs": {
+    "start_minus_0d": {
+     "rc": 0,
+     "tool": "invalid_experiment",
+     "doc_rule": "invalid_experiment",
+     "tool_scan": {
+      "K": 1447,
+      "p": "5.375e-14",
+      "units": 80,
+      "mismatch": true,
+      "threshold": "3.455e-05"
+     },
+     "my_scan": {
+      "K": 1447,
+      "p": "5.375e-14",
+      "units": 80,
+      "mismatch": true
+     },
+     "block": true,
+     "srm_p": 0.000172,
+     "diff": 0.0541,
+     "claims": {
+      "causal": false,
+      "significance": false
+     }
+    },
+    "start_minus_1d": {
+     "rc": 0,
+     "tool": "invalid_experiment",
+     "doc_rule": "invalid_experiment",
+     "tool_scan": {
+      "K": 1447,
+      "p": "5.375e-14",
+      "units": 80,
+      "mismatch": true,
+      "threshold": "3.455e-05"
+     },
+     "my_scan": {
+      "K": 1447,
+      "p": "5.375e-14",
+      "units": 80,
+      "mismatch": true
+     },
+     "block": true,
+     "srm_p": 0.000172,
+     "diff": 0.0541,
+     "claims": {
+      "causal": false,
+      "significance": false
+     }
+    },
+    "start_minus_3d": {
+     "rc": 0,
+     "tool": "invalid_experiment",
+     "doc_rule": "invalid_experiment",
+     "tool_scan": {
+      "K": 1447,
+      "p": "5.375e-14",
+      "units": 80,
+      "mismatch": true,
+      "threshold": "3.455e-05"
+     },
+     "my_scan": {
+      "K": 1447,
+      "p": "5.375e-14",
+      "units": 80,
+      "mismatch": true
+     },
+     "block": true,
+     "srm_p": 0.000172,
+     "diff": 0.0541,
+     "claims": {
+      "causal": false,
+      "significance": false
+     }
+    },
+    "start_minus_6d": {
+     "rc": 0,
+     "tool": "invalid_experiment",
+     "doc_rule": "invalid_experiment",
+     "tool_scan": {
+      "K": 1447,
+      "p": "5.375e-14",
+      "units": 80,
+      "mismatch": true,
+      "threshold": "3.455e-05"
+     },
+     "my_scan": {
+      "K": 1447,
+      "p": "5.375e-14",
+      "units": 80,
+      "mismatch": true
+     },
+     "block": true,
+     "srm_p": 0.000172,
+     "diff": 0.0541,
+     "claims": {
+      "causal": false,
+      "significance": false
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "S04_unequal_plan_and_clean_controls",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "clean_50": {
+    "rc": 0,
+    "tool": "no_detectable_difference",
+    "doc_rule": "no_detectable_difference",
+    "tool_scan": {
+     "K": 1447,
+     "p": "6.795e-04",
+     "units": 40,
+     "mismatch": false,
+     "threshold": "3.455e-05"
+    },
+    "my_scan": {
+     "K": 1447,
+     "p": "6.795e-04",
+     "units": 40,
+     "mismatch": false
+    },
+    "block": false,
+    "srm_p": 0.80725,
+    "diff": -0.0048,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "clean_30_70": {
+    "rc": 0,
+    "tool": "no_detectable_difference",
+    "doc_rule": "no_detectable_difference",
+    "tool_scan": {
+     "K": 1447,
+     "p": "1.487e-02",
+     "units": 40,
+     "mismatch": false,
+     "threshold": "3.455e-05"
+    },
+    "my_scan": {
+     "K": 1447,
+     "p": "1.487e-02",
+     "units": 40,
+     "mismatch": false
+    },
+    "block": false,
+    "srm_p": 0.831359,
+    "diff": -0.0035,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   },
+   "burst_30_70": {
+    "rc": 0,
+    "tool": "invalid_experiment",
+    "doc_rule": "invalid_experiment",
+    "tool_scan": {
+     "K": 1447,
+     "p": "8.507e-07",
+     "units": 40,
+     "mismatch": true,
+     "threshold": "3.455e-05"
+    },
+    "my_scan": {
+     "K": 1447,
+     "p": "8.507e-07",
+     "units": 40,
+     "mismatch": true
+    },
+    "block": false,
+    "srm_p": 0.55812,
+    "diff": 0.0275,
+    "claims": {
+     "causal": false,
+     "significance": false
+    }
+   }
+  }
+ },
+ {
+  "id": "S05_r2_residual_burst_no_causal_claim",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "tool": "invalid_experiment",
+   "doc_rule": "invalid_experiment",
+   "tool_scan": {
+    "K": 1501,
+    "p": "4.272e-25",
+    "units": 160,
+    "mismatch": true,
+    "threshold": "3.331e-05"
+   },
+   "my_scan": {
+    "K": 1501,
+    "p": "4.272e-25",
+    "units": 160,
+    "mismatch": true
+   },
+   "block": false,
+   "srm_p": 0.03096,
+   "diff": 0.0859,
+   "claims": {
+    "causal": false,
+    "significance": false
+   }
+  }
+ },
+ {
+  "id": "S06_tied_timestamps_follow_doc_rule",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "tool": "invalid_experiment",
+   "doc_rule": "invalid_experiment",
+   "tool_scan": {
+    "K": 1483,
+    "p": "1.819e-12",
+    "units": 40,
+    "mismatch": true,
+    "threshold": "3.372e-05"
+   },
+   "my_scan": {
+    "K": 1483,
+    "p": "1.819e-12",
+    "units": 40,
+    "mismatch": true
+   },
+   "block": false,
+   "srm_p": 0.499587,
+   "diff": 0.0318,
+   "claims": {
+    "causal": false,
+    "significance": false
+   }
+  }
+ },
+ {
+  "id": "S07_random_shapes_property",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "run": 40,
+   "mismatches": [
+    {
+     "rc": 0,
+     "tool": "invalid_experiment",
+     "doc_rule": "invalid_experiment",
+     "tool_scan": {
+      "K": 446,
+      "p": "2.361e-05",
+      "units": 160,
+      "mismatch": true,
+      "threshold": "1.121e-04"
+     },
+     "my_scan": {
+      "K": 446,
+      "p": "2.361e-05",
+      "units": 160,
+      "mismatch": false
+     },
+     "block": true,
+     "srm_p": 0.0,
+     "diff": 0.0275,
+     "claims": {
+      "causal": false,
+      "significance": false
+     },
+     "shape": "step",
+     "days": 14,
+     "per": 40,
+     "burst": null
+    },
+    {
+     "rc": 0,
+     "tool": "invalid_experiment",
+     "doc_rule": "invalid_experiment",
+     "tool_scan": {
+      "K": 446,
+      "p": "5.269e-06",
+      "units": 160,
+      "mismatch": true,
+      "threshold": "1.121e-04"
+     },
+     "my_scan": {
+      "K": 446,
+      "p": "5.269e-06",
+      "units": 160,
+      "mismatch": false
+     },
+     "block": true,
+     "srm_p": 0.00132,
+     "diff": -0.0284,
+     "claims": {
+      "causal": false,
+      "significance": false
+     },
+     "shape": "step",
+     "days": 28,
+     "per": 20,
+     "burst": null
+    },
+    {
+     "rc": 0,
+     "tool": "invalid_experiment",
+     "doc_rule": "difference_detected",
+     "tool_scan": {
+      "K": 463,
+      "p": "8.365e-06",
+      "units": 40,
+      "mismatch": true,
+      "threshold": "1.080e-04"
+     },
+     "my_scan": {
+      "K": 463,
+      "p": "8.365e-06",
+      "units": 40,
+      "mismatch": false
+     },
+     "block": false,
+     "srm_p": 0.212881,
+     "diff": 0.0961,
+     "claims": {
+      "causal": false,
+      "significance": false
+     },
+     "shape": "burst",
+     "days": 28,
+     "per": 20,
+     "burst": [
+      25,
+      20,
+      false,
+      1031,
+      1439
+     ]
+    }
+   ]
+  }
+ }
+]

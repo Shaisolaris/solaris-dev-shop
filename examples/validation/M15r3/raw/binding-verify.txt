@@ -1,0 +1,11 @@
+Mon Oct 19 04:52:44 PDT 2026
+candidate 64c3cc706c753b1c3676b1ef6a433c4706b3e62f parent 6c51c3c07558d766d49ad25bd0953285c4568455
+02ba9c571b10ad1dba792d2ac5534bcad3171e67	refs/heads/main
+5666e7beb161d1252ddd5dcc0a166aca83255370	refs/heads/review/grok-g13-csv-reconciliation
+64c3cc706c753b1c3676b1ef6a433c4706b3e62f	refs/heads/review/grok-g15-experiment-readout
+fast-forward from r2 6c51c3c: yes
+r2 on r1 78daf30: yes; G13 r3 5666e7b ancestor: yes
+patch sha 78329953a486b36faa334314faf4ff0ee79c904063a1c77cfbf7494221337bc5 diff sha 78329953a486b36faa334314faf4ff0ee79c904063a1c77cfbf7494221337bc5
+manifest entries 7 mismatches 0
+manifest set == diff set
+M15 r2 validated 6c51c3c (3a368d2); this round's fix is builder code (handback: no validator patch used)

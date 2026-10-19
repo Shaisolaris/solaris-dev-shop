@@ -1,0 +1,3 @@
+0 spike 35 15 r2-rule: difference_detected | r3 scan mismatch: False min p 1.182e-02 K 418
+9 spike 49 30 r2-rule: no_detectable_difference | r3 scan mismatch: True min p 1.493e-09 K 1262
+done

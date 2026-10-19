@@ -1,0 +1,6 @@
+-- rc=0 clean-aa :: no_detectable_difference {'control': (400, 100), 'treatment': (400, 100)} {'causal': False, 'significance': False}
+-- rc=0 retention-lift :: difference_detected {'control': (600, 123), 'treatment': (600, 231)} {'causal': True, 'significance': True}
+-- rc=0 sample-ratio-mismatch :: invalid_experiment {'control': (300, 56), 'treatment': (420, 130)} {'causal': False, 'significance': False}
+-- rc=2 README.md :: invalid: README.md: not valid UTF-8 JSON
+-- rc=0 --out written: yes
+new files in copy (besides r.json): 0, pycache: 0
