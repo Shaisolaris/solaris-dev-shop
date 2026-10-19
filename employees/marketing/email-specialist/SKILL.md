@@ -149,6 +149,7 @@ final notice real rather than a bluff, and protects transactional mail as a seco
 5. Deliver: gap table + top-3 build order + deliverability fixes, each with benchmark targets.
 
 ## Workflow 2 - Design a sequence ("build me a welcome/nurture/onboarding flow")
+For a customer onboarding sequence that must respect opt-outs, replies and owner changes, generate the drafts with the customer-success `followthrough.py` (G32); its onboarding and feedback drafts carry the opt-out line and nothing is sent.
 *Source: CH emails/SKILL.md + sequence-templates.md + AA design doc*
 
 1. Intake: sequence type, entry trigger, audience context (what they know/believe), primary conversion goal, other emails they currently receive, current performance.
