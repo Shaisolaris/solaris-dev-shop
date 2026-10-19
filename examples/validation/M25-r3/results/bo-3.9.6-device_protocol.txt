@@ -1,0 +1,14 @@
+PASS o1 clean control: in-order stream gives exactly the four claims, no anomalies, simulator scope stated
+PASS o2 duplicates, local reordering and re-acked retries never repeat a claim
+PASS o3 a missing sequence number, mid-stream or before the last record, is a reported gap; later events still apply once
+PASS o4 records from an earlier boot are rejected replays; a re-sent ack after a reboot counts once
+PASS o5 acks for another device, unknown or refused commands, or with the wrong resulting state make no claim
+PASS o6 malformed, over-long, deeply nested and out-of-range lines are quarantined; valid lines still apply; report bounded; ids with a trailing newline are refused
+PASS o7 unexplained state changes are reported, never claimed; a fault ack is not a successful actuation
+PASS o8 simulated lossy link (drop, dup, reorder, disconnect, reboot): claims equal ground truth exactly once; replay agrees
+PASS o9 crash drill at six points then resume equals an unbroken run; a changed input refuses to resume (2); an edited checkpoint (claims, line count) or a non-object one is refused (4)
+PASS o10 invalid invocations (bad command log, output onto an input, missing file, bad faults) exit 2 and write nothing
+PASS o11 scale: hundreds of devices under heavy faults, deterministic per seed, within budget
+PASS o12 unseen generated streams (random devices, boots, retries, duplicates, local reordering) give exactly the expected claims
+scale: {'devices': 200, 'steps': 300, 'seconds_per_run': 0.18}
+12/12 checks passed

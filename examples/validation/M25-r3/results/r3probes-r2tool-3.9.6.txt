@@ -1,0 +1,32 @@
+H00   FAIL  {"rc": 1, "same": true, "doc_hash_formula_matches": false}
+H01   FAIL  {"edited": "lines", "rc": 1, "unchanged": false, "msg": ": \"solaris.device-protocol-report/1\",\n  \"status\": \"anomalies\",\n  \"tool_version\": \"1.1.0\"\n}"}
+H02   FAIL  {"edited": "offset", "rc": 2, "unchanged": true, "msg": "nts file no longer starts with the part already ingested; remove the state to start over\"}"}
+H03   FAIL  {"edited": "events_prefix_sha256", "rc": 2, "unchanged": true, "msg": "nts file no longer starts with the part already ingested; remove the state to start over\"}"}
+H04   FAIL  {"edited": "tool_version", "rc": 1, "unchanged": false, "msg": ": \"solaris.device-protocol-report/1\",\n  \"status\": \"anomalies\",\n  \"tool_version\": \"1.1.0\"\n}"}
+H05   PASS  {"edited": "devices", "rc": 4, "unchanged": true, "msg": "5.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"}
+H06   PASS  {"edited": "anomalies", "rc": 4, "unchanged": true, "msg": "6.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"}
+H10   PASS  {"forged": "lines+1, hash recomputed", "rc": 4, "msg": "0.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"}
+H11   PASS  {"forged": "lines-1, hash recomputed", "rc": 4, "msg": "1.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"}
+H12   PASS  {"forged": "offset-1, hash recomputed (prefix hash now differs)", "rc": 4, "msg": "2.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"}
+H13   LIMIT {"forged": "unknown top-level key, hash recomputed", "rc": 4, "same": false}
+H14   PASS  {"case": "body_sha256 missing", "rc": 4}
+H15   PASS  {"case": "body_sha256 a number", "rc": 4, "tb": false}
+H16   PASS  {"forged": "lines as a string, hash recomputed", "rc": 4, "tb": false, "msg": "\", \"error\": \"state: st-H16.json: offset or lines is not a count; remove it to start over\"}"}
+H17   PASS  {"forged": "offset past end of file, hash recomputed", "rc": 4, "tb": false, "msg": "7.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"}
+H18   FAIL  {"case": "schema /2 checkpoint", "rc": 1}
+N01   FAIL  {"checkpoint": "1", "rc": 2, "msg": "or\": \"state: st-N01.json belongs to another command log or tool; remove it to start over\"}"}
+N02   FAIL  {"checkpoint": "true", "rc": 2, "msg": "or\": \"state: st-N02.json belongs to another command log or tool; remove it to start over\"}"}
+N03   FAIL  {"checkpoint": "[{}]", "rc": 2, "msg": "or\": \"state: st-N03.json belongs to another command log or tool; remove it to start over\"}"}
+N04   LIMIT {"checkpoint": "{}", "rc": 2, "msg": "or\": \"state: st-N04.json belongs to another command log or tool; remove it to start over\"}"}
+N05   PASS  {"checkpoint": "\ufeff{}", "rc": 4, "msg": "ate\", \"error\": \"state: st-N05.json is not a readable checkpoint; remove it to start over\"}"}
+N06   PASS  {"checkpoint": "invalid utf-8", "rc": 4, "tb": false}
+N07   PASS  {"checkpoint": "a folder", "rc": 2, "tb": false}
+U01   PASS  {"case": "unterminated last line, crash before it, resume", "rc": 1, "same": true}
+U02   LIMIT {"case": "checkpoint written at an unterminated end, file then grows", "first_rc": 1, "state_written": true, "resume_rc": 1, "same_as_unbroken": false, "differs": {"inputs": ["{\"commands_sha256\": \"0ff1ecd7329941770cd59b9f2490c7688df5aa26
+Q01   FAIL  {"record": "f2/a/b/c", "rc": 1, "tb": true, "msg": "kdir\n    self._accessor.mkdir(self, mode)\nNotADirectoryError: [Errno 20] Not a directory: 'f2/a/b/c'", "note": "file three levels above"}
+Q02   FAIL  {"record": "dang/sub", "rc": 1, "tb": true, "msg": " 1313, in mkdir\n    self._accessor.mkdir(self, mode)\nFileExistsError: [Errno 17] File exists: 'dang'", "note": "dangling symlink above"}
+Q03   LIMIT {"record": "ldir/sub", "rc": 0, "tb": false, "msg": " stream; not hardware evidence)\nsimulation: claims equal ground truth, exactly once (ground truth 5)", "note": "symlinked folder above (doc silent)"}
+Q04   PASS  {"note": "nothing written under or over the file"}
+Q05   FAIL  {"record": "read-only/sub", "rc": 1, "msg": "n mkdir\n    self._accessor.mkdir(self, mode)\nPermissionError: [Errno 13] Permission denied: 'ro/sub'"}
+Q06   LIMIT {"note": "ingest with --record (is it accepted?)", "rc": 2, "msg": "t,simulate} ...\ndevice_protocol.py: error: unrecognized arguments: --record f2/x"}
+TOTAL 14/26 FAILS ['H00', 'H01', 'H02', 'H03', 'H04', 'H18', 'N01', 'N02', 'N03', 'Q01', 'Q02', 'Q05']

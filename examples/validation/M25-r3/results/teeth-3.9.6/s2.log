@@ -1,0 +1,13 @@
+{"baseline_core": 23, "probes": 21, "bt": "OK", "bo": "12/12 checks passed"}
+{"mutant": "acked_only_claimed", "m25_core": [], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": false}
+{"mutant": "window_unbounded", "m25_core": ["K09"], "probes": ["W33"], "probes_r3": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "r2_ack_owner_off", "m25_core": [], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": false}
+{"mutant": "r2_damaged_exit2", "m25_core": [], "probes": ["R06", "R07", "R08", "R09", "R10", "R11"], "probes_r3": ["H01:FAIL", "H01:PASS", "H02:FAIL", "H02:PASS", "H03:FAIL", "H03:PASS", "H04:FAIL", "H04:PASS", "H05:FAIL", "H05:PASS", "H06:FAIL", "H06:PASS", "H10:FAIL", "H10:PASS", "H11:FAIL", "H11:PASS", "H14:FAIL", "H14:PASS", "H15:FAIL", "H15:PASS", "H16:FAIL", "H16:PASS", "N01:FAIL", "N01:PASS", "N02:FAIL", "N02:PASS", "N03:FAIL", "N03:PASS", "N05:FAIL", "N05:PASS", "N06:FAIL", "N06:PASS"], "builder_tests": true, "builder_oracle": true}
+{"mutant": "r2_cmdlog_match", "m25_core": [], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "no_state_match", "m25_core": ["K12"], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "bool_as_int", "m25_core": ["K15"], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "prefix_hash_off", "m25_core": ["K20"], "probes": [], "probes_r3": ["H12:FAIL", "H12:PASS"], "builder_tests": true, "builder_oracle": true}
+{"mutant": "flush_no_gap_note", "m25_core": ["K07", "K09"], "probes": ["W33"], "probes_r3": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "r3g_recount_off", "m25_core": [], "probes": [], "probes_r3": ["H10:FAIL", "H10:PASS", "H11:FAIL", "H11:PASS"], "builder_tests": true, "builder_oracle": false}
+{"mutant": "r3g_parent_first_only", "m25_core": [], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": false}
+DONE

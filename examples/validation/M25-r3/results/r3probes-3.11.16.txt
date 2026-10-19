@@ -1,0 +1,32 @@
+H00   PASS  {"rc": 1, "same": true, "doc_hash_formula_matches": true}
+H01   PASS  {"edited": "lines", "rc": 4, "unchanged": true, "msg": "1.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"}
+H02   PASS  {"edited": "offset", "rc": 4, "unchanged": true, "msg": "2.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"}
+H03   PASS  {"edited": "events_prefix_sha256", "rc": 4, "unchanged": true, "msg": "3.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"}
+H04   PASS  {"edited": "tool_version", "rc": 4, "unchanged": true, "msg": "4.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"}
+H05   PASS  {"edited": "devices", "rc": 4, "unchanged": true, "msg": "5.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"}
+H06   PASS  {"edited": "anomalies", "rc": 4, "unchanged": true, "msg": "6.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"}
+H10   PASS  {"forged": "lines+1, hash recomputed", "rc": 4, "msg": ": st-H10.json: lines does not match the events already ingested; remove it to start over\"}"}
+H11   PASS  {"forged": "lines-1, hash recomputed", "rc": 4, "msg": ": st-H11.json: lines does not match the events already ingested; remove it to start over\"}"}
+H12   PASS  {"forged": "offset-1, hash recomputed (prefix hash now differs)", "rc": 2, "msg": "nts file no longer starts with the part already ingested; remove the state to start over\"}"}
+H13   LIMIT {"forged": "unknown top-level key, hash recomputed", "rc": 1, "same": true}
+H14   PASS  {"case": "body_sha256 missing", "rc": 4}
+H15   PASS  {"case": "body_sha256 a number", "rc": 4, "tb": false}
+H16   PASS  {"forged": "lines as a string, hash recomputed", "rc": 4, "tb": false, "msg": "\", \"error\": \"state: st-H16.json: offset or lines is not a count; remove it to start over\"}"}
+H17   PASS  {"forged": "offset past end of file, hash recomputed", "rc": 2, "tb": false, "msg": "nts file no longer starts with the part already ingested; remove the state to start over\"}"}
+H18   PASS  {"case": "schema /2 checkpoint", "rc": 2}
+N01   PASS  {"checkpoint": "1", "rc": 4, "msg": "state\", \"error\": \"state: st-N01.json is not a checkpoint object; remove it to start over\"}"}
+N02   PASS  {"checkpoint": "true", "rc": 4, "msg": "state\", \"error\": \"state: st-N02.json is not a checkpoint object; remove it to start over\"}"}
+N03   PASS  {"checkpoint": "[{}]", "rc": 4, "msg": "state\", \"error\": \"state: st-N03.json is not a checkpoint object; remove it to start over\"}"}
+N04   LIMIT {"checkpoint": "{}", "rc": 2, "msg": "or\": \"state: st-N04.json belongs to another command log or tool; remove it to start over\"}"}
+N05   PASS  {"checkpoint": "\ufeff{}", "rc": 4, "msg": "ate\", \"error\": \"state: st-N05.json is not a readable checkpoint; remove it to start over\"}"}
+N06   PASS  {"checkpoint": "invalid utf-8", "rc": 4, "tb": false}
+N07   PASS  {"checkpoint": "a folder", "rc": 2, "tb": false}
+U01   PASS  {"case": "unterminated last line, crash before it, resume", "rc": 1, "same": true}
+U02   LIMIT {"case": "checkpoint written at an unterminated end, file then grows", "first_rc": 1, "state_written": true, "resume_rc": 1, "same_as_unbroken": false, "differs": {"inputs": ["{\"commands_sha256\": \"0ff1ecd7329941770cd59b9f2490c7688df5aa26
+Q01   PASS  {"record": "f2/a/b/c", "rc": 2, "tb": false, "msg": "invalid: --record: f2 is not a folder, so f2/a/b/c cannot be created\nnothing written", "note": "file three levels above"}
+Q02   PASS  {"record": "dang/sub", "rc": 2, "tb": false, "msg": "invalid: --record: dang is not a folder, so dang/sub cannot be created\nnothing written", "note": "dangling symlink above"}
+Q03   LIMIT {"record": "ldir/sub", "rc": 0, "tb": false, "msg": " stream; not hardware evidence)\nsimulation: claims equal ground truth, exactly once (ground truth 5)", "note": "symlinked folder above (doc silent)"}
+Q04   PASS  {"note": "nothing written under or over the file"}
+Q05   PASS  {"record": "read-only/sub", "rc": 2, "msg": "invalid: --record: cannot write ro/sub: Permission denied\nnothing written"}
+Q06   LIMIT {"note": "ingest with --record (is it accepted?)", "rc": 2, "msg": "t,simulate} ...\ndevice_protocol.py: error: unrecognized arguments: --record f2/x"}
+TOTAL 26/26 FAILS []

@@ -1,0 +1,246 @@
+[
+ {
+  "id": "R00",
+  "result": "PASS",
+  "observed": {
+   "rc": 1,
+   "same_as_unbroken": true,
+   "claims": 55
+  }
+ },
+ {
+  "id": "R01",
+  "result": "PASS",
+  "observed": {
+   "edited": "lines",
+   "rc": 4,
+   "same_as_unbroken": false,
+   "resumed_from_line": null,
+   "true_line": 250,
+   "state_unchanged_on_refusal": true,
+   "msg": "rror\": \"state: st-R01.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"
+  }
+ },
+ {
+  "id": "R02",
+  "result": "PASS",
+  "observed": {
+   "edited": "lines",
+   "rc": 4,
+   "same_as_unbroken": false,
+   "resumed_from_line": null,
+   "true_line": 250,
+   "state_unchanged_on_refusal": true,
+   "msg": "rror\": \"state: st-R02.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"
+  }
+ },
+ {
+  "id": "R03",
+  "result": "PASS",
+  "observed": {
+   "edited": "offset",
+   "rc": 4,
+   "same_as_unbroken": false,
+   "resumed_from_line": null,
+   "true_line": 250,
+   "state_unchanged_on_refusal": true,
+   "msg": "rror\": \"state: st-R03.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"
+  }
+ },
+ {
+  "id": "R04",
+  "result": "PASS",
+  "observed": {
+   "edited": "events_prefix_sha256",
+   "rc": 4,
+   "same_as_unbroken": false,
+   "resumed_from_line": null,
+   "true_line": 250,
+   "state_unchanged_on_refusal": true,
+   "msg": "rror\": \"state: st-R04.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"
+  }
+ },
+ {
+  "id": "R05",
+  "result": "PASS",
+  "observed": {
+   "edited": "tool_version",
+   "rc": 4,
+   "same_as_unbroken": false,
+   "resumed_from_line": null,
+   "true_line": 250,
+   "state_unchanged_on_refusal": true,
+   "msg": "rror\": \"state: st-R05.json: its body does not match body_sha256 (edited or damaged); remove it to start over\"}"
+  }
+ },
+ {
+  "id": "R06",
+  "result": "PASS",
+  "observed": {
+   "checkpoint": "[]",
+   "rc": 4,
+   "unchanged": true,
+   "msg": " \"damaged_state\", \"error\": \"state: st-R06.json is not a checkpoint object; remove it to start over\"}"
+  }
+ },
+ {
+  "id": "R07",
+  "result": "PASS",
+  "observed": {
+   "checkpoint": "(empty)",
+   "rc": 4,
+   "unchanged": true,
+   "msg": "damaged_state\", \"error\": \"state: st-R07.json is not a readable checkpoint; remove it to start over\"}"
+  }
+ },
+ {
+  "id": "R08",
+  "result": "PASS",
+  "observed": {
+   "checkpoint": "{\"schema\": 1",
+   "rc": 4,
+   "unchanged": true,
+   "msg": "damaged_state\", \"error\": \"state: st-R08.json is not a readable checkpoint; remove it to start over\"}"
+  }
+ },
+ {
+  "id": "R09",
+  "result": "PASS",
+  "observed": {
+   "checkpoint": "null",
+   "rc": 4,
+   "unchanged": true,
+   "msg": " \"damaged_state\", \"error\": \"state: st-R09.json is not a checkpoint object; remove it to start over\"}"
+  }
+ },
+ {
+  "id": "R10",
+  "result": "PASS",
+  "observed": {
+   "checkpoint": "\"text\"",
+   "rc": 4,
+   "unchanged": true,
+   "msg": " \"damaged_state\", \"error\": \"state: st-R10.json is not a checkpoint object; remove it to start over\"}"
+  }
+ },
+ {
+  "id": "R11",
+  "result": "PASS",
+  "observed": {
+   "rc": 4,
+   "unchanged": true
+  }
+ },
+ {
+  "id": "L01",
+  "result": "LIMIT",
+  "observed": {
+   "forged": "claims removed (31), hash recomputed",
+   "rc": 4,
+   "claims": null,
+   "unbroken_claims": 55
+  }
+ },
+ {
+  "id": "L02",
+  "result": "LIMIT",
+  "observed": {
+   "forged": "duplicates_dropped +777, hash recomputed",
+   "rc": 4,
+   "dups": null,
+   "unbroken": 184
+  }
+ },
+ {
+  "id": "D01",
+  "result": "PASS",
+  "observed": {
+   "rc": 0
+  }
+ },
+ {
+  "id": "D02",
+  "result": "PASS",
+  "observed": {
+   "rc": 2,
+   "msg": "invalid: --record: afile exists and is not a folder\nnothing written"
+  }
+ },
+ {
+  "id": "D03",
+  "result": "PASS",
+  "observed": {
+   "rc": 2,
+   "msg": "invalid: --record: linkdir exists and is not a folder\nnothing written"
+  }
+ },
+ {
+  "id": "D04",
+  "result": "PASS",
+  "observed": {
+   "rc": 2,
+   "traceback": false,
+   "msg": "invalid: --record: afile is not a folder, so afile/sub cannot be created\nnothing written",
+   "note": "parent is a file"
+  }
+ },
+ {
+  "id": "D05",
+  "result": "PASS",
+  "observed": {
+   "rc": 0,
+   "note": "existing empty folder"
+  }
+ },
+ {
+  "id": "W32",
+  "result": "PASS",
+  "observed": {
+   "records_ahead_of_hole": 32,
+   "gaps": 0,
+   "rc": 0
+  }
+ },
+ {
+  "id": "W33",
+  "result": "PASS",
+  "observed": {
+   "records_ahead_of_hole": 33,
+   "gaps": 1,
+   "rc": 1
+  }
+ },
+ {
+  "id": "I01",
+  "result": "PASS",
+  "observed": {
+   "devices": [
+    "v"
+   ],
+   "rc": 1
+  }
+ },
+ {
+  "id": "I02",
+  "result": "PASS",
+  "observed": {
+   "rc": 1,
+   "claims": [],
+   "note": "ack cmd 'c-1\\n' must not claim c-1"
+  }
+ },
+ {
+  "id": "L03",
+  "result": "LIMIT",
+  "observed": {
+   "rc": 0,
+   "claims": [],
+   "counts": {
+    "applied": 3,
+    "commands_rejected_by_device": 1,
+    "duplicate_acks": 1
+   },
+   "note": "doc: rejected ack makes no claim; repeats are duplicate_acks; behaviour pinned by builder"
+  }
+ }
+]

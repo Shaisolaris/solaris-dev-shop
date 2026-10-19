@@ -1,0 +1,246 @@
+[
+ {
+  "id": "R00",
+  "result": "PASS",
+  "observed": {
+   "rc": 1,
+   "same_as_unbroken": true,
+   "claims": 55
+  }
+ },
+ {
+  "id": "R01",
+  "result": "FAIL",
+  "observed": {
+   "edited": "lines",
+   "rc": 1,
+   "same_as_unbroken": false,
+   "resumed_from_line": 1250,
+   "true_line": 250,
+   "state_unchanged_on_refusal": false,
+   "msg": "e\": 1250,\n  \"schema\": \"solaris.device-protocol-report/1\",\n  \"status\": \"anomalies\",\n  \"tool_version\": \"1.1.0\"\n}"
+  }
+ },
+ {
+  "id": "R02",
+  "result": "FAIL",
+  "observed": {
+   "edited": "lines",
+   "rc": 1,
+   "same_as_unbroken": false,
+   "resumed_from_line": 0,
+   "true_line": 250,
+   "state_unchanged_on_refusal": false,
+   "msg": "line\": 0,\n  \"schema\": \"solaris.device-protocol-report/1\",\n  \"status\": \"anomalies\",\n  \"tool_version\": \"1.1.0\"\n}"
+  }
+ },
+ {
+  "id": "R03",
+  "result": "PASS",
+  "observed": {
+   "edited": "offset",
+   "rc": 2,
+   "same_as_unbroken": false,
+   "resumed_from_line": null,
+   "true_line": 250,
+   "state_unchanged_on_refusal": true,
+   "msg": "or\": \"state: the events file no longer starts with the part already ingested; remove the state to start over\"}"
+  }
+ },
+ {
+  "id": "R04",
+  "result": "PASS",
+  "observed": {
+   "edited": "events_prefix_sha256",
+   "rc": 2,
+   "same_as_unbroken": false,
+   "resumed_from_line": null,
+   "true_line": 250,
+   "state_unchanged_on_refusal": true,
+   "msg": "or\": \"state: the events file no longer starts with the part already ingested; remove the state to start over\"}"
+  }
+ },
+ {
+  "id": "R05",
+  "result": "PASS",
+  "observed": {
+   "edited": "tool_version",
+   "rc": 1,
+   "same_as_unbroken": true,
+   "resumed_from_line": 250,
+   "true_line": 250,
+   "state_unchanged_on_refusal": false,
+   "msg": "ne\": 250,\n  \"schema\": \"solaris.device-protocol-report/1\",\n  \"status\": \"anomalies\",\n  \"tool_version\": \"1.1.0\"\n}"
+  }
+ },
+ {
+  "id": "R06",
+  "result": "FAIL",
+  "observed": {
+   "checkpoint": "[]",
+   "rc": 2,
+   "unchanged": true,
+   "msg": "lid\", \"error\": \"state: st-R06.json belongs to another command log or tool; remove it to start over\"}"
+  }
+ },
+ {
+  "id": "R07",
+  "result": "PASS",
+  "observed": {
+   "checkpoint": "(empty)",
+   "rc": 4,
+   "unchanged": true,
+   "msg": "damaged_state\", \"error\": \"state: st-R07.json is not a readable checkpoint; remove it to start over\"}"
+  }
+ },
+ {
+  "id": "R08",
+  "result": "PASS",
+  "observed": {
+   "checkpoint": "{\"schema\": 1",
+   "rc": 4,
+   "unchanged": true,
+   "msg": "damaged_state\", \"error\": \"state: st-R08.json is not a readable checkpoint; remove it to start over\"}"
+  }
+ },
+ {
+  "id": "R09",
+  "result": "FAIL",
+  "observed": {
+   "checkpoint": "null",
+   "rc": 2,
+   "unchanged": true,
+   "msg": "lid\", \"error\": \"state: st-R09.json belongs to another command log or tool; remove it to start over\"}"
+  }
+ },
+ {
+  "id": "R10",
+  "result": "FAIL",
+  "observed": {
+   "checkpoint": "\"text\"",
+   "rc": 2,
+   "unchanged": true,
+   "msg": "lid\", \"error\": \"state: st-R10.json belongs to another command log or tool; remove it to start over\"}"
+  }
+ },
+ {
+  "id": "R11",
+  "result": "PASS",
+  "observed": {
+   "rc": 4,
+   "unchanged": true
+  }
+ },
+ {
+  "id": "L01",
+  "result": "LIMIT",
+  "observed": {
+   "forged": "claims removed (31), hash recomputed",
+   "rc": 1,
+   "claims": 24,
+   "unbroken_claims": 55
+  }
+ },
+ {
+  "id": "L02",
+  "result": "LIMIT",
+  "observed": {
+   "forged": "duplicates_dropped +777, hash recomputed",
+   "rc": 1,
+   "dups": 961,
+   "unbroken": 184
+  }
+ },
+ {
+  "id": "D01",
+  "result": "PASS",
+  "observed": {
+   "rc": 0
+  }
+ },
+ {
+  "id": "D02",
+  "result": "PASS",
+  "observed": {
+   "rc": 2,
+   "msg": "invalid: --record: afile exists and is not a folder\nnothing written"
+  }
+ },
+ {
+  "id": "D03",
+  "result": "PASS",
+  "observed": {
+   "rc": 2,
+   "msg": "invalid: --record: linkdir exists and is not a folder\nnothing written"
+  }
+ },
+ {
+  "id": "D04",
+  "result": "FAIL",
+  "observed": {
+   "rc": 1,
+   "traceback": true,
+   "msg": "y\", line 1313, in mkdir\n    self._accessor.mkdir(self, mode)\nNotADirectoryError: [Errno 20] Not a directory: 'afile/sub'",
+   "note": "parent is a file"
+  }
+ },
+ {
+  "id": "D05",
+  "result": "PASS",
+  "observed": {
+   "rc": 0,
+   "note": "existing empty folder"
+  }
+ },
+ {
+  "id": "W32",
+  "result": "PASS",
+  "observed": {
+   "records_ahead_of_hole": 32,
+   "gaps": 0,
+   "rc": 0
+  }
+ },
+ {
+  "id": "W33",
+  "result": "PASS",
+  "observed": {
+   "records_ahead_of_hole": 33,
+   "gaps": 1,
+   "rc": 1
+  }
+ },
+ {
+  "id": "I01",
+  "result": "PASS",
+  "observed": {
+   "devices": [
+    "v"
+   ],
+   "rc": 1
+  }
+ },
+ {
+  "id": "I02",
+  "result": "PASS",
+  "observed": {
+   "rc": 1,
+   "claims": [],
+   "note": "ack cmd 'c-1\\n' must not claim c-1"
+  }
+ },
+ {
+  "id": "L03",
+  "result": "LIMIT",
+  "observed": {
+   "rc": 0,
+   "claims": [],
+   "counts": {
+    "applied": 3,
+    "commands_rejected_by_device": 1,
+    "duplicate_acks": 1
+   },
+   "note": "doc: rejected ack makes no claim; repeats are duplicate_acks; behaviour pinned by builder"
+  }
+ }
+]

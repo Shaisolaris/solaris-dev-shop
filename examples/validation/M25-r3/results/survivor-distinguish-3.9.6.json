@@ -1,0 +1,97 @@
+{
+ "cand": {
+  "file_3_up": {
+   "rc": 2,
+   "msg": "invalid: --record: f2 is not a folder, so f2/a/b/c cannot be created\nnothing written"
+  },
+  "dangling_above": {
+   "rc": 2,
+   "msg": "invalid: --record: dang is not a folder, so dang/sub cannot be created\nnothing written"
+  },
+  "unterminated_then_finished": {
+   "first_rc": 0,
+   "state": {
+    "offset": 6407,
+    "lines": 60
+   },
+   "resume_rc": 0,
+   "msg": "60,\n  \"schema\": \"solaris.device-protocol-report/1\",\n  \"status\": \"clean\",\n  \"tool_version\": \"1.2.0\"\n}"
+  }
+ },
+ "r3g_parent_walk_off": {
+  "file_3_up": {
+   "rc": 2,
+   "msg": "invalid: --record: cannot write f2/a/b/c: Not a directory\nnothing written"
+  },
+  "dangling_above": {
+   "rc": 2,
+   "msg": "invalid: --record: cannot write dang/sub: File exists\nnothing written"
+  },
+  "unterminated_then_finished": {
+   "first_rc": 0,
+   "state": {
+    "offset": 6407,
+    "lines": 60
+   },
+   "resume_rc": 0,
+   "msg": "60,\n  \"schema\": \"solaris.device-protocol-report/1\",\n  \"status\": \"clean\",\n  \"tool_version\": \"1.2.0\"\n}"
+  }
+ },
+ "r3g_parent_first_only": {
+  "file_3_up": {
+   "rc": 2,
+   "msg": "invalid: --record: cannot write f2/a/b/c: Not a directory\nnothing written"
+  },
+  "dangling_above": {
+   "rc": 2,
+   "msg": "invalid: --record: dang is not a folder, so dang/sub cannot be created\nnothing written"
+  },
+  "unterminated_then_finished": {
+   "first_rc": 0,
+   "state": {
+    "offset": 6407,
+    "lines": 60
+   },
+   "resume_rc": 0,
+   "msg": "60,\n  \"schema\": \"solaris.device-protocol-report/1\",\n  \"status\": \"clean\",\n  \"tool_version\": \"1.2.0\"\n}"
+  }
+ },
+ "r3g_parent_no_symlink": {
+  "file_3_up": {
+   "rc": 2,
+   "msg": "invalid: --record: f2 is not a folder, so f2/a/b/c cannot be created\nnothing written"
+  },
+  "dangling_above": {
+   "rc": 2,
+   "msg": "invalid: --record: cannot write dang/sub: File exists\nnothing written"
+  },
+  "unterminated_then_finished": {
+   "first_rc": 0,
+   "state": {
+    "offset": 6407,
+    "lines": 60
+   },
+   "resume_rc": 0,
+   "msg": "60,\n  \"schema\": \"solaris.device-protocol-report/1\",\n  \"status\": \"clean\",\n  \"tool_version\": \"1.2.0\"\n}"
+  }
+ },
+ "r3g_recount_no_tail": {
+  "file_3_up": {
+   "rc": 2,
+   "msg": "invalid: --record: f2 is not a folder, so f2/a/b/c cannot be created\nnothing written"
+  },
+  "dangling_above": {
+   "rc": 2,
+   "msg": "invalid: --record: dang is not a folder, so dang/sub cannot be created\nnothing written"
+  },
+  "unterminated_then_finished": {
+   "first_rc": 0,
+   "state": {
+    "offset": 6407,
+    "lines": 60
+   },
+   "resume_rc": 4,
+   "msg": "error\": \"state: st.json: lines does not match the events already ingested; remove it to start over\"}"
+  }
+ }
+}

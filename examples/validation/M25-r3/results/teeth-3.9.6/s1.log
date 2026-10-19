@@ -1,0 +1,13 @@
+{"baseline_core": 23, "probes": 21, "bt": "OK", "bo": "12/12 checks passed"}
+{"mutant": "claimed_only_EQUIV", "m25_core": [], "probes": [], "probes_r3": [], "builder_tests": false, "builder_oracle": false}
+{"mutant": "window_le", "m25_core": ["K09"], "probes": ["W33"], "probes_r3": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "r2_claim_ack_check_off", "m25_core": [], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": false}
+{"mutant": "r2_counts_check_off", "m25_core": [], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": false}
+{"mutant": "r2_device_match", "m25_core": [], "probes": ["I01"], "probes_r3": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "no_device_match", "m25_core": ["K11"], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "no_end_flush", "m25_core": ["K07"], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "max_devices_off", "m25_core": [], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": false}
+{"mutant": "reboot_keeps_next", "m25_core": ["K17", "K18"], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": false}
+{"mutant": "r3g_nonobj_as_invalid", "m25_core": [], "probes": ["R06", "R09", "R10"], "probes_r3": ["N01:FAIL", "N01:PASS", "N02:FAIL", "N02:PASS", "N03:FAIL", "N03:PASS"], "builder_tests": true, "builder_oracle": true}
+{"mutant": "r3g_parent_no_symlink", "m25_core": [], "probes": [], "probes_r3": [], "builder_tests": false, "builder_oracle": false}
+DONE

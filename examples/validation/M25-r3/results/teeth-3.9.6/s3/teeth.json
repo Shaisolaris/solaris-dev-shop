@@ -1,0 +1,134 @@
+[
+ {
+  "mutant": "stale_applied",
+  "kills": {
+   "m25_core": [
+    "K06"
+   ],
+   "probes": [],
+   "probes_r3": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  }
+ },
+ {
+  "mutant": "r2_window_r1_revert",
+  "kills": {
+   "m25_core": [],
+   "probes": [
+    "W32"
+   ],
+   "probes_r3": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  }
+ },
+ {
+  "mutant": "r2_buffer_window_off",
+  "kills": {
+   "m25_core": [],
+   "probes": [],
+   "probes_r3": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  }
+ },
+ {
+  "mutant": "r2_record_symlink_ok",
+  "kills": {
+   "m25_core": [],
+   "probes": [
+    "D03"
+   ],
+   "probes_r3": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  }
+ },
+ {
+  "mutant": "r2_ackcmd_match",
+  "kills": {
+   "m25_core": [],
+   "probes": [],
+   "probes_r3": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  }
+ },
+ {
+  "mutant": "rejected_claims",
+  "kills": {
+   "m25_core": [],
+   "probes": [],
+   "probes_r3": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  }
+ },
+ {
+  "mutant": "isfinite_off_EQUIV",
+  "kills": {
+   "m25_core": [],
+   "probes": [],
+   "probes_r3": [],
+   "builder_tests": false,
+   "builder_oracle": false
+  }
+ },
+ {
+  "mutant": "commands_hash_off",
+  "kills": {
+   "m25_core": [
+    "K20"
+   ],
+   "probes": [],
+   "probes_r3": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  }
+ },
+ {
+  "mutant": "r3g_hash_snap_only",
+  "kills": {
+   "m25_core": [],
+   "probes": [],
+   "probes_r3": [
+    "H00:FAIL",
+    "H00:PASS",
+    "H02:FAIL",
+    "H02:PASS",
+    "H03:FAIL",
+    "H03:PASS",
+    "H04:FAIL",
+    "H04:PASS",
+    "H13:1",
+    "H13:4"
+   ],
+   "builder_tests": true,
+   "builder_oracle": false
+  }
+ },
+ {
+  "mutant": "r3g_recount_no_tail",
+  "kills": {
+   "m25_core": [],
+   "probes": [],
+   "probes_r3": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  }
+ },
+ {
+  "mutant": "r3g_oserror_uncaught",
+  "kills": {
+   "m25_core": [],
+   "probes": [],
+   "probes_r3": [
+    "Q05:FAIL",
+    "Q05:PASS"
+   ],
+   "builder_tests": true,
+   "builder_oracle": false
+  }
+ }
+]

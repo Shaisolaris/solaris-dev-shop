@@ -1,0 +1,4 @@
+3.9.6 | Ran 113 tests in 8.995s OK  | bo 12/12 checks passed noop 0/12 checks passed naive 1/12 checks passed | core: 23 / 23  adversarial holding: 17 / 17 | TOTAL 21/21 FAILS []
+3.11.16 | Ran 113 tests in 6.899s OK  | bo 12/12 checks passed noop 0/12 checks passed naive 1/12 checks passed | core: 23 / 23  adversarial holding: 17 / 17 | TOTAL 21/21 FAILS []
+3.12.14 | Ran 113 tests in 7.217s OK  | bo 12/12 checks passed noop 0/12 checks passed naive 1/12 checks passed | core: 23 / 23  adversarial holding: 17 / 17 | TOTAL 21/21 FAILS []
+3.13.15 | Ran 113 tests in 7.281s OK  | bo 12/12 checks passed noop 0/12 checks passed naive 1/12 checks passed | core: 23 / 23  adversarial holding: 17 / 17 | TOTAL 21/21 FAILS []

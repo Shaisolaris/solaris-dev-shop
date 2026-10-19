@@ -1,0 +1,52 @@
+no_claim_dedupe                    core= 6 r2probes= 1 r3graded= 2 r3limit=H13      tests=K boracle=K
+dup_seq_reapplied                  core= 1 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=K
+r2_body_hash_off                   core= 0 r2probes= 1 r3graded= 6 r3limit=-        tests=K boracle=K
+r2_applied_ge_off                  core= 0 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=-
+r2_record_no_mkdir                 core= 0 r2probes=22 r3graded=27 r3limit=H13,N04,Q03,Q06,U02 tests=K boracle=-
+r2_snapshot_check_off              core= 0 r2probes= 1 r3graded= 7 r3limit=-        tests=K boracle=K
+no_unexplained                     core= 1 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=K
+unknown_field_ok                   core= 1 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=K
+dup_cmd_log_ok                     core= 1 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=K
+r3g_hash_no_lines                  core= 0 r2probes= 0 r3graded= 1 r3limit=H13      tests=K boracle=-
+r3g_parent_walk_off                core= 0 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=-
+r3g_schema_old                     core= 0 r2probes= 0 r3graded= 1 r3limit=-        tests=K boracle=-
+claimed_only_EQUIV                 core= 0 r2probes= 0 r3graded= 0 r3limit=-        tests=- boracle=-
+window_le                          core= 1 r2probes= 1 r3graded= 0 r3limit=-        tests=K boracle=K
+r2_claim_ack_check_off             core= 0 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=-
+r2_counts_check_off                core= 0 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=-
+r2_device_match                    core= 0 r2probes= 1 r3graded= 0 r3limit=-        tests=K boracle=K
+no_device_match                    core= 1 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=K
+no_end_flush                       core= 1 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=K
+max_devices_off                    core= 0 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=-
+reboot_keeps_next                  core= 2 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=-
+r3g_nonobj_as_invalid              core= 0 r2probes= 3 r3graded= 3 r3limit=-        tests=K boracle=K
+r3g_parent_no_symlink              core= 0 r2probes= 0 r3graded= 0 r3limit=-        tests=- boracle=-
+acked_only_claimed                 core= 0 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=-
+window_unbounded                   core= 1 r2probes= 1 r3graded= 0 r3limit=-        tests=K boracle=K
+r2_ack_owner_off                   core= 0 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=-
+r2_damaged_exit2                   core= 0 r2probes= 6 r3graded=16 r3limit=-        tests=K boracle=K
+r2_cmdlog_match                    core= 0 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=K
+no_state_match                     core= 1 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=K
+bool_as_int                        core= 1 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=K
+prefix_hash_off                    core= 1 r2probes= 0 r3graded= 1 r3limit=-        tests=K boracle=K
+flush_no_gap_note                  core= 2 r2probes= 1 r3graded= 0 r3limit=-        tests=K boracle=K
+r3g_recount_off                    core= 0 r2probes= 0 r3graded= 2 r3limit=-        tests=K boracle=-
+r3g_parent_first_only              core= 0 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=-
+stale_applied                      core= 1 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=K
+r2_window_r1_revert                core= 0 r2probes= 1 r3graded= 0 r3limit=-        tests=K boracle=K
+r2_buffer_window_off               core= 0 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=-
+r2_record_symlink_ok               core= 0 r2probes= 1 r3graded= 0 r3limit=-        tests=K boracle=-
+r2_ackcmd_match                    core= 0 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=-
+rejected_claims                    core= 0 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=K
+isfinite_off_EQUIV                 core= 0 r2probes= 0 r3graded= 0 r3limit=-        tests=- boracle=-
+commands_hash_off                  core= 1 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=K
+r3g_hash_snap_only                 core= 0 r2probes= 0 r3graded= 4 r3limit=H13      tests=K boracle=-
+r3g_recount_no_tail                core= 0 r2probes= 0 r3graded= 0 r3limit=-        tests=K boracle=-
+r3g_oserror_uncaught               core= 0 r2probes= 0 r3graded= 1 r3limit=-        tests=K boracle=-
+
+mutants 45
+killed by Grok graded oracles (core|r2 probes|r3 graded): 29/45
+survive Grok graded: ['r2_applied_ge_off', 'r3g_parent_walk_off', 'claimed_only_EQUIV', 'r2_claim_ack_check_off', 'r2_counts_check_off', 'max_devices_off', 'r3g_parent_no_symlink', 'acked_only_claimed', 'r2_ack_owner_off', 'r2_cmdlog_match', 'r3g_parent_first_only', 'r2_buffer_window_off', 'r2_ackcmd_match', 'rejected_claims', 'isfinite_off_EQUIV', 'r3g_recount_no_tail']
+killed by builder tests: 42/45
+killed by builder oracle: 23/45
+survive everything (incl LIMIT-row deviations): ['claimed_only_EQUIV', 'r3g_parent_no_symlink', 'isfinite_off_EQUIV']

@@ -1,0 +1,242 @@
+[
+ {
+  "mutant": "no_claim_dedupe",
+  "kills": {
+   "m25_core": [
+    "K04",
+    "K05",
+    "K17",
+    "K18",
+    "K19",
+    "K22"
+   ],
+   "probes": [
+    "R00"
+   ],
+   "probes_r3": [
+    "H00:FAIL",
+    "H00:PASS",
+    "H13:1",
+    "H13:4",
+    "U01:FAIL",
+    "U01:PASS"
+   ],
+   "builder_tests": true,
+   "builder_oracle": true
+  }
+ },
+ {
+  "mutant": "dup_seq_reapplied",
+  "kills": {
+   "m25_core": [
+    "K03"
+   ],
+   "probes": [],
+   "probes_r3": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  }
+ },
+ {
+  "mutant": "r2_body_hash_off",
+  "kills": {
+   "m25_core": [],
+   "probes": [
+    "R11"
+   ],
+   "probes_r3": [
+    "H02:FAIL",
+    "H02:PASS",
+    "H03:FAIL",
+    "H03:PASS",
+    "H04:FAIL",
+    "H04:PASS",
+    "H06:FAIL",
+    "H06:PASS",
+    "H14:FAIL",
+    "H14:PASS",
+    "H15:FAIL",
+    "H15:PASS"
+   ],
+   "builder_tests": true,
+   "builder_oracle": true
+  }
+ },
+ {
+  "mutant": "r2_applied_ge_off",
+  "kills": {
+   "m25_core": [],
+   "probes": [],
+   "probes_r3": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  }
+ },
+ {
+  "mutant": "r2_record_no_mkdir",
+  "kills": {
+   "m25_core": [],
+   "probes": [
+    "D01",
+    "D02",
+    "D03",
+    "D04",
+    "D05",
+    "I01",
+    "I02",
+    "R00",
+    "R01",
+    "R02",
+    "R03",
+    "R04",
+    "R05",
+    "R06",
+    "R07",
+    "R08",
+    "R09",
+    "R10",
+    "R11",
+    "W32",
+    "W33",
+    "_error [Errno 2] No such file or directory: '<D>/grok-output/M25/r3/oracle/../results/teeth-3.9.6/s0/p-r2_record_no_mkdir/probes.json'"
+   ],
+   "probes_r3": [
+    "H00:PASS",
+    "H01:PASS",
+    "H02:PASS",
+    "H03:PASS",
+    "H04:PASS",
+    "H05:PASS",
+    "H06:PASS",
+    "H10:PASS",
+    "H11:PASS",
+    "H12:PASS",
+    "H13:1",
+    "H14:PASS",
+    "H15:PASS",
+    "H16:PASS",
+    "H17:PASS",
+    "H18:PASS",
+    "N01:PASS",
+    "N02:PASS",
+    "N03:PASS",
+    "N04:2",
+    "N05:PASS",
+    "N06:PASS",
+    "N07:PASS",
+    "Q01:PASS",
+    "Q02:PASS",
+    "Q03:0",
+    "Q04:PASS",
+    "Q05:PASS",
+    "Q06:2",
+    "U01:PASS",
+    "U02:null",
+    "_error [Errno 2] No such file or directory: '<D>/grok-output/M25/r3/oracle/../results/teeth-3.9.6/s0/p3-r2_record_no_mkdir/probes.json'"
+   ],
+   "builder_tests": true,
+   "builder_oracle": false
+  }
+ },
+ {
+  "mutant": "r2_snapshot_check_off",
+  "kills": {
+   "m25_core": [],
+   "probes": [
+    "R11"
+   ],
+   "probes_r3": [
+    "H02:FAIL",
+    "H02:PASS",
+    "H03:FAIL",
+    "H03:PASS",
+    "H04:FAIL",
+    "H04:PASS",
+    "H05:FAIL",
+    "H05:PASS",
+    "H06:FAIL",
+    "H06:PASS",
+    "H14:FAIL",
+    "H14:PASS",
+    "H15:FAIL",
+    "H15:PASS"
+   ],
+   "builder_tests": true,
+   "builder_oracle": true
+  }
+ },
+ {
+  "mutant": "no_unexplained",
+  "kills": {
+   "m25_core": [
+    "K14"
+   ],
+   "probes": [],
+   "probes_r3": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  }
+ },
+ {
+  "mutant": "unknown_field_ok",
+  "kills": {
+   "m25_core": [
+    "K15"
+   ],
+   "probes": [],
+   "probes_r3": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  }
+ },
+ {
+  "mutant": "dup_cmd_log_ok",
+  "kills": {
+   "m25_core": [
+    "K16"
+   ],
+   "probes": [],
+   "probes_r3": [],
+   "builder_tests": true,
+   "builder_oracle": true
+  }
+ },
+ {
+  "mutant": "r3g_hash_no_lines",
+  "kills": {
+   "m25_core": [],
+   "probes": [],
+   "probes_r3": [
+    "H00:FAIL",
+    "H00:PASS",
+    "H13:1",
+    "H13:4"
+   ],
+   "builder_tests": true,
+   "builder_oracle": false
+  }
+ },
+ {
+  "mutant": "r3g_parent_walk_off",
+  "kills": {
+   "m25_core": [],
+   "probes": [],
+   "probes_r3": [],
+   "builder_tests": true,
+   "builder_oracle": false
+  }
+ },
+ {
+  "mutant": "r3g_schema_old",
+  "kills": {
+   "m25_core": [],
+   "probes": [],
+   "probes_r3": [
+    "H18:FAIL",
+    "H18:PASS"
+   ],
+   "builder_tests": true,
+   "builder_oracle": false
+  }
+ }
+]

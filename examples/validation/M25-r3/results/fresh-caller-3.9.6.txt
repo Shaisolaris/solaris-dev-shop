@@ -1,0 +1,25 @@
+fresh caller (Grok self-validation): env -i, HOME=$FC/home, PATH=$FC/shim:/usr/bin:/bin (python3 -> Python 3.9.6), offline guard; cwd=empty folder holding only device_protocol.py
+== doc block verbatim in an empty folder (contents: device_protocol.py)
+--- python3 device_protocol.py simulate --devices 12 --steps 300 --seed 7 --faults drop=0.2,dup=0.2,reorder=0.3,disconnect=0.05,reboot=0.02 --record out/
+rc=0
+reordered_buffered: 86
+reboots: 55
+simulation: claims equal ground truth, exactly once (ground truth 93)
+--- python3 device_protocol.py ingest --commands out/commands.jsonl --events out/events.jsonl --json
+rc=1
+{'status': 'anomalies', 'effects_claimed': 93, 'commands_issued': 93, 'anomalies_found': {'gap': 1, 'quarantined': 0, 'stale_boot_replay': 13, 'transition_mismatch': 0, 'unexplained_transition': 0, 'unknown_command': 0}, 'resumed_from_line': None}
+--- python3 device_protocol.py ingest --commands out/commands.jsonl --events out/events.jsonl --state out/st.json --crash-after 500   # exit 3
+rc=3
+crash drill: crash drill after line 500; checkpoint at line 450
+rerun the same command without --crash-after to resume
+--- python3 device_protocol.py ingest --commands out/commands.jsonl --events out/events.jsonl --state out/st.json   # resumes, exit 1
+rc=1
+duplicate_acks: 46
+reordered_buffered: 86
+reboots: 55
+--- python3 -c 'import socket; socket.create_connection(("example.com", 80))'
+rc=1
+  File "/tmp/m25r2-fc-HSCd0Z/guard/sitecustomize.py", line 3, in _blocked
+    raise OSError("offline guard: network blocked in fresh caller")
+OSError: offline guard: network blocked in fresh caller
+unbroken report 9d40473102857c30 vs crash+resume report 9d40473102857c30: identical

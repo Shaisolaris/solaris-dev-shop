@@ -1,0 +1,13 @@
+{"baseline_core": 23, "probes": 21, "bt": "OK", "bo": "12/12 checks passed"}
+{"mutant": "stale_applied", "m25_core": ["K06"], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "r2_window_r1_revert", "m25_core": [], "probes": ["W32"], "probes_r3": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "r2_buffer_window_off", "m25_core": [], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": false}
+{"mutant": "r2_record_symlink_ok", "m25_core": [], "probes": ["D03"], "probes_r3": [], "builder_tests": true, "builder_oracle": false}
+{"mutant": "r2_ackcmd_match", "m25_core": [], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": false}
+{"mutant": "rejected_claims", "m25_core": [], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "isfinite_off_EQUIV", "m25_core": [], "probes": [], "probes_r3": [], "builder_tests": false, "builder_oracle": false}
+{"mutant": "commands_hash_off", "m25_core": ["K20"], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "r3g_hash_snap_only", "m25_core": [], "probes": [], "probes_r3": ["H00:FAIL", "H00:PASS", "H02:FAIL", "H02:PASS", "H03:FAIL", "H03:PASS", "H04:FAIL", "H04:PASS", "H13:1", "H13:4"], "builder_tests": true, "builder_oracle": false}
+{"mutant": "r3g_recount_no_tail", "m25_core": [], "probes": [], "probes_r3": [], "builder_tests": true, "builder_oracle": false}
+{"mutant": "r3g_oserror_uncaught", "m25_core": [], "probes": [], "probes_r3": ["Q05:FAIL", "Q05:PASS"], "builder_tests": true, "builder_oracle": false}
+DONE

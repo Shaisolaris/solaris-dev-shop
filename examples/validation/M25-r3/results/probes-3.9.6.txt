@@ -1,0 +1,25 @@
+R00   PASS  {"rc": 1, "same_as_unbroken": true, "claims": 55}
+R01   PASS  {"edited": "lines", "rc": 4, "same_as_unbroken": false, "resumed_from_line": null, "true_line": 250, "state_unchanged_on_refusal": true, "msg": "rror\": \"state: st-R01.json: its body does not match body_sha256 (edited or damaged); remove i
+R02   PASS  {"edited": "lines", "rc": 4, "same_as_unbroken": false, "resumed_from_line": null, "true_line": 250, "state_unchanged_on_refusal": true, "msg": "rror\": \"state: st-R02.json: its body does not match body_sha256 (edited or damaged); remove i
+R03   PASS  {"edited": "offset", "rc": 4, "same_as_unbroken": false, "resumed_from_line": null, "true_line": 250, "state_unchanged_on_refusal": true, "msg": "rror\": \"state: st-R03.json: its body does not match body_sha256 (edited or damaged); remove 
+R04   PASS  {"edited": "events_prefix_sha256", "rc": 4, "same_as_unbroken": false, "resumed_from_line": null, "true_line": 250, "state_unchanged_on_refusal": true, "msg": "rror\": \"state: st-R04.json: its body does not match body_sha256 (edited or dam
+R05   PASS  {"edited": "tool_version", "rc": 4, "same_as_unbroken": false, "resumed_from_line": null, "true_line": 250, "state_unchanged_on_refusal": true, "msg": "rror\": \"state: st-R05.json: its body does not match body_sha256 (edited or damaged); r
+R06   PASS  {"checkpoint": "[]", "rc": 4, "unchanged": true, "msg": " \"damaged_state\", \"error\": \"state: st-R06.json is not a checkpoint object; remove it to start over\"}"}
+R07   PASS  {"checkpoint": "(empty)", "rc": 4, "unchanged": true, "msg": "damaged_state\", \"error\": \"state: st-R07.json is not a readable checkpoint; remove it to start over\"}"}
+R08   PASS  {"checkpoint": "{\"schema\": 1", "rc": 4, "unchanged": true, "msg": "damaged_state\", \"error\": \"state: st-R08.json is not a readable checkpoint; remove it to start over\"}"}
+R09   PASS  {"checkpoint": "null", "rc": 4, "unchanged": true, "msg": " \"damaged_state\", \"error\": \"state: st-R09.json is not a checkpoint object; remove it to start over\"}"}
+R10   PASS  {"checkpoint": "\"text\"", "rc": 4, "unchanged": true, "msg": " \"damaged_state\", \"error\": \"state: st-R10.json is not a checkpoint object; remove it to start over\"}"}
+R11   PASS  {"rc": 4, "unchanged": true}
+L01   LIMIT {"forged": "claims removed (31), hash recomputed", "rc": 4, "claims": null, "unbroken_claims": 55}
+L02   LIMIT {"forged": "duplicates_dropped +777, hash recomputed", "rc": 4, "dups": null, "unbroken": 184}
+D01   PASS  {"rc": 0}
+D02   PASS  {"rc": 2, "msg": "invalid: --record: afile exists and is not a folder\nnothing written"}
+D03   PASS  {"rc": 2, "msg": "invalid: --record: linkdir exists and is not a folder\nnothing written"}
+D04   PASS  {"rc": 2, "traceback": false, "msg": "invalid: --record: afile is not a folder, so afile/sub cannot be created\nnothing written", "note": "parent is a file"}
+D05   PASS  {"rc": 0, "note": "existing empty folder"}
+W32   PASS  {"records_ahead_of_hole": 32, "gaps": 0, "rc": 0}
+W33   PASS  {"records_ahead_of_hole": 33, "gaps": 1, "rc": 1}
+I01   PASS  {"devices": ["v"], "rc": 1}
+I02   PASS  {"rc": 1, "claims": [], "note": "ack cmd 'c-1\\n' must not claim c-1"}
+L03   LIMIT {"rc": 0, "claims": [], "counts": {"applied": 3, "commands_rejected_by_device": 1, "duplicate_acks": 1}, "note": "doc: rejected ack makes no claim; repeats are duplicate_acks; behaviour pinned by builder"}
+TOTAL 21/21 FAILS []
