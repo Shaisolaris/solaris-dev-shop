@@ -1,0 +1,6 @@
+Mon Oct 19 09:50:04 PDT 2026
+my prefixes: /tmp/m35r2-*, /tmp/m35r2mx-*, /tmp/m35r2fc-*, /tmp/m35r2teeth-*, /tmp/m35o-*, /tmp/m39-eval, /tmp/m39fix, /tmp/m39p-*, /tmp/m39o-*, /tmp/m39fl-*, /tmp/m39mx-*, /tmp/m39fc-*, /tmp/m39teeth-*, /tmp/m39r-*
+builder dirs named this batch, present now: /tmp/g38 /tmp/g38-r2 /tmp/g40 /tmp/g40-inspect 
+other writer dirs present: /tmp/m08-pub /tmp/m16r7-pub-sanitize /tmp/r01 
+repo worktrees under /tmp/m3*: /private/tmp/m35r2-eval /private/tmp/m38-peek /private/tmp/m39-eval 
+none of my prefixes start with /tmp/g or match the other writer's dirs; I touch no builder worktree; /tmp/m38-peek is not mine (my M38 used /tmp/m38-eval, removed) and was left alone

@@ -1,0 +1,74 @@
+diff --git a/employees/product-project/delivery-lead/delivery_evidence.py b/employees/product-project/delivery-lead/delivery_evidence.py
+index b05ff07..1c887ce 100644
+--- a/employees/product-project/delivery-lead/delivery_evidence.py
++++ b/employees/product-project/delivery-lead/delivery_evidence.py
+@@ -215,6 +215,22 @@ def cmd_record(ns):
+         raise Invalid("%s must not be a symlink" % LEDGER_DIR)
+     (d / "logs").mkdir(parents=True, exist_ok=True)
+     read_ledger(root)  # refuse early on a broken ledger, before running anything
++    qos = _load_qos()
++    named = list(ns.inputs or [])
++    for i in named:
++        if os.path.isabs(i) or ".." in Path(i).parts or Path(i).parts[:1] == (LEDGER_DIR,):
++            raise Invalid("input %r must be a relative path inside ROOT and outside %s" % (i[:80], LEDGER_DIR))
++    # every existing file named in the command (other than an output or a .py tool) is an input too
++    outs = set(Path(o).as_posix() for o in ns.outputs)
++    for a in argv[1:]:
++        if a.endswith(".py") or os.path.isabs(a) or ".." in Path(a).parts or Path(a).as_posix() in outs:
++            continue
++        if (root / a).is_file() and not (root / a).is_symlink() and Path(a).parts[:1] != (LEDGER_DIR,):
++            named.append(a)
++    try:
++        inputs = qos.artifact_digests(root, named) if named else {}
++    except ValueError as e:
++        raise Invalid("inputs: %s" % str(e)[:200])
+     log = d / "logs" / ("%s.log" % uuid.uuid4().hex)
+     started = _now()
+     with open(log, "wb") as lf:
+@@ -226,7 +242,6 @@ def cmd_record(ns):
+             rc, why = None, "timeout after %gs" % ns.timeout
+         except OSError as e:
+             rc, why = None, "could not start: %s" % type(e).__name__
+-    qos = _load_qos()
+     outputs = {}
+     try:
+         outputs = qos.artifact_digests(root, ns.outputs)
+@@ -235,7 +250,7 @@ def cmd_record(ns):
+     ok = why is None and rc in ok_exit
+     rec = {"role": ns.role, "worker": ns.worker, "argv": argv, "ok_exit": ok_exit, "exit": rc, "ok": ok,
+            "reason": why if why else (None if ok else "exit %s not in %s" % (rc, ok_exit)),
+-           "claimed_outputs": list(ns.outputs), "outputs": outputs, "tools": _tool_digests(argv, root),
++           "claimed_outputs": list(ns.outputs), "outputs": outputs, "inputs": inputs, "tools": _tool_digests(argv, root),
+            "log": log.relative_to(root).as_posix(), "log_sha256": _sha_file(log),
+            "started": started, "ended": _now(), "worker_identity": "claimed in plain text, not authenticated"}
+     lockp = d / "ledger.lock"
+@@ -322,6 +337,21 @@ def _contribution(qos, root, claim, recs):
+         out.update(state="not_covered", not_recorded=uncovered[:20],
+                    action="the record does not cover these files; re-run with them in --outputs")
+         return out
++    under = lambda p: any(p == w.rstrip("/") or p.startswith(w.rstrip("/") + "/") for w in want)
++    removed = sorted(p for p in recorded if under(p) and p not in current)
++    if removed:
++        out.update(state="stale", removed=removed[:20], action="an output file was removed; re-run: %s" % " ".join(r["argv"]))
++        return out
++    ins = r.get("inputs") or {}
++    if ins:
++        try:
++            now = qos.artifact_digests(root, sorted(ins))
++        except ValueError:
++            now = {}
++        moved = sorted(p for p in ins if now.get(p) != ins[p])
++        if moved:
++            out.update(state="stale", inputs_changed=moved[:20], action="an input changed after the run; re-run: %s" % " ".join(r["argv"]))
++            return out
+     state, detail = qos.binding_state({"digests": {p: recorded[p] for p in current}}, {"digests": current})
+     if state not in ("carried_forward", "current"):
+         out.update(state="stale", changed=detail.get("changed", []), action="re-run: %s" % " ".join(r["argv"]))
+@@ -416,6 +446,7 @@ def main(argv=None):
+     r.add_argument("root")
+     r.add_argument("--role", required=True)
+     r.add_argument("--outputs", nargs="+", required=True)
++    r.add_argument("--inputs", nargs="+", help="files or folders the command reads; a later change makes the record stale")
+     r.add_argument("--ok-exit", default="0")
+     r.add_argument("--worker", default="unnamed")
+     r.add_argument("--timeout", type=float, default=600)

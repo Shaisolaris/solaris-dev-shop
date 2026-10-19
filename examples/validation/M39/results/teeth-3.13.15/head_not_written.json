@@ -1,0 +1,295 @@
+{
+ "tool": "/tmp/m39teeth-4wsf8vxc/head_not_written/employees/product-project/delivery-lead/delivery_evidence.py",
+ "python": "3.13.15",
+ "rows": [
+  {
+   "row": "d01 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "IndexError('list index out of range')"
+   }
+  },
+  {
+   "row": "d02 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "PermissionError(1, 'Operation not permitted')"
+   }
+  },
+  {
+   "row": "d03 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "FileNotFoundError(2, 'No such file or directory')"
+   }
+  },
+  {
+   "row": "d04 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "IndexError('list index out of range')"
+   }
+  },
+  {
+   "row": "D05 duplicate-delivery suppression: resuming twice after a crash after delivery leaves one delivery and GO; a duplicated delivery line or a new revision without its delivery is NO_GO; the new revision delivered once is GO",
+   "pass": false,
+   "sub": {
+    "crash_after_delivery_resume_twice_one_delivery_go": false,
+    "duplicated_delivery_line_no_go": true,
+    "new_revision_without_its_delivery_no_go": true,
+    "new_revision_delivered_once_go": false
+   },
+   "detail": {
+    "crash_after_delivery_resume_twice_one_delivery_go": [
+     false,
+     [
+      75,
+      0,
+      0,
+      1,
+      1
+     ]
+    ],
+    "duplicated_delivery_line_no_go": [
+     true,
+     [
+      1,
+      "delivery_count_wrong"
+     ]
+    ],
+    "new_revision_without_its_delivery_no_go": [
+     true,
+     [
+      1,
+      "incomplete"
+     ]
+    ],
+    "new_revision_delivered_once_go": [
+     false,
+     [
+      0,
+      1,
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "row": "D06 exit codes by default: a dirty-month reconciliation (exit 1) and an invalid-input run (exit 2) block the delivery",
+   "pass": false,
+   "sub": {
+    "dirty_month_exit_1_blocks_by_default": false,
+    "invalid_input_exit_2_blocks_by_default": false,
+    "exit_0_but_output_missing_not_ok": true
+   },
+   "detail": {
+    "dirty_month_exit_1_blocks_by_default": [
+     false,
+     [
+      1,
+      1,
+      "unevidenced"
+     ]
+    ],
+    "invalid_input_exit_2_blocks_by_default": [
+     false,
+     [
+      3,
+      1
+     ]
+    ],
+    "exit_0_but_output_missing_not_ok": [
+     true,
+     [
+      1,
+      false,
+      "outputs: reports/never.txt is not a regular file"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "D07 upstream input changed after review (M39 goal): a changed source CSV or a changed data contract makes the delivery NO_GO",
+   "pass": false,
+   "sub": {
+    "orders_csv_row_added": false,
+    "contract_timezone_changed": false
+   },
+   "detail": {
+    "orders_csv_row_added": [
+     false,
+     [
+      1,
+      1,
+      "NO_GO",
+      {
+       "data/data-engineer": "unevidenced",
+       "infrastructure/database-administrator": "unevidenced"
+      }
+     ]
+    ],
+    "contract_timezone_changed": [
+     false,
+     [
+      1,
+      1,
+      "NO_GO",
+      {
+       "data/data-engineer": "unevidenced",
+       "infrastructure/database-administrator": "unevidenced"
+      }
+     ]
+    ]
+   }
+  },
+  {
+   "row": "D08 fresh-caller input errors: an unknown role, a credential-shaped argument, outputs inside .delivery, outside ROOT or absolute, and a missing claims file give exit 2 with no traceback and write nothing secret",
+   "pass": false,
+   "sub": {
+    "unknown_role_in_claims_exit_2": true,
+    "credential_in_command_refused_never_written": true,
+    "output_in_ledger_dir_refused": true,
+    "output_outside_root_refused": true,
+    "absolute_output_refused": true,
+    "record_role_dotdot_refused": true,
+    "record_role_upper_refused": true,
+    "record_role_double_slash_refused": true,
+    "claims_role_twice_exit_2": true,
+    "claims_order_outside_root_exit_2": true,
+    "verify_writes_no_bytecode_in_repo": true,
+    "verify_out_only_the_named_file": false,
+    "missing_claims_exit_2": true
+   },
+   "detail": {
+    "unknown_role_in_claims_exit_2": [
+     true,
+     [
+      2,
+      "invalid: data/no-such-role is not an employee in this repository (no employees/data/no-such-role/SKILL.md)"
+     ]
+    ],
+    "credential_in_command_refused_never_written": [
+     true,
+     2
+    ],
+    "output_in_ledger_dir_refused": [
+     true,
+     2
+    ],
+    "output_outside_root_refused": [
+     true,
+     2
+    ],
+    "absolute_output_refused": [
+     true,
+     2
+    ],
+    "record_role_dotdot_refused": [
+     true,
+     2
+    ],
+    "record_role_upper_refused": [
+     true,
+     2
+    ],
+    "record_role_double_slash_refused": [
+     true,
+     2
+    ],
+    "claims_role_twice_exit_2": [
+     true,
+     2
+    ],
+    "claims_order_outside_root_exit_2": [
+     true,
+     2
+    ],
+    "verify_writes_no_bytecode_in_repo": [
+     true,
+     []
+    ],
+    "verify_out_only_the_named_file": [
+     false,
+     [
+      [
+       "verdict.json"
+      ],
+      "NO_GO",
+      1
+     ]
+    ],
+    "missing_claims_exit_2": [
+     true,
+     2
+    ]
+   }
+  },
+  {
+   "row": "D09 concurrency and timeouts: eight concurrent recorders all append under the lock with an intact chain; a timed-out command is killed and recorded as not ok; out-of-range timeouts give exit 2",
+   "pass": false,
+   "sub": {
+    "eight_concurrent_recorders_all_appended_chain_intact": false,
+    "timeout_kills_and_records_not_ok": false,
+    "timeout_zero_refused": true,
+    "timeout_too_long_refused": true,
+    "no_wait_with_lock_held_exit_4_nothing_appended": false
+   },
+   "detail": {
+    "eight_concurrent_recorders_all_appended_chain_intact": [
+     false,
+     [
+      [
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3
+      ],
+      1,
+      true,
+      []
+     ]
+    ],
+    "timeout_kills_and_records_not_ok": [
+     false,
+     [
+      3,
+      true,
+      null,
+      0.0
+     ]
+    ],
+    "timeout_zero_refused": [
+     true,
+     2
+    ],
+    "timeout_too_long_refused": [
+     true,
+     2
+    ],
+    "no_wait_with_lock_held_exit_4_nothing_appended": [
+     false,
+     [
+      3,
+      0
+     ]
+    ]
+   }
+  },
+  {
+   "row": "o09 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "IndexError('list index out of range')"
+   }
+  }
+ ]
+}

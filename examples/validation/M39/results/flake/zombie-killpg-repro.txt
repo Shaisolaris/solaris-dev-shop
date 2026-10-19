@@ -1,0 +1,2 @@
+Darwin 27.0.0 3.9.6 {'PermissionError: [Errno 1] Operation not permitted': 20}
+Darwin 27.0.0 3.12.14 {'PermissionError: [Errno 1] Operation not permitted': 20}

@@ -1,0 +1,23 @@
+Mon Oct 19 09:38:22 PDT 2026
+candidate f04d34dbf41364b6dcdb03104a647c2e499bccac parent(s) fabed6adf227e936dcd5690b26697e0fadf667d1
+base fabed6adf227e936dcd5690b26697e0fadf667d1
+fabed6adf227e936dcd5690b26697e0fadf667d1 parents 804f3a33d6418832e09b8367780dda378071d9d3 5606672b464f5daaf08e28cbfa5a8d307f730c27 | G39 prerequisite merge: G19: duplicate-safe API and tenant boundaries (rev at 5606672b464f
+804f3a33d6418832e09b8367780dda378071d9d3 parents 2369b1a0ba5a2c2cfecd2f72adbd19b714b12e13 5666e7beb161d1252ddd5dcc0a166aca83255370 | G39 prerequisite merge: G13 rework r3: M13 r2 findings RT and RD (review o at 5666e7beb161
+2369b1a0ba5a2c2cfecd2f72adbd19b714b12e13 parents 8b38a72f2183ad7427594d6557d7e308baf0469b d4d98f2180ed9b92fd058a2350285f60f83b877d | G39 prerequisite merge: G03 rework r3: M03 r2 findings R-A to R-D (review  at d4d98f2180ed
+8b38a72f2183ad7427594d6557d7e308baf0469b parents 314b4dbf980437cf14bc32438117e5b5b777f942 | G05: revision-bound assurance evidence (review only)
+2369b1a second parent: d4d98f2180ed9b92fd058a2350285f60f83b877d first parent: 8b38a72f2183ad7427594d6557d7e308baf0469b
+804f3a3 second parent: 5666e7beb161d1252ddd5dcc0a166aca83255370 first parent: 2369b1a0ba5a2c2cfecd2f72adbd19b714b12e13
+fabed6a second parent: 5606672b464f5daaf08e28cbfa5a8d307f730c27 first parent: 804f3a33d6418832e09b8367780dda378071d9d3
+expected: G05 8b38a72f, G03 r3 d4d98f2, G13 r3 5666e7b, G19 5606672 (remote heads above)
+bbe682b28e96296723826c1f113e138ccc39c530	refs/heads/review/grok-g02-activation
+d4d98f2180ed9b92fd058a2350285f60f83b877d	refs/heads/review/grok-g03-recovery
+314b4dbf980437cf14bc32438117e5b5b777f942	refs/heads/review/grok-g04-handoff
+8b38a72f2183ad7427594d6557d7e308baf0469b	refs/heads/review/grok-g05-revision-bound-evidence
+5666e7beb161d1252ddd5dcc0a166aca83255370	refs/heads/review/grok-g13-csv-reconciliation
+5606672b464f5daaf08e28cbfa5a8d307f730c27	refs/heads/review/grok-g19-duplicate-safe-api
+merge-tree recompute: c86565120fe96253aa8fb729067b4c8d7d5f7a16 vs 2369b1a tree c86565120fe96253aa8fb729067b4c8d7d5f7a16
+diff sha c79cf299029d6b759546be3daffb0f76ae1d53f7ef422c28792a8bfac56b1bd2 patch file sha c79cf299029d6b759546be3daffb0f76ae1d53f7ef422c28792a8bfac56b1bd2 handback c79cf299029d6b759546be3daffb0f76ae1d53f7ef422c28792a8bfac56b1bd2
+manifest entries 17 mismatches 0
+manifest set == diff set
+merge-tree recompute 804f3a3: 3d449f18fad8a3ee9ebe6f07b0698f847865150b vs 3d449f18fad8a3ee9ebe6f07b0698f847865150b
+merge-tree recompute fabed6a: 403df5fe4ae53987be2f27949cf4e3b35af475a5 vs 403df5fe4ae53987be2f27949cf4e3b35af475a5

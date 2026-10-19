@@ -1,0 +1,8 @@
+DRILL PASSED
+== drill folder after the drill:
+delivery verdict: GO ledger: 4 records, chain intact   data/data-engineer                       evidenced   quality-security/security-auditor        evidenced   infrastructure/database-administrator    evidenced 
+== P2-1 after one order row appended to data/orders.csv:
+delivery verdict: GO ledger: 4 records, chain intact   data/data-engineer                       evidenced   quality-security/security-auditor        evidenced   infrastructure/database-administrator    evidenced 
+re-run of the recorded command: exit 1 (reconciled_with_gaps); report differs from the recorded output
+== P2-2 after snapshots/s1/ledger.db is deleted (remaining: manifest.json ):
+delivery verdict: GO ledger: 4 records, chain intact   data/data-engineer                       evidenced   quality-security/security-auditor        evidenced   infrastructure/database-administrator    evidenced 
