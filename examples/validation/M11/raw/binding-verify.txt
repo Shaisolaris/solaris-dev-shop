@@ -1,0 +1,13 @@
+# M11 binding and prerequisite verify 2026-10-19 02:03:30 PDT (Grok self-validation)
+remote g11 head: 36c1ed1686f013e382eddffa40151073ec0d8d28	refs/heads/review/grok-g11-incident-slo
+candidate parent: 16e265a64d5c8ef807d648cae6ecc66eb5b295cd (want 16e265a64d5c8ef807d648cae6ecc66eb5b295cd)
+16e265a parents: 16e265a64d5c8ef807d648cae6ecc66eb5b295cd d4d98f2180ed9b92fd058a2350285f60f83b877d f79be61580dec0911f6aba56c3bdc746a30898e7
+16e265a tree: 918672fefae65cb4deae3d04a7d95b9834b211b7
+merge-tree --write-tree d4d98f2 f79be61: 918672fefae65cb4deae3d04a7d95b9834b211b7
+G03 branch head: d4d98f2180ed9b92fd058a2350285f60f83b877d	refs/heads/review/grok-g03-recovery
+G10 branch head: f79be61580dec0911f6aba56c3bdc746a30898e7	refs/heads/review/grok-g10-network-diagnosis
+16e265a on a remote branch?:   origin/review/grok-g11-incident-slo 
+patch sha256: fa4747eaafc28e47f5354cd5a31047d8ba40796e659d33f89b42d83e68198af5
+diff --binary sha256: fa4747eaafc28e47f5354cd5a31047d8ba40796e659d33f89b42d83e68198af5
+ 23 files changed, 4736 insertions(+), 4 deletions(-)
+manifest 23 match 23 manifest set == diff set True

@@ -1,0 +1,576 @@
+[
+ {
+  "id": "E16_g10_trace_gating",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "during": [
+    0,
+    null
+   ],
+   "before": [
+    0,
+    null
+   ],
+   "outside_path_rc": 0
+  }
+ },
+ {
+  "id": "E17_zero_denominator_and_window_limit",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "zero_rc": 0,
+   "zero_status": null,
+   "stderr_tail": "",
+   "window_32d_rc": 0
+  }
+ },
+ {
+  "id": "E18_burn_since_change_window",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "trace": []
+  }
+ },
+ {
+  "id": "E01_clean_control_exact",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "diff": {
+    "good": [
+     null,
+     94763
+    ],
+    "total": [
+     null,
+     94785
+    ],
+    "bad": [
+     null,
+     22
+    ],
+    "availability": [
+     null,
+     "0.999768"
+    ],
+    "error_budget_requests": [
+     null,
+     "473.925000"
+    ],
+    "burn_rate": [
+     null,
+     "0.046421"
+    ],
+    "budget_consumed": [
+     null,
+     "0.046421"
+    ],
+    "budget_remaining": [
+     null,
+     "0.953579"
+    ]
+   },
+   "status": null,
+   "decision": null
+  }
+ },
+ {
+  "id": "E02_regression_exact_and_trace_names",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "diff": {
+    "good": [
+     null,
+     91067
+    ],
+    "total": [
+     null,
+     94326
+    ],
+    "bad": [
+     null,
+     3259
+    ],
+    "availability": [
+     null,
+     "0.965450"
+    ],
+    "error_budget_requests": [
+     null,
+     "471.630000"
+    ],
+    "burn_rate": [
+     null,
+     "6.910078"
+    ],
+    "budget_consumed": [
+     null,
+     "6.910078"
+    ],
+    "budget_remaining": [
+     null,
+     "-5.910078"
+    ]
+   },
+   "impact": {},
+   "want_impact": [
+    "2026-09-07T13:33:00Z",
+    "2026-09-07T13:51:00Z",
+    18
+   ],
+   "response": {},
+   "want_response": {
+    "time_to_detect_s": 130,
+    "time_to_mitigate_s": 1025,
+    "time_to_resolve_s": 1500
+   },
+   "decision": null,
+   "trace_names_service_window_revision": false
+  }
+ },
+ {
+  "id": "E03_request_weighted_denominator",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "diff": {
+    "good": [
+     null,
+     98800
+    ],
+    "total": [
+     null,
+     108800
+    ],
+    "bad": [
+     null,
+     10000
+    ],
+    "availability": [
+     null,
+     "0.908088"
+    ],
+    "error_budget_requests": [
+     null,
+     "544.000000"
+    ],
+    "burn_rate": [
+     null,
+     "18.382353"
+    ],
+    "budget_consumed": [
+     null,
+     "18.382353"
+    ],
+    "budget_remaining": [
+     null,
+     "-17.382353"
+    ]
+   }
+  }
+ },
+ {
+  "id": "E04_denominator_window_and_objective_changes",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "outside_window_count": null,
+   "diff_full": {
+    "good": [
+     null,
+     95222
+    ],
+    "total": [
+     null,
+     95242
+    ],
+    "bad": [
+     null,
+     20
+    ],
+    "availability": [
+     null,
+     "0.999790"
+    ],
+    "error_budget_requests": [
+     null,
+     "476.210000"
+    ],
+    "burn_rate": [
+     null,
+     "0.041998"
+    ],
+    "budget_consumed": [
+     null,
+     "0.041998"
+    ],
+    "budget_remaining": [
+     null,
+     "0.958002"
+    ]
+   },
+   "diff_narrow": {
+    "good": [
+     null,
+     63460
+    ],
+    "total": [
+     null,
+     63475
+    ],
+    "bad": [
+     null,
+     15
+    ],
+    "availability": [
+     null,
+     "0.999764"
+    ],
+    "error_budget_requests": [
+     null,
+     "317.375000"
+    ],
+    "burn_rate": [
+     null,
+     "0.047263"
+    ],
+    "budget_consumed": [
+     null,
+     "0.047263"
+    ],
+    "budget_remaining": [
+     null,
+     "0.952737"
+    ]
+   },
+   "diff_obj": {
+    "good": [
+     null,
+     95222
+    ],
+    "total": [
+     null,
+     95242
+    ],
+    "bad": [
+     null,
+     20
+    ],
+    "availability": [
+     null,
+     "0.999790"
+    ],
+    "error_budget_requests": [
+     null,
+     "47.621000"
+    ],
+    "burn_rate": [
+     null,
+     "0.419983"
+    ],
+    "budget_consumed": [
+     null,
+     "0.419983"
+    ],
+    "budget_remaining": [
+     null,
+     "0.580017"
+    ]
+   },
+   "rcs": [
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "id": "E05_duplicate_alerts",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "timeline_alerts": [],
+   "detect": null,
+   "want_detect": 90,
+   "import": null
+  }
+ },
+ {
+  "id": "E05b_duplicate_kept_record",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "kept": []
+  }
+ },
+ {
+  "id": "E06_conflicting_event_refused_out_kept",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rcs": [
+    0,
+    0
+   ],
+   "files": [
+    "b.json"
+   ]
+  }
+ },
+ {
+  "id": "E07_repeated_import_stable",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rcs": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "equal_to_single": [
+    true,
+    true,
+    true,
+    true
+   ],
+   "rerun_identical": true
+  }
+ },
+ {
+  "id": "E08_missing_telemetry_labelled",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "diff": {
+    "good": [
+     null,
+     85845
+    ],
+    "total": [
+     null,
+     85872
+    ],
+    "bad": [
+     null,
+     27
+    ],
+    "availability": [
+     null,
+     "0.999686"
+    ],
+    "error_budget_requests": [
+     null,
+     "429.360000"
+    ],
+    "burn_rate": [
+     null,
+     "0.062884"
+    ],
+    "budget_consumed": [
+     null,
+     "0.062884"
+    ],
+    "budget_remaining": [
+     null,
+     "0.937116"
+    ]
+   },
+   "missing": {},
+   "want_ranges": [
+    [
+     "2026-09-07T13:20:00Z",
+     "2026-09-07T13:26:00Z"
+    ],
+    [
+     "2026-09-07T14:01:00Z",
+     "2026-09-07T14:02:00Z"
+    ]
+   ],
+   "coverage_ok": false,
+   "low_cov_status": null
+  }
+ },
+ {
+  "id": "E08b_gap_after_change_no_rollback",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "decision": null
+  }
+ },
+ {
+  "id": "E09_conflicting_minute_left_out",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "diff": {
+    "good": [
+     null,
+     92209
+    ],
+    "total": [
+     null,
+     92231
+    ],
+    "bad": [
+     null,
+     22
+    ],
+    "availability": [
+     null,
+     "0.999761"
+    ],
+    "error_budget_requests": [
+     null,
+     "461.155000"
+    ],
+    "burn_rate": [
+     null,
+     "0.047706"
+    ],
+    "budget_consumed": [
+     null,
+     "0.047706"
+    ],
+    "budget_remaining": [
+     null,
+     "0.952294"
+    ]
+   },
+   "conflicting": null,
+   "measured": null
+  }
+ },
+ {
+  "id": "E10_late_records_labelled_used",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "diff": {
+    "good": [
+     null,
+     93224
+    ],
+    "total": [
+     null,
+     93248
+    ],
+    "bad": [
+     null,
+     24
+    ],
+    "availability": [
+     null,
+     "0.999743"
+    ],
+    "error_budget_requests": [
+     null,
+     "466.240000"
+    ],
+    "burn_rate": [
+     null,
+     "0.051476"
+    ],
+    "budget_consumed": [
+     null,
+     "0.051476"
+    ],
+    "budget_remaining": [
+     null,
+     "0.948524"
+    ]
+   },
+   "telemetry_late": null
+  }
+ },
+ {
+  "id": "E10b_late_boundary",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "telemetry_late_for_3_at_301s_and_3_at_300s_after_minute_end": null,
+   "note": "doc does not say whether lateness is measured from the minute start or end"
+  }
+ },
+ {
+  "id": "E11",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: KeyError('timeline')"
+ },
+ {
+  "id": "E12_decision_classes",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "got": {
+    "change_outside_window": null,
+    "impact_before_change": null,
+    "slow_burn_below_threshold": null,
+    "migrating_no_snapshot": null
+   },
+   "want": {
+    "change_outside_window": "not_applicable",
+    "impact_before_change": "do_not_rollback",
+    "slow_burn_below_threshold": "do_not_rollback",
+    "migrating_no_snapshot": "rollback_blocked"
+   }
+  }
+ },
+ {
+  "id": "E13_invalid_refused_then_recovers",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "good_gt_total": 0,
+   "negative_total": 0,
+   "float_counts": 0,
+   "window_not_whole_minute": 0,
+   "window_end_before_start": 0,
+   "objective_one": 0,
+   "unknown_event_kind": 0,
+   "bool_counts": 0,
+   "valid_after": 0
+  }
+ },
+ {
+  "id": "E14_zero_traffic_minutes",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "rc": 0,
+   "values_match_request_weighted": false,
+   "measured_minutes": null,
+   "coverage": null
+  }
+ },
+ {
+  "id": "E14b_odd_timestamps",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "telemetry_minute_with_seconds_rc": 0,
+   "event_with_offset_rc": 0,
+   "event_at_in_timeline": []
+  }
+ },
+ {
+  "id": "E15_reads_only",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "files_after": [
+    "b.json"
+   ]
+  }
+ }
+]

@@ -1,0 +1,2 @@
+split_two_sources_every_minute rc 0 {'status': 'met', 'good': 29500, 'total': 29500, 'availability': '1.000000', 'coverage': '0.983333', 'measured_minutes': 59} 1 ['conflicting telemetry for 1 minute(s); left out of the SLO'] 
+equal_counts_two_sources rc 0 {'status': 'met', 'good': 30000, 'total': 30000, 'availability': '1.000000', 'coverage': '1.000000', 'measured_minutes': 60} 0 [] 
