@@ -1,0 +1,250 @@
+{
+ "schema": "solaris.daily-integration/1",
+ "goal": "G42",
+ "base": "02ba9c571b10ad1dba792d2ac5534bcad3171e67",
+ "writable": [
+  "employees/quality-security/assurance/**",
+  "employees/quality-security/qa-engineer/**",
+  "examples/capabilities/G42/**",
+  "tests/test_g42_capability.py"
+ ],
+ "prerequisites": [
+  {
+   "id": "G02",
+   "commit": "8fdae9cead8d136211f596bf1e501a41c5a78078",
+   "note": "G02 r3 (root QA), merged here so the G39 drill runs the repaired activation",
+   "tests": [
+    "tests.test_g02_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G02/activation_oracle.py",
+     "--",
+     "{python}",
+     "employees/product-project/project-onboarding/activate.py"
+    ]
+   ]
+  },
+  {
+   "id": "G03",
+   "commit": "d4d98f2180ed9b92fd058a2350285f60f83b877d",
+   "note": "carried by G39",
+   "tests": [
+    "tests.test_g03_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G03/recovery_oracle.py",
+     "--",
+     "{python}",
+     "employees/infrastructure/database-administrator/sqlite_recovery.py"
+    ]
+   ]
+  },
+  {
+   "id": "G04",
+   "commit": "155fc33ad284b8c8f79c235d96f240abcd64f662",
+   "note": "G04 r2 (root QA), merged here so the G39 drill runs the repaired handoff",
+   "tests": [
+    "tests.test_g04_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G04/handoff_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G05",
+   "commit": "30563781f175d3f012e881fe8d302f5a7aed5c20",
+   "note": "G05 r2 (root QA), carried by G39 r3",
+   "tests": [
+    "tests.test_g05_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G05/binding_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G13",
+   "commit": "5666e7beb161d1252ddd5dcc0a166aca83255370",
+   "note": "carried by G37 and G39",
+   "tests": [
+    "tests.test_g13_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G13/reconcile_oracle.py",
+     "--tool",
+     "{python} employees/data/data-engineer/csv_reconcile.py"
+    ]
+   ]
+  },
+  {
+   "id": "G19",
+   "commit": "350d175e5cf43438e95476f945ea16804e4bba85",
+   "note": "G19 h1 (final docs hardening), carried by G39 r3",
+   "tests": [
+    "tests.test_g19_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G19/boundary_oracle.py",
+     "--server",
+     "{python} employees/engineering/backend-developer/ledger_api.py"
+    ]
+   ]
+  },
+  {
+   "id": "G37",
+   "commit": "e9b7a7772636f927bf21128dc2802ffcac742b44",
+   "note": "G37 h1 (final docs hardening) on accepted 9b0f58e",
+   "tests": [
+    "tests.test_g37_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G37/privacy_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G38",
+   "commit": "b5428517178c032cea8af6bd7ef626e8db4a07b4",
+   "note": "G38 r3",
+   "tests": [
+    "tests.test_g38_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G38/authority_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G39",
+   "commit": "9ab356256d5147c89c0f780d4ab639c584971326",
+   "note": "G39 r3 (M39 r2 fix), on G05 r2 and G19 h1",
+   "tests": [
+    "tests.test_g39_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G39/drill_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G40",
+   "commit": "bb444782e65fa2ea1ca790a335faf7f3917b3191",
+   "note": "G40 r3 (M40 fix), on G39 r3",
+   "tests": [
+    "tests.test_g40_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G40/portability_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G41",
+   "commit": "9b98d9b749a32fb5987a12657e2fc9903ab9edb5",
+   "note": "G41 on G40 r3, base of the merge chain",
+   "tests": [
+    "tests.test_g41_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G41/inventory_oracle.py"
+    ]
+   ]
+  }
+ ],
+ "external": [],
+ "cross_checks": [
+  [
+   "examples/capabilities/G42/cross_checks.py"
+  ]
+ ],
+ "resolved_overlaps": [
+  {
+   "path": "employees/infrastructure/fleet-dispatcher/handoff-work-orders.md",
+   "reason": "G38 and G41 carry the same older copy (blob 2d607b2 from 314b4db). G04 (through commit 155fc33) builds on that commit and changes the file (blob 96af330). HEAD is the G04 blob, the newest, so nothing is lost."
+  },
+  {
+   "path": "employees/infrastructure/fleet-dispatcher/handoff.py",
+   "reason": "G38 and G41 carry the same older copy (blob eb27607 from 314b4db). G04 (through commit 155fc33) builds on that commit and changes the file (blob cc545eb). HEAD is the G04 blob, the newest, so nothing is lost."
+  },
+  {
+   "path": "employees/legal-compliance/legal-advisor/SKILL.md",
+   "reason": "G37 9b0f58e and G38 41ad344 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob eb6f60c)."
+  },
+  {
+   "path": "employees/legal-compliance/legal-advisor/capability.contract.json",
+   "reason": "G37 9b0f58e and G38 41ad344 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob f691132)."
+  },
+  {
+   "path": "employees/legal-compliance/legal-advisor/learnings.md",
+   "reason": "G37 9b0f58e and G38 41ad344 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob 7a7c6f4)."
+  },
+  {
+   "path": "employees/product-project/delivery-lead/SKILL.md",
+   "reason": "G04 and G38 carry the same older copy (blob 7bb0a17 from 314b4db). G41 (through commit 05378c4) builds on that commit and changes the file (blob 302fd88). HEAD is the G41 blob, the newest, so nothing is lost."
+  },
+  {
+   "path": "employees/product-project/project-onboarding/SKILL.md",
+   "reason": "G04 and G38 and G41 carry the same older copy (blob 1801847 from bbe682b). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob 1921766). HEAD is the G02 blob, the newest, so nothing is lost."
+  },
+  {
+   "path": "employees/product-project/project-onboarding/activate.py",
+   "reason": "G04 and G38 and G41 carry the same older copy (blob 37e7d6a from bbe682b). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob daf9978). HEAD is the G02 blob, the newest, so nothing is lost."
+  },
+  {
+   "path": "employees/product-project/project-onboarding/learnings.md",
+   "reason": "G04 and G38 and G41 carry the same older copy (blob ceba76e from bbe682b). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob d3321aa). HEAD is the G02 blob, the newest, so nothing is lost."
+  },
+  {
+   "path": "employees/quality-security/assurance/ASSURANCE.md",
+   "reason": "G38 carries an older copy (blob 6b57a82 from 8b38a72). G41 (through commit 3056378) builds on that commit and changes the file (blob 612ee22). HEAD is the G41 blob, the newest, so nothing is lost."
+  },
+  {
+   "path": "employees/quality-security/assurance/quality_os.py",
+   "reason": "G38 carries an older copy (blob 6bbd6b3 from 8b38a72). G41 (through commit 3056378) builds on that commit and changes the file (blob d3d32f5). HEAD is the G41 blob, the newest, so nothing is lost."
+  },
+  {
+   "path": "employees/quality-security/qa-engineer/SKILL.md",
+   "reason": "G38 carries an older copy (blob c2b2092 from 8b38a72). G41 (through commit 8ebabfd) builds on that commit and changes the file (blob e585eb6). HEAD is the G41 blob, the newest, so nothing is lost."
+  },
+  {
+   "path": "employees/quality-security/security-auditor/SKILL.md",
+   "reason": "G38 41ad344 and G41 5606672 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob 845b475)."
+  },
+  {
+   "path": "employees/quality-security/security-auditor/capability.contract.json",
+   "reason": "G38 41ad344 and G41 5606672 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob d9671a9)."
+  },
+  {
+   "path": "employees/quality-security/security-auditor/learnings.md",
+   "reason": "G38 41ad344 and G41 5606672 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob 99b0320)."
+  },
+  {
+   "path": "examples/capabilities/G02/README.md",
+   "reason": "G04 and G38 and G41 carry the same older copy (blob 7645664 from 4113204). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob c95aecc). HEAD is the G02 blob, the newest, so nothing is lost."
+  },
+  {
+   "path": "examples/capabilities/G02/activation_oracle.py",
+   "reason": "G04 and G38 and G41 carry the same older copy (blob 228c3ec from 4113204). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob 24cc8ef). HEAD is the G02 blob, the newest, so nothing is lost."
+  },
+  {
+   "path": "tests/test_g02_capability.py",
+   "reason": "G04 and G38 and G41 carry the same older copy (blob 129cdc6 from bbe682b). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob ac855ef). HEAD is the G02 blob, the newest, so nothing is lost."
+  },
+  {
+   "path": "tests/test_g04_capability.py",
+   "reason": "G38 and G41 carry the same older copy (blob 6a63af7 from 314b4db). G04 (through commit 155fc33) builds on that commit and changes the file (blob 9751498). HEAD is the G04 blob, the newest, so nothing is lost."
+  }
+ ]
+}
