@@ -1,0 +1,2 @@
+exception_partial_writes_kept builder tests: no kill OK 
+wal_every_open builder tests: no kill OK 

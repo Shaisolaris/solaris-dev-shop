@@ -1,0 +1,14 @@
+Mon Oct 19 05:54:59 PDT 2026
+candidate 1faee8d4e529fbbeac7c64292bed324bdced9796 parent(s) c9109b7f70904d566122afaae3aab62df42f8b42
+02ba9c571b10ad1dba792d2ac5534bcad3171e67	refs/heads/main
+6f7b23aa18413907c5fbd250daab475dc94e7a1e	refs/heads/review/grok-g14-cash-revenue
+5606672b464f5daaf08e28cbfa5a8d307f730c27	refs/heads/review/grok-g19-duplicate-safe-api
+822a9c1aaf2da3a0dace1bd0a0640d992406efa0	refs/heads/review/grok-g21-offline-sync
+1faee8d4e529fbbeac7c64292bed324bdced9796	refs/heads/review/grok-g22-payment-ledger
+base c9109b7f70904d566122afaae3aab62df42f8b42 is ancestor: yes
+patch sha 5143b95d5983e5b7185fa50da61fe97a3db6337b80c7f4082169d3d4695b7d40 diff sha 5143b95d5983e5b7185fa50da61fe97a3db6337b80c7f4082169d3d4695b7d40
+manifest entries 18 mismatches 0
+manifest set == diff set
+merge c9109b7 parents: 6f7b23aa18413907c5fbd250daab475dc94e7a1e 5606672b464f5daaf08e28cbfa5a8d307f730c27
+merge tree da3c0fca0f6297c26f98003bb385b2ac70a3c7e7 merge-tree da3c0fca0f6297c26f98003bb385b2ac70a3c7e7
+G19 5606672 validated by M19 f2e52da (PASS with adversarial findings, see M19 VALIDATION); G14 r2 6f7b23a validated by M14 r2 60682d2

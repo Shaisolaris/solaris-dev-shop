@@ -1,0 +1,28 @@
+== 3.9.6 demo exit 0
+{"db": "<TMPDIR>/tmp.o7N0MyTEio/ledger.db", "currency": "USD", "skus": 3}
+ingest exit 3 (3: two envelopes refused)
+replay exit 3
+USD net cash 32.69 (captured 45.29, refunded 12.60); 2 held or exception events
+  mug-blue on_hand 9 reserved 0 shipped 2 restocked 1
+  poster on_hand 1 reserved 0 shipped 3 restocked 1
+  tee-m on_hand 3 reserved 0 shipped 1 restocked 0
+consistent
+{"out": "<TMPDIR>/tmp.o7N0MyTEio/books", "files": ["invoices.csv", "payments.csv", "credits.csv", "package.json"]}
+period 2026-09-01T00:00:00+00:00 to 2026-10-01T00:00:00+00:00: reconciled
+  USD: revenue 32.69, net cash 32.69 (in 45.29, refunds 12.60), billed 45.29, credit notes 12.60
+       closing AR 0.00 (owed 0.00, customer credit 0.00), deferred 0.00, unbilled 0.00, unapplied cash 0.00
+-- pycache dirs in copy: 0; tree changed: no; HOME entries: ./Library ./Library/Caches ./Library/Caches/com.apple.python 
+== 3.13.15 demo exit 0
+{"db": "<TMPDIR>/tmp.gUr31IItcb/ledger.db", "currency": "USD", "skus": 3}
+ingest exit 3 (3: two envelopes refused)
+replay exit 3
+USD net cash 32.69 (captured 45.29, refunded 12.60); 2 held or exception events
+  mug-blue on_hand 9 reserved 0 shipped 2 restocked 1
+  poster on_hand 1 reserved 0 shipped 3 restocked 1
+  tee-m on_hand 3 reserved 0 shipped 1 restocked 0
+consistent
+{"out": "<TMPDIR>/tmp.gUr31IItcb/books", "files": ["invoices.csv", "payments.csv", "credits.csv", "package.json"]}
+period 2026-09-01T00:00:00+00:00 to 2026-10-01T00:00:00+00:00: reconciled
+  USD: revenue 32.69, net cash 32.69 (in 45.29, refunds 12.60), billed 45.29, credit notes 12.60
+       closing AR 0.00 (owed 0.00, customer credit 0.00), deferred 0.00, unbilled 0.00, unapplied cash 0.00
+-- pycache dirs in copy: 0; tree changed: no; HOME entries: 

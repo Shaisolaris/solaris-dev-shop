@@ -1,0 +1,465 @@
+{
+ "tool": "/tmp/m22mx-RuaS5I/examples/capabilities/G22/noop_ledger.py",
+ "python": "3.13.15",
+ "rows": [
+  {
+   "row": "B01 clean stream: exact money, stock identity, exit 0, check consistent",
+   "pass": false,
+   "detail": {
+    "rc": 0,
+    "check": 0,
+    "s": {
+     "captured": 0,
+     "refunded": 0,
+     "ucap": 0,
+     "uref": 0,
+     "net": 0,
+     "stock": {},
+     "open": 0
+    }
+   }
+  },
+  {
+   "row": "B02 signature and time: tampered, wrong secret, stale, future, malformed refused and nothing stored; 300 s boundary accepted",
+   "pass": false,
+   "detail": "crash KeyError: 'mug-blue'"
+  },
+  {
+   "row": "B03 replay: same id and body once (in batch, across runs, re-signed); other body conflicting_replay; reused payment id is an exception",
+   "pass": false,
+   "detail": {
+    "dups": [
+     0,
+     0,
+     0,
+     {
+      "captured": 0,
+      "refunded": 0,
+      "ucap": 0,
+      "uref": 0,
+      "net": 0,
+      "stock": {},
+      "open": 0
+     }
+    ],
+    "conflicting": [
+     0,
+     false,
+     false
+    ],
+    "reused_payment_id": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "row": "B04 out of order: reversed stream equals in-order; held events listed (exit 1), then applied when the order arrives",
+   "pass": false,
+   "detail": {
+    "reversed": [
+     0,
+     0,
+     {
+      "captured": 0,
+      "refunded": 0,
+      "ucap": 0,
+      "uref": 0,
+      "net": 0,
+      "stock": {},
+      "open": 0
+     }
+    ],
+    "split": [
+     0,
+     0,
+     0,
+     0,
+     {
+      "captured": 0,
+      "refunded": 0,
+      "ucap": 0,
+      "uref": 0,
+      "net": 0,
+      "stock": {},
+      "open": 0
+     },
+     0
+    ],
+    "refund_before_capture": [
+     0,
+     0,
+     0,
+     0,
+     false
+    ]
+   }
+  },
+  {
+   "row": "B05 oversell under concurrency: 10 processes race for 4 tee-m; exactly 4 reserved, no 'database is locked', check consistent; concurrent replays capture once",
+   "pass": false,
+   "detail": "crash KeyError: 'tee-m'"
+  },
+  {
+   "row": "B06 over-refund refused as refund_exceeds_captured, kept as unapplied money; exact remainder accepted",
+   "pass": false,
+   "detail": {
+    "r": [
+     0,
+     0,
+     0
+    ],
+    "s1": {
+     "captured": 0,
+     "refunded": 0,
+     "ucap": 0,
+     "uref": 0,
+     "net": 0,
+     "stock": {},
+     "open": 0
+    },
+    "s2": {
+     "captured": 0,
+     "refunded": 0,
+     "ucap": 0,
+     "uref": 0,
+     "net": 0,
+     "stock": {},
+     "open": 0
+    },
+    "s3": {
+     "captured": 0,
+     "refunded": 0,
+     "ucap": 0,
+     "uref": 0,
+     "net": 0,
+     "stock": {},
+     "open": 0
+    },
+    "check": 0
+   }
+  },
+  {
+   "row": "B07 over-restock refused as restock_exceeds_shipped: stock and money unchanged, refund money unapplied",
+   "pass": false,
+   "detail": "crash KeyError: 'mug-blue'"
+  },
+  {
+   "row": "B08 exact cents: 3 x 0.10 = 0.30 captured, refunds of 0.10 sum exactly, float and 0.300 refused, 0.29 is capture_amount_mismatch",
+   "pass": false,
+   "detail": "crash KeyError: 'poster'"
+  },
+  {
+   "row": "B09 crash drill: --crash-after N exits 70, rerunning the whole batch reaches the clean end state",
+   "pass": false,
+   "detail": {
+    "clean": [
+     0,
+     {
+      "captured": 0,
+      "refunded": 0,
+      "ucap": 0,
+      "uref": 0,
+      "net": 0,
+      "stock": {},
+      "open": 0
+     }
+    ],
+    "1": [
+     0,
+     0,
+     0,
+     0,
+     true
+    ],
+    "2": [
+     0,
+     0,
+     0,
+     0,
+     true
+    ],
+    "3": [
+     0,
+     0,
+     0,
+     0,
+     true
+    ],
+    "4": [
+     0,
+     0,
+     0,
+     0,
+     true
+    ],
+    "5": [
+     0,
+     0,
+     0,
+     0,
+     true
+    ],
+    "6": [
+     0,
+     0,
+     0,
+     0,
+     true
+    ]
+   }
+  },
+  {
+   "row": "B10 export-g14 reconciles in G14 with recognized revenue and net cash equal to the ledger net cash (september fixture and own streams)",
+   "pass": false,
+   "detail": {
+    "september": {
+     "net": 0,
+     "export_rc": 0,
+     "g14_rc": 2,
+     "nums": {},
+     "checks_ok": [],
+     "exceptions_empty": false
+    },
+    "base": {
+     "net": 0,
+     "export_rc": 0,
+     "g14_rc": 2,
+     "nums": {},
+     "checks_ok": [],
+     "exceptions_empty": false
+    },
+    "crash_stream": {
+     "net": 0,
+     "export_rc": 0,
+     "g14_rc": 2,
+     "nums": {},
+     "checks_ok": [],
+     "exceptions_empty": false
+    },
+    "outside_period": {
+     "export_rc": 0,
+     "g14_rc": 2,
+     "nums": {}
+    }
+   }
+  },
+  {
+   "row": "B11 cancel releases the reservation; capture after cancel and cancel after capture are named anomalies",
+   "pass": false,
+   "detail": "crash KeyError: 'tee-m'"
+  },
+  {
+   "row": "B12 seeded soak: shuffled captures/refunds, duplicates, crash restarts on an ample catalog equal an independent cents model",
+   "pass": false,
+   "detail": [
+    {
+     "seed": 0,
+     "n": 34,
+     "ok": false,
+     "rc": [
+      0,
+      0,
+      0
+     ],
+     "got": {
+      "captured": 0,
+      "refunded": 0,
+      "ucap": 0,
+      "uref": 0,
+      "net": 0,
+      "stock": {},
+      "open": 0
+     },
+     "exp": {
+      "cap": 17034,
+      "ref": 2062,
+      "stock": {
+       "mug-blue": [
+        496,
+        5,
+        4,
+        0
+       ],
+       "tee-m": [
+        495,
+        4,
+        6,
+        1
+       ],
+       "poster": [
+        496,
+        8,
+        4,
+        0
+       ]
+      }
+     }
+    },
+    {
+     "seed": 1,
+     "n": 51,
+     "ok": false,
+     "rc": [
+      0,
+      0,
+      0
+     ],
+     "got": {
+      "captured": 0,
+      "refunded": 0,
+      "ucap": 0,
+      "uref": 0,
+      "net": 0,
+      "stock": {},
+      "open": 0
+     },
+     "exp": {
+      "cap": 71981,
+      "ref": 27571,
+      "stock": {
+       "mug-blue": [
+        480,
+        0,
+        27,
+        7
+       ],
+       "tee-m": [
+        487,
+        0,
+        19,
+        6
+       ],
+       "poster": [
+        479,
+        0,
+        25,
+        4
+       ]
+      }
+     }
+    },
+    {
+     "seed": 2,
+     "n": 43,
+     "ok": false,
+     "rc": [
+      0,
+      0,
+      0
+     ],
+     "got": {
+      "captured": 0,
+      "refunded": 0,
+      "ucap": 0,
+      "uref": 0,
+      "net": 0,
+      "stock": {},
+      "open": 0
+     },
+     "exp": {
+      "cap": 52417,
+      "ref": 20626,
+      "stock": {
+       "mug-blue": [
+        481,
+        3,
+        21,
+        2
+       ],
+       "tee-m": [
+        491,
+        7,
+        13,
+        4
+       ],
+       "poster": [
+        483,
+        8,
+        18,
+        1
+       ]
+      }
+     }
+    },
+    {
+     "seed": 3,
+     "n": 41,
+     "ok": false,
+     "rc": [
+      0,
+      0,
+      0
+     ],
+     "got": {
+      "captured": 0,
+      "refunded": 0,
+      "ucap": 0,
+      "uref": 0,
+      "net": 0,
+      "stock": {},
+      "open": 0
+     },
+     "exp": {
+      "cap": 22888,
+      "ref": 13067,
+      "stock": {
+       "mug-blue": [
+        491,
+        14,
+        15,
+        6
+       ],
+       "tee-m": [
+        498,
+        12,
+        2,
+        0
+       ],
+       "poster": [
+        489,
+        7,
+        14,
+        3
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "row": "B13 a refund id already recorded, under a new event id, is an exception and refunds once",
+   "pass": false,
+   "detail": {
+    "rc": 0,
+    "named": false,
+    "s": {
+     "captured": 0,
+     "refunded": 0,
+     "ucap": 0,
+     "uref": 0,
+     "net": 0,
+     "stock": {},
+     "open": 0
+    },
+    "check": 0
+   }
+  },
+  {
+   "row": "B14 an exception writes nothing: a refund whose second restock line exceeds shipped leaves the first line unrestocked",
+   "pass": false,
+   "detail": "crash KeyError: 'mug-blue'"
+  },
+  {
+   "row": "B15 check names each broken invariant alone: stock identity, money rows, reservations, event states (read-only)",
+   "pass": false,
+   "detail": "crash FileNotFoundError: [Errno 2] No such file or directory: '<TMPDIR>/m22o-dc9_nqac/l.db'"
+  },
+  {
+   "row": "B16 race: 24 processes (ingest batches, replays, reports, checks) on one fresh ledger; no 'database is locked', stock conserved",
+   "pass": false,
+   "detail": "crash KeyError: 'poster'"
+  }
+ ]
+}
