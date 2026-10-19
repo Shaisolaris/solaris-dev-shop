@@ -1,0 +1,374 @@
+{
+ "schema": "solaris.resource-decision/1",
+ "decision": {
+  "question": "Synthetic studio: how do we deliver the client platform launch by week 16 without breaking the cash buffer?",
+  "owner": "COO (synthetic role, approves resourcing up to the delegated limit)",
+  "as_of": "2026-10-05",
+  "currency": "USD"
+ },
+ "assumptions": {
+  "be_people": {
+   "value": 3,
+   "unit": "people",
+   "source": "synthetic roster export",
+   "dated": "2026-10-01",
+   "exact": true
+  },
+  "fe_people": {
+   "value": 3,
+   "unit": "people",
+   "source": "synthetic roster export",
+   "dated": "2026-10-01",
+   "exact": true
+  },
+  "hours": {
+   "value": 40,
+   "low": 36,
+   "unit": "hours/week",
+   "source": "synthetic timesheets, last 8 weeks",
+   "dated": "2026-10-01"
+  },
+  "focus": {
+   "value": "0.70",
+   "low": "0.60",
+   "high": "0.75",
+   "unit": "share of hours on project work",
+   "source": "synthetic timesheets, last 8 weeks",
+   "dated": "2026-10-01"
+  },
+  "design_h": {
+   "value": 60,
+   "high": 80,
+   "unit": "hours",
+   "source": "synthetic estimate by the design lead",
+   "dated": "2026-09-30"
+  },
+  "api_h": {
+   "value": 800,
+   "high": 900,
+   "unit": "hours",
+   "source": "synthetic estimate, three-point, backend lead",
+   "dated": "2026-09-30"
+  },
+  "web_h": {
+   "value": 400,
+   "high": 460,
+   "unit": "hours",
+   "source": "synthetic estimate, three-point, frontend lead",
+   "dated": "2026-09-30"
+  },
+  "integ_h": {
+   "value": 120,
+   "high": 150,
+   "unit": "hours",
+   "source": "synthetic estimate, backend lead",
+   "dated": "2026-09-30"
+  },
+  "report_h": {
+   "value": 240,
+   "high": 300,
+   "unit": "hours",
+   "source": "synthetic estimate, backend lead",
+   "dated": "2026-09-30"
+  },
+  "cash_open": {
+   "value": 520000,
+   "low": 505000,
+   "unit": "USD",
+   "source": "synthetic bank statement balance",
+   "dated": "2026-10-01"
+  },
+  "inflow": {
+   "from_g14": {
+    "package": "books-sept/package.json",
+    "measure": "monthly_net_cash"
+   },
+   "low": 98000,
+   "unit": "USD/month",
+   "source": "G14 reconciliation of synthetic September books; low = loss of the smallest retainer",
+   "dated": "2026-10-05"
+  },
+  "burn": {
+   "value": 120000,
+   "high": 126000,
+   "unit": "USD/month",
+   "source": "synthetic payroll and overhead ledger",
+   "dated": "2026-10-01"
+  },
+  "buffer": {
+   "value": 2,
+   "unit": "months of outflow",
+   "source": "synthetic board cash policy",
+   "dated": "2026-06-30",
+   "exact": true
+  },
+  "zero": {
+   "value": 0,
+   "unit": "n/a",
+   "source": "definition",
+   "dated": "2026-10-05",
+   "exact": true
+  },
+  "one": {
+   "value": 1,
+   "unit": "weeks",
+   "source": "definition",
+   "dated": "2026-10-05",
+   "exact": true
+  },
+  "ctr_people": {
+   "value": 2,
+   "unit": "people",
+   "source": "synthetic agency quote",
+   "dated": "2026-10-02",
+   "exact": true
+  },
+  "ctr_start": {
+   "value": 3,
+   "high": 4,
+   "unit": "week",
+   "source": "synthetic agency quote: start in 2-3 weeks",
+   "dated": "2026-10-02",
+   "downside": "high"
+  },
+  "ctr_ramp": {
+   "value": 2,
+   "high": 3,
+   "unit": "weeks at half capacity",
+   "source": "synthetic onboarding history",
+   "dated": "2026-09-15"
+  },
+  "ctr_cost": {
+   "value": 26000,
+   "high": 28000,
+   "unit": "USD/month",
+   "source": "synthetic agency quote",
+   "dated": "2026-10-02"
+  },
+  "ctr_exit": {
+   "value": 2,
+   "unit": "weeks notice",
+   "source": "synthetic agency quote terms",
+   "dated": "2026-10-02",
+   "exact": true
+  },
+  "ctr_exit_cost": {
+   "value": 6500,
+   "unit": "USD",
+   "source": "synthetic agency quote terms (one notice period)",
+   "dated": "2026-10-02",
+   "exact": true
+  },
+  "hire_people": {
+   "value": 2,
+   "unit": "people",
+   "source": "synthetic hiring plan",
+   "dated": "2026-10-01",
+   "exact": true
+  },
+  "hire_start": {
+   "value": 10,
+   "low": 8,
+   "high": 14,
+   "unit": "week",
+   "source": "synthetic hiring history: 8-14 weeks to start",
+   "dated": "2026-09-01",
+   "downside": "high"
+  },
+  "hire_ramp": {
+   "value": 4,
+   "high": 6,
+   "unit": "weeks at half capacity",
+   "source": "synthetic onboarding history",
+   "dated": "2026-09-15"
+  },
+  "hire_cost": {
+   "value": 30000,
+   "high": 32000,
+   "unit": "USD/month fully loaded",
+   "source": "synthetic salary bands x 1.35",
+   "dated": "2026-09-01"
+  },
+  "recruit_fee": {
+   "value": 36000,
+   "unit": "USD",
+   "source": "synthetic recruiter terms",
+   "dated": "2026-09-01",
+   "exact": true
+  },
+  "slip_p": {
+   "value": "0.30",
+   "high": "0.40",
+   "unit": "probability",
+   "source": "synthetic: 3 of the last 10 integrations needed rework",
+   "dated": "2026-09-30"
+  },
+  "slip_h": {
+   "value": 40,
+   "high": 60,
+   "unit": "hours",
+   "source": "synthetic rework history",
+   "dated": "2026-09-30"
+  },
+  "ctr_end": {
+   "value": 16,
+   "high": 18,
+   "low": 15,
+   "unit": "week",
+   "source": "synthetic: engagement ends at launch plus hand-over",
+   "dated": "2026-10-02",
+   "downside": "high"
+  }
+ },
+ "calendar": {
+  "start": "2026-10-05",
+  "weeks": 26
+ },
+ "capacity": [
+  {
+   "role": "backend",
+   "people": "be_people",
+   "hours_per_week": "hours",
+   "focus": "focus"
+  },
+  {
+   "role": "frontend",
+   "people": "fe_people",
+   "hours_per_week": "hours",
+   "focus": "focus"
+  }
+ ],
+ "work": [
+  {
+   "id": "design",
+   "role": "frontend",
+   "hours": "design_h",
+   "priority": 1
+  },
+  {
+   "id": "api",
+   "role": "backend",
+   "hours": "api_h",
+   "priority": 1,
+   "max_people": 5
+  },
+  {
+   "id": "web",
+   "role": "frontend",
+   "hours": "web_h",
+   "after": [
+    "design"
+   ],
+   "priority": 1
+  },
+  {
+   "id": "integration",
+   "role": "backend",
+   "hours": "integ_h",
+   "after": [
+    "api",
+    "web"
+   ],
+   "priority": 1,
+   "max_people": 3
+  },
+  {
+   "id": "reporting",
+   "role": "backend",
+   "hours": "report_h",
+   "priority": 3
+  }
+ ],
+ "milestones": [
+  {
+   "id": "launch",
+   "needs": [
+    "integration"
+   ],
+   "deadline_week": 16
+  }
+ ],
+ "cash": {
+  "opening": "cash_open",
+  "monthly_inflow": "inflow",
+  "monthly_outflow": "burn",
+  "min_buffer_months": "buffer"
+ },
+ "options": [
+  {
+   "id": "as-is",
+   "label": "current team, full scope",
+   "reversible": true,
+   "undo": {
+    "weeks": "zero",
+    "cost": "zero"
+   }
+  },
+  {
+   "id": "contractors",
+   "label": "two contract backend engineers from week 3 to launch",
+   "capacity_add": [
+    {
+     "role": "backend",
+     "people": "ctr_people",
+     "from_week": "ctr_start",
+     "ramp_weeks": "ctr_ramp",
+     "until_week": "ctr_end"
+    }
+   ],
+   "monthly_cost": "ctr_cost",
+   "cost_from_week": "ctr_start",
+   "reversible": true,
+   "undo": {
+    "weeks": "ctr_exit",
+    "cost": "ctr_exit_cost"
+   },
+   "cost_until_week": "ctr_end"
+  },
+  {
+   "id": "hire",
+   "label": "two permanent backend hires",
+   "capacity_add": [
+    {
+     "role": "backend",
+     "people": "hire_people",
+     "from_week": "hire_start",
+     "ramp_weeks": "hire_ramp"
+    }
+   ],
+   "one_time_cost": "recruit_fee",
+   "monthly_cost": "hire_cost",
+   "cost_from_week": "hire_start",
+   "reversible": false,
+   "why_irreversible": "permanent offers; unwinding means severance and lost trust"
+  },
+  {
+   "id": "descope-reporting",
+   "label": "launch without the reporting module, two weeks later",
+   "descope": [
+    "reporting"
+   ],
+   "deadline_shift_weeks": 2,
+   "reversible": true,
+   "undo": {
+    "weeks": "one",
+    "cost": "zero"
+   }
+  }
+ ],
+ "risks": [
+  {
+   "id": "R1",
+   "text": "integration rework after client acceptance testing",
+   "owner": "backend lead (synthetic)",
+   "mitigation": "contract test suite agreed with the client in week 2",
+   "applies_to": "all",
+   "work": "integration",
+   "probability": "slip_p",
+   "extra_hours": "slip_h"
+  }
+ ],
+ "dissent": [
+  "Delivery lead (synthetic): prefers descoping to adding contractors, citing onboarding drag."
+ ]
+}

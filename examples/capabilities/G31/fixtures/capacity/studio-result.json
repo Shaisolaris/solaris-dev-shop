@@ -1,0 +1,870 @@
+{
+ "as_of": "2026-10-05",
+ "assumptions": {
+  "api_h": {
+   "downside_bound": null,
+   "exact": false,
+   "high": 900,
+   "low": 800,
+   "ranged": true,
+   "stale": false,
+   "unit": "hours",
+   "value": 800
+  },
+  "be_people": {
+   "downside_bound": null,
+   "exact": true,
+   "high": 3,
+   "low": 3,
+   "ranged": true,
+   "stale": false,
+   "unit": "people",
+   "value": 3
+  },
+  "buffer": {
+   "downside_bound": null,
+   "exact": true,
+   "high": 2,
+   "low": 2,
+   "ranged": true,
+   "stale": false,
+   "unit": "months of outflow",
+   "value": 2
+  },
+  "burn": {
+   "downside_bound": null,
+   "exact": false,
+   "high": 126000,
+   "low": 120000,
+   "ranged": true,
+   "stale": false,
+   "unit": "USD/month",
+   "value": 120000
+  },
+  "cash_open": {
+   "downside_bound": null,
+   "exact": false,
+   "high": 520000,
+   "low": 505000,
+   "ranged": true,
+   "stale": false,
+   "unit": "USD",
+   "value": 520000
+  },
+  "ctr_cost": {
+   "downside_bound": null,
+   "exact": false,
+   "high": 28000,
+   "low": 26000,
+   "ranged": true,
+   "stale": false,
+   "unit": "USD/month",
+   "value": 26000
+  },
+  "ctr_end": {
+   "downside_bound": "high",
+   "exact": false,
+   "high": 18,
+   "low": 15,
+   "ranged": true,
+   "stale": false,
+   "unit": "week",
+   "value": 16
+  },
+  "ctr_exit": {
+   "downside_bound": null,
+   "exact": true,
+   "high": 2,
+   "low": 2,
+   "ranged": true,
+   "stale": false,
+   "unit": "weeks notice",
+   "value": 2
+  },
+  "ctr_exit_cost": {
+   "downside_bound": null,
+   "exact": true,
+   "high": 6500,
+   "low": 6500,
+   "ranged": true,
+   "stale": false,
+   "unit": "USD",
+   "value": 6500
+  },
+  "ctr_people": {
+   "downside_bound": null,
+   "exact": true,
+   "high": 2,
+   "low": 2,
+   "ranged": true,
+   "stale": false,
+   "unit": "people",
+   "value": 2
+  },
+  "ctr_ramp": {
+   "downside_bound": null,
+   "exact": false,
+   "high": 3,
+   "low": 2,
+   "ranged": true,
+   "stale": false,
+   "unit": "weeks at half capacity",
+   "value": 2
+  },
+  "ctr_start": {
+   "downside_bound": "high",
+   "exact": false,
+   "high": 4,
+   "low": 3,
+   "ranged": true,
+   "stale": false,
+   "unit": "week",
+   "value": 3
+  },
+  "design_h": {
+   "downside_bound": null,
+   "exact": false,
+   "high": 80,
+   "low": 60,
+   "ranged": true,
+   "stale": false,
+   "unit": "hours",
+   "value": 60
+  },
+  "fe_people": {
+   "downside_bound": null,
+   "exact": true,
+   "high": 3,
+   "low": 3,
+   "ranged": true,
+   "stale": false,
+   "unit": "people",
+   "value": 3
+  },
+  "focus": {
+   "downside_bound": null,
+   "exact": false,
+   "high": "0.75",
+   "low": "0.6",
+   "ranged": true,
+   "stale": false,
+   "unit": "share of hours on project work",
+   "value": "0.7"
+  },
+  "hire_cost": {
+   "downside_bound": null,
+   "exact": false,
+   "high": 32000,
+   "low": 30000,
+   "ranged": true,
+   "stale": false,
+   "unit": "USD/month fully loaded",
+   "value": 30000
+  },
+  "hire_people": {
+   "downside_bound": null,
+   "exact": true,
+   "high": 2,
+   "low": 2,
+   "ranged": true,
+   "stale": false,
+   "unit": "people",
+   "value": 2
+  },
+  "hire_ramp": {
+   "downside_bound": null,
+   "exact": false,
+   "high": 6,
+   "low": 4,
+   "ranged": true,
+   "stale": false,
+   "unit": "weeks at half capacity",
+   "value": 4
+  },
+  "hire_start": {
+   "downside_bound": "high",
+   "exact": false,
+   "high": 14,
+   "low": 8,
+   "ranged": true,
+   "stale": false,
+   "unit": "week",
+   "value": 10
+  },
+  "hours": {
+   "downside_bound": null,
+   "exact": false,
+   "high": 40,
+   "low": 36,
+   "ranged": true,
+   "stale": false,
+   "unit": "hours/week",
+   "value": 40
+  },
+  "inflow": {
+   "downside_bound": null,
+   "exact": false,
+   "high": 109500,
+   "low": 98000,
+   "ranged": true,
+   "stale": false,
+   "unit": "USD/month",
+   "value": 109500
+  },
+  "integ_h": {
+   "downside_bound": null,
+   "exact": false,
+   "high": 150,
+   "low": 120,
+   "ranged": true,
+   "stale": false,
+   "unit": "hours",
+   "value": 120
+  },
+  "one": {
+   "downside_bound": null,
+   "exact": true,
+   "high": 1,
+   "low": 1,
+   "ranged": true,
+   "stale": false,
+   "unit": "weeks",
+   "value": 1
+  },
+  "recruit_fee": {
+   "downside_bound": null,
+   "exact": true,
+   "high": 36000,
+   "low": 36000,
+   "ranged": true,
+   "stale": false,
+   "unit": "USD",
+   "value": 36000
+  },
+  "report_h": {
+   "downside_bound": null,
+   "exact": false,
+   "high": 300,
+   "low": 240,
+   "ranged": true,
+   "stale": false,
+   "unit": "hours",
+   "value": 240
+  },
+  "slip_h": {
+   "downside_bound": null,
+   "exact": false,
+   "high": 60,
+   "low": 40,
+   "ranged": true,
+   "stale": false,
+   "unit": "hours",
+   "value": 40
+  },
+  "slip_p": {
+   "downside_bound": null,
+   "exact": false,
+   "high": "0.4",
+   "low": "0.3",
+   "ranged": true,
+   "stale": false,
+   "unit": "probability",
+   "value": "0.3"
+  },
+  "web_h": {
+   "downside_bound": null,
+   "exact": false,
+   "high": 460,
+   "low": 400,
+   "ranged": true,
+   "stale": false,
+   "unit": "hours",
+   "value": 400
+  },
+  "zero": {
+   "downside_bound": null,
+   "exact": true,
+   "high": 0,
+   "low": 0,
+   "ranged": true,
+   "stale": false,
+   "unit": "n/a",
+   "value": 0
+  }
+ },
+ "certainty": "computed only from the stated assumptions and their ranges; not a forecast, and no outcome is certain. The decision owner decides.",
+ "currency": "USD",
+ "decision_owner": "COO (synthetic role, approves resourcing up to the delegated limit)",
+ "dissent": [
+  "Delivery lead (synthetic): prefers descoping to adding contractors, citing onboarding drag."
+ ],
+ "evidence": {
+  "inflow": {
+   "exit": 0,
+   "package": "books-sept/package.json",
+   "package_sha256": "8aeed7ce62f4c4224132f32a4a6d0c3eb283aab8250202b9b8172b1c6edd71bd",
+   "period": {
+    "end": "2026-10-01T00:00:00+00:00",
+    "start": "2026-09-01T00:00:00+00:00"
+   },
+   "result": "reconciled"
+  }
+ },
+ "facts": {
+  "api_h": {
+   "dated": "2026-09-30",
+   "source": "synthetic estimate, three-point, backend lead"
+  },
+  "be_people": {
+   "dated": "2026-10-01",
+   "source": "synthetic roster export"
+  },
+  "buffer": {
+   "dated": "2026-06-30",
+   "source": "synthetic board cash policy"
+  },
+  "burn": {
+   "dated": "2026-10-01",
+   "source": "synthetic payroll and overhead ledger"
+  },
+  "cash_open": {
+   "dated": "2026-10-01",
+   "source": "synthetic bank statement balance"
+  },
+  "ctr_cost": {
+   "dated": "2026-10-02",
+   "source": "synthetic agency quote"
+  },
+  "ctr_end": {
+   "dated": "2026-10-02",
+   "source": "synthetic: engagement ends at launch plus hand-over"
+  },
+  "ctr_exit": {
+   "dated": "2026-10-02",
+   "source": "synthetic agency quote terms"
+  },
+  "ctr_exit_cost": {
+   "dated": "2026-10-02",
+   "source": "synthetic agency quote terms (one notice period)"
+  },
+  "ctr_people": {
+   "dated": "2026-10-02",
+   "source": "synthetic agency quote"
+  },
+  "ctr_ramp": {
+   "dated": "2026-09-15",
+   "source": "synthetic onboarding history"
+  },
+  "ctr_start": {
+   "dated": "2026-10-02",
+   "source": "synthetic agency quote: start in 2-3 weeks"
+  },
+  "design_h": {
+   "dated": "2026-09-30",
+   "source": "synthetic estimate by the design lead"
+  },
+  "fe_people": {
+   "dated": "2026-10-01",
+   "source": "synthetic roster export"
+  },
+  "focus": {
+   "dated": "2026-10-01",
+   "source": "synthetic timesheets, last 8 weeks"
+  },
+  "hire_cost": {
+   "dated": "2026-09-01",
+   "source": "synthetic salary bands x 1.35"
+  },
+  "hire_people": {
+   "dated": "2026-10-01",
+   "source": "synthetic hiring plan"
+  },
+  "hire_ramp": {
+   "dated": "2026-09-15",
+   "source": "synthetic onboarding history"
+  },
+  "hire_start": {
+   "dated": "2026-09-01",
+   "source": "synthetic hiring history: 8-14 weeks to start"
+  },
+  "hours": {
+   "dated": "2026-10-01",
+   "source": "synthetic timesheets, last 8 weeks"
+  },
+  "inflow": {
+   "dated": "2026-10-05",
+   "source": "G14 reconciliation of synthetic September books; low = loss of the smallest retainer"
+  },
+  "integ_h": {
+   "dated": "2026-09-30",
+   "source": "synthetic estimate, backend lead"
+  },
+  "one": {
+   "dated": "2026-10-05",
+   "source": "definition"
+  },
+  "recruit_fee": {
+   "dated": "2026-09-01",
+   "source": "synthetic recruiter terms"
+  },
+  "report_h": {
+   "dated": "2026-09-30",
+   "source": "synthetic estimate, backend lead"
+  },
+  "slip_h": {
+   "dated": "2026-09-30",
+   "source": "synthetic rework history"
+  },
+  "slip_p": {
+   "dated": "2026-09-30",
+   "source": "synthetic: 3 of the last 10 integrations needed rework"
+  },
+  "web_h": {
+   "dated": "2026-09-30",
+   "source": "synthetic estimate, three-point, frontend lead"
+  },
+  "zero": {
+   "dated": "2026-10-05",
+   "source": "definition"
+  }
+ },
+ "feasible_in_downside": [
+  "descope-reporting"
+ ],
+ "options": [
+  {
+   "cases": {
+    "base": {
+     "binding_constraints": [],
+     "cash": {
+      "buffer_breach": null,
+      "closing": "457000.00",
+      "lowest": "457000.00",
+      "lowest_week": 26,
+      "runway_note": "weeks from start until cash reaches zero at the end-of-horizon rate",
+      "runway_weeks": "214.603175",
+      "weekly_net_at_end": "-2423.08"
+     },
+     "feasible": true,
+     "finish_weeks": {
+      "api": 10,
+      "design": 1,
+      "integration": 12,
+      "reporting": 14,
+      "web": 6
+     },
+     "milestones": [
+      {
+       "deadline_week": 16,
+       "descoped_needs": [],
+       "finish_week": 12,
+       "id": "launch",
+       "met": true
+      }
+     ],
+     "unfinished_hours": {}
+    },
+    "downside": {
+     "binding_constraints": [
+      "capacity"
+     ],
+     "cash": {
+      "buffer_breach": null,
+      "closing": "337000.00",
+      "lowest": "337000.00",
+      "lowest_week": 26,
+      "runway_note": "weeks from start until cash reaches zero at the end-of-horizon rate",
+      "runway_weeks": "78.154762",
+      "weekly_net_at_end": "-6461.54"
+     },
+     "feasible": false,
+     "finish_weeks": {
+      "api": 14,
+      "design": 2,
+      "integration": 18,
+      "reporting": 22,
+      "web": 10
+     },
+     "milestones": [
+      {
+       "binding": "capacity: backend short 73.2 hours by week 16",
+       "capacity_short_hours": {
+        "backend": "73.2"
+       },
+       "deadline_week": 16,
+       "descoped_needs": [],
+       "earliest_feasible_week": 18,
+       "finish_week": 18,
+       "id": "launch",
+       "late_work": [
+        "integration"
+       ],
+       "met": false
+      }
+     ],
+     "unfinished_hours": {}
+    }
+   },
+   "deadline_shift_weeks": 0,
+   "descope": [],
+   "feasible_base": true,
+   "feasible_downside": false,
+   "id": "as-is",
+   "label": "current team, full scope",
+   "narrowed": {
+    "drop_optional_work": [],
+    "earliest_milestone_weeks": {
+     "launch": 18
+    },
+    "feasible_downside": false,
+    "note": "dropping optional work does not make it feasible; the milestones need a later date, more capacity, or less required scope (the owner's call)"
+   },
+   "reversible": true,
+   "risk_exposure": [
+    {
+     "expected_cost": "0.00",
+     "extra_hours": 40,
+     "id": "R1",
+     "mitigation": "contract test suite agreed with the client in week 2",
+     "owner": "backend lead (synthetic)",
+     "probability": "0.3",
+     "work": "integration"
+    }
+   ],
+   "undo": {
+    "cost": {
+     "base": "0.00",
+     "downside": "0.00"
+    },
+    "weeks": {
+     "base": 0,
+     "downside": 0
+    }
+   }
+  },
+  {
+   "cases": {
+    "base": {
+     "binding_constraints": [],
+     "cash": {
+      "buffer_breach": null,
+      "closing": "373000.00",
+      "lowest": "373000.00",
+      "lowest_week": 26,
+      "runway_note": "weeks from start until cash reaches zero at the end-of-horizon rate",
+      "runway_weeks": "179.936508",
+      "weekly_net_at_end": "-2423.08"
+     },
+     "feasible": true,
+     "finish_weeks": {
+      "api": 7,
+      "design": 1,
+      "integration": 9,
+      "reporting": 10,
+      "web": 6
+     },
+     "milestones": [
+      {
+       "deadline_week": 16,
+       "descoped_needs": [],
+       "finish_week": 9,
+       "id": "launch",
+       "met": true
+      }
+     ],
+     "unfinished_hours": {}
+    },
+    "downside": {
+     "binding_constraints": [
+      "cash"
+     ],
+     "cash": {
+      "buffer_breach": {
+       "balance": "304692.31",
+       "buffer": "308000.00",
+       "week": 17
+      },
+      "closing": "240076.92",
+      "lowest": "240076.92",
+      "lowest_week": 26,
+      "runway_note": "weeks from start until cash reaches zero at the end-of-horizon rate",
+      "runway_weeks": "63.154762",
+      "weekly_net_at_end": "-6461.54"
+     },
+     "feasible": false,
+     "finish_weeks": {
+      "api": 11,
+      "design": 2,
+      "integration": 15,
+      "reporting": 15,
+      "web": 10
+     },
+     "milestones": [
+      {
+       "deadline_week": 16,
+       "descoped_needs": [],
+       "finish_week": 15,
+       "id": "launch",
+       "met": true
+      }
+     ],
+     "unfinished_hours": {}
+    }
+   },
+   "deadline_shift_weeks": 0,
+   "descope": [],
+   "feasible_base": true,
+   "feasible_downside": false,
+   "id": "contractors",
+   "label": "two contract backend engineers from week 3 to launch",
+   "narrowed": {
+    "cash_buffer_breach": {
+     "balance": "304692.31",
+     "buffer": "308000.00",
+     "week": 17
+    },
+    "drop_optional_work": [],
+    "feasible_downside": false,
+    "note": "the schedule holds but cash falls below the buffer in week 17; it needs a lower or shorter cost, more cash, or a buffer exception (the owner's call)"
+   },
+   "reversible": true,
+   "risk_exposure": [
+    {
+     "expected_cost": "0.00",
+     "extra_hours": 40,
+     "id": "R1",
+     "mitigation": "contract test suite agreed with the client in week 2",
+     "owner": "backend lead (synthetic)",
+     "probability": "0.3",
+     "work": "integration"
+    }
+   ],
+   "undo": {
+    "cost": {
+     "base": "6500.00",
+     "downside": "6500.00"
+    },
+    "weeks": {
+     "base": 2,
+     "downside": 2
+    }
+   }
+  },
+  {
+   "cases": {
+    "base": {
+     "binding_constraints": [],
+     "cash": {
+      "buffer_breach": null,
+      "closing": "303307.69",
+      "lowest": "303307.69",
+      "lowest_week": 26,
+      "runway_note": "weeks from start until cash reaches zero at the end-of-horizon rate",
+      "runway_weeks": "58.452675",
+      "weekly_net_at_end": "-9346.15"
+     },
+     "feasible": true,
+     "finish_weeks": {
+      "api": 10,
+      "design": 1,
+      "integration": 12,
+      "reporting": 13,
+      "web": 6
+     },
+     "milestones": [
+      {
+       "deadline_week": 16,
+       "descoped_needs": [],
+       "finish_week": 12,
+       "id": "launch",
+       "met": true
+      }
+     ],
+     "unfinished_hours": {}
+    },
+    "downside": {
+     "binding_constraints": [
+      "capacity",
+      "cash"
+     ],
+     "cash": {
+      "buffer_breach": {
+       "balance": "315769.23",
+       "buffer": "316000.00",
+       "week": 18
+      },
+      "closing": "205000.00",
+      "lowest": "205000.00",
+      "lowest_week": 26,
+      "runway_note": "weeks from start until cash reaches zero at the end-of-horizon rate",
+      "runway_weeks": "40.805556",
+      "weekly_net_at_end": "-13846.15"
+     },
+     "feasible": false,
+     "finish_weeks": {
+      "api": 14,
+      "design": 2,
+      "integration": 18,
+      "reporting": 20,
+      "web": 10
+     },
+     "milestones": [
+      {
+       "binding": "capacity: backend short 8.4 hours by week 16",
+       "capacity_short_hours": {
+        "backend": "8.4"
+       },
+       "deadline_week": 16,
+       "descoped_needs": [],
+       "earliest_feasible_week": 18,
+       "finish_week": 18,
+       "id": "launch",
+       "late_work": [
+        "integration"
+       ],
+       "met": false
+      }
+     ],
+     "unfinished_hours": {}
+    }
+   },
+   "deadline_shift_weeks": 0,
+   "descope": [],
+   "feasible_base": true,
+   "feasible_downside": false,
+   "id": "hire",
+   "label": "two permanent backend hires",
+   "narrowed": {
+    "drop_optional_work": [],
+    "earliest_milestone_weeks": {
+     "launch": 18
+    },
+    "feasible_downside": false,
+    "note": "dropping optional work does not make it feasible; the milestones need a later date, more capacity, or less required scope (the owner's call)"
+   },
+   "reversible": false,
+   "risk_exposure": [
+    {
+     "expected_cost": "0.00",
+     "extra_hours": 40,
+     "id": "R1",
+     "mitigation": "contract test suite agreed with the client in week 2",
+     "owner": "backend lead (synthetic)",
+     "probability": "0.3",
+     "work": "integration"
+    }
+   ],
+   "why_irreversible": "permanent offers; unwinding means severance and lost trust"
+  },
+  {
+   "cases": {
+    "base": {
+     "binding_constraints": [],
+     "cash": {
+      "buffer_breach": null,
+      "closing": "457000.00",
+      "lowest": "457000.00",
+      "lowest_week": 26,
+      "runway_note": "weeks from start until cash reaches zero at the end-of-horizon rate",
+      "runway_weeks": "214.603175",
+      "weekly_net_at_end": "-2423.08"
+     },
+     "feasible": true,
+     "finish_weeks": {
+      "api": 10,
+      "design": 1,
+      "integration": 12,
+      "web": 6
+     },
+     "milestones": [
+      {
+       "deadline_week": 18,
+       "descoped_needs": [],
+       "finish_week": 12,
+       "id": "launch",
+       "met": true
+      }
+     ],
+     "unfinished_hours": {}
+    },
+    "downside": {
+     "binding_constraints": [],
+     "cash": {
+      "buffer_breach": null,
+      "closing": "337000.00",
+      "lowest": "337000.00",
+      "lowest_week": 26,
+      "runway_note": "weeks from start until cash reaches zero at the end-of-horizon rate",
+      "runway_weeks": "78.154762",
+      "weekly_net_at_end": "-6461.54"
+     },
+     "feasible": true,
+     "finish_weeks": {
+      "api": 14,
+      "design": 2,
+      "integration": 18,
+      "web": 10
+     },
+     "milestones": [
+      {
+       "deadline_week": 18,
+       "descoped_needs": [],
+       "finish_week": 18,
+       "id": "launch",
+       "met": true
+      }
+     ],
+     "unfinished_hours": {}
+    }
+   },
+   "deadline_shift_weeks": 2,
+   "descope": [
+    "reporting"
+   ],
+   "feasible_base": true,
+   "feasible_downside": true,
+   "id": "descope-reporting",
+   "label": "launch without the reporting module, two weeks later",
+   "reversible": true,
+   "risk_exposure": [
+    {
+     "expected_cost": "0.00",
+     "extra_hours": 40,
+     "id": "R1",
+     "mitigation": "contract test suite agreed with the client in week 2",
+     "owner": "backend lead (synthetic)",
+     "probability": "0.3",
+     "work": "integration"
+    }
+   ],
+   "undo": {
+    "cost": {
+     "base": "0.00",
+     "downside": "0.00"
+    },
+    "weeks": {
+     "base": 1,
+     "downside": 1
+    }
+   }
+  }
+ ],
+ "ordering_rule": "options feasible in the downside case, reversible first, then by highest lowest-cash; an ordering of what the numbers allow, not a recommendation",
+ "package_sha256": "c8b2794f43123d10aba8a4b3904b584bae2280a7673d529a0dbd4c572f68ab83",
+ "question": "Synthetic studio: how do we deliver the client platform launch by week 16 without breaking the cash buffer?",
+ "read_only": "local files only; nothing was sent, posted, hired, bought or booked",
+ "required_evidence": [],
+ "risk": [
+  {
+   "applies_to": "all",
+   "id": "R1",
+   "mitigation": "contract test suite agreed with the client in week 2",
+   "owner": "backend lead (synthetic)",
+   "text": "integration rework after client acceptance testing"
+  }
+ ],
+ "schema": "solaris.resource-decision-report/1",
+ "status": "feasible_options",
+ "warnings": [],
+ "weeks": 26
+}
