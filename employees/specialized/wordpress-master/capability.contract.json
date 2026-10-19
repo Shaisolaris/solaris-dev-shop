@@ -238,9 +238,12 @@
       "plugin.json",
       "depth-2026-06.md",
       "hosting-cleanup-hardening.md",
-      "wp-modern-engineering-methodology.md"
+      "wp-modern-engineering-methodology.md",
+      "wp-trace-diagnosis.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "wp_trace_diag.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -302,6 +305,12 @@
           "id": "ref-wp-modern-engineering-methodology-md",
           "kind": "file_exists",
           "target": "wp-modern-engineering-methodology.md",
+          "required": false
+        },
+        {
+          "id": "ref-wp-trace-diagnosis-md",
+          "kind": "file_exists",
+          "target": "wp-trace-diagnosis.md",
           "required": false
         }
       ],
@@ -513,7 +522,8 @@
       "plugin.json",
       "depth-2026-06.md",
       "hosting-cleanup-hardening.md",
-      "wp-modern-engineering-methodology.md"
+      "wp-modern-engineering-methodology.md",
+      "wp-trace-diagnosis.md"
     ]
   }
 }

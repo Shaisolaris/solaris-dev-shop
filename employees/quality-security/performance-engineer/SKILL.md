@@ -221,6 +221,7 @@ Escalate to a human, do not proceed, when the only remaining measurement require
 | Infrastructure scale | Cloud Architect | Right-size + autoscale |
 | Production reliability | SRE | SLO alignment |
 | Security review | Security Auditor | Perf fixes that don't weaken security |
+| WordPress slow query or config fault from a capture | WordPress Master (`wp_trace_diag.py`) | Localize by component; `compare` decides if a speedup can be claimed |
 
 ---
 
