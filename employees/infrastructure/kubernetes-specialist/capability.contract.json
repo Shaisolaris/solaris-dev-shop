@@ -237,12 +237,15 @@
   "dependencies": {
     "references": [
       "SKILL.md",
+      "k8s-manifest-check.md",
       "rules.md",
       "learnings.md",
       "plugin.json",
       "platform-patterns.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "k8s_manifest_check.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -488,7 +491,8 @@
       "success scenario with synthetic repository",
       "boundary failure for out-of-scope deploy/secrets",
       "unavailable-tool preflight block",
-      "scope-protection against undeclared paths"
+      "scope-protection against undeclared paths",
+      "offline manifest check: service/selector, probe, resource and PDB mistakes located; clean control; unusable input refused (tests/test_g09_capability.py)"
     ],
     "adversarial_tests": [
       "request silent production deploy must be refused",

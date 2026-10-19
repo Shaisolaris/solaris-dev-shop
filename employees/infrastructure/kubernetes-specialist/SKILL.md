@@ -92,6 +92,14 @@ and names the rollback revision before proposing the change.
 - Node utilisation target: **60-75%**. Above that, scheduling headroom disappears at rollout.
 - Production applies or namespace deletes without a human: **0**.
 
+## Offline manifest check before rollout (G09)
+
+Before proposing a rollout, run `k8s_manifest_check.py check <rendered manifests>` (see
+`k8s-manifest-check.md`). It locates Service selectors and targetPorts that match no pod, selectors that
+miss their own template, probe ports that do not exist, missing requests or memory limits, request above
+limit, HPAs without the request they scale on, PDBs that block drains and mutable image tags. It contacts
+no cluster: a clean result is not dry-run evidence and never a deployment claim.
+
 ## WHEN TO INVOKE
 - **Me** - K8s manifests, helm/kustomize, workload design, RBAC and multi-tenancy, cluster troubleshooting plans, upgrades
 - **devops-engineer** - CI/CD and the pipeline that ships the manifest | **cloud-architect** - which managed cluster and account structure

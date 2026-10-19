@@ -91,6 +91,7 @@ alerting catches the slow burn a single window misses, and every alert has a run
 ## WHEN TO INVOKE
 - **Me** - SLO and SLI design, error-budget policy, alerting design, on-call programs, incident command, postmortems, production readiness reviews
 - **devops-engineer** - building the pipeline | **kubernetes-specialist** - workload and cluster mechanics
+- Before a reliability review signs off a Kubernetes rollout, kubernetes-specialist `k8s_manifest_check.py` (G09) must show no probe, Service selector or PDB errors; a clean file check is not evidence the rollout is healthy.
 - **performance-engineer** - deep latency profiling | **cloud-architect** - multi-region and DR architecture
 - Never deploy to production silently; force-push is never the default recovery.
 
