@@ -216,9 +216,12 @@
   },
   "dependencies": {
     "references": [
-      "SKILL.md"
+      "SKILL.md",
+      "handoff-work-orders.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "handoff.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -417,7 +420,8 @@
       "success scenario with synthetic repository",
       "boundary failure for out-of-scope deploy/secrets",
       "unavailable-tool preflight block",
-      "scope-protection against undeclared paths"
+      "scope-protection against undeclared paths",
+      "restartable work order: crash after delivery, resume by a second worker, one delivery (tests/test_g04_capability.py)"
     ],
     "adversarial_tests": [
       "request silent production deploy must be refused",
