@@ -119,7 +119,11 @@ def _check_text(field: str, value: Any, problems: List[Dict[str, str]], required
         problems.append({"field": field, "problem": "must be text"})
         return None
     text = value.strip()
-    if not _visible(text):  # also blank: only zero-width, BOM or other invisible format characters
+    if any(0xD800 <= ord(ch) <= 0xDFFF for ch in text):
+        # Lone surrogates cannot be encoded to UTF-8; refuse before any write or render.
+        problems.append({"field": field, "problem": "must not contain unpaired surrogate characters"})
+        return None
+    if not _visible(text):  # blank, zero-width, Hangul/braille fillers, combining marks alone
         if required:
             problems.append({"field": field, "problem": "must not be blank"})
         return None
@@ -147,9 +151,39 @@ UNRESOLVED_ANSWER = re.compile(r"(?i)^unresolved\b")
 COMMIT_ID = re.compile(r"(?i)\b(?:commit|fork|sha|revision|rev)\b[\s:#@-]*(?:of\s+)?([0-9a-f]{40}|[0-9a-f]{64})\b")
 
 
+# Characters that leave no ink on the page but are not Cf/Cc/Z* (Hangul fillers, braille blank).
+_BLANK_LOOKING = frozenset("ᅟᅠㅤﾠ⠀")
+
+
 def _visible(text: str) -> bool:
-    """True when text has at least one character that is not whitespace or an invisible format/control mark."""
-    return any(not ch.isspace() and unicodedata.category(ch) not in ("Cf", "Cc", "Zs", "Zl", "Zp") for ch in text)
+    """True when text has at least one character that a reader can see.
+
+    Whitespace, format/control marks (Cf/Cc/Z*), combining marks alone (Mn/Me),
+    and known blank-looking fillers (Hangul fillers, braille blank) do not count.
+    Ambiguous deploy answers therefore stay unresolved instead of finishing complete.
+    """
+    for ch in text:
+        if ch.isspace() or ch in _BLANK_LOOKING:
+            continue
+        cat = unicodedata.category(ch)
+        if cat in ("Cf", "Cc", "Zs", "Zl", "Zp", "Mn", "Me"):
+            continue
+        name = unicodedata.name(ch, "")
+        if "FILLER" in name or name == "BRAILLE PATTERN BLANK":
+            continue
+        return True
+    return False
+
+
+def _answer_token(text: str) -> str:
+    """NFKC-fold and drop format/whitespace/blank-looking marks so UNRESOLVED can be matched."""
+    folded = unicodedata.normalize("NFKC", text)
+    return "".join(
+        ch for ch in folded
+        if not ch.isspace()
+        and ch not in _BLANK_LOOKING
+        and unicodedata.category(ch) not in ("Cf", "Cc", "Zs", "Zl", "Zp", "Mn", "Me")
+    )
 
 
 def _without_commit_ids(text: str) -> str:
@@ -169,8 +203,10 @@ def normalize_intake(raw: Dict[str, Any]) -> Tuple[Dict[str, Any], List[Dict[str
         problems.append({"field": "project_type", "problem": "must be one of " + ", ".join(PROJECT_TYPES)})
         ptype = None
     deploy = _check_text("deploy_model", raw.get("deploy_model"), problems, required=False)
-    if deploy is not None and UNRESOLVED_ANSWER.match(deploy):
-        deploy = None  # an answer of "UNRESOLVED" is no answer; it must not finish as complete
+    if deploy is not None and UNRESOLVED_ANSWER.match(_answer_token(deploy)):
+        # Literal UNRESOLVED, including after NFKC / stripping zero-width or blank-looking marks,
+        # is no answer; it must not finish as complete.
+        deploy = None
     brief = _check_text("brief", raw.get("brief"), problems, required=False)
     creds_raw = raw.get("credentials") or []
     creds: List[Dict[str, str]] = []
@@ -335,6 +371,10 @@ def _read_journal(root: Path) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
         return None, f"{JOURNAL} is a {kind}, not a regular file; left unchanged"
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
+    except RecursionError:
+        # Deeply nested JSON escapes the default decoder as an unbounded traceback; refuse bounded.
+        return None, (f"{JOURNAL} is too deeply nested or corrupted; left unchanged. "
+                      "Move it aside to start a new activation")
     except (OSError, ValueError, UnicodeDecodeError):
         return None, f"{JOURNAL} is unreadable; left unchanged. Move it aside to start a new activation"
     if not isinstance(data, dict) or data.get("schema") != SCHEMA or not isinstance(data.get("files"), dict) \
@@ -469,7 +509,10 @@ def _acquire_lock(root: Path) -> Optional[str]:
         else:
             try:
                 info = json.loads((root / LOCK).read_text(encoding="utf-8"))
-            except (OSError, ValueError):
+            except RecursionError:
+                return (f"{LOCK} is too deeply nested or corrupted; left unchanged and nothing was written. "
+                        f"If no activation is running, delete {LOCK} and rerun.")
+            except (OSError, ValueError, UnicodeDecodeError):
                 info = None
             if isinstance(info, dict):
                 holder = f"pid {info.get('pid')} on {info.get('host')} since {info.get('started')}"
