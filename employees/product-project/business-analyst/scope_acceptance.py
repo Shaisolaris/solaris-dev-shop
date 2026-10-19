@@ -42,6 +42,23 @@ VAGUE = ["fast", "quick", "quickly", "user-friendly", "intuitive", "seamless", "
          "high quality", "world-class", "secure enough", "minimal"]
 VAGUE_RX = re.compile(r"(?<![A-Za-z0-9-])(" + "|".join(re.escape(v) for v in sorted(VAGUE, key=len, reverse=True))
                       + r")(?![A-Za-z0-9-])", re.I)
+# opposite-term families (documented list): one side in one text and the other side in another text of the
+# same proposal is a possible contradiction that the owner must resolve. This is a bounded check, not a
+# general test of free-text coherence.
+OPPOSITES = [
+    ("availability", ["24/7", "24x7", "24 hours a day", "around the clock", "round the clock", "any hour", "at any time",
+                      "always available", "always on", "always-on"],
+                     ["office hours", "business hours", "working hours", "opening hours", "weekdays only", "closed outside",
+                      "closed at night", "closed on weekends", "only during the day"]),
+    ("connectivity", ["offline", "without internet", "no internet"], ["online only", "online-only", "requires internet", "always connected"]),
+    ("hosting", ["on-premise", "on-premises", "on-prem", "self-hosted"], ["cloud-hosted", "cloud only", "saas", "hosted by us"]),
+    ("sign-in", ["no login", "without login", "without logging in", "without an account", "no account", "anonymous"],
+                ["login required", "must log in", "requires login", "requires an account", "must sign in", "sign-in required"]),
+    ("retention", ["never stored", "not stored", "no data stored", "deleted immediately", "delete immediately"],
+                  ["kept for", "retained for", "full history", "stored for"]),
+]
+OPP_RX = [(name, [re.compile(r"(?<![A-Za-z0-9])" + re.escape(t) + r"(?![A-Za-z0-9])", re.I) for t in a],
+           [re.compile(r"(?<![A-Za-z0-9])" + re.escape(t) + r"(?![A-Za-z0-9])", re.I) for t in b]) for name, a, b in OPPOSITES]
 KINDS = ("scope", "estimate", "date", "feature", "sla", "other")
 G17 = Path(__file__).resolve().parents[2] / "leadership" / "coo" / "resource_decision.py"
 
@@ -167,6 +184,10 @@ def load_package(path):
         for x in r["_deps"]:
             if x not in P["requirements"]:
                 raise Invalid("%s depends on unknown requirement %r" % (w, x))
+        r["_conf"] = _refs(r.get("conflicts_with"), w + ".conflicts_with")
+        for x in r["_conf"]:
+            if x not in P["requirements"] or x == k:
+                raise Invalid("%s conflicts_with must name other known requirements, not %r" % (w, x))
         r["_est"] = _hours(r.get("estimate_hours"), w + ".estimate_hours")
         if not isinstance(r.get("optional", False), bool):
             raise Invalid("%s.optional must be true or false" % w)
@@ -352,6 +373,49 @@ def check(path):
         for a in covered:
             if a["status"] == "open":
                 F.append({"code": "open_ambiguity", "ref": k, "detail": "%s: %s (escalated to %s)" % (a["id"], a["question"], a["escalated_to"])})
+    # contradictions: declared conflicts_with, and the opposite-term families across in-scope requirement texts,
+    # their criteria and the inputs they trace. A conflict is settled only by an ambiguity entry about every
+    # requirement in it; open ones block (open_ambiguity), missing ones block (unresolved_conflict).
+    def sides(text):
+        out = set()
+        for name, a, b in OPP_RX:
+            if any(x.search(text) for x in a):
+                out.add((name, "a"))
+            if any(x.search(text) for x in b):
+                out.add((name, "b"))
+        return out
+    texts = {}
+    for k in scope:
+        r = reqs[k]
+        own = [("requirement %s" % k, r["text"])] + [("criterion %s" % c["id"], c["criterion"] + " " + (c.get("measure") or "")) for c in r.get("acceptance") or []]
+        own += [("input %s" % t, P["inputs"][t]["text"]) for t in trace[k] if t in P["inputs"]]
+        own += [("assumption %s" % t, P["assumptions"][t]["text"]) for t in trace[k] if t in P["assumptions"]]
+        texts[k] = [(where, sd) for where, txt in own for sd in sides(txt)]
+    conflicts = {}
+    for k in scope:
+        for x in reqs[k]["_conf"]:
+            if x in sset:
+                conflicts.setdefault(tuple(sorted({k, x})), set()).add("declared conflicts_with")
+    for i, k in enumerate(scope):
+        for k2 in scope[i:]:
+            for w1, (f1, s1) in texts[k]:
+                for w2, (f2, s2) in texts[k2]:
+                    if f1 == f2 and s1 == "a" and s2 == "b" or f1 == f2 and s1 == "b" and s2 == "a" and k != k2:
+                        conflicts.setdefault(tuple(sorted({k, k2})), set()).add("%s: %s vs %s" % (f1, w1, w2))
+    conflict_rep = []
+    for pair, why in sorted(conflicts.items()):
+        cover = [a for a in P["ambiguities"].values() if set(pair) <= set(a["_about"])]
+        st = "resolved" if cover and all(a["status"] == "resolved" for a in cover) else ("open" if cover else "unescalated")
+        conflict_rep.append({"between": list(pair), "evidence": sorted(why), "status": st, "ambiguities": sorted(a["id"] for a in cover),
+                             "owner": sorted({a["escalated_to"] for a in cover})})
+        if st == "unescalated":
+            for k in pair:
+                F.append({"code": "unresolved_conflict", "ref": k, "detail": "%s; add an ambiguity about %s escalated to the owner" % ("; ".join(sorted(why)), " and ".join(pair))})
+        elif st == "open":
+            for k in pair:
+                for a in cover:
+                    if a["status"] == "open" and not any(f["code"] == "open_ambiguity" and f["ref"] == k and f["detail"].startswith(a["id"] + ":") for f in F):
+                        F.append({"code": "open_ambiguity", "ref": k, "detail": "%s: %s (escalated to %s)" % (a["id"], a["question"], a["escalated_to"])})
     for a in sorted(P["ambiguities"].values(), key=lambda a: a["id"]):
         if a["status"] == "open":
             escalations.append({"id": a["id"], "about": a["_about"], "question": a["question"], "escalated_to": a["escalated_to"]})
@@ -391,7 +455,8 @@ def check(path):
     finish, cap_problem = None, None
     if any(c["kind"] == "date" for c in P["commitments"].values()):
         finish, cap_problem = _capacity(P)
-    blocked_reqs = {f["ref"] for f in F if f["code"] in ("open_ambiguity", "unescalated_ambiguity", "undemonstrated_capability", "untraced_requirement")}
+    blocked_reqs = {f["ref"] for f in F if f["code"] in ("open_ambiguity", "unescalated_ambiguity", "undemonstrated_capability", "untraced_requirement", "unresolved_conflict")}
+    resolved_amb = {a["id"] for a in P["ambiguities"].values() if a["status"] == "resolved"}
     for k, c in sorted(P["commitments"].items()):
         refs = c["_refs"]
         unknown = [x for x in refs if x not in known_src and x not in reqs]
@@ -412,9 +477,16 @@ def check(path):
                 F.append({"code": "unsupported_date", "ref": k, "detail": cap_problem})
             elif finish > c["_date"]:
                 F.append({"code": "unsupported_date", "ref": k, "detail": "G17 downside finish %s is after the committed %s" % (finish, c["_date"])})
+        # a commitment whose own text takes one side of a family that an in-scope text takes the other side of
+        csd = sides(c["text"])
+        clash = sorted({"%s: commitment text vs %s" % (f, where) for (f, sd) in csd for k2 in scope for where, (f2, s2) in texts[k2]
+                        if f2 == f and s2 != sd and not any(set([k, k2]) <= set(a["_about"]) and a["id"] in resolved_amb for a in P["ambiguities"].values())})
+        if clash:
+            F.append({"code": "conflicting_commitment", "ref": k, "detail": "; ".join(clash)})
         roots = sorted({t for x in refs if x in reqs for t in reqs[x]["_traces"] if t in known_src} | {x for x in refs if x in known_src})
         conds = sorted(t for t in roots if t in unconfirmed)
-        matrix.append({"commitment": k, "kind": c["kind"], "refs": refs, "sources": roots, "conditional_on": conds})
+        qual = sorted({a for cr in conflict_rep if cr["status"] == "resolved" and set(cr["between"]) & set(refs) for a in cr["ambiguities"]})
+        matrix.append({"commitment": k, "kind": c["kind"], "refs": refs, "sources": roots, "conditional_on": conds, "qualified_by": qual})
     F = _sorted(F)
     status = "ready" if not F else "blocked"
     rep = {"schema": REPORT, "command": "check", "status": status, "engagement": P["engagement"]["id"],
@@ -423,6 +495,9 @@ def check(path):
            "trace_matrix": matrix, "findings": F, "escalations": escalations,
            "conditions": sorted(unconfirmed & {t for k in scope for t in trace[k]}),
            "capacity_finish": str(finish) if finish else None, "read_only": True,
+           "conflicts": conflict_rep,
+           "coherence": {"checked": "declared conflicts_with and the documented opposite-term families (%s)" % ", ".join(n for n, _, _ in OPPOSITES),
+                         "not_checked": "general consistency of free text; the owner confirms the requirements do not contradict each other before sending"},
            "note": "draft for the owner; no commitment is made, sent or signed by this tool"}
     return rep, (0 if status == "ready" else 1)
 
@@ -523,8 +598,13 @@ def render(r):
         e = r["estimate"]
         L.append("estimate %s: hours %s, price %s at %s/h" % (e["type"], e["hours"], e["price"], e["rate_per_hour"]))
         for m in r["trace_matrix"]:
-            L.append("  %s (%s) -> %s%s" % (m["commitment"], m["kind"], ", ".join(m["sources"]) or "nothing",
-                                            " [conditional on %s]" % ", ".join(m["conditional_on"]) if m["conditional_on"] else ""))
+            L.append("  %s (%s) -> %s%s%s" % (m["commitment"], m["kind"], ", ".join(m["sources"]) or "nothing",
+                                            " [conditional on %s]" % ", ".join(m["conditional_on"]) if m["conditional_on"] else "",
+                                            " [qualified by owner resolution %s]" % ", ".join(m["qualified_by"]) if m.get("qualified_by") else ""))
+        for x in r.get("conflicts") or []:
+            L.append("  CONFLICT %s %s: %s%s" % (" vs ".join(x["between"]), x["status"], "; ".join(x["evidence"]),
+                                                " (%s, owner %s)" % (", ".join(x["ambiguities"]), ", ".join(x["owner"])) if x["ambiguities"] else ""))
+        L.append("  NOT CHECKED: %s" % r["coherence"]["not_checked"])
         for x in r["escalations"]:
             L.append("  ESCALATE %s to %s: %s" % (x["id"], x["escalated_to"], x["question"]))
     else:

@@ -10,9 +10,9 @@ All data here is synthetic. Nothing is sent to a customer; reports are drafts fo
 python3 employees/product-project/business-analyst/scope_acceptance.py check examples/capabilities/G31/fixtures/portal.json   # exit 0
 python3 employees/product-project/business-analyst/scope_acceptance.py check examples/capabilities/G31/fixtures/portal.json --json   # exit 0
 python3 employees/product-project/business-analyst/scope_acceptance.py accept examples/capabilities/G31/fixtures/portal.json examples/capabilities/G31/fixtures/delivery.json   # exit 0
-python3 examples/capabilities/G31/scope_oracle.py   # ACCEPTED 11/11
-python3 examples/capabilities/G31/scope_oracle.py --tool examples/capabilities/G31/naive_scope.py   # REJECTED 1/11
-python3 examples/capabilities/G31/scope_oracle.py --tool examples/capabilities/G31/noop_scope.py   # REJECTED 1/11
+python3 examples/capabilities/G31/scope_oracle.py   # ACCEPTED 12/12
+python3 examples/capabilities/G31/scope_oracle.py --tool examples/capabilities/G31/naive_scope.py   # REJECTED 1/12
+python3 examples/capabilities/G31/scope_oracle.py --tool examples/capabilities/G31/noop_scope.py   # REJECTED 1/12
 ```
 
 ## The clinic portal fixture, worked by hand
@@ -41,5 +41,8 @@ missing, failing or future-dated (o5); the G17-backed date (o6); acceptance with
 evidence and a not-ready scope (o7); 11 invalid packages and an unknown delivery criterion refused with
 nothing written (o8); `--out`, `verify`, tampered and truncated results and keeping an earlier result after a
 failed run (o9); 12 seeded unseen packages of 120 to 200 requirements with planted flaws whose findings are
-known by construction (o10); no network, mail or process use and fixtures byte-identical (s1). `--seed N`
+known by construction (o10); contradictions (seeded phrasings from six family pairs): requirement vs
+requirement, requirement vs its own input, a commitment text, a declared `conflicts_with` and an open
+escalation all block, and an owner-resolved one is ready with `qualified_by` on the affected commitments;
+no false hit on "onboarding" (o11); no network, mail or process use and fixtures byte-identical (s1). `--seed N`
 changes the unseen packages. The naive control (template checklist) and the no-op control both fail.

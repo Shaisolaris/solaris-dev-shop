@@ -344,6 +344,64 @@ def o10(c, seed):
     return bad == 0, "%d seeded unseen packages (120 to 200 requirements, planted flaws) match exactly" % total
 
 
+PAIRS = [("available 24/7", "closed outside office hours"), ("open around the clock", "only during business hours"),
+         ("usable offline at the front desk", "online only"), ("installed on-premises", "a SaaS service"),
+         ("booking with no login", "login required for every booking"), ("card data never stored", "payments kept for 7 years")]
+
+
+def o11(c, seed):
+    """r2 (root G31): contradictory requirements stay unresolved or owner-qualified, never plain commitments."""
+    rng = random.Random(seed * 11 + 3); res = {}
+    def with_r6(p, r6, inp, r1=None):
+        p["inputs"].append({"id": "IN9", "text": inp, "source": "ops email 2026-10-02", "date": "2026-10-02"})
+        p["requirements"].append({"id": "R6", "text": r6, "traces": ["IN9"], "depends_on": ["R1"], "capability": "CAP-booking",
+                                  "estimate_hours": {"low": "4", "likely": "6", "high": "8"},
+                                  "acceptance": [{"id": "AC6", "criterion": "the rule is enforced", "measure": "3 of 3 scripted attempts"}]})
+        if r1:
+            req(p, "R1")["text"] = r1
+        p["proposal"]["scope"].append("R6"); est = p["proposal"]["estimate"]; rate = Decimal(p["rate"]["per_hour"])
+        for t, n in (("low", 4), ("likely", 6), ("high", 8)):
+            est["hours"][t] = str(Decimal(est["hours"][t]) + n)
+        est["price"] = {b: str((Decimal(est["hours"][b]) * rate).quantize(Decimal("0.01"))) for b in ("low", "high")}
+        for cm in p["proposal"]["commitments"][:2]:
+            cm["refs"].append("R6")
+    a_, b_ = rng.choice(PAIRS)
+    p = base(); with_r6(p, "Booking " + b_, "Front desk asked for booking " + b_, "Online booking of appointments " + a_)
+    rc, r = c.check(c.fresh(), p)
+    res["req_vs_req"] = rc == 1 and ("unresolved_conflict", "R1") in codes(r) and ("unresolved_conflict", "R6") in codes(r) and ("commitment_on_blocked_requirement", "C1") in codes(r)
+    a_, b_ = rng.choice(PAIRS)
+    p = base(); with_r6(p, "Patients can book " + a_, "Owner wants booking " + b_)
+    rc, r = c.check(c.fresh(), p)
+    res["req_vs_its_input"] = rc == 1 and ("unresolved_conflict", "R6") in codes(r)
+    a_, b_ = rng.choice(PAIRS)
+    p = base(); with_r6(p, "Booking " + b_, "Booking " + b_)
+    p["proposal"]["commitments"].append({"id": "C9", "kind": "sla", "text": "Booking " + a_, "refs": ["R1"]})
+    rc, r = c.check(c.fresh(), p)
+    res["commitment_text"] = rc == 1 and ("conflicting_commitment", "C9") in codes(r)
+    p = base(); with_r6(p, "Front desk can block days for staff training", "Front desk wants to block days"); req(p, "R6")["conflicts_with"] = ["R3"]
+    rc, r = c.check(c.fresh(), p)
+    res["declared"] = rc == 1 and ("unresolved_conflict", "R3") in codes(r) and ("unresolved_conflict", "R6") in codes(r)
+    a_, b_ = rng.choice(PAIRS)
+    for st in ("open", "resolved"):
+        p = base(); with_r6(p, "Booking " + b_, "Booking " + b_, "Online booking of appointments " + a_)
+        amb = {"id": "AMB9", "about": ["R1", "R6"], "question": "which governs?", "escalated_to": "Clinic owner", "status": st}
+        if st == "resolved":
+            amb["resolution"] = {"text": "R6 governs", "source": "owner email 2026-10-03", "date": "2026-10-03"}
+        p["ambiguities"] = (p.get("ambiguities") or []) + [amb]
+        rc, r = c.check(c.fresh(), p)
+        if st == "open":
+            res["open_blocks_with_owner"] = rc == 1 and ("open_ambiguity", "R6") in codes(r) and any(x["id"] == "AMB9" and x["escalated_to"] == "Clinic owner" for x in (r or {}).get("escalations", []))
+        else:
+            m = {x["commitment"]: x for x in r["trace_matrix"]} if r else {}
+            res["resolved_is_qualified"] = rc == 0 and m.get("C1", {}).get("qualified_by") == ["AMB9"] and m.get("C4", {}).get("qualified_by") == [] \
+                and any(x["status"] == "resolved" and x["owner"] == ["Clinic owner"] for x in (r or {}).get("conflicts", [])) and "not_checked" in (r or {}).get("coherence", {})
+    p = base(); req(p, "R1")["text"] = "Online booking, moving and cancelling of appointments, onboarding call included"
+    rc, r = c.check(c.fresh(), p)
+    res["no_false_hit"] = rc == 0 and (r or {}).get("conflicts") == []
+    bad = sorted(k for k, v in res.items() if not v)
+    return not bad, "contradictions block until an owner resolves them (req vs req, req vs input, commitment text, declared, open with owner); resolved ones qualify commitments; no false hit" if not bad else "failed %s" % bad
+
+
 def s1(c):
     before = {p: sha(p) for p in FIX.rglob("*") if p.is_file()}
     src = Path(c.tool).read_text() if Path(c.tool).is_file() else ""
@@ -356,8 +414,8 @@ def main():
     a = ap.parse_args()
     c = Ctx(a.tool)
     (s1ok, s1msg), before = s1(c)
-    checks = [o1, o2, o3, o4, o5, o6, o7, o8, o9, lambda c: o10(c, a.seed)]
-    names = ["o1", "o2", "o3", "o4", "o5", "o6", "o7", "o8", "o9", "o10"]
+    checks = [o1, o2, o3, o4, o5, o6, o7, o8, o9, lambda c: o10(c, a.seed), lambda c: o11(c, a.seed)]
+    names = ["o1", "o2", "o3", "o4", "o5", "o6", "o7", "o8", "o9", "o10", "o11"]
     passed = 0
     for nm, fn in zip(names, checks):
         try:

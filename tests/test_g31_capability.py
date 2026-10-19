@@ -57,7 +57,7 @@ class G31Capability(unittest.TestCase):
         self.assertEqual(r['capacity_finish'], '2027-02-07')
         m = {x['commitment']: x for x in r['trace_matrix']}
         self.assertEqual(m['C3']['sources'], ['A1', 'A2', 'IN1', 'IN2', 'IN3', 'IN4'])
-        self.assertEqual(m['C4'], {'commitment': 'C4', 'kind': 'feature', 'refs': ['R3'], 'sources': ['IN3'], 'conditional_on': []})
+        self.assertEqual(m['C4'], {'commitment': 'C4', 'kind': 'feature', 'refs': ['R3'], 'sources': ['IN3'], 'conditional_on': [], 'qualified_by': []})
         self.assertTrue(r['read_only'])
 
     def test_invented_and_out_of_scope_commitments(self):
@@ -128,6 +128,103 @@ class G31Capability(unittest.TestCase):
     def test_vague_word_boundaries(self):
         self.req('R1')['text'] = 'Breakfast-time quickstep: bestow fastidious, steadfast and unsimple booking'
         self.check(0)
+
+    def add_r6(self, r6, inp, r1=None):
+        self.p['inputs'].append({'id': 'IN9', 'text': inp, 'source': 'ops email 2026-10-02', 'date': '2026-10-02'})
+        self.p['requirements'].append({'id': 'R6', 'text': r6, 'traces': ['IN9'], 'depends_on': ['R1'], 'capability': 'CAP-booking',
+                                       'estimate_hours': {'low': '4', 'likely': '6', 'high': '8'},
+                                       'acceptance': [{'id': 'AC6', 'criterion': 'the rule is enforced', 'measure': '3 of 3 scripted attempts'}]})
+        if r1:
+            self.req('R1')['text'] = r1
+        self.p['proposal']['scope'].append('R6')
+        est = self.p['proposal']['estimate']
+        for t, n in (('low', 4), ('likely', 6), ('high', 8)):
+            est['hours'][t] = str(int(est['hours'][t]) + n)
+        est['price'] = {b: '%d.00' % (int(est['hours'][b]) * 150) for b in ('low', 'high')}
+        for c in self.p['proposal']['commitments'][:2]:
+            c['refs'].append('R6')
+
+    def test_contradictory_requirements_never_plain_commitments(self):
+        # root G31: the M31 O12 package (24/7 vs closed outside office hours) must not be ready
+        self.add_r6('Booking closed outside office hours (08:00 to 18:00)', 'Booking must be closed outside office hours',
+                    'Online booking, moving and cancelling of appointments at any hour, 24/7')
+        r = self.check(1)
+        self.assertTrue({('unresolved_conflict', 'R1'), ('unresolved_conflict', 'R6'), ('commitment_on_blocked_requirement', 'C1'),
+                         ('commitment_on_blocked_requirement', 'C2')} <= self.codes(r))
+        self.assertEqual([(c['between'], c['status']) for c in r['conflicts']], [(['R1', 'R6'], 'unescalated')])
+        self.assertIn('availability: requirement R1 vs requirement R6', r['conflicts'][0]['evidence'])
+        # escalated and open: blocked, listed with its owner
+        self.p['ambiguities'].append({'id': 'AMB9', 'about': ['R1', 'R6'], 'question': '24/7 or office hours?', 'escalated_to': 'Clinic owner', 'status': 'open'})
+        r = self.check(1)
+        self.assertIn(('open_ambiguity', 'R6'), self.codes(r))
+        self.assertNotIn('unresolved_conflict', {f['code'] for f in r['findings']})
+        self.assertEqual([(c['status'], c['ambiguities'], c['owner']) for c in r['conflicts']], [('open', ['AMB9'], ['Clinic owner'])])
+        self.assertEqual({x['commitment']: x['qualified_by'] for x in r['trace_matrix']}['C1'], [])
+        self.assertIn({'id': 'AMB9', 'about': ['R1', 'R6'], 'question': '24/7 or office hours?', 'escalated_to': 'Clinic owner'}, r['escalations'])
+        # an ambiguity about only one side does not settle it
+        self.p['ambiguities'][-1]['about'] = ['R6']; self.p['ambiguities'][-1]['status'] = 'resolved'
+        self.p['ambiguities'][-1]['resolution'] = {'text': 'office hours govern', 'source': 'owner email 2026-10-03', 'date': '2026-10-03'}
+        self.assertIn(('unresolved_conflict', 'R1'), self.codes(self.check(1)))
+        # resolved by the owner about both: ready, and the commitments carry the qualification
+        self.p['ambiguities'][-1]['about'] = ['R1', 'R6']
+        r = self.check(0)
+        m = {x['commitment']: x['qualified_by'] for x in r['trace_matrix']}
+        self.assertEqual(m, {'C1': ['AMB9'], 'C2': ['AMB9'], 'C3': ['AMB9'], 'C4': []})
+        self.assertEqual(r['conflicts'][0]['owner'], ['Clinic owner'])
+        out = cli('check', self.d / 'pkg.json').stdout
+        self.assertIn('[qualified by owner resolution AMB9]', out)
+        self.assertIn('CONFLICT R1 vs R6 resolved', out)
+        self.assertIn('NOT CHECKED: general consistency of free text', out)
+
+    def test_every_opposite_family_and_its_input(self):
+        sys.path.insert(0, str(TOOL.parent)); old = sys.dont_write_bytecode; sys.dont_write_bytecode = True
+        try:
+            import scope_acceptance as sa
+        finally:
+            sys.path.pop(0); sys.dont_write_bytecode = old
+        base = json.loads(json.dumps(self.p))
+        for name, a, b in sa.OPPOSITES:
+            for ta, tb in ((a[0], b[0]), (a[-1], b[-1])):
+                self.p = json.loads(json.dumps(base))
+                self.add_r6('Patients can book ' + ta.upper(), 'The owner wants booking ' + tb.upper())
+                r = self.check(1)
+                self.assertIn(('unresolved_conflict', 'R6'), self.codes(r), (name, ta, tb))
+                self.assertTrue(any(name + ': requirement R6 vs input IN9' == e for c in r['conflicts'] for e in c['evidence']), (name, r['conflicts']))
+        # a contradiction that sits only in an acceptance criterion
+        self.p = json.loads(json.dumps(base))
+        self.add_r6('Booking rules for the front desk', 'Front desk wants booking rules')
+        self.req('R6')['acceptance'][0]['criterion'] = 'bookings are refused outside office hours'
+        self.req('R1')['acceptance'][0]['measure'] = 'booking works 24/7 in 12 of 12 scripted steps'
+        r = self.check(1)
+        self.assertIn(('unresolved_conflict', 'R1'), self.codes(r))
+        self.assertTrue(any('criterion AC1 vs criterion AC6' in e or 'criterion AC6 vs criterion AC1' in e for c in r['conflicts'] for e in c['evidence']), r['conflicts'])
+        # a commitment text against an in-scope requirement
+        self.p = json.loads(json.dumps(base))
+        self.add_r6('Booking only during business hours', 'Booking only during business hours')
+        self.p['proposal']['commitments'].append({'id': 'C9', 'kind': 'sla', 'text': 'Booking open around the clock', 'refs': ['R1']})
+        r = self.check(1)
+        self.assertIn(('conflicting_commitment', 'C9'), self.codes(r))
+        self.p['ambiguities'].append({'id': 'AMB8', 'about': ['C9', 'R6'], 'question': 'which?', 'escalated_to': 'Clinic owner', 'status': 'resolved',
+                                      'resolution': {'text': 'support line only', 'source': 'owner call 2026-10-03', 'date': '2026-10-03'}})
+        self.assertNotIn(('conflicting_commitment', 'C9'), self.codes(self.check(0)))
+
+    def test_declared_conflict_and_word_boundaries(self):
+        self.add_r6('Front desk can block days for staff training', 'Front desk wants to block days')
+        self.req('R6')['conflicts_with'] = ['R3']
+        self.assertTrue({('unresolved_conflict', 'R3'), ('unresolved_conflict', 'R6')} <= self.codes(self.check(1)))
+        self.req('R6')['conflicts_with'] = ['R6']
+        self.check(2)
+        self.req('R6')['conflicts_with'] = ['R99']
+        self.check(2)
+        # declared against a requirement that is not in scope is not a conflict in this proposal
+        self.req('R6')['conflicts_with'] = ['R5']
+        self.check(0)
+        # look-alikes are not terms
+        self.p = json.loads((self.d / 'portal.json').read_text())
+        self.req('R1')['text'] = 'Online booking with an onboarding call, anonymously-rated SaaSy offlinedata kept-forward, on-premiums and online-onlyness, billed through a SaaS partner'
+        r = self.check(0)
+        self.assertEqual(r['conflicts'], [])
+        self.assertIn('not_checked', r['coherence'])
 
     def test_demo_evidence_required(self):
         (self.d / 'demos' / 'CAP-import.json').write_text('{"capability": "CAP-import", "exit_code": 0, "result": "pass", "ran_at": "2026-09-30"}')
@@ -263,11 +360,11 @@ class G31Capability(unittest.TestCase):
         run = lambda *a: subprocess.run([sys.executable, str(EX / 'scope_oracle.py')] + list(a), capture_output=True, text=True, env=ENV, timeout=600)
         r = run()
         self.assertEqual(r.returncode, 0, r.stdout)
-        self.assertEqual(r.stdout.strip().splitlines()[-1], 'ACCEPTED 11/11')
+        self.assertEqual(r.stdout.strip().splitlines()[-1], 'ACCEPTED 12/12')
         for t in ('naive_scope.py', 'noop_scope.py'):
             r = run('--tool', str(EX / t))
             self.assertEqual(r.returncode, 1)
-            self.assertEqual(r.stdout.strip().splitlines()[-1], 'REJECTED 1/11')
+            self.assertEqual(r.stdout.strip().splitlines()[-1], 'REJECTED 1/12')
 
     def test_contracts_declare_tool(self):
         c = json.loads((ROOT / 'employees/product-project/business-analyst/capability.contract.json').read_text())

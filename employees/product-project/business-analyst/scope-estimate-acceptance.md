@@ -17,7 +17,7 @@ python3 scope_acceptance.py verify RESULT PACKAGE [DELIVERY]          # 0 identi
   assume (same fields plus `confirmed` true or false). Nothing may be dated after `as_of`.
 - `requirements`: id, text, `traces` (input or assumption ids), `depends_on`, `capability`,
   `estimate_hours` {low, likely, high} as decimal strings, `acceptance` [{id, criterion, measure}],
-  optional `optional: true`.
+  optional `optional: true`, optional `conflicts_with` (ids of other requirements it contradicts).
 - `capabilities`: id, name, `demo` {path, sha256} pointing to a JSON run record inside the package folder
   with `capability`, `exit_code`, `result`, `ran_at`.
 - `ambiguities`: id, `about` (requirement or criterion ids), question, escalated_to, status open or
@@ -41,10 +41,37 @@ python3 scope_acceptance.py verify RESULT PACKAGE [DELIVERY]          # 0 identi
 | no_acceptance_criteria | an in-scope requirement with nothing that defines done |
 | unescalated_ambiguity | vague wording (listed in the tool's `VAGUE`, such as real-time, seamless, scalable, fast, asap, tbd) in a requirement or criterion, or a criterion with no measure, with no ambiguity entry about it |
 | open_ambiguity | an escalated ambiguity still open; also listed under `escalations` with its owner |
-| commitment_on_blocked_requirement | a commitment resting on a requirement with an open, unescalated, untraced or undemonstrated finding |
+| unresolved_conflict | two in-scope requirements contradict each other, or one contradicts an input or assumption it traces, and no ambiguity entry about every requirement involved exists (see Contradictions) |
+| conflicting_commitment | a commitment's own text takes one side of an opposite-term family that an in-scope requirement, criterion or traced input takes the other side of, with no resolved ambiguity about that commitment and requirement |
+| commitment_on_blocked_requirement | a commitment resting on a requirement with an open, unescalated, untraced, undemonstrated or unresolved-conflict finding |
 | estimate_mismatch | stated hours differ from the sum of in-scope estimates, or price differs from hours x rate rounded half up to cents |
 | unsupported_fixed_estimate | a fixed estimate below the high sum, with an open ambiguity in scope, or resting on an unconfirmed assumption (and any estimate commitment to it) |
 | unsupported_date | no capacity evidence, the stored G17 result differs from a rerun, the option is not feasible in the G17 downside, or its downside finish (calendar start + 7 x finish week - 1 day) is after the committed date |
+
+## Contradictions (owner-resolution boundary)
+
+The tool does not judge whether free text is coherent. It finds two bounded kinds of contradiction:
+
+- declared: a requirement's `conflicts_with` names another in-scope requirement;
+- opposite terms: one text uses a term from one side of a documented family and another text of the same
+  proposal uses the other side. Texts are in-scope requirement texts, their acceptance criteria and measures,
+  the inputs and assumptions they trace, and commitment texts. Families (`OPPOSITES` in the tool):
+  availability (24/7, around the clock, any hour ... vs office hours, business hours, closed outside ...),
+  connectivity (offline vs online only), hosting (on-premises vs SaaS, cloud only), sign-in (no login,
+  anonymous vs login required) and retention (never stored, deleted immediately vs kept for, retained for).
+  Terms match whole words, case-insensitively.
+
+A contradiction never becomes a plain commitment. It needs an ambiguity entry whose `about` lists every
+requirement involved, escalated to the person who decides. With no entry it is `unresolved_conflict`
+on each requirement, and commitments resting on them are blocked. With an open entry it is `open_ambiguity`
+and listed under `escalations` with its owner. With a resolved entry the proposal may be ready, but
+each commitment resting on those requirements lists the ambiguity under `qualified_by`, so the proposal
+states the owner's resolution. `conflicts` in the JSON lists every contradiction found, its evidence,
+status, ambiguity ids and owner.
+
+Every report carries `coherence`: what was checked, and that general consistency of free text was not.
+The owner confirms that before sending. Contradictions phrased outside the families and not declared are
+not found.
 
 Unconfirmed assumptions are allowed in a range estimate; they are reported under `conditions` and per
 commitment as `conditional_on`, so the proposal can state them.
