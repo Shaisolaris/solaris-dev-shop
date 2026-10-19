@@ -24,5 +24,5 @@ python3 host_portability.py report REPO [--out FILE]
 ## What a pass does not mean
 
 - It does not publish to PyPI or change shared version/catalog metadata.
-- It does not prove every host agent (Cursor, Claude, Codex, ...) discovers skills the same way.
+- It does not prove every host agent (common host agents) discovers skills the same way.
 - It authenticates no install path on a stranger's machine beyond the commands run here.
