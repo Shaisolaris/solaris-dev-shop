@@ -1,0 +1,10 @@
+{
+  "schema": "solaris.ledger-principals/1",
+  "note": "Synthetic local-only keys for a loopback demo. They grant nothing anywhere else.",
+  "principals": [
+    {"key": "local-demo-northwind-ada-0001", "tenant": "northwind", "user": "ada", "role": "editor"},
+    {"key": "local-demo-northwind-ben-0002", "tenant": "northwind", "user": "ben", "role": "viewer"},
+    {"key": "local-demo-harbor-cy-0003", "tenant": "harbor", "user": "cy", "role": "editor"},
+    {"key": "local-demo-harbor-dee-0004", "tenant": "harbor", "user": "dee", "role": "viewer"}
+  ]
+}
