@@ -1,0 +1,82 @@
+K01 FAIL  clean control: one claim, state open, status clean, scope stated
+      observed: (0, [], None)
+K02 FAIL  reorder inside the buffer gives the in-order result
+      observed: (0, [], None, {})
+K03 FAIL  duplicate records are dropped, no second claim
+      observed: (0, [], {})
+K04 FAIL  re-acks of one command at new seqs give one claim
+      observed: (0, [], {})
+K05 FAIL  reboot and re-ack: one claim, new session, no anomaly
+      observed: oracle exception KeyError: 'v1'
+K06 FAIL  lower-boot record is a stale replay and claims nothing
+      observed: (0, [], None, {}, [])
+K07 FAIL  hole at end of stream is a gap; earlier claim stands
+      observed: (0, [], {})
+K08 FAIL  31 records ahead of a hole fit the buffer; no gap
+      observed: oracle exception KeyError: 'v1'
+K09 FAIL  33 ahead overflow the buffer; gap declared
+      observed: (0, {}, {})
+K10 FAIL  ack for a command not in the log: unknown_command, no claim
+      observed: (0, [], {})
+K11 FAIL  ack from another device: unknown_command; addressed device claims
+      observed: (0, [], {})
+K12 FAIL  done ack with the wrong state: transition_mismatch, no claim
+      observed: (0, [], {})
+K13 FAIL  rejected ack makes no claim
+      observed: oracle exception KeyError: 'effects_claimed'
+K14 FAIL  unexplained state change flagged; state follows device
+      observed: (0, None, {})
+K15 FAIL  12 malformed lines quarantined, never echoed, valid records still apply
+      observed: (0, 0, [], False, '')
+K16 FAIL  invalid command log exits 2 (dup id, unknown field, bad action)
+      observed: [('dup', 0), ('field', 0), ('action', 0)]
+K17 FAIL  interleaved 4-device history with reboots: exact claims and states
+      observed: (0, 0, 160, False, {})
+K18 FAIL  same history duplicated and swapped: exact claims and states, no gap
+      observed: (0, 0, 160, False, {})
+K19 FAIL  crash drill exit 3, resume equals the unbroken report
+      observed: (0, 0, 0, None, True)
+K20 FAIL  resume onto changed events or commands is refused (exit 2)
+      observed: (0, 0, 0, 0)
+K21 FAIL  lost ack: command unacknowledged, not claimed
+      observed: (0, [], [])
+K22 FAIL  simulate with heavy faults matches ground truth (3 seeds)
+      observed: [(1, 0, False), (7, 0, False), (42, 0, False)]
+K23 FAIL  text report states the simulator scope
+      observed: clean
+
+A01 GAP   seq 2.0 (integral float) is quarantined, not taken as an integer
+      observed: (0, 0, [])
+A02 GAP   boot 2^31 and seq 2^53 accepted, seq 2^53+1 quarantined
+      observed: (0, 0, {})
+A03 GAP   10001st distinct device quarantined, run under 60 s
+      observed: (0, 0, 0, 0.0)
+A04 GAP   lost ack then reboot re-ack: one claim, no false unexplained transition
+      observed: (0, [], {})
+A05 GAP   reused seq with different content in one boot claims nothing new
+      observed: (0, [], {})
+A06 GAP   tampered checkpoint is refused or ignored, never trusted
+      observed: no readable checkpoint: [Errno 2] No such file or directory: '<TMPDIR>/m25or-vy6btj8r/a06/st.json'
+A07 GAP   ~200k-line stream: exact claims under 120 s
+      observed: (44600, 0, 0.0, False)
+A08 GAP   stale-boot done ack after a newer boot claims nothing
+      observed: (0, [], {})
+A09 GAP   500 anomalies: count exact, list capped at 200
+      observed: oracle exception KeyError: 'anomalies'
+A10 GAP   late re-ack of an earlier command after a newer one completed: no reclaim
+      observed: (0, [], None, {})
+A11 GAP   CRLF and blank line tolerated
+      observed: (0, [], 0)
+A12 GAP   flow_lpm 1e400 (infinite) is quarantined
+      observed: (0, 0)
+A13 HOLDS 32 records ahead of a hole fit 'a buffer of 32' (boundary)
+      observed: (0, 0, {})
+A06b GAP   checkpoint with claims removed is refused or gives the unbroken report
+      observed: oracle exception FileNotFoundError: [Errno 2] No such file or directory: '<TMPDIR>/m25or-vy6btj8r/a06b/st.json'
+A14 GAP   structurally wrong checkpoint refused with exit 2, no traceback
+      observed: oracle exception FileNotFoundError: [Errno 2] No such file or directory: '<TMPDIR>/m25or-vy6btj8r/a14/st.json'
+A15 GAP   device id with a trailing newline is quarantined (documented pattern)
+      observed: (0, 0, [])
+A16 GAP   command id with a trailing newline makes the command log invalid
+      observed: (0, '')
+core: 0 / 23  adversarial holding: 1 / 17

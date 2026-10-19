@@ -1,0 +1,41 @@
+fresh caller (Grok self-validation): env -i, HOME=$FC/home, PATH=$FC/shim:/usr/bin:/bin (python3 -> Python 3.13.15), offline guard; cwd=<tree>/employees/engineering/iot-engineer
+== pass 1: doc verbatim on a folder without out/
+--- python3 device_protocol.py simulate --devices 12 --steps 300 --seed 7 --faults drop=0.2,dup=0.2,reorder=0.3,disconnect=0.05,reboot=0.02 --record out/
+rc=2
+invalid: --record: out is not a folder
+nothing written
+--- python3 device_protocol.py ingest --commands out/commands.jsonl --events out/events.jsonl --json
+rc=2
+{'status': 'invalid'}
+--- python3 device_protocol.py ingest --commands out/commands.jsonl --events out/events.jsonl --state st.json --crash-after 500
+rc=2
+invalid: commands: cannot read commands.jsonl: No such file or directory
+nothing written
+--- python3 device_protocol.py ingest --commands out/commands.jsonl --events out/events.jsonl --state st.json
+rc=2
+invalid: commands: cannot read commands.jsonl: No such file or directory
+nothing written
+== pass 2: deviation 'mkdir out' first
+--- python3 device_protocol.py simulate --devices 12 --steps 300 --seed 7 --faults drop=0.2,dup=0.2,reorder=0.3,disconnect=0.05,reboot=0.02 --record out/
+rc=0
+reordered_buffered: 86
+reboots: 55
+simulation: claims equal ground truth, exactly once (ground truth 93)
+--- python3 device_protocol.py ingest --commands out/commands.jsonl --events out/events.jsonl --json
+rc=1
+{'status': 'anomalies', 'effects_claimed': 93, 'commands_issued': 93, 'anomalies_found': {'gap': 1, 'quarantined': 0, 'stale_boot_replay': 13, 'transition_mismatch': 0, 'unexplained_transition': 0, 'unknown_command': 0}, 'resumed_from_line': None}
+--- python3 device_protocol.py ingest --commands out/commands.jsonl --events out/events.jsonl --state st.json --crash-after 500
+rc=3
+crash drill: crash drill after line 500; checkpoint at line 450
+rerun the same command without --crash-after to resume
+--- python3 device_protocol.py ingest --commands out/commands.jsonl --events out/events.jsonl --state st.json
+rc=1
+duplicate_acks: 46
+reordered_buffered: 86
+reboots: 55
+--- python3 -c 'import socket; socket.create_connection(("example.com", 80))'
+rc=1
+  File "$FC/guard/sitecustomize.py", line 3, in _blocked
+    raise OSError("offline guard: network blocked in fresh caller")
+OSError: offline guard: network blocked in fresh caller
+unbroken report 8cff5789198627db vs crash+resume report 8cff5789198627db: identical

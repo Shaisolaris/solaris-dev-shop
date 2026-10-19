@@ -1,0 +1,286 @@
+{
+ "engine": "/private/tmp/m25-eval/examples/capabilities/G25/naive_stub.py",
+ "python": "/usr/bin/python3",
+ "results": [
+  {
+   "id": "K01",
+   "core": true,
+   "holds": false,
+   "desc": "clean control: one claim, state open, status clean, scope stated",
+   "observed": "(0, [('c-1', 'v1')], None)"
+  },
+  {
+   "id": "K02",
+   "core": true,
+   "holds": false,
+   "desc": "reorder inside the buffer gives the in-order result",
+   "observed": "(0, [('c-1', 'v1')], None, {'quarantined': 0})"
+  },
+  {
+   "id": "K03",
+   "core": true,
+   "holds": false,
+   "desc": "duplicate records are dropped, no second claim",
+   "observed": "(0, [('c-1', 'v1'), ('c-1', 'v1'), ('c-1', 'v1')], {})"
+  },
+  {
+   "id": "K04",
+   "core": true,
+   "holds": false,
+   "desc": "re-acks of one command at new seqs give one claim",
+   "observed": "(0, [('c-1', 'v1'), ('c-1', 'v1'), ('c-1', 'v1')], {})"
+  },
+  {
+   "id": "K05",
+   "core": true,
+   "holds": false,
+   "desc": "reboot and re-ack: one claim, new session, no anomaly",
+   "observed": "oracle exception KeyError: 'v1'"
+  },
+  {
+   "id": "K06",
+   "core": true,
+   "holds": false,
+   "desc": "lower-boot record is a stale replay and claims nothing",
+   "observed": "oracle exception KeyError: 'commands_unacknowledged'"
+  },
+  {
+   "id": "K07",
+   "core": true,
+   "holds": false,
+   "desc": "hole at end of stream is a gap; earlier claim stands",
+   "observed": "(0, [('c-1', 'v1')], {'quarantined': 0})"
+  },
+  {
+   "id": "K08",
+   "core": true,
+   "holds": false,
+   "desc": "31 records ahead of a hole fit the buffer; no gap",
+   "observed": "oracle exception KeyError: 'v1'"
+  },
+  {
+   "id": "K09",
+   "core": true,
+   "holds": false,
+   "desc": "33 ahead overflow the buffer; gap declared",
+   "observed": "(0, {'quarantined': 0}, {})"
+  },
+  {
+   "id": "K10",
+   "core": true,
+   "holds": false,
+   "desc": "ack for a command not in the log: unknown_command, no claim",
+   "observed": "(0, [('c-9', 'v1')], {'quarantined': 0})"
+  },
+  {
+   "id": "K11",
+   "core": true,
+   "holds": false,
+   "desc": "ack from another device: unknown_command; addressed device claims",
+   "observed": "(0, [('c-1', 'v1'), ('c-1', 'v2')], {'quarantined': 0})"
+  },
+  {
+   "id": "K12",
+   "core": true,
+   "holds": false,
+   "desc": "done ack with the wrong state: transition_mismatch, no claim",
+   "observed": "(0, [('c-1', 'v1')], {'quarantined': 0})"
+  },
+  {
+   "id": "K13",
+   "core": true,
+   "holds": false,
+   "desc": "rejected ack makes no claim",
+   "observed": "oracle exception KeyError: 'effects_claimed'"
+  },
+  {
+   "id": "K14",
+   "core": true,
+   "holds": false,
+   "desc": "unexplained state change flagged; state follows device",
+   "observed": "(0, None, {'quarantined': 0})"
+  },
+  {
+   "id": "K15",
+   "core": true,
+   "holds": false,
+   "desc": "12 malformed lines quarantined, never echoed, valid records still apply",
+   "observed": "(1, 3, [('c-1', 'v1')], False, '')"
+  },
+  {
+   "id": "K16",
+   "core": true,
+   "holds": false,
+   "desc": "invalid command log exits 2 (dup id, unknown field, bad action)",
+   "observed": "[('dup', 0), ('field', 0), ('action', 0)]"
+  },
+  {
+   "id": "K17",
+   "core": true,
+   "holds": false,
+   "desc": "interleaved 4-device history with reboots: exact claims and states",
+   "observed": "(0, 172, 160, False, {'quarantined': 0})"
+  },
+  {
+   "id": "K18",
+   "core": true,
+   "holds": false,
+   "desc": "same history duplicated and swapped: exact claims and states, no gap",
+   "observed": "(0, 258, 160, False, {'quarantined': 0})"
+  },
+  {
+   "id": "K19",
+   "core": true,
+   "holds": false,
+   "desc": "crash drill exit 3, resume equals the unbroken report",
+   "observed": "(0, 0, 0, None, True)"
+  },
+  {
+   "id": "K20",
+   "core": true,
+   "holds": false,
+   "desc": "resume onto changed events or commands is refused (exit 2)",
+   "observed": "(0, 0, 0, 0)"
+  },
+  {
+   "id": "K21",
+   "core": true,
+   "holds": false,
+   "desc": "lost ack: command unacknowledged, not claimed",
+   "observed": "oracle exception KeyError: 'commands_unacknowledged'"
+  },
+  {
+   "id": "K22",
+   "core": true,
+   "holds": false,
+   "desc": "simulate with heavy faults matches ground truth (3 seeds)",
+   "observed": "[(1, 2, False), (7, 2, False), (42, 2, False)]"
+  },
+  {
+   "id": "K23",
+   "core": true,
+   "holds": false,
+   "desc": "text report states the simulator scope",
+   "observed": "{\"status\": \"clean\", \"claims\": [{\"cmd\": \"c-1\", \"device\": \"v1\"}], \"anomalies_found\": {\"quarantined\": 0}, \"claim_scope\": \"simulated valve actuations; not hardware evidence\", \"counts\": {}, \"devices\": {}}\n"
+  },
+  {
+   "id": "A01",
+   "core": false,
+   "holds": false,
+   "desc": "seq 2.0 (integral float) is quarantined, not taken as an integer",
+   "observed": "(0, 0, [('c-1', 'v1')])"
+  },
+  {
+   "id": "A02",
+   "core": false,
+   "holds": false,
+   "desc": "boot 2^31 and seq 2^53 accepted, seq 2^53+1 quarantined",
+   "observed": "(0, 0, {})"
+  },
+  {
+   "id": "A03",
+   "core": false,
+   "holds": false,
+   "desc": "10001st distinct device quarantined, run under 60 s",
+   "observed": "(0, 0, 0, 0.0)"
+  },
+  {
+   "id": "A04",
+   "core": false,
+   "holds": true,
+   "desc": "lost ack then reboot re-ack: one claim, no false unexplained transition",
+   "observed": "(0, [('c-1', 'v1')], {'quarantined': 0})"
+  },
+  {
+   "id": "A05",
+   "core": false,
+   "holds": false,
+   "desc": "reused seq with different content in one boot claims nothing new",
+   "observed": "(0, [('c-1', 'v1'), ('c-2', 'v1')], {})"
+  },
+  {
+   "id": "A06",
+   "core": false,
+   "holds": false,
+   "desc": "tampered checkpoint is refused or ignored, never trusted",
+   "observed": "no readable checkpoint: [Errno 2] No such file or directory: '<TMPDIR>/m25or-ae1p8s98/a06/st.json'"
+  },
+  {
+   "id": "A07",
+   "core": false,
+   "holds": false,
+   "desc": "~200k-line stream: exact claims under 120 s",
+   "observed": "(44600, 0, 0.1, False)"
+  },
+  {
+   "id": "A08",
+   "core": false,
+   "holds": false,
+   "desc": "stale-boot done ack after a newer boot claims nothing",
+   "observed": "(0, [('c-1', 'v1')], {'quarantined': 0})"
+  },
+  {
+   "id": "A09",
+   "core": false,
+   "holds": false,
+   "desc": "500 anomalies: count exact, list capped at 200",
+   "observed": "oracle exception KeyError: 'anomalies'"
+  },
+  {
+   "id": "A10",
+   "core": false,
+   "holds": false,
+   "desc": "late re-ack of an earlier command after a newer one completed: no reclaim",
+   "observed": "(0, [('c-1', 'v1'), ('c-1', 'v1'), ('c-2', 'v1')], None, {'quarantined': 0})"
+  },
+  {
+   "id": "A11",
+   "core": false,
+   "holds": true,
+   "desc": "CRLF and blank line tolerated",
+   "observed": "(1, [('c-1', 'v1')], 1)"
+  },
+  {
+   "id": "A12",
+   "core": false,
+   "holds": false,
+   "desc": "flow_lpm 1e400 (infinite) is quarantined",
+   "observed": "(0, 0)"
+  },
+  {
+   "id": "A13",
+   "core": false,
+   "holds": true,
+   "desc": "32 records ahead of a hole fit 'a buffer of 32' (boundary)",
+   "observed": "(0, 0, {})"
+  },
+  {
+   "id": "A06b",
+   "core": false,
+   "holds": false,
+   "desc": "checkpoint with claims removed is refused or gives the unbroken report",
+   "observed": "oracle exception FileNotFoundError: [Errno 2] No such file or directory: '<TMPDIR>/m25or-ae1p8s98/a06b/st.json'"
+  },
+  {
+   "id": "A14",
+   "core": false,
+   "holds": false,
+   "desc": "structurally wrong checkpoint refused with exit 2, no traceback",
+   "observed": "oracle exception FileNotFoundError: [Errno 2] No such file or directory: '<TMPDIR>/m25or-ae1p8s98/a14/st.json'"
+  },
+  {
+   "id": "A15",
+   "core": false,
+   "holds": false,
+   "desc": "device id with a trailing newline is quarantined (documented pattern)",
+   "observed": "(0, 0, [])"
+  },
+  {
+   "id": "A16",
+   "core": false,
+   "holds": false,
+   "desc": "command id with a trailing newline makes the command log invalid",
+   "observed": "(0, '')"
+  }
+ ]
+}

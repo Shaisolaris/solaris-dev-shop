@@ -1,0 +1,83 @@
+K01 HOLDS clean control: one claim, state open, status clean, scope stated
+      observed: (0, [('c-1', 'v1')], 'open')
+K02 HOLDS reorder inside the buffer gives the in-order result
+      observed: (0, [('c-1', 'v1')], 'open', {'gap': 0, 'quarantined': 0, 'stale_boot_replay': 0, 'transition_mismatch': 0, 'unexplained_transition': 0, 'unknown_command': 0})
+K03 HOLDS duplicate records are dropped, no second claim
+      observed: (0, [('c-1', 'v1')], {'applied': 3, 'duplicates_dropped': 3})
+K04 HOLDS re-acks of one command at new seqs give one claim
+      observed: (0, [('c-1', 'v1')], {'applied': 5, 'duplicate_acks': 2})
+K05 HOLDS reboot and re-ack: one claim, new session, no anomaly
+      observed: (0, [('c-1', 'v1')], {'boot': 2, 'last_seq': 3, 'state': 'open'}, {'gap': 0, 'quarantined': 0, 'stale_boot_replay': 0, 'transition_mismatch': 0, 'unexplained_transition': 0, 'unknown_command': 0})
+K06 HOLDS lower-boot record is a stale replay and claims nothing
+      observed: (1, [('c-1', 'v1')], 'open', {'gap': 0, 'quarantined': 0, 'stale_boot_replay': 2, 'transition_mismatch': 0, 'unexplained_transition': 0, 'unknown_command': 0}, ['c-2'])
+K07 HOLDS hole at end of stream is a gap; earlier claim stands
+      observed: (1, [('c-1', 'v1')], {'gap': 1, 'quarantined': 0, 'stale_boot_replay': 0, 'transition_mismatch': 0, 'unexplained_transition': 0, 'unknown_command': 0})
+K08 HOLDS 31 records ahead of a hole fit the buffer; no gap
+      observed: (0, {'gap': 0, 'quarantined': 0, 'stale_boot_replay': 0, 'transition_mismatch': 0, 'unexplained_transition': 0, 'unknown_command': 0}, {'v1': {'boot': 1, 'last_seq': 33, 'state': 'closed'}})
+K09 HOLDS 33 ahead overflow the buffer; gap declared
+      observed: (1, {'gap': 1, 'quarantined': 0, 'stale_boot_replay': 0, 'transition_mismatch': 0, 'unexplained_transition': 0, 'unknown_command': 0}, {'v1': {'boot': 1, 'last_seq': 35, 'state': 'closed'}})
+K10 HOLDS ack for a command not in the log: unknown_command, no claim
+      observed: (1, [], {'gap': 0, 'quarantined': 0, 'stale_boot_replay': 0, 'transition_mismatch': 0, 'unexplained_transition': 0, 'unknown_command': 1})
+K11 HOLDS ack from another device: unknown_command; addressed device claims
+      observed: (1, [('c-1', 'v1')], {'gap': 0, 'quarantined': 0, 'stale_boot_replay': 0, 'transition_mismatch': 0, 'unexplained_transition': 0, 'unknown_command': 1})
+K12 HOLDS done ack with the wrong state: transition_mismatch, no claim
+      observed: (1, [], {'gap': 0, 'quarantined': 0, 'stale_boot_replay': 0, 'transition_mismatch': 1, 'unexplained_transition': 0, 'unknown_command': 0})
+K13 HOLDS rejected ack makes no claim
+      observed: (0, [], {'applied': 3, 'commands_rejected_by_device': 1}, {'gap': 0, 'quarantined': 0, 'stale_boot_replay': 0, 'transition_mismatch': 0, 'unexplained_transition': 0, 'unknown_command': 0})
+K14 HOLDS unexplained state change flagged; state follows device
+      observed: (1, 'open', {'gap': 0, 'quarantined': 0, 'stale_boot_replay': 0, 'transition_mismatch': 0, 'unexplained_transition': 1, 'unknown_command': 0})
+K15 HOLDS 12 malformed lines quarantined, never echoed, valid records still apply
+      observed: (1, 12, [('c-1', 'v1')], False, '')
+K16 HOLDS invalid command log exits 2 (dup id, unknown field, bad action)
+      observed: [('dup', 2), ('field', 2), ('action', 2)]
+K17 HOLDS interleaved 4-device history with reboots: exact claims and states
+      observed: (0, 160, 160, True, {'gap': 0, 'quarantined': 0, 'stale_boot_replay': 0, 'transition_mismatch': 0, 'unexplained_transition': 0, 'unknown_command': 0})
+K18 HOLDS same history duplicated and swapped: exact claims and states, no gap
+      observed: (0, 160, 160, True, {'gap': 0, 'quarantined': 0, 'stale_boot_replay': 0, 'transition_mismatch': 0, 'unexplained_transition': 0, 'unknown_command': 0})
+K19 HOLDS crash drill exit 3, resume equals the unbroken report
+      observed: (3, 0, 0, 100, True)
+K20 HOLDS resume onto changed events or commands is refused (exit 2)
+      observed: (3, 2, 3, 2)
+K21 HOLDS lost ack: command unacknowledged, not claimed
+      observed: (0, [('c-1', 'v1')], ['c-2'])
+K22 HOLDS simulate with heavy faults matches ground truth (3 seeds)
+      observed: [(1, 0, True), (7, 0, True), (42, 0, True)]
+K23 HOLDS text report states the simulator scope
+      observed: status: clean
+effects claimed: 1 of 1 commands (simulated valve actuations from a synthetic event stream; not hardware evidence)
+
+A01 HOLDS seq 2.0 (integral float) is quarantined, not taken as an integer
+      observed: (1, 1, [('c-1', 'v1')])
+A02 HOLDS boot 2^31 and seq 2^53 accepted, seq 2^53+1 quarantined
+      observed: (1, 1, {'v1': {'boot': 2147483648, 'last_seq': 9007199254740992, 'state': 'closed'}})
+A03 HOLDS 10001st distinct device quarantined, run under 60 s
+      observed: (1, 1, 10000, 0.1)
+A04 HOLDS lost ack then reboot re-ack: one claim, no false unexplained transition
+      observed: (0, [('c-1', 'v1')], {'gap': 0, 'quarantined': 0, 'stale_boot_replay': 0, 'transition_mismatch': 0, 'unexplained_transition': 0, 'unknown_command': 0})
+A05 HOLDS reused seq with different content in one boot claims nothing new
+      observed: (0, [('c-1', 'v1')], {'applied': 3, 'duplicates_dropped': 1})
+A06 GAP   tampered checkpoint is refused or ignored, never trusted
+      observed: (0, 'DIFFERENT report accepted', True)
+A07 HOLDS ~200k-line stream: exact claims under 120 s
+      observed: (44600, 0, 1.5, True)
+A08 HOLDS stale-boot done ack after a newer boot claims nothing
+      observed: (1, [], {'gap': 0, 'quarantined': 0, 'stale_boot_replay': 1, 'transition_mismatch': 0, 'unexplained_transition': 0, 'unknown_command': 0})
+A09 HOLDS 500 anomalies: count exact, list capped at 200
+      observed: (1, 500, 200, 200)
+A10 HOLDS late re-ack of an earlier command after a newer one completed: no reclaim
+      observed: (0, [('c-1', 'v1'), ('c-2', 'v1')], 'closed', {'gap': 0, 'quarantined': 0, 'stale_boot_replay': 0, 'transition_mismatch': 0, 'unexplained_transition': 0, 'unknown_command': 0})
+A11 HOLDS CRLF and blank line tolerated
+      observed: (0, [('c-1', 'v1')], 0)
+A12 HOLDS flow_lpm 1e400 (infinite) is quarantined
+      observed: (1, 1)
+A13 GAP   32 records ahead of a hole fit 'a buffer of 32' (boundary)
+      observed: (1, 1, {'v1': {'boot': 1, 'last_seq': 34, 'state': 'closed'}})
+A06b GAP   checkpoint with claims removed is refused or gives the unbroken report
+      observed: (0, 'claims removed 22', 'DIFFERENT: claimed 38 vs 60')
+A14 GAP   structurally wrong checkpoint refused with exit 2, no traceback
+      observed: (1, ["TypeError: 'int' object is not subscriptable"])
+A15 GAP   device id with a trailing newline is quarantined (documented pattern)
+      observed: (0, 0, ['v1', 'v1\n'])
+A16 GAP   command id with a trailing newline makes the command log invalid
+      observed: (0, '')
+core: 23 / 23  adversarial holding: 11 / 17

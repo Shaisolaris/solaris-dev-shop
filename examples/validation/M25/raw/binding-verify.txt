@@ -1,0 +1,9 @@
+# binding check 2026-10-18 19:10:52 PDT (Grok self-validation)
+commit 822db7d08e044d7c17ea5b64103d69b85a21f4f3 parent 02ba9c571b10ad1dba792d2ac5534bcad3171e67
+diff 02ba9c5..822db7d sha256 dfce0eca3141e2bd027012a649f047c1a4eae674f5c23f3618eb81ed1b44f64c
+G25.patch sha256           8483b454e865506938b25edcbc53f85df4aaf175449826acccbeee42bfdc0f9a
+identical bytes: NO
+manifest check at 822db7d:
+entries 17 ok 17
+manifest set == diff set: yes
+applied; tree 3e9a54932bfe07cd50779591a6fe01fb73482515 vs 822db7d tree 3e9a54932bfe07cd50779591a6fe01fb73482515

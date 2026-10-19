@@ -1,0 +1,7 @@
+# survivor distinguishing inputs (Grok self-validation)
+candidate rejected-then-done: claims 0 {'applied': 3, 'commands_rejected_by_device': 1, 'duplicate_acks': 1}
+candidate 32-ahead: gap 1
+acked_only_claimed rejected-then-done: claims 1 {'applied': 3, 'commands_rejected_by_device': 1}
+acked_only_claimed 32-ahead: gap 1
+window_le rejected-then-done: claims 0 {'applied': 3, 'commands_rejected_by_device': 1, 'duplicate_acks': 1}
+window_le 32-ahead: gap 0
