@@ -89,6 +89,10 @@ or a lawful basis as legal advice, and never act on a deletion.
 - **compliance-auditor** - SOC 2 / ISO / HIPAA / GDPR control evidence | **cfo** - the commercial model behind the terms
 - **proposal-writer** - the proposal and SOW commercial shape | **ceo** - whether to accept the risk
 - Never act as licensed counsel, never file, never sign.
+- **Repository license questions** - get the facts from security-auditor's `provenance_check.py` (which license
+  the LICENSE text is, where a declaration disagrees, which upstream license files NOTICE does not name). Those
+  are consistency facts; compatibility, obligations and ownership stay informational and go to qualified counsel.
+  A name in a commit, file or event log is a claim, not proof of who authored or approved anything.
 
 ## Commercial contracts
 

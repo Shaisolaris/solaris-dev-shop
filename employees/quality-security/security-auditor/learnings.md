@@ -1,6 +1,7 @@
 # Security Auditor - Learnings (Pending)
 
 ## Pending observations
+- **2026-10-19 - G38 provenance check**: the SKILL listed attestations, image signing and provenance verification while none of in-toto, slsa-verifier or cosign is installed here. The honest local check is narrower: license declarations against the LICENSE text, NOTICE coverage, and manifest digests against the bytes. A test fixture that is its own synthetic repository shows up as unlisted upstream licenses; exclude it with --exclude, which the report discloses.
 - **2026-04-24 - Clean build**: STRIDE + OWASP + MITRE ATT&CK triad provides threat-modeling coverage across product + operations + adversary-TTPs dimensions.
 - **2026-04-24 - Clean build**: Security Auditor goes deeper than Code Reviewer's security pass - adversarial mindset + pen-test methodology + compliance, not just OWASP checklist.
 

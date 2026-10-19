@@ -246,9 +246,12 @@
       "rules.md",
       "learnings.md",
       "plugin.json",
-      "frontier-references.md"
+      "frontier-references.md",
+      "immutable-event-validation.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "event_chain.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -397,7 +400,8 @@
     "acceptance": "Stack detected from repo; tools preflighted; evidence executed; deploy/credentials/history rewrite never silent; Gate: passed only if SELF-QA all yes",
     "redaction": "Strip tokens, passwords, connection strings, and personal absolute home paths from receipts",
     "forward_tests": [
-      "synthetic repository build/fix with stack detection + tests executed"
+      "synthetic repository build/fix with stack detection + tests executed",
+      "synthetic hash-chained event log: edits, gaps, replays, torn tails and anchored rewrites found at their line; recovery to a new file only; concurrent appends lose nothing; no wallet or transaction (tests/test_g38_capability.py)"
     ],
     "receipts": [
       "command stdout",
@@ -507,7 +511,8 @@
       "rules.md",
       "learnings.md",
       "plugin.json",
-      "frontier-references.md"
+      "frontier-references.md",
+      "immutable-event-validation.md"
     ]
   }
 }

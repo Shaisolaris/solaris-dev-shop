@@ -9,6 +9,7 @@
   ],
   "references": [
     "rules.md",
+    "immutable-event-validation.md",
     "learnings.md",
     "frontier-references.md"
   ],

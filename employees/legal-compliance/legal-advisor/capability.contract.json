@@ -359,7 +359,8 @@
     "forward_tests": [
       "synthetic MSA review produces clause issues + disclaimer",
       "filing request yields refuse + human_counsel_required",
-      "privacy handoff from compliance-auditor privacy_inventory.py read with its configured clocks, retention holds and deletion conflicts; no legal opinion issued (tests/test_g37_capability.py)"
+      "privacy handoff from compliance-auditor privacy_inventory.py read with its configured clocks, retention holds and deletion conflicts; no legal opinion issued (tests/test_g37_capability.py)",
+      "license question answered from provenance_check.py consistency facts; compatibility and ownership left to qualified counsel; plain-text names not treated as authenticated (tests/test_g38_capability.py)"
     ],
     "receipts": [
       "memo path",

@@ -275,9 +275,11 @@
       "elite-audit-delivery.md",
       "scanning-stack.md",
       "trivy-and-dast.md",
-      "job-two-improvement.md"
+      "job-two-improvement.md",
+      "provenance-integrity.md"
     ],
     "scripts": [
+      "provenance_check.py",
       "boundary_probe.py"
     ],
     "binaries": [],
@@ -402,7 +404,8 @@
     "redaction": "Strip secrets, tokens, live credentials, and personal paths; redact exploit details that enable abuse when publishing client-facing summaries",
     "forward_tests": [
       "synthetic planted vuln fixture detects with correct severity band",
-      "clean fixture no material false positives"
+      "clean fixture no material false positives",
+      "synthetic repository: license declarations, NOTICE coverage and a sha256 manifest checked against the files; drift, missing, symlinked and escaping artifacts reported; no legal opinion or authenticated identity (tests/test_g38_capability.py)"
     ],
     "receipts": [
       "scan stdout",
@@ -522,7 +525,8 @@
       "elite-audit-delivery.md",
       "scanning-stack.md",
       "trivy-and-dast.md",
-      "job-two-improvement.md"
+      "job-two-improvement.md",
+      "provenance-integrity.md"
     ]
   }
 }
