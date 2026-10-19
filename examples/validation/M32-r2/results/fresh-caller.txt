@@ -1,0 +1,98 @@
+== 3.9.6 demo exit 1
+northwind-clinic (owner Morgan (customer success, synthetic)) at 2026-10-02T19:00:00+00:00 by w1: drafted 4, duplicate suppressed 0, withdrawn 0, reassigned 0, suppressed 3, cancelled 0, scheduled 7; sent 0
+northwind-clinic (owner Priya (customer success lead, synthetic)) at 2026-10-05T19:00:00+00:00 by w2: drafted 2, duplicate suppressed 0, withdrawn 1, reassigned 3, suppressed 5, cancelled 2, scheduled 2; sent 0
+northwind-clinic (owner Priya (customer success lead, synthetic)) at 2026-10-08T19:00:00+00:00 by w1: drafted 3, duplicate suppressed 4, withdrawn 1, reassigned 0, suppressed 6, cancelled 2, scheduled 0; sent 0
+  NOTE consent_review_required c-dee: opt_in after an opt-out or bounce; the contact stays suppressed until a person reviews it
+status: 3 run(s); last by w1 at 2026-10-08T19:00:00+00:00; 7 open draft(s), 2 withdrawn; sent 0
+PASS o1 fixture over three runs and two workers matches the reference (9 drafts, 7 open, 2 withdrawn)
+PASS o2 rerun and redelivered events draft nothing new; a reused event id with new content is refused
+PASS o3 hard bounce and opt-out stay suppressed after opt_in; support still reaches a marketing opt-out
+PASS o4 15 crash drills after the draft and after the ledger record: no duplicate, state converges
+PASS o5 8 concurrent workers per run (3 rounds): exit 0 or 4 only, one draft per action
+PASS o6 ownership handoff: next worker resumes, unsent drafts re-rendered for the new owner, status shows state
+PASS o7 8 invalid inputs create nothing; a forged journal and another account's state are refused
+PASS o8 held lock exits 4 with nothing written; a torn ledger tail does not swallow the next record
+PASS o9 3 seeded unseen accounts (120 to 180 contacts, 2096 event lines incl. redeliveries, 4 runs each, 1488 drafts) match the reference
+PASS o10 6 duplicate-person or missing-handle imports refused with exit 2 and no draft for the second record
+PASS s1 no mail, network or process use in the tool; fixtures byte-identical
+ACCEPTED 11/11
+FAIL o1 fixture over three runs and two workers matches the reference (9 drafts, 7 open, 2 withdrawn)
+FAIL o2 rerun and redelivered events draft nothing new; a reused event id with new content is refused
+FAIL o3 hard bounce and opt-out stay suppressed after opt_in; support still reaches a marketing opt-out
+FAIL o4 6 crash drills after the draft and after the ledger record: no duplicate, state converges
+FAIL o5 8 concurrent workers per run (3 rounds): exit 0 or 4 only, one draft per action
+FAIL o6 ownership handoff: next worker resumes, unsent drafts re-rendered for the new owner, status shows state
+FAIL o7 error FileNotFoundError: [Errno 2] No such file or directory: '/tmp/m32r2fc-MZckSV/home/g32-oracle-huv9kpmv/w19/s/journal.jsonl'
+FAIL o8 held lock exits 4 with nothing written; a torn ledger tail does not swallow the next record
+    unseen 0: [(('c021', 'nudge', 'X00101'), ['draft', 'Owner A'], None), (('c099', 'ack', 'X00451'), ['DUPLICATE', None], ['withdrawn', 'Owner B']), (('c108', 'nudge', 'X00506'), ['draft', 'Owner A'], None)]
+    unseen 1: [(('c004', 'nudge', 'X00021'), ['DUPLICATE', None], ['draft', 'Owner D']), (('c071', 'nudge', 'X00333'), ['DUPLICATE', None], None), (('c052', 'training', 'X00236'), ['DUPLICATE', None], ['draft', 'Owner D'])]
+    unseen 2: [(('c016', 'welcome', 'X00070'), ['DUPLICATE', None], None), (('c075', 'checkin', 'X00360'), ['DUPLICATE', None], None), (('c032', 'training', 'X00144'), ['DUPLICATE', None], None)]
+FAIL o9 3 seeded unseen accounts (120 to 180 contacts, 2096 event lines incl. redeliveries, 4 runs each, 2186 drafts) match the reference
+FAIL o10 6 duplicate-person or missing-handle imports refused with exit 2 and no draft for the second record
+PASS s1 no mail, network or process use in the tool; fixtures byte-identical
+REJECTED 1/11
+FAIL o1 fixture over three runs and two workers matches the reference (9 drafts, 7 open, 2 withdrawn)
+FAIL o2 rerun and redelivered events draft nothing new; a reused event id with new content is refused
+FAIL o3 hard bounce and opt-out stay suppressed after opt_in; support still reaches a marketing opt-out
+FAIL o4 6 crash drills after the draft and after the ledger record: no duplicate, state converges
+FAIL o5 8 concurrent workers per run (3 rounds): exit 0 or 4 only, one draft per action
+FAIL o6 ownership handoff: next worker resumes, unsent drafts re-rendered for the new owner, status shows state
+FAIL o7 error FileNotFoundError: [Errno 2] No such file or directory: '/tmp/m32r2fc-MZckSV/home/g32-oracle-ou85x6z6/w19/s/journal.jsonl'
+FAIL o8 held lock exits 4 with nothing written; a torn ledger tail does not swallow the next record
+    unseen 0: [(('c004', 'training', 'X00014'), None, ['draft', 'Owner B']), (('c018', 'ack', 'X00077'), None, ['draft', 'Owner B']), (('c101', 'ack', 'X00460'), None, ['draft', 'Owner B'])]
+    unseen 1: [(('c014', 'welcome', 'X00061'), None, ['draft', 'Owner D']), (('c121', 'training', 'X00554'), None, ['draft', 'Owner D']), (('c143', 'nudge', 'X00665'), None, ['draft', 'Owner D'])]
+    unseen 2: [(('c019', 'ack', 'X00083'), None, ['draft', 'Owner B']), (('c070', 'welcome', 'X00328'), None, ['draft', 'Owner B']), (('c065', 'training', 'X00300'), None, ['draft', 'Owner B'])]
+FAIL o9 3 seeded unseen accounts (120 to 180 contacts, 2096 event lines incl. redeliveries, 4 runs each, 0 drafts) match the reference
+FAIL o10 6 duplicate-person or missing-handle imports refused with exit 2 and no draft for the second record
+PASS s1 no mail, network or process use in the tool; fixtures byte-identical
+REJECTED 1/11
+-- pycache dirs in copy: 0; tree changed: no; HOME entries: ./Library ./Library/Caches ./Library/Caches/com.apple.python 
+== 3.13.15 demo exit 1
+northwind-clinic (owner Morgan (customer success, synthetic)) at 2026-10-02T19:00:00+00:00 by w1: drafted 4, duplicate suppressed 0, withdrawn 0, reassigned 0, suppressed 3, cancelled 0, scheduled 7; sent 0
+northwind-clinic (owner Priya (customer success lead, synthetic)) at 2026-10-05T19:00:00+00:00 by w2: drafted 2, duplicate suppressed 0, withdrawn 1, reassigned 3, suppressed 5, cancelled 2, scheduled 2; sent 0
+northwind-clinic (owner Priya (customer success lead, synthetic)) at 2026-10-08T19:00:00+00:00 by w1: drafted 3, duplicate suppressed 4, withdrawn 1, reassigned 0, suppressed 6, cancelled 2, scheduled 0; sent 0
+  NOTE consent_review_required c-dee: opt_in after an opt-out or bounce; the contact stays suppressed until a person reviews it
+status: 3 run(s); last by w1 at 2026-10-08T19:00:00+00:00; 7 open draft(s), 2 withdrawn; sent 0
+PASS o1 fixture over three runs and two workers matches the reference (9 drafts, 7 open, 2 withdrawn)
+PASS o2 rerun and redelivered events draft nothing new; a reused event id with new content is refused
+PASS o3 hard bounce and opt-out stay suppressed after opt_in; support still reaches a marketing opt-out
+PASS o4 15 crash drills after the draft and after the ledger record: no duplicate, state converges
+PASS o5 8 concurrent workers per run (3 rounds): exit 0 or 4 only, one draft per action
+PASS o6 ownership handoff: next worker resumes, unsent drafts re-rendered for the new owner, status shows state
+PASS o7 8 invalid inputs create nothing; a forged journal and another account's state are refused
+PASS o8 held lock exits 4 with nothing written; a torn ledger tail does not swallow the next record
+PASS o9 3 seeded unseen accounts (120 to 180 contacts, 2096 event lines incl. redeliveries, 4 runs each, 1488 drafts) match the reference
+PASS o10 6 duplicate-person or missing-handle imports refused with exit 2 and no draft for the second record
+PASS s1 no mail, network or process use in the tool; fixtures byte-identical
+ACCEPTED 11/11
+FAIL o1 fixture over three runs and two workers matches the reference (9 drafts, 7 open, 2 withdrawn)
+FAIL o2 rerun and redelivered events draft nothing new; a reused event id with new content is refused
+FAIL o3 hard bounce and opt-out stay suppressed after opt_in; support still reaches a marketing opt-out
+FAIL o4 6 crash drills after the draft and after the ledger record: no duplicate, state converges
+FAIL o5 error JSONDecodeError: Extra data: line 1 column 178 (char 177)
+FAIL o6 ownership handoff: next worker resumes, unsent drafts re-rendered for the new owner, status shows state
+FAIL o7 error FileNotFoundError: [Errno 2] No such file or directory: '/tmp/m32r2fc-3QXmc6/home/g32-oracle-6ywnrtk9/w17/s/journal.jsonl'
+FAIL o8 held lock exits 4 with nothing written; a torn ledger tail does not swallow the next record
+    unseen 0: [(('c041', 'welcome', 'X00197'), ['DUPLICATE', None], ['draft', 'Owner B']), (('c107', 'training', 'X00494'), ['draft', 'Owner A'], ['draft', 'Owner B']), (('c027', 'ack', 'X00125'), ['DUPLICATE', None], ['draft', 'Owner B'])]
+    unseen 1: [(('c115', 'feedback', 'X00544'), ['DUPLICATE', None], ['draft', 'Owner D']), (('c111', 'welcome', 'X00520'), ['DUPLICATE', None], ['draft', 'Owner D']), (('c089', 'welcome', 'X00428'), ['DUPLICATE', None], ['draft', 'Owner D'])]
+    unseen 2: [(('c117', 'ack', 'X00523'), ['DUPLICATE', None], ['draft', 'Owner B']), (('c150', 'training', 'X00674'), ['draft', 'Owner A'], ['draft', 'Owner B']), (('c144', 'feedback', 'X00649'), ['DUPLICATE', None], ['draft', 'Owner B'])]
+FAIL o9 3 seeded unseen accounts (120 to 180 contacts, 2096 event lines incl. redeliveries, 4 runs each, 2186 drafts) match the reference
+FAIL o10 6 duplicate-person or missing-handle imports refused with exit 2 and no draft for the second record
+PASS s1 no mail, network or process use in the tool; fixtures byte-identical
+REJECTED 1/11
+FAIL o1 fixture over three runs and two workers matches the reference (9 drafts, 7 open, 2 withdrawn)
+FAIL o2 rerun and redelivered events draft nothing new; a reused event id with new content is refused
+FAIL o3 hard bounce and opt-out stay suppressed after opt_in; support still reaches a marketing opt-out
+FAIL o4 6 crash drills after the draft and after the ledger record: no duplicate, state converges
+FAIL o5 8 concurrent workers per run (3 rounds): exit 0 or 4 only, one draft per action
+FAIL o6 ownership handoff: next worker resumes, unsent drafts re-rendered for the new owner, status shows state
+FAIL o7 error FileNotFoundError: [Errno 2] No such file or directory: '/tmp/m32r2fc-3QXmc6/home/g32-oracle-i1hnuu4g/w19/s/journal.jsonl'
+FAIL o8 held lock exits 4 with nothing written; a torn ledger tail does not swallow the next record
+    unseen 0: [(('c105', 'ack', 'X00486'), None, ['draft', 'Owner B']), (('c044', 'checkin', 'X00208'), None, ['draft', 'Owner B']), (('c076', 'checkin', 'X00363'), None, ['draft', 'Owner B'])]
+    unseen 1: [(('c066', 'ack', 'X00304'), None, ['draft', 'Owner D']), (('c036', 'welcome', 'X00174'), None, ['draft', 'Owner D']), (('c076', 'checkin', 'X00363'), None, ['draft', 'Owner D'])]
+    unseen 2: [(('c145', 'training', 'X00650'), None, ['draft', 'Owner B']), (('c062', 'checkin', 'X00282'), None, ['draft', 'Owner B']), (('c076', 'training', 'X00362'), None, ['draft', 'Owner B'])]
+FAIL o9 3 seeded unseen accounts (120 to 180 contacts, 2096 event lines incl. redeliveries, 4 runs each, 0 drafts) match the reference
+FAIL o10 6 duplicate-person or missing-handle imports refused with exit 2 and no draft for the second record
+PASS s1 no mail, network or process use in the tool; fixtures byte-identical
+REJECTED 1/11
+-- pycache dirs in copy: 0; tree changed: no; HOME entries: 

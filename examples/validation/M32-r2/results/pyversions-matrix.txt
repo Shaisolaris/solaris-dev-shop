@@ -1,0 +1,6 @@
+== 3.9.6 | g32: Ran 22 tests in 10.304s  OK  | full: Ran 166 tests in 22.154s  OK  | builder-oracle: ACCEPTED 11/11 | builder-naive: REJECTED 1/11 | builder-noop: REJECTED 1/11 | m32-oracle: M32R2 ORACLE 18/18 core PASS | m32-naive: M32R2 ORACLE 3/18 core FAIL | m32-noop: M32R2 ORACLE 5/18 core FAIL
+== 3.11.16 | g32: Ran 22 tests in 7.968s  OK  | full: Ran 166 tests in 17.265s  OK  | builder-oracle: ACCEPTED 11/11 | builder-naive: REJECTED 1/11 | builder-noop: REJECTED 1/11 | m32-oracle: M32R2 ORACLE 18/18 core PASS | m32-naive: M32R2 ORACLE 3/18 core FAIL | m32-noop: M32R2 ORACLE 5/18 core FAIL
+== 3.12.14 | g32: Ran 22 tests in 8.118s  OK  | full: Ran 166 tests in 18.515s  OK  | builder-oracle: ACCEPTED 11/11 | builder-naive: REJECTED 1/11 | builder-noop: REJECTED 1/11 | m32-oracle: M32R2 ORACLE 18/18 core PASS | m32-naive: M32R2 ORACLE 3/18 core FAIL | m32-noop: M32R2 ORACLE 5/18 core FAIL
+== 3.13.15 | g32: Ran 22 tests in 8.201s  OK  | full: Ran 166 tests in 18.235s  OK  | builder-oracle: ACCEPTED 11/11 | builder-naive: REJECTED 1/11 | builder-noop: REJECTED 1/11 | m32-oracle: M32R2 ORACLE 18/18 core PASS | m32-naive: M32R2 ORACLE 3/18 core FAIL | m32-noop: M32R2 ORACLE 5/18 core FAIL
+pycache in copy: 0
+candidate status lines: 0
