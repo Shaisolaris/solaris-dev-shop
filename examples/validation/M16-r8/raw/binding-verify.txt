@@ -1,0 +1,13 @@
+# M16 r8 binding verify 2026-10-19 00:56:51 PDT
+remote head: 49aba3fd978a21545f525ad6e82156e39653b257	refs/heads/review/grok-g16-grounded-evals
+parent: f8fa811b330cec34c8685de09a48c93b65ad0742
+patch sha256 file: b4f949bbd965e57ed868c3d93e9bdc2ec4df76d785d34a58e28d59c202ecbd16
+diff sha256: b4f949bbd965e57ed868c3d93e9bdc2ec4df76d785d34a58e28d59c202ecbd16
+ 5 files changed, 163 insertions(+), 17 deletions(-)
+M16 r7 validation commit b77299f is on remote branch: b77299f9871f
+manifest check in candidate tree:
+employees/engineering/ai-ml-engineer/SKILL.md
+employees/engineering/ai-ml-engineer/learnings.md
+employees/engineering/llm-agent-designer/SKILL.md
+manifest entries 28 match in candidate tree 28
+r8 diff files ['employees/engineering/llm-agent-designer/grounded-answer-evals.md', 'employees/engineering/llm-agent-designer/grounded_eval.py', 'examples/capabilities/G16/README.md', 'examples/capabilities/G16/grounding_oracle.py', 'tests/test_g16_capability.py'] all in manifest True

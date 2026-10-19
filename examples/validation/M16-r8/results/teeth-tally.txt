@@ -1,0 +1,40 @@
+teeth-3.9.6 mutants 12 my oracle kills 11 builder tests kill 12 my survivors ['greet_start_anywhere']
+  bot_role_any_word                  builder_tests,wide_r8
+  bot_role_off                       builder_tests,greetings,wide_r8
+  fill_no_once_more                  builder_tests,greetings,wide_r8
+  fill_no_yall                       builder_tests,greetings,wide_r8
+  fill_single                        builder_tests,greetings,wide_r8
+  fill_there_only                    builder_tests,greetings,wide_r8,m16r7_greeting_probes
+  greet_start_anywhere               builder_tests
+  greet_start_off                    builder_tests,greetings,wide_r8,m16r7_greeting_probes
+  greet_start_only_sentence_start    builder_tests,wide_r8
+  greetings_no_fill                  builder_tests,wide_r8
+  no_good_afternoon                  builder_tests,wide_r8
+  no_yo                              builder_tests,wide_r8
+teeth-3.11.16 mutants 12 my oracle kills 11 builder tests kill 12 my survivors ['greet_start_anywhere']
+  bot_role_any_word                  builder_tests,wide_r8
+  bot_role_off                       builder_tests,greetings,wide_r8
+  fill_no_once_more                  builder_tests,greetings,wide_r8
+  fill_no_yall                       builder_tests,greetings,wide_r8
+  fill_single                        builder_tests,greetings,wide_r8
+  fill_there_only                    builder_tests,greetings,wide_r8,m16r7_greeting_probes
+  greet_start_anywhere               builder_tests
+  greet_start_off                    builder_tests,greetings,wide_r8,m16r7_greeting_probes
+  greet_start_only_sentence_start    builder_tests,wide_r8
+  greetings_no_fill                  builder_tests,wide_r8
+  no_good_afternoon                  builder_tests,wide_r8
+  no_yo                              builder_tests,wide_r8
+teeth-3.13.15 mutants 12 my oracle kills 11 builder tests kill 12 my survivors ['greet_start_anywhere']
+  bot_role_any_word                  builder_tests,wide_r8
+  bot_role_off                       builder_tests,greetings,wide_r8
+  fill_no_once_more                  builder_tests,greetings,wide_r8
+  fill_no_yall                       builder_tests,greetings,wide_r8
+  fill_single                        builder_tests,greetings,wide_r8
+  fill_there_only                    builder_tests,greetings,wide_r8,m16r7_greeting_probes
+  greet_start_anywhere               builder_tests
+  greet_start_off                    builder_tests,greetings,wide_r8,m16r7_greeting_probes
+  greet_start_only_sentence_start    builder_tests,wide_r8
+  greetings_no_fill                  builder_tests,wide_r8
+  no_good_afternoon                  builder_tests,wide_r8
+  no_yo                              builder_tests,wide_r8
+kill sets identical across versions: True
