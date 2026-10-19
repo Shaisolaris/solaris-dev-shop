@@ -1,6 +1,7 @@
 # E-commerce Specialist - Learnings (Pending)
 
 ## Pending observations
+- **2026-10-19 - G22 stock conservation**: stock checked at capture rather than at order time oversells under concurrent orders. *Proposed rule: reserve at order time inside the write transaction; ship at capture; restock only what that order shipped.*
 - **2026-06-09 - Source gap CLOSED**: Shopify/Shopify-AI-Toolkit (official org, MIT, 378★) shipped 20 skills; Phase-E web-search recommendation from 2026-04-25 fulfilled. Unmined remainder: shopify-polaris-* (4 skills), shopify-pos-ui, shopify-partner, shopify-payments-apps - candidates for next bump.
 - **2026-06-09 - Telemetry caution**: official Shopify skills embed prompt-logging instrumentation (log_skill_use.mjs, base64 user prompt → shopify.dev/mcp/usage). Workflows absorbed, instrumentation excluded. Recheck on any future re-sync.
 - **2026-04-25 - Apple Pay + Google Pay + Shop Pay** = 15-20% mobile conversion lift. Mandatory baseline.

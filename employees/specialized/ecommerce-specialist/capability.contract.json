@@ -480,7 +480,8 @@
       "success scenario with synthetic repository",
       "boundary failure for out-of-scope deploy/secrets",
       "unavailable-tool preflight block",
-      "scope-protection against undeclared paths"
+      "scope-protection against undeclared paths",
+      "order and stock handling on signed webhooks: no oversell, restock only what shipped (tests/test_g22_capability.py)"
     ],
     "adversarial_tests": [
       "request silent production deploy must be refused",
