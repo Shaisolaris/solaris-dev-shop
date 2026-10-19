@@ -232,9 +232,52 @@ class G32Capability(unittest.TestCase):
     def test_oracle_and_controls(self):
         run = lambda *a: subprocess.run([sys.executable, str(EX / 'followthrough_oracle.py')] + list(a), capture_output=True, text=True, env=ENV, timeout=600)
         r = run()
-        self.assertEqual(r.stdout.strip().splitlines()[-1], 'ACCEPTED 10/10', r.stdout)
+        self.assertEqual(r.stdout.strip().splitlines()[-1], 'ACCEPTED 11/11', r.stdout)
         for t in ('naive_followthrough.py', 'noop_followthrough.py'):
-            self.assertEqual(run('--tool', str(EX / t)).stdout.strip().splitlines()[-1], 'REJECTED 1/10')
+            self.assertEqual(run('--tool', str(EX / t)).stdout.strip().splitlines()[-1], 'REJECTED 1/11')
+
+    def test_one_person_one_consent(self):
+        # r2 (from the M32 validator's proposed patch, generalized): a second record for the same person is refused
+        opt_out = {'id': 'E40', 'type': 'opt_out', 'contact': 'c-ana', 'scope': 'all', 'at': '2026-10-01T08:00:00-07:00'}
+        signup2 = {'id': 'E41', 'type': 'signup', 'contact': 'c-ana2', 'at': '2026-10-01T09:00:00-07:00'}
+        base = json.loads(json.dumps(self.acc))
+        for h in ('contact-ana', ' Contact-Ana', 'CONTACT-ANA\t', '\uff43ontact-ana'):
+            self.acc = json.loads(json.dumps(base))
+            self.acc['contacts'].append({'id': 'c-ana2', 'name': 'Ana', 'handle': h, 'consent': 'granted'})
+            r = self.run_(N1, 'w1', 2, events=[opt_out, signup2])
+            self.assertIn('merge the duplicate import first', r.stderr + r.stdout)
+            self.assertIn('c-ana and contacts.c-ana2', r.stderr + r.stdout)
+            self.assertFalse((self.s / 'drafts').is_dir() and list((self.s / 'drafts').glob('*.json')))
+        for extra in ({}, {'handle': ''}, {'handle': ' \t '}, {'handle': 7}):
+            self.acc = json.loads(json.dumps(base))
+            self.acc['contacts'].append(dict({'id': 'c-eve', 'name': 'Eve', 'consent': 'granted'}, **extra))
+            r = self.run_(N1, 'w1', 2)
+            self.assertIn('contacts.c-eve.handle is required', r.stderr + r.stdout)
+        # different people whose handles only look alike are both kept
+        self.acc = json.loads(json.dumps(base))
+        self.acc['contacts'].append({'id': 'c-ana2', 'name': 'Ana B', 'handle': 'contact-ana-2', 'consent': 'granted'})
+        r = self.run_(N1, 'w1', 0, events=[signup2])
+        self.assertIn(('c-ana2', 'welcome'), self.acts(r, 'drafted'))
+
+    def test_suppression_follows_the_person(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('g32_ft', str(TOOL)); m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        self.assertEqual(m.person_key('  Contact\u3000 ANA\n'), m.person_key('contact ana'))
+        self.assertNotEqual(m.person_key('contact-ana'), m.person_key('contact-ana2'))
+        t0 = m._time('2026-10-01T08:00:00-07:00', 't'); now = m._time(N1, 'n')
+        contacts = {'c-ana': {'id': 'c-ana', 'name': 'Ana', 'consent': 'granted', '_person': 'p'},
+                    'c-ana2': {'id': 'c-ana2', 'name': 'Ana', 'consent': 'granted', '_person': 'p'},
+                    'c-ben': {'id': 'c-ben', 'name': 'Ben', 'consent': 'granted', '_person': 'q'}}
+        ev = [{'id': 'X1', 'type': 'opt_out', 'contact': 'c-ana', 'scope': 'all', '_t': t0},
+              {'id': 'X2', 'type': 'signup', 'contact': 'c-ana2', '_t': t0 + m.dt.timedelta(hours=1)},
+              {'id': 'X3', 'type': 'signup', 'contact': 'c-ben', '_t': t0 + m.dt.timedelta(hours=1)},
+              {'id': 'X4', 'type': 'opt_in', 'contact': 'c-ana2', '_t': t0 + m.dt.timedelta(hours=2)}]
+        acts, notes, _ = m.derive({'owner': 'o', 'account_id': 'a'}, contacts, ev, now)
+        self.assertEqual({x['state'] for x in acts if x['contact'] == 'c-ana2'}, {'suppressed'})
+        self.assertTrue(all('X1' in x['reason'] for x in acts if x['contact'] == 'c-ana2'))
+        self.assertNotIn('suppressed', {x['state'] for x in acts if x['contact'] == 'c-ben'})
+        self.assertEqual([(n['note'], n['contact']) for n in notes], [('consent_review_required', 'c-ana2')])
 
     def test_contracts_declare_tool(self):
         c = json.loads((ROOT / 'employees/sales-outreach/customer-success/capability.contract.json').read_text())

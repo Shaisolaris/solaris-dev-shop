@@ -12,9 +12,9 @@ python3 employees/sales-outreach/customer-success/followthrough.py run $STATE --
 python3 employees/sales-outreach/customer-success/followthrough.py run $STATE --account examples/capabilities/G32/fixtures/account.json --events examples/capabilities/G32/fixtures/events.jsonl --now 2026-10-05T12:00:00-07:00 --worker w2   # exit 0
 python3 employees/sales-outreach/customer-success/followthrough.py run $STATE --account examples/capabilities/G32/fixtures/account.json --events examples/capabilities/G32/fixtures/events.jsonl --now 2026-10-08T12:00:00-07:00 --worker w1   # exit 0
 python3 employees/sales-outreach/customer-success/followthrough.py status $STATE   # exit 0
-python3 examples/capabilities/G32/followthrough_oracle.py   # ACCEPTED 10/10
-python3 examples/capabilities/G32/followthrough_oracle.py --tool examples/capabilities/G32/naive_followthrough.py   # REJECTED 1/10
-python3 examples/capabilities/G32/followthrough_oracle.py --tool examples/capabilities/G32/noop_followthrough.py   # REJECTED 1/10
+python3 examples/capabilities/G32/followthrough_oracle.py   # ACCEPTED 11/11
+python3 examples/capabilities/G32/followthrough_oracle.py --tool examples/capabilities/G32/naive_followthrough.py   # REJECTED 1/11
+python3 examples/capabilities/G32/followthrough_oracle.py --tool examples/capabilities/G32/noop_followthrough.py   # REJECTED 1/11
 ```
 
 ## The fixture, worked by hand
@@ -41,5 +41,7 @@ fixture over three runs (o1); reruns and redelivered events (o2); permanent supp
 bounce and support to a marketing opt-out (o3); crash drills after the draft and after the ledger record (o4);
 8 concurrent workers per run (o5); ownership handoff and status (o6); invalid inputs, a forged journal and
 another account's state (o7); a held lock and a torn ledger tail (o8); 3 seeded unseen accounts of 120 to 180
-contacts with their generated event logs over 4 runs (o9); no mail, network or process use (s1). The naive control
+contacts with their generated event logs over 4 runs (o9); a duplicate import of one person under a second
+contact id (same handle, or the same handle in other case, spacing or width) and contacts with no handle,
+all refused with exit 2 and no draft (o10); no mail, network or process use (s1). The naive control
 (due dates only, no ledger) and the no-op control both fail.

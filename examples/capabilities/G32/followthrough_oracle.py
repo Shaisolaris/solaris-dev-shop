@@ -311,6 +311,26 @@ def o9(c, seed):
     return ok, "3 seeded unseen accounts (120 to 180 contacts, %d event lines incl. redeliveries, 4 runs each, %d drafts) match the reference" % (nev, total)
 
 
+def o10(c):
+    """One person, one consent: a duplicate import of a person (same handle, ignoring case, spacing and width)
+    or a contact with no handle is refused before anything is written; never drafted twice under two ids."""
+    acc, ev = fixture(); ok = True; tried = 0
+    ana = next(x for x in acc["contacts"] if x["id"] == "c-ana")
+    for h in (ana["handle"], "  Contact-ANA ", "CONTACT-ANA\t\n",
+              "\uff43ontact-ana", None, "   "):
+        acc2 = json.loads(json.dumps(acc))
+        if h is None or not h.strip():
+            acc2["contacts"].append({"id": "c-ana2", "name": "Ana", "consent": "granted", **({} if h is None else {"handle": h})})
+        else:
+            acc2["contacts"].append({"id": "c-ana2", "name": "Ana", "handle": h, "consent": "granted"})
+        ev2 = ev + [{"id": "E30", "type": "signup", "contact": "c-ana2", "at": "2026-10-07T09:00:00-07:00"}]
+        d = c.dir(); a, e = write(d, acc2, ev2); tried += 1
+        rc, out, err = c.run(d / "s", a, e, RUNS[-1])
+        drafted = [json.loads(f.read_text()) for f in (d / "s" / "drafts").glob("*.json")] if (d / "s" / "drafts").is_dir() else []
+        ok = ok and rc == 2 and not [f for f in drafted if f.get("contact") == "c-ana2"]
+    return ok, "%d duplicate-person or missing-handle imports refused with exit 2 and no draft for the second record" % tried
+
+
 def s1(c):
     src = Path(c.tool).read_text() if Path(c.tool).is_file() else ""
     banned = [w for w in ("smtplib", "import socket", "urllib", "http.client", "import subprocess", "os.system", "webbrowser") if w in src]
@@ -321,7 +341,7 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--tool", default=str(TOOL)); ap.add_argument("--seed", type=int, default=32)
     a = ap.parse_args(); c = Ctx(a.tool)
     before = {p: p.read_bytes() for p in FIX.rglob("*") if p.is_file()}
-    checks = [("o1", o1), ("o2", o2), ("o3", o3), ("o4", o4), ("o5", o5), ("o6", o6), ("o7", o7), ("o8", o8), ("o9", lambda c: o9(c, a.seed)), ("s1", s1)]
+    checks = [("o1", o1), ("o2", o2), ("o3", o3), ("o4", o4), ("o5", o5), ("o6", o6), ("o7", o7), ("o8", o8), ("o9", lambda c: o9(c, a.seed)), ("o10", o10), ("s1", s1)]
     passed = 0
     for nm, fn in checks:
         try:

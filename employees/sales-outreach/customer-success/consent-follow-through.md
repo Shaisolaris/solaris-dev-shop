@@ -15,7 +15,10 @@ the state lock (nothing written); 75 crash drill (`--fail-at drafted|ledgered`).
 ## Inputs
 
 - Account (schema `solaris.cs-account/1`): `account_id`, `owner`, `contacts` [{id, name, handle, consent
-  granted|unknown}]. Handles are opaque ids; the sending system maps them to addresses.
+  granted|unknown}]. Handles are opaque ids; the sending system maps them to addresses. Every contact
+  needs a handle, and the handle names the person: two contacts whose handles match once case, spacing and
+  character width are ignored are one person imported twice, and the account is refused (exit 2, nothing
+  written) until the duplicate import is merged.
 - Events: JSON lines with `id`, `type`, `at` (ISO time with offset) and, by type, `contact`, `thread`,
   `scope`, `kind` or `owner`. Types: signup, ticket_opened, agent_response, reply_received, ticket_closed,
   opt_out (scope all|marketing), opt_in, bounce (kind hard|soft), owner_change. An exact redelivered line
@@ -30,7 +33,8 @@ the state lock (nothing written); 75 crash drill (`--fail-at drafted|ledgered`).
 | agent_response | nudge | support | +2 days |
 | ticket_closed | feedback | feedback | +1 day |
 
-- **Suppression**: an opt-out (scope all) or a hard bounce suppresses every action for the contact; an
+- **Suppression**: an opt-out (scope all) or a hard bounce suppresses every action for the person (every
+  contact record carrying that handle), not only the record id the event named; an
   opt-out with scope marketing suppresses onboarding and feedback but not support replies to the customer's own
   ticket. Contacts with consent `unknown` get no onboarding or feedback. Suppression is permanent: a later
   `opt_in` is reported as `consent_review_required` and changes nothing.

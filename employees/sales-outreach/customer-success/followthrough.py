@@ -8,7 +8,9 @@ follow-up the playbook calls for (onboarding welcome, check-in and training invi
 a nudge when a customer has not replied to our response; a feedback request after a ticket closes), then
 applies consent and reply state:
 
-- an opt-out (scope all or marketing) or a hard bounce suppresses the contact from then on, for good; a
+- every contact needs a handle; a second contact with the same handle (ignoring case, spacing and width) is
+  the same person imported twice and the account is refused until it is merged;
+- an opt-out (scope all or marketing) or a hard bounce suppresses the person from then on, for good; a
   later opt_in is flagged for human review and the contact stays suppressed;
 - a reply from the customer cancels the nudge or check-in it would have triggered;
 - a draft already written for an action that is now suppressed or cancelled is withdrawn (its file says so);
@@ -35,6 +37,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 ACCOUNT = "solaris.cs-account/1"
@@ -53,6 +56,11 @@ CRASH = 75
 
 class Invalid(Exception):
     pass
+
+
+def person_key(handle):
+    """One person, however the import spelled the handle: NFKC, whitespace collapsed, case folded."""
+    return " ".join(unicodedata.normalize("NFKC", handle).split()).casefold()
 
 
 def _g04():
@@ -88,7 +96,7 @@ def load_account(path):
         raise Invalid("account_id must be a short identifier")
     if not isinstance(a.get("owner"), str) or not a["owner"].strip():
         raise Invalid("owner must name the accountable person or role")
-    cs = {}
+    cs, people = {}, {}
     for i, c in enumerate(a.get("contacts") or []):
         if not isinstance(c, dict) or not isinstance(c.get("id"), str) or not ID.match(c["id"]) or c["id"] in cs:
             raise Invalid("contacts[%d] needs a unique short id" % i)
@@ -96,6 +104,16 @@ def load_account(path):
             raise Invalid("contacts.%s.consent must be granted or unknown" % c["id"])
         if not isinstance(c.get("name"), str) or not c["name"].strip():
             raise Invalid("contacts.%s.name is required" % c["id"])
+        h = c.get("handle")
+        if not isinstance(h, str) or not person_key(h):
+            raise Invalid("contacts.%s.handle is required (consent belongs to the person it reaches)" % c["id"])
+        k = person_key(h)
+        if k in people:
+            # a duplicate import of one person: consent is per person, so merge the records before running
+            raise Invalid("contacts.%s and contacts.%s have the same handle once case and spaces are ignored; "
+                          "merge the duplicate import first" % (people[k], c["id"]))
+        people[k] = c["id"]
+        c["_person"] = k
         cs[c["id"]] = c
     if not cs:
         raise Invalid("account has no contacts")
@@ -147,7 +165,8 @@ def load_events(path, contacts):
 def derive(account, contacts, events, now):
     """Pure function of the inputs: desired actions with their state at `now`."""
     acts, notes = [], []
-    supp = {}  # contact -> list of (time, scope, event)
+    supp = {}  # person (normalized handle) -> list of (time, scope, event); follows the person, not the record id
+    who = lambda cid: contacts[cid]["_person"]
     owner = account["owner"].strip()
     replies = {}  # (contact, thread) -> [times]
     for e in events:
@@ -157,11 +176,11 @@ def derive(account, contacts, events, now):
         if t == "owner_change":
             owner = e["owner"].strip()
         elif t == "opt_out":
-            supp.setdefault(e["contact"], []).append((e["_t"], e["scope"], "%s (opt-out %s)" % (e["id"], e["scope"])))
+            supp.setdefault(who(e["contact"]), []).append((e["_t"], e["scope"], "%s (opt-out %s)" % (e["id"], e["scope"])))
         elif t == "bounce" and e["kind"] == "hard":
-            supp.setdefault(e["contact"], []).append((e["_t"], "all", "%s (hard bounce)" % e["id"]))
+            supp.setdefault(who(e["contact"]), []).append((e["_t"], "all", "%s (hard bounce)" % e["id"]))
         elif t == "opt_in":
-            if supp.get(e["contact"]):
+            if supp.get(who(e["contact"])):
                 notes.append({"note": "consent_review_required", "contact": e["contact"], "event": e["id"],
                               "detail": "opt_in after an opt-out or bounce; the contact stays suppressed until a person reviews it"})
         elif t == "reply_received":
@@ -189,7 +208,7 @@ def derive(account, contacts, events, now):
         x["kind"], x["due"] = kind, x["base"] + delay
         x["state"], x["reason"] = "due" if x["due"] <= now else "scheduled", None
         # consent: any opt-out or hard bounce up to now suppresses the contact for good, including unsent drafts
-        for (st, scope, why) in supp.get(x["contact"], []):
+        for (st, scope, why) in supp.get(who(x["contact"]), []):
             if scope == "all" or kind in MARKETING:
                 x["state"], x["reason"] = "suppressed", why
                 break
