@@ -1,0 +1,34 @@
+python3 = 3.9.6
+$ python3 $Q digest examples/capabilities/G05/fixtures/project-r2 src ui --revision 9b3e7d1c5a2f8e0b6d4c1a9f7e3b5d2c8a0f6e1b
+{
+  "digests": {
+    "src/auth.py": "828699e80c90bd46abbe14a5f9d61ee16586684ec1e561cc6dc61167012730a4",
+    "src/session.py": "d59ce0d8d37e4591337bc5ef4369e2c3e2e6d52452f68f58c7733b95c142bc3b",
+    "ui/index.html": "2c64f9d2fcc4099843aefe06dd311abd0b630877ca799833a6ef452a4646cf88"
+  },
+  "revision": "9b3e7d1c5a2f8e0b6d4c1a9f7e3b5d2c8a0f6e1b"
+}
+[exit 0]
+$ python3 $Q self-test
+{
+  "ok": true,
+  "assurance_version": "1.0.2"
+}
+[exit 0]
+$ python3 $Q route security
+{
+  "defect_kind": "security",
+  "accountable_role": "security-auditor",
+  "verifier_role": "code-reviewer"
+}
+[exit 0]
+$ python3 examples/capabilities/G05/binding_oracle.py 
+16/16 checks passed
+[exit 0]
+$ python3 examples/capabilities/G05/binding_oracle.py --tool examples/capabilities/G05/naive_engine.py
+6/16 checks passed
+[exit 1]
+$ python3 examples/capabilities/G05/binding_oracle.py --tool examples/capabilities/G05/noop_engine.py
+3/16 checks passed
+[exit 1]
+pycache: 0

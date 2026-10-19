@@ -1,0 +1,94 @@
+{
+ "C00": [
+  "PASS",
+  "{\"codes\": [], \"rc\": 0}"
+ ],
+ "C01": [
+  "PASS",
+  "{\"codes\": [], \"rc\": 0, \"states\": {\"functional\": \"current\", \"security\": \"current\", \"ux\": \"current\"}}"
+ ],
+ "C02": [
+  "PASS",
+  "{\"actions\": {\"functional\": \"re-run the functional gate on f0e1d2c3b4a5968778695a4b3c2d1e0f98765432 and attach a receipt with reviewed.revision (or reviewed.digests for the files it covered)\", \"security\": \"re-run the security gate on f0e1d2c3b4a5968778695a4b3c2d1e0f98765432 and attach a receipt with reviewed.revision (or reviewed.digests for the files it covered)\", \"ux\": \"\"}, \"changed\": {\"functional\": [\"app/login.py\"], \"security\": [\"app/login.py\"], \"ux\": null}, \"codes\": [\"STALE_GATE_EVIDENCE\"], \"rc\": 1, \"states\": {\"functional\": \"stale\", \"security\": \"stale\", \"ux\": \"carried_forward\"}}"
+ ],
+ "C03": [
+  "PASS",
+  "{\"codes\": [\"STALE_GATE_EVIDENCE\"], \"rc\": 1, \"states\": {\"security\": \"stale\"}}"
+ ],
+ "C04": [
+  "PASS",
+  "{\"codes\": [], \"rc\": 0, \"rc_abbrev\": 0, \"states_abbrev\": {\"functional\": \"current\", \"security\": \"current\", \"ux\": \"current\"}}"
+ ],
+ "C05": [
+  "PASS",
+  "{\"rc\": 0, \"states\": {\"functional\": \"current\", \"security\": \"current\", \"ux\": \"carried_forward\"}}"
+ ],
+ "C06": [
+  "FAIL",
+  "{\"codes\": [\"INVALID_GATE_EVIDENCE\"], \"rc\": 1, \"states\": {}}"
+ ],
+ "C06b": [
+  "OBS",
+  "{\"codes\": [\"STALE_GATE_EVIDENCE\"], \"rc\": 1, \"states\": {\"security\": \"stale\"}}"
+ ],
+ "C07": [
+  "PASS",
+  "{\"codes\": [\"UNBOUND_GATE_EVIDENCE\"], \"rc\": 1, \"states\": {\"security\": \"unbound\"}}"
+ ],
+ "C08": [
+  "PASS",
+  "{\"codes\": [\"REVISION_CONFLICT\"], \"codes_agree\": [], \"rc_agree\": 0, \"rc_conflict\": 1}"
+ ],
+ "C09": [
+  "PASS",
+  "{\"evidence_keys\": [\"blocking_open\", \"completed_gates\", \"missing_gates\"], \"keys\": [\"assurance_version\", \"evidence\", \"findings\", \"gate_codes\", \"messages\", \"notes\", \"ok\", \"orders\", \"required_gates\", \"risk_level\", \"schema_version\", \"status\"]}"
+ ],
+ "C10": [
+  "PASS",
+  ""
+ ],
+ "C11": [
+  "PASS",
+  ""
+ ],
+ "C12": [
+  "PASS",
+  "{\"as_subject_rc\": 0, \"err\": \"\", \"matches\": true, \"rc\": 0}"
+ ],
+ "C13": [
+  "PASS",
+  "{\"absolute\": 2, \"bad_revision\": 2, \"empty_dir\": 2, \"escape\": 2, \"missing\": 2, \"oversize\": 2, \"symlink_file\": 2, \"symlink_in_folder\": 2}"
+ ],
+ "C14": [
+  "PASS",
+  "{\"abbrev_verified\": [true, []], \"current\": [true, []], \"legacy_no_revision\": [true, []], \"malformed\": [false, [\"INVALID_REVISION\"]], \"missing\": [false, [\"MISSING_VERIFIED_REVISION\"]], \"stale\": [false, [\"STALE_CLOSURE_EVIDENCE\"]]}"
+ ],
+ "C15": [
+  "PASS",
+  "{\"non_independent\": [false, [\"NON_INDEPENDENT_CLOSURE_EVIDENCE\"]], \"self\": [false, [\"SELF_APPROVAL_FORBIDDEN\"]]}"
+ ],
+ "C16": [
+  "PASS",
+  "{\"close_r1\": [], \"cur_r1\": [true, []], \"cur_r2\": [false, [\"STALE_CLOSURE\"]], \"reclose_new\": [true, []], \"reclose_old_evidence\": [false, [\"NON_INDEPENDENT_CLOSURE_EVIDENCE\"]], \"reopen\": [], \"reopen_short\": [\"REOPEN_REASON_REQUIRED\"], \"status\": \"open\"}"
+ ],
+ "C17": [
+  "PASS",
+  "{\"expired\": [false, [\"WAIVER_EXPIRED\"]], \"revoked\": [false, [\"WAIVER_NOT_ACTIVE\"]], \"self_approved\": [false, [\"WAIVER_SELF_APPROVAL_FORBIDDEN\"]], \"valid_any_rev\": [[true, []], [true, []], [true, []]]}"
+ ],
+ "C17b": [
+  "OBS",
+  "{\"reopen_waived\": []}"
+ ],
+ "C17c": [
+  "OBS",
+  "{\"close_via_waiver\": [], \"closure_is_current_r2\": [false, [\"UNBOUND_CLOSURE\"]], \"reopen_after_waiver_close\": [], \"status\": \"closed\"}"
+ ],
+ "C18": [
+  "PASS",
+  "{\"codes\": [\"STALE_CLOSURE_EVIDENCE\"], \"err\": \"\", \"rc\": 0}"
+ ],
+ "C19": [
+  "PASS",
+  "{\"rc\": 0, \"tail\": \"{\\n  \\\"ok\\\": true,\\n  \\\"assurance_version\\\": \\\"1.0.2\\\"\\n}\\n\"}"
+ ]
+}

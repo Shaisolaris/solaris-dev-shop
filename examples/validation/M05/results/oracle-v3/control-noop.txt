@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "<D>/grok-output/M05/oracle/m05_oracle.py", line 129, in <module>
+    a = cc(finding(), subject_revision=R2, verified_revision=R2); b = cc(finding(), subject_revision=R2, verified_revision=R1)
+  File "<D>/grok-output/M05/oracle/m05_oracle.py", line 126, in finding
+    d.update(kw); return E.Finding(**d)
+AttributeError: module 'm05_engine' has no attribute 'Finding'

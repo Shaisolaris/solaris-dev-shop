@@ -1,0 +1,14 @@
+# fetch and prerequisites 2026-10-19 00:46:49 PDT
+8b38a72f2183ad7427594d6557d7e308baf0469b parent 314b4dbf980437cf14bc32438117e5b5b777f942 G05: revision-bound assurance evidence (review only)
+  origin/review/grok-g05-revision-bound-evidence
+stated: G04 314b4dbf980437cf14bc32438117e5b5b777f942, G02 bbe682b28e96296723826c1f113e138ccc39c530
+candidate parent == G04: yes
+G04 parent == G02: yes
+G04 branch head 314b4dbf980437cf14bc32438117e5b5b777f942 (superseded: no)
+G02 branch head bbe682b28e96296723826c1f113e138ccc39c530 (superseded: no)
+commits main..candidate:
+  8b38a72 G05: revision-bound assurance evidence (review only)
+  314b4db G04: restartable local work-order handoff (review only)
+  bbe682b G02 rework: M02 self-validation findings F1 to F8 (review only)
+  4113204 G02: safe project activation and ownership preservation (review only)
+validation status: G04 314b4db = Grok M04 PASS with residuals (P3 owner conflict, P4), commit 1628e6da79a11b5e00830e574cfa4bf457cc7e61; G02 bbe682b = relayed (Muse ACCEPT per G04 handback), not re-validated by Grok

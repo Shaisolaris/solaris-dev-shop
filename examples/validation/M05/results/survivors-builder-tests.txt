@@ -1,0 +1,12 @@
+test modules: tests.test_assurance_packets tests.test_g05_capability 
+carry_any_digest tests_rc=1 failing: test_oracle_passes_on_the_engine 
+conflict_exact tests_rc=1 failing: test_oracle_passes_on_the_engine 
+digest_symlink_ok tests_rc=1 failing: test_digest_refuses_symlinks_and_oversize_files 
+empty_binding_ok tests_rc=1 failing: test_oracle_passes_on_the_engine 
+extra_keys_ok tests_rc=1 failing: test_oracle_passes_on_the_engine 
+fixture_rev_untyped tests_rc=1 failing: test_oracle_passes_on_the_engine 
+prefix_any_length tests_rc=1 failing: test_revision_matching_rules 
+reopen_any_status tests_rc=1 failing: test_oracle_passes_on_the_engine test_oracle_rejects_the_naive_control 
+digest_unsorted_EQUIV tests_rc=0 failing: none
+sha256_prefix_EQUIV tests_rc=0 failing: none
+restored ok

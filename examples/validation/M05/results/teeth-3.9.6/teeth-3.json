@@ -1,0 +1,68 @@
+[
+ {
+  "mutant": "revision_trumps_digests",
+  "kills_result": [
+   "C03"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "prefix_any_length",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "subject_unvalidated",
+  "kills_result": [
+   "C10"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "digest_path_unchecked",
+  "kills_result": [
+   "C10"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "conflict_exact",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "waiver_needs_revision",
+  "kills_result": [
+   "C17"
+  ],
+  "kills_detail_only": [
+   "C17c"
+  ]
+ },
+ {
+  "mutant": "reopen_keeps_closer",
+  "kills_result": [
+   "C16"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "digest_symlink_ok",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "digest_cli_rev_unchecked",
+  "kills_result": [
+   "C13"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "binding_key_always",
+  "kills_result": [
+   "C09"
+  ],
+  "kills_detail_only": []
+ }
+]

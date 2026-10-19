@@ -1,0 +1,22 @@
+C00 FAIL {"rc": 0, "codes": null}
+C01 FAIL {"rc": 0, "states": {}, "codes": null}
+C02 FAIL {"rc": 0, "states": {}, "codes": null, "actions": {}, "changed": {}}
+C03 FAIL {"rc": 0, "states": {}, "codes": null}
+C04 FAIL {"rc": 0, "rc_abbrev": 0, "states_abbrev": {}, "codes": null}
+C05 FAIL {"rc": 0, "states": {}}
+C06 FAIL {"rc": 0, "states": {}, "codes": null}
+C06b OBS {"rc": 0, "states": {}, "codes": null}
+C07 FAIL {"rc": 0, "states": {}, "codes": null}
+C08 FAIL {"rc_conflict": 0, "codes": null, "rc_agree": 0, "codes_agree": null}
+C09 FAIL {"keys": [], "evidence_keys": []}
+C10 FAIL {"subject_rev_0": [0, false, true], "reviewed_rev_0": [0, false, true], "subject_rev_1": [0, false, true], "reviewed_rev_1": [0, false, true], "subject_rev_2": [0, false, true], "reviewed_rev_2": [0, false, true], "subject_rev_3": [0, false, true], "reviewed_rev_3": [0, false, true], "subject_rev_4"
+C11 FAIL {"rc": 0, "states": {}, "seconds": 0.03}
+C12 FAIL {"rc": 0, "matches": false, "as_subject_rc": 0, "err": ""}
+C13 FAIL {"escape": 0, "symlink_file": 0, "missing": 0, "empty_dir": 0, "bad_revision": 0, "oversize": 0, "symlink_in_folder": 0, "absolute": 0}
+C14 FAIL {"error": "AttributeError(\"module 'm05_engine' has no attribute 'Finding'\")"}
+C15 FAIL {"error": "AttributeError(\"module 'm05_engine' has no attribute 'Finding'\")"}
+C16 FAIL {"error": "AttributeError(\"module 'm05_engine' has no attribute 'Finding'\")"}
+C17 FAIL {"error": "AttributeError(\"module 'm05_engine' has no attribute 'Finding'\")"}
+C18 FAIL {"rc": 0, "codes": null, "err": ""}
+C19 PASS {"rc": 0, "tail": "{}\n"}
+M05 ORACLE 1/20

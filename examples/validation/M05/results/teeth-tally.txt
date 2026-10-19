@@ -1,0 +1,46 @@
+M05 teeth (Grok self-validation): the BUILDER's 40 G05 mutants scored by Grok's oracle on 3.9.6 and 3.13.15 (kill = row result or masked detail differs; C10/C11 result only).
+3.9.6: killed 30/40 (30 by a row result, 0 by detail only)
+3.13.15: killed 30/40 (30 by a row result, 0 by detail only)
+per-mutant kill sets identical on both versions: True
+  binding_key_always         KILLED result=C09 detail_only=-
+  carry_any_digest           SURVIVED; builder tests: tests_rc=1 failing: test_oracle_passes_on_the_engine
+  closed_at_not_recorded     KILLED result=C16 detail_only=-
+  closure_missing_ok         KILLED result=C14,C15,C16,C17,C17b,C17c detail_only=-
+  closure_rev_unvalidated    KILLED result=C14 detail_only=-
+  closure_stale_off          KILLED result=C14,C18 detail_only=-
+  conflict_exact             SURVIVED; builder tests: tests_rc=1 failing: test_oracle_passes_on_the_engine
+  conflict_off               KILLED result=C08 detail_only=-
+  current_ignores_revision   KILLED result=C16 detail_only=-
+  diag_no_action             KILLED result=C02 detail_only=-
+  digest_change_ignored      KILLED result=C02,C03,C11 detail_only=-
+  digest_cli_rev_unchecked   KILLED result=C13 detail_only=-
+  digest_empty_ok            KILLED result=C13 detail_only=-
+  digest_path_unchecked      KILLED result=C10 detail_only=-
+  digest_size_unbounded      KILLED result=C13 detail_only=-
+  digest_symlink_ok          SURVIVED; builder tests: tests_rc=1 failing: test_digest_refuses_symlinks_and_oversize_files
+  digest_unsorted_EQUIV      SURVIVED; builder tests: tests_rc=0 failing: none
+  dotdot_ok                  KILLED result=C10 detail_only=-
+  empty_binding_ok           SURVIVED; builder tests: tests_rc=1 failing: test_oracle_passes_on_the_engine
+  extra_keys_ok              SURVIVED; builder tests: tests_rc=1 failing: test_oracle_passes_on_the_engine
+  fixture_rev_untyped        SURVIVED; builder tests: tests_rc=1 failing: test_oracle_passes_on_the_engine
+  fixture_revs_dropped       KILLED result=C18 detail_only=-
+  max_artifacts_off          KILLED result=C10 detail_only=-
+  no_carry_forward           KILLED result=C02,C05,C11 detail_only=-
+  prefix_any_length          SURVIVED; builder tests: tests_rc=1 failing: test_revision_matching_rules
+  prefix_off                 KILLED result=C04 detail_only=C14
+  reopen_any_status          SURVIVED; builder tests: tests_rc=1 failing: test_oracle_passes_on_the_engine test_oracle_rejects_the_naive_control
+  reopen_drops_evidence      KILLED result=C16 detail_only=-
+  reopen_keeps_closer        KILLED result=C16 detail_only=-
+  reopen_short_reason        KILLED result=C16 detail_only=-
+  reviewed_unvalidated       KILLED result=C10 detail_only=C06
+  revision_differs_unbound   KILLED result=C19 detail_only=C06b
+  revision_re_loose          KILLED result=C10,C13,C14 detail_only=-
+  revision_trumps_digests    KILLED result=C03 detail_only=-
+  sha256_prefix_EQUIV        SURVIVED; builder tests: tests_rc=0 failing: none
+  stale_ignored              KILLED result=C02,C03,C11,C19 detail_only=C06b
+  subject_unvalidated        KILLED result=C10 detail_only=-
+  unbound_closure_current    KILLED result=C16 detail_only=C17c
+  unbound_ignored            KILLED result=C07 detail_only=-
+  waiver_needs_revision      KILLED result=C17 detail_only=C17c
+survivors not marked EQUIV: 8, all fail a builder test (3.9.6): True
+EQUIV-marked digest_unsorted_EQUIV and sha256_prefix_EQUIV survive my oracle and the builder tests.

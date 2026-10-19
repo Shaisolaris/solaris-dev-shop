@@ -1,0 +1,439 @@
+[
+ {
+  "id": "C00",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "codes": []
+  }
+ },
+ {
+  "id": "C01",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "states": {},
+   "codes": []
+  }
+ },
+ {
+  "id": "C02",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "states": {},
+   "codes": [],
+   "actions": {},
+   "changed": {}
+  }
+ },
+ {
+  "id": "C03",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "states": {},
+   "codes": []
+  }
+ },
+ {
+  "id": "C04",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "rc_abbrev": 0,
+   "states_abbrev": {},
+   "codes": []
+  }
+ },
+ {
+  "id": "C05",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "states": {}
+  }
+ },
+ {
+  "id": "C06",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "states": {},
+   "codes": []
+  }
+ },
+ {
+  "id": "C06b",
+  "result": "OBS",
+  "detail": {
+   "rc": 0,
+   "states": {},
+   "codes": []
+  }
+ },
+ {
+  "id": "C07",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "states": {},
+   "codes": []
+  }
+ },
+ {
+  "id": "C08",
+  "result": "FAIL",
+  "detail": {
+   "rc_conflict": 0,
+   "codes": [],
+   "rc_agree": 0,
+   "codes_agree": []
+  }
+ },
+ {
+  "id": "C09",
+  "result": "PASS",
+  "detail": {
+   "keys": [
+    "assurance_version",
+    "evidence",
+    "findings",
+    "gate_codes",
+    "messages",
+    "notes",
+    "ok",
+    "orders",
+    "required_gates",
+    "risk_level",
+    "schema_version",
+    "status"
+   ],
+   "evidence_keys": [
+    "blocking_open",
+    "completed_gates",
+    "missing_gates"
+   ]
+  }
+ },
+ {
+  "id": "C10",
+  "result": "FAIL",
+  "detail": {
+   "subject_rev_0": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_0": [
+    0,
+    false,
+    true
+   ],
+   "subject_rev_1": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_1": [
+    0,
+    false,
+    true
+   ],
+   "subject_rev_2": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_2": [
+    0,
+    false,
+    true
+   ],
+   "subject_rev_3": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_3": [
+    0,
+    false,
+    true
+   ],
+   "subject_rev_4": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_4": [
+    0,
+    false,
+    true
+   ],
+   "subject_rev_5": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_5": [
+    0,
+    false,
+    true
+   ],
+   "subject_rev_6": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_6": [
+    0,
+    false,
+    true
+   ],
+   "subject_rev_7": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_7": [
+    0,
+    false,
+    true
+   ],
+   "subject_rev_8": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_8": [
+    0,
+    false,
+    true
+   ],
+   "subject_digest_nonhex": [
+    0,
+    false,
+    true
+   ],
+   "subject_digest_upper": [
+    0,
+    false,
+    true
+   ],
+   "subject_path_escape": [
+    0,
+    false,
+    true
+   ],
+   "subject_path_abs": [
+    0,
+    false,
+    true
+   ],
+   "subject_digests_list": [
+    0,
+    false,
+    true
+   ],
+   "subject_digest_int": [
+    0,
+    false,
+    true
+   ],
+   "subject_10001_paths": [
+    0,
+    false,
+    true,
+    0.12
+   ]
+  }
+ },
+ {
+  "id": "C11",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "states": {},
+   "seconds": 0.12
+  }
+ },
+ {
+  "id": "C12",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "matches": true,
+   "as_subject_rc": 0,
+   "err": ""
+  }
+ },
+ {
+  "id": "C13",
+  "result": "PASS",
+  "detail": {
+   "escape": 2,
+   "symlink_file": 2,
+   "missing": 2,
+   "empty_dir": 2,
+   "bad_revision": 2,
+   "oversize": 2,
+   "symlink_in_folder": 2,
+   "absolute": 2
+  }
+ },
+ {
+  "id": "C14",
+  "result": "FAIL",
+  "detail": {
+   "current": [
+    true,
+    []
+   ],
+   "stale": [
+    true,
+    []
+   ],
+   "missing": [
+    true,
+    []
+   ],
+   "malformed": [
+    true,
+    []
+   ],
+   "legacy_no_revision": [
+    true,
+    []
+   ],
+   "abbrev_verified": [
+    true,
+    []
+   ]
+  }
+ },
+ {
+  "id": "C15",
+  "result": "PASS",
+  "detail": {
+   "self": [
+    false,
+    [
+     "SELF_APPROVAL_FORBIDDEN"
+    ]
+   ],
+   "non_independent": [
+    false,
+    [
+     "NON_INDEPENDENT_CLOSURE_EVIDENCE"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C16",
+  "result": "FAIL",
+  "detail": {
+   "close_r1": [],
+   "cur_r1": [
+    true,
+    []
+   ],
+   "cur_r2": [
+    true,
+    []
+   ],
+   "reopen_short": [
+    "REOPEN_REASON_REQUIRED"
+   ],
+   "reopen": [],
+   "status": "open",
+   "reclose_old_evidence": [
+    false,
+    [
+     "NON_INDEPENDENT_CLOSURE_EVIDENCE"
+    ]
+   ],
+   "reclose_new": [
+    true,
+    []
+   ]
+  }
+ },
+ {
+  "id": "C17",
+  "result": "PASS",
+  "detail": {
+   "valid_any_rev": [
+    [
+     true,
+     []
+    ],
+    [
+     true,
+     []
+    ],
+    [
+     true,
+     []
+    ]
+   ],
+   "expired": [
+    false,
+    [
+     "WAIVER_EXPIRED"
+    ]
+   ],
+   "revoked": [
+    false,
+    [
+     "WAIVER_NOT_ACTIVE"
+    ]
+   ],
+   "self_approved": [
+    false,
+    [
+     "WAIVER_SELF_APPROVAL_FORBIDDEN"
+    ]
+   ]
+  }
+ },
+ {
+  "id": "C17b",
+  "result": "OBS",
+  "detail": {
+   "reopen_waived": []
+  }
+ },
+ {
+  "id": "C17c",
+  "result": "OBS",
+  "detail": {
+   "close_via_waiver": [],
+   "status": "closed",
+   "closure_is_current_r2": [
+    true,
+    []
+   ],
+   "reopen_after_waiver_close": []
+  }
+ },
+ {
+  "id": "C18",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "codes": [
+    "SELF_APPROVAL_NOT_ENFORCED"
+   ],
+   "err": ""
+  }
+ },
+ {
+  "id": "C19",
+  "result": "FAIL",
+  "detail": {
+   "rc": 1,
+   "tail": "{\n  \"ok\": false,\n  \"failures\": [\n    \"stale receipt accepted\"\n  ]\n}\n"
+  }
+ }
+]

@@ -1,0 +1,8 @@
+== builder 3.13.15 2026-10-19 00:47:36 PDT
+suite test_g05_capability.py: rc=0 Ran 11 tests OK 
+suite test*.py: rc=0 Ran 155 tests OK 
+--- oracle help: usage: binding_oracle.py [-h] [--tool TOOL] [--json] [--scale SCALE]  options: 
+--- builder oracle rc=0
+scale: {"subject_files": 5000, "gates": 11, "changed": 37, "stale_expected": 3, "seconds": 0.007}
+16/16 checks passed
+not run: whether a reviewer really examined the named revision (receipts are declarations), git itself (revisions are compared as declared ids), and any release or external action.

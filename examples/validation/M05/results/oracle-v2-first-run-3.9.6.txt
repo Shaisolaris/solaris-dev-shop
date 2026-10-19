@@ -1,0 +1,22 @@
+C00 PASS {"rc": 0, "codes": []}
+C01 PASS {"rc": 0, "states": {"functional": "current", "security": "current", "ux": "current"}, "codes": []}
+C02 PASS {"rc": 1, "states": {"functional": "stale", "security": "stale", "ux": "carried_forward"}, "codes": ["STALE_GATE_EVIDENCE"], "actions": {"functional": "re-run the functional gate on f0e1d2c3b4a5968778695a4b3c2d1e0f98765432 and attach a receipt with reviewed.revision (or reviewed.digests for the file
+C03 PASS {"rc": 1, "states": {"security": "stale"}, "codes": ["STALE_GATE_EVIDENCE"]}
+C04 PASS {"rc": 0, "rc_abbrev": 0, "states_abbrev": {"functional": "current", "security": "current", "ux": "current"}, "codes": []}
+C05 PASS {"rc": 0, "states": {"functional": "current", "security": "current", "ux": "carried_forward"}}
+C06 FAIL {"rc": 1, "states": {}, "codes": ["INVALID_GATE_EVIDENCE"]}
+C07 PASS {"rc": 1, "states": {"security": "unbound"}, "codes": ["UNBOUND_GATE_EVIDENCE"]}
+C08 PASS {"rc_conflict": 1, "codes": ["REVISION_CONFLICT"], "rc_agree": 0, "codes_agree": []}
+C09 PASS {"keys": ["assurance_version", "evidence", "findings", "gate_codes", "messages", "notes", "ok", "orders", "required_gates", "risk_level", "schema_version", "status"], "evidence_keys": ["blocking_open", "completed_gates", "missing_gates"]}
+C10 PASS {"subject_rev_0": [1, true, true], "reviewed_rev_0": [1, true, true], "subject_rev_1": [1, true, true], "reviewed_rev_1": [1, true, true], "subject_rev_2": [1, true, true], "reviewed_rev_2": [1, true, true], "subject_rev_3": [1, true, true], "reviewed_rev_3": [1, true, true], "subject_rev_4": [1, tr
+C11 PASS {"rc": 1, "states": {"functional": "carried_forward", "security": "stale"}, "seconds": 0.14}
+C12 PASS {"rc": 0, "matches": true, "as_subject_rc": 0, "err": ""}
+C13 PASS {"escape": 2, "symlink_file": 2, "missing": 2, "empty_dir": 2, "bad_revision": 2, "oversize": 2, "symlink_in_folder": 2, "absolute": 2}
+C14 FAIL {"current": [false, ["INVALID_FINDING"]], "stale": [false, ["INVALID_FINDING"]], "missing": [false, ["INVALID_FINDING"]], "malformed": [false, ["INVALID_FINDING"]], "legacy_no_revision": [false, ["INVALID_FINDING"]], "abbrev_verified": [false, ["INVALID_FINDING"]]}
+C15 FAIL {"self": [false, ["INVALID_FINDING"]], "non_independent": [false, ["INVALID_FINDING"]]}
+C16 FAIL {"close_r1": ["INVALID_FINDING"], "cur_r1": [false, ["INVALID_FINDING"]], "cur_r2": [false, ["INVALID_FINDING"]], "reopen_short": ["INVALID_FINDING"], "reopen": ["INVALID_FINDING"], "status": "open", "reclose_old_evidence": [false, ["INVALID_FINDING"]], "reclose_new": [false, ["INVALID_FINDING"]]}
+C17 FAIL {"valid_any_rev": [[false, ["INVALID_FINDING"]], [false, ["INVALID_FINDING"]], [false, ["INVALID_FINDING"]]], "expired": [false, ["INVALID_FINDING"]], "revoked": [false, ["INVALID_FINDING"]], "self_approved": [false, ["INVALID_FINDING"]]}
+C17b OBS {"reopen_waived": ["INVALID_FINDING"]}
+C18 FAIL {"rc": 0, "codes": ["INVALID_FINDING"], "err": ""}
+C19 PASS {"rc": 0, "tail": "{\n  \"ok\": true,\n  \"assurance_version\": \"1.0.2\"\n}\n"}
+M05 ORACLE 14/20

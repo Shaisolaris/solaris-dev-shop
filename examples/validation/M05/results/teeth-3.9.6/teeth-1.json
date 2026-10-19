@@ -1,0 +1,67 @@
+[
+ {
+  "mutant": "unbound_ignored",
+  "kills_result": [
+   "C07"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "carry_any_digest",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "sha256_prefix_EQUIV",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "extra_keys_ok",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "max_artifacts_off",
+  "kills_result": [
+   "C10"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "closure_missing_ok",
+  "kills_result": [
+   "C14",
+   "C15",
+   "C16",
+   "C17",
+   "C17b",
+   "C17c"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "current_ignores_revision",
+  "kills_result": [
+   "C16"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "reopen_any_status",
+  "kills_result": [],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "digest_empty_ok",
+  "kills_result": [
+   "C13"
+  ],
+  "kills_detail_only": []
+ },
+ {
+  "mutant": "fixture_rev_untyped",
+  "kills_result": [],
+  "kills_detail_only": []
+ }
+]

@@ -1,0 +1,11 @@
+{"mutant": "digest_change_ignored", "kills_result": ["C02", "C03", "C11"], "kills_detail_only": []}
+{"mutant": "revision_differs_unbound", "kills_result": ["C19"], "kills_detail_only": ["C06b"]}
+{"mutant": "revision_re_loose", "kills_result": ["C10", "C13", "C14"], "kills_detail_only": []}
+{"mutant": "empty_binding_ok", "kills_result": [], "kills_detail_only": []}
+{"mutant": "conflict_off", "kills_result": ["C08"], "kills_detail_only": []}
+{"mutant": "closure_rev_unvalidated", "kills_result": ["C14"], "kills_detail_only": []}
+{"mutant": "unbound_closure_current", "kills_result": ["C16"], "kills_detail_only": ["C17c"]}
+{"mutant": "reopen_short_reason", "kills_result": ["C16"], "kills_detail_only": []}
+{"mutant": "digest_unsorted_EQUIV", "kills_result": [], "kills_detail_only": []}
+{"mutant": "fixture_revs_dropped", "kills_result": ["C18"], "kills_detail_only": []}
+DONE

@@ -1,0 +1,11 @@
+{"mutant": "stale_ignored", "kills_result": ["C02", "C03", "C11", "C19"], "kills_detail_only": ["C06b"]}
+{"mutant": "no_carry_forward", "kills_result": ["C02", "C05", "C11"], "kills_detail_only": []}
+{"mutant": "prefix_off", "kills_result": ["C04"], "kills_detail_only": ["C14"]}
+{"mutant": "reviewed_unvalidated", "kills_result": ["C10"], "kills_detail_only": ["C06"]}
+{"mutant": "dotdot_ok", "kills_result": ["C10"], "kills_detail_only": []}
+{"mutant": "closure_stale_off", "kills_result": ["C14", "C18"], "kills_detail_only": []}
+{"mutant": "closed_at_not_recorded", "kills_result": ["C16"], "kills_detail_only": []}
+{"mutant": "reopen_drops_evidence", "kills_result": ["C16"], "kills_detail_only": []}
+{"mutant": "digest_size_unbounded", "kills_result": ["C13"], "kills_detail_only": []}
+{"mutant": "diag_no_action", "kills_result": ["C02"], "kills_detail_only": []}
+DONE

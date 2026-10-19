@@ -1,0 +1,312 @@
+[
+ {
+  "id": "C00",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "codes": null
+  }
+ },
+ {
+  "id": "C01",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "states": {},
+   "codes": null
+  }
+ },
+ {
+  "id": "C02",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "states": {},
+   "codes": null,
+   "actions": {},
+   "changed": {}
+  }
+ },
+ {
+  "id": "C03",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "states": {},
+   "codes": null
+  }
+ },
+ {
+  "id": "C04",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "rc_abbrev": 0,
+   "states_abbrev": {},
+   "codes": null
+  }
+ },
+ {
+  "id": "C05",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "states": {}
+  }
+ },
+ {
+  "id": "C06",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "states": {},
+   "codes": null
+  }
+ },
+ {
+  "id": "C06b",
+  "result": "OBS",
+  "detail": {
+   "rc": 0,
+   "states": {},
+   "codes": null
+  }
+ },
+ {
+  "id": "C07",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "states": {},
+   "codes": null
+  }
+ },
+ {
+  "id": "C08",
+  "result": "FAIL",
+  "detail": {
+   "rc_conflict": 0,
+   "codes": null,
+   "rc_agree": 0,
+   "codes_agree": null
+  }
+ },
+ {
+  "id": "C09",
+  "result": "FAIL",
+  "detail": {
+   "keys": [],
+   "evidence_keys": []
+  }
+ },
+ {
+  "id": "C10",
+  "result": "FAIL",
+  "detail": {
+   "subject_rev_0": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_0": [
+    0,
+    false,
+    true
+   ],
+   "subject_rev_1": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_1": [
+    0,
+    false,
+    true
+   ],
+   "subject_rev_2": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_2": [
+    0,
+    false,
+    true
+   ],
+   "subject_rev_3": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_3": [
+    0,
+    false,
+    true
+   ],
+   "subject_rev_4": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_4": [
+    0,
+    false,
+    true
+   ],
+   "subject_rev_5": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_5": [
+    0,
+    false,
+    true
+   ],
+   "subject_rev_6": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_6": [
+    0,
+    false,
+    true
+   ],
+   "subject_rev_7": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_7": [
+    0,
+    false,
+    true
+   ],
+   "subject_rev_8": [
+    0,
+    false,
+    true
+   ],
+   "reviewed_rev_8": [
+    0,
+    false,
+    true
+   ],
+   "subject_digest_nonhex": [
+    0,
+    false,
+    true
+   ],
+   "subject_digest_upper": [
+    0,
+    false,
+    true
+   ],
+   "subject_path_escape": [
+    0,
+    false,
+    true
+   ],
+   "subject_path_abs": [
+    0,
+    false,
+    true
+   ],
+   "subject_digests_list": [
+    0,
+    false,
+    true
+   ],
+   "subject_digest_int": [
+    0,
+    false,
+    true
+   ],
+   "subject_10001_paths": [
+    0,
+    false,
+    true,
+    0.03
+   ]
+  }
+ },
+ {
+  "id": "C11",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "states": {},
+   "seconds": 0.03
+  }
+ },
+ {
+  "id": "C12",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "matches": false,
+   "as_subject_rc": 0,
+   "err": ""
+  }
+ },
+ {
+  "id": "C13",
+  "result": "FAIL",
+  "detail": {
+   "escape": 0,
+   "symlink_file": 0,
+   "missing": 0,
+   "empty_dir": 0,
+   "bad_revision": 0,
+   "oversize": 0,
+   "symlink_in_folder": 0,
+   "absolute": 0
+  }
+ },
+ {
+  "id": "C14",
+  "result": "FAIL",
+  "detail": {
+   "error": "AttributeError(\"module 'm05_engine' has no attribute 'Finding'\")"
+  }
+ },
+ {
+  "id": "C15",
+  "result": "FAIL",
+  "detail": {
+   "error": "AttributeError(\"module 'm05_engine' has no attribute 'Finding'\")"
+  }
+ },
+ {
+  "id": "C16",
+  "result": "FAIL",
+  "detail": {
+   "error": "AttributeError(\"module 'm05_engine' has no attribute 'Finding'\")"
+  }
+ },
+ {
+  "id": "C17",
+  "result": "FAIL",
+  "detail": {
+   "error": "AttributeError(\"module 'm05_engine' has no attribute 'Finding'\")"
+  }
+ },
+ {
+  "id": "C18",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "codes": null,
+   "err": ""
+  }
+ },
+ {
+  "id": "C19",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "tail": "{}\n"
+  }
+ }
+]

@@ -1,0 +1,23 @@
+C00 PASS {"rc": 0, "codes": []}
+C01 FAIL {"rc": 0, "states": {}, "codes": []}
+C02 FAIL {"rc": 0, "states": {}, "codes": [], "actions": {}, "changed": {}}
+C03 FAIL {"rc": 0, "states": {}, "codes": []}
+C04 FAIL {"rc": 0, "rc_abbrev": 0, "states_abbrev": {}, "codes": []}
+C05 FAIL {"rc": 0, "states": {}}
+C06 FAIL {"rc": 0, "states": {}, "codes": []}
+C06b OBS {"rc": 0, "states": {}, "codes": []}
+C07 FAIL {"rc": 0, "states": {}, "codes": []}
+C08 FAIL {"rc_conflict": 0, "codes": [], "rc_agree": 0, "codes_agree": []}
+C09 PASS {"keys": ["assurance_version", "evidence", "findings", "gate_codes", "messages", "notes", "ok", "orders", "required_gates", "risk_level", "schema_version", "status"], "evidence_keys": ["blocking_open", "completed_gates", "missing_gates"]}
+C10 FAIL {"subject_rev_0": [0, false, true], "reviewed_rev_0": [0, false, true], "subject_rev_1": [0, false, true], "reviewed_rev_1": [0, false, true], "subject_rev_2": [0, false, true], "reviewed_rev_2": [0, false, true], "subject_rev_3": [0, false, true], "reviewed_rev_3": [0, false, true], "subject_rev_4"
+C11 FAIL {"rc": 0, "states": {}, "seconds": 0.13}
+C12 PASS {"rc": 0, "matches": true, "as_subject_rc": 0, "err": ""}
+C13 PASS {"escape": 2, "symlink_file": 2, "missing": 2, "empty_dir": 2, "bad_revision": 2, "oversize": 2, "symlink_in_folder": 2, "absolute": 2}
+C14 FAIL {"current": [true, []], "stale": [true, []], "missing": [true, []], "malformed": [true, []], "legacy_no_revision": [true, []], "abbrev_verified": [true, []]}
+C15 PASS {"self": [false, ["SELF_APPROVAL_FORBIDDEN"]], "non_independent": [false, ["NON_INDEPENDENT_CLOSURE_EVIDENCE"]]}
+C16 FAIL {"close_r1": [], "cur_r1": [true, []], "cur_r2": [true, []], "reopen_short": ["REOPEN_REASON_REQUIRED"], "reopen": [], "status": "open", "reclose_old_evidence": [false, ["NON_INDEPENDENT_CLOSURE_EVIDENCE"]], "reclose_new": [true, []]}
+C17 PASS {"valid_any_rev": [[true, []], [true, []], [true, []]], "expired": [false, ["WAIVER_EXPIRED"]], "revoked": [false, ["WAIVER_NOT_ACTIVE"]], "self_approved": [false, ["WAIVER_SELF_APPROVAL_FORBIDDEN"]]}
+C17b OBS {"reopen_waived": []}
+C18 FAIL {"rc": 1, "codes": ["SELF_APPROVAL_NOT_ENFORCED"], "err": ""}
+C19 FAIL {"rc": 1, "tail": "{\n  \"ok\": false,\n  \"failures\": [\n    \"stale receipt accepted\"\n  ]\n}\n"}
+M05 ORACLE 6/20
