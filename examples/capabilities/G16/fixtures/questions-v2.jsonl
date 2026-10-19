@@ -1,0 +1,12 @@
+{"id": "q01", "question": "How much does a single adult ride cost?", "expect": {"answerable": true, "facts": ["2.75"], "support_docs": ["fares.md"]}}
+{"id": "q02", "question": "How much do riders aged 65 or older pay?", "expect": {"answerable": true, "facts": ["1.35"], "support_docs": ["fares.md"]}}
+{"id": "q03", "question": "How long are items left on a ferry kept?", "expect": {"answerable": true, "facts": ["45 days"], "support_docs": ["lost-found.md"]}}
+{"id": "q04", "question": "How many business days does a refund take?", "expect": {"answerable": true, "facts": ["10 business days"], "support_docs": ["refunds.md"]}}
+{"id": "q05", "question": "How many wheelchair spaces does a ferry have?", "expect": {"answerable": true, "facts": ["2 wheelchair spaces"], "support_docs": ["accessibility.md"]}}
+{"id": "q06", "question": "Can service animals ride on ferries?", "expect": {"answerable": true, "facts": ["may ride"], "support_docs": ["accessibility.md"]}}
+{"id": "q07", "question": "How far in advance must paratransit trips be booked?", "expect": {"answerable": true, "facts": ["48 hours"], "support_docs": ["paratransit.md"]}}
+{"id": "q08", "question": "How many minutes are bus transfers free?", "expect": {"answerable": true, "facts": ["90 minutes"], "support_docs": ["fares.md"]}}
+{"id": "q09", "question": "How much does a dog ticket cost on the ferry?", "expect": {"answerable": false}}
+{"id": "q10", "question": "What is the price of a 7-day pass?", "expect": {"answerable": false}}
+{"id": "q11", "question": "How long are items kept at the airport?", "expect": {"answerable": false}}
+{"id": "q12", "question": "What is the phone number for lost property?", "expect": {"answerable": false}}
