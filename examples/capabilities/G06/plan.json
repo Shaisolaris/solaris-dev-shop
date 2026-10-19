@@ -1,0 +1,78 @@
+{
+ "schema": "solaris.daily-integration/1",
+ "goal": "G06",
+ "base": "02ba9c571b10ad1dba792d2ac5534bcad3171e67",
+ "writable": [
+  "employees/quality-security/assurance/**",
+  "employees/quality-security/qa-engineer/**",
+  "examples/capabilities/G06/**",
+  "tests/test_g06_capability.py"
+ ],
+ "prerequisites": [
+  {
+   "id": "G01",
+   "commit": "a069a79ca6f57672fa92b0a86bfbcb46eff99ddb",
+   "tests": [
+    "tests.test_fixture_runner",
+    "tests.test_assurance_packets",
+    "tests.test_closure_hardening"
+   ]
+  },
+  {
+   "id": "G02",
+   "commit": "8fdae9cead8d136211f596bf1e501a41c5a78078",
+   "note": "newest repair head (G02 r3, root QA)",
+   "tests": [
+    "tests.test_g02_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G02/activation_oracle.py",
+     "--",
+     "{python}",
+     "employees/product-project/project-onboarding/activate.py"
+    ]
+   ]
+  },
+  {
+   "id": "G03",
+   "commit": "d4d98f2180ed9b92fd058a2350285f60f83b877d",
+   "tests": [
+    "tests.test_g03_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G03/recovery_oracle.py",
+     "--",
+     "{python}",
+     "employees/infrastructure/database-administrator/sqlite_recovery.py"
+    ]
+   ]
+  }
+ ],
+ "external": [
+  {
+   "id": "P01",
+   "source_commit": "2577f3ed714650e62d022113a0ce23f5b6d7aa76",
+   "reply_url": "https://github.com/Tinche/aiofiles/pull/245#issuecomment-6273292619",
+   "reply_sha256": "ae1184fe00cc686272159d538fb35b07f342d4b6ec157750b830ee4e9eb06776",
+   "validation_id": "R01",
+   "validation_manifest_sha256": "15fe3ae0b47c929b38eed0afab38d61a0669faa011e61d0f418e6b7e104fd90e",
+   "consumes": "Tinche/aiofiles#245 follow-up: queued-cancel fix at the original PR head (read only; outside this repository)"
+  },
+  {
+   "id": "P02",
+   "source_commit": null,
+   "reply_url": "https://github.com/lucc/khard/pull/360#issuecomment-6273295216",
+   "reply_sha256": "a2d8560b589c4729b1e39871526f31e223830230ab7b0071410a88f81af8703c",
+   "validation_id": "R02",
+   "validation_manifest_sha256": "732990abc5a913fa94e3fab1e279753231cb6844c423ad30c4f6a34f59324bc8",
+   "consumes": "lucc/khard#360 design and LLM-use response: PartialDate proposal; no code change requested (read only)"
+  }
+ ],
+ "cross_checks": [
+  [
+   "examples/capabilities/G06/cross_checks.py"
+  ]
+ ]
+}
