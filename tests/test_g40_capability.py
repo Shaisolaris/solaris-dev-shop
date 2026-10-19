@@ -97,5 +97,25 @@ class G40Direct(unittest.TestCase):
         self.assertEqual(r.returncode, 2, r.stderr)
         self.assertIn("Nothing was written", r.stderr)
 
+class NoBytecode(unittest.TestCase):
+    def test_python_bounds_writes_no_bytecode_into_the_checkout(self):
+        import shutil as _sh, tempfile as _tf
+        top = Path(_tf.mkdtemp(prefix="g40nb-"))
+        try:
+            dst = top / "repo"
+            (dst / "employees/x/y").mkdir(parents=True)
+            (dst / "employees/x/y/tool.py").write_text("print(1)\n")
+            (dst / "control-plane").mkdir()
+            (dst / "control-plane/meta_control_plane.py").write_text("")
+            _sh.copy2(ROOT / "pyproject.toml", dst / "pyproject.toml")
+            env = {k: v for k, v in os.environ.items() if k not in ("PYTHONDONTWRITEBYTECODE", "PYTHONPYCACHEPREFIX")}
+            p = subprocess.run([sys.executable, str(TOOL),
+                                "python-bounds", str(dst)], capture_output=True, text=True, env=env, timeout=120)
+            self.assertIn(p.returncode, (0, 1), p.stderr)
+            self.assertEqual([x for x in dst.rglob("__pycache__")], [])
+        finally:
+            _sh.rmtree(top, ignore_errors=True)
+
+
 if __name__ == "__main__":
     unittest.main()

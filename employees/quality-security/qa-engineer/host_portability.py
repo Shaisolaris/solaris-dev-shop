@@ -26,7 +26,6 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import py_compile
 import re
 import shutil
 import subprocess
@@ -241,9 +240,9 @@ def python_bounds(root):
     parse_ok, parse_fail = [], []
     for p in scripts:
         try:
-            py_compile.compile(str(p), doraise=True)
+            compile(p.read_bytes(), str(p), "exec", dont_inherit=True)  # in memory: a check never writes bytecode
             parse_ok.append(p.relative_to(root).as_posix())
-        except py_compile.PyCompileError as ex:
+        except (SyntaxError, ValueError) as ex:
             parse_fail.append({"path": p.relative_to(root).as_posix(), "detail": str(ex)[:160]})
     wheel_min = "3.10+"
     source_min = "3.9+"
