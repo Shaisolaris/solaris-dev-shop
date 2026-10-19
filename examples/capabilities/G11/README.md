@@ -31,7 +31,7 @@ nothing:
 
 ```bash
 PY=python3.12
-$PY examples/capabilities/G11/incident_oracle.py -- $PY $T                                  # ACCEPTED 12/12
+$PY examples/capabilities/G11/incident_oracle.py -- $PY $T                                  # ACCEPTED 13/13
 $PY examples/capabilities/G11/incident_oracle.py -- $PY examples/capabilities/G11/naive_stub.py  # REJECTED
 $PY examples/capabilities/G11/incident_oracle.py -- $PY examples/capabilities/G11/noop_stub.py   # REJECTED
 ```
@@ -46,4 +46,9 @@ change, a gap hiding the impact start, and a slow burn below the threshold; o8 a
 and damaged are blocked, a real one is named); o9 late records labelled and still scored; o10 seven
 invalid bundles exit 2, then a valid run recovers; o11 a 30-day window (86 000+ records, doubled and
 shuffled) with exact values and identical parallel runs; o12 no network use under a socket-denying
-guard and the bundle folder byte-identical.
+guard and the bundle folder byte-identical; o13 telemetry split across two load balancers is summed per
+minute (the only error minute, whose shares differ, breaches the SLO), equal counts from two sources both
+count, and one source reporting two counts for a minute is a conflict.
+
+The fixtures' re-delivered telemetry rows carry the source that first reported the minute: a re-delivery is
+the same source again, not a second load balancer.

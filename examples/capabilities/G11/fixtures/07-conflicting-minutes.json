@@ -60,7 +60,7 @@
   {
    "good": 1044,
    "minute": "2026-10-18T09:12:00Z",
-   "source": "lb-retry",
+   "source": "lb-0",
    "total": 1044
   },
   {
@@ -72,7 +72,7 @@
   {
    "good": 998,
    "minute": "2026-10-18T09:50:00Z",
-   "source": "lb-x",
+   "source": "lb-0",
    "total": 1050
   },
   {
@@ -97,7 +97,7 @@
   {
    "good": 1020,
    "minute": "2026-10-18T09:06:00Z",
-   "source": "lb-retry",
+   "source": "lb-0",
    "total": 1022
   },
   {
@@ -115,13 +115,13 @@
   {
    "good": 1000,
    "minute": "2026-10-18T09:00:00Z",
-   "source": "lb-retry",
+   "source": "lb-0",
    "total": 1000
   },
   {
    "good": 1019,
    "minute": "2026-10-18T09:36:00Z",
-   "source": "lb-retry",
+   "source": "lb-0",
    "total": 1132
   },
   {
@@ -176,7 +176,7 @@
   {
    "good": 1152,
    "minute": "2026-10-18T09:42:00Z",
-   "source": "lb-retry",
+   "source": "lb-0",
    "total": 1154
   },
   {
@@ -237,13 +237,13 @@
   {
    "good": 1036,
    "minute": "2026-10-18T09:51:00Z",
-   "source": "lb-x",
+   "source": "lb-1",
    "total": 1087
   },
   {
    "good": 1176,
    "minute": "2026-10-18T09:48:00Z",
-   "source": "lb-retry",
+   "source": "lb-0",
    "total": 1176
   },
   {
@@ -310,7 +310,7 @@
   {
    "good": 980,
    "minute": "2026-10-18T09:24:00Z",
-   "source": "lb-retry",
+   "source": "lb-0",
    "total": 1088
   },
   {
@@ -371,7 +371,7 @@
   {
    "good": 1064,
    "minute": "2026-10-18T09:18:00Z",
-   "source": "lb-retry",
+   "source": "lb-0",
    "total": 1066
   },
   {
@@ -462,13 +462,13 @@
   {
    "good": 999,
    "minute": "2026-10-18T09:30:00Z",
-   "source": "lb-retry",
+   "source": "lb-0",
    "total": 1110
   },
   {
    "good": 1196,
    "minute": "2026-10-18T09:54:00Z",
-   "source": "lb-retry",
+   "source": "lb-0",
    "total": 1198
   },
   {

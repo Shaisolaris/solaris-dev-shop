@@ -66,7 +66,7 @@ def world(rng, n=120, objective="0.99", burn=5, deploy=(40, 17), impact=(43, 70)
             rec["received_at"] = ts(base, i + 1, 400)  # late telemetry, still counted
         tel.append(rec)
         if i in conflicting:
-            tel.append({"minute": ts(base, i), "good": total - bad - 1, "total": total, "source": "lb-x"})
+            tel.append({"minute": ts(base, i), "good": total - bad - 1, "total": total, "source": "lb-%d" % (i % 3)})
     meas = [i for i in range(n) if i not in missing and i not in conflicting]
     good = sum(per[i][0] for i in meas)
     total = sum(per[i][1] for i in meas)
@@ -411,6 +411,43 @@ def main():
             all(k in json.dumps(rep) for k in ("read_only",))
         return ok, "runs under a socket-denying guard and leaves the bundle folder byte-identical" if ok else "rc %s changed %s" % (rc, tree_digest(d) != before)
     check("o12 offline and read-only", o12)
+
+    def o13():
+        # telemetry split across two load balancers: each minute's value is the sum over distinct sources
+        base = 1792396800 + rng.randrange(0, 60) * 86400
+        n = 30
+
+        def bundle(tel):
+            return {"schema": "solaris.incident-bundle/1", "service": "svc-split-lb", "events": [],
+                    "window": {"start": ts(base, 0), "end": ts(base, n)},
+                    "slo": {"objective": 0.99, "rollback_burn_rate": 5, "min_coverage": 0.9}, "telemetry": tel}
+        # A: shares differ in the only error minute (lb-a 500 bad of 500); summed it breaches the SLO
+        tel = []
+        for i in range(n):
+            tel.append({"minute": ts(base, i), "good": 0 if i == 17 else 500, "total": 500, "source": "lb-a"})
+            tel.append({"minute": ts(base, i), "good": 500, "total": 500, "source": "lb-b"})
+        tel.append(dict(tel[0]))  # an exact re-delivery from lb-a counts once
+        rng.shuffle(tel)
+        rca, ra, _ = run(put(tmp, "o13a.json", bundle(tel)))
+        sa = g(ra, "slo") or {}
+        oka = rca == 0 and sa.get("total") == 30000 and sa.get("bad") == 500 and sa.get("availability") == D(29500, 30000) \
+            and sa.get("status") == "breached" and g(ra, "missing_telemetry", "conflicting_minutes") == 0 \
+            and g(ra, "import", "telemetry_duplicates") == 1
+        # B: two sources with equal counts are two reports, not one (totals not halved)
+        tel = [{"minute": ts(base, i), "good": 490, "total": 500, "source": s_} for i in range(n) for s_ in ("lb-a", "lb-b")]
+        rcb, rb, _ = run(put(tmp, "o13b.json", bundle(tel)))
+        sb = g(rb, "slo") or {}
+        okb = rcb == 0 and sb.get("total") == 30000 and sb.get("good") == 29400 and g(rb, "missing_telemetry", "conflicting_minutes") == 0
+        # C: one source reporting two different counts for a minute is a genuine conflict
+        tel = [{"minute": ts(base, i), "good": 500, "total": 500, "source": s_} for i in range(n) for s_ in ("lb-a", "lb-b")]
+        tel.append({"minute": ts(base, 4), "good": 450, "total": 500, "source": "lb-b"})
+        rcc, rc_, _ = run(put(tmp, "o13c.json", bundle(tel)))
+        sc = g(rc_, "slo") or {}
+        okc = rcc == 0 and g(rc_, "missing_telemetry", "conflicting_minutes") == 1 and sc.get("total") == 29000
+        ok = oka and okb and okc
+        return ok, "split load balancers summed (the only error minute breaches); equal counts from two sources both count; " \
+            "one source with two counts is a conflict" if ok else "A %s %s B %s C %s" % (oka, {k: sa.get(k) for k in ("total", "bad", "status")}, okb, okc)
+    check("o13 per-source telemetry summed", o13)
 
     passed = sum(1 for _, ok, _ in RESULTS if ok)
     print("%s: %d/%d checks passed (seed %d)" % ("ACCEPTED" if passed == len(RESULTS) else "REJECTED", passed, len(RESULTS), a.seed))

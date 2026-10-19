@@ -11,7 +11,7 @@ the revision. It never deploys, rolls back, opens a socket or writes anything bu
 service      name of the service the SLO belongs to
 window       {start, end}: the service window, whole UTC minutes, end exclusive, at most 31 days
 slo          {objective (0..1, e.g. 0.99), rollback_burn_rate (default 10), min_coverage (default 0.9)}
-telemetry    [{minute, good, total, source?, received_at?}]: one request count per minute
+telemetry    [{minute, good, total, source?, received_at?}]: request counts per minute and source
 events       [{id, at, kind, actor?, detail?, received_at?}]: kind is detected, declared, mitigated,
              resolved, deploy, rollback, status or note
 change       optional {revision, previous, deployed_at, migrates_data, data?: {snapshot, databases}}
@@ -30,10 +30,16 @@ Exit codes: 0 analysed; 2 invalid input, nothing written (a previous `--out` sta
 
 ## How records are judged
 
-- **Duplicates**: a minute delivered again with the same counts is counted once; an event id
+- **Sources**: `source` names the reporter whose counts add up to the service's traffic (a load
+  balancer, region or shard). A minute's value is the sum over its distinct sources, so telemetry split
+  across load balancers is measured whole. Records without `source` belong to one unnamed source. Do
+  not give a re-delivery or a mirror of the same traffic a different source name: it would be added.
+- **Duplicates**: a source delivering a minute again with the same counts is counted once; an event id
   delivered again with the same content is kept once (earliest `received_at`). An event id with two
   different contents refuses the bundle: the tool will not pick a story.
-- **Conflicting minutes**: two different counts for one minute are labelled and left out.
+- **Conflicting minutes**: one source reporting two different counts for one minute makes the whole
+  minute conflicting; it is labelled and left out (the tool does not pick a count). Different counts from
+  different sources are not a conflict: they are summed.
 - **Missing telemetry**: minutes with no record are listed as ranges, put on the timeline and left
   out. They are never counted as good. When measured minutes cover less than `min_coverage` of the
   window the SLO status is `insufficient_telemetry`, not met or breached.
@@ -65,4 +71,6 @@ human approval it requires.
 
 - Request-based availability SLO only; latency SLOs and multi-window alert rules are not computed.
 - Telemetry is per minute; finer buckets must be rolled up first.
+- The burn rate since the change is measured from the start of the change's minute, so up to 59 s
+  before `deployed_at` are included.
 - Not run: any live metrics backend, paging system or production rollback.

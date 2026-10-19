@@ -7,9 +7,12 @@ network traces) and writes one report: the merged timeline, exact SLO and error-
 for the named window, the telemetry it does not have, and a rollback decision whose trace
 names the service, the window and the revision.
 
-Records arrive late, twice and out of order. A telemetry minute delivered twice with the same
-counts is counted once; a minute with two different counts is "conflicting" and, like a minute
-with no record, is labelled and left out of the measured values instead of being guessed. An
+Records arrive late, twice and out of order. `source` names the reporter whose counts are additive
+(a load balancer, region or shard); records without one belong to a single unnamed source. Each
+minute's value is the sum over its distinct sources. A source that delivers a minute again with the
+same counts is counted once; a source that reports two different counts for one minute makes that
+minute "conflicting", and, like a minute with no record, it is labelled and left out of the measured
+values instead of being guessed. An
 event id delivered twice with the same content is kept once; with different content the bundle
 is refused. The same bundle always gives the same bytes (no wall clock, sorted JSON), and
 re-importing the same records (duplicated, reordered) gives the same SLO, timeline and decision.
@@ -210,8 +213,8 @@ def normalise(doc: Any, base: Path) -> Dict[str, Any]:
         raise Invalid("events: expected a list")
     if len(tel) + len(evs) > MAX_RECORDS:
         raise Invalid(f"more than {MAX_RECORDS} records")
-    buckets: Dict[dt.datetime, List[Tuple[int, int]]] = {}
-    stats = {"telemetry_records": len(tel), "telemetry_duplicates": 0, "telemetry_late": 0,
+    per_source: Dict[dt.datetime, Dict[str, List[Tuple[int, int]]]] = {}
+    stats = {"telemetry_records": len(tel), "telemetry_duplicates": 0, "telemetry_minutes_multi_source": 0, "telemetry_late": 0,
              "telemetry_outside_window": 0, "event_records": len(evs), "event_duplicates": 0, "events_late": 0}
     for i, r in enumerate(tel):
         r = _obj(r, f"telemetry[{i}]")
@@ -219,19 +222,31 @@ def normalise(doc: Any, base: Path) -> Dict[str, Any]:
         good, total = _count(r.get("good"), f"telemetry[{i}].good"), _count(r.get("total"), f"telemetry[{i}].total")
         if good > total:
             raise Invalid(f"telemetry[{i}]: good {good} exceeds total {total}")
+        src = ""  # records without a source belong to one unnamed source
         if r.get("source") is not None:
-            _str(r.get("source"), f"telemetry[{i}].source", 100)
+            src = _str(r.get("source"), f"telemetry[{i}].source", 100)
         if r.get("received_at") is not None:
             if (_time(r["received_at"], f"telemetry[{i}].received_at") - (m + MINUTE)).total_seconds() > LATE_AFTER_S:
                 stats["telemetry_late"] += 1
         if not (start <= m < end):
             stats["telemetry_outside_window"] += 1
             continue
-        vals = buckets.setdefault(m, [])
+        vals = per_source.setdefault(m, {}).setdefault(src, [])
         if (good, total) in vals:
             stats["telemetry_duplicates"] += 1
         else:
             vals.append((good, total))
+    # one value per minute: the sum over distinct sources; a source with two different counts makes the
+    # minute conflicting (its differing values are kept, so the minute has more than one entry)
+    buckets: Dict[dt.datetime, List[Tuple[int, int]]] = {}
+    for m, srcs in per_source.items():
+        clash = sorted(v for vals in srcs.values() if len(vals) > 1 for v in vals)
+        if clash:
+            buckets[m] = clash
+        else:
+            buckets[m] = [(sum(v[0][0] for v in srcs.values()), sum(v[0][1] for v in srcs.values()))]
+            if len(srcs) > 1:
+                stats["telemetry_minutes_multi_source"] += 1
 
     events: Dict[str, Dict[str, Any]] = {}
     for i, e in enumerate(evs):

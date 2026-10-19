@@ -34,11 +34,13 @@ def report(path):
 
 
 def expected(bundle):
-    """Independent SLO arithmetic: one value per minute, duplicates once, conflicts and gaps out."""
+    """Independent SLO arithmetic: per minute the sum over distinct sources, a source's exact repeats once,
+    a source with two different counts makes the minute conflicting; conflicts and gaps out."""
     seen = {}
     for r in bundle['telemetry']:
-        seen.setdefault(r['minute'], set()).add((r['good'], r['total']))
-    keep = [next(iter(v)) for v in seen.values() if len(v) == 1]
+        seen.setdefault(r['minute'], {}).setdefault(r.get('source'), set()).add((r['good'], r['total']))
+    keep = [(sum(next(iter(v))[0] for v in srcs.values()), sum(next(iter(v))[1] for v in srcs.values()))
+            for srcs in seen.values() if all(len(v) == 1 for v in srcs.values())]
     good, total = sum(g for g, _ in keep), sum(t for _, t in keep)
     o = decimal.Decimal(str(bundle['slo']['objective']))
     q = decimal.Decimal('0.000001')
@@ -59,7 +61,7 @@ class G11Capability(unittest.TestCase):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_oracle_accepts_the_tool_and_rejects_controls(self):
-        for target, want in ((TOOL, 'ACCEPTED: 12/12'), (EX / 'naive_stub.py', 'REJECTED'), (EX / 'noop_stub.py', 'REJECTED')):
+        for target, want in ((TOOL, 'ACCEPTED: 13/13'), (EX / 'naive_stub.py', 'REJECTED'), (EX / 'noop_stub.py', 'REJECTED')):
             p = subprocess.run([sys.executable, str(EX / 'incident_oracle.py'), '--', sys.executable, str(target)],
                                capture_output=True, text=True, env=ENV, timeout=600)
             self.assertIn(want, p.stdout.strip().splitlines()[-1], (target.name, p.stdout[-1500:], p.stderr[-800:]))
@@ -100,6 +102,33 @@ class G11Capability(unittest.TestCase):
         self.assertIn('telemetry_missing', [t['kind'] for t in r['timeline']])
         r = report(FIX / '07-conflicting-minutes.json')
         self.assertEqual(r['missing_telemetry']['conflicting_ranges'], [{'start': '2026-10-18T09:50:00Z', 'end': '2026-10-18T09:52:00Z', 'minutes': 2}])
+
+    def test_per_source_counts_summed_hand_worked(self):
+        b = json.loads((FIX / '01-clean-control.json').read_text())
+        start = b['window']['start']
+        tel = [r for r in b['telemetry'] if r['minute'] != start]
+        tel += [{'minute': start, 'good': 300, 'total': 400, 'source': 'lb-a'},   # differing shares: summed
+                {'minute': start, 'good': 600, 'total': 600, 'source': 'lb-b'},
+                {'minute': start, 'good': 300, 'total': 400, 'source': 'lb-a'}]   # exact repeat: once
+        d = Path(tempfile.mkdtemp(prefix='g11-src-'))
+        try:
+            p = d / 'b.json'
+            p.write_text(json.dumps(dict(b, telemetry=tel)))
+            r = report(p)
+            self.assertEqual({k: r['slo'][k] for k in ('good', 'total', 'bad')}, {k: expected(dict(b, telemetry=tel))[k] for k in ('good', 'total', 'bad')})
+            self.assertEqual(r['missing_telemetry']['conflicting_minutes'], 0)
+            self.assertEqual(r['import']['telemetry_minutes_multi_source'], 1)
+            base = report(FIX / '01-clean-control.json')['slo']
+            first = [x for x in b['telemetry'] if x['minute'] == start][0]
+            self.assertEqual(r['slo']['total'], base['total'] - first['total'] + 1000)
+            self.assertEqual(r['slo']['bad'], base['bad'] - (first['total'] - first['good']) + 100)
+            # without a source, two different counts are one source reporting twice: a conflict
+            tel2 = [r_ for r_ in b['telemetry'] if r_['minute'] != start] + \
+                [{'minute': start, 'good': 990, 'total': 1000}, {'minute': start, 'good': 1000, 'total': 1000}]
+            p.write_text(json.dumps(dict(b, telemetry=tel2)))
+            self.assertEqual(report(p)['missing_telemetry']['conflicting_minutes'], 1)
+        finally:
+            shutil.rmtree(d, ignore_errors=True)
 
     def test_repeated_import_is_stable(self):
         b = json.loads((FIX / '02-deploy-regression.json').read_text())
