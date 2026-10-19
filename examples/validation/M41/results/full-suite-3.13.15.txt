@@ -1,0 +1,10 @@
+...................................................................................................................................<UV>/python/cpython-3.13.15-macos-aarch64-none/lib/python3.13/asyncio/queues.py:23: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x1067287c0>
+  class QueueFull(Exception):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+..................................................................................<frozen importlib._bootstrap>:488: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10689f2e0>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+......................................................................................................................
+----------------------------------------------------------------------
+Ran 331 tests in 150.814s
+
+OK

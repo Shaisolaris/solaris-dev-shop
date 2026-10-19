@@ -1,0 +1,10 @@
+== negative controls (3.13.15)
+-- base 0f593a1 (no release_candidate.py), tool path from the candidate layout:
+M41 ORACLE 0/5 scored FAIL
+-- builder no-op tool:
+M41 ORACLE 0/5 scored FAIL
+-- builder naive tool:
+FAIL R02 honest NOT_READY: a moved candidate, a missing acceptance, a missing goal, a required final goal {"candidate_mo
+FAIL R03 selection: a rejected goal is excluded and kept out; a goal not selected for the week does not b {"rejected_goa
+FAIL R04 metadata reconciliation: a CHANGELOG heading ahead of pyproject, a wrong description count, an e {"changelog_to
+M41 ORACLE 2/5 scored FAIL

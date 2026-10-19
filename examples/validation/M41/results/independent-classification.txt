@@ -1,0 +1,22 @@
+selected goals 84, not selected 8
+mine counts {'accepted': 38, 'candidate_only': 13, 'missing': 33} | tool counts {'accepted': 38, 'candidate_only': 13, 'missing': 41}
+classification differences: ['G26', 'G27', 'G28', 'G29', 'M26', 'M27', 'M28', 'M29'] [('G26', None, 'missing'), ('G27', None, 'missing'), ('G28', None, 'missing'), ('G29', None, 'missing'), ('M26', None, 'missing'), ('M27', None, 'missing'), ('M28', None, 'missing'), ('M29', None, 'missing')]
+queue status accepted but no acceptance-file entry: ['R01', 'R02', 'R03', 'R04']
+acceptance-file entry but queue status not accepted: [] []
+queue acceptance_record.exact_revision differs from acceptance file commit: []
+index candidate differs from the remote review branch head (index stale or post-acceptance commits):
+   ('G01', 'accepted', 'a069a79', 'review/grok-g01-fixture-runner', 'aa0b083')
+   ('G02', 'candidate_only', 'bbe682b', 'review/grok-g02-activation', '8fdae9c')
+   ('G19', 'accepted', '5606672', 'review/grok-g19-duplicate-safe-api', '350d175')
+   ('G04', 'candidate_only', '314b4db', 'review/grok-g04-handoff', '155fc33')
+   ('G05', 'candidate_only', '8b38a72', 'review/grok-g05-revision-bound-evidence', '3056378')
+   ('G15', 'candidate_only', '64c3cc7', 'review/grok-g15-experiment-readout', '7e7f361')
+   ('G31', 'candidate_only', '37f42b0', 'review/grok-g31-scope-acceptance', 'e998d2b')
+   ('G32', 'candidate_only', '2d85d94', 'review/grok-g32-consent-followthrough', 'b69f328')
+   ('G33', 'candidate_only', '861167d', 'review/grok-g33-evidence-decision', '327e631')
+   ('G37', 'accepted', '9b0f58e', 'review/grok-g37-privacy-inventory', 'e9b7a77')
+   ('G38', 'candidate_only', '01c9afb', 'review/grok-g38-authority-consistency', 'b542851')
+   ('G39', 'candidate_only', 'f04d34d', 'review/grok-g39-delivery-drill', '05378c4')
+   ('G40', 'candidate_only', '8428c90', 'review/grok-g40-fresh-install', '0f593a1')
+queue excluded/rejected: [] | statuses present: ['accepted', 'candidate_has_validation_residuals_repair_or_contract_bound_required', 'integration_or_final_validation_queued', 'rebuild_and_validation_required_after_G39_repair', 'release_cohort_preparation_not_ready', 'repair_candidate_delivered_fresh_validation_required', 'repair_delivered_awaiting_affected_validation', 'rework_required_root_contract_review', 'validation_ready_dependency_repair_required']
+required final goals and dispositions: [('G39', 'candidate_only'), ('M39', 'missing'), ('G40', 'candidate_only'), ('M40', 'missing'), ('G41', 'missing'), ('M41', 'missing'), ('G42', 'missing'), ('M42', 'missing')]

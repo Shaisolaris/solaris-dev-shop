@@ -1,0 +1,6 @@
+ls: /tmp/m41mx-Px4JnV/build: No such file or directory
+== 3.9.6 | g41: OK | full: Ran 331 tests in 144.399s  FAILED (failures=1, skipped=1)  FAIL: test_oracle_accepts_real_api_and_rejects_stubs (test_g19_capability.ProbeAndOracle)  | builder-oracle: ACCEPTED 10/10 | builder-naive: REJECTED 5/10 | builder-noop: REJECTED 0/10 | m41-oracle: M41 ORACLE 4/5 scored FAIL | pycache in copy: 0 | build/egg-info in copy: 0
+== 3.11.16 | g41: OK | full: Ran 331 tests in 135.858s  FAILED (failures=1)  FAIL: test_oracle_accepts_real_api_and_rejects_stubs (test_g19_capability.ProbeAndOracle.test_oracle_accepts_real_api_and_rejects_stubs)  | builder-oracle: ACCEPTED 10/10 | builder-naive: REJECTED 5/10 | builder-noop: REJECTED 0/10 | m41-oracle: M41 ORACLE 4/5 scored FAIL | pycache in copy: 0 | build/egg-info in copy: 2
+== 3.12.14 | g41: OK | full: Ran 331 tests in 170.075s  OK   | builder-oracle: ACCEPTED 10/10 | builder-naive: REJECTED 5/10 | builder-noop: REJECTED 0/10 | m41-oracle: M41 ORACLE 4/5 scored FAIL | pycache in copy: 0 | build/egg-info in copy: 2
+== 3.13.15 | g41: OK | full: Ran 331 tests in 150.814s  OK   | builder-oracle: ACCEPTED 10/10 | builder-naive: REJECTED 5/10 | builder-noop: REJECTED 0/10 | m41-oracle: M41 ORACLE 4/5 scored FAIL | pycache in copy: 0 | build/egg-info in copy: 2
+candidate status lines: 0

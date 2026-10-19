@@ -1,0 +1,9 @@
+== independent metadata reconciliation at 50429506 (Grok self-validation)
+pyproject version: version = "0.61"
+top CHANGELOG version heading: ## 0.61 (2026-10-18)
+description: description = "61 portable specialist skills with searchable discovery and an ex
+employees/*/*/SKILL.md: 61
+skills.json entries: {'skills': 61}
+roster.json: {'capabilities': 62}
+README skill count mentions:    1 61 portable specialist skills    1 61 skills    2 61 specialist skills 
+nothing applied: candidate worktree status lines 0; pyproject/CHANGELOG changed vs main 02ba9c5: 0 files

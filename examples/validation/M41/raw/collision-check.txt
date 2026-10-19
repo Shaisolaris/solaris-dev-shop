@@ -1,0 +1,5 @@
+Mon Oct 19 12:03:22 PDT 2026
+my prefixes: /tmp/m40*, /tmp/m41*
+builder dirs present (untouched): /tmp/g18 /tmp/g39 /tmp/g40-inspect /tmp/g40-skill-cglbby_x /tmp/g40-skill-rewwhfxx /tmp/g40-skill-sej7ej1k 
+other writer dirs present (untouched): /tmp/m08-pub /tmp/m16r7-pub-sanitize /tmp/m38-peek /tmp/r01 
+repo worktrees under /tmp/m*: /private/tmp/m38-peek /private/tmp/m40-eval /private/tmp/m41-eval 

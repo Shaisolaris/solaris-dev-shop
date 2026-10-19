@@ -1,0 +1,719 @@
+{
+  "blocked_on_root_or_owner": [
+    {
+      "owner": "root",
+      "step": "apply the proposed version to pyproject.toml and CHANGELOG.md"
+    },
+    {
+      "owner": "root",
+      "step": "regenerate or edit control-plane/skills.json, roster.json or counts"
+    },
+    {
+      "owner": "root",
+      "step": "supported CI on Linux/macOS/Windows Python 3.12 and Linux 3.10/3.13 at the final revision"
+    },
+    {
+      "owner": "root",
+      "step": "protected branding SHA256 check at the final revision"
+    },
+    {
+      "owner": "root with owner approval",
+      "step": "existing PR replies or updates"
+    },
+    {
+      "owner": "root after the owner's final gate",
+      "step": "tag, GitHub release and main push"
+    }
+  ],
+  "conflicts": [],
+  "counts": {
+    "accepted": 38,
+    "candidate_only": 13,
+    "missing": 41
+  },
+  "excluded": [],
+  "goals": [
+    {
+      "acceptance_source": "ACCEPTANCE-B.json",
+      "accepted_commit": "a069a79ca6f57672fa92b0a86bfbcb46eff99ddb",
+      "disposition": "accepted",
+      "id": "G01",
+      "queue_status": "accepted"
+    },
+    {
+      "candidate_sha": "bbe682b28e96296723826c1f113e138ccc39c530",
+      "disposition": "candidate_only",
+      "id": "G02",
+      "queue_status": "repair_delivered_awaiting_affected_validation"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "d4d98f2180ed9b92fd058a2350285f60f83b877d",
+      "disposition": "accepted",
+      "id": "G03",
+      "queue_status": "accepted"
+    },
+    {
+      "candidate_sha": "314b4dbf980437cf14bc32438117e5b5b777f942",
+      "disposition": "candidate_only",
+      "id": "G04",
+      "queue_status": "repair_delivered_awaiting_affected_validation"
+    },
+    {
+      "candidate_sha": "8b38a72f2183ad7427594d6557d7e308baf0469b",
+      "disposition": "candidate_only",
+      "id": "G05",
+      "queue_status": "rework_required_root_contract_review"
+    },
+    {
+      "disposition": "missing",
+      "id": "G06",
+      "queue_status": "integration_or_final_validation_queued"
+    },
+    {
+      "candidate_sha": "0d6a78d56cdb4c3b8d87ed25bb41704e99bc5382",
+      "disposition": "candidate_only",
+      "id": "G07",
+      "queue_status": "validation_ready_dependency_repair_required"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "ddebe98707219aa2638cd424777b1255413d9ceb",
+      "disposition": "accepted",
+      "id": "G08",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-B.json",
+      "accepted_commit": "edfa64d4d86532d18164e37175c7b0e4d734d0e0",
+      "disposition": "accepted",
+      "id": "G09",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "f79be61580dec0911f6aba56c3bdc746a30898e7",
+      "disposition": "accepted",
+      "id": "G10",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "13ba7055537e305732856aea3c74ff28f0848be8",
+      "disposition": "accepted",
+      "id": "G11",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "G12",
+      "queue_status": "integration_or_final_validation_queued"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "5666e7beb161d1252ddd5dcc0a166aca83255370",
+      "disposition": "accepted",
+      "id": "G13",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "6f7b23aa18413907c5fbd250daab475dc94e7a1e",
+      "disposition": "accepted",
+      "id": "G14",
+      "queue_status": "accepted"
+    },
+    {
+      "candidate_sha": "64c3cc706c753b1c3676b1ef6a433c4706b3e62f",
+      "disposition": "candidate_only",
+      "id": "G15",
+      "queue_status": "rework_required_root_contract_review"
+    },
+    {
+      "candidate_sha": "49aba3fd978a21545f525ad6e82156e39653b257",
+      "disposition": "candidate_only",
+      "id": "G16",
+      "queue_status": "candidate_has_validation_residuals_repair_or_contract_bound_required"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "550f1848a76ad4d5b6688090afc0519354ac3370",
+      "disposition": "accepted",
+      "id": "G17",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "G18",
+      "queue_status": "integration_or_final_validation_queued"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-B.json",
+      "accepted_commit": "5606672b464f5daaf08e28cbfa5a8d307f730c27",
+      "disposition": "accepted",
+      "id": "G19",
+      "queue_status": "accepted"
+    },
+    {
+      "candidate_sha": "8d45038b82a13bf5d360e5969ed2da72b80ce467",
+      "disposition": "candidate_only",
+      "id": "G20",
+      "queue_status": "rework_required_root_contract_review"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-B.json",
+      "accepted_commit": "822a9c1aaf2da3a0dace1bd0a0640d992406efa0",
+      "disposition": "accepted",
+      "id": "G21",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-B.json",
+      "accepted_commit": "1faee8d4e529fbbeac7c64292bed324bdced9796",
+      "disposition": "accepted",
+      "id": "G22",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "0ff2641c56c852d9525adaa71442274d8c8453a6",
+      "disposition": "accepted",
+      "id": "G23",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "G24",
+      "queue_status": "integration_or_final_validation_queued"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "eb9c7c47384ec5d8ba951aca72240ed57ca7b383",
+      "disposition": "accepted",
+      "id": "G25",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "G26",
+      "queue_status": "held_environment_unverified"
+    },
+    {
+      "disposition": "missing",
+      "id": "G27",
+      "queue_status": "held_environment_unverified"
+    },
+    {
+      "disposition": "missing",
+      "id": "G28",
+      "queue_status": "held_environment_unverified"
+    },
+    {
+      "disposition": "missing",
+      "id": "G29",
+      "queue_status": "held_environment_unverified"
+    },
+    {
+      "disposition": "missing",
+      "id": "G30",
+      "queue_status": "integration_or_final_validation_queued"
+    },
+    {
+      "candidate_sha": "37f42b085c20bd7fbb1a43434e4367bb7fc411f8",
+      "disposition": "candidate_only",
+      "id": "G31",
+      "queue_status": "rework_required_root_contract_review"
+    },
+    {
+      "candidate_sha": "2d85d94fb36933357c733de80a1e988302ffc1ec",
+      "disposition": "candidate_only",
+      "id": "G32",
+      "queue_status": "rework_required_root_contract_review"
+    },
+    {
+      "candidate_sha": "861167dd854156f69c6d4a62734ca6c6e45b81d1",
+      "disposition": "candidate_only",
+      "id": "G33",
+      "queue_status": "rework_required_root_contract_review"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "de76fae516c3aab8adc5df7bfcaac2d751dc92d9",
+      "disposition": "accepted",
+      "id": "G34",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-B.json",
+      "accepted_commit": "34bb98f465901438fec47d6ac8beccc0edf8df70",
+      "disposition": "accepted",
+      "id": "G35",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "G36",
+      "queue_status": "integration_or_final_validation_queued"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-B.json",
+      "accepted_commit": "9b0f58e84d3d39828955022d8179c0cf372155a4",
+      "disposition": "accepted",
+      "id": "G37",
+      "queue_status": "accepted"
+    },
+    {
+      "candidate_sha": "01c9afbfc9066d844be0e0a7ee9b90c1a3859491",
+      "disposition": "candidate_only",
+      "id": "G38",
+      "queue_status": "repair_candidate_delivered_fresh_validation_required"
+    },
+    {
+      "candidate_sha": "f04d34dbf41364b6dcdb03104a647c2e499bccac",
+      "disposition": "candidate_only",
+      "id": "G39",
+      "queue_status": "rework_required_root_contract_review"
+    },
+    {
+      "candidate_sha": "8428c90ed6c22f64e81209fa989c278a5d4390b8",
+      "disposition": "candidate_only",
+      "id": "G40",
+      "queue_status": "rebuild_and_validation_required_after_G39_repair"
+    },
+    {
+      "disposition": "missing",
+      "id": "G41",
+      "queue_status": "release_cohort_preparation_not_ready"
+    },
+    {
+      "disposition": "missing",
+      "id": "G42",
+      "queue_status": "integration_or_final_validation_queued"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-B.json",
+      "accepted_commit": "2b4e2f71c88eb91f9531c67dee71e0c460bfaeea",
+      "disposition": "accepted",
+      "id": "M01",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "M02",
+      "queue_status": "repair_delivered_awaiting_affected_validation"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "1020f11aae924738197780c86c266ad3866e7ff0",
+      "disposition": "accepted",
+      "id": "M03",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "M04",
+      "queue_status": "repair_delivered_awaiting_affected_validation"
+    },
+    {
+      "disposition": "missing",
+      "id": "M05",
+      "queue_status": "rework_required_root_contract_review"
+    },
+    {
+      "disposition": "missing",
+      "id": "M06",
+      "queue_status": "integration_or_final_validation_queued"
+    },
+    {
+      "disposition": "missing",
+      "id": "M07",
+      "queue_status": "validation_ready_dependency_repair_required"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "9ed30c3ed40653e1abdec1cfb8740b0b275a17cd",
+      "disposition": "accepted",
+      "id": "M08",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-B.json",
+      "accepted_commit": "17457d8b24c2535bc622bf878fe33d8415708595",
+      "disposition": "accepted",
+      "id": "M09",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "1c4290a6909bbd12ec62ca98ceae556b5c96e90a",
+      "disposition": "accepted",
+      "id": "M10",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "f743447f5f4038f22603bc5d5edad095b5cb7260",
+      "disposition": "accepted",
+      "id": "M11",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "M12",
+      "queue_status": "integration_or_final_validation_queued"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "db6028ed56d059c1926df5311379fa1e6880bb7b",
+      "disposition": "accepted",
+      "id": "M13",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "60682d2f425354c3d8ef76c6a4b5a593992a2a2b",
+      "disposition": "accepted",
+      "id": "M14",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "M15",
+      "queue_status": "rework_required_root_contract_review"
+    },
+    {
+      "disposition": "missing",
+      "id": "M16",
+      "queue_status": "candidate_has_validation_residuals_repair_or_contract_bound_required"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "ed85c95b213919bb774b3fe053447cdecf89e413",
+      "disposition": "accepted",
+      "id": "M17",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "M18",
+      "queue_status": "integration_or_final_validation_queued"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-B.json",
+      "accepted_commit": "f2e52da4e6b6604392324f7771b8b045f2e1dc10",
+      "disposition": "accepted",
+      "id": "M19",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "M20",
+      "queue_status": "rework_required_root_contract_review"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-B.json",
+      "accepted_commit": "06e061526ac253e255004a8ec72ba3b8f29e4c2c",
+      "disposition": "accepted",
+      "id": "M21",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-B.json",
+      "accepted_commit": "9b7845aac503c6d3667d84c41eac3521963be9b9",
+      "disposition": "accepted",
+      "id": "M22",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "88e4c26d01bdb60735978cf326bae83f7c3d1933",
+      "disposition": "accepted",
+      "id": "M23",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "M24",
+      "queue_status": "integration_or_final_validation_queued"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "808e9c5e74a794bad9fa0a1b8a5ba48b0a371829",
+      "disposition": "accepted",
+      "id": "M25",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "M26",
+      "queue_status": "held_environment_unverified"
+    },
+    {
+      "disposition": "missing",
+      "id": "M27",
+      "queue_status": "held_environment_unverified"
+    },
+    {
+      "disposition": "missing",
+      "id": "M28",
+      "queue_status": "held_environment_unverified"
+    },
+    {
+      "disposition": "missing",
+      "id": "M29",
+      "queue_status": "held_environment_unverified"
+    },
+    {
+      "disposition": "missing",
+      "id": "M30",
+      "queue_status": "integration_or_final_validation_queued"
+    },
+    {
+      "disposition": "missing",
+      "id": "M31",
+      "queue_status": "rework_required_root_contract_review"
+    },
+    {
+      "disposition": "missing",
+      "id": "M32",
+      "queue_status": "rework_required_root_contract_review"
+    },
+    {
+      "disposition": "missing",
+      "id": "M33",
+      "queue_status": "rework_required_root_contract_review"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-A.json",
+      "accepted_commit": "e8b129ba53269a25da3250a3c9f2f757a132c79e",
+      "disposition": "accepted",
+      "id": "M34",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-B.json",
+      "accepted_commit": "b6dd5e98aa3fd11ab680faef3c618b8308caa8eb",
+      "disposition": "accepted",
+      "id": "M35",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "M36",
+      "queue_status": "integration_or_final_validation_queued"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-B.json",
+      "accepted_commit": "36387820cabc3fb26d53141e046207d2668e5f62",
+      "disposition": "accepted",
+      "id": "M37",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "M38",
+      "queue_status": "repair_candidate_delivered_fresh_validation_required"
+    },
+    {
+      "disposition": "missing",
+      "id": "M39",
+      "queue_status": "rework_required_root_contract_review"
+    },
+    {
+      "disposition": "missing",
+      "id": "M40",
+      "queue_status": "rebuild_and_validation_required_after_G39_repair"
+    },
+    {
+      "disposition": "missing",
+      "id": "M41",
+      "queue_status": "release_cohort_preparation_not_ready"
+    },
+    {
+      "disposition": "missing",
+      "id": "M42",
+      "queue_status": "integration_or_final_validation_queued"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-PR.json",
+      "disposition": "accepted",
+      "external_commit": "2577f3ed714650e62d022113a0ce23f5b6d7aa76",
+      "id": "P01",
+      "note": "accepted work outside this repository; nothing of it is included in this release",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-PR.json",
+      "disposition": "accepted",
+      "external_commit": null,
+      "id": "P02",
+      "note": "accepted work outside this repository; nothing of it is included in this release",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-PR.json",
+      "disposition": "accepted",
+      "external_commit": "bee80893c03beca8dcff9a7c77df15744ec9f370",
+      "id": "P03",
+      "note": "accepted work outside this repository; nothing of it is included in this release",
+      "queue_status": "accepted"
+    },
+    {
+      "acceptance_source": "ACCEPTANCE-PR.json",
+      "disposition": "accepted",
+      "external_commit": null,
+      "id": "P04",
+      "note": "accepted work outside this repository; nothing of it is included in this release",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "R01",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "R02",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "R03",
+      "queue_status": "accepted"
+    },
+    {
+      "disposition": "missing",
+      "id": "R04",
+      "queue_status": "accepted"
+    }
+  ],
+  "included_if_released": [
+    "G01",
+    "G03",
+    "G08",
+    "G09",
+    "G10",
+    "G11",
+    "G13",
+    "G14",
+    "G17",
+    "G19",
+    "G21",
+    "G22",
+    "G23",
+    "G25",
+    "G34",
+    "G35",
+    "G37",
+    "M01",
+    "M03",
+    "M08",
+    "M09",
+    "M10",
+    "M11",
+    "M13",
+    "M14",
+    "M17",
+    "M19",
+    "M21",
+    "M22",
+    "M23",
+    "M25",
+    "M34",
+    "M35",
+    "M37",
+    "P01",
+    "P02",
+    "P03",
+    "P04"
+  ],
+  "limits": "reads files and, with --git, local commit ancestry; it does not run CI, verify manifests byte for byte, or decide acceptance",
+  "metadata": {
+    "catalog_skills": 61,
+    "changelog_top_version": "0.61",
+    "description_skill_count": 61,
+    "problems": [],
+    "pyproject_version": "0.61",
+    "skill_files": 61
+  },
+  "proposed_version": {
+    "applied": false,
+    "from": "0.61",
+    "status": "proposed only; root alone applies release metadata after the final gates",
+    "version": "0.62"
+  },
+  "release_gate": {
+    "applied": false,
+    "queue_state": "NOT_READY",
+    "reasons": [
+      "G02 candidate_only",
+      "G04 candidate_only",
+      "G05 candidate_only",
+      "G06 missing",
+      "G07 candidate_only",
+      "G12 missing",
+      "G15 candidate_only",
+      "G16 candidate_only",
+      "G18 missing",
+      "G20 candidate_only",
+      "G24 missing",
+      "G26 missing",
+      "G27 missing",
+      "G28 missing",
+      "G29 missing",
+      "G30 missing",
+      "G31 candidate_only",
+      "G32 candidate_only",
+      "G33 candidate_only",
+      "G36 missing",
+      "G38 candidate_only",
+      "G39 candidate_only",
+      "G40 candidate_only",
+      "G41 missing",
+      "G42 missing",
+      "M02 missing",
+      "M04 missing",
+      "M05 missing",
+      "M06 missing",
+      "M07 missing",
+      "M12 missing",
+      "M15 missing",
+      "M16 missing",
+      "M18 missing",
+      "M20 missing",
+      "M24 missing",
+      "M26 missing",
+      "M27 missing",
+      "M28 missing",
+      "M29 missing",
+      "M30 missing",
+      "M31 missing",
+      "M32 missing",
+      "M33 missing",
+      "M36 missing",
+      "M38 missing",
+      "M39 missing",
+      "M40 missing",
+      "M41 missing",
+      "M42 missing",
+      "R01 missing",
+      "R02 missing",
+      "R03 missing",
+      "R04 missing",
+      "required final goal G39 is not accepted",
+      "required final goal M39 is not accepted",
+      "required final goal G40 is not accepted",
+      "required final goal M40 is not accepted",
+      "required final goal G41 is not accepted",
+      "required final goal M41 is not accepted",
+      "required final goal G42 is not accepted",
+      "required final goal M42 is not accepted",
+      "release_gate.candidate_commit is not set by root",
+      "release_gate.checks_revision is not set by root",
+      "release_gate.reviewed_revision is not set by root"
+    ],
+    "state": "NOT_READY"
+  },
+  "schema": "solaris.release-candidate-inventory/1",
+  "unknown_ids": []
+}

@@ -1,0 +1,334 @@
+{
+ "tool": "/tmp/m41teeth-h1u_n7da/version_unchecked/employees/quality-security/assurance/release_candidate.py",
+ "python": "3.9.6",
+ "rows": [
+  {
+   "row": "R01 clean control: every selected goal accepted at its candidate, metadata agrees and root named the revisions: READY, exit 0, proposal 0.62 not applied, REPO untouched",
+   "pass": true,
+   "sub": {
+    "clean_ready_exit_0": true,
+    "all_accepted": true,
+    "pr_followup_accepted_without_commit": true,
+    "proposes_0_62_not_applied": true,
+    "repo_untouched": true
+   },
+   "detail": {
+    "clean_ready_exit_0": [
+     true,
+     [
+      0,
+      "READY",
+      []
+     ]
+    ],
+    "all_accepted": [
+     true,
+     {
+      "G01": "accepted",
+      "G02": "accepted",
+      "G39": "accepted",
+      "G40": "accepted",
+      "M01": "accepted",
+      "M02": "accepted",
+      "M39": "accepted",
+      "M40": "accepted",
+      "P01": "accepted"
+     }
+    ],
+    "pr_followup_accepted_without_commit": [
+     true,
+     "accepted"
+    ],
+    "proposes_0_62_not_applied": [
+     true,
+     {
+      "applied": false,
+      "from": "0.61",
+      "status": "proposed only; root alone applies release metadata after the final gates",
+      "version": "0.62"
+     }
+    ],
+    "repo_untouched": [
+     true,
+     0
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "R02 honest NOT_READY: a moved candidate, a missing acceptance, a missing goal, a required final goal not accepted or excluded, conflicting acceptances and unset root revisions each give NOT_READY, exit 1, with the reason named",
+   "pass": true,
+   "sub": {
+    "candidate_moved_after_acceptance_stale": true,
+    "candidate_without_acceptance": true,
+    "no_candidate_no_acceptance_missing": true,
+    "required_final_goal_not_accepted": true,
+    "required_final_goal_excluded_blocks": true,
+    "conflicting_acceptance_commits": true,
+    "root_candidate_commit_unset": true,
+    "root_checks_revision_unset": true,
+    "root_reviewed_revision_unset": true
+   },
+   "detail": {
+    "candidate_moved_after_acceptance_stale": [
+     true,
+     [
+      1,
+      "NOT_READY",
+      {
+       "G01": "acceptance_stale"
+      },
+      "G01 acceptance_stale"
+     ]
+    ],
+    "candidate_without_acceptance": [
+     true,
+     [
+      1,
+      "NOT_READY",
+      {
+       "G02": "candidate_only"
+      },
+      "G02 candidate_only"
+     ]
+    ],
+    "no_candidate_no_acceptance_missing": [
+     true,
+     [
+      1,
+      "NOT_READY",
+      {
+       "G02": "missing"
+      },
+      "G02 missing"
+     ]
+    ],
+    "required_final_goal_not_accepted": [
+     true,
+     [
+      1,
+      "NOT_READY",
+      {
+       "G39": "candidate_only"
+      },
+      "G39 candidate_only required final goal G39 is not accepted"
+     ]
+    ],
+    "required_final_goal_excluded_blocks": [
+     true,
+     [
+      1,
+      "NOT_READY",
+      {
+       "G39": "excluded"
+      },
+      "required final goal G39 is not accepted"
+     ]
+    ],
+    "conflicting_acceptance_commits": [
+     true,
+     [
+      1,
+      "NOT_READY",
+      {},
+      "G01 acceptance_stale conflicting acceptance for G01"
+     ]
+    ],
+    "root_candidate_commit_unset": [
+     true,
+     [
+      1,
+      "NOT_READY",
+      {},
+      "release_gate.candidate_commit is not set by root"
+     ]
+    ],
+    "root_checks_revision_unset": [
+     true,
+     [
+      1,
+      "NOT_READY",
+      {},
+      "release_gate.checks_revision is not set by root"
+     ]
+    ],
+    "root_reviewed_revision_unset": [
+     true,
+     [
+      1,
+      "NOT_READY",
+      {},
+      "release_gate.reviewed_revision is not set by root"
+     ]
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "R03 selection: a rejected goal is excluded and kept out; a goal not selected for the week does not block; a queue-accepted goal with no acceptance record is not ready and named",
+   "pass": false,
+   "sub": {
+    "rejected_goal_excluded_and_not_included": true,
+    "unselected_held_goal_does_not_block": false,
+    "queue_accepted_without_acceptance_record_not_ready_named": true
+   },
+   "detail": {
+    "rejected_goal_excluded_and_not_included": [
+     true,
+     [
+      0,
+      "excluded",
+      "READY"
+     ]
+    ],
+    "unselected_held_goal_does_not_block": [
+     false,
+     [
+      1,
+      "NOT_READY",
+      "missing"
+     ]
+    ],
+    "queue_accepted_without_acceptance_record_not_ready_named": [
+     true,
+     [
+      1,
+      "missing",
+      "R01 missing"
+     ]
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "R04 metadata reconciliation: a CHANGELOG heading ahead of pyproject, a wrong description count, an extra SKILL.md and a catalog missing one skill each give NOT_READY with a named problem, and REPO is not changed",
+   "pass": false,
+   "sub": {
+    "changelog_top_heading_ahead": false,
+    "description_count_wrong": true,
+    "extra_skill_file": true,
+    "catalog_missing_one": true
+   },
+   "detail": {
+    "changelog_top_heading_ahead": [
+     false,
+     [
+      0,
+      "READY",
+      []
+     ]
+    ],
+    "description_count_wrong": [
+     true,
+     [
+      1,
+      "NOT_READY",
+      [
+       "skill counts disagree: description 62, SKILL.md files 61, skills.json 61"
+      ]
+     ]
+    ],
+    "extra_skill_file": [
+     true,
+     [
+      1,
+      "NOT_READY",
+      [
+       "skill counts disagree: description 61, SKILL.md files 62, skills.json 61"
+      ]
+     ]
+    ],
+    "catalog_missing_one": [
+     true,
+     [
+      1,
+      "NOT_READY",
+      [
+       "skill counts disagree: description 61, SKILL.md files 61, skills.json 60"
+      ]
+     ]
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "R05 --out equals the report and is the only write; unreadable or malformed inputs and a missing --out folder exit 2 without a traceback",
+   "pass": true,
+   "sub": {
+    "out_written_equals_stdout": true,
+    "only_out_written": true,
+    "bad_queue_exit_2": true,
+    "bad_repo_exit_2": true,
+    "out_missing_folder_exit_2": true,
+    "malformed_queue_exit_2": true
+   },
+   "detail": {
+    "out_written_equals_stdout": [
+     true,
+     0
+    ],
+    "only_out_written": [
+     true,
+     0
+    ],
+    "bad_queue_exit_2": [
+     true,
+     [
+      2,
+      "invalid: queue unreadable: FileNotFoundError"
+     ]
+    ],
+    "bad_repo_exit_2": [
+     true,
+     [
+      2,
+      "invalid: REPO must be a folder"
+     ]
+    ],
+    "out_missing_folder_exit_2": [
+     true,
+     [
+      2,
+      "invalid: --out folder does not exist"
+     ]
+    ],
+    "malformed_queue_exit_2": [
+     true,
+     2
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "O06 OBS: next-version proposals for other version shapes and an id outside the G/M/P/R pattern (recorded, not scored)",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "version_0.9": [
+     0,
+     "0.10",
+     "0.10",
+     false
+    ],
+    "version_1.2.3": [
+     0,
+     "1.3",
+     "1.3.0",
+     false
+    ],
+    "version_2": [
+     0,
+     null,
+     null,
+     false
+    ],
+    "unknown_id_shape": [
+     2,
+     null,
+     null
+    ]
+   },
+   "scored": false
+  }
+ ]
+}

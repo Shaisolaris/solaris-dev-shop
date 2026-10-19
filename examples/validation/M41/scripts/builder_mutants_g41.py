@@ -1,0 +1,22 @@
+E = "employees/quality-security/assurance/release_candidate.py"
+M = [
+ ("stale_not_detected", E, '        if c and c != a["commit"]:', '        if False:'),
+ ("excluded_ignored", E, '    if status in EXCLUDED:\n        d["disposition"] = "excluded"', '    if False:\n        d["disposition"] = "excluded"'),
+ ("candidate_only_ok", E, '        if r["disposition"] not in ("accepted", "excluded"):', '        if r["disposition"] not in ("accepted", "excluded", "candidate_only"):'),
+ ("required_unchecked", E, '        if next(r for r in rows if r["id"] == g)["disposition"] != "accepted":', '        if False:'),
+ ("conflicts_ignored", E, '    reasons += ["conflicting acceptance for %s" % c["id"] for c in conflicts]', '    pass'),
+ ("meta_ignored", E, '    reasons += ["metadata: " + p for p in meta["problems"]]', '    pass'),
+ ("version_unchecked", E, '    elif m["pyproject_version"] != m["changelog_top_version"]:', '    elif False:'),
+ ("counts_unchecked", E, '    if len(set(counts.values())) != 1:', '    if False:'),
+ ("gate_fields_ignored", E, '        if not gate.get(k):', '        if False:'),
+ ("propose_major", E, '    return "%s.%d" % (p.group(1), int(p.group(2)) + 1)', '    return "%d.0" % (int(p.group(1)) + 1)'),
+ ("applied_true", E, '                         "reasons": reasons, "applied": False},', '                         "reasons": reasons, "applied": True},'),
+ ("short_sha_ok", E, 'SHA_RE = re.compile(r"^[0-9a-f]{40}$")', 'SHA_RE = re.compile(r"^[0-9a-f]{6,40}$")'),
+ ("dup_queue_ok", E, '        if g["id"] in goals:\n            raise Invalid', '        if False:\n            raise Invalid'),
+ ("git_inverted", E, '    return "candidate descends from the accepted commit" if rc == 0 else "candidate does not descend from it"', '    return "candidate descends from the accepted commit" if rc != 0 else "candidate does not descend from it"'),
+ ("rc_always_0", E, '    return 0 if not reasons else 1', '    return 0'),
+ ("excluded_listed", E, '        "included_if_released": [r["id"] for r in rows if r["disposition"] == "accepted"],', '        "included_if_released": [r["id"] for r in rows if r["disposition"] in ("accepted", "excluded")],'),
+ ("external_rejected", E, '            if "commit" not in e and "source_commit" in e:', '            if False:'),
+ ("out_missing_dir_ok", E, '        if not out.parent.is_dir():\n            raise Invalid("--out folder does not exist")', '        if False:\n            raise Invalid("--out folder does not exist")'),
+ ("required_outside_queue_ok", E, '    if not isinstance(req, list) or not all(isinstance(x, str) and x in goals for x in req):', '    if not isinstance(req, list):'),
+]

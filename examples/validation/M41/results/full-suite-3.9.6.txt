@@ -1,0 +1,27 @@
+...........................................................................................................................................................................................................................F.........................................................s.....................................................
+======================================================================
+FAIL: test_oracle_accepts_real_api_and_rejects_stubs (test_g19_capability.ProbeAndOracle)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/m41mx-Px4JnV/tests/test_g19_capability.py", line 405, in test_oracle_accepts_real_api_and_rejects_stubs
+    self.assertEqual(p.returncode, 0, p.stdout[-1500:])
+AssertionError: 1 != 0 : PASS o1 clean control: create, read, list, pay in full, void, with exact values (0.32s)
+PASS o2 32 concurrent replays of one create make one invoice and one shared answer (0.34s)
+PASS o3 payment replays apply once; concurrent distinct payments never overspend (0.41s)
+PASS o4 another tenant's records read like missing ones; lists, cursors and paging stay in tenant (0.82s)
+PASS o5 cross-tenant pay/void and tenant smuggling change nothing (0.9s)
+PASS o6 keys are per tenant; key reuse with a different body and missing keys are refused (0.35s)
+PASS o7 401 and 403 are exact and change nothing (0.34s)
+FAIL o8 transient failure, crash after commit and crash before commit all retry to one effect across a restart (0.19s)
+     - oracle saw PermissionError: [Errno 1] Operation not permitted
+PASS o9 scale: shuffled duplicate-laden load over four tenants keeps exact per-tenant counts (1.13s)
+PASS o10 invalid input refused: non-loopback host, bad principals, bad bodies; refusals make nothing (1.06s)
+o3: {'race_accepted': 3, 'race_refused': 13, 'race_paid': 900}
+o9: {'unique': 300, 'requests': 375, 'workers': 16, 'seconds': 0.87}
+9/10 checks passed
+
+
+----------------------------------------------------------------------
+Ran 331 tests in 144.399s
+
+FAILED (failures=1, skipped=1)

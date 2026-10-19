@@ -1,0 +1,6 @@
+conflicts_ignored builder tests: KILL FAILED (failures=1) FAIL: test_naive_rejected (tests.test_g41_capability.Controls.test_naive_rejected)
+applied_true builder tests: KILL FAILED (failures=2) FAIL: test_naive_rejected (tests.test_g41_capability.Controls.test_naive_rejected); FAIL: test_o7 (tests.test_g41_capability.OracleChecks.test_o7)
+short_sha_ok builder tests: KILL FAILED (failures=2) FAIL: test_naive_rejected (tests.test_g41_capability.Controls.test_naive_rejected); FAIL: test_o9 (tests.test_g41_capability.OracleChecks.test_o9)
+dup_queue_ok builder tests: KILL FAILED (failures=2) FAIL: test_naive_rejected (tests.test_g41_capability.Controls.test_naive_rejected); FAIL: test_o9 (tests.test_g41_capability.OracleChecks.test_o9)
+git_inverted builder tests: KILL FAILED (failures=1) FAIL: test_o10 (tests.test_g41_capability.OracleChecks.test_o10)
+required_outside_queue_ok builder tests: KILL FAILED (failures=1) FAIL: test_required_goal_outside_queue_is_invalid (tests.test_g41_capability.Direct.test_required_goal_outside_queue_is_invalid)
