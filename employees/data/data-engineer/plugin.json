@@ -12,7 +12,8 @@
     "learnings.md",
     "mcp-toolbox-multidb-patterns.md",
     "ingestion-orchestration-lakehouse-quality.md",
-    "vector-embedding-pipelines-pgvector.md"
+    "vector-embedding-pipelines-pgvector.md",
+    "csv-reconciliation.md"
   ],
   "tags": [
     "data",
