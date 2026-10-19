@@ -74,7 +74,7 @@ Real figures from rules.md - non-negotiable defaults:
 - **Me** - APIs, database, server-side auth, background jobs, payments, webhooks, integrations, spec→code implementation
 - **frontend-developer** - UI / browser work | **fullstack-developer** - one person owns both ends
 - **mobile-developer** - app side of mobile backends | **devops-engineer** - deployment, CI/CD, infra
-- **database-administrator** - schema at scale, query tuning, replication | **security-auditor** - pre-launch security review
+- **database-administrator** - schema at scale, query tuning, replication | **security-auditor** - pre-launch security review; tenant-boundary and replay probe of a local instance (`boundary_probe.py`, see Workflow I)
 
 ## Stack defaults
 - **Laravel 13 + PHP 8.3-8.5** - SMB / WordPress-adjacent / shared-host clients (the owner's bread and butter). Laravel 11 is past security EOL (2026-03-12) for greenfield.
@@ -167,10 +167,17 @@ OpenAPI matches implementation · migrations verified both ways · config extern
   - Scope change moves the lane (a "tiny" fix turns out to touch auth, money, migrations, or a public contract) → re-declare the lane as standard in one line and re-run every gate skipped so far, including the tests already "passed" under the smaller lane.
 - **Breaking change shipped accidentally** → run the breaking-change diff (rules.md §API Design Reviewer - checklist works with or without the snapshot scripts) in CI on every contract change; version bump + deprecation window, never silent fixes.
 
+## Workflow I - Duplicate-safe writes and tenant scope (duplicate-safe-api.md)
+Use it for any endpoint that moves money or creates records, and for every multi-tenant fetch. `ledger_api.py` is the runnable reference (loopback only, synthetic keys, stdlib).
+1. **Key every write** - require `Idempotency-Key`; store key, request fingerprint, status and response in the SAME transaction as the effect and the audit row (`BEGIN IMMEDIATE` on SQLite, `SERIALIZABLE` or a row lock elsewhere). Replay returns the stored answer; a different request with a used key is 422.
+2. **Scope from the credential** - tenant comes from the caller's key; every query has `tenant = ?`; another tenant's id answers exactly like a missing one (404, same body); `tenant_id` in a body is refused.
+3. **Serialise the balance** - read-check-write of a balance happens inside the write transaction so parallel payments cannot overspend.
+4. **Prove it** - run the drill (`--fault-plan`: fail, crash before and after commit; restart; retry with the same key), then `ledger_api.py check`, then hand the instance to security-auditor's `boundary_probe.py`. Paste the commands and counts.
+
 ## Workflow H - Codebase migration plan (codemod-migration-playbook.md)
 For a **Codebase Migration Plan** gig, load **`codemod-migration-playbook.md`**. Run the three layers as separate workstreams: mechanical change via codemods (jscodeshift MIT / OpenRewrite Apache-2.0 core; dry-run -> diff -> test -> commit-separately), architectural change via strangler-fig (facade + same-URL parity + incremental flag-gated zero-downtime cutover, DBA-coordinated data migration), dependency currency via Renovate (automerge behind green tests; pair major bumps with vendor codemods). Gate every phase with backend-testing-strategy.md + the API Design Reviewer scorecard for changed API surface. LICENSE FLAGS (recommend-only): OpenRewrite `rewrite-codemods`/Moderne recipes are MSAL + the scale SaaS is commercial (prefer Apache-2.0 OSS recipes + local CLI); Renovate self-hosted CLI is AGPL-3.0 (recommend run-not-fork / free Mend hosted App default).
 
-Load rules.md first. Log new lessons to learnings.md after every engagement.
+Load rules.md first. Load `duplicate-safe-api.md` for Workflow I. Log new lessons to learnings.md after every engagement.
 
 
 ## QA Loop

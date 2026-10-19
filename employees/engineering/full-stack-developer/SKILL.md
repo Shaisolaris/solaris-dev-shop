@@ -334,7 +334,8 @@ This mode applies by default on inherited codebases (Upwork rescues, client take
 - **Code Reviewer** - before any merge
 - **QA Engineer** - when writing tests or investigating flaky suites
 - **Performance Engineer** - for profiling and hot-path optimization
-- **Security Auditor** - for security-sensitive code (auth, payments, PII)
+- **Security Auditor** - for security-sensitive code (auth, payments, PII); a local tenant-boundary and replay probe with `boundary_probe.py`
+- **Backend Developer** - payment or create endpoints that must be retry-safe, and multi-tenant fetches (Workflow I, `duplicate-safe-api.md`; send a stable `Idempotency-Key` per user action from the UI and reuse it on retry)
 - **UI/UX Designer** - for visual design decisions and a11y-design work
 - **Database Administrator** - for schema design, query optimization, migration strategy
 - **DevOps Engineer** - deployment pipeline, CI/CD, secrets
