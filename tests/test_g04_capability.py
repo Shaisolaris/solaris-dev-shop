@@ -180,5 +180,32 @@ class G04Handoff(unittest.TestCase):
             self.assertIn(name, json.loads((TOOL.parent / 'plugin.json').read_text())['references'])
 
 
+    def test_owner_change_does_not_reuse_old_brief(self):
+        """Same revision, different owner must not keep a brief naming the previous owner (root G04)."""
+        order_path = self.w / 'order.json'
+        order = json.loads(order_path.read_text())
+        old_owner = order['owner']
+        env = dict(ENV)
+        p1 = subprocess.run([sys.executable, str(TOOL), 'run', str(order_path), '--worker', 'ana'],
+                            cwd=str(self.w), capture_output=True, text=True, env=env, timeout=120)
+        self.assertEqual(p1.returncode, 0, p1.stderr + p1.stdout)
+        briefs = list((self.w / '.handoff').rglob('HANDOFF-BRIEF.md'))
+        self.assertEqual(len(briefs), 1)
+        self.assertIn(old_owner, briefs[0].read_text())
+        order['owner'] = 'support: Someone Else'
+        order_path.write_text(json.dumps(order, indent=2) + '\n')
+        p2 = subprocess.run([sys.executable, str(TOOL), 'run', str(order_path), '--worker', 'ben'],
+                            cwd=str(self.w), capture_output=True, text=True, env=env, timeout=120)
+        self.assertEqual(p2.returncode, 0, p2.stderr + p2.stdout)
+        text = briefs[0].read_text()
+        self.assertIn('support: Someone Else', text)
+        self.assertNotIn(old_owner, text)
+        # brief step must have been redone, not silently reused
+        self.assertIn('brief', p2.stdout.lower())
+        self.assertTrue('stale' in p2.stdout.lower() or 'done' in p2.stdout.lower())
+        ledger = (self.w / 'outbox' / 'ledger.jsonl').read_text().strip().splitlines()
+        self.assertTrue(any('Someone Else' in line for line in ledger))
+
+
 if __name__ == '__main__':
     unittest.main()
