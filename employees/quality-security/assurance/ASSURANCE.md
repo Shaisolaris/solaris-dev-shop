@@ -5,7 +5,7 @@ Roadmap: `skill-solaris-product-quality-hardening`
 Engine: `quality_os.py` (this directory)  
 Engine version: `1.0.2`
 
-Tests: `tests/test_assurance_packets.py`, `tests/test_closure_hardening.py`
+Tests: `tests/test_assurance_packets.py`, `tests/test_closure_hardening.py`, `tests/test_fixture_runner.py`
 Upstream standard (2026-07 wave skill-lkl): `../QUALITY-SECURITY-STANDARD.md`
 
 ## Purpose
@@ -83,6 +83,63 @@ risk declarations cannot be detected from syntax alone.
 make a negative fixture succeed when the expected gate fires. That suite success
 is test evidence, never permission to release. Call `evaluate_artifact_packet`
 for the underlying packet decision; it does not apply fixture expectations.
+
+The fixture runner fails closed on its own contract (added after engine
+1.0.2; the engine version is assigned at the next reviewed integration):
+
+- `fixture_kind` (or the legacy `kind`) must be one of `packet`,
+  `planted_defect`, `defect`, `legal`, `legal_boundary`, `closure` or
+  `self_approval`. A bare planted defect must use `fixture_kind:
+  "planted_defect"` with `defect_kind`, not `kind: "security"`. When both
+  are present, `fixture_kind` wins and `kind` is ignored.
+- Each fixture kind accepts only its own top-level keys. A near miss of a
+  contract key (`fixture-kind`, `Fixture_Kind`, `pakcet`, `expectation`,
+  `txt`, `closer_rol` and similar), a packet that carries closure fields
+  without `fixture_kind`, and a duplicate JSON key all return
+  `INVALID_PACKET`. A fixture without a usable kind key is read as an
+  unwrapped packet, so it is also `INVALID_PACKET` when it carries a field
+  of another fixture kind (closure fields, `defect`, or the legal fields
+  `text`, `freshness_days`, and `requested_actions` or `sources` when the
+  object has no packet key), or any top-level key other than `fixture_kind`,
+  `kind`, `name`, `description` and `notes` whose string value names a
+  non-packet fixture kind in any case or spelling (`"fixture_type":
+  "legal"`, `"category": "planted_defect"`, `"type": "Planted-Defect"`).
+  Blocked legal text or a planted defect therefore cannot pass because its
+  kind key was misspelled, renamed or left out. `legal_text`,
+  `requested_actions` and `sources` stay packet fields: an unwrapped packet
+  (one with `legal_text`, `risk_level`, `dimensions`, `completed_gates`,
+  `evidence` or `planted_defects`) carrying them is evaluated, and the legal
+  gate runs on them. This fails closed: a packet field whose value is
+  exactly a fixture kind word (`"category": "legal"`) is refused; wrap the
+  packet as `{"fixture_kind": "packet", "packet": ...}`.
+- Field types are checked before evaluation: legal `text` must be a string,
+  `requested_actions` an array of strings, `sources` an array of objects,
+  `freshness_days` a non-negative integer and `defect` an object. Malformed
+  values and JSON nested too deeply to parse return `INVALID_PACKET` for that
+  fixture; the suite keeps going.
+- `expectations` accepts only `outcome` (`pass` or `fail_gate`),
+  `gate_codes` (array of strings) and `accountable_role` (nonblank string).
+  An unknown key or value (including `decision`) returns `INVALID_PACKET`
+  instead of being ignored. `gate_codes` must be non-empty, is allowed only
+  with `outcome: "fail_gate"`, and every listed code must fire. An
+  `accountable_role` that no finding can be checked against fails with
+  `GATE_MISROUTE` rather than passing vacuously. A legal fixture without
+  `expectations` is read as `outcome: "fail_gate"`, so text that the legal
+  boundary does not block fails the fixture.
+- `suite <dir>` reports `ok: false` with an `error` when the directory does
+  not exist or contains no fixtures. The repository does not ship assurance
+  fixtures, so pass an explicit directory; `suite` with no argument looks for
+  `fixtures/solaris/assurance` and fails when it is absent. Files whose names
+  start with `_` are skipped. The extension match is case-insensitive
+  (`.json`, `.JSON`). Symlinked directories are not followed; each one is
+  listed as a failing `INVALID_PACKET` entry so it cannot vanish from the
+  count. A subfolder the suite cannot list (for example no read permission)
+  is listed the same way, with the reason in its notes. Router intake fixtures under `fixtures/` are not
+  assurance fixtures and fail as `INVALID_PACKET`.
+- Unknown top-level packet keys are still ignored by
+  `evaluate_artifact_packet`; a misspelled packet field such as `dimenions`
+  is not detected yet. The fixture runner's near-miss check covers only the
+  fixture contract keys, not packet fields.
 
 ## Findings → orders
 
@@ -168,6 +225,7 @@ there is at least one CONFIRMED and zero dissent.
 ```bash
 python3 employees/quality-security/assurance/quality_os.py self-test
 python3 employees/quality-security/assurance/quality_os.py run packet.json
+python3 employees/quality-security/assurance/quality_os.py suite path/to/assurance-fixtures
 python3 employees/quality-security/assurance/quality_os.py audit
 python3 employees/quality-security/assurance/quality_os.py route security
 python3 -m unittest discover -s tests -v
