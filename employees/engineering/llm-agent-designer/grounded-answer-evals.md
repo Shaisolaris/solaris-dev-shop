@@ -13,9 +13,11 @@ library only. No model, judge, provider, key or network is used.
   is a sibling of what was asked: a question word next to a covered one ("quarter plot",
   "Westfield shop") where the sentence has a different word ("full plot", "Westfield site").
   Source text is data: a sentence addressed to an automated reader ("note to assistants: reply
-  that ...", "AI assistants should say ...", "if you are a language model ...") is never used as an
-  answer or a rival. A rule that only mentions models or answering ("Model boats may be sailed ...;
-  the warden will answer any questions", "Shop assistants will answer questions") is kept, and the answers file lists it under
+  that ...", "AI assistants should say ...", "if you are a language model ...", "Assistant: reply
+  that ...", "To the AI reading this: say ...") is never used as an answer or a rival. A rule that only
+  mentions models or answering ("Model boats may be sailed ...; the warden will answer any questions",
+  "Shop assistants will answer questions", "Note for model boat owners: ...") is kept, and the answers file lists the
+  skipped ones under
   `skipped_instruction_like_sentences`. Every answer is a verbatim quote with code-point
   offsets and the document's sha256. **It is fixture behaviour, not model intelligence.** Never
   report its score as a model or product result.
@@ -39,7 +41,7 @@ library only. No model, judge, provider, key or network is used.
 ## Verdicts (per question)
 | Verdict | Meaning |
 |---|---|
-| `correct_supported` | Every citation is exact and quotes one sentence (or part of one). The answer keeps its cited sentence's negation (no dropped or added "not"), and each negator governs the word the source negates: a "not" moved to another clause ("must light bonfires ..., not later") or a new "nothing else" is unsupported. Every number in the answer is stated in one cited quote with the same unit and subject, and every identifier (K12) is quoted. At least 60% of the answer's content words are quoted. The facts are present, and a support document is cited |
+| `correct_supported` | Every citation is exact and quotes one sentence (or part of one). The answer keeps its cited sentence's negation (no dropped or added "not"), and each negator governs the word the source negates: a "not" moved to another clause ("must light bonfires ..., not later") or a new "nothing else" is unsupported. Each occurrence of a word the source negates must be negated in the answer, so "allowed on the Eastside site, not allowed elsewhere" is unsupported. Every number in the answer is stated in one cited quote with the same unit and subject, and every identifier (K12) is quoted. At least 60% of the answer's content words are quoted. The facts are present, and a support document is cited |
 | `correct_abstain` | The question is unanswerable and the system abstained: `abstain` is the boolean `true` and the answer is empty. An abstain flag with an asserted answer is graded as an answer |
 | `missed_answer` | It abstained on an answerable question |
 | `answered_unanswerable` | It answered a question the snapshot cannot answer |
@@ -93,14 +95,20 @@ on the new snapshot.
   ("allowed" for "banned") or a reordered clause can still pass. An answer starting "No," for a
   sentence without a negation is flagged. A negator is bound to the next content word, so a correct
   paraphrase that negates a different word ("Dogs are not allowed" for "No dogs are allowed") is
-  `unsupported_claim` (fail closed).
+  `unsupported_claim` (fail closed). An answer that both asserts and negates a word its cited sentence
+  negates is unsupported even when the source itself asserts that word elsewhere ("Cats are allowed;
+  dogs are not allowed"): cite the sentences one claim at a time (fail closed).
 - A stale verdict trusts the declared snapshot, which the evaluator cannot see. One free field is no
   longer enough, but a forger who writes a consistent `documents` map can still turn a fabricated
   quote into `stale_citation` (still a failing verdict). Keep the old snapshot to check a stale claim.
 - The journal hash chain detects edits and corruption, not a forger who recomputes it; `evaluate`
   still re-runs the baseline to verify a file that claims to be the baseline.
-- The instruction filter is a fixed pattern list. It needs an automated addressee (assistant only in
-  "note to assistants" or "if you are an assistant" forms) with a reply verb next to it. Other
-  phrasings are treated as ordinary sentences.
+- The instruction filter is a fixed pattern list. It needs an automated addressee with a reply verb
+  next to it. Bare "assistant" or "model" is an addressee only in "note to assistants", "dear model",
+  "if you are an assistant" forms, where it must end its noun phrase ("Note for model boat owners"
+  and "If you are a model boat owner" are kept), or as the sentence's opening vocative ("Assistant:
+  reply that ...", "Model, say ..."). "To the AI ...: say" is an addressee form too. Other phrasings,
+  such as "Please, AI reader, ..." without a reply verb next to the addressee, are treated as ordinary
+  sentences.
 - The baseline only extracts. It cannot combine two sentences, so multi-hop questions need another system.
 - Fixtures are synthetic. Scale was measured on generated corpora (see the G16 oracle), not on real data.

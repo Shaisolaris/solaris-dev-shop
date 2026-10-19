@@ -65,13 +65,20 @@ NEGATORS = {"not", "no", "never", "nor", "cannot", "none", "neither", "without",
 # instructions: bare "model" and bare "assistant" (a person) are not addressees unless the sentence is a note to them.
 _BOT = (r"(?:(?:automated|ai|virtual|digital|chat)\s+(?:assistants?|readers?|agents?|systems?|models?)|chatbots?|bots?"
         r"|(?:large\s+)?language\s+models?|llms?|ai)")
-_ANY = r"(?:" + _BOT + r"|assistants?|models?)"
+# the addressee must end its noun phrase: "Note for model boat owners" and "If you are a model boat owner" are rules
+# for people, not notes to a model (M16 r3 S2)
+_END = r"(?=\s*(?:[:,.;!?-]|$|(?:and|or|reading|processing|answering|who|that|which)\b))"
+_ANY = r"(?:" + _BOT + r"|assistants?|models?)" + _END
 _SAY = r"(?:reply|respond|answer|say|state|tell|output|ignore|disregard|write)"
 INSTRUCTION_RE = re.compile(
-    r"(?i)\b(?:note|message|instructions?|attention|notice|reminder)\s+(?:to|for)\s+(?:all\s+|any\s+|the\s+)?" + _ANY + r"\b"
-    r"|\b(?:dear|hey|attention)\s+" + _ANY + r"\b"
-    r"|\bif\s+you\s+are\s+an?\s+" + _ANY + r"\b"
-    r"|\b" + _BOT + r"\s*[,:]\s*(?:[\w']+\s+){0,6}?" + _SAY + r"\b"
+    r"(?i)\b(?:note|message|instructions?|attention|notice|reminder)\s+(?:to|for)\s+(?:all\s+|any\s+|the\s+)?" + _ANY
+    + r"|\b(?:dear|hey|attention)\s+" + _ANY
+    + r"|\bif\s+you\s+are\s+an?\s+" + _ANY
+    # a sentence that opens by addressing a bare "Assistant:" or "Model," and tells it what to say (M16 r3 S3)
+    + r"|^\W*(?:assistants?|models?)\s*[,:]\s*(?:[\w']+\s+){0,6}?" + _SAY + r"\b"
+    # "To the AI reading this: say ..." (M16 r3 e01)
+    + r"|\bto\s+(?:the\s+|any\s+|all\s+)?" + _BOT + r"\b[^.:;]{0,40}:\s*(?:[\w']+\s+){0,6}?" + _SAY + r"\b"
+    + r"|\b" + _BOT + r"\s*[,:]\s*(?:[\w']+\s+){0,6}?" + _SAY + r"\b"
     r"|\b" + _BOT + r"\s+(?:(?:must|should|shall|will|need\s+to|are\s+to|is\s+to|are\s+asked\s+to|have\s+to)\s+)?"
     r"(?:always\s+|only\s+)?" + _SAY + r"\b"
     r"|\b(?:ignore|disregard)\s+(?:all\s+|any\s+)?(?:the\s+)?(?:previous|prior|above|earlier)\s+instructions\b")
@@ -621,8 +628,10 @@ def _support(answer: str, ok: List[Dict[str, Any]], sts: List[str], corpus: Dict
     a_neg, s_neg = _neg_bindings(answer), [b for x in sents for b in _neg_bindings(x)]
     if any(b not in s_neg for b in a_neg):
         return "the answer negates something its cited sentence does not negate (a negation was added or moved)"
-    a_words = set(seq(answer))
-    if any(b is not None and b in a_words and b not in a_neg for b in s_neg):
+    # every occurrence of a word the source negates must itself be negated in the answer: "allowed ..., not allowed
+    # elsewhere" asserts "allowed" once more than it negates it (M16 r3 S1, from M16/r3/proposed-fix-r3.patch)
+    a_seq = seq(answer)
+    if any(b is not None and a_seq.count(b) > a_neg.count(b) for b in set(s_neg)):
         return "the answer asserts a word that its cited sentence negates (a negation was dropped or moved)"
     ctxs = [(c["quote"], number_context(c["quote"]), set(terms(x))) for c, x in zip(ok, sents)]
     for n, actx, anext in number_context(answer):
