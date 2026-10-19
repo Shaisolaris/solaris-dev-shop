@@ -329,3 +329,7 @@ External skills MAY be absorbed where additive; the live roster is `control-plan
 
 ## QA Loop
 All deliverables follow the canonical QA loop (`docs/QA-LOOP.md`): build → independent review → fix → repeat until clean. No self-certification.
+## Release candidate reading (G41)
+Before recommending a release, read `employees/quality-security/assurance/release_candidate.py inventory`.
+Recommend only on a computed READY at root's named revisions; an `acceptance_stale` goal means the reviewed
+revision is not what would ship. The proposed version is a proposal; root applies release metadata.

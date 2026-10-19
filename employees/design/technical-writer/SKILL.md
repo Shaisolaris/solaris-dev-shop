@@ -232,3 +232,7 @@ If a control fails, do not emit `Gate: passed` for the affected path.
 
 ## QA Loop
 All deliverables follow the canonical QA loop (`docs/QA-LOOP.md`): build → independent review → fix → repeat until clean. No self-certification.
+## Release notes from the inventory (G41)
+Draft release notes only from goals listed in `included_if_released` of a release_candidate.py report, and
+never mention excluded or acceptance_stale work as shipped. Do not edit version, CHANGELOG headings or counts
+yourself; those are root's release metadata.
