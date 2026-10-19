@@ -1,0 +1,6 @@
+== 3.9.6 | g38: Ran 16 tests in 20.686s  OK  | full: Ran 171 tests in 43.436s  OK  | builder-oracle: ACCEPTED 8/8 | builder-naive: REJECTED 1/8 | builder-noop: REJECTED 1/8 | m38r2-oracle: M38 R2 ORACLE 11/12 core FAIL | m38-naive: M38 R2 ORACLE 1/12 core FAIL | m38-noop: M38 R2 ORACLE 2/12 core FAIL
+== 3.11.16 | g38: Ran 16 tests in 12.950s  OK  | full: Ran 171 tests in 34.019s  OK  | builder-oracle: ACCEPTED 8/8 | builder-naive: REJECTED 1/8 | builder-noop: REJECTED 1/8 | m38r2-oracle: M38 R2 ORACLE 11/12 core FAIL | m38-naive: M38 R2 ORACLE 1/12 core FAIL | m38-noop: M38 R2 ORACLE 2/12 core FAIL
+== 3.12.14 | g38: Ran 16 tests in 21.543s  OK  | full: Ran 171 tests in 40.302s  OK  | builder-oracle: ACCEPTED 8/8 | builder-naive: REJECTED 1/8 | builder-noop: REJECTED 1/8 | m38r2-oracle: M38 R2 ORACLE 11/12 core FAIL | m38-naive: M38 R2 ORACLE 1/12 core FAIL | m38-noop: M38 R2 ORACLE 2/12 core FAIL
+== 3.13.15 | g38: Ran 16 tests in 23.299s  OK  | full: Ran 171 tests in 47.623s  OK  | builder-oracle: ACCEPTED 8/8 | builder-naive: REJECTED 1/8 | builder-noop: REJECTED 1/8 | m38r2-oracle: M38 R2 ORACLE 11/12 core FAIL | m38-naive: M38 R2 ORACLE 1/12 core FAIL | m38-noop: M38 R2 ORACLE 2/12 core FAIL
+pycache in copy: 0
+candidate status lines: 0

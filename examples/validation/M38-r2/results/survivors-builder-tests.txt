@@ -1,0 +1,8 @@
+(3.13.15) pc_escape_allowed builder tests: KILL FAILED (failures=1) FAIL: test_oracle_and_controls (tests.test_g38_capability.G38Wiring.test_oracle_and_controls)
+(3.13.15) pc_dup_manifest_ok builder tests: KILL FAILED (failures=1) FAIL: test_manifest_cases (tests.test_g38_capability.G38Provenance.test_manifest_cases)
+(3.13.15) pc_out_not_atomic builder tests: KILL FAILED (failures=1) FAIL: test_manifest_cases (tests.test_g38_capability.G38Provenance.test_manifest_cases)
+(3.13.15) ec_empty_ok builder tests: KILL FAILED (failures=1) FAIL: test_tamper_kinds (tests.test_g38_capability.G38EventChain.test_tamper_kinds)
+(3.13.15) ec_long_line_ok builder tests: KILL FAILED (failures=1) FAIL: test_tamper_kinds (tests.test_g38_capability.G38EventChain.test_tamper_kinds)
+(3.13.15) ec_claimed_unstripped builder tests: KILL FAILED (failures=1) FAIL: test_append_rules (tests.test_g38_capability.G38EventChain.test_append_rules)
+(3.13.15) ec_recover_in_place builder tests: KILL FAILED (failures=1) FAIL: test_recover (tests.test_g38_capability.G38EventChain.test_recover)
+(3.9.6) pc_g05_cache_written builder tests: no kill OK 

@@ -1,0 +1,44 @@
+diff --git a/employees/quality-security/security-auditor/provenance_check.py b/employees/quality-security/security-auditor/provenance_check.py
+index 7c3ee48..a2f616b 100644
+--- a/employees/quality-security/security-auditor/provenance_check.py
++++ b/employees/quality-security/security-auditor/provenance_check.py
+@@ -76,6 +76,22 @@ THE SOFTWARE.""")
+ APACHE_TERMS_SHA = "95cef6332b35354c12f9d666ab9ff47002e6f7ef937924896882b2e0cdb7a0d6"
+ APACHE_END = "end of terms and conditions"
+ APACHE_APPENDIX = "appendix: how to apply the apache license to your work"
++# the standard appendix is matched exactly, except its one boilerplate copyright line (M38 r2 P2-1)
++APPENDIX_PRE_LEN, APPENDIX_PRE_SHA = 541, "2f63bf7c3012ea797a544c26c91ded04caf35fb4d0c2f859e8f5f126f71293e2"
++APPENDIX_POST_LEN, APPENDIX_POST_SHA = 518, "7943cfe17974cbd39aadcc2ac292ca49c0df278fc7b4861a8a0d370c4400516e"
++# a copyright line is "copyright [(c)] YEAR[S] HOLDER[.] [all rights reserved.]"; a line that adds a sentence is not one
++COPYRIGHT_RE = re.compile(r"^(?:copyright|\(c\)|\u00a9)(?: \(c\)| \u00a9)? \d{4}(?:\s*[-,\u2013]\s*\d{4})*,? [^.;:!?]{1,200}?\.?(?: all rights reserved\.?)?$")
++FILL_RE = re.compile(r"^(?:\{yyyy\} \{name of copyright owner\}|\[yyyy\] \[name of copyright owner\]|\d{4}(?:\s*[-,\u2013]\s*\d{4})*,? [^.;:!?]{1,200}?\.?)$")
++
++
++def _appendix_ok(tail):
++    if not tail:
++        return True
++    if len(tail) <= APPENDIX_PRE_LEN + APPENDIX_POST_LEN:
++        return False
++    pre, mid, post = tail[:APPENDIX_PRE_LEN], tail[APPENDIX_PRE_LEN:-APPENDIX_POST_LEN], tail[-APPENDIX_POST_LEN:]
++    return (hashlib.sha256(pre.encode("utf-8")).hexdigest() == APPENDIX_PRE_SHA and
++            hashlib.sha256(post.encode("utf-8")).hexdigest() == APPENDIX_POST_SHA and bool(FILL_RE.match(mid.strip())))
+ 
+ 
+ def identify(text):
+@@ -83,14 +99,14 @@ def identify(text):
+     lines = [l.strip() for l in text.splitlines() if l.strip()]
+     if lines and _norm(lines[0]) in MIT_TITLES:
+         lines.pop(0)
+-    while lines and _norm(lines[0]).startswith(("copyright", "(c)")):
++    while lines and COPYRIGHT_RE.match(_norm(lines[0])):
+         lines.pop(0)
+     if _norm(" ".join(lines)) == MIT_BODY:
+         return "MIT"
+     t = _norm(text); j = t.find(APACHE_END)
+     if j > 0 and hashlib.sha256(t[:j + len(APACHE_END)].encode("utf-8")).hexdigest() == APACHE_TERMS_SHA:
+         tail = t[j + len(APACHE_END):].strip()
+-        if not tail or (tail.startswith(APACHE_APPENDIX) and tail.endswith("limitations under the license.")):
++        if _appendix_ok(tail):
+             return "Apache-2.0"
+     return None
+ 

@@ -1,0 +1,16 @@
+# proposed fix positive control (rsync copy with proposed-fix.patch), Mon Oct 19 10:29:11 PDT 2026
+$ tests.test_g38_capability (3.13.15)
+Ran 16 tests in 13.565s
+
+OK
+$ full suite (3.13.15)
+Ran 171 tests in 27.177s
+
+OK
+$ authority_oracle.py
+ACCEPTED 8/8
+$ check on the repository itself
+findings MIT 2
+$ same on the candidate
+findings MIT 2
+$ my oracle on the patched copy (3.9.6): R10 fails only readme_bold_gpl_mismatch_found and provenance_out_existing_folder_exit_2 (P4s, not in the patch)

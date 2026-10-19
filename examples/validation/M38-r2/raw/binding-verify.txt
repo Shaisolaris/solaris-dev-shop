@@ -1,0 +1,8 @@
+Mon Oct 19 10:24:17 PDT 2026
+candidate 01c9afbfc9066d844be0e0a7ee9b90c1a3859491 parent(s) 41ad34461d0924b34d1d725012825f736ee548a3
+expected parent G38 r1 41ad34461d0924b34d1d725012825f736ee548a3; G38 r1 parent 8b38a72f2183ad7427594d6557d7e308baf0469b (G05 8b38a72 expected)
+8b38a72f2183ad7427594d6557d7e308baf0469b	refs/heads/review/grok-g05-revision-bound-evidence
+01c9afbfc9066d844be0e0a7ee9b90c1a3859491	refs/heads/review/grok-g38-authority-consistency
+diff sha cddcff74e466e42359432c9e47801eb9c365bc0d44b9b0a35694e102dadbc66d patch file sha cddcff74e466e42359432c9e47801eb9c365bc0d44b9b0a35694e102dadbc66d
+manifest entries 6 mismatches 0
+manifest set == diff set
