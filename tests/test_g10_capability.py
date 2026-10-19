@@ -601,5 +601,40 @@ class M10R3Rework(Base):
         self.assertNotIn('spiffe', detail)
 
 
+
+class M10R4Rework(Base):
+    """G10 r6 (M10 r4 Grok self-validation of 865734e): V1, a bare covering name after a non-host entry
+    in one pasted line gave a false TLS_NAME_MISMATCH."""
+    codes = M10R2Rework.codes
+    alert = M10R2Rework.alert
+
+    def test_v1_bare_name_after_a_non_host_entry_is_its_own_entry(self):
+        for line in ('DNS:other.example, URI:spiffe://lab.example/x, web.lab.example',
+                     'DNS:other.example, Registered ID:1.2.3.4, web.lab.example',
+                     'DNSName: other.example, URIName: spiffe://x, web.lab.example',
+                     'DNS:other.example, email:ops, web.lab.example',
+                     'DNS:other.example, DirName:/C=GB, O=Shop, web.lab.example'):
+            with self.subTest(line=line):
+                self.assertEqual(self.codes(self.alert([line])), ['TLS_ALERT'])
+        self.assertEqual(nd._san_parts('DNS:o.example, URI:spiffe://x, web.lab.example'),
+                         ['DNS:o.example', 'URI:spiffe://x', 'web.lab.example'])
+
+    def test_v1_controls_non_host_values_keep_their_own_commas(self):
+        for line in ('DNS:other.example, URI:spiffe://x, DNS:other2.example',
+                     'DNS:other.example, URI:spiffe://x, other2.example',
+                     'DNS:other.example, DirName:/C=GB, O=Shop, CN=svc',
+                     'DNS:other.example, DirName:/C=GB, O=web.lab.example',
+                     'URI:spiffe://x.example/a,web.lab.example, DNS:a.example'):
+            with self.subTest(line=line):
+                self.assertIn('TLS_NAME_MISMATCH', self.codes(self.alert([line])))
+        self.assertEqual(nd._san_parts('DNS:a.example, DirName:/C=GB, O=Shop, CN=svc'),
+                         ['DNS:a.example', 'DirName:/C=GB, O=Shop, CN=svc'])
+        self.assertEqual(nd._san_parts('DNS:a.example, DirName:/C=GB, O=Shop, Foo Name: x'),
+                         ['DNS:a.example', 'DirName:/C=GB, O=Shop, Foo Name: x'])
+        # an RDN in dotted-OID form (2.5.4.3 is CN) stays with its DirName too
+        self.assertEqual(nd._san_parts('DNS:a.example, DirName:/C=GB, 2.5.4.3=svc'),
+                         ['DNS:a.example', 'DirName:/C=GB, 2.5.4.3=svc'])
+
+
 if __name__ == '__main__':
     unittest.main()

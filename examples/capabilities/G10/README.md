@@ -50,5 +50,8 @@ Also: certutil "Principal Name=" (not understood) stays separate from a lone oth
 r5 (M10 r3 Q1, Q2): o14 adds keytool URIName, OIDName, Other-Name and certutil URL= beside a
 non-covering DNS entry (still a mismatch), a lone URI whose note must not advise pasting it as DNS,
 and a one-line list `DNS:other.example, <host>` whose bare second name covers the host.
+r6 (M10 r4 V1): o14 adds a bare covering name after a URI, a Registered ID and a keytool URIName in
+one line (covers), with the control `..., URI:spiffe://x, other2.example` still a mismatch and a
+DirName with commas kept whole.
 The naive stub blames the first bad-looking observation, is always certain, uses the wall
 clock for certificates, does a live lookup and copies headers.

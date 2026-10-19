@@ -304,6 +304,21 @@ def _san_text(raw: str) -> str:
     return raw.lower() if raw.isascii() else raw
 
 
+def _split_nonhost(piece: str) -> List[str]:
+    """A non-host value (URI, email, Registered ID, DirName, ...) ends at ', ' when the next chunk has
+    no '=' and no type prefix, so 'URI:spiffe://x, api.example' gives the bare name its own entry
+    (M10 r4 V1), while DirName RDNs (', O=Shop') stay with their value. URI, email and Registered ID
+    values hold no spaces, so ', ' never splits inside them; a comma without a space never splits."""
+    chunks = re.split(r",(?=\s)", piece)
+    out = [chunks[0]]
+    for c in chunks[1:]:
+        if "=" in c or OTHER_TYPE_RE.match(c):
+            out[-1] += "," + c
+        else:
+            out.append(c)
+    return out
+
+
 def _san_parts(raw: str) -> List[str]:
     """One SAN item may be the one-line openssl list 'DNS:a, DNS:b, IP Address:192.0.2.1'."""
     if "," not in raw:
@@ -314,10 +329,10 @@ def _san_parts(raw: str) -> List[str]:
     else:
         # split before each type prefix, then split a DNS, IP or bare piece at its own commas, so a bare
         # name after a typed one ('DNS:a.example, api.example') is its own entry; a non-host value
-        # (DirName, URI, ...) keeps its commas
+        # (DirName, URI, ...) keeps its commas except before a bare name (_split_nonhost)
         parts = []
         for piece in TYPED_SPLIT_RE.split(raw):
-            parts.extend([piece] if NON_HOST_TYPE_RE.match(piece) else piece.split(","))
+            parts.extend(_split_nonhost(piece) if NON_HOST_TYPE_RE.match(piece) else piece.split(","))
     return [p for p in (x.strip() for x in parts) if p]
 
 

@@ -365,6 +365,18 @@ def main():
         j = variant("mixed-cover", lambda o: o["cert"].update(san=[f"DNS:other.example, {host}"]))
         if codes(j) != ["TLS_ALERT"]:
             bad.append(f"'DNS:other.example, {host}' covers {host}: {codes(j)}, expected only TLS_ALERT")
+        # G10 r6 (M10 r4 V1): a bare covering name after a non-host entry in the same line
+        for i, line in enumerate((f"DNS:other.example, URI:spiffe://svc.example/x, {host}",
+                                  f"DNS:other.example, Registered ID:1.2.3.4, {host}",
+                                  f"DNSName: other.example, URIName: spiffe://x, {host}")):
+            j = variant(f"v1-cover-{i}", lambda o, line=line: o["cert"].update(san=[line]))
+            if codes(j) != ["TLS_ALERT"]:
+                bad.append(f"'{line}' covers {host}: {codes(j)}, expected only TLS_ALERT")
+        for i, line in enumerate(("DNS:other.example, URI:spiffe://x, other2.example",
+                                  f"DNS:other.example, DirName:/C=GB, O={host}")):
+            j = variant(f"v1-control-{i}", lambda o, line=line: o["cert"].update(san=[line]))
+            if "TLS_NAME_MISMATCH" not in codes(j):
+                bad.append(f"'{line}': {codes(j)}, nothing covers so TLS_NAME_MISMATCH is expected")
         j = variant("nh-cover", lambda o: o["cert"].update(san=[f"DNS:{host}", "URI:spiffe://svc.example/a"]))
         if codes(j) != ["TLS_ALERT"]:
             bad.append(f"covering DNS entry plus URI: {codes(j)}, expected only TLS_ALERT")
