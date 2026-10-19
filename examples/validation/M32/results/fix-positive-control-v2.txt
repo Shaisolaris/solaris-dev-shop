@@ -1,0 +1,7 @@
+# v2 rerun: positive control of proposed-fix-duplicate-handle.patch with the v2 oracle (private copy only, never the candidate)
+Mon Oct 19 07:15:27 PDT 2026
+PASS P05 conflicting consent: suppression wins over any opt-in order or tie; a duplicate import never drafts to an opted-out handle; redelivery once, conflicting ids refused {"out_then_in": [true, [0,
+M32 ORACLE 14/14 core PASS
+Ran 20 tests in 10.490s
+
+OK

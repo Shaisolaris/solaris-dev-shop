@@ -1,0 +1,116 @@
+== 3.9.6 demo exit 1
+usage: followthrough.py run [-h] --account ACCOUNT --events EVENTS --now NOW
+                            --worker WORKER [--json]
+                            [--fail-at {drafted,ledgered}]
+                            state
+followthrough.py run: error: the following arguments are required: state
+usage: followthrough.py run [-h] --account ACCOUNT --events EVENTS --now NOW
+                            --worker WORKER [--json]
+                            [--fail-at {drafted,ledgered}]
+                            state
+followthrough.py run: error: the following arguments are required: state
+usage: followthrough.py run [-h] --account ACCOUNT --events EVENTS --now NOW
+                            --worker WORKER [--json]
+                            [--fail-at {drafted,ledgered}]
+                            state
+followthrough.py run: error: the following arguments are required: state
+usage: followthrough.py status [-h] [--json] state
+followthrough.py status: error: the following arguments are required: state
+PASS o1 fixture over three runs and two workers matches the reference (9 drafts, 7 open, 2 withdrawn)
+PASS o2 rerun and redelivered events draft nothing new; a reused event id with new content is refused
+PASS o3 hard bounce and opt-out stay suppressed after opt_in; support still reaches a marketing opt-out
+PASS o4 15 crash drills after the draft and after the ledger record: no duplicate, state converges
+PASS o5 8 concurrent workers per run (3 rounds): exit 0 or 4 only, one draft per action
+PASS o6 ownership handoff: next worker resumes, unsent drafts re-rendered for the new owner, status shows state
+PASS o7 8 invalid inputs create nothing; a forged journal and another account's state are refused
+PASS o8 held lock exits 4 with nothing written; a torn ledger tail does not swallow the next record
+PASS o9 3 seeded unseen accounts (120 to 180 contacts, 2096 event lines incl. redeliveries, 4 runs each, 1488 drafts) match the reference
+PASS s1 no mail, network or process use in the tool; fixtures byte-identical
+ACCEPTED 10/10
+FAIL o1 fixture over three runs and two workers matches the reference (9 drafts, 7 open, 2 withdrawn)
+FAIL o2 rerun and redelivered events draft nothing new; a reused event id with new content is refused
+FAIL o3 hard bounce and opt-out stay suppressed after opt_in; support still reaches a marketing opt-out
+FAIL o4 6 crash drills after the draft and after the ledger record: no duplicate, state converges
+FAIL o5 8 concurrent workers per run (3 rounds): exit 0 or 4 only, one draft per action
+FAIL o6 ownership handoff: next worker resumes, unsent drafts re-rendered for the new owner, status shows state
+FAIL o7 error FileNotFoundError: [Errno 2] No such file or directory: '/tmp/m32fc-J7yaVU/home/g32-oracle-rp6exh8k/w19/s/journal.jsonl'
+FAIL o8 held lock exits 4 with nothing written; a torn ledger tail does not swallow the next record
+    unseen 0: [(('c094', 'feedback', 'X00440'), ['draft', 'Owner A'], None), (('c091', 'ack', 'X00419'), ['draft', 'Owner A'], ['draft', 'Owner B']), (('c080', 'checkin', 'X00381'), ['DUPLICATE', None], None)]
+    unseen 1: [(('c043', 'nudge', 'X00200'), ['DUPLICATE', None], None), (('c078', 'feedback', 'X00378'), ['DUPLICATE', None], ['draft', 'Owner D']), (('c016', 'ack', 'X00078'), ['DUPLICATE', None], ['draft', 'Owner D'])]
+    unseen 2: [(('c166', 'nudge', 'X00738'), ['DUPLICATE', None], None), (('c124', 'training', 'X00558'), ['draft', 'Owner A'], ['draft', 'Owner B']), (('c045', 'ack', 'X00206'), ['DUPLICATE', None], ['draft', 'Owner B'])]
+FAIL o9 3 seeded unseen accounts (120 to 180 contacts, 2096 event lines incl. redeliveries, 4 runs each, 2186 drafts) match the reference
+PASS s1 no mail, network or process use in the tool; fixtures byte-identical
+REJECTED 1/10
+FAIL o1 fixture over three runs and two workers matches the reference (9 drafts, 7 open, 2 withdrawn)
+FAIL o2 rerun and redelivered events draft nothing new; a reused event id with new content is refused
+FAIL o3 hard bounce and opt-out stay suppressed after opt_in; support still reaches a marketing opt-out
+FAIL o4 6 crash drills after the draft and after the ledger record: no duplicate, state converges
+FAIL o5 8 concurrent workers per run (3 rounds): exit 0 or 4 only, one draft per action
+FAIL o6 ownership handoff: next worker resumes, unsent drafts re-rendered for the new owner, status shows state
+FAIL o7 error FileNotFoundError: [Errno 2] No such file or directory: '/tmp/m32fc-J7yaVU/home/g32-oracle-4rgh80rj/w19/s/journal.jsonl'
+FAIL o8 held lock exits 4 with nothing written; a torn ledger tail does not swallow the next record
+    unseen 0: [(('c113', 'welcome', 'X00534'), None, ['draft', 'Owner B']), (('c075', 'ack', 'X00362'), None, ['draft', 'Owner B']), (('c029', 'training', 'X00133'), None, ['draft', 'Owner B'])]
+    unseen 1: [(('c113', 'welcome', 'X00532'), None, ['draft', 'Owner D']), (('c071', 'ack', 'X00332'), None, ['draft', 'Owner D']), (('c124', 'checkin', 'X00561'), None, ['draft', 'Owner D'])]
+    unseen 2: [(('c124', 'training', 'X00558'), None, ['draft', 'Owner B']), (('c089', 'checkin', 'X00414'), None, ['draft', 'Owner B']), (('c035', 'ack', 'X00159'), None, ['draft', 'Owner B'])]
+FAIL o9 3 seeded unseen accounts (120 to 180 contacts, 2096 event lines incl. redeliveries, 4 runs each, 0 drafts) match the reference
+PASS s1 no mail, network or process use in the tool; fixtures byte-identical
+REJECTED 1/10
+-- pycache dirs in copy: 0; tree changed: no; HOME entries: ./Library ./Library/Caches ./Library/Caches/com.apple.python 
+== 3.13.15 demo exit 1
+usage: followthrough.py run [-h] --account ACCOUNT --events EVENTS --now NOW
+                            --worker WORKER [--json]
+                            [--fail-at {drafted,ledgered}]
+                            state
+followthrough.py run: error: the following arguments are required: state
+usage: followthrough.py run [-h] --account ACCOUNT --events EVENTS --now NOW
+                            --worker WORKER [--json]
+                            [--fail-at {drafted,ledgered}]
+                            state
+followthrough.py run: error: the following arguments are required: state
+usage: followthrough.py run [-h] --account ACCOUNT --events EVENTS --now NOW
+                            --worker WORKER [--json]
+                            [--fail-at {drafted,ledgered}]
+                            state
+followthrough.py run: error: the following arguments are required: state
+usage: followthrough.py status [-h] [--json] state
+followthrough.py status: error: the following arguments are required: state
+PASS o1 fixture over three runs and two workers matches the reference (9 drafts, 7 open, 2 withdrawn)
+PASS o2 rerun and redelivered events draft nothing new; a reused event id with new content is refused
+PASS o3 hard bounce and opt-out stay suppressed after opt_in; support still reaches a marketing opt-out
+PASS o4 15 crash drills after the draft and after the ledger record: no duplicate, state converges
+PASS o5 8 concurrent workers per run (3 rounds): exit 0 or 4 only, one draft per action
+PASS o6 ownership handoff: next worker resumes, unsent drafts re-rendered for the new owner, status shows state
+PASS o7 8 invalid inputs create nothing; a forged journal and another account's state are refused
+PASS o8 held lock exits 4 with nothing written; a torn ledger tail does not swallow the next record
+PASS o9 3 seeded unseen accounts (120 to 180 contacts, 2096 event lines incl. redeliveries, 4 runs each, 1488 drafts) match the reference
+PASS s1 no mail, network or process use in the tool; fixtures byte-identical
+ACCEPTED 10/10
+FAIL o1 fixture over three runs and two workers matches the reference (9 drafts, 7 open, 2 withdrawn)
+FAIL o2 rerun and redelivered events draft nothing new; a reused event id with new content is refused
+FAIL o3 hard bounce and opt-out stay suppressed after opt_in; support still reaches a marketing opt-out
+FAIL o4 6 crash drills after the draft and after the ledger record: no duplicate, state converges
+FAIL o5 error JSONDecodeError: Extra data: line 1 column 178 (char 177)
+FAIL o6 ownership handoff: next worker resumes, unsent drafts re-rendered for the new owner, status shows state
+FAIL o7 error FileNotFoundError: [Errno 2] No such file or directory: '/tmp/m32fc-FIqFTF/home/g32-oracle-uvu6iik8/w17/s/journal.jsonl'
+FAIL o8 held lock exits 4 with nothing written; a torn ledger tail does not swallow the next record
+    unseen 0: [(('c072', 'ack', 'X00346'), ['draft', 'Owner A'], ['draft', 'Owner B']), (('c049', 'nudge', 'X00237'), ['DUPLICATE', None], ['withdrawn', 'Owner B']), (('c079', 'welcome', 'X00374'), ['DUPLICATE', None], None)]
+    unseen 1: [(('c073', 'nudge', 'X00346'), ['DUPLICATE', None], None), (('c010', 'ack', 'X00048'), ['DUPLICATE', None], ['draft', 'Owner D']), (('c128', 'training', 'X00588'), ['DUPLICATE', None], ['draft', 'Owner D'])]
+    unseen 2: [(('c073', 'nudge', 'X00346'), ['draft', 'Owner A'], ['draft', 'Owner B']), (('c011', 'training', 'X00053'), ['draft', 'Owner A'], ['draft', 'Owner B']), (('c113', 'training', 'X00509'), ['draft', 'Owner A'], ['draft', 'Owner B'])]
+FAIL o9 3 seeded unseen accounts (120 to 180 contacts, 2096 event lines incl. redeliveries, 4 runs each, 2186 drafts) match the reference
+PASS s1 no mail, network or process use in the tool; fixtures byte-identical
+REJECTED 1/10
+FAIL o1 fixture over three runs and two workers matches the reference (9 drafts, 7 open, 2 withdrawn)
+FAIL o2 rerun and redelivered events draft nothing new; a reused event id with new content is refused
+FAIL o3 hard bounce and opt-out stay suppressed after opt_in; support still reaches a marketing opt-out
+FAIL o4 6 crash drills after the draft and after the ledger record: no duplicate, state converges
+FAIL o5 8 concurrent workers per run (3 rounds): exit 0 or 4 only, one draft per action
+FAIL o6 ownership handoff: next worker resumes, unsent drafts re-rendered for the new owner, status shows state
+FAIL o7 error FileNotFoundError: [Errno 2] No such file or directory: '/tmp/m32fc-FIqFTF/home/g32-oracle-m361_ons/w19/s/journal.jsonl'
+FAIL o8 held lock exits 4 with nothing written; a torn ledger tail does not swallow the next record
+    unseen 0: [(('c034', 'ack', 'X00161'), None, ['draft', 'Owner B']), (('c023', 'training', 'X00110'), None, ['draft', 'Owner B']), (('c002', 'training', 'X00008'), None, ['draft', 'Owner B'])]
+    unseen 1: [(('c088', 'checkin', 'X00427'), None, ['draft', 'Owner D']), (('c113', 'welcome', 'X00532'), None, ['draft', 'Owner D']), (('c043', 'welcome', 'X00198'), None, ['draft', 'Owner D'])]
+    unseen 2: [(('c068', 'checkin', 'X00312'), None, ['draft', 'Owner B']), (('c040', 'nudge', 'X00190'), None, ['draft', 'Owner B']), (('c169', 'training', 'X00746'), None, ['draft', 'Owner B'])]
+FAIL o9 3 seeded unseen accounts (120 to 180 contacts, 2096 event lines incl. redeliveries, 4 runs each, 0 drafts) match the reference
+PASS s1 no mail, network or process use in the tool; fixtures byte-identical
+REJECTED 1/10
+-- pycache dirs in copy: 0; tree changed: no; HOME entries: 

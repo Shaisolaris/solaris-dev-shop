@@ -1,0 +1,726 @@
+{
+ "tool": "/tmp/m32teeth-wg4fcj7w/redelivery_counted_twice/employees/sales-outreach/customer-success/followthrough.py",
+ "python": "3.9.6",
+ "rows": [
+  {
+   "row": "P01 clean fixture: exactly the hand-derived drafts, signed by the current owner, no send, no network/process",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "rc": 0,
+    "live": [
+     [
+      "c-ana",
+      "training"
+     ],
+     [
+      "c-ana",
+      "welcome"
+     ],
+     [
+      "c-ben",
+      "ack"
+     ],
+     [
+      "c-ben",
+      "checkin"
+     ],
+     [
+      "c-ben",
+      "feedback"
+     ],
+     [
+      "c-ben",
+      "training"
+     ],
+     [
+      "c-ben",
+      "welcome"
+     ]
+    ],
+    "owners": [
+     "Priya (customer success lead, synthetic)"
+    ]
+   }
+  },
+  {
+   "row": "P02 withdrawn consent: an opt-out all or hard bounce withdraws every written draft for the contact (do not send) and nothing is redrafted; a soft bounce does not",
+   "pass": true,
+   "sub": {
+    "opt_out_all": true,
+    "hard_bounce": true,
+    "soft_bounce_no_suppression": true
+   },
+   "detail": {
+    "opt_out_all": [
+     true,
+     {
+      "before": [
+       [
+        "c-ana",
+        "ack",
+        "X0"
+       ],
+       [
+        "c-ana",
+        "welcome",
+        "E01"
+       ]
+      ],
+      "after_live": [],
+      "withdrawn": [
+       [
+        "c-ana",
+        "ack"
+       ],
+       [
+        "c-ana",
+        "welcome"
+       ]
+      ],
+      "withdrawn_send": [
+       "do not send"
+      ],
+      "third_run_live": []
+     }
+    ],
+    "hard_bounce": [
+     true,
+     {
+      "before": [
+       [
+        "c-ana",
+        "ack",
+        "X0"
+       ],
+       [
+        "c-ana",
+        "welcome",
+        "E01"
+       ]
+      ],
+      "after_live": [],
+      "withdrawn": [
+       [
+        "c-ana",
+        "ack"
+       ],
+       [
+        "c-ana",
+        "welcome"
+       ]
+      ],
+      "withdrawn_send": [
+       "do not send"
+      ],
+      "third_run_live": []
+     }
+    ],
+    "soft_bounce_no_suppression": [
+     true,
+     [
+      "training",
+      "welcome"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "P03 expired or unrecognised consent values never yield onboarding or feedback drafts (refused or treated as no consent)",
+   "pass": true,
+   "sub": {
+    "expired": true,
+    "withdrawn": true,
+    "revoked": true,
+    "": true,
+    "None": true,
+    "GRANTED": true,
+    "granted_with_past_expiry_field": true
+   },
+   "detail": {
+    "expired": [
+     true,
+     {
+      "rc": 2,
+      "ana": []
+     }
+    ],
+    "withdrawn": [
+     true,
+     {
+      "rc": 2,
+      "ana": []
+     }
+    ],
+    "revoked": [
+     true,
+     {
+      "rc": 2,
+      "ana": []
+     }
+    ],
+    "": [
+     true,
+     {
+      "rc": 2,
+      "ana": []
+     }
+    ],
+    "None": [
+     true,
+     {
+      "rc": 2,
+      "ana": []
+     }
+    ],
+    "GRANTED": [
+     true,
+     {
+      "rc": 2,
+      "ana": []
+     }
+    ],
+    "granted_with_past_expiry_field": [
+     true,
+     {
+      "rc": 0,
+      "ana": [
+       "training",
+       "welcome"
+      ],
+      "note": "OBS only: the doc has no expiry"
+     }
+    ]
+   }
+  },
+  {
+   "row": "P04 partial consent: marketing opt-out and unknown consent keep support replies on the customer's own ticket (ack) and nothing else; the closed ticket cancels the nudge and its feedback is suppressed",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "dee": [
+     "ack"
+    ],
+    "cy": [
+     "ack"
+    ]
+   }
+  },
+  {
+   "row": "P05 conflicting consent: suppression wins over any opt-in order or tie; a duplicate import never drafts to an opted-out handle; redelivery once, conflicting ids refused",
+   "pass": false,
+   "sub": {
+    "out_then_in": true,
+    "in_then_out": true,
+    "same_instant": true,
+    "marketing_then_all": true,
+    "future_opt_out_ignored_at_now": true,
+    "duplicate_import_same_handle": false,
+    "duplicate_contact_id": true,
+    "exact_redelivery_once": true,
+    "same_id_other_content_refused": true
+   },
+   "detail": {
+    "out_then_in": [
+     true,
+     [
+      0,
+      [],
+      [
+       "consent_review_required"
+      ]
+     ]
+    ],
+    "in_then_out": [
+     true,
+     [
+      0,
+      [],
+      []
+     ]
+    ],
+    "same_instant": [
+     true,
+     [
+      0,
+      [],
+      [
+       "consent_review_required"
+      ]
+     ]
+    ],
+    "marketing_then_all": [
+     true,
+     [
+      0,
+      [],
+      []
+     ]
+    ],
+    "future_opt_out_ignored_at_now": [
+     true,
+     [
+      0,
+      [
+       "training",
+       "welcome"
+      ],
+      []
+     ]
+    ],
+    "duplicate_import_same_handle": [
+     false,
+     {
+      "rc": 0,
+      "live_drafts_to_opted_out_handle": [
+       [
+        "c-ana2",
+        "checkin"
+       ],
+       [
+        "c-ana2",
+        "welcome"
+       ]
+      ]
+     }
+    ],
+    "duplicate_contact_id": [
+     true,
+     {
+      "rc": 2,
+      "drafts": 0
+     }
+    ],
+    "exact_redelivery_once": [
+     true,
+     [
+      0,
+      7
+     ]
+    ],
+    "same_id_other_content_refused": [
+     true,
+     [
+      2,
+      0
+     ]
+    ]
+   }
+  },
+  {
+   "row": "P06 reopened request: a reopened ticket gets its own ack and nudge (one per trigger), the earlier close's feedback stands",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "rc": 0,
+    "ben": [
+     [
+      "ack",
+      "E05"
+     ],
+     [
+      "ack",
+      "R1"
+     ],
+     [
+      "checkin",
+      "E02"
+     ],
+     [
+      "feedback",
+      "E12"
+     ],
+     [
+      "nudge",
+      "R2"
+     ],
+     [
+      "training",
+      "E02"
+     ],
+     [
+      "welcome",
+      "E02"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "P07 duplicate safety: rerun idempotent, crash at drafted or ledgered resumes to one draft per key, five concurrent workers make no duplicates",
+   "pass": true,
+   "sub": {
+    "rerun_idempotent": true,
+    "crash_drafted": true,
+    "crash_ledgered": true,
+    "five_workers": true
+   },
+   "detail": {
+    "rerun_idempotent": [
+     true,
+     [
+      7,
+      7,
+      7
+     ]
+    ],
+    "crash_drafted": [
+     true,
+     [
+      75,
+      0,
+      7
+     ]
+    ],
+    "crash_ledgered": [
+     true,
+     [
+      75,
+      0,
+      7
+     ]
+    ],
+    "five_workers": [
+     true,
+     {
+      "rcs": [
+       0,
+       0,
+       0,
+       0,
+       4
+      ],
+      "drafts": 7
+     }
+    ]
+   }
+  },
+  {
+   "row": "P08 owner change re-renders unsent drafts under the current owner and reports them reassigned",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "old": [
+     "Morgan (customer success, synthetic)"
+    ],
+    "new": [
+     "Priya (customer success lead, synthetic)"
+    ],
+    "reassigned": 7
+   }
+  },
+  {
+   "row": "P09 state integrity: a tampered journal or another account's state is refused with nothing written; a removed draft is noted, not redrafted; a torn ledger line swallows nothing",
+   "pass": true,
+   "sub": {
+    "journal_tampered": true,
+    "other_account_state": true,
+    "draft_file_removed": true,
+    "torn_ledger_line": true
+   },
+   "detail": {
+    "journal_tampered": [
+     true,
+     2
+    ],
+    "other_account_state": [
+     true,
+     2
+    ],
+    "draft_file_removed": [
+     true,
+     [
+      "consent_review_required",
+      "draft_file_missing"
+     ]
+    ],
+    "torn_ledger_line": [
+     true,
+     [
+      0,
+      0,
+      8
+     ]
+    ]
+   }
+  },
+  {
+   "row": "P10 seeded soak: 8 random histories with a mid-way run; no live draft for a suppressed contact or kind, no duplicate keys, nothing sent",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "bad": []
+   }
+  },
+  {
+   "row": "P12 v2 timing and history: welcome +0, checkin +3d, training +7d, nudge +2d, feedback +1d at the exact minute; second signup not redrafted; a reply cancels the nudge; a close withdraws a drafted nudge for good; a future opt-out is not applied yet",
+   "pass": true,
+   "sub": {
+    "at_0109:00": true,
+    "at_0310:59": true,
+    "at_0311:00": true,
+    "at_0408:59": true,
+    "at_0409:00": true,
+    "at_0608:59": true,
+    "at_0609:00": true,
+    "at_0809:00": true,
+    "at_0912:00": true,
+    "second_signup_no_redraft": true,
+    "reply_cancels_T8_nudge": true,
+    "closed_ticket_nudge_withdrawn_stays": true,
+    "future_opt_out_not_applied": true,
+    "nothing_sent": true
+   },
+   "detail": {
+    "at_0109:00": [
+     true,
+     [
+      0,
+      [
+       "welcome"
+      ]
+     ]
+    ],
+    "at_0310:59": [
+     true,
+     [
+      0,
+      [
+       "ack",
+       "ack",
+       "welcome"
+      ]
+     ]
+    ],
+    "at_0311:00": [
+     true,
+     [
+      0,
+      [
+       "ack",
+       "ack",
+       "nudge",
+       "welcome"
+      ]
+     ]
+    ],
+    "at_0408:59": [
+     true,
+     [
+      0,
+      [
+       "ack",
+       "ack",
+       "nudge",
+       "welcome"
+      ]
+     ]
+    ],
+    "at_0409:00": [
+     true,
+     [
+      0,
+      [
+       "ack",
+       "ack",
+       "checkin",
+       "nudge",
+       "welcome"
+      ]
+     ]
+    ],
+    "at_0608:59": [
+     true,
+     [
+      0,
+      [
+       "ack",
+       "ack",
+       "checkin",
+       "welcome"
+      ]
+     ]
+    ],
+    "at_0609:00": [
+     true,
+     [
+      0,
+      [
+       "ack",
+       "ack",
+       "checkin",
+       "feedback",
+       "welcome"
+      ]
+     ]
+    ],
+    "at_0809:00": [
+     true,
+     [
+      0,
+      [
+       "ack",
+       "ack",
+       "checkin",
+       "feedback",
+       "training",
+       "welcome"
+      ]
+     ]
+    ],
+    "at_0912:00": [
+     true,
+     [
+      0,
+      [
+       "ack",
+       "ack",
+       "checkin",
+       "feedback",
+       "training",
+       "welcome"
+      ]
+     ]
+    ],
+    "second_signup_no_redraft": [
+     true,
+     1
+    ],
+    "reply_cancels_T8_nudge": [
+     true,
+     [
+      [
+       "x1",
+       "ack",
+       "A3"
+      ],
+      [
+       "x1",
+       "ack",
+       "A5"
+      ],
+      [
+       "x1",
+       "checkin",
+       "A1"
+      ],
+      [
+       "x1",
+       "feedback",
+       "A8"
+      ],
+      [
+       "x1",
+       "training",
+       "A1"
+      ],
+      [
+       "x1",
+       "welcome",
+       "A1"
+      ]
+     ]
+    ],
+    "closed_ticket_nudge_withdrawn_stays": [
+     true,
+     [
+      [
+       "x1",
+       "nudge"
+      ]
+     ]
+    ],
+    "future_opt_out_not_applied": [
+     true,
+     6
+    ],
+    "nothing_sent": [
+     true,
+     null
+    ]
+   }
+  },
+  {
+   "row": "P13 v2 invalid input refused with nothing written: ticket without thread, opt-out without or with an unknown scope, unknown contact, a time without offset, a bad worker name",
+   "pass": true,
+   "sub": {
+    "ticket_without_thread": true,
+    "opt_out_without_scope": true,
+    "opt_out_scope_sms": true,
+    "unknown_contact": true,
+    "naive_time": true,
+    "bad_worker": true
+   },
+   "detail": {
+    "ticket_without_thread": [
+     true,
+     [
+      2,
+      0
+     ]
+    ],
+    "opt_out_without_scope": [
+     true,
+     [
+      2,
+      0
+     ]
+    ],
+    "opt_out_scope_sms": [
+     true,
+     [
+      2,
+      0
+     ]
+    ],
+    "unknown_contact": [
+     true,
+     [
+      2,
+      0
+     ]
+    ],
+    "naive_time": [
+     true,
+     [
+      2,
+      0
+     ]
+    ],
+    "bad_worker": [
+     true,
+     [
+      2,
+      0
+     ]
+    ]
+   }
+  },
+  {
+   "row": "P14 v2 torn ledger: after a torn last line every draft written by the next run has a parseable ledger record",
+   "pass": true,
+   "sub": {
+    "rc": true,
+    "unrecorded": true
+   },
+   "detail": {
+    "rc": [
+     true,
+     0
+    ],
+    "unrecorded": [
+     true,
+     []
+    ]
+   }
+  },
+  {
+   "row": "P11 nothing is ever sent: no send-capable import in the tool and no audited network/process/mail event in any run of this oracle",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "imports": [],
+    "audit_hits": []
+   }
+  }
+ ]
+}

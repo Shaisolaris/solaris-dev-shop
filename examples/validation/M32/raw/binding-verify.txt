@@ -1,0 +1,14 @@
+Mon Oct 19 06:55:06 PDT 2026
+candidate 589a9900203c779b55ed479e87fb88a11e406d07 parent(s) 314b4dbf980437cf14bc32438117e5b5b777f942
+02ba9c571b10ad1dba792d2ac5534bcad3171e67	refs/heads/main
+314b4dbf980437cf14bc32438117e5b5b777f942	refs/heads/review/grok-g04-handoff
+5666e7beb161d1252ddd5dcc0a166aca83255370	refs/heads/review/grok-g13-csv-reconciliation
+550f1848a76ad4d5b6688090afc0519354ac3370	refs/heads/review/grok-g17-resource-decision
+37f42b085c20bd7fbb1a43434e4367bb7fc411f8	refs/heads/review/grok-g31-scope-acceptance
+589a9900203c779b55ed479e87fb88a11e406d07	refs/heads/review/grok-g32-consent-followthrough
+d63b1c146cf534f9b8575b0a61a51fa03c5b0c19	refs/heads/review/grok-g33-evidence-decision
+base 314b4dbf980437cf14bc32438117e5b5b777f942 is ancestor: yes; direct parent: yes
+patch sha cc2939e919abb525cc6bfa3107b5d3942eab6e202393527ab5701007ba4d5fdc diff sha cc2939e919abb525cc6bfa3107b5d3942eab6e202393527ab5701007ba4d5fdc
+manifest entries 18 mismatches 0
+manifest set == diff set
+G04 314b4db validated by M04 1628e6d (PASS with residuals: P3 owner conflict not detected, P4); G32 handback mentions a planned G04 tightening not yet landed (branch still at 314b4db)

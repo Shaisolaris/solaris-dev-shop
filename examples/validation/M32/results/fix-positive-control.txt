@@ -1,0 +1,8 @@
+# positive control of proposed-fix-duplicate-handle.patch (applied to a private copy only, never to the candidate)
+Mon Oct 19 07:01:47 PDT 2026
+PASS P05 conflicting consent: suppression wins over any opt-in order or tie; a duplicate import never drafts to an opted-out handle; redelivery once, conflicting ids refused {"out_then_in": [true, [0, [], ["consent_review_required"]]], "in_then_out": [true, [0, [], []]], "same_instant": [true, [0, [], ["consent_review_required"]]], "marketing_then_all": [true, [0, [], []]], "future_opt_out_ignored_at_now": [true, [0, ["training", "welcome"], []]], "duplicate_import_same_handle": [true, {"rc": 2, "live_drafts_to_opted_out_handle": []}], "duplicate_contact_id": [true, {"rc": 2, "drafts": 0}], "e
+M32 ORACLE 11/11 core PASS
+Ran 20 tests in 11.558s
+
+OK
+ACCEPTED 10/10

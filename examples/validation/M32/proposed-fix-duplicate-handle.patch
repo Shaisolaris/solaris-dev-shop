@@ -1,0 +1,25 @@
+--- a/employees/sales-outreach/customer-success/followthrough.py	2026-10-19 07:01:46
++++ b/employees/sales-outreach/customer-success/followthrough.py	2026-10-19 07:01:46
+@@ -88,7 +88,7 @@
+         raise Invalid("account_id must be a short identifier")
+     if not isinstance(a.get("owner"), str) or not a["owner"].strip():
+         raise Invalid("owner must name the accountable person or role")
+-    cs = {}
++    cs, handles = {}, {}
+     for i, c in enumerate(a.get("contacts") or []):
+         if not isinstance(c, dict) or not isinstance(c.get("id"), str) or not ID.match(c["id"]) or c["id"] in cs:
+             raise Invalid("contacts[%d] needs a unique short id" % i)
+@@ -96,6 +96,13 @@
+             raise Invalid("contacts.%s.consent must be granted or unknown" % c["id"])
+         if not isinstance(c.get("name"), str) or not c["name"].strip():
+             raise Invalid("contacts.%s.name is required" % c["id"])
++        h = c.get("handle")
++        if not isinstance(h, str) or not h.strip():
++            raise Invalid("contacts.%s.handle is required" % c["id"])
++        if h in handles:
++            # a duplicate import of one person: consent is per person, so merge the records before running
++            raise Invalid("contacts.%s and contacts.%s share handle %s; merge the duplicate import first" % (handles[h], c["id"], h))
++        handles[h] = c["id"]
+         cs[c["id"]] = c
+     if not cs:
+         raise Invalid("account has no contacts")

@@ -1,0 +1,429 @@
+{
+ "tool": "/tmp/m32mx-SbQV6I/examples/capabilities/G32/noop_followthrough.py",
+ "python": "3.12.14",
+ "rows": [
+  {
+   "row": "P01 clean fixture: exactly the hand-derived drafts, signed by the current owner, no send, no network/process",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "rc": 0,
+    "live": [],
+    "owners": []
+   }
+  },
+  {
+   "row": "P02 withdrawn consent: an opt-out all or hard bounce withdraws every written draft for the contact (do not send) and nothing is redrafted; a soft bounce does not",
+   "pass": false,
+   "sub": {
+    "soft_bounce_no_suppression": false
+   },
+   "detail": {
+    "opt_out_all": [
+     [],
+     {
+      "before": [],
+      "after_live": [],
+      "withdrawn": [],
+      "withdrawn_send": [],
+      "third_run_live": []
+     }
+    ],
+    "hard_bounce": [
+     [],
+     {
+      "before": [],
+      "after_live": [],
+      "withdrawn": [],
+      "withdrawn_send": [],
+      "third_run_live": []
+     }
+    ],
+    "soft_bounce_no_suppression": [
+     false,
+     []
+    ]
+   }
+  },
+  {
+   "row": "P03 expired or unrecognised consent values never yield onboarding or feedback drafts (refused or treated as no consent)",
+   "pass": true,
+   "sub": {
+    "expired": true,
+    "withdrawn": true,
+    "revoked": true,
+    "": true,
+    "None": true,
+    "GRANTED": true,
+    "granted_with_past_expiry_field": true
+   },
+   "detail": {
+    "expired": [
+     true,
+     {
+      "rc": 0,
+      "ana": []
+     }
+    ],
+    "withdrawn": [
+     true,
+     {
+      "rc": 0,
+      "ana": []
+     }
+    ],
+    "revoked": [
+     true,
+     {
+      "rc": 0,
+      "ana": []
+     }
+    ],
+    "": [
+     true,
+     {
+      "rc": 0,
+      "ana": []
+     }
+    ],
+    "None": [
+     true,
+     {
+      "rc": 0,
+      "ana": []
+     }
+    ],
+    "GRANTED": [
+     true,
+     {
+      "rc": 0,
+      "ana": []
+     }
+    ],
+    "granted_with_past_expiry_field": [
+     true,
+     {
+      "rc": 0,
+      "ana": [],
+      "note": "OBS only: the doc has no expiry"
+     }
+    ]
+   }
+  },
+  {
+   "row": "P04 partial consent: marketing opt-out and unknown consent keep support replies on the customer's own ticket (ack) and nothing else; the closed ticket cancels the nudge and its feedback is suppressed",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "dee": [],
+    "cy": []
+   }
+  },
+  {
+   "row": "P05 conflicting consent: suppression wins over any opt-in order or tie; a duplicate import never drafts to an opted-out handle; redelivery once, conflicting ids refused",
+   "pass": false,
+   "sub": {
+    "out_then_in": false,
+    "in_then_out": true,
+    "same_instant": true,
+    "marketing_then_all": true,
+    "future_opt_out_ignored_at_now": true,
+    "duplicate_import_same_handle": true,
+    "duplicate_contact_id": false,
+    "exact_redelivery_once": false,
+    "same_id_other_content_refused": false
+   },
+   "detail": {
+    "out_then_in": [
+     false,
+     [
+      0,
+      [],
+      []
+     ]
+    ],
+    "in_then_out": [
+     true,
+     [
+      0,
+      [],
+      []
+     ]
+    ],
+    "same_instant": [
+     true,
+     [
+      0,
+      [],
+      []
+     ]
+    ],
+    "marketing_then_all": [
+     true,
+     [
+      0,
+      [],
+      []
+     ]
+    ],
+    "future_opt_out_ignored_at_now": [
+     true,
+     [
+      0,
+      [],
+      []
+     ]
+    ],
+    "duplicate_import_same_handle": [
+     true,
+     {
+      "rc": 0,
+      "live_drafts_to_opted_out_handle": []
+     }
+    ],
+    "duplicate_contact_id": [
+     false,
+     {
+      "rc": 0,
+      "drafts": 0
+     }
+    ],
+    "exact_redelivery_once": [
+     false,
+     [
+      0,
+      0
+     ]
+    ],
+    "same_id_other_content_refused": [
+     false,
+     [
+      0,
+      0
+     ]
+    ]
+   }
+  },
+  {
+   "row": "P06 reopened request: a reopened ticket gets its own ack and nudge (one per trigger), the earlier close's feedback stands",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "rc": 0,
+    "ben": []
+   }
+  },
+  {
+   "row": "p07 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "FileNotFoundError(2, 'No such file or directory')"
+   }
+  },
+  {
+   "row": "P08 owner change re-renders unsent drafts under the current owner and reports them reassigned",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "old": [],
+    "new": [],
+    "reassigned": 0
+   }
+  },
+  {
+   "row": "p09 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "FileNotFoundError(2, 'No such file or directory')"
+   }
+  },
+  {
+   "row": "P10 seeded soak: 8 random histories with a mid-way run; no live draft for a suppressed contact or kind, no duplicate keys, nothing sent",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "bad": []
+   }
+  },
+  {
+   "row": "P12 v2 timing and history: welcome +0, checkin +3d, training +7d, nudge +2d, feedback +1d at the exact minute; second signup not redrafted; a reply cancels the nudge; a close withdraws a drafted nudge for good; a future opt-out is not applied yet",
+   "pass": false,
+   "sub": {
+    "at_0109:00": false,
+    "at_0310:59": false,
+    "at_0311:00": false,
+    "at_0408:59": false,
+    "at_0409:00": false,
+    "at_0608:59": false,
+    "at_0609:00": false,
+    "at_0809:00": false,
+    "at_0912:00": false,
+    "second_signup_no_redraft": false,
+    "reply_cancels_T8_nudge": true,
+    "closed_ticket_nudge_withdrawn_stays": false,
+    "future_opt_out_not_applied": false,
+    "nothing_sent": true
+   },
+   "detail": {
+    "at_0109:00": [
+     false,
+     [
+      0,
+      []
+     ]
+    ],
+    "at_0310:59": [
+     false,
+     [
+      0,
+      []
+     ]
+    ],
+    "at_0311:00": [
+     false,
+     [
+      0,
+      []
+     ]
+    ],
+    "at_0408:59": [
+     false,
+     [
+      0,
+      []
+     ]
+    ],
+    "at_0409:00": [
+     false,
+     [
+      0,
+      []
+     ]
+    ],
+    "at_0608:59": [
+     false,
+     [
+      0,
+      []
+     ]
+    ],
+    "at_0609:00": [
+     false,
+     [
+      0,
+      []
+     ]
+    ],
+    "at_0809:00": [
+     false,
+     [
+      0,
+      []
+     ]
+    ],
+    "at_0912:00": [
+     false,
+     [
+      0,
+      []
+     ]
+    ],
+    "second_signup_no_redraft": [
+     false,
+     0
+    ],
+    "reply_cancels_T8_nudge": [
+     true,
+     []
+    ],
+    "closed_ticket_nudge_withdrawn_stays": [
+     false,
+     []
+    ],
+    "future_opt_out_not_applied": [
+     false,
+     0
+    ],
+    "nothing_sent": [
+     true,
+     null
+    ]
+   }
+  },
+  {
+   "row": "P13 v2 invalid input refused with nothing written: ticket without thread, opt-out without or with an unknown scope, unknown contact, a time without offset, a bad worker name",
+   "pass": false,
+   "sub": {
+    "ticket_without_thread": false,
+    "opt_out_without_scope": false,
+    "opt_out_scope_sms": false,
+    "unknown_contact": false,
+    "naive_time": false,
+    "bad_worker": false
+   },
+   "detail": {
+    "ticket_without_thread": [
+     false,
+     [
+      0,
+      0
+     ]
+    ],
+    "opt_out_without_scope": [
+     false,
+     [
+      0,
+      0
+     ]
+    ],
+    "opt_out_scope_sms": [
+     false,
+     [
+      0,
+      0
+     ]
+    ],
+    "unknown_contact": [
+     false,
+     [
+      0,
+      0
+     ]
+    ],
+    "naive_time": [
+     false,
+     [
+      0,
+      0
+     ]
+    ],
+    "bad_worker": [
+     false,
+     [
+      0,
+      0
+     ]
+    ]
+   }
+  },
+  {
+   "row": "p14 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "FileNotFoundError(2, 'No such file or directory')"
+   }
+  },
+  {
+   "row": "P11 nothing is ever sent: no send-capable import in the tool and no audited network/process/mail event in any run of this oracle",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "imports": [],
+    "audit_hits": []
+   }
+  }
+ ]
+}

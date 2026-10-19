@@ -1,0 +1,6 @@
+== 3.9.6 | g32: Ran 20 tests in 10.139s  OK  | full: Ran 164 tests in 24.467s  OK  | builder-oracle: ACCEPTED 10/10 | builder-naive: REJECTED 1/10 | builder-noop: REJECTED 1/10 | m32-oracle: M32 ORACLE 13/14 core FAIL | m32-naive: M32 ORACLE 1/14 core FAIL | m32-noop: M32 ORACLE 3/14 core FAIL
+== 3.11.16 | g32: Ran 20 tests in 8.416s  OK  | full: Ran 164 tests in 19.208s  OK  | builder-oracle: ACCEPTED 10/10 | builder-naive: REJECTED 1/10 | builder-noop: REJECTED 1/10 | m32-oracle: M32 ORACLE 13/14 core FAIL | m32-naive: M32 ORACLE 1/14 core FAIL | m32-noop: M32 ORACLE 3/14 core FAIL
+== 3.12.14 | g32: Ran 20 tests in 8.894s  OK  | full: Ran 164 tests in 19.410s  OK  | builder-oracle: ACCEPTED 10/10 | builder-naive: REJECTED 1/10 | builder-noop: REJECTED 1/10 | m32-oracle: M32 ORACLE 13/14 core FAIL | m32-naive: M32 ORACLE 1/14 core FAIL | m32-noop: M32 ORACLE 3/14 core FAIL
+== 3.13.15 | g32: Ran 20 tests in 9.220s  OK  | full: Ran 164 tests in 19.172s  OK  | builder-oracle: ACCEPTED 10/10 | builder-naive: REJECTED 1/10 | builder-noop: REJECTED 1/10 | m32-oracle: M32 ORACLE 13/14 core FAIL | m32-naive: M32 ORACLE 1/14 core FAIL | m32-noop: M32 ORACLE 3/14 core FAIL
+pycache in copy: 0
+candidate status lines: 0
