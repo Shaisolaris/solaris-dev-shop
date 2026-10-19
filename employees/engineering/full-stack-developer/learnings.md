@@ -8,6 +8,9 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 
 ## Pending observations
 
+- **2026-10-19 - G21 offline client against the G19 API**: a server that stores 409 answers per idempotency key means a client "retry" of a refused change must use a new key, or it only replays the refusal.
+  *Proposed rule: document for client teams which answers are stored per key and which are not.* Tags: [#api], [#state]
+
 - **2026-04-24 - FS Developer rebuild**: State management decision order (local → lifted → Context → Zustand → React Query → Redux → XState) is the single most important piece of React methodology absorbed from lodetomasi. Most dev sessions default to overusing Context; the ordered hierarchy prevents that.
   *Proposed rule: When React state question comes up, always show the 7-tier decision order. Don't let the default jump to Redux or Context when local state or React Query would suffice.*
   Tags: [#state], [#react], [#promoted?]

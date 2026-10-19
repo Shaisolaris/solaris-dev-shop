@@ -96,6 +96,7 @@ Gate: passed
 - **frontend-developer** - UI depth on one end | **backend-developer** - API/data depth on one end
 - **code-reviewer** - before any merge | **qa-engineer** - the E2E journey
 - **devops-engineer** - deployment, CI/CD, infra | **mobile-developer** - the app side
+- Offline clients writing to your API: agree the mobile-developer outbox rules (`offline-sync.md`, G21) - one idempotency key per user change, 409/404 kept as conflicts, versioned reads.
 - **cto** - escalate the approach if stuck > 30 min, and any stack deviation needs a CTO-approved ADR
 
 ## The Solaris stack (defaults - deviate only with CTO-approved ADR)
