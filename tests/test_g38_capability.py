@@ -154,6 +154,61 @@ class G38Provenance(unittest.TestCase):
         r = run(EC, 'recover', log, '--out', self.tmp / 'no-such-dir' / 'out.jsonl')
         self.assertEqual(r.returncode, 2); self.assertIn('Nothing was written', r.stderr); self.assertNotIn('Traceback', r.stderr)
 
+    def test_copyright_lines_and_apache_appendix_carry_no_terms(self):
+        # M38 r2 P2-1: a "copyright" line or the Apache appendix may not carry added terms
+        mit = (EX / 'fixtures' / 'repo-clean' / 'LICENSE').read_text()
+        cl = [l for l in mit.splitlines() if l.lower().startswith('copyright')][0]
+        for bad in (cl + ' Commercial use of the Software is prohibited.', cl + '\n(c) The Software may not be used for commercial purposes.',
+                    cl + '\nCopyright holders forbid any commercial use of the Software.', 'Copyright (c) 2026 Acme no commercial use',
+                    'Copyright (c) 2026 Acme. Attribution to Acme is required in every copy.'):
+            (self.r / 'LICENSE').write_text(mit.replace(cl, bad))
+            self.assertEqual(self.codes(self.check(1)), [('license_unrecognized', 'LICENSE')], bad)
+        for ok in ('Copyright 2019-2026 Acme, Inc. All rights reserved.', '\u00a9 2020, 2021 Jane Doe', cl + '\nCopyright (c) 2026 Second Holder'):
+            (self.r / 'LICENSE').write_text(mit.replace(cl, ok))
+            self.assertEqual(self.check(0)['license'], 'MIT', ok)
+        ap = (EX / 'fixtures' / 'apache-2.0.txt').read_text()
+        ph = 'Copyright {yyyy} {name of copyright owner}'
+        self.assertIn(ph, ap)
+        cut = ap[:ap.index('APPENDIX:')]
+        good = (ap, cut, ap.replace(ph, 'Copyright 2026 Acme Corp'),
+                ap.replace('brackets "{}"', 'brackets "[]"').replace(ph, 'Copyright [yyyy] [name of copyright owner]'))
+        bad = (ap.replace(ph, ph + '\n\n   NOTWITHSTANDING THE ABOVE, NO COMMERCIAL USE IS PERMITTED.'),
+               ap.replace('limitations under the License.', 'limitations under the License.\n   Additional term: no commercial use.\n   limitations under the License.'),
+               ap.replace(ph, 'Copyright 2026 Acme. No commercial use.'), ap.replace(ph, 'Copyright 2026 Acme, commercial use prohibited'),
+               ap.replace('brackets "{}"', 'brackets "[]"'), ap.replace('governing permissions and', 'governing prohibition and'),
+               ap.replace(ph, 'Copyright 2026 Acme. Attribution required in every copy.'))
+        self.assertEqual(ap.count('governing permissions and'), 1)  # appendix only: a same-length edit after the copyright line
+        for i, txt in enumerate(good):
+            (self.r / 'LICENSE').write_text(txt)
+            self.assertEqual(self.check(1)['license'], 'Apache-2.0', i)  # 1: the fixture declares MIT
+        for i, txt in enumerate(bad):
+            (self.r / 'LICENSE').write_text(txt)
+            self.assertEqual(self.check(1)['license'], 'unrecognized', i)
+
+    def test_out_existing_folder_is_invalid(self):
+        # M38 r2 P4-1: --out naming an existing folder -> exit 2, nothing written, no traceback
+        (self.tmp / 'outdir').mkdir()
+        r = run(PC, 'check', self.r, '--out', self.tmp / 'outdir')
+        self.assertEqual(r.returncode, 2); self.assertIn('Nothing was written', r.stderr); self.assertNotIn('Traceback', r.stderr)
+        self.assertEqual(list((self.tmp / 'outdir').iterdir()), [])
+
+    def test_pyproject_license_forms(self):
+        # M38 r2 P4-2: file =, single-quoted and [project.license] table forms are declarations
+        head = '[project]\nname = "x"\nversion = "0.1.0"\n'
+        for body, rc, want in ((head + 'license = { file = "LICENSE" }\n', 0, []), (head + "license = 'MIT'\n", 0, []),
+                               (head + '\n[project.license]\ntext = "MIT"\n', 0, []),
+                               (head + '\n[project.license]\nfile = "LICENSE"\n', 0, []),
+                               (head + '\n[project.license]\ntext = "Apache-2.0"\n', 1, [('license_mismatch', 'pyproject.toml')]),
+                               (head + 'license = { file = "NOPE.txt" }\n', 1, [('license_undeclared', 'pyproject.toml')]),
+                               (head + 'license = { file = "../OUTSIDE.txt" }\n', 1, [('license_undeclared', 'pyproject.toml')]),
+                               (head + 'license = { file = "docs/APACHE.txt" }\n', 1, [('license_mismatch', 'pyproject.toml')]),
+                               ('[tool.other]\nlicense = "MIT"\n' + head, 1, [('license_undeclared', 'pyproject.toml')])):
+            (self.r / 'docs').mkdir(exist_ok=True)
+            shutil.copy(str(self.r / 'LICENSE'), str(self.tmp / 'OUTSIDE.txt'))  # a real MIT file outside ROOT
+            shutil.copy(str(EX / 'fixtures' / 'apache-2.0.txt'), str(self.r / 'docs' / 'APACHE.txt'))
+            (self.r / 'pyproject.toml').write_text(body)
+            self.assertEqual(self.codes(self.check(rc)), want, body)
+
     def test_manifest_cases(self):
         m = self.r / 'MANIFEST.sha256'; good = m.read_text()
         (self.r / 'src' / 'app.py').write_text('changed\n')

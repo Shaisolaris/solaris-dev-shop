@@ -4,9 +4,9 @@
   provenance_check.py check ROOT [--manifest FILE] [--exclude DIR ...] [--json] [--out FILE]
 
 Checks, reading only:
-- the root LICENSE is recognised from its whole text (MIT or Apache-2.0; fragments and added terms are not); anything else is reported
-  as unrecognised and nothing is guessed;
-- every license declaration agrees with it: pyproject.toml `license`, every `plugin.json` under ROOT (including chief-of-staff/)
+- the root LICENSE is recognised from its whole text (MIT or Apache-2.0; fragments and added terms are not, including terms in a
+  copyright line or the Apache appendix); anything else is reported as unrecognised and nothing is guessed;
+- every license declaration agrees with it: pyproject.toml `license` (string, text, file or [project.license] table forms), every `plugin.json` under ROOT (including chief-of-staff/)
   `license`, the README license badge and `## License` section;
 - NOTICE.md lists every other LICENSE* file in the tree, and every LICENSE path it lists exists;
 - with --manifest ("<sha256>  <relative path>" lines): every listed file exists and has that digest, hashed
@@ -20,7 +20,8 @@ What a clean result means: the declarations are consistent with each other and w
 listed bytes are the bytes on disk. It is not a legal opinion on licence compatibility, ownership or
 obligations, and it authenticates no one: an author or approver named in plain text stays a claim.
 
-Exit codes: 0 consistent; 1 findings; 2 invalid input (unreadable ROOT, malformed manifest), nothing written.
+Exit codes: 0 consistent; 1 findings; 2 invalid input (unreadable ROOT, malformed manifest, --out folder missing or --out
+is a folder), nothing written.
 --out is written atomically. Python 3.9+, standard library; never runs or edits the files it reads.
 """
 import argparse
@@ -76,6 +77,51 @@ THE SOFTWARE.""")
 APACHE_TERMS_SHA = "95cef6332b35354c12f9d666ab9ff47002e6f7ef937924896882b2e0cdb7a0d6"
 APACHE_END = "end of terms and conditions"
 APACHE_APPENDIX = "appendix: how to apply the apache license to your work"
+# The standard appendix is compared word for word; only its one boilerplate copyright line may differ (placeholder, or
+# years and a holder). Both published bracket spellings are accepted: "{}" (common copies) and "[]" (apache.org).
+# Generalised from the M38 r2 proposed patch (Grok self-validation), which matched one spelling by fixed-length hashes.
+APPENDIX_PRE = _norm("""APPENDIX: How to apply the Apache License to your work. To apply the Apache License to your work,
+attach the following boilerplate notice, with the fields enclosed by brackets "{}" replaced with your own identifying
+information. (Don't include the brackets!) The text should be enclosed in the appropriate comment syntax for the file
+format. We also recommend that a file or class name and description of purpose be included on the same "printed page"
+as the copyright notice for easier identification within third-party archives. Copyright""")
+APPENDIX_POST = _norm("""Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in
+compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless
+required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS"
+BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language
+governing permissions and limitations under the License.""")
+# A copyright line is "copyright [(c)] YEAR[S] HOLDER[.] [all rights reserved.]" (M38 r2 P2-1). The holder may not hold a
+# sentence (no . ; : ! ? inside) and may not use words that grant, limit or condition use; such a line is not dropped,
+# so the text no longer matches. This is a guard, not a parser: a restriction worded without these words still passes.
+YEARS = r"\d{4}(?:\s*[-,\u2013]\s*\d{4})*,?"
+HOLDER_RE = re.compile(r"^(?P<h>[^.;:!?]{1,200}?)\.?(?: all rights reserved\.?)?$")
+OPERATIVE = re.compile(r"\b(?:may|must|shall|not|no|only|unless|except\w*|prohibit\w*|forbid\w*|permi\w*|commercial\w*"
+                       r"|restrict\w*|licen[cs]\w*|terms?|conditions?|software|use[ds]?|without)\b")
+COPYRIGHT_RE = re.compile(r"^(?:copyright(?: \(c\)| \u00a9)?|\(c\)|\u00a9) (?P<rest>" + YEARS + r" .+)$")
+
+
+def _years_holder_ok(s):
+    """'YEAR[S] HOLDER[.] [all rights reserved.]' with a plain holder name."""
+    m = re.match("^" + YEARS + r" (.+)$", s)
+    h = HOLDER_RE.match(m.group(1)) if m else None
+    return bool(h) and not OPERATIVE.search(h.group("h"))
+
+
+def _copyright_line(s):
+    m = COPYRIGHT_RE.match(s)
+    return bool(m) and _years_holder_ok(m.group("rest"))
+
+
+def _appendix_ok(tail):
+    if not tail:
+        return True
+    for o, c in ("{}", "[]"):
+        pre = APPENDIX_PRE.replace('"{}"', '"%s%s"' % (o, c))
+        if tail.startswith(pre + " ") and tail.endswith(" " + APPENDIX_POST):
+            mid = tail[len(pre):len(tail) - len(APPENDIX_POST)].strip()
+            if mid == "%syyyy%s %sname of copyright owner%s" % (o, c, o, c) or _years_holder_ok(mid):
+                return True
+    return False
 
 
 def identify(text):
@@ -83,16 +129,50 @@ def identify(text):
     lines = [l.strip() for l in text.splitlines() if l.strip()]
     if lines and _norm(lines[0]) in MIT_TITLES:
         lines.pop(0)
-    while lines and _norm(lines[0]).startswith(("copyright", "(c)")):
+    while lines and _copyright_line(_norm(lines[0])):
         lines.pop(0)
     if _norm(" ".join(lines)) == MIT_BODY:
         return "MIT"
     t = _norm(text); j = t.find(APACHE_END)
     if j > 0 and hashlib.sha256(t[:j + len(APACHE_END)].encode("utf-8")).hexdigest() == APACHE_TERMS_SHA:
         tail = t[j + len(APACHE_END):].strip()
-        if not tail or (tail.startswith(APACHE_APPENDIX) and tail.endswith("limitations under the license.")):
+        if _appendix_ok(tail):
             return "Apache-2.0"
     return None
+
+
+_TOML_STR = r"""(?:"([^"\n]*)"|'([^'\n]*)')"""
+
+
+def _pyproject_license(py):
+    """The [project] license as ("text", value) or ("file", path): license = "X" or 'X', license = { text = .. } or
+    { file = .. }, or a [project.license] table. ("text", None) when none is found. Not a full TOML parser."""
+    def section(name):
+        m = re.search(r"(?m)^\[\s*" + re.escape(name) + r"\s*\]\s*$", py)
+        if not m:
+            return None
+        n = re.search(r"(?m)^\[", py[m.end():])
+        return py[m.end():m.end() + n.start()] if n else py[m.end():]
+
+    def keyval(body, key):
+        m = re.search(r"(?:^|[\s{,])" + key + r"\s*=\s*" + _TOML_STR, body, re.M)
+        return (m.group(1) if m.group(1) is not None else m.group(2)) if m else None
+
+    proj = section("project")
+    for body in ([proj] if proj is not None else []) + [py]:
+        m = re.search(r"(?m)^license\s*=\s*(?:" + _TOML_STR + r"|\{([^}\n]*)\})", body)
+        if m:
+            if m.group(3) is None:
+                return "text", m.group(1) if m.group(1) is not None else m.group(2)
+            f = keyval(m.group(3), "file")
+            return ("file", f) if f is not None else ("text", keyval(m.group(3), "text"))
+        if proj is not None:
+            break
+    tab = section("project.license")
+    if tab is not None:
+        f = keyval(tab, "file")
+        return ("file", f) if f is not None else ("text", keyval(tab, "text"))
+    return "text", None
 
 
 def spdx(v):
@@ -154,8 +234,19 @@ def check(root, manifest=None, exclude=()):
 
     py = _read(root / "pyproject.toml")
     if py is not None:
-        m = re.search(r'(?m)^license\s*=\s*(?:\{\s*text\s*=\s*"([^"]*)"\s*\}|"([^"]*)")', py)
-        declared("pyproject.toml", (m.group(1) or m.group(2)) if m else None, "pyproject license")
+        kind, val = _pyproject_license(py)
+        if kind == "file":
+            lp = root / val
+            if os.path.isabs(val) or ".." in Path(val).parts or not lp.is_file():
+                F.append({"code": "license_undeclared", "path": "pyproject.toml",
+                          "detail": "pyproject license file %r is not a file inside ROOT" % val[:80]})
+            elif lp.resolve() == (root / "LICENSE").resolve():
+                decl.append({"path": "pyproject.toml", "declared": actual or "LICENSE", "how": "pyproject license file"})
+            else:
+                other = identify(_read(lp) or "")
+                declared("pyproject.toml", other or "unrecognized text in %s" % val[:80], "pyproject license file")
+        else:
+            declared("pyproject.toml", val, "pyproject license")
     for p in _walk(root, root, ex):
         if p.name != "plugin.json":
             continue
@@ -234,6 +325,8 @@ def _atomic(out, data):
     out = Path(out)
     if not out.parent.is_dir():
         raise Invalid("--out folder does not exist: %s" % out.parent.as_posix())
+    if out.is_dir():
+        raise Invalid("--out names a folder, not a file: %s" % out.as_posix())
     fd, tmp = tempfile.mkstemp(dir=str(out.parent), prefix="." + out.name + ".")
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as f:
