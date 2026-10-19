@@ -122,11 +122,12 @@ Findings: `can_close_finding` / `close_finding` take `subject_revision` and `ver
 subject, a non-waived closure needs `verified_revision` (else `MISSING_VERIFIED_REVISION`) matching the
 subject (else `STALE_CLOSURE_EVIDENCE`; a malformed one is `INVALID_REVISION`); the closure records
 `closed_at_revision`. `closure_is_current(finding, revision)` reports `STALE_CLOSURE` (verified at another
-revision; conservative, any other revision counts), `UNBOUND_CLOSURE` (closed without a revision) or
-`NOT_CLOSED`. `reopen_finding` returns a closed finding to open with a reason of 12+ characters
+revision; conservative, any other revision counts), `UNBOUND_CLOSURE` (closed without a revision and
+without a waiver), or `NOT_CLOSED`. A closure that records a `waiver_id` is waiver-governed: `closure_is_current` returns current at any revision, and `reopen_finding` refuses with `WAIVER_GOVERNS`.
+`reopen_finding` returns a non-waiver closed finding to open with a reason of 12+ characters
 (`REOPEN_REASON_REQUIRED`), clearing the closer and revision and keeping the earlier evidence plus a reopen
-note, so closing again needs new independent evidence. Waivers are unchanged: a valid waiver closes a waived
-finding at any revision until it expires, and `reopen_finding` does not apply to waived findings.
+note, so closing again needs new independent evidence. A valid waiver closes a waived finding at any
+revision until it expires; expiry and revocation stay with `validate_waiver`.
 
 What this cannot do: tell whether a reviewer really examined the named revision (receipts stay
 declarations), or run git; callers supply revisions and digests from the artifact they release.
