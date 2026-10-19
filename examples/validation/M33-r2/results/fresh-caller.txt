@@ -1,0 +1,518 @@
+== 3.9.6 demo exit 1
+Which product bet for mid-size clinics (5-20 providers) should we fund next?: PREFERRED portal (owner Product lead (synthetic role), ICP mid-size clinics)
+  ai-schedule total 0.9500 to 0.9500
+  portal total 3.5000 to 3.9500
+  reports total 1.0500 to 2.3000; unknown: proof
+  VERIFY S-mkt (https://analyst.example.invalid/market/clinic-software) is 127 days old, max 30
+{
+ "as_of": "2026-10-06",
+ "cells": [
+  {
+   "claims": [
+    "C4"
+   ],
+   "conflict": false,
+   "dimension": "fit",
+   "high": "0",
+   "low": "0",
+   "mean": "0.0000",
+   "option": "ai-schedule"
+  },
+  {
+   "claims": [
+    "C11"
+   ],
+   "conflict": false,
+   "dimension": "pain",
+   "high": "1",
+   "low": "1",
+   "mean": "1.0000",
+   "option": "ai-schedule"
+  },
+  {
+   "claims": [
+    "C12"
+   ],
+   "conflict": false,
+   "dimension": "proof",
+   "high": "2",
+   "low": "2",
+   "mean": "2.0000",
+   "option": "ai-schedule"
+  },
+  {
+   "claims": [
+    "C3"
+   ],
+   "conflict": false,
+   "dimension": "fit",
+   "high": "4",
+   "low": "4",
+   "mean": "4.0000",
+   "option": "portal"
+  },
+  {
+   "claims": [
+    "C1",
+    "C5",
+    "C6"
+   ],
+   "conflict": false,
+   "dimension": "pain",
+   "high": "5",
+   "low": "4",
+   "mean": "4.7143",
+   "option": "portal"
+  },
+  {
+   "claims": [
+    "C8"
+   ],
+   "conflict": false,
+   "dimension": "proof",
+   "high": "2",
+   "low": "2",
+   "mean": "2.0000",
+   "option": "portal"
+  },
+  {
+   "claims": [
+    "C13"
+   ],
+   "conflict": false,
+   "dimension": "fit",
+   "high": "2",
+   "low": "2",
+   "mean": "2.0000",
+   "option": "reports"
+  },
+  {
+   "claims": [
+    "C2",
+    "C7"
+   ],
+   "conflict": false,
+   "dimension": "pain",
+   "high": "1",
+   "low": "1",
+   "mean": "1.0000",
+   "option": "reports"
+  },
+  {
+   "dimension": "proof",
+   "evidence": "none",
+   "option": "reports"
+  }
+ ],
+ "certainty": "ranges come only from the cited evidence; unknown dimensions span the whole scale. The owner decides.",
+ "claim_confidence": {
+  "C1": "high",
+  "C11": "high",
+  "C12": "high",
+  "C13": "medium",
+  "C2": "high",
+  "C3": "high",
+  "C4": "high",
+  "C5": "medium",
+  "C6": "medium",
+  "C7": "medium",
+  "C8": "high"
+ },
+ "contrary_evidence": [],
+ "deciding_evidence": [],
+ "estimates_made": "none: no market size or adoption figure is computed",
+ "excluded": [
+  {
+   "claim": "C10",
+   "reason": "stale mutable source; verify before use"
+  },
+  {
+   "claim": "C9",
+   "reason": "segment enterprise hospital system is outside the ICP mid-size clinics"
+  }
+ ],
+ "findings": [],
+ "icp": {
+  "definition": "clinics with 5 to 20 providers that book appointments by phone or paper today",
+  "segment": "mid-size clinics"
+ },
+ "owner": "Product lead (synthetic role)",
+ "package_sha256": "94642abc7c0450893b41003fcf066ed3de6d9bedfe6695475ab74f486a7f0620",
+ "preferred": "portal",
+ "question": "Which product bet for mid-size clinics (5-20 providers) should we fund next?",
+ "schema": "solaris.evidence-decision-report/1",
+ "status": "preferred",
+ "totals": {
+  "ai-schedule": {
+   "high": "0.9500",
+   "low": "0.9500",
+   "point": "0.9500",
+   "unknown_dimensions": []
+  },
+  "portal": {
+   "high": "3.9500",
+   "low": "3.5000",
+   "point": "3.8214",
+   "unknown_dimensions": []
+  },
+  "reports": {
+   "high": "2.3000",
+   "low": "1.0500",
+   "point": null,
+   "unknown_dimensions": [
+    "proof"
+   ]
+  }
+ },
+ "used_claims": 11,
+ "verify_before_use": [
+  {
+   "age_days": 127,
+   "claim": "C10",
+   "max_age_days": 30,
+   "retrieved_at": "2026-06-01",
+   "source": "S-mkt",
+   "url": "https://analyst.example.invalid/market/clinic-software"
+  }
+ ]
+}
+PASS o1 clean fixture prefers portal; out-of-ICP and stale market claim excluded; no invented TAM
+PASS o2 changed snapshot, invented quote, value not in quote, G13 mismatch and stated score mismatch all block
+PASS o3 preference flips when scores change; overlapping ranges give no robust choice with deciding cells
+PASS o4 a contrary claim is listed, marks the cell as conflicting and removes the robust preference
+PASS o5 unknown dimension spans 0 to 5; a fresh mutable source is used on its metric scale; G13 with gaps counts as low confidence; top-level TAM refused
+PASS o6 7 invalid packages refused, nothing written
+PASS o7 --out and verify; tampered result detected; failed run keeps earlier result; input overwrite refused
+PASS o8 40 seeded packages (7 with a robust winner) match an independent reference on totals and choice
+PASS o9 top-level adoption, adoption_rate, assumed_adoption and tam refused; a quantity dimension uses only claims with a numeric value in the quote
+PASS s1 no network, mail or process use in the tool; fixtures byte-identical
+ACCEPTED 10/10
+FAIL o1 clean fixture prefers portal; out-of-ICP and stale market claim excluded; no invented TAM
+FAIL o2 changed snapshot, invented quote, value not in quote, G13 mismatch and stated score mismatch all block
+FAIL o3 preference flips when scores change; overlapping ranges give no robust choice with deciding cells
+FAIL o4 error IndexError: list index out of range
+FAIL o5 unknown dimension spans 0 to 5; a fresh mutable source is used on its metric scale; G13 with gaps counts as low confidence; top-level TAM refused
+FAIL o6 7 invalid packages refused, nothing written
+FAIL o7 --out and verify; tampered result detected; failed run keeps earlier result; input overwrite refused
+    unseen 0: rc 0 pref O4 want None
+    unseen 1: rc 0 pref O0 want None
+    unseen 2: rc 0 pref O4 want None
+    unseen 3: rc 0 pref O2 want None
+    unseen 4: rc 0 pref O3 want None
+    unseen 5: rc 0 pref O1 want O1
+    unseen 6: rc 0 pref O1 want None
+    unseen 7: rc 0 pref O0 want O0
+    unseen 8: rc 0 pref O0 want O0
+    unseen 9: rc 0 pref O1 want None
+    unseen 10: rc 0 pref O0 want None
+    unseen 11: rc 0 pref O3 want O3
+    unseen 12: rc 0 pref O0 want None
+    unseen 13: rc 0 pref O0 want None
+    unseen 14: rc 0 pref O0 want None
+    unseen 15: rc 0 pref O1 want None
+    unseen 16: rc 0 pref O0 want None
+    unseen 17: rc 0 pref O0 want None
+    unseen 18: rc 0 pref O4 want O4
+    unseen 19: rc 0 pref O4 want None
+    unseen 20: rc 0 pref O0 want None
+    unseen 21: rc 0 pref O2 want None
+    unseen 22: rc 0 pref O0 want None
+    unseen 23: rc 0 pref O0 want None
+    unseen 24: rc 0 pref O1 want None
+    unseen 25: rc 0 pref O2 want None
+    unseen 26: rc 0 pref O1 want None
+    unseen 27: rc 0 pref O2 want None
+    unseen 28: rc 0 pref O2 want None
+    unseen 29: rc 0 pref O0 want None
+    unseen 30: rc 0 pref O2 want None
+    unseen 31: rc 0 pref O0 want O0
+    unseen 32: rc 0 pref O2 want None
+    unseen 33: rc 0 pref O2 want O2
+    unseen 34: rc 0 pref O5 want None
+    unseen 35: rc 0 pref O0 want None
+    unseen 36: rc 0 pref O3 want None
+    unseen 37: rc 0 pref O3 want None
+    unseen 38: rc 0 pref O1 want None
+    unseen 39: rc 0 pref O0 want None
+FAIL o8 40 seeded packages (7 with a robust winner) match an independent reference on totals and choice
+FAIL o9 top-level adoption, adoption_rate, assumed_adoption and tam refused; a quantity dimension uses only claims with a numeric value in the quote
+PASS s1 no network, mail or process use in the tool; fixtures byte-identical
+REJECTED 1/10
+FAIL o1 error KeyError: 'portal'
+FAIL o2 changed snapshot, invented quote, value not in quote, G13 mismatch and stated score mismatch all block
+FAIL o3 preference flips when scores change; overlapping ranges give no robust choice with deciding cells
+FAIL o4 error IndexError: list index out of range
+FAIL o5 error KeyError: 'portal'
+FAIL o6 7 invalid packages refused, nothing written
+FAIL o7 --out and verify; tampered result detected; failed run keeps earlier result; input overwrite refused
+    unseen 0: rc 0 pref O0 want None
+    unseen 1: rc 0 pref O0 want None
+    unseen 2: rc 0 pref O0 want None
+    unseen 3: rc 0 pref O0 want None
+    unseen 4: rc 0 pref O0 want None
+    unseen 5: rc 0 pref O0 want O1
+    unseen 6: rc 0 pref O0 want None
+FAIL o8 error KeyError: 'O0'
+FAIL o9 top-level adoption, adoption_rate, assumed_adoption and tam refused; a quantity dimension uses only claims with a numeric value in the quote
+PASS s1 no network, mail or process use in the tool; fixtures byte-identical
+REJECTED 1/10
+-- pycache dirs in copy: 0; tree changed: no; HOME entries: ./Library ./Library/Caches ./Library/Caches/com.apple.python 
+== 3.13.15 demo exit 1
+Which product bet for mid-size clinics (5-20 providers) should we fund next?: PREFERRED portal (owner Product lead (synthetic role), ICP mid-size clinics)
+  ai-schedule total 0.9500 to 0.9500
+  portal total 3.5000 to 3.9500
+  reports total 1.0500 to 2.3000; unknown: proof
+  VERIFY S-mkt (https://analyst.example.invalid/market/clinic-software) is 127 days old, max 30
+{
+ "as_of": "2026-10-06",
+ "cells": [
+  {
+   "claims": [
+    "C4"
+   ],
+   "conflict": false,
+   "dimension": "fit",
+   "high": "0",
+   "low": "0",
+   "mean": "0.0000",
+   "option": "ai-schedule"
+  },
+  {
+   "claims": [
+    "C11"
+   ],
+   "conflict": false,
+   "dimension": "pain",
+   "high": "1",
+   "low": "1",
+   "mean": "1.0000",
+   "option": "ai-schedule"
+  },
+  {
+   "claims": [
+    "C12"
+   ],
+   "conflict": false,
+   "dimension": "proof",
+   "high": "2",
+   "low": "2",
+   "mean": "2.0000",
+   "option": "ai-schedule"
+  },
+  {
+   "claims": [
+    "C3"
+   ],
+   "conflict": false,
+   "dimension": "fit",
+   "high": "4",
+   "low": "4",
+   "mean": "4.0000",
+   "option": "portal"
+  },
+  {
+   "claims": [
+    "C1",
+    "C5",
+    "C6"
+   ],
+   "conflict": false,
+   "dimension": "pain",
+   "high": "5",
+   "low": "4",
+   "mean": "4.7143",
+   "option": "portal"
+  },
+  {
+   "claims": [
+    "C8"
+   ],
+   "conflict": false,
+   "dimension": "proof",
+   "high": "2",
+   "low": "2",
+   "mean": "2.0000",
+   "option": "portal"
+  },
+  {
+   "claims": [
+    "C13"
+   ],
+   "conflict": false,
+   "dimension": "fit",
+   "high": "2",
+   "low": "2",
+   "mean": "2.0000",
+   "option": "reports"
+  },
+  {
+   "claims": [
+    "C2",
+    "C7"
+   ],
+   "conflict": false,
+   "dimension": "pain",
+   "high": "1",
+   "low": "1",
+   "mean": "1.0000",
+   "option": "reports"
+  },
+  {
+   "dimension": "proof",
+   "evidence": "none",
+   "option": "reports"
+  }
+ ],
+ "certainty": "ranges come only from the cited evidence; unknown dimensions span the whole scale. The owner decides.",
+ "claim_confidence": {
+  "C1": "high",
+  "C11": "high",
+  "C12": "high",
+  "C13": "medium",
+  "C2": "high",
+  "C3": "high",
+  "C4": "high",
+  "C5": "medium",
+  "C6": "medium",
+  "C7": "medium",
+  "C8": "high"
+ },
+ "contrary_evidence": [],
+ "deciding_evidence": [],
+ "estimates_made": "none: no market size or adoption figure is computed",
+ "excluded": [
+  {
+   "claim": "C10",
+   "reason": "stale mutable source; verify before use"
+  },
+  {
+   "claim": "C9",
+   "reason": "segment enterprise hospital system is outside the ICP mid-size clinics"
+  }
+ ],
+ "findings": [],
+ "icp": {
+  "definition": "clinics with 5 to 20 providers that book appointments by phone or paper today",
+  "segment": "mid-size clinics"
+ },
+ "owner": "Product lead (synthetic role)",
+ "package_sha256": "94642abc7c0450893b41003fcf066ed3de6d9bedfe6695475ab74f486a7f0620",
+ "preferred": "portal",
+ "question": "Which product bet for mid-size clinics (5-20 providers) should we fund next?",
+ "schema": "solaris.evidence-decision-report/1",
+ "status": "preferred",
+ "totals": {
+  "ai-schedule": {
+   "high": "0.9500",
+   "low": "0.9500",
+   "point": "0.9500",
+   "unknown_dimensions": []
+  },
+  "portal": {
+   "high": "3.9500",
+   "low": "3.5000",
+   "point": "3.8214",
+   "unknown_dimensions": []
+  },
+  "reports": {
+   "high": "2.3000",
+   "low": "1.0500",
+   "point": null,
+   "unknown_dimensions": [
+    "proof"
+   ]
+  }
+ },
+ "used_claims": 11,
+ "verify_before_use": [
+  {
+   "age_days": 127,
+   "claim": "C10",
+   "max_age_days": 30,
+   "retrieved_at": "2026-06-01",
+   "source": "S-mkt",
+   "url": "https://analyst.example.invalid/market/clinic-software"
+  }
+ ]
+}
+PASS o1 clean fixture prefers portal; out-of-ICP and stale market claim excluded; no invented TAM
+PASS o2 changed snapshot, invented quote, value not in quote, G13 mismatch and stated score mismatch all block
+PASS o3 preference flips when scores change; overlapping ranges give no robust choice with deciding cells
+PASS o4 a contrary claim is listed, marks the cell as conflicting and removes the robust preference
+PASS o5 unknown dimension spans 0 to 5; a fresh mutable source is used on its metric scale; G13 with gaps counts as low confidence; top-level TAM refused
+PASS o6 7 invalid packages refused, nothing written
+PASS o7 --out and verify; tampered result detected; failed run keeps earlier result; input overwrite refused
+PASS o8 40 seeded packages (7 with a robust winner) match an independent reference on totals and choice
+PASS o9 top-level adoption, adoption_rate, assumed_adoption and tam refused; a quantity dimension uses only claims with a numeric value in the quote
+PASS s1 no network, mail or process use in the tool; fixtures byte-identical
+ACCEPTED 10/10
+FAIL o1 clean fixture prefers portal; out-of-ICP and stale market claim excluded; no invented TAM
+FAIL o2 changed snapshot, invented quote, value not in quote, G13 mismatch and stated score mismatch all block
+FAIL o3 preference flips when scores change; overlapping ranges give no robust choice with deciding cells
+FAIL o4 error IndexError: list index out of range
+FAIL o5 unknown dimension spans 0 to 5; a fresh mutable source is used on its metric scale; G13 with gaps counts as low confidence; top-level TAM refused
+FAIL o6 7 invalid packages refused, nothing written
+FAIL o7 --out and verify; tampered result detected; failed run keeps earlier result; input overwrite refused
+    unseen 0: rc 0 pref O4 want None
+    unseen 1: rc 0 pref O0 want None
+    unseen 2: rc 0 pref O4 want None
+    unseen 3: rc 0 pref O2 want None
+    unseen 4: rc 0 pref O3 want None
+    unseen 5: rc 0 pref O1 want O1
+    unseen 6: rc 0 pref O1 want None
+    unseen 7: rc 0 pref O0 want O0
+    unseen 8: rc 0 pref O0 want O0
+    unseen 9: rc 0 pref O1 want None
+    unseen 10: rc 0 pref O0 want None
+    unseen 11: rc 0 pref O3 want O3
+    unseen 12: rc 0 pref O0 want None
+    unseen 13: rc 0 pref O0 want None
+    unseen 14: rc 0 pref O0 want None
+    unseen 15: rc 0 pref O1 want None
+    unseen 16: rc 0 pref O0 want None
+    unseen 17: rc 0 pref O0 want None
+    unseen 18: rc 0 pref O4 want O4
+    unseen 19: rc 0 pref O4 want None
+    unseen 20: rc 0 pref O0 want None
+    unseen 21: rc 0 pref O2 want None
+    unseen 22: rc 0 pref O0 want None
+    unseen 23: rc 0 pref O0 want None
+    unseen 24: rc 0 pref O1 want None
+    unseen 25: rc 0 pref O2 want None
+    unseen 26: rc 0 pref O1 want None
+    unseen 27: rc 0 pref O2 want None
+    unseen 28: rc 0 pref O2 want None
+    unseen 29: rc 0 pref O0 want None
+    unseen 30: rc 0 pref O2 want None
+    unseen 31: rc 0 pref O0 want O0
+    unseen 32: rc 0 pref O2 want None
+    unseen 33: rc 0 pref O2 want O2
+    unseen 34: rc 0 pref O5 want None
+    unseen 35: rc 0 pref O0 want None
+    unseen 36: rc 0 pref O3 want None
+    unseen 37: rc 0 pref O3 want None
+    unseen 38: rc 0 pref O1 want None
+    unseen 39: rc 0 pref O0 want None
+FAIL o8 40 seeded packages (7 with a robust winner) match an independent reference on totals and choice
+FAIL o9 top-level adoption, adoption_rate, assumed_adoption and tam refused; a quantity dimension uses only claims with a numeric value in the quote
+PASS s1 no network, mail or process use in the tool; fixtures byte-identical
+REJECTED 1/10
+FAIL o1 error KeyError: 'portal'
+FAIL o2 changed snapshot, invented quote, value not in quote, G13 mismatch and stated score mismatch all block
+FAIL o3 preference flips when scores change; overlapping ranges give no robust choice with deciding cells
+FAIL o4 error IndexError: list index out of range
+FAIL o5 error KeyError: 'portal'
+FAIL o6 7 invalid packages refused, nothing written
+FAIL o7 --out and verify; tampered result detected; failed run keeps earlier result; input overwrite refused
+    unseen 0: rc 0 pref O0 want None
+    unseen 1: rc 0 pref O0 want None
+    unseen 2: rc 0 pref O0 want None
+    unseen 3: rc 0 pref O0 want None
+    unseen 4: rc 0 pref O0 want None
+    unseen 5: rc 0 pref O0 want O1
+    unseen 6: rc 0 pref O0 want None
+FAIL o8 error KeyError: 'O0'
+FAIL o9 top-level adoption, adoption_rate, assumed_adoption and tam refused; a quantity dimension uses only claims with a numeric value in the quote
+PASS s1 no network, mail or process use in the tool; fixtures byte-identical
+REJECTED 1/10
+-- pycache dirs in copy: 0; tree changed: no; HOME entries: 

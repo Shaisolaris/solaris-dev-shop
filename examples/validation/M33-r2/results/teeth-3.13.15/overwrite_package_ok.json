@@ -1,0 +1,640 @@
+{
+ "tool": "/tmp/m33r2teeth-ybeyynq0/overwrite_package_ok/employees/product-project/product-manager/evidence_decision.py",
+ "python": "3.13.15",
+ "rows": [
+  {
+   "row": "E01 clean control: preferred portal; totals equal an independent Decimal model; C9 (segment) and C10 (stale) excluded; no market size computed",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "rc": 0,
+    "pref": "portal",
+    "mine": {
+     "portal": [
+      "3.5000",
+      "3.9500",
+      "3.8214"
+     ],
+     "ai-schedule": [
+      "0.9500",
+      "0.9500",
+      "0.9500"
+     ],
+     "reports": [
+      "1.0500",
+      "2.3000",
+      null
+     ]
+    },
+    "got": {
+     "ai-schedule": {
+      "high": "0.9500",
+      "low": "0.9500",
+      "point": "0.9500",
+      "unknown_dimensions": []
+     },
+     "portal": {
+      "high": "3.9500",
+      "low": "3.5000",
+      "point": "3.8214",
+      "unknown_dimensions": []
+     },
+     "reports": {
+      "high": "2.3000",
+      "low": "1.0500",
+      "point": null,
+      "unknown_dimensions": [
+       "proof"
+      ]
+     }
+    },
+    "excluded": [
+     "C10",
+     "C9"
+    ]
+   }
+  },
+  {
+   "row": "E02 no invented market numbers: top-level TAM/SAM/SOM/market_size/adoption refused and nothing written; a fresh analyst figure is score-checked, used only as evidence; invented values and quotes blocked",
+   "pass": true,
+   "sub": {
+    "top_tam": true,
+    "top_sam": true,
+    "top_som": true,
+    "top_market_size": true,
+    "top_adoption": true,
+    "fresh_market_number_score_checked": true,
+    "fresh_market_number_consistent_is_used_not_computed": true,
+    "value_not_in_quote": true,
+    "invented_quote": true,
+    "quote_whitespace_case_normalized_ok": true
+   },
+   "detail": {
+    "top_tam": [
+     true,
+     2
+    ],
+    "top_sam": [
+     true,
+     2
+    ],
+    "top_som": [
+     true,
+     2
+    ],
+    "top_market_size": [
+     true,
+     2
+    ],
+    "top_adoption": [
+     true,
+     2
+    ],
+    "fresh_market_number_score_checked": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "stated_score_mismatch"
+      ]
+     }
+    ],
+    "fresh_market_number_consistent_is_used_not_computed": [
+     true,
+     {
+      "rc": 0,
+      "proof": {
+       "claims": [
+        "C10",
+        "C8"
+       ],
+       "conflict": true,
+       "dimension": "proof",
+       "high": "5",
+       "low": "2",
+       "mean": "2.7500",
+       "option": "portal"
+      }
+     }
+    ],
+    "value_not_in_quote": [
+     true,
+     [
+      "value_not_in_quote"
+     ]
+    ],
+    "invented_quote": [
+     true,
+     [
+      "quote_not_in_source"
+     ]
+    ],
+    "quote_whitespace_case_normalized_ok": [
+     true,
+     []
+    ]
+   }
+  },
+  {
+   "row": "E03 source integrity: edited or missing snapshots, unknown sources, late retrieval, unscored claims and bad scores never feed a cell",
+   "pass": true,
+   "sub": {
+    "snapshot_edited": true,
+    "snapshot_missing": true,
+    "unknown_source": true,
+    "retrieved_after_as_of": true,
+    "unscored_claim": true,
+    "float_score_invalid": true,
+    "score_above_5_invalid": true
+   },
+   "detail": {
+    "snapshot_edited": [
+     true,
+     [
+      "snapshot_mismatch"
+     ]
+    ],
+    "snapshot_missing": [
+     true,
+     [
+      "snapshot_mismatch"
+     ]
+    ],
+    "unknown_source": [
+     true,
+     [
+      "unknown_source"
+     ]
+    ],
+    "retrieved_after_as_of": [
+     true,
+     2
+    ],
+    "unscored_claim": [
+     true,
+     [
+      "unscored_claim"
+     ]
+    ],
+    "float_score_invalid": [
+     true,
+     2
+    ],
+    "score_above_5_invalid": [
+     true,
+     2
+    ]
+   }
+  },
+  {
+   "row": "E04 conflicting evidence: a strong contrary interview claim makes the portal pain cell a conflict (1..5), lists it as contrary, and the decision becomes no_robust_choice naming that cell",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "rc": 1,
+    "status": "no_robust_choice",
+    "cell": {
+     "claims": [
+      "C1",
+      "C20",
+      "C5",
+      "C6"
+     ],
+     "conflict": true,
+     "dimension": "pain",
+     "high": "5",
+     "low": "1",
+     "mean": "3.6000",
+     "option": "portal"
+    },
+    "contrary": [
+     {
+      "against": "cell mean 3.6000",
+      "claim": "C20",
+      "dimension": "pain",
+      "option": "portal",
+      "score": "1"
+     }
+    ],
+    "deciding": [
+     {
+      "dimension": "pain",
+      "option": "portal",
+      "weighted_range": "1.8000",
+      "why": "evidence spans 1 to 5"
+     },
+     {
+      "dimension": "proof",
+      "option": "reports",
+      "weighted_range": "1.2500",
+      "why": "no evidence"
+     }
+    ],
+    "mine": {
+     "portal": [
+      "2.1500",
+      "3.9500",
+      "3.3200"
+     ],
+     "ai-schedule": [
+      "0.9500",
+      "0.9500",
+      "0.9500"
+     ],
+     "reports": [
+      "1.0500",
+      "2.3000",
+      null
+     ]
+    }
+   }
+  },
+  {
+   "row": "E05 the decision moves predictably: sweeping C1 over scores 0..5 and every confidence gives the model's totals and preference each time",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "bad": []
+   }
+  },
+  {
+   "row": "E06 unknown dimension spans 0..5 with no point and blocks a robust win; a mutable source is usable at max_age_days and excluded one day later",
+   "pass": true,
+   "sub": {
+    "unknown_dimension": true,
+    "mutable_age_30": true,
+    "mutable_age_31": true
+   },
+   "detail": {
+    "unknown_dimension": [
+     true,
+     {
+      "rc": 1,
+      "portal": {
+       "high": "4.2500",
+       "low": "2.3000",
+       "point": null,
+       "unknown_dimensions": [
+        "fit"
+       ]
+      }
+     }
+    ],
+    "mutable_age_30": [
+     true,
+     {
+      "rc": 0,
+      "used": true,
+      "verify": []
+     }
+    ],
+    "mutable_age_31": [
+     true,
+     {
+      "rc": 0,
+      "used": false,
+      "verify": [
+       {
+        "age_days": 31,
+        "claim": "C10",
+        "max_age_days": 30,
+        "retrieved_at": "2026-09-05",
+        "source": "S-mkt",
+        "url": "https://analyst.example.invalid/market/clinic-software"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "row": "E07 G13 evidence: gaps lower confidence to low; a wrong value, a missing contract and a stated score against the metric scale are named",
+   "pass": true,
+   "sub": {
+    "g13_gaps_low_confidence": true,
+    "g13_value_mismatch": true,
+    "g13_unavailable": true,
+    "stated_score_vs_metric": true
+   },
+   "detail": {
+    "g13_gaps_low_confidence": [
+     true,
+     {
+      "rc": 0,
+      "C8": "low",
+      "codes": []
+     }
+    ],
+    "g13_value_mismatch": [
+     true,
+     [
+      "g13_value_mismatch"
+     ]
+    ],
+    "g13_unavailable": [
+     true,
+     [
+      "g13_unavailable"
+     ]
+    ],
+    "stated_score_vs_metric": [
+     true,
+     [
+      "stated_score_mismatch"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "E08 recovery: --out refuses the package, an invalid run keeps the earlier result, verify names an edited or truncated result",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "out": 0,
+    "verify": 0,
+    "over_pkg": 0,
+    "pkg_unchanged": false,
+    "invalid": 2,
+    "kept": true,
+    "edited": 1,
+    "truncated": 2
+   }
+  },
+  {
+   "row": "E09 seeded soak: 30 random packages (2-4 options, random weights, scores, confidences, out-of-ICP claims, real quotes) match the independent model exactly",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "bad": []
+   }
+  },
+  {
+   "row": "E10 v2 package rules: weights must sum to exactly 1; a quantity dimension needs a value in every claim's quote; an out-of-ICP G13 claim is excluded like any other",
+   "pass": true,
+   "sub": {
+    "weights_sum_0_99_refused": true,
+    "weights_exact_other_spelling_ok": true,
+    "quantity_C1_without_value_flagged": true,
+    "quantity_numberless_quote_without_value_flagged_per_doc": true,
+    "quantity_C1_value_40_in_quote_ok": true,
+    "g13_claim_outside_icp_excluded": true
+   },
+   "detail": {
+    "weights_sum_0_99_refused": [
+     true,
+     2
+    ],
+    "weights_exact_other_spelling_ok": [
+     true,
+     0
+    ],
+    "quantity_C1_without_value_flagged": [
+     true,
+     [
+      "C1",
+      "C11",
+      "C2",
+      "C5"
+     ]
+    ],
+    "quantity_numberless_quote_without_value_flagged_per_doc": [
+     true,
+     [
+      "C1",
+      "C11",
+      "C2",
+      "C5"
+     ]
+    ],
+    "quantity_C1_value_40_in_quote_ok": [
+     true,
+     [
+      "C11",
+      "C2",
+      "C5"
+     ]
+    ],
+    "g13_claim_outside_icp_excluded": [
+     true,
+     [
+      "C10",
+      "C8",
+      "C9"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "O11 OBS: one blocked claim on a losing option (reports) while portal would still win robustly: the tool withholds the preference (doc: exit 1 'when no preferred option survives')",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "rc": 1,
+    "preferred": null,
+    "status": "blocked_evidence",
+    "findings": [
+     "quote_not_in_source"
+    ]
+   }
+  },
+  {
+   "row": "E11 r2 doc rule: any blocking finding withholds the preference (blocked_evidence, preferred null, exit 1) even when portal would still win; the clean package still prefers portal",
+   "pass": true,
+   "sub": {
+    "one_blocked_claim_withholds_preference": true,
+    "clean_still_prefers_portal": true
+   },
+   "detail": {
+    "one_blocked_claim_withholds_preference": [
+     true,
+     {
+      "rc": 1,
+      "preferred": null,
+      "status": "blocked_evidence"
+     }
+    ],
+    "clean_still_prefers_portal": [
+     true,
+     {
+      "rc": 0,
+      "preferred": "portal"
+     }
+    ]
+   }
+  },
+  {
+   "row": "E12 r2 repairs and beyond: adoption, adoption_rate, assumed_adoption, tam and market_size refused with exit 2 and nothing written whatever their value; quantity must be a boolean; a quantity claim is used with its stated number (40, '40 dollars') and flagged without one (detail names a numberless quote), for a spelled-out number, a digit fragment of the stated number or a JSON number; a metric-scale value that is a fragment of the stated number is not scored",
+   "pass": false,
+   "sub": {
+    "refused_adoption_'35%'": true,
+    "refused_adoption_rate_'0.35'": true,
+    "refused_assumed_adoption_0.35": true,
+    "refused_adoption_None": true,
+    "refused_tam_0": true,
+    "refused_market_size_''": true,
+    "quantity_string_true_refused": true,
+    "quantity_one_refused": true,
+    "quantity_null_refused": true,
+    "quantity_false_like_absent": true,
+    "q_C1_value_40_used": true,
+    "q_C1_value_40_dollars_used": true,
+    "q_C1_no_value_flagged": true,
+    "q_C5_numberless_flag_says_so": true,
+    "q_C5_value_ten_spelled_flagged": true,
+    "q_C1_value_fragment_4_of_40_flagged": false,
+    "q_value_json_number_refused_cleanly": true,
+    "metric_value_fragment_18_of_18000_not_scored": false
+   },
+   "detail": {
+    "refused_adoption_'35%'": [
+     true,
+     2
+    ],
+    "refused_adoption_rate_'0.35'": [
+     true,
+     2
+    ],
+    "refused_assumed_adoption_0.35": [
+     true,
+     2
+    ],
+    "refused_adoption_None": [
+     true,
+     2
+    ],
+    "refused_tam_0": [
+     true,
+     2
+    ],
+    "refused_market_size_''": [
+     true,
+     2
+    ],
+    "quantity_string_true_refused": [
+     true,
+     2
+    ],
+    "quantity_one_refused": [
+     true,
+     2
+    ],
+    "quantity_null_refused": [
+     true,
+     2
+    ],
+    "quantity_false_like_absent": [
+     true,
+     0
+    ],
+    "q_C1_value_40_used": [
+     true,
+     {
+      "rc": 1,
+      "flags": [],
+      "used": true
+     }
+    ],
+    "q_C1_value_40_dollars_used": [
+     true,
+     {
+      "rc": 1,
+      "flags": [],
+      "used": true
+     }
+    ],
+    "q_C1_no_value_flagged": [
+     true,
+     {
+      "rc": 1,
+      "flags": [
+       {
+        "code": "value_not_in_quote",
+        "detail": "quantity claim must state the number it uses",
+        "ref": "C1"
+       }
+      ],
+      "used": false
+     }
+    ],
+    "q_C5_numberless_flag_says_so": [
+     true,
+     {
+      "rc": 1,
+      "flags": [
+       {
+        "code": "value_not_in_quote",
+        "detail": "quantity claim must state the number it uses; the quote states no number",
+        "ref": "C5"
+       }
+      ],
+      "used": false
+     }
+    ],
+    "q_C5_value_ten_spelled_flagged": [
+     true,
+     {
+      "rc": 1,
+      "flags": [
+       {
+        "code": "value_not_in_quote",
+        "detail": "quantity value 'ten' is not a number",
+        "ref": "C5"
+       }
+      ],
+      "used": false
+     }
+    ],
+    "q_C1_value_fragment_4_of_40_flagged": [
+     false,
+     {
+      "rc": 1,
+      "flags": [],
+      "used": true
+     }
+    ],
+    "q_value_json_number_refused_cleanly": [
+     true,
+     2
+    ],
+    "metric_value_fragment_18_of_18000_not_scored": [
+     false,
+     {
+      "rc": 0,
+      "used": true,
+      "codes": [],
+      "proof": {
+       "claims": [
+        "C10",
+        "C8"
+       ],
+       "conflict": false,
+       "dimension": "proof",
+       "high": "3",
+       "low": "2",
+       "mean": "2.2500",
+       "option": "portal"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "row": "O13 OBS: refused-key spelling variants and a nested decision.adoption (doc: top-level keys only), a '40,0' quantity value",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "top_TAM": 0,
+    "top_Adoption": 0,
+    "top_market-size": 0,
+    "top_marketSize": 0,
+    "nested_decision_adoption": 0,
+    "q_value_40_comma_0": [
+     1,
+     [
+      "value_not_in_quote"
+     ]
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,12 @@
+Mon Oct 19 09:18:06 PDT 2026
+candidate 861167dd854156f69c6d4a62734ca6c6e45b81d1 parent(s) d63b1c146cf534f9b8575b0a61a51fa03c5b0c19
+02ba9c571b10ad1dba792d2ac5534bcad3171e67	refs/heads/main
+5666e7beb161d1252ddd5dcc0a166aca83255370	refs/heads/review/grok-g13-csv-reconciliation
+861167dd854156f69c6d4a62734ca6c6e45b81d1	refs/heads/review/grok-g33-evidence-decision
+4b491d707651cd5ff4afaf7c5edd8830a84afc6d	refs/heads/review/grok-m33-validation
+base d63b1c146cf534f9b8575b0a61a51fa03c5b0c19 is ancestor: yes; direct parent: yes
+G33 r1 parent: 5666e7beb161d1252ddd5dcc0a166aca83255370 (G13 r3 5666e7b expected)
+format-patch sha f8cec4252e2bef06fb9b711ba50632f79b89b520b5a70927c0db2487491be7ed patch file sha f8cec4252e2bef06fb9b711ba50632f79b89b520b5a70927c0db2487491be7ed handback f8cec4252e2bef06fb9b711ba50632f79b89b520b5a70927c0db2487491be7ed
+diff sha 676046c9b3ad1e19cde7a33eb28b9928da9e3d08e97b5f35aba6dff091f82c03
+manifest entries 5 mismatches 0
+manifest set == diff set

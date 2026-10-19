@@ -1,0 +1,6 @@
+== 3.9.6 | g33: Ran 19 tests in 8.888s  OK  | full: Ran 143 tests in 23.287s  OK  | builder-oracle: ACCEPTED 10/10 | builder-naive: REJECTED 1/10 | builder-noop: REJECTED 1/10 | m33-oracle: M33 ORACLE 13/14 core FAIL | m33-naive: M33 ORACLE 2/14 core FAIL | m33-noop: M33 ORACLE 2/14 core FAIL
+== 3.11.16 | g33: Ran 19 tests in 6.826s  OK  | full: Ran 143 tests in 15.889s  OK  | builder-oracle: ACCEPTED 10/10 | builder-naive: REJECTED 1/10 | builder-noop: REJECTED 1/10 | m33-oracle: M33 ORACLE 13/14 core FAIL | m33-naive: M33 ORACLE 2/14 core FAIL | m33-noop: M33 ORACLE 2/14 core FAIL
+== 3.12.14 | g33: Ran 19 tests in 6.684s  OK  | full: Ran 143 tests in 15.660s  OK  | builder-oracle: ACCEPTED 10/10 | builder-naive: REJECTED 1/10 | builder-noop: REJECTED 1/10 | m33-oracle: M33 ORACLE 13/14 core FAIL | m33-naive: M33 ORACLE 2/14 core FAIL | m33-noop: M33 ORACLE 2/14 core FAIL
+== 3.13.15 | g33: Ran 19 tests in 6.214s  OK  | full: Ran 143 tests in 14.898s  OK  | builder-oracle: ACCEPTED 10/10 | builder-naive: REJECTED 1/10 | builder-noop: REJECTED 1/10 | m33-oracle: M33 ORACLE 13/14 core FAIL | m33-naive: M33 ORACLE 2/14 core FAIL | m33-noop: M33 ORACLE 2/14 core FAIL
+pycache in copy: 0
+candidate status lines: 0
