@@ -1,0 +1,25 @@
+--- a/employees/infrastructure/network-engineer/netdiag.py	2026-10-18 12:30:34
++++ b/netdiag.py	2026-10-18 12:37:04
+@@ -245,7 +245,7 @@
+         if o.get("cert") is not None:
+             c = _obj(o["cert"], f"{w}.cert")
+             out["cert"] = {
+-                "san": sorted({_str(s, f"{w}.cert.san", 253).lower() for s in _list(c.get("san", []), f"{w}.cert.san")}),
++                "san": sorted({(lambda x: x.lower() if x.isascii() else x)(_str(s, f"{w}.cert.san", 253)) for s in _list(c.get("san", []), f"{w}.cert.san")}),
+                 "not_before": _time(c["not_before"], f"{w}.cert.not_before").isoformat() if c.get("not_before") is not None else None,
+                 "not_after": _time(c["not_after"], f"{w}.cert.not_after").isoformat() if c.get("not_after") is not None else None,
+                 "chain_trusted": c.get("chain_trusted") if isinstance(c.get("chain_trusted"), bool) else None}
+@@ -296,10 +296,12 @@
+             continue
+         if kind == "ip":
+             continue  # an address entry never covers a host name
++        if not raw.isascii():
++            continue  # dNSName is IA5String; folded non-ASCII text (KELVIN SIGN) must not match
+         if name == host:
+             return True
+         if name.startswith("*.") and "." in host:
+-            if host.split(".", 1)[1] == name[2:] and host.split(".", 1)[0]:
++            if "." in name[2:] and host.split(".", 1)[1] == name[2:] and host.split(".", 1)[0]:
+                 return True
+     return False
+ 

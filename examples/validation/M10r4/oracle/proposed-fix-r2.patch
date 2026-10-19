@@ -1,0 +1,61 @@
+--- a/employees/infrastructure/network-engineer/netdiag.py
++++ b/employees/infrastructure/network-engineer/netdiag.py
+@@ -279,6 +279,11 @@
+ # Windows certutil "DNS Name=", "IP Address=". Anything else typed is not understood.
+ SAN_PREFIX_RE = re.compile(r"^\s*(dns ?name|dns|ip ?address|ip)\s*[:=]\s*", re.I)
+ OTHER_TYPE_RE = re.compile(r"^\s*[A-Za-z][A-Za-z0-9 ._-]{0,30}\s*[:=]")
++# SAN types that are never host names (RFC 6125: only dNSName and iPAddress identify a TLS server).
++NON_HOST_TYPE_RE = re.compile(r"^\s*(uri|email|rfc822 ?name|other ?name|dir ?name|directory ?address|"
++                              r"registered ?id|x400(?: ?name| ?address)?|edi ?party ?name)\s*[:=]", re.I)
++TYPED_SPLIT_RE = re.compile(r",\s*(?=(?:dns ?name|dns|ip ?address|ip|uri|email|rfc822 ?name|other ?name|dir ?name|"
++                            r"directory ?address|registered ?id|x400(?: ?name| ?address)?|edi ?party ?name)\s*[:=])", re.I)
+ # Multi-label public suffixes a wildcard may not sit on (a short list, not the full PSL).
+ PUBLIC_SUFFIXES = frozenset("""co.uk org.uk ac.uk gov.uk ltd.uk plc.uk me.uk net.uk sch.uk nhs.uk
+ com.au net.au org.au edu.au gov.au co.nz org.nz net.nz govt.nz co.jp ne.jp or.jp ac.jp go.jp
+@@ -296,7 +301,11 @@
+ 
+ def _san_parts(raw: str) -> List[str]:
+     """One SAN item may be the one-line openssl list 'DNS:a, DNS:b, IP Address:192.0.2.1'."""
+-    return [p for p in (x.strip() for x in raw.split(",")) if p] if "," in raw else [raw]
++    if "," not in raw:
++        return [raw]
++    typed = SAN_PREFIX_RE.match(raw) or NON_HOST_TYPE_RE.match(raw)
++    parts = TYPED_SPLIT_RE.split(raw) if typed else raw.split(",")
++    return [p for p in (x.strip() for x in parts) if p]
+ 
+ 
+ def _san_entry(raw: str) -> Tuple[Optional[str], str]:
+@@ -309,6 +318,8 @@
+     m = SAN_PREFIX_RE.match(raw)
+     if m:
+         kind, value = ("dns" if m.group(1).lower().startswith("dns") else "ip"), raw[m.end():].strip()
++    elif NON_HOST_TYPE_RE.match(raw):
++        return "other", raw.strip()
+     elif OTHER_TYPE_RE.match(raw) and not _is_ip(raw.strip()):
+         return "unknown", raw.strip()
+     else:
+@@ -338,7 +349,7 @@
+     except ValueError:
+         host_ip = None
+     for kind, name in _san_entries(san):
+-        if kind in ("unknown", "invalid"):
++        if kind in ("unknown", "invalid", "other"):
+             continue
+         if host_ip is not None:
+             # an address target is covered only by an address entry (bare or IP:), compared as addresses
+@@ -516,7 +527,14 @@
+                         problems.append(("TLS_CERT_NOT_YET_VALID", f"certificate valid only from {c['not_before']}"))
+                 elif c["not_after"]:
+                     notes.append("certificate dates not judged: the trace has no captured_at")
+-                unknown = [n for k, n in _san_entries(c["san"]) if k == "unknown"]
++                entries = _san_entries(c["san"])
++                hostnames = [n for k, n in entries if k in ("dns", "ip")]
++                # Non-host types are ignored beside real DNS/IP entries; with no host entry at all they stay
++                # "not understood" (no confident mismatch), as in r3.
++                unknown = [n for k, n in entries if k == "unknown" or (k == "other" and not hostnames)]
++                other = [n for k, n in entries if k == "other" and hostnames]
++                if other:
++                    notes.append(f"certificate SAN entries that are not host names were ignored: {sorted(other)[:4]}")
+                 if unknown:
+                     notes.append(f"certificate SAN entries not understood and not used: {sorted(unknown)[:4]}; "
+                                  "paste them as DNS:<name> or IP:<address>")

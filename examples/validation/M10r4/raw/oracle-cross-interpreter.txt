@@ -1,0 +1,8 @@
+== oracle under Python 3.12.14
+SUMMARY 10/10 pass; oracle ACCEPTS candidate
+== oracle under Python 3.9.6
+SUMMARY 10/10 pass; oracle ACCEPTS candidate
+== oracle under Python 3.11.16
+SUMMARY 10/10 pass; oracle ACCEPTS candidate
+== oracle under Python 3.13.15
+SUMMARY 10/10 pass; oracle ACCEPTS candidate

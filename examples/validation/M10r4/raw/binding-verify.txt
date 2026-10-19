@@ -1,0 +1,13 @@
+# binding check 2026-10-18 19:28:41 PDT (Grok self-validation)
+commit 865734e parent 69c60819eccadd6c7df4fcc514914efa11d86742
+G10-r5.patch == diff 69c6081..865734e: yes
+manifest entries 25 ok 25
+manifest set == diff set 02ba9c5..865734e: yes
+r5 diff stat:
+ .../infrastructure/network-engineer/learnings.md   |  1 +
+ .../infrastructure/network-engineer/netdiag.py     | 28 +++++++----
+ .../network-engineer/offline-trace-diagnosis.md    |  6 +--
+ examples/capabilities/G10/README.md                |  3 ++
+ examples/capabilities/G10/diagnosis_oracle.py      | 16 ++++++-
+ tests/test_g10_capability.py                       | 56 ++++++++++++++++++++++
+ 6 files changed, 98 insertions(+), 12 deletions(-)

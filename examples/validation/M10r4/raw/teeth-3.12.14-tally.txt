@@ -1,0 +1,18 @@
+all: n=37 m10_oracle=17 builder_oracle=35 builder_tests=36 r3_probes=12 r4_probes=12 union=36
+r2 set (23): n=23 m10_oracle=17 builder_oracle=23 builder_tests=23 r3_probes=3 r4_probes=2 union=23
+r3 set on r5 (7): n=7 m10_oracle=0 builder_oracle=6 builder_tests=6 r3_probes=4 r4_probes=3 union=6
+r5 new (7): n=7 m10_oracle=0 builder_oracle=6 builder_tests=7 r3_probes=5 r4_probes=7 union=7
+survivors (union): ['rg3_no_truncate']
+candidate: {'subject': 'candidate', 'm10_oracle': '10/10 pass; oracle ACCEPTS candidate ', 'builder_oracle': '14/14 pass; candidate ACCEPTED by oracle', 'builder_tests': 'rc=0 Ran 47 tests in 1.689s OK ', 'r3_probes': 'SUMMARY HOLDS=33 GAP=0 pattern=88e82f1e7', 'r4_probes': 'SUMMARY HOLDS=15 GAP=3 OBS=1 pattern=f14'}
+r4-69c6081 killed by: ['builder_oracle', 'builder_tests', 'r3_probes', 'r4_probes']
+stub-noop killed by: ['m10_oracle', 'builder_oracle', 'builder_tests']
+stub-naive killed by: ['m10_oracle', 'builder_oracle', 'builder_tests']
+builder-noop_stub killed by: ['m10_oracle', 'builder_oracle', 'builder_tests']
+builder-naive_stub killed by: ['m10_oracle', 'builder_oracle', 'builder_tests']
+q2_rv_bare_split ['builder_oracle', 'builder_tests', 'r3_probes', 'r4_probes']
+q2_split_nonhost_too ['builder_oracle', 'builder_tests', 'r3_probes', 'r4_probes']
+q1_rv_types ['builder_oracle', 'builder_tests', 'r3_probes', 'r4_probes']
+q1_no_url ['builder_oracle', 'builder_tests', 'r3_probes', 'r4_probes']
+q1_no_oidname ['builder_oracle', 'builder_tests', 'r3_probes', 'r4_probes']
+q1_note_old ['builder_oracle', 'builder_tests', 'r4_probes']
+detail_all_san ['builder_tests', 'r4_probes']
