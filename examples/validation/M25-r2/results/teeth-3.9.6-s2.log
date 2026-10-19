@@ -1,0 +1,11 @@
+{"baseline_core": 23, "probes": 15, "bt": "OK", "bo": "12/12 checks passed"}
+{"mutant": "acked_only_claimed", "m25_core": [], "probes": [], "builder_tests": true, "builder_oracle": false}
+{"mutant": "window_unbounded", "m25_core": ["K09"], "probes": ["W33"], "builder_tests": true, "builder_oracle": true}
+{"mutant": "r2_ack_owner_off", "m25_core": [], "probes": [], "builder_tests": false, "builder_oracle": false}
+{"mutant": "r2_damaged_exit2", "m25_core": [], "probes": ["R07", "R08", "R11"], "builder_tests": true, "builder_oracle": true}
+{"mutant": "r2_cmdlog_match", "m25_core": [], "probes": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "no_state_match", "m25_core": ["K12"], "probes": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "bool_as_int", "m25_core": ["K15"], "probes": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "prefix_hash_off", "m25_core": ["K20"], "probes": ["R03"], "builder_tests": true, "builder_oracle": true}
+{"mutant": "flush_no_gap_note", "m25_core": ["K07", "K09"], "probes": ["W33"], "builder_tests": true, "builder_oracle": true}
+DONE

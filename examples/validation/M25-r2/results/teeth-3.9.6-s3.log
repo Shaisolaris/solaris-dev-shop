@@ -1,0 +1,10 @@
+{"baseline_core": 23, "probes": 15, "bt": "OK", "bo": "12/12 checks passed"}
+{"mutant": "stale_applied", "m25_core": ["K06"], "probes": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "r2_window_r1_revert", "m25_core": [], "probes": ["W32"], "builder_tests": true, "builder_oracle": true}
+{"mutant": "r2_buffer_window_off", "m25_core": [], "probes": [], "builder_tests": true, "builder_oracle": false}
+{"mutant": "r2_record_symlink_ok", "m25_core": [], "probes": ["D03"], "builder_tests": false, "builder_oracle": false}
+{"mutant": "r2_ackcmd_match", "m25_core": [], "probes": [], "builder_tests": true, "builder_oracle": false}
+{"mutant": "rejected_claims", "m25_core": [], "probes": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "isfinite_off_EQUIV", "m25_core": [], "probes": [], "builder_tests": false, "builder_oracle": false}
+{"mutant": "commands_hash_off", "m25_core": ["K20"], "probes": [], "builder_tests": true, "builder_oracle": true}
+DONE

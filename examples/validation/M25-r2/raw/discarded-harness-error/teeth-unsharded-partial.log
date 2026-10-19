@@ -1,0 +1,6 @@
+{"baseline_core": 23, "probes": 15, "bt": "OK", "bo": "12/12 checks passed"}
+{"mutant": "no_claim_dedupe", "m25_core": ["K04", "K05", "K17", "K18", "K19", "K22"], "probes": ["R00", "R01", "R02"], "builder_tests": true, "builder_oracle": true}
+{"mutant": "claimed_only_EQUIV", "m25_core": [], "probes": [], "builder_tests": false, "builder_oracle": false}
+{"mutant": "acked_only_claimed", "m25_core": [], "probes": [], "builder_tests": true, "builder_oracle": false}
+{"mutant": "stale_applied", "m25_core": ["K06"], "probes": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "dup_seq_reapplied", "m25_core": ["K03"], "probes": [], "builder_tests": true, "builder_oracle": true}

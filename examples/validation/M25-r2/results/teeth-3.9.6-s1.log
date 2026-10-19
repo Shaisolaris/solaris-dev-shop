@@ -1,0 +1,11 @@
+{"baseline_core": 23, "probes": 15, "bt": "OK", "bo": "12/12 checks passed"}
+{"mutant": "claimed_only_EQUIV", "m25_core": [], "probes": [], "builder_tests": false, "builder_oracle": false}
+{"mutant": "window_le", "m25_core": ["K09"], "probes": ["W33"], "builder_tests": true, "builder_oracle": true}
+{"mutant": "r2_claim_ack_check_off", "m25_core": [], "probes": [], "builder_tests": true, "builder_oracle": false}
+{"mutant": "r2_counts_check_off", "m25_core": [], "probes": [], "builder_tests": false, "builder_oracle": false}
+{"mutant": "r2_device_match", "m25_core": [], "probes": ["I01"], "builder_tests": true, "builder_oracle": true}
+{"mutant": "no_device_match", "m25_core": ["K11"], "probes": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "no_end_flush", "m25_core": ["K07"], "probes": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "max_devices_off", "m25_core": [], "probes": [], "builder_tests": true, "builder_oracle": false}
+{"mutant": "reboot_keeps_next", "m25_core": ["K17", "K18"], "probes": [], "builder_tests": true, "builder_oracle": false}
+DONE

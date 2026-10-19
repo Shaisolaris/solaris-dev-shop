@@ -1,0 +1,11 @@
+{"baseline_core": 23, "probes": 15, "bt": "OK", "bo": "12/12 checks passed"}
+{"mutant": "no_claim_dedupe", "m25_core": ["K04", "K05", "K17", "K18", "K19", "K22"], "probes": ["R00", "R01", "R02"], "builder_tests": true, "builder_oracle": true}
+{"mutant": "dup_seq_reapplied", "m25_core": ["K03"], "probes": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "r2_body_hash_off", "m25_core": [], "probes": ["R11"], "builder_tests": true, "builder_oracle": true}
+{"mutant": "r2_applied_ge_off", "m25_core": [], "probes": [], "builder_tests": false, "builder_oracle": false}
+{"mutant": "r2_record_no_mkdir", "m25_core": [], "probes": ["D01", "D02", "D03", "D05", "I01", "I02", "R00", "R03", "R04", "R05", "R07", "R08", "R11", "W32", "W33", "_error [Errno 2] No such file or directory: 'results/teeth-3.9.6-s0/p-r2_record_no_mkdir/probes.json'"], "builder_tests": true, "builder_oracle": false}
+{"mutant": "r2_snapshot_check_off", "m25_core": [], "probes": ["R11"], "builder_tests": true, "builder_oracle": true}
+{"mutant": "no_unexplained", "m25_core": ["K14"], "probes": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "unknown_field_ok", "m25_core": ["K15"], "probes": [], "builder_tests": true, "builder_oracle": true}
+{"mutant": "dup_cmd_log_ok", "m25_core": ["K16"], "probes": [], "builder_tests": true, "builder_oracle": true}
+DONE

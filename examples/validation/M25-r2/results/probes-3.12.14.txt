@@ -1,0 +1,25 @@
+R00   PASS  {"rc": 1, "same_as_unbroken": true, "claims": 55}
+R01   FAIL  {"edited": "lines", "rc": 1, "same_as_unbroken": false, "resumed_from_line": 1250, "true_line": 250, "state_unchanged_on_refusal": false, "msg": "e\": 1250,\n  \"schema\": \"solaris.device-protocol-report/1\",\n  \"status\": \"anomalies\",\
+R02   FAIL  {"edited": "lines", "rc": 1, "same_as_unbroken": false, "resumed_from_line": 0, "true_line": 250, "state_unchanged_on_refusal": false, "msg": "line\": 0,\n  \"schema\": \"solaris.device-protocol-report/1\",\n  \"status\": \"anomalies\",\n  
+R03   PASS  {"edited": "offset", "rc": 2, "same_as_unbroken": false, "resumed_from_line": null, "true_line": 250, "state_unchanged_on_refusal": true, "msg": "or\": \"state: the events file no longer starts with the part already ingested; remove the sta
+R04   PASS  {"edited": "events_prefix_sha256", "rc": 2, "same_as_unbroken": false, "resumed_from_line": null, "true_line": 250, "state_unchanged_on_refusal": true, "msg": "or\": \"state: the events file no longer starts with the part already ingested; 
+R05   PASS  {"edited": "tool_version", "rc": 1, "same_as_unbroken": true, "resumed_from_line": 250, "true_line": 250, "state_unchanged_on_refusal": false, "msg": "ne\": 250,\n  \"schema\": \"solaris.device-protocol-report/1\",\n  \"status\": \"anomalie
+R06   FAIL  {"checkpoint": "[]", "rc": 2, "unchanged": true, "msg": "lid\", \"error\": \"state: st-R06.json belongs to another command log or tool; remove it to start over\"}"}
+R07   PASS  {"checkpoint": "(empty)", "rc": 4, "unchanged": true, "msg": "damaged_state\", \"error\": \"state: st-R07.json is not a readable checkpoint; remove it to start over\"}"}
+R08   PASS  {"checkpoint": "{\"schema\": 1", "rc": 4, "unchanged": true, "msg": "damaged_state\", \"error\": \"state: st-R08.json is not a readable checkpoint; remove it to start over\"}"}
+R09   FAIL  {"checkpoint": "null", "rc": 2, "unchanged": true, "msg": "lid\", \"error\": \"state: st-R09.json belongs to another command log or tool; remove it to start over\"}"}
+R10   FAIL  {"checkpoint": "\"text\"", "rc": 2, "unchanged": true, "msg": "lid\", \"error\": \"state: st-R10.json belongs to another command log or tool; remove it to start over\"}"}
+R11   PASS  {"rc": 4, "unchanged": true}
+L01   LIMIT {"forged": "claims removed (31), hash recomputed", "rc": 1, "claims": 24, "unbroken_claims": 55}
+L02   LIMIT {"forged": "duplicates_dropped +777, hash recomputed", "rc": 1, "dups": 961, "unbroken": 184}
+D01   PASS  {"rc": 0}
+D02   PASS  {"rc": 2, "msg": "invalid: --record: afile exists and is not a folder\nnothing written"}
+D03   PASS  {"rc": 2, "msg": "invalid: --record: linkdir exists and is not a folder\nnothing written"}
+D04   FAIL  {"rc": 1, "traceback": true, "msg": "12/pathlib.py\", line 1311, in mkdir\n    os.mkdir(self, mode)\nNotADirectoryError: [Errno 20] Not a directory: 'afile/sub'", "note": "parent is a file"}
+D05   PASS  {"rc": 0, "note": "existing empty folder"}
+W32   PASS  {"records_ahead_of_hole": 32, "gaps": 0, "rc": 0}
+W33   PASS  {"records_ahead_of_hole": 33, "gaps": 1, "rc": 1}
+I01   PASS  {"devices": ["v"], "rc": 1}
+I02   PASS  {"rc": 1, "claims": [], "note": "ack cmd 'c-1\\n' must not claim c-1"}
+L03   LIMIT {"rc": 0, "claims": [], "counts": {"applied": 3, "commands_rejected_by_device": 1, "duplicate_acks": 1}, "note": "doc: rejected ack makes no claim; repeats are duplicate_acks; behaviour pinned by builder"}
+TOTAL 15/21 FAILS ['R01', 'R02', 'R06', 'R09', 'R10', 'D04']

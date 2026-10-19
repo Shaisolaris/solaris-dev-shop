@@ -1,0 +1,40 @@
+Grok self-validation. M25 r2 teeth on G25 r2 a902bc4, /usr/bin/python3 3.9.6, 4 shards.
+no_claim_dedupe                  tests=K b_oracle=K grok=K core=K04,K05,K17,K18,K19,K22 probes=R00,R01,R02
+dup_seq_reapplied                tests=K b_oracle=K grok=K core=K03 probes=
+r2_body_hash_off                 tests=K b_oracle=K grok=K core= probes=R11
+r2_applied_ge_off                tests=- b_oracle=- grok=- core= probes=
+r2_record_no_mkdir               tests=K b_oracle=- grok=K core= probes=D01,D02,D03,D05,I01,I02,R00,R03,R04,R05,R07,R08,R11,W32,W33,_error [Errno 2] No such file or directory: 'results/teeth-3.9.6-s0/p-r2_record_no_mkdir/probes.json'
+r2_snapshot_check_off            tests=K b_oracle=K grok=K core= probes=R11
+no_unexplained                   tests=K b_oracle=K grok=K core=K14 probes=
+unknown_field_ok                 tests=K b_oracle=K grok=K core=K15 probes=
+dup_cmd_log_ok                   tests=K b_oracle=K grok=K core=K16 probes=
+claimed_only_EQUIV               tests=- b_oracle=- grok=- core= probes=
+window_le                        tests=K b_oracle=K grok=K core=K09 probes=W33
+r2_claim_ack_check_off           tests=K b_oracle=- grok=- core= probes=
+r2_counts_check_off              tests=- b_oracle=- grok=- core= probes=
+r2_device_match                  tests=K b_oracle=K grok=K core= probes=I01
+no_device_match                  tests=K b_oracle=K grok=K core=K11 probes=
+no_end_flush                     tests=K b_oracle=K grok=K core=K07 probes=
+max_devices_off                  tests=K b_oracle=- grok=- core= probes=
+reboot_keeps_next                tests=K b_oracle=- grok=K core=K17,K18 probes=
+acked_only_claimed               tests=K b_oracle=- grok=- core= probes=
+window_unbounded                 tests=K b_oracle=K grok=K core=K09 probes=W33
+r2_ack_owner_off                 tests=- b_oracle=- grok=- core= probes=
+r2_damaged_exit2                 tests=K b_oracle=K grok=K core= probes=R07,R08,R11
+r2_cmdlog_match                  tests=K b_oracle=K grok=- core= probes=
+no_state_match                   tests=K b_oracle=K grok=K core=K12 probes=
+bool_as_int                      tests=K b_oracle=K grok=K core=K15 probes=
+prefix_hash_off                  tests=K b_oracle=K grok=K core=K20 probes=R03
+flush_no_gap_note                tests=K b_oracle=K grok=K core=K07,K09 probes=W33
+stale_applied                    tests=K b_oracle=K grok=K core=K06 probes=
+r2_window_r1_revert              tests=K b_oracle=K grok=K core= probes=W32
+r2_buffer_window_off             tests=K b_oracle=- grok=- core= probes=
+r2_record_symlink_ok             tests=- b_oracle=- grok=K core= probes=D03
+r2_ackcmd_match                  tests=K b_oracle=- grok=- core= probes=
+rejected_claims                  tests=K b_oracle=K grok=- core= probes=
+isfinite_off_EQUIV               tests=- b_oracle=- grok=- core= probes=
+commands_hash_off                tests=K b_oracle=K grok=K core=K20 probes=
+
+TOTAL 35, errors 0 (EQUIV controls: ['claimed_only_EQUIV', 'isfinite_off_EQUIV'])
+builder tests kill 29; builder oracle kill 22; Grok (core+probes) kill 23; union 30
+survivors: ['r2_applied_ge_off', 'claimed_only_EQUIV', 'r2_counts_check_off', 'r2_ack_owner_off', 'isfinite_off_EQUIV']
