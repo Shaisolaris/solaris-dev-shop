@@ -8,7 +8,7 @@ A work order names its owner, a revision number, a hashed intake file and a fixe
   deliver   append one delivery record to the outbox ledger (the effect that must never be duplicated)
 
 Every finished step appends a receipt to a hash-chained journal: the step, the revision, the hashes of the
-inputs it used and of the outputs it produced. A later worker (any process that runs `run` on the same order)
+inputs it used (including the order owner for activate and brief) and of the outputs it produced. A later worker (any process that runs `run` on the same order)
 re-checks each receipt against the current inputs and outputs and reuses it only if both still match;
 otherwise the step is stale and is redone. Delivery is keyed by order, revision and brief hash, and the
 ledger is checked under a lock before appending, so a worker that crashed after delivering but before writing
@@ -269,10 +269,12 @@ def _run(o, sdir, worker, stop_after, fail_at):
         return None
 
     def current_inputs(step):
+        # Owner is part of the order identity for brief (and activate): a same-revision owner
+        # change must not reuse a brief that still names the previous owner.
         if step == "activate":
-            return {"intake": o["intake_sha"]}
+            return {"intake": o["intake_sha"], "owner": o["owner"]}
         if step == "brief":
-            return {"intake": o["intake_sha"], "STATUS.md": sha_file(status_p)}
+            return {"intake": o["intake_sha"], "STATUS.md": sha_file(status_p), "owner": o["owner"]}
         return {"brief": sha_file(brief_p)}
 
     def outputs_hold(step, rec):
