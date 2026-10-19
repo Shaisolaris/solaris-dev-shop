@@ -168,6 +168,7 @@ reports AOV alongside conversion so the threshold's effect is visible.
 4. Register topics via GraphQL Admin (REST webhook management is legacy for apps created after 2025-04-01).
 5. Core topics: orders/create, orders/paid, orders/fulfilled, products/update, customers/create, app/uninstalled; topic arrives in `X-Shopify-Topic`, shop in `X-Shopify-Shop-Domain`.
 6. Reconcile money-touching state with periodic polling - never webhooks alone.
+7. Stock and refund rules for the handler: prove them on the payments-specialist `payment_ledger.py` (G22) - reserve only available stock, restock only what shipped, hold out-of-order events.
 
 ## Platform routing (engagement triage)
 | Situation | Route |

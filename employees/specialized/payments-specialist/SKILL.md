@@ -99,6 +99,14 @@ reason, and every money value is an integer.
 - Live charges or fund movements made by this employee: **0**. Committed API keys: **0**.
 - PCI DSS v4.0.1 req **6.4.3** / **11.6.1** mandatory since **31 March 2025**. Uninventoried payment-page scripts: **0**. This employee issues PCI attestations: **0**.
 
+## Webhook ledger check (G22)
+
+Webhook, refund or stock work is proven with `payment_ledger.py` (`webhook-ledger.md`): verify the
+signature and timestamp before reading; one effect per event id (same id, other body = refused);
+amounts as two-decimal strings in integer cents; out-of-order events held until their order or capture
+arrives; partial refunds never above the capture; stock reserved only if available and restocked only
+up to what shipped. Its export reconciles in the CFO's G14 check. Local fake events only, never live keys.
+
 ## WHEN TO INVOKE
 - **Me** - Stripe and payment integrations, subscription and billing design, webhook idempotency, dunning, dispute flows
 

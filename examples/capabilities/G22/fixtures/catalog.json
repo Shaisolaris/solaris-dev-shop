@@ -1,0 +1,4 @@
+{"schema": "solaris.store-catalog/1", "currency": "USD", "note": "Synthetic store for the G22 demo.",
+ "skus": [{"sku": "mug-blue", "price": "12.50", "on_hand": 10},
+          {"sku": "tee-m", "price": "19.99", "on_hand": 4},
+          {"sku": "poster", "price": "0.10", "on_hand": 3}]}

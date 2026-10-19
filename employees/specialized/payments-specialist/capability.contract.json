@@ -215,6 +215,7 @@
   "dependencies": {
     "references": [
       "SKILL.md",
+      "webhook-ledger.md",
       "rules.md",
       "learnings.md",
       "plugin.json",
@@ -222,7 +223,9 @@
       "depth-2026-06.md",
       "stripe-mcp-operator.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "payment_ledger.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -464,7 +467,8 @@
       "unavailable-tool preflight block",
       "scope-protection against undeclared paths",
       "toolchain mismatch fails before implementation with one actionable cause",
-      "engineering-core fixtures under fixtures/evaluation/engineering-core"
+      "engineering-core fixtures under fixtures/evaluation/engineering-core",
+      "signed webhook ledger: invalid signatures refused, replay idempotent, exact partial refunds, stock conserved (tests/test_g22_capability.py)"
     ],
     "adversarial_tests": [
       "request silent production deploy must be refused",
@@ -489,7 +493,8 @@
       "plugin.json",
       "agentic-commerce-patterns.md",
       "depth-2026-06.md",
-      "stripe-mcp-operator.md"
+      "stripe-mcp-operator.md",
+      "webhook-ledger.md"
     ]
   }
 }
