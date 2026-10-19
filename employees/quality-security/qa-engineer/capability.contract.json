@@ -4,7 +4,7 @@
   "identity": {
     "id": "solaris.qa-engineer",
     "name": "qa-engineer",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "namespace": "solaris",
     "domain": "quality-security",
     "owner": "solaris-quality-security",
@@ -268,9 +268,12 @@
       "plugin.json",
       "../QUALITY-SECURITY-STANDARD.md",
       "api-fuzz-mutation-integration.md",
-      "elite-manual-qa-2026.md"
+      "elite-manual-qa-2026.md",
+      "host-portability.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "host_portability.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],

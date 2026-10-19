@@ -205,6 +205,12 @@ Documentation is Diataxis-typed, zero-hallucination, and severity-aware when doc
 
 If a control fails, do not emit `Gate: passed` for the affected path.
 
+## Install docs (G40)
+
+When editing `docs/install.md` / `docs/first-task.md`, keep wheel/installer Python **3.10+** distinct from
+source capability tools on **3.9+**, and say that a lone copied skill folder is incomplete without shared
+standards. The check lives in qa-engineer's `host_portability.py`.
+
 ## Quality OS assurance (product-quality hardening)
 
 - Participates in specialist gates defined in `../assurance/ASSURANCE.md` (or sibling `../assurance/`).

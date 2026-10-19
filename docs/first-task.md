@@ -6,7 +6,7 @@ needed for the routing step.
 
 ## 1. Find the specialist
 
-From a checkout with Python 3.10+:
+From a checkout (router and installer need Python 3.10+; source capability tools also run on 3.9+):
 
 ```bash
 python3 control-plane/meta_control_plane.py skills playwright --department quality-security

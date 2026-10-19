@@ -1,0 +1,101 @@
+"""G40: fresh install and host portability (host_portability.py)."""
+import json, os, shutil, subprocess, sys, tempfile, unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+X = ROOT / "examples/capabilities/G40"
+TOOL = ROOT / "employees/quality-security/qa-engineer/host_portability.py"
+ENV = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+
+
+def run(*args, tool=TOOL, timeout=300):
+    return subprocess.run([sys.executable, str(tool)] + [str(a) for a in args],
+                          capture_output=True, text=True, env=ENV, timeout=timeout)
+
+
+class G40Oracle(unittest.TestCase):
+    def test_oracle_accepted(self):
+        r = subprocess.run([sys.executable, str(X / "portability_oracle.py")], capture_output=True, text=True, env=ENV, timeout=600)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("ACCEPTED 8/8", r.stdout)
+
+    def test_naive_rejected(self):
+        r = subprocess.run([sys.executable, str(X / "portability_oracle.py"), "--tool", str(X / "naive_portability.py"),
+                            "--only", "o1,o7"], capture_output=True, text=True, env=ENV, timeout=300)
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("REJECTED", r.stdout)
+
+    def test_noop_rejected(self):
+        r = subprocess.run([sys.executable, str(X / "portability_oracle.py"), "--tool", str(X / "noop_portability.py"),
+                            "--only", "o1,o5"], capture_output=True, text=True, env=ENV, timeout=120)
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("REJECTED", r.stdout)
+
+
+class G40Direct(unittest.TestCase):
+    def test_skill_copy_qa_engineer_broken(self):
+        d = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, d, True)
+        r = run("skill-copy", ROOT, "quality-security/qa-engineer", "--dest", d, "--json")
+        self.assertEqual(r.returncode, 1, r.stderr)
+        j = json.loads(r.stdout)
+        self.assertEqual(j["status"], "broken")
+        self.assertTrue(any("QUALITY-SECURITY-STANDARD" in m["ref"] for m in j["missing"]))
+
+    def test_python_bounds(self):
+        r = run("python-bounds", ROOT, "--json")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        j = json.loads(r.stdout)
+        self.assertEqual(j["wheel_and_installer"], "3.10+")
+        self.assertEqual(j["source_tools"], "3.9+")
+        self.assertTrue(j["requires_python"].startswith(">="))
+
+    def test_invalid_and_out(self):
+        d = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, d, True)
+        r = run("python-bounds", d)
+        self.assertEqual(r.returncode, 2); self.assertIn("Nothing was written", r.stderr)
+        missing = d / "no" / "x.json"
+        r = run("python-bounds", ROOT, "--out", missing)
+        self.assertEqual(r.returncode, 2); self.assertNotIn("Traceback", r.stderr)
+
+    @unittest.skipIf(sys.version_info < (3, 10), "wheel-smoke needs 3.10+")
+    def test_wheel_smoke(self):
+        d = Path(tempfile.mkdtemp(prefix="g40t-")); self.addCleanup(shutil.rmtree, d, True)
+        r = run("wheel-smoke", ROOT, "--outside", d, "--json", timeout=600)
+        self.assertEqual(r.returncode, 0, r.stderr + r.stdout)
+        j = json.loads(r.stdout)
+        self.assertEqual(j["result"], "pass")
+        self.assertFalse(j["employees_in_wheel"])
+
+    def test_docs_state_bounds(self):
+        install = (ROOT / "docs/install.md").read_text()
+        self.assertIn("3.10+", install); self.assertIn("3.9+", install)
+        self.assertIn("host_portability.py", install)
+        self.assertIn("3.9+", (ROOT / "docs/first-task.md").read_text())
+
+    def test_role_declares_tool(self):
+        c = json.loads((ROOT / "employees/quality-security/qa-engineer/capability.contract.json").read_text())
+        self.assertIn("host_portability.py", c["dependencies"]["scripts"])
+        self.assertTrue((ROOT / "employees/quality-security/qa-engineer/host-portability.md").is_file())
+
+
+    def test_inspect_wheel_names(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("hp", str(TOOL))
+        m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+        bad = m.inspect_wheel_names(["employees/x/SKILL.md", "foo.pyc"])
+        codes = {f["code"] for f in bad}
+        self.assertIn("wheel_ships_employees", codes)
+        self.assertIn("wheel_contains_pyc", codes)
+        self.assertIn("wheel_missing_control_plane", codes)
+        good = m.inspect_wheel_names(["solaris_intake/control_plane/policy.json", "solaris_intake/__init__.py"])
+        self.assertEqual(good, [])
+
+    def test_role_rejects_parent_segments(self):
+        # resolves to a real skill if .. were allowed; must still be refused
+        role = "quality-security/qa-engineer/../../design/technical-writer"
+        r = run("skill-copy", ROOT, role)
+        self.assertEqual(r.returncode, 2, r.stderr)
+        self.assertIn("Nothing was written", r.stderr)
+
+if __name__ == "__main__":
+    unittest.main()

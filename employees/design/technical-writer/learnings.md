@@ -20,3 +20,5 @@
 - Upstream: llms.txt standard (license not stated: community spec (CC-ish; methodology)); evildmp/diataxis-documentation-framework (CC-BY-SA-4.0 (attribution)); OpenAPI 3.1 + Swagger UI/Redoc/Mintlify (license not stated: various); olivierlacan/keep-a-changelog (MIT); google/styleguide (CC-BY-3.0)
 - What was used: methodology absorbed: llms.txt standard; connected as external reference: evildmp/diataxis-documentation-framework, OpenAPI 3.1 + Swagger UI/Redoc/Mintlify, olivierlacan/keep-a-changelog, google/styleguide
 - License notes: licenses not recorded in scan for: llms.txt standard, OpenAPI 3.1 + Swagger UI/Redoc/Mintlify - verify before reuse; no code vendored
+
+- 2026-10-19 G40: document wheel 3.10+ vs source tools 3.9+; do not imply a copied skill folder is enough when ../ standards are required.

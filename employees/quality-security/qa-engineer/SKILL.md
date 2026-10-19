@@ -364,6 +364,13 @@ QA reports use severity + numbered repro + expected-vs-actual + evidence paths. 
 
 If a control fails, do not emit `Gate: passed` for the affected path.
 
+## Host portability (G40)
+
+Before claiming a fresh install works, run `host_portability.py report` on the checkout: wheel smoke outside
+the tree (3.10+), python bounds (wheel 3.10+ vs source tools 3.9+), and `skill-copy` for any role you tell a
+user to paste into a host skill directory. A lone copied folder that misses `../` standards is broken. See
+`host-portability.md`.
+
 ## Quality OS assurance (product-quality hardening)
 
 - Accountable gate for **functional** and **accessibility** defects.

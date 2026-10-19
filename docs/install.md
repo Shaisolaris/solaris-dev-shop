@@ -20,12 +20,26 @@ and uninstall. Do not delete a checkout until you have reviewed its local change
 The installer requires Python 3.10+. If `python3` is older, set `SOLARIS_PYTHON`
 to the executable for a supported version before running the installer.
 
+Python version bounds (keep these distinct):
+
+- **Wheel, `install.sh`, and the installed `solaris-intake` command:** Python **3.10+**
+  (`requires-python = ">=3.10"` in `pyproject.toml`). Build and smoke the wheel the same way CI does
+  (`python -m pip wheel . --no-deps`, install outside the checkout, run `solaris-intake self-test`).
+- **Source checkout capability tools** under `employees/` (stdlib scripts such as delivery evidence or
+  host portability): Python **3.9+**. They are not installed by the wheel.
+
+The optional wheel is the intake router only. It does not install the employee skill directories.
+Capability tools that load companions by relative path need the **full checkout** (or every referenced
+shared standard). Copying a single skill folder into a host skill directory breaks those references;
+`employees/quality-security/qa-engineer/host_portability.py skill-copy` reports the missing paths.
+
+
 From a repository checkout, `./install.sh` does the same against the checkout you are in.
 
 It verifies the tree, runs the control-plane self-test and the routing suite, and installs the `solaris-intake` command into `~/.local/bin`.
 
-The employee skills are copied into your agent; the optional Python package is
-the intake router only. It has not been published to PyPI. You can build a local
+Employee skills can be opened from the checkout or copied into your agent only as a complete
+bundle (companions and shared standards); the optional Python package is the intake router only. It has not been published to PyPI. You can build a local
 wheel with `python -m pip wheel . --no-deps`. The wheel ships the canonical
 `control-plane/` files even when Git cannot materialize the checkout's convenience
 symlink on Windows. It does not install the 61 employee skill directories into

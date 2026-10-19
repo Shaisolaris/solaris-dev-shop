@@ -12,7 +12,8 @@
     "rules.md",
     "learnings.md",
     "api-fuzz-mutation-integration.md",
-    "elite-manual-qa-2026.md"
+    "elite-manual-qa-2026.md",
+    "host-portability.md"
   ],
   "references_source_note": "Canonical wshobson accessibility-compliance + ui-design refs underpin a11y. an internal playwright-pro skill (6 workflows + Golden Rules + Cypress/Selenium migration) ABSORBED 2026-06-04 into rules.md (delta over existing Playwright coverage); source snapshot at solaris/archives/shai-laptop-skills-2026-06/playwright-pro/.",
   "mcp_servers": [],

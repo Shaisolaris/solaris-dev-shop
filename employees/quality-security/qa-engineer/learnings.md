@@ -39,3 +39,5 @@ Format: - **<YYYY-MM-DD> - <project/context>**: <what> *Proposed rule: <takeaway
 - Upstream: Schemathesis (license not stated: 3,318); Stryker-JS (license not stated: ~2,900); Testcontainers (license not stated: 2,500 (node); 4.8k Go, 4.3k .NET); Vitest (license not stated: ~16,600); faker-js (license not stated: 15,363)
 - What was used: methodology absorbed: Schemathesis, Stryker-JS, Testcontainers; methodology only: Vitest, faker-js
 - License notes: licenses not recorded in scan for: Schemathesis, Stryker-JS, Testcontainers, Vitest, faker-js - verify before reuse; no code vendored
+
+- 2026-10-19 G40: wheel/installer need 3.10+; source employee tools run on 3.9+; copying only qa-engineer drops ../QUALITY-SECURITY-STANDARD.md and ../assurance/*.

@@ -111,7 +111,8 @@ skill contracts and manifest tags. `--department` filters an exact department;
 the catalog against the source and active roster. Assignment packets include
 `skill_path` and `skill_source_url` (additive schema 1.2 fields). Paths refer to
 the source checkout, and links refer to the current default branch. The wheel
-does not contain or execute employee folders. Record a checkout commit when a
+does not contain or execute employee folders. Wheel and installer need Python 3.10+;
+source capability tools under `employees/` run on Python 3.9+. Record a checkout commit when a
 handoff needs an immutable source. See [the first-task walkthrough](first-task.md).
 
 ## Risk matching and production actions
