@@ -1,0 +1,8 @@
+# binding 2026-10-18 23:36:38 PDT
+head 92628c638d0c807e8a978fb863fdf90549a876f8 parent 1d2ec0f097c6351bc3fbced7fc73cc7526869e7a
+diff dca7056bf9d0a1a16c61619f6fd42be6349cf0eaa887b227662f106ab06d21aa
+patch dca7056bf9d0a1a16c61619f6fd42be6349cf0eaa887b227662f106ab06d21aa
+identical: yes
+manifest: 28 OK 0 not OK
+manifest set == diff set: no (the manifest covers the whole capability, 28 files; the diff touches a subset)
+diff files: 6; diff files not in manifest: 0

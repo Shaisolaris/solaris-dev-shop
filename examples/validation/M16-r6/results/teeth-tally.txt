@@ -1,0 +1,17 @@
+pre_verb_2           tests=K table=- r6probes=- r4adv=- r5probes=-
+qual_min2            tests=K table=K r6probes=K r4adv=K r5probes=K
+sep_no_comma         tests=K table=K r6probes=K r4adv=K r5probes=K
+addressed_off        tests=K table=K r6probes=K r4adv=K r5probes=K
+pre_verb_12          tests=K table=- r6probes=- r4adv=- r5probes=-
+head_end_off         tests=- table=- r6probes=- r4adv=- r5probes=-
+anchor_no_clause     tests=K table=K r6probes=- r4adv=- r5probes=-
+reader_no_bare_ai    tests=K table=K r6probes=K r4adv=- r5probes=K
+det_off              tests=K table=K r6probes=- r4adv=K r5probes=K
+post_mod_off         tests=K table=K r6probes=- r4adv=K r5probes=K
+opener_no_tofor      tests=- table=- r6probes=- r4adv=- r5probes=-
+sep_order_EQUIV      tests=- table=- r6probes=- r4adv=- r5probes=-
+
+mutants 12 (3.13.15)
+killed by Grok instruments: 7/12
+killed by builder G16 tests: 9/12
+survive all: ['head_end_off', 'opener_no_tofor', 'sep_order_EQUIV']

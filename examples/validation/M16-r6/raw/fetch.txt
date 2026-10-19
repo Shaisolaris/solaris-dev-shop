@@ -1,0 +1,4 @@
+# fetch 2026-10-18 23:36:38 PDT
+92628c638d0c807e8a978fb863fdf90549a876f8
+92628c638d0c807e8a978fb863fdf90549a876f8 parent 1d2ec0f097c6351bc3fbced7fc73cc7526869e7a G16 rework r6: M16 r5 findings as an addressee grammar (review only)
+  origin/review/grok-g16-grounded-evals
