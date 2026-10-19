@@ -14,6 +14,7 @@
 - **Memory writes are namespaced by scope key `{client}:{employee}:{project}`** (e.g. `acme:data-analyst:q3-churn-review`). Never write a cross-client fact to an unscoped key; never let one client's metric definition leak into another's namespace.
 - **SHA-pin any CI actions** (e.g. a Great Expectations or dbt check wired into CI) - pin to a commit SHA, not a floating tag.
 - **No em-dashes** in any employee file (fleet was purged of them).
+- **2026-10-18 - G13 CSV reconciliation**: a duplicated customer row in a lookup file doubled every order joined to it. Lesson: check the join key is unique before any segment cut, and require segment totals to add back to the headline total.
 
 ## Promotion log
 | Date | Rule | Location |

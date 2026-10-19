@@ -1,0 +1,88 @@
+{
+  "schema": "solaris.csv-reconcile/1",
+  "timezone": "America/Los_Angeles",
+  "facts": {
+    "file": "orders.csv",
+    "grain": [
+      "order_id"
+    ],
+    "columns": {
+      "order_id": "str",
+      "customer_id": "str",
+      "amount": "decimal",
+      "currency": "str",
+      "status": "str",
+      "event_time": "timestamp",
+      "loaded_at": "timestamp",
+      "updated_at": "timestamp"
+    },
+    "header_aliases": {
+      "Order ID": "order_id",
+      "Amount": "amount",
+      "Customer": "customer_id"
+    },
+    "required": [
+      "amount",
+      "currency",
+      "event_time"
+    ],
+    "uppercase": [
+      "currency"
+    ],
+    "thousands_separator": ",",
+    "duplicate_policy": "latest:updated_at",
+    "status_column": "status",
+    "exclude_status": [
+      "test",
+      "void"
+    ],
+    "loaded_at_column": "loaded_at"
+  },
+  "dimension": {
+    "file": "customers.csv",
+    "key": "customer_id",
+    "attributes": [
+      "region"
+    ],
+    "columns": {
+      "customer_id": "str",
+      "region": "str",
+      "updated_at": "timestamp"
+    },
+    "duplicate_policy": "reject"
+  },
+  "window": {
+    "column": "event_time",
+    "start": "2026-09-01T00:00:00-07:00",
+    "end": "2026-10-01T00:00:00-07:00"
+  },
+  "as_of": "2026-10-02T00:00:00Z",
+  "metrics": [
+    {
+      "name": "revenue",
+      "agg": "sum",
+      "column": "amount",
+      "by": [
+        "currency"
+      ]
+    },
+    {
+      "name": "orders",
+      "agg": "count_distinct",
+      "column": "order_id"
+    },
+    {
+      "name": "revenue_by_region",
+      "agg": "sum",
+      "column": "amount",
+      "by": [
+        "region",
+        "currency"
+      ]
+    }
+  ],
+  "controls": {
+    "file": "control.csv",
+    "sum_column": "amount"
+  }
+}

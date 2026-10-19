@@ -239,9 +239,12 @@
       "plugin.json",
       "ingestion-orchestration-lakehouse-quality.md",
       "mcp-toolbox-multidb-patterns.md",
-      "vector-embedding-pipelines-pgvector.md"
+      "vector-embedding-pipelines-pgvector.md",
+      "csv-reconciliation.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "csv_reconcile.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -303,6 +306,12 @@
           "id": "ref-vector-embedding-pipelines-pgvector-md",
           "kind": "file_exists",
           "target": "vector-embedding-pipelines-pgvector.md",
+          "required": false
+        },
+        {
+          "id": "ref-csv-reconciliation-md",
+          "kind": "file_exists",
+          "target": "csv-reconciliation.md",
           "required": false
         }
       ],
@@ -536,7 +545,8 @@
       "plugin.json",
       "ingestion-orchestration-lakehouse-quality.md",
       "mcp-toolbox-multidb-patterns.md",
-      "vector-embedding-pipelines-pgvector.md"
+      "vector-embedding-pipelines-pgvector.md",
+      "csv-reconciliation.md"
     ]
   }
 }
