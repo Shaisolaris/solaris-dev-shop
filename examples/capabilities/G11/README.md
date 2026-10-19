@@ -48,7 +48,7 @@ invalid bundles exit 2, then a valid run recovers; o11 a 30-day window (86 000+ 
 shuffled) with exact values and identical parallel runs; o12 no network use under a socket-denying
 guard and the bundle folder byte-identical; o13 telemetry split across two load balancers is summed per
 minute (the only error minute, whose shares differ, breaches the SLO), equal counts from two sources both
-count, and one source reporting two counts for a minute is a conflict.
+count, and one source reporting two counts for a minute is a conflict. o14 expected sources: a load balancer silent for 30 of 60 minutes leaves those minutes out and blocks met with a per-source label; a declared source that never reports makes every minute partial; names match trimmed and case-folded and two spellings of one name are refused; a source silent after a change blocks a do_not_rollback.
 
 The fixtures' re-delivered telemetry rows carry the source that first reported the minute: a re-delivery is
 the same source again, not a second load balancer.

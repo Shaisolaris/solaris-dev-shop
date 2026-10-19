@@ -35,12 +35,14 @@ def report(path):
 
 def expected(bundle):
     """Independent SLO arithmetic: per minute the sum over distinct sources, a source's exact repeats once,
-    a source with two different counts makes the minute conflicting; conflicts and gaps out."""
+    a source with two different counts makes the minute conflicting; conflicts, gaps and minutes missing an
+    expected source out."""
     seen = {}
     for r in bundle['telemetry']:
         seen.setdefault(r['minute'], {}).setdefault(r.get('source'), set()).add((r['good'], r['total']))
+    every = {k for srcs in seen.values() for k in srcs}  # expected: every source seen (no declared list here)
     keep = [(sum(next(iter(v))[0] for v in srcs.values()), sum(next(iter(v))[1] for v in srcs.values()))
-            for srcs in seen.values() if all(len(v) == 1 for v in srcs.values())]
+            for srcs in seen.values() if all(len(v) == 1 for v in srcs.values()) and set(srcs) == every]
     good, total = sum(g for g, _ in keep), sum(t for _, t in keep)
     o = decimal.Decimal(str(bundle['slo']['objective']))
     q = decimal.Decimal('0.000001')
@@ -61,7 +63,7 @@ class G11Capability(unittest.TestCase):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_oracle_accepts_the_tool_and_rejects_controls(self):
-        for target, want in ((TOOL, 'ACCEPTED: 13/13'), (EX / 'naive_stub.py', 'REJECTED'), (EX / 'noop_stub.py', 'REJECTED')):
+        for target, want in ((TOOL, 'ACCEPTED: 14/14'), (EX / 'naive_stub.py', 'REJECTED'), (EX / 'noop_stub.py', 'REJECTED')):
             p = subprocess.run([sys.executable, str(EX / 'incident_oracle.py'), '--', sys.executable, str(target)],
                                capture_output=True, text=True, env=ENV, timeout=600)
             self.assertIn(want, p.stdout.strip().splitlines()[-1], (target.name, p.stdout[-1500:], p.stderr[-800:]))
@@ -106,7 +108,11 @@ class G11Capability(unittest.TestCase):
     def test_per_source_counts_summed_hand_worked(self):
         b = json.loads((FIX / '01-clean-control.json').read_text())
         start = b['window']['start']
-        tel = [r for r in b['telemetry'] if r['minute'] != start]
+        # two load balancers in every minute: lb-a carries the fixture's traffic, lb-b reports zero, except
+        # in the first minute where both carry traffic
+        others = sorted({r['minute'] for r in b['telemetry']} - {start})
+        tel = [dict(r, source='lb-a') for r in b['telemetry'] if r['minute'] != start]
+        tel += [{'minute': mm, 'good': 0, 'total': 0, 'source': 'lb-b'} for mm in others]
         tel += [{'minute': start, 'good': 300, 'total': 400, 'source': 'lb-a'},   # differing shares: summed
                 {'minute': start, 'good': 600, 'total': 600, 'source': 'lb-b'},
                 {'minute': start, 'good': 300, 'total': 400, 'source': 'lb-a'}]   # exact repeat: once
@@ -117,7 +123,8 @@ class G11Capability(unittest.TestCase):
             r = report(p)
             self.assertEqual({k: r['slo'][k] for k in ('good', 'total', 'bad')}, {k: expected(dict(b, telemetry=tel))[k] for k in ('good', 'total', 'bad')})
             self.assertEqual(r['missing_telemetry']['conflicting_minutes'], 0)
-            self.assertEqual(r['import']['telemetry_minutes_multi_source'], 1)
+            self.assertEqual(r['import']['telemetry_minutes_multi_source'], len(others) + 1)
+            self.assertEqual(r['missing_telemetry']['partial_minutes'], 0)
             base = report(FIX / '01-clean-control.json')['slo']
             first = [x for x in b['telemetry'] if x['minute'] == start][0]
             self.assertEqual(r['slo']['total'], base['total'] - first['total'] + 1000)
@@ -127,6 +134,47 @@ class G11Capability(unittest.TestCase):
                 [{'minute': start, 'good': 990, 'total': 1000}, {'minute': start, 'good': 1000, 'total': 1000}]
             p.write_text(json.dumps(dict(b, telemetry=tel2)))
             self.assertEqual(report(p)['missing_telemetry']['conflicting_minutes'], 1)
+        finally:
+            shutil.rmtree(d, ignore_errors=True)
+
+    def test_silent_source_hand_worked(self):
+        # M11 r2: lb-b stops reporting for 30 of 60 minutes; r2 kept coverage 1.0 and halved traffic
+        b = json.loads((FIX / '01-clean-control.json').read_text())
+        mins = sorted({r['minute'] for r in b['telemetry']})
+        tel = [dict(r, source='lb-a', good=0) if r['minute'] == mins[20] else dict(r, source='lb-a') for r in b['telemetry']]
+        tel += [{'minute': mm, 'good': 1000, 'total': 1000, 'source': 'lb-b'} for k, mm in enumerate(mins) if not 10 <= k < 40]
+        tel = [r for r in tel if r['minute'] != mins[50]]  # one minute with no record at all
+        d = Path(tempfile.mkdtemp(prefix='g11-silent-'))
+        try:
+            p = d / 'b.json'
+            p.write_text(json.dumps(dict(b, telemetry=tel)))
+            r = report(p)
+            self.assertEqual(r['slo']['status'], 'insufficient_telemetry')
+            self.assertEqual((r['slo']['measured_minutes'], r['missing_telemetry']['partial_minutes'], r['missing_telemetry']['minutes']), (29, 30, 1))
+            # lb-a's all-error minute 20 is partial: left out, not an impact minute (lb-b's share is unknown)
+            self.assertEqual((r['impact']['minutes'], r['impact']['start']), (0, None))
+            self.assertEqual(r['missing_telemetry']['partial_ranges'], [{'start': mins[10], 'end': mins[40], 'minutes': 30}])
+            ps = {x['source']: x for x in r['sources']['per_source']}
+            self.assertEqual((ps['lb-a']['reported_minutes'], ps['lb-b']['reported_minutes'], ps['lb-b']['silent_while_others_report']), (59, 29, 30))
+            self.assertEqual(ps['lb-b']['coverage'], '0.483333')
+            self.assertEqual({k: r['slo'][k] for k in ('good', 'total')}, {k: expected(dict(b, telemetry=tel))[k] for k in ('good', 'total')})
+            self.assertTrue(any(x.startswith('source lb-b silent for 30 of 60') for x in r['labels']))
+            self.assertIn('source_silent', [x['kind'] for x in r['timeline']])
+            self.assertEqual(r['decision']['decision'], 'insufficient_evidence')  # no impact seen, lb-b silent after r42
+            # declared sources: names trimmed and case-folded; a declared source that never reports is a gap
+            b2 = dict(b, telemetry=[dict(r_, source=' LB-A') for r_ in b['telemetry']], telemetry_sources=['lb-a'])
+            p.write_text(json.dumps(b2))
+            r2 = report(p)
+            self.assertEqual((r2['slo']['status'], r2['sources']['basis'], r2['sources']['expected']), ('met', 'declared', ['lb-a']))
+            p.write_text(json.dumps(dict(b2, telemetry_sources=['lb-a', 'lb-c'])))
+            r3 = report(p)
+            self.assertEqual((r3['slo']['status'], r3['slo']['measured_minutes']), ('insufficient_telemetry', 0))
+            for bad in (dict(b, telemetry=tel + [dict(tel[0], source='LB-A ')]),            # two spellings of one name
+                        dict(b, telemetry=tel, telemetry_sources=['lb-a']),                 # lb-b not declared
+                        dict(b, telemetry=tel, telemetry_sources=['lb-a', 'lb-b', 'LB-A']),  # declared twice
+                        dict(b, telemetry=[{k: v for k, v in r_.items() if k != 'source'} for r_ in tel], telemetry_sources=['lb-a'])):
+                p.write_text(json.dumps(bad))
+                self.assertEqual(cli('report', p).returncode, 2)
         finally:
             shutil.rmtree(d, ignore_errors=True)
 

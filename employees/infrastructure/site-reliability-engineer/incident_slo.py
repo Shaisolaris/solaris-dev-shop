@@ -12,7 +12,10 @@ Records arrive late, twice and out of order. `source` names the reporter whose c
 minute's value is the sum over its distinct sources. A source that delivers a minute again with the
 same counts is counted once; a source that reports two different counts for one minute makes that
 minute "conflicting", and, like a minute with no record, it is labelled and left out of the measured
-values instead of being guessed. An
+values instead of being guessed. Expected sources (`telemetry_sources`, or every source seen in the
+window) must all report a minute for it to count: a minute with an expected source silent is partial,
+left out and labelled, and the SLO is never `met` while one exists. Source names are compared trimmed
+and case-folded; two spellings of one name are refused as ambiguous. An
 event id delivered twice with the same content is kept once; with different content the bundle
 is refused. The same bundle always gives the same bytes (no wall clock, sorted JSON), and
 re-importing the same records (duplicated, reordered) gives the same SLO, timeline and decision.
@@ -110,6 +113,11 @@ def _str(v: Any, where: str, limit: int = 300) -> str:
     return v
 
 
+def source_key(v: str) -> str:
+    """A source name as compared: surrounding space trimmed, inner runs of space collapsed, case folded."""
+    return " ".join(v.split()).casefold()
+
+
 def _name(v: Any, where: str) -> str:
     if not isinstance(v, str) or not NAME_RE.match(v):
         raise Invalid(f"{where}: expected a name of letters, digits, '.', '_' or '-'")
@@ -187,7 +195,7 @@ def normalise(doc: Any, base: Path) -> Dict[str, Any]:
     d = _obj(doc, "bundle")
     if d.get("schema") != BUNDLE_SCHEMA:
         raise Invalid(f"schema must be {BUNDLE_SCHEMA!r}")
-    known = {"schema", "service", "window", "slo", "telemetry", "events", "change", "diagnoses"}
+    known = {"schema", "service", "window", "slo", "telemetry", "telemetry_sources", "events", "change", "diagnoses"}
     extra = sorted(set(d) - known)
     if extra:
         raise Invalid(f"unknown field(s) {extra}; refusing to ignore evidence")
@@ -216,6 +224,15 @@ def normalise(doc: Any, base: Path) -> Dict[str, Any]:
     per_source: Dict[dt.datetime, Dict[str, List[Tuple[int, int]]]] = {}
     stats = {"telemetry_records": len(tel), "telemetry_duplicates": 0, "telemetry_minutes_multi_source": 0, "telemetry_late": 0,
              "telemetry_outside_window": 0, "event_records": len(evs), "event_duplicates": 0, "events_late": 0}
+    declared: Optional[List[str]] = None
+    if d.get("telemetry_sources") is not None:
+        ds = d["telemetry_sources"]
+        if not isinstance(ds, list) or not ds or len(ds) > 1000:
+            raise Invalid("telemetry_sources: expected a non-empty list of at most 1000 source names")
+        declared = [source_key(_str(x, f"telemetry_sources[{j}]", 100)) for j, x in enumerate(ds)]
+        if len(set(declared)) != len(declared):
+            raise Invalid("telemetry_sources: two names are the same after trimming and case folding")
+    spellings: Dict[str, set] = {}
     for i, r in enumerate(tel):
         r = _obj(r, f"telemetry[{i}]")
         m = _minute(r.get("minute"), f"telemetry[{i}].minute")
@@ -224,7 +241,12 @@ def normalise(doc: Any, base: Path) -> Dict[str, Any]:
             raise Invalid(f"telemetry[{i}]: good {good} exceeds total {total}")
         src = ""  # records without a source belong to one unnamed source
         if r.get("source") is not None:
-            src = _str(r.get("source"), f"telemetry[{i}].source", 100)
+            raw = _str(r.get("source"), f"telemetry[{i}].source", 100)
+            src = source_key(raw)
+            spellings.setdefault(src, set()).add(raw)
+        if declared is not None and src not in declared:
+            raise Invalid(f"telemetry[{i}].source {r.get('source')!r} is not in telemetry_sources" if src else
+                          f"telemetry[{i}] has no source but telemetry_sources is declared; every record must name one")
         if r.get("received_at") is not None:
             if (_time(r["received_at"], f"telemetry[{i}].received_at") - (m + MINUTE)).total_seconds() > LATE_AFTER_S:
                 stats["telemetry_late"] += 1
@@ -236,6 +258,16 @@ def normalise(doc: Any, base: Path) -> Dict[str, Any]:
             stats["telemetry_duplicates"] += 1
         else:
             vals.append((good, total))
+    for k, sp in sorted(spellings.items()):
+        if len(sp) > 1:
+            raise Invalid(f"source names {sorted(sp)!r} differ only in case or spacing; ambiguous (one reporter "
+                          f"or several?): fix the export or name them distinctly")
+    # expected sources: the declared list, or every source that reported inside the window
+    if declared is not None:
+        expected, basis = sorted(declared), "declared"
+    else:
+        expected, basis = sorted({k for srcs in per_source.values() for k in srcs}), "inferred"
+    partial = set()
     # one value per minute: the sum over distinct sources; a source with two different counts makes the
     # minute conflicting (its differing values are kept, so the minute has more than one entry)
     buckets: Dict[dt.datetime, List[Tuple[int, int]]] = {}
@@ -247,6 +279,8 @@ def normalise(doc: Any, base: Path) -> Dict[str, Any]:
             buckets[m] = [(sum(v[0][0] for v in srcs.values()), sum(v[0][1] for v in srcs.values()))]
             if len(srcs) > 1:
                 stats["telemetry_minutes_multi_source"] += 1
+            if sorted(srcs) != expected:
+                partial.add(m)  # an expected source is silent: the sum is not the whole traffic
 
     events: Dict[str, Dict[str, Any]] = {}
     for i, e in enumerate(evs):
@@ -302,7 +336,10 @@ def normalise(doc: Any, base: Path) -> Dict[str, Any]:
     diag_paths = sorted({(str(x), _inside(base, x, f"diagnoses[{i}]")) for i, x in enumerate(diags)})
     return {"service": service, "start": start, "end": end, "objective": objective, "burn": burn,
             "min_coverage": cov, "buckets": buckets, "events": events, "change": change,
-            "diagnoses": diag_paths, "stats": stats}
+            "diagnoses": diag_paths, "stats": stats,
+            "sources": {"expected": expected, "basis": basis,
+                        "reported": {k: {m for m, srcs in per_source.items() if k in srcs} for k in expected}},
+            "partial": partial}
 
 
 # -- analysis -------------------------------------------------------------------------
@@ -332,7 +369,7 @@ def _sums(b: Dict[str, Any], minutes: List[dt.datetime]) -> Tuple[int, int, int]
     good = total = n = 0
     for m in minutes:
         v = b["buckets"].get(m)
-        if v and len(v) == 1:
+        if v and len(v) == 1 and m not in b["partial"]:
             good += v[0][0]
             total += v[0][1]
             n += 1
@@ -403,6 +440,10 @@ def _decide(b: Dict[str, Any], minutes: List[dt.datetime], impact: Dict[str, Any
     if p["_cov"] < b["min_coverage"] or not total:
         return done("insufficient_evidence", f"only {measured} of {len(post)} minutes after {c['revision']} have telemetry; no rollback decision without it")
     start = impact["_start"]
+    quiet_post = [m for m in post if m in b["partial"]]
+    if start is None and quiet_post:
+        trace.append({"check": "every expected source reporting after the change", "observed": f"{len(quiet_post)} minute(s) with a silent source", "result": "no"})
+        return done("insufficient_evidence", f"an expected telemetry source is silent for {len(quiet_post)} minute(s) after {c['revision']}; its errors would not be seen, so no rollback decision")
     if start is None:
         trace.append({"check": "budget-burning impact", "observed": "no minute burned faster than the budget", "result": "none"})
         return done("do_not_rollback", f"no minute burned error budget faster than allowed after {c['revision']}")
@@ -454,9 +495,12 @@ def analyse(b: Dict[str, Any], sha: str) -> Dict[str, Any]:
     minutes = [b["start"] + i * MINUTE for i in range(n)]
     missing = [m for m in minutes if m not in b["buckets"]]
     conflicting = [m for m in minutes if len(b["buckets"].get(m, ())) > 1]
-    gaps = set(missing) | set(conflicting)
+    partial = [m for m in minutes if m in b["partial"]]
+    gaps = set(missing) | set(conflicting) | set(partial)
     good, total, measured = _sums(b, minutes)
     slo = _slo(b, good, total, measured, n)
+    if partial and slo["status"] == "met":
+        slo["status"] = "insufficient_telemetry"  # a silent source could hold the errors
     allowed_ratio = 1 - b["objective"]
     burning = [m for m in minutes if m not in gaps and b["buckets"][m][0][1] and
                Fraction(b["buckets"][m][0][1] - b["buckets"][m][0][0], b["buckets"][m][0][1]) > allowed_ratio]
@@ -469,6 +513,13 @@ def analyse(b: Dict[str, Any], sha: str) -> Dict[str, Any]:
             impact["end_bound"] = "at_or_after"
     diags = _diagnose(b)
     decision = _decide(b, minutes, impact, diags, gaps)
+    per_src = []
+    for k in b["sources"]["expected"]:
+        silent = [m for m in minutes if m not in b["sources"]["reported"][k]]
+        alone = [m for m in silent if m in b["partial"]]  # silent while another source reported
+        per_src.append({"source": k or "(unnamed)", "reported_minutes": n - len(silent),
+                        "coverage": dec(Fraction(n - len(silent), n)), "silent_ranges": _ranges(silent),
+                        "silent_while_others_report": len(alone), "partial_ranges": _ranges(alone)})
 
     tl: List[Dict[str, Any]] = []
     for e in b["events"].values():
@@ -486,6 +537,10 @@ def analyse(b: Dict[str, Any], sha: str) -> Dict[str, Any]:
     for r in _ranges(missing):
         tl.append({"at": r["start"], "kind": "telemetry_missing", "source": "telemetry", "id": "gap",
                    "detail": f"no telemetry for {r['minutes']} minute(s) until {r['end']}"})
+    for ps in per_src:
+        for r in ps["partial_ranges"]:
+            tl.append({"at": r["start"], "kind": "source_silent", "source": "telemetry", "id": ps["source"],
+                       "detail": f"source {ps['source']} reported nothing for {r['minutes']} minute(s) until {r['end']} while other sources did"})
     for r in _ranges(conflicting):
         tl.append({"at": r["start"], "kind": "telemetry_conflicting", "source": "telemetry", "id": "conflict",
                    "detail": f"two different counts for {r['minutes']} minute(s) until {r['end']}; left out"})
@@ -493,7 +548,7 @@ def analyse(b: Dict[str, Any], sha: str) -> Dict[str, Any]:
         det = f"G10 {dg['verdict']}" + (f" at {dg['layer']}" if dg.get("layer") else "") + \
             (f" ({dg['confidence']})" if dg.get("confidence") else "") if dg["status"] == "ok" else f"unreadable trace: {dg['error']}"
         tl.append({"at": iso(dg["at"]), "kind": "diagnosis", "source": "g10", "id": dg["trace"], "detail": det})
-    order = {k: i for i, k in enumerate(("telemetry_missing", "telemetry_conflicting", "change", "deploy", "impact_start",
+    order = {k: i for i, k in enumerate(("telemetry_missing", "source_silent", "telemetry_conflicting", "change", "deploy", "impact_start",
                                           "diagnosis", "detected", "declared", "status", "note", "mitigated",
                                           "rollback", "impact_end", "resolved"))}
     tl.sort(key=lambda x: (x["at"] is None, x["at"] or "", order.get(x["kind"], 99), x["id"]))
@@ -518,6 +573,11 @@ def analyse(b: Dict[str, Any], sha: str) -> Dict[str, Any]:
         labels.append(f"telemetry missing for {len(missing)} minute(s); left out of the SLO, not counted as good or bad")
     if conflicting:
         labels.append(f"conflicting telemetry for {len(conflicting)} minute(s); left out of the SLO")
+    for ps in per_src:
+        quiet = ps["silent_while_others_report"]
+        if quiet:
+            labels.append(f"source {ps['source']} silent for {quiet} of {n} minute(s) while other sources reported (coverage {ps['coverage']}); "
+                          f"minutes without every expected source are left out of the SLO, which cannot be reported as met")
     if impact["start_bound"] != "exact" and impact["_start"] is not None:
         labels.append("impact start is bounded by missing telemetry or the window start; response times are lower bounds")
 
@@ -530,7 +590,10 @@ def analyse(b: Dict[str, Any], sha: str) -> Dict[str, Any]:
         "window": {"start": iso(b["start"]), "end": iso(b["end"]), "minutes": n},
         "slo": slo,
         "missing_telemetry": {"minutes": len(missing), "ranges": _ranges(missing),
-                              "conflicting_minutes": len(conflicting), "conflicting_ranges": _ranges(conflicting)},
+                              "conflicting_minutes": len(conflicting), "conflicting_ranges": _ranges(conflicting),
+                              "partial_minutes": len(partial), "partial_ranges": _ranges(partial)},
+        "sources": {"basis": b["sources"]["basis"], "expected": [k or "(unnamed)" for k in b["sources"]["expected"]],
+                    "per_source": per_src},
         "impact": {"start": iso(impact["_start"]), "end": iso(impact["_end"]), "start_bound": impact["start_bound"],
                    "end_bound": impact["end_bound"], "minutes": len(burning)},
         "response": response, "labels": labels, "timeline": tl,

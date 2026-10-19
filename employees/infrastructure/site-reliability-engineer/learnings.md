@@ -1,6 +1,7 @@
 # Site Reliability Engineer - Learnings (Pending)
 
 ## Pending observations
+- **2026-10-19 - G11 r3 silent source**: summing per-source telemetry hid a load balancer that stopped reporting for 30 minutes: every minute still had a record, coverage stayed 1.0 and traffic was halved. *Rule: know which sources are expected, treat a minute missing one as partial, and never call an SLO met on partial sources.*
 - **2026-10-19 - G11 r2 per-source telemetry**: with traffic split across load balancers, treating "two counts for one minute" as a conflict dropped the only error minute and read the SLO as met at 1.000000, and treating equal counts as a duplicate halved the totals. *Proposed rule: sum per-source counts first; only one source reporting two different counts for a minute is a conflict.*
 - **2026-04-24 - Clean build**: Google SRE workbook multi-burn-rate alerting pattern is industry-standard now; codified in alert-design reference.
 - **2026-04-24 - Clean build**: "100% reliability is wrong target" - counter-intuitive but defensible core principle. Error budget lets teams ship.

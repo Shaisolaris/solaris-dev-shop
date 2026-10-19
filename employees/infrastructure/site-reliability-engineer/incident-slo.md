@@ -12,6 +12,7 @@ service      name of the service the SLO belongs to
 window       {start, end}: the service window, whole UTC minutes, end exclusive, at most 31 days
 slo          {objective (0..1, e.g. 0.99), rollback_burn_rate (default 10), min_coverage (default 0.9)}
 telemetry    [{minute, good, total, source?, received_at?}]: request counts per minute and source
+telemetry_sources  optional [source names]: the reporters expected in every minute
 events       [{id, at, kind, actor?, detail?, received_at?}]: kind is detected, declared, mitigated,
              resolved, deploy, rollback, status or note
 change       optional {revision, previous, deployed_at, migrates_data, data?: {snapshot, databases}}
@@ -34,6 +35,22 @@ Exit codes: 0 analysed; 2 invalid input, nothing written (a previous `--out` sta
   balancer, region or shard). A minute's value is the sum over its distinct sources, so telemetry split
   across load balancers is measured whole. Records without `source` belong to one unnamed source. Do
   not give a re-delivery or a mirror of the same traffic a different source name: it would be added.
+- **Expected sources**: `telemetry_sources` lists the reporters that must appear in every minute.
+  Without it, every source that reports anywhere in the window is expected in every minute (the report
+  says `basis: inferred`; a source that never reports at all can only be caught by declaring it). A
+  minute in which an expected source is silent while others report is **partial**: its sum is not the
+  service's traffic, so it is labelled, listed in `missing_telemetry.partial_ranges`, left out of the
+  measured values and from the impact minutes like a missing minute (one source's error ratio is not
+  the service's), and the SLO cannot be `met` while any partial minute exists
+  (status `insufficient_telemetry`; a breach seen in the complete minutes is still reported). The
+  `sources.per_source` list gives each source's reported minutes, coverage and silent ranges. A source
+  added or retired inside the window looks silent outside its lifetime; the tool cannot tell that from
+  an outage, so the label stands until someone confirms it.
+- **Source names**: names are compared trimmed, with inner spaces collapsed and case folded, so
+  `" LB-A"` in the records matches `lb-a` in `telemetry_sources`. Two spellings of one name inside the
+  telemetry (`lb-0` and `LB-0 `) are refused (exit 2): one reporter re-sent or two reporters, the tool
+  cannot tell. With `telemetry_sources` declared, a record naming another source, or naming none, is
+  refused, and so is a list naming one source twice.
 - **Duplicates**: a source delivering a minute again with the same counts is counted once; an event id
   delivered again with the same content is kept once (earliest `received_at`). An event id with two
   different contents refuses the bundle: the tool will not pick a story.
@@ -43,6 +60,9 @@ Exit codes: 0 analysed; 2 invalid input, nothing written (a previous `--out` sta
 - **Missing telemetry**: minutes with no record are listed as ranges, put on the timeline and left
   out. They are never counted as good. When measured minutes cover less than `min_coverage` of the
   window the SLO status is `insufficient_telemetry`, not met or breached.
+- **Import counts**: `import` reports telemetry_records, telemetry_duplicates (exact re-deliveries
+  counted once), telemetry_minutes_multi_source (minutes whose value is a sum over two or more
+  sources), telemetry_late, telemetry_outside_window, event_records, event_duplicates and events_late.
 - **Late and out-of-order**: records more than 300 s late are labelled `late` and still used; the
   timeline is sorted by time whatever the input order.
 - **Values**: availability = good / total over measured minutes; error budget = (1 - objective) x
@@ -55,7 +75,8 @@ Exit codes: 0 analysed; 2 invalid input, nothing written (a previous `--out` sta
 
 1. Change outside the window: `not_applicable`.
 2. Fewer than `min_coverage` of the minutes since the change measured: `insufficient_evidence`.
-3. No budget-burning minute: `do_not_rollback`. Impact began before the change: `do_not_rollback`.
+3. No budget-burning minute while an expected source is silent after the change:
+   `insufficient_evidence` (its errors would not be seen). No budget-burning minute: `do_not_rollback`. Impact began before the change: `do_not_rollback`.
    Impact start hidden by a gap that reaches back past the change: `insufficient_evidence`.
 4. Burn rate from the change to the end of the impact below `rollback_burn_rate`: `do_not_rollback`.
 5. A G10 trace captured during the impact that places the fault at the dns, route or tls layer

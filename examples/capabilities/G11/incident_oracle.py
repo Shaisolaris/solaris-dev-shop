@@ -61,12 +61,12 @@ def world(rng, n=120, objective="0.99", burn=5, deploy=(40, 17), impact=(43, 70)
         per[i] = (total - bad, total)
         if i in missing:
             continue
-        rec = {"minute": ts(base, i), "good": total - bad, "total": total, "source": "lb-%d" % (i % 3)}
+        rec = {"minute": ts(base, i), "good": total - bad, "total": total, "source": "lb-0"}
         if i % 7 == 0:
             rec["received_at"] = ts(base, i + 1, 400)  # late telemetry, still counted
         tel.append(rec)
         if i in conflicting:
-            tel.append({"minute": ts(base, i), "good": total - bad - 1, "total": total, "source": "lb-%d" % (i % 3)})
+            tel.append({"minute": ts(base, i), "good": total - bad - 1, "total": total, "source": "lb-0"})
     meas = [i for i in range(n) if i not in missing and i not in conflicting]
     good = sum(per[i][0] for i in meas)
     total = sum(per[i][1] for i in meas)
@@ -448,6 +448,58 @@ def main():
         return ok, "split load balancers summed (the only error minute breaches); equal counts from two sources both count; " \
             "one source with two counts is a conflict" if ok else "A %s %s B %s C %s" % (oka, {k: sa.get(k) for k in ("total", "bad", "status")}, okb, okc)
     check("o13 per-source telemetry summed", o13)
+
+    def o14():
+        # silent sources: one of two load balancers stops reporting (M11 r2 O09), a declared source that never
+        # reports, source-name spelling, and the rollback decision when a source is silent after a change
+        base = 1792396800 + rng.randrange(0, 60) * 86400
+        n = 60
+
+        def bundle(tel, **kw):
+            b = {"schema": "solaris.incident-bundle/1", "service": "svc-split-lb", "events": [],
+                 "window": {"start": ts(base, 0), "end": ts(base, n)},
+                 "slo": {"objective": 0.99, "rollback_burn_rate": 5, "min_coverage": 0.4}, "telemetry": tel}
+            b.update(kw)
+            return b
+        full = lambda srcs: [{"minute": ts(base, i), "good": 500, "total": 500, "source": s_} for i in range(n) for s_ in srcs]
+        bad = []
+        # A: lb-b silent for minutes 10-39: 30 partial minutes left out, per-source gap reported, met blocked
+        tel = [r for r in full(("lb-a", "lb-b")) if not (r["source"] == "lb-b" and ts(base, 10) <= r["minute"] < ts(base, 40))]
+        rc, r, _ = run(put(tmp, "o14a.json", bundle(tel)))
+        ps = {x.get("source"): x for x in g(r, "sources", "per_source") or []}
+        if not (rc == 0 and g(r, "slo", "status") == "insufficient_telemetry" and g(r, "slo", "total") == 30000
+                and g(r, "missing_telemetry", "partial_minutes") == 30 and (ps.get("lb-b") or {}).get("coverage") == "0.500000"
+                and (ps.get("lb-a") or {}).get("coverage") == "1.000000" and g(r, "sources", "basis") == "inferred"
+                and any("lb-b" in x and "cannot be reported as met" in x for x in g(r, "labels") or [])):
+            bad.append(("A silent half hour", rc, g(r, "slo", "status"), g(r, "missing_telemetry", "partial_minutes")))
+        # B: control, both report every minute: met, nothing partial
+        rc, r, _ = run(put(tmp, "o14b.json", bundle(full(("lb-a", "lb-b")))))
+        if not (rc == 0 and g(r, "slo", "status") == "met" and g(r, "missing_telemetry", "partial_minutes") == 0):
+            bad.append(("B control", rc, g(r, "slo", "status")))
+        # C: a declared source that never reports makes every minute partial
+        rc, r, _ = run(put(tmp, "o14c.json", bundle(full(("lb-a", "lb-b")), telemetry_sources=["lb-a", "lb-b", "lb-c"])))
+        ps = {x.get("source"): x for x in g(r, "sources", "per_source") or []}
+        if not (rc == 0 and g(r, "slo", "status") == "insufficient_telemetry" and (ps.get("lb-c") or {}).get("coverage") == "0.000000"
+                and g(r, "sources", "basis") == "declared"):
+            bad.append(("C declared never reports", rc, g(r, "slo", "status")))
+        # D: names trimmed and case-folded against the declared list; two spellings of one name are refused;
+        # an undeclared source is refused
+        tel = [dict(x, source={"lb-a": " LB-A", "lb-b": "lb-B "}[x["source"]]) for x in full(("lb-a", "lb-b"))]
+        rc1, r1, _ = run(put(tmp, "o14d1.json", bundle(tel, telemetry_sources=["lb-a", "LB-b"])))
+        tel2 = full(("lb-a",)) + [dict(x, source="LB-A ") for x in full(("lb-a",))[:1]]
+        rc2, _, _ = run(put(tmp, "o14d2.json", bundle(tel2)))
+        rc3, _, _ = run(put(tmp, "o14d3.json", bundle(full(("lb-a", "lb-z")), telemetry_sources=["lb-a"])))
+        if not (rc1 == 0 and g(r1, "slo", "status") == "met" and g(r1, "slo", "total") == 60000 and rc2 == 2 and rc3 == 2):
+            bad.append(("D names", rc1, g(r1, "slo", "status"), rc2, rc3))
+        # E: change in the window, no budget burned, lb-b silent after the change: no do_not_rollback
+        tel = [r_ for r_ in full(("lb-a", "lb-b")) if not (r_["source"] == "lb-b" and r_["minute"] >= ts(base, 50))]
+        b = bundle(tel, change={"revision": "rel-2", "previous": "rel-1", "deployed_at": ts(base, 30), "migrates_data": False})
+        rc, r, _ = run(put(tmp, "o14e.json", b))
+        if not (rc == 0 and dec_of(r) == "insufficient_evidence" and "silent" in (g(r, "decision", "reason") or "")):
+            bad.append(("E decision", rc, dec_of(r)))
+        ok = not bad
+        return ok, "a silent load balancer, a declared source that never reports, name spelling and a silent source after a change are labelled, block met or the rollback call, and are refused when ambiguous" if ok else "%s" % bad
+    check("o14 expected sources and per-source coverage", o14)
 
     passed = sum(1 for _, ok, _ in RESULTS if ok)
     print("%s: %d/%d checks passed (seed %d)" % ("ACCEPTED" if passed == len(RESULTS) else "REJECTED", passed, len(RESULTS), a.seed))

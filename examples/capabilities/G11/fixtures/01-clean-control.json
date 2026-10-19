@@ -29,13 +29,13 @@
   {
    "good": 1006,
    "minute": "2026-10-18T09:11:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1007
   },
   {
    "good": 1166,
    "minute": "2026-10-18T09:37:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1169
   },
   {
@@ -59,7 +59,7 @@
   {
    "good": 1146,
    "minute": "2026-10-18T09:31:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1147
   },
   {
@@ -71,7 +71,7 @@
   {
    "good": 1034,
    "minute": "2026-10-18T09:55:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1035
   },
   {
@@ -89,7 +89,7 @@
   {
    "good": 1198,
    "minute": "2026-10-18T09:27:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1199
   },
   {
@@ -101,19 +101,19 @@
   {
    "good": 1182,
    "minute": "2026-10-18T09:59:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1183
   },
   {
    "good": 1106,
    "minute": "2026-10-18T09:57:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1109
   },
   {
    "good": 1130,
    "minute": "2026-10-18T09:09:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1133
   },
   {
@@ -125,7 +125,7 @@
   {
    "good": 1174,
    "minute": "2026-10-18T09:21:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1177
   },
   {
@@ -150,7 +150,7 @@
    "good": 1050,
    "minute": "2026-10-18T09:23:00Z",
    "received_at": "2026-10-18T09:31:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1051
   },
   {
@@ -168,7 +168,7 @@
   {
    "good": 1010,
    "minute": "2026-10-18T09:49:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1013
   },
   {
@@ -180,20 +180,20 @@
   {
    "good": 1026,
    "minute": "2026-10-18T09:17:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1029
   },
   {
    "good": 1154,
    "minute": "2026-10-18T09:15:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1155
   },
   {
    "good": 1018,
    "minute": "2026-10-18T09:33:00Z",
    "received_at": "2026-10-18T09:41:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1021
   },
   {
@@ -235,13 +235,13 @@
   {
    "good": 1086,
    "minute": "2026-10-18T09:51:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1087
   },
   {
    "good": 1122,
    "minute": "2026-10-18T09:25:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1125
   },
   {
@@ -253,7 +253,7 @@
   {
    "good": 1094,
    "minute": "2026-10-18T09:35:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1095
   },
   {
@@ -271,7 +271,7 @@
   {
    "good": 1138,
    "minute": "2026-10-18T09:47:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1139
   },
   {
@@ -284,7 +284,7 @@
    "good": 1190,
    "minute": "2026-10-18T09:43:00Z",
    "received_at": "2026-10-18T09:51:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1191
   },
   {
@@ -303,13 +303,13 @@
    "good": 1110,
    "minute": "2026-10-18T09:03:00Z",
    "received_at": "2026-10-18T09:11:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1111
   },
   {
    "good": 1102,
    "minute": "2026-10-18T09:19:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1103
   },
   {
@@ -321,7 +321,7 @@
   {
    "good": 1062,
    "minute": "2026-10-18T09:45:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1065
   },
   {
@@ -333,7 +333,7 @@
   {
    "good": 1182,
    "minute": "2026-10-18T09:05:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1185
   },
   {
@@ -358,19 +358,19 @@
    "good": 1158,
    "minute": "2026-10-18T09:53:00Z",
    "received_at": "2026-10-18T10:01:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1161
   },
   {
    "good": 1058,
    "minute": "2026-10-18T09:07:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1059
   },
   {
    "good": 1034,
    "minute": "2026-10-18T09:01:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1037
   },
   {
@@ -388,26 +388,26 @@
   {
    "good": 1042,
    "minute": "2026-10-18T09:39:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1043
   },
   {
    "good": 1078,
    "minute": "2026-10-18T09:13:00Z",
    "received_at": "2026-10-18T09:21:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1081
   },
   {
    "good": 1114,
    "minute": "2026-10-18T09:41:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1117
   },
   {
    "good": 1070,
    "minute": "2026-10-18T09:29:00Z",
-   "source": "lb-1",
+   "source": "lb-0",
    "total": 1073
   },
   {
