@@ -1,0 +1,19 @@
+strict_keys_off tests_rc=1 failing: test_journal_edit_is_refused_and_status_reports_it 
+brief_no_owner tests_rc=1 failing: test_oracle_passes_on_the_runner test_oracle_rejects_the_naive_control 
+inputs_extra_ok tests_rc=1 failing: test_oracle_passes_on_the_runner test_oracle_rejects_the_naive_control 
+key_no_revision tests_rc=1 failing: test_delivery_key_binds_order_revision_and_brief 
+status_no_stale tests_rc=1 failing: test_stale_receipt_not_yet_redone_shows_pending 
+fail_record_skipped tests_rc=1 failing: test_oracle_passes_on_the_runner test_oracle_rejects_the_naive_control 
+chain_unchecked tests_rc=1 failing: test_journal_edit_is_refused_and_status_reports_it 
+activate_fail_ignored tests_rc=1 failing: test_oracle_passes_on_the_runner test_oracle_rejects_the_naive_control 
+ledger_torn_glued tests_rc=1 failing: test_torn_ledger_line_does_not_swallow_the_next_delivery 
+inputs_unchecked tests_rc=1 failing: test_oracle_passes_on_the_runner 
+no_ledger_lock_EQUIV tests_rc=0 failing: none
+abs_path_ok_EQUIV tests_rc=0 failing: none
+receipt_any_rev_EQUIV tests_rc=0 failing: none
+  oracle on mutant: C10 PASS {"rev2_rc": 0, "ledger_after_rev2": 2, "rev1_rc": 2, "unchanged": true, "out2": "WO-KITE-7 revision 2 (owner delivery-lead: K. Tester)
+  activate done (activation partial, changed 2)
+  brief    done
+  deliver  done (delivered)
+  note: activate receipt is stale (inputs changed); re"}
+restored ok

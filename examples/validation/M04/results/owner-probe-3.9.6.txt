@@ -1,0 +1,14 @@
+stop-after brief: 3
+rerun with new owner: rc 0
+WO-KITE-7 revision 1 (owner support: Someone Else)
+  activate reused (receipt by ana)
+  brief    reused (receipt by ana)
+  deliver  done (delivered)
+
+brief owner lines: ['- Owner: delivery-lead: K. Tester', '- Steps: activate, brief, deliver. Live deployment and every external step stay with the owner.']
+ledger record: {"brief_sha256":"3c41b8c59b99f7baa8f78484c7fecacb1e5c1bea8eb57509169549828350cd49","delivered_by":"ben","key":"c6284bd2c547c9de2815c33a8d1202b27dec2c42da11c5292e9d80791783f01c","order_id":"WO-KITE-7","owner":"support: Someone Else","revision":1}
+status: WO-KITE-7 revision 1 (owner support: Someone Else)
+  activate done by ana
+  brief    done by ana
+  deliver  done by ben
+

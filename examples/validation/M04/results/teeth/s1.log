@@ -1,0 +1,10 @@
+{"mutant": "key_no_revision", "kills_result": [], "kills_detail_only": []}
+{"mutant": "trust_receipt", "kills_result": ["C06", "C07"], "kills_detail_only": ["C06b"]}
+{"mutant": "no_ledger_lock_EQUIV", "kills_result": [], "kills_detail_only": []}
+{"mutant": "torn_not_cut", "kills_result": ["C13"], "kills_detail_only": []}
+{"mutant": "takeover_always", "kills_result": [], "kills_detail_only": ["C16"]}
+{"mutant": "rev_bool_ok", "kills_result": ["C11"], "kills_detail_only": []}
+{"mutant": "status_no_stale", "kills_result": [], "kills_detail_only": []}
+{"mutant": "receipt_key_blank", "kills_result": [], "kills_detail_only": ["C06", "C07"]}
+{"mutant": "fail_record_skipped", "kills_result": [], "kills_detail_only": []}
+DONE

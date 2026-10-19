@@ -1,0 +1,264 @@
+[
+ {
+  "id": "C01",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "ledger": 0,
+   "brief": false,
+   "status_rc": 0,
+   "status": "{}\n"
+  }
+ },
+ {
+  "id": "C02",
+  "result": "FAIL",
+  "detail": {
+   "stop_rc": 0,
+   "resume_rc": 0,
+   "ledger": 0,
+   "earlier_files_untouched": true,
+   "status": "{}\n"
+  }
+ },
+ {
+  "id": "C02b",
+  "result": "OBS",
+  "detail": {
+   "changed_since_handoff": [],
+   "note": "v2: C02 counted runner bookkeeping (holder.json) as an earlier output; activate/brief outputs untouched if only .handoff bookkeeping is listed"
+  }
+ },
+ {
+  "id": "C03",
+  "result": "FAIL",
+  "detail": {
+   "crash_rc": 0,
+   "ledger_after_crash": 0,
+   "resume_rc": 0,
+   "ledger": 0,
+   "out": "{}\n"
+  }
+ },
+ {
+  "id": "C04",
+  "result": "FAIL",
+  "detail": {
+   "status_after_crash": "{}\n"
+  }
+ },
+ {
+  "id": "C05",
+  "result": "FAIL",
+  "detail": {
+   "rcs": [
+    0,
+    0,
+    0
+   ],
+   "ledger": 0
+  }
+ },
+ {
+  "id": "C06",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "brief_back": false,
+   "out": "{}\n"
+  }
+ },
+ {
+  "id": "C06b",
+  "result": "OBS",
+  "detail": {
+   "ledger": 0,
+   "brief_identical_rerender": false
+  }
+ },
+ {
+  "id": "C07",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "out": "{}\n"
+  }
+ },
+ {
+  "id": "C07b",
+  "result": "OBS",
+  "detail": {
+   "ledger_after_edit_cycle": 0
+  }
+ },
+ {
+  "id": "C08",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "unchanged": true,
+   "out": "{}\n"
+  }
+ },
+ {
+  "id": "C09",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "out": "{}\n"
+  }
+ },
+ {
+  "id": "C10",
+  "result": "FAIL",
+  "detail": {
+   "rev2_rc": 0,
+   "ledger_after_rev2": 0,
+   "rev1_rc": 0,
+   "unchanged": true,
+   "out2": "{}\n"
+  }
+ },
+ {
+  "id": "C10b",
+  "result": "OBS",
+  "detail": {
+   "status_rev2": "{}\n"
+  }
+ },
+ {
+  "id": "C11",
+  "result": "FAIL",
+  "detail": {
+   "no_owner": [
+    0,
+    true
+   ],
+   "empty_owner": [
+    0,
+    true
+   ],
+   "rev0": [
+    0,
+    true
+   ],
+   "rev_str": [
+    0,
+    true
+   ],
+   "rev_float": [
+    0,
+    true
+   ],
+   "rev_bool": [
+    0,
+    true
+   ],
+   "escape_root": [
+    0,
+    true
+   ],
+   "abs_outbox": [
+    0,
+    true
+   ],
+   "bad_schema": [
+    0,
+    true
+   ],
+   "steps_order": [
+    0,
+    true
+   ],
+   "steps_short": [
+    0,
+    true
+   ],
+   "intake_escape": [
+    0,
+    true
+   ],
+   "abs_outbox_absent": true
+  }
+ },
+ {
+  "id": "C12",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "out": "{}\n"
+  }
+ },
+ {
+  "id": "C13",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "out": "{}\n"
+  }
+ },
+ {
+  "id": "C14",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "out": "{}\n"
+  }
+ },
+ {
+  "id": "C14b",
+  "result": "OBS",
+  "detail": {
+   "new_files": [],
+   "changed": []
+  }
+ },
+ {
+  "id": "C15",
+  "result": "FAIL",
+  "detail": {
+   "rcs": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "sweep": 0,
+   "ledger": 0
+  }
+ },
+ {
+  "id": "C16",
+  "result": "OBS",
+  "detail": {
+   "rc": 0,
+   "ledger": 0,
+   "out": "{}\n"
+  }
+ },
+ {
+  "id": "C17",
+  "result": "FAIL",
+  "detail": {
+   "activate": [
+    0,
+    0,
+    0
+   ],
+   "brief": [
+    0,
+    0,
+    0
+   ],
+   "deliver": [
+    0,
+    0,
+    0
+   ]
+  }
+ }
+]

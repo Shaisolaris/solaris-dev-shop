@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "<D>/grok-output/M04/oracle/m04_oracle.py", line 61, in <module>
+    d = world(); run(d, "run", "order.json", "--worker", "ana"); b0 = open(brief(d), "rb").read(); os.remove(brief(d))
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/m04o-ksru2vg6/.handoff/WO-KITE-7/rev1/HANDOFF-BRIEF.md'

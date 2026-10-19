@@ -1,0 +1,30 @@
+python3 = 3.9.6; env vars: 11
+$ python3 $H run order.json --worker ana --fail-at deliver
+[exit 75]
+$ python3 $H run order.json --worker ben
+WO-HARBOR-1 revision 1 (owner delivery-lead: A. Example)
+  activate reused (receipt by ana)
+  brief    reused (receipt by ana)
+  deliver  done (already delivered; duplicate suppressed)
+  resumed work left unfinished by ana
+[exit 0]
+$ python3 $H status order.json
+WO-HARBOR-1 revision 1 (owner delivery-lead: A. Example)
+  activate done by ana
+  brief    done by ana
+  deliver  done by ben
+[exit 0]
+$ wc -l outbox/ledger.jsonl
+1
+$ python3 $H run order-rev2.json --worker cy
+WO-HARBOR-1 revision 2 (owner delivery-lead: A. Example)
+  activate done (activation partial, changed 2)
+  brief    done
+  deliver  done (delivered)
+  note: earlier deliveries of this order (revision 1) remain in the ledger as superseded; a delivery cannot be recalled
+[exit 0]
+$ python3 $H run order.json --worker ana
+error: revision 1 is older than revision 2 already worked; refusing a stale order
+[exit 2]
+ledger lines now: 2
+pycache in candidate: 0

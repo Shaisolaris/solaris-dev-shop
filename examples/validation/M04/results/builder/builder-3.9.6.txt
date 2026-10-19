@@ -1,0 +1,8 @@
+== builder 3.9.6 2026-10-19 00:36:02 PDT
+suite test_g04_capability.py: rc=0 Ran 13 tests OK 
+suite test*.py: rc=0 Ran 144 tests OK 
+--- oracle help: usage: handoff_oracle.py [-h] [--tool TOOL] [--json] [--scale SCALE]  optional arguments: 
+--- builder oracle rc=0
+scale: {"orders": 200, "workers": 4, "runs": 1000, "crash_drills": 224, "seconds": 11.5}
+16/16 checks passed
+not run: workers on other machines or a shared network folder (locks are local fcntl locks), a router or scheduler launching workers, Hermes jobs, and any live delivery; the outbox is a local file.

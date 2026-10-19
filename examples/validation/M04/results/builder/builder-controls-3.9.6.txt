@@ -1,0 +1,6 @@
+--- builder oracle on naive control (3.9.6)
+rc=1
+FAIL o3 FAIL o5 FAIL o15 FAIL o7 FAIL o8 FAIL o10 FAIL o14 9/16 checks 
+--- builder oracle on noop control (3.9.6)
+rc=1
+FAIL o1 FAIL o2 FAIL o3 FAIL o4 FAIL o5 FAIL o6 FAIL o15 FAIL o7 FAIL o8 FAIL o9 FAIL o10 FAIL o11 FAIL o12 FAIL o13 FAIL o14 1/16 checks 

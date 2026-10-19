@@ -1,0 +1,9 @@
+{"mutant": "no_early_intake_check", "kills_result": ["C09"], "kills_detail_only": []}
+{"mutant": "inputs_unchecked", "kills_result": [], "kills_detail_only": []}
+{"mutant": "hash_unchecked", "kills_result": [], "kills_detail_only": ["C12"]}
+{"mutant": "journal_other_order", "kills_result": [], "kills_detail_only": ["C14", "C14b"]}
+{"mutant": "brief_ignores_status", "kills_result": ["C01", "C03", "C05", "C06", "C07", "C10", "C13", "C15", "C17"], "kills_detail_only": ["C02", "C04", "C06b", "C07b", "C10b", "C16"]}
+{"mutant": "abs_path_ok_EQUIV", "kills_result": [], "kills_detail_only": []}
+{"mutant": "receipt_any_rev_EQUIV", "kills_result": [], "kills_detail_only": ["C10"]}
+{"mutant": "steps_any", "kills_result": ["C11"], "kills_detail_only": []}
+DONE

@@ -1,0 +1,9 @@
+{"mutant": "no_intake_check", "kills_result": ["C08", "C09"], "kills_detail_only": []}
+{"mutant": "outputs_unchecked", "kills_result": ["C06", "C07"], "kills_detail_only": ["C06b", "C07b"]}
+{"mutant": "chain_unchecked", "kills_result": [], "kills_detail_only": []}
+{"mutant": "torn_not_noted", "kills_result": [], "kills_detail_only": ["C13"]}
+{"mutant": "activate_fail_ignored", "kills_result": [], "kills_detail_only": []}
+{"mutant": "path_escape_ok", "kills_result": ["C11"], "kills_detail_only": []}
+{"mutant": "superseded_never", "kills_result": ["C10"], "kills_detail_only": []}
+{"mutant": "ledger_torn_glued", "kills_result": [], "kills_detail_only": []}
+DONE

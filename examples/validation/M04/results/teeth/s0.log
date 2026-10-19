@@ -1,0 +1,10 @@
+{"mutant": "dedupe_off", "kills_result": ["C03", "C05", "C17"], "kills_detail_only": []}
+{"mutant": "no_rev_check", "kills_result": ["C10"], "kills_detail_only": []}
+{"mutant": "no_worker_lock", "kills_result": ["C15"], "kills_detail_only": []}
+{"mutant": "strict_keys_off", "kills_result": [], "kills_detail_only": []}
+{"mutant": "takeover_never", "kills_result": [], "kills_detail_only": ["C03"]}
+{"mutant": "owner_blank_ok", "kills_result": ["C11"], "kills_detail_only": []}
+{"mutant": "stop_no_release", "kills_result": [], "kills_detail_only": ["C16"]}
+{"mutant": "brief_no_owner", "kills_result": [], "kills_detail_only": []}
+{"mutant": "inputs_extra_ok", "kills_result": [], "kills_detail_only": []}
+DONE

@@ -1,0 +1,12 @@
+# fetch and prerequisites 2026-10-19 00:35:38 PDT
+314b4dbf980437cf14bc32438117e5b5b777f942 parent bbe682b28e96296723826c1f113e138ccc39c530 G04: restartable local work-order handoff (review only)
+  origin/review/grok-g04-handoff
+stated prerequisite G02 bbe682b28e96296723826c1f113e138ccc39c530
+candidate parent == stated G02: yes
+G02 branch head now: bbe682b28e96296723826c1f113e138ccc39c530 (superseded: no)
+G02 commit: bbe682b28e96296723826c1f113e138ccc39c530 parent 41132041afeb2cce63a68554caf18cf6992a11ae 2026-10-18 11:56:38 -0700 G02 rework: M02 self-validation findings F1 to F8 (review only)
+merge-base candidate/main: 02ba9c571b10ad1dba792d2ac5534bcad3171e67
+commits main..candidate:
+  314b4db G04: restartable local work-order handoff (review only)
+  bbe682b G02 rework: M02 self-validation findings F1 to F8 (review only)
+  4113204 G02: safe project activation and ownership preservation (review only)

@@ -1,0 +1,23 @@
+C01 PASS {"rc": 0, "ledger": 1, "brief": true, "status_rc": 0, "status": "WO-KITE-7 revision 1 (owner delivery-lead: K. Tester)\n  activate done by ana\n  brief    done by ana\n  deliver  done by ana\n"}
+C02 FAIL {"stop_rc": 3, "resume_rc": 0, "ledger": 1, "earlier_files_untouched": false, "status": "WO-KITE-7 revision 1 (owner delivery-lead: K. Tester)\n  activate done by ana\n  brief    done by ana\n  deliver  done by ben\n"}
+C02b OBS {"changed_since_handoff": [".handoff/WO-KITE-7/holder.json"], "note": "v2: C02 counted runner bookkeeping (holder.json) as an earlier output; activate/brief outputs untouched if only .handoff bookkeeping is listed"}
+C03 PASS {"crash_rc": 75, "ledger_after_crash": 1, "resume_rc": 0, "ledger": 1, "out": "WO-KITE-7 revision 1 (owner delivery-lead: K. Tester)\n  activate reused (receipt by ana)\n  brief    reused (receipt by ana)\n  deliver  done (already delivered; duplicate suppressed)\n  resumed work lef"}
+C04 PASS {"status_after_crash": "WO-KITE-7 revision 1 (owner delivery-lead: K. Tester)\n  activate done by ana\n  brief    done by ana\n  deliver  pending\n"}
+C05 PASS {"rcs": [0, 0, 0], "ledger": 1}
+C06 PASS {"rc": 0, "brief_back": true, "out": "WO-KITE-7 revision 1 (owner delivery-lead: K. Tester)\n  activate reused (receipt by ana)\n  brief    done\n  deliver  reused (receipt by ana)\n  note: brief receipt is stale (recorded output no longer ma"}
+C06b OBS {"ledger": 1, "brief_identical_rerender": true}
+C07 PASS {"rc": 0, "out": "WO-KITE-7 revision 1 (owner delivery-lead: K. Tester)\n  activate reused (receipt by ana)\n  brief    done\n  deliver  reused (receipt by ana)\n  note: brief receipt is stale (recorded output no longer ma"}
+C07b OBS {"ledger_after_edit_cycle": 1}
+C08 PASS {"rc": 2, "unchanged": true, "out": "error: intake does not match the sha256 in the work order; issue a new revision instead of editing the input\n"}
+C09 PASS {"rc": 2, "out": "error: intake does not match the sha256 in the work order; issue a new revision instead of editing the input\n"}
+C10 PASS {"rev2_rc": 0, "ledger_after_rev2": 2, "rev1_rc": 2, "unchanged": true, "out2": "WO-KITE-7 revision 2 (owner delivery-lead: K. Tester)\n  activate done (activation partial, changed 2)\n  brief    done\n  deliver  done (delivered)\n  note: earlier deliveries of this order (revision 1) "}
+C10b OBS {"status_rev2": "WO-KITE-7 revision 2 (owner delivery-lead: K. Tester)\n  activate done by ben\n  brief    done by ben\n  deliver  done by ben\n"}
+C11 PASS {"no_owner": [2, true], "empty_owner": [2, true], "rev0": [2, true], "rev_str": [2, true], "rev_float": [2, true], "rev_bool": [2, true], "escape_root": [2, true], "abs_outbox": [2, true], "bad_schema": [2, true], "steps_order": [2, true], "steps_short": [2, true], "intake_escape": [2, true], "abs_o
+C12 PASS {"rc": 2, "out": "error: journal line 1 does not verify; do not resume from it (inspect /private/tmp/m04o-6k9vzgov/.handoff/WO-KITE-7/journal.jsonl)\n"}
+C13 PASS {"rc": 0, "out": "WO-KITE-7 revision 1 (owner delivery-lead: K. Tester)\n  activate reused (receipt by ana)\n  brief    done\n  deliver  done (delivered)\n  note: journal had a torn last line (a crash mid-write); it was cu"}
+C14 FAIL {"rc": 2, "out": "error: journal belongs to another order\n"}
+C14b OBS {"new_files": [".handoff/WO-KITE-8/.worker.lock"], "changed": []}
+C15 PASS {"rcs": [0, 4, 4, 4, 4, 4, 4, 4], "sweep": 0, "ledger": 1}
+C16 OBS {"rc": 0, "ledger": 1, "out": "WO-KITE-7 revision 1 (owner support: Someone Else)\n  activate reused (receipt by ana)\n  brief    reused (receipt by ana)\n  deliver  done (delivered)\n"}
+C17 PASS {"activate": [75, 0, 1], "brief": [75, 0, 1], "deliver": [75, 0, 1]}
+M04 ORACLE 14/16

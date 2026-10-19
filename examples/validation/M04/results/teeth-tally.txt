@@ -1,0 +1,38 @@
+M04 teeth (Grok self-validation, 3.9.6): the BUILDER's 34 G04 mutants scored by Grok's oracle (kill = row result or masked detail differs; C15 detail excluded as timing).
+killed 22/34 (14 by a row result, 8 by detail only)
+  abs_path_ok_EQUIV        SURVIVED; builder tests: tests_rc=0 failing: none
+  activate_fail_ignored    SURVIVED; builder tests: tests_rc=1 failing: test_oracle_passes_on_the_runner test_oracle_rejects_the_naive_control
+  brief_ignores_status     KILLED result=C01,C03,C05,C06,C07,C10,C13,C15,C17 detail_only=C02,C04,C06b,C07b,C10b,C16
+  brief_no_owner           SURVIVED; builder tests: tests_rc=1 failing: test_oracle_passes_on_the_runner test_oracle_rejects_the_naive_control
+  chain_unchecked          SURVIVED; builder tests: tests_rc=1 failing: test_journal_edit_is_refused_and_status_reports_it
+  dedupe_off               KILLED result=C03,C05,C17 detail_only=-
+  fail_record_skipped      SURVIVED; builder tests: tests_rc=1 failing: test_oracle_passes_on_the_runner test_oracle_rejects_the_naive_control
+  hash_unchecked           KILLED result=- detail_only=C12
+  inputs_extra_ok          SURVIVED; builder tests: tests_rc=1 failing: test_oracle_passes_on_the_runner test_oracle_rejects_the_naive_control
+  inputs_unchecked         SURVIVED; builder tests: tests_rc=1 failing: test_oracle_passes_on_the_runner
+  journal_other_order      KILLED result=- detail_only=C14,C14b
+  key_no_revision          SURVIVED; builder tests: tests_rc=1 failing: test_delivery_key_binds_order_revision_and_brief
+  ledger_torn_glued        SURVIVED; builder tests: tests_rc=1 failing: test_torn_ledger_line_does_not_swallow_the_next_delivery
+  no_early_intake_check    KILLED result=C09 detail_only=-
+  no_intake_check          KILLED result=C08,C09 detail_only=-
+  no_ledger_lock_EQUIV     SURVIVED; builder tests: tests_rc=0 failing: none
+  no_rev_check             KILLED result=C10 detail_only=-
+  no_worker_lock           KILLED result=C15 detail_only=-
+  outputs_unchecked        KILLED result=C06,C07 detail_only=C06b,C07b
+  owner_blank_ok           KILLED result=C11 detail_only=-
+  path_escape_ok           KILLED result=C11 detail_only=-
+  receipt_any_rev_EQUIV    KILLED result=- detail_only=C10
+  receipt_key_blank        KILLED result=- detail_only=C06,C07
+  rev_bool_ok              KILLED result=C11 detail_only=-
+  status_no_stale          SURVIVED; builder tests: tests_rc=1 failing: test_stale_receipt_not_yet_redone_shows_pending
+  steps_any                KILLED result=C11 detail_only=-
+  stop_no_release          KILLED result=- detail_only=C16
+  strict_keys_off          SURVIVED; builder tests: tests_rc=1 failing: test_journal_edit_is_refused_and_status_reports_it
+  superseded_never         KILLED result=C10 detail_only=-
+  takeover_always          KILLED result=- detail_only=C16
+  takeover_never           KILLED result=- detail_only=C03
+  torn_not_cut             KILLED result=C13 detail_only=-
+  torn_not_noted           KILLED result=- detail_only=C13
+  trust_receipt            KILLED result=C06,C07 detail_only=C06b
+survivors not marked EQUIV: 10, all fail a builder test: True
+EQUIV-marked: no_ledger_lock_EQUIV and abs_path_ok_EQUIV survive everything; receipt_any_rev_EQUIV changes only the C10 output text (an extra 'activate receipt is stale' note on revision 2; same exits, ledger and files), so it is behaviour-equivalent but not output-equivalent.
