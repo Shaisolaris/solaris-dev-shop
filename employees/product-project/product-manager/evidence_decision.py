@@ -7,7 +7,7 @@ saved snapshots of external pages, or a G13 reconciled metric); and claims, each
 dimension from one source. The tool:
 
 - checks every claim against its source: the quote must appear in the pinned snapshot (sha256), a number in a
-  claim must appear in its quote, a G13 metric claim must equal a rerun of the G13 reconciliation, and a score
+  claim must equal a whole number stated in its quote (18 does not match 18,000), a G13 metric claim must equal a rerun of the G13 reconciliation, and a score
   derived from a metric scale must match; any failure blocks the decision (no fabricated evidence);
 - excludes claims about another segment than the ICP, and mutable external claims older than their max age
   at as_of (listed under verify_before_use); G13 metrics with quality gaps count at low confidence only;
@@ -47,6 +47,30 @@ KINDS = ("interview", "external", "g13")
 LO, HI, MID = Decimal(0), Decimal(5), Decimal("2.5")
 G13 = Path(__file__).resolve().parents[2] / "data" / "data-engineer" / "csv_reconcile.py"
 NUM = re.compile(r"\d+(?:[.,]\d+)*%?")
+
+
+def _num(tok):
+    """A numeric token as (Decimal, is_percent); thousands commas dropped. None if not a plain number."""
+    tok = tok.strip()
+    if not NUM.fullmatch(tok):
+        return None
+    pct = tok.endswith("%")
+    body = tok.rstrip("%")
+    if "," in body and "." not in body and not re.fullmatch(r"\d{1,3}(?:,\d{3})+", body):
+        return None  # "40,0" is not a thousands-grouped number; refuse rather than guess
+    try:
+        return Decimal(body.replace(",", "")), pct
+    except InvalidOperation:
+        return None
+
+
+def _value_in_quote(value, quote):
+    """A numeric value must equal a whole number the quote states (18 never matches 18,000; 4 never 40).
+    Non-numeric values keep the substring rule."""
+    want = _num(value)
+    if want is None:
+        return value in quote
+    return any(_num(m.group(0)) == want for m in NUM.finditer(quote))
 
 
 class Invalid(Exception):
@@ -248,8 +272,8 @@ def decide(path):
             q = c.get("quote")
             if not isinstance(q, str) or not q.strip() or _norm(q) not in _norm(text):
                 F.append({"code": "quote_not_in_source", "ref": k, "detail": "quote not found in %s" % s["id"]}); continue
-            if c.get("value") is not None and c["value"] not in q:
-                F.append({"code": "value_not_in_quote", "ref": k, "detail": "value %r is not in the quote" % c["value"]}); continue
+            if c.get("value") is not None and not _value_in_quote(c["value"], q):
+                F.append({"code": "value_not_in_quote", "ref": k, "detail": "value %r is not a whole number stated in the quote" % c["value"]}); continue
             if c["segment"] != P["icp"]:
                 excluded.append({"claim": k, "reason": "segment %s is outside the ICP %s" % (c["segment"], P["icp"])}); continue
             if c.get("value") is None and dim.get("metric_scale") is not None:

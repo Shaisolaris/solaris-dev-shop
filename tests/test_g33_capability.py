@@ -153,6 +153,28 @@ class G33Capability(unittest.TestCase):
         self.p = json.loads((self.d / 'choice.json').read_text()); self.p['dimensions'][0]['quantity'] = False
         self.decide(0)
 
+    def test_numeric_value_needs_whole_number_boundaries(self):
+        """Root G33: 4 never matches 40 and 18 never matches 18,000; the whole number still matches."""
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('g33_ed', str(TOOL)); m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        self.assertFalse(m._value_in_quote('18', 'North America: 18,000.'))
+        self.assertTrue(m._value_in_quote('18,000', 'North America: 18,000.'))
+        self.assertTrue(m._value_in_quote('18000', 'North America: 18,000.'))
+        self.assertFalse(m._value_in_quote('4', 'about 40 dollars'))
+        self.assertFalse(m._value_in_quote('40', 'about 1400 dollars'))
+        self.assertTrue(m._value_in_quote('40', 'about 40 dollars'))
+        self.assertFalse(m._value_in_quote('12%', 'grew 12 points'))
+        self.assertTrue(m._value_in_quote('12%', 'grew 12% last year'))
+        self.assertTrue(m._value_in_quote('ten minutes', 'saves ten minutes a day'))
+        self.p['dimensions'][0]['quantity'] = True
+        self.p['claims'] = [c for c in self.p['claims'] if c['id'] not in ('C2', 'C5', 'C11')]
+        self.claim('C1')['quote'] = 'I would pay about 40 dollars per provider per month for that alone.'
+        self.claim('C1')['value'] = '4'
+        self.assertIn(('value_not_in_quote', 'C1'), self.codes(self.decide(1)))
+        self.claim('C1')['value'] = '40'
+        self.assertEqual(self.decide(0)['findings'], [])
+
     def test_staleness_boundary(self):
         self.src('S-mkt')['max_age_days'] = 127
         self.claim('C10')['score'] = '5'  # matches the metric scale for 18,000
@@ -242,9 +264,9 @@ class G33Capability(unittest.TestCase):
     def test_oracle_and_controls(self):
         run = lambda *a: subprocess.run([sys.executable, str(EX / 'evidence_oracle.py')] + list(a), capture_output=True, text=True, env=ENV, timeout=600)
         r = run()
-        self.assertEqual(r.stdout.strip().splitlines()[-1], 'ACCEPTED 10/10', r.stdout)
+        self.assertEqual(r.stdout.strip().splitlines()[-1], 'ACCEPTED 11/11', r.stdout)
         for t in ('naive_decision.py', 'noop_decision.py'):
-            self.assertEqual(run('--tool', str(EX / t)).stdout.strip().splitlines()[-1], 'REJECTED 1/10')
+            self.assertEqual(run('--tool', str(EX / t)).stdout.strip().splitlines()[-1], 'REJECTED 1/11')
 
     def test_contracts_declare_tool(self):
         text = (ROOT / 'employees/product-project/product-manager/capability.contract.json').read_text()

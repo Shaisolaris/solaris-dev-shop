@@ -235,6 +235,33 @@ def o9(c):
     return ok, "top-level adoption, adoption_rate, assumed_adoption and tam refused; a quantity dimension uses only claims with a numeric value in the quote"
 
 
+def o10(c):
+    """r3 (root G33): a numeric value must be a whole number in the quote; 4 never matches 40, 18 never matches 18,000."""
+    ok = True
+    for quote, val, flag in (("I would pay about 40 dollars per provider per month for that alone.", "4", True),
+                             ("We run 18,000 visits a month across the clinics.", "18", True),
+                             ("We run 18,000 visits a month across the clinics.", "180", True),
+                             ("We moved 12 points on retention.", "12%", True),
+                             ("We run 18,000 visits a month across the clinics.", "18,000", False),
+                             ("We run 18,000 visits a month across the clinics.", "18000", False),
+                             ("I would pay about 40 dollars per provider per month for that alone.", "40", False)):
+        p = base(); p["dimensions"][0]["quantity"] = True
+        p["claims"] = [x for x in p["claims"] if x["id"] not in ("C2", "C5", "C11")]
+        for cl in p["claims"]:
+            if cl["id"] == "C1":
+                cl["quote"] = quote; cl["value"] = val
+        d = c.fresh(); snap = d / "sources" / "ana.txt"
+        if quote not in snap.read_text():
+            snap.write_text(snap.read_text() + "\n" + quote + "\n")
+            for sr in p["sources"]:
+                if sr["id"] == "S-ana":
+                    sr["snapshot"]["sha256"] = sha(snap)
+        rc, r = c.run(d, p)
+        hit = r is not None and ("value_not_in_quote", "C1") in codes(r)
+        ok = ok and r is not None and hit == flag and rc == (1 if flag else 0)
+    return ok, "numeric values match whole numbers only: 4 vs 40, 18 and 180 vs 18,000, 12% vs 12 points flagged; 40, 18,000 and 18000 accepted"
+
+
 def s1(c):
     src = Path(c.tool).read_text() if Path(c.tool).is_file() else ""
     banned = [w for w in ("urllib", "http.client", "import socket", "smtplib", "import subprocess", "os.system") if w in src]
@@ -245,7 +272,7 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--tool", default=str(TOOL)); ap.add_argument("--seed", type=int, default=33)
     a = ap.parse_args(); c = Ctx(a.tool)
     before = {p: p.read_bytes() for p in FIX.rglob("*") if p.is_file()}
-    checks = [("o1", o1), ("o2", o2), ("o3", o3), ("o4", o4), ("o5", o5), ("o6", o6), ("o7", o7), ("o8", lambda c: o8(c, a.seed)), ("o9", o9), ("s1", s1)]
+    checks = [("o1", o1), ("o2", o2), ("o3", o3), ("o4", o4), ("o5", o5), ("o6", o6), ("o7", o7), ("o8", lambda c: o8(c, a.seed)), ("o9", o9), ("o10", o10), ("s1", s1)]
     passed = 0
     for nm, fn in checks:
         try:

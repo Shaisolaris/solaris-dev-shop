@@ -16,7 +16,7 @@ python3 evidence_decision.py verify RESULT PACKAGE                  # 0 identica
 - `options`: [{`id`, `label`}].
 - `dimensions`: [{`id`, `label`, `weight`}] with weights summing to exactly 1. Optional `metric_scale`
   {`thresholds`: five ascending numbers} maps a stated numeric value to scores 1..5. Optional `quantity`
-  (true or false) requires every claim on that dimension to carry a numeric `value` that appears in its quote;
+  (true or false) requires every claim on that dimension to carry a numeric `value` that equals a whole number stated in its quote (numbers are compared whole, so `18` does not match `18,000` and `4` does not match `40`; `18000` matches `18,000`; a `%` must match);
   a claim without a value, with a value that is not a number, or whose quote states no number is flagged
   `value_not_in_quote` and not used.
 - `sources`: [{`id`, `kind` interview|external|g13, `title`, `retrieved_at` ≤ `as_of`, ...}].
@@ -36,7 +36,7 @@ python3 evidence_decision.py verify RESULT PACKAGE                  # 0 identica
 | unknown_source | claim names a source id that is not in `sources` |
 | snapshot_mismatch | snapshot file missing or sha256 differs |
 | quote_not_in_source | quote (normalized whitespace/case) is not a substring of the snapshot |
-| value_not_in_quote | a stated `value` does not appear in the quote (also when the dimension is `quantity`) |
+| value_not_in_quote | a stated `value` does not appear in the quote; a numeric value must equal a whole number in the quote, not a digit fragment (also when the dimension is `quantity`) |
 | unscored_claim | no `score` and no `metric_scale` path that can derive one |
 | stated_score_mismatch | stated score differs from the metric-scale mapping of `value` |
 | g13_unavailable | G13 contract missing, reconcile refused, or group/metric not present |
