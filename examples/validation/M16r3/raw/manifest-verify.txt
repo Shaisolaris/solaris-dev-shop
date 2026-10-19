@@ -1,0 +1,7 @@
+# manifest check 2026-10-18 18:35:53 PDT
+examples/capabilities/G16/fixtures/snapshot-v2/paratransit.md: OK
+examples/capabilities/G16/fixtures/snapshot-v2/refunds.md: OK
+tests/test_g16_capability.py: OK
+manifest entries 28  ok 28
+manifest set == diff set 02ba9c5..6bd3695: yes
+G16-r3.patch == diff df25d6a..6bd3695: yes

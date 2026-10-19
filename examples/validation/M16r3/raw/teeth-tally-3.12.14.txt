@@ -1,0 +1,37 @@
+mutant                         m16  bld-oracle  bld-tests  union
+abstain_truthy                 K    K           K          KILLED
+any_answer_on_unanswerable_ok  K    K           K          KILLED
+baseline_label_trusted         K    K           K          KILLED
+cite_corpus_sha                K    K           K          KILLED
+cite_offset_shift              K    K           K          KILLED
+conflict_check_off             K    K           K          KILLED
+coverage_not_checked           K    K           K          KILLED
+fabricated_quote_accepted      K    K           K          KILLED
+facts_not_in_quote_ok          K    K           K          KILLED
+failure_still_writes           K    K           K          KILLED
+fault_plan_ignored             K    K           K          KILLED
+identifiers_not_exact          -    K           K          KILLED
+imported_called_verified       K    K           K          KILLED
+invalid_input_writes           -    -           -          survived
+journal_header_unchecked       K    K           K          KILLED
+min_coverage_ignored           K    K           K          KILLED
+missed_answer_passes           K    K           K          KILLED
+missing_record_ignored         K    K           K          KILLED
+need_number_ignored            K    K           K          KILLED
+numbers_not_checked            -    -           -          survived
+order_dependent_output         K    K           K          KILLED
+overwrite_input_allowed        K    K           K          KILLED
+relocation_not_allowed         K    K           K          KILLED
+resume_redoes_all              K    K           K          KILLED
+stale_reported_invalid         K    K           K          KILLED
+symlink_doc_followed           -    -           -          survived
+torn_tail_parsed               K    K           K          KILLED
+wrong_source_off               K    K           K          KILLED
+mutants 28: m16 oracle core 24, builder oracle 25, builder tests 25, union 25
+candidate              m16: SUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversari | builder: 15/15 checks passed  | tests: rc=0 Ran 27 tests in 10.903s OK 
+r2-df25d6a             m16: SUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversari | builder: o15 14/15 checks passed  | tests: rc=1 Ran 27 tests in 5.352s FAILED (failures=16, e
+stub-noop              m16: k1 k2 k3 k4 k5 k6 k7 k8 k9 k10 SUMMARY core 0/10 pass; oracl | builder: o1 o2 o3 o4 o5 o6 o7 o8 o9 o10 o11 o12 o | tests: n/a
+stub-always_abstain    m16: k1 k2 k4 k5 k6 k7 k8 k9 SUMMARY core 2/10 pass; oracle REJEC | builder: o1 o3 o4 o5 o6 o7 o8 o9 o10 o11 o13 o14  | tests: n/a
+stub-copy_question     m16: k1 k2 k4 k5 k6 k7 k8 k9 SUMMARY core 2/10 pass; oracle REJEC | builder: o1 o3 o4 o5 o6 o7 o9 o10 o11 o13 o14 o15 | tests: n/a
+builder-noop_stub      m16: k1 k2 k3 k4 k5 k6 k7 k8 k9 k10 SUMMARY core 0/10 pass; oracl | builder: o1 o2 o3 o4 o5 o6 o7 o8 o9 o10 o11 o12 o | tests: n/a
+builder-naive_stub     m16: k1 k2 k3 k4 k5 k6 k7 k8 k10 SUMMARY core 1/10 pass; oracle R | builder: o1 o2 o3 o4 o5 o6 o7 o9 o10 o11 o12 o13  | tests: n/a

@@ -1,0 +1,28 @@
+fabricated_quote_accepted original anchor
+numbers_not_checked re-pointed (builder r2, hand-checked)
+coverage_not_checked re-pointed (builder r2, hand-checked)
+any_answer_on_unanswerable_ok original anchor
+missed_answer_passes original anchor
+wrong_source_off original anchor
+facts_not_in_quote_ok re-pointed (builder r2, hand-checked)
+stale_reported_invalid re-pointed (r2 M16)
+relocation_not_allowed original anchor
+baseline_label_trusted original anchor
+imported_called_verified original anchor
+resume_redoes_all original anchor
+journal_header_unchecked original anchor
+fault_plan_ignored original anchor
+failure_still_writes original anchor
+conflict_check_off re-pointed (builder r2, hand-checked)
+identifiers_not_exact original anchor
+min_coverage_ignored original anchor
+torn_tail_parsed original anchor
+need_number_ignored original anchor
+cite_corpus_sha original anchor
+cite_offset_shift original anchor
+abstain_truthy original anchor
+invalid_input_writes original anchor
+overwrite_input_allowed re-pointed (builder r2, hand-checked)
+symlink_doc_followed original anchor
+order_dependent_output re-pointed (builder r2, hand-checked)
+missing_record_ignored original anchor

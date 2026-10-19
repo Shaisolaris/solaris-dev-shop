@@ -1,0 +1,17 @@
+# proposed-fix-r3 positive control 2026-10-18 18:41:17 PDT (Grok self-validation; never applied to the candidate)
+git apply --check on clean 6bd3695: OK
+candidate worktree status lines: 0
+== 3.12.14
+  G16 tests: rc=0 Ran 27 tests in 10.927s OK 
+  full suite: rc=0 Ran 111 tests in 12.507s OK 
+  builder oracle: 15/15 checks passed 
+  M16 oracle: SUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversarial 17/17 rejected the attack (0 findings) 
+  r2 adversarial: a01 HOLDS a02 HOLDS a03 HOLDS a04 HOLDS a05 HOLDS a06 HOLDS a07 HOLDS a08 HOLDS a09 GAP   a10 HOLDS a11 HOLDS 
+  r3 adversarial: b01 HOLDS  b02 HOLDS  b03 HOLDS  c01 HOLDS  c02 HOLDS  c03 HOLDS  c04 HOLDS  d01 GAP    e01 GAP    e02 GAP    e03 HOLDS  e04 GAP    e04c HOLDS e05 HOLDS  
+== 3.9.6
+  G16 tests: rc=0 Ran 27 tests in 13.802s OK 
+  full suite: rc=0 Ran 111 tests in 15.088s OK 
+  builder oracle: 15/15 checks passed 
+  M16 oracle: SUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversarial 17/17 rejected the attack (0 findings) 
+  r2 adversarial: a01 HOLDS a02 HOLDS a03 HOLDS a04 HOLDS a05 HOLDS a06 HOLDS a07 HOLDS a08 HOLDS a09 GAP   a10 HOLDS a11 HOLDS 
+  r3 adversarial: b01 HOLDS  b02 HOLDS  b03 HOLDS  c01 HOLDS  c02 HOLDS  c03 HOLDS  c04 HOLDS  d01 GAP    e01 GAP    e02 GAP    e03 HOLDS  e04 GAP    e04c HOLDS e05 HOLDS  

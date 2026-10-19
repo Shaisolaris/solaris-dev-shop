@@ -1,0 +1,17 @@
+diff --git a/employees/engineering/llm-agent-designer/grounded_eval.py b/employees/engineering/llm-agent-designer/grounded_eval.py
+index 8e769cb..487ca2d 100644
+--- a/employees/engineering/llm-agent-designer/grounded_eval.py
++++ b/employees/engineering/llm-agent-designer/grounded_eval.py
+@@ -621,8 +621,10 @@ def _support(answer: str, ok: List[Dict[str, Any]], sts: List[str], corpus: Dict
+     a_neg, s_neg = _neg_bindings(answer), [b for x in sents for b in _neg_bindings(x)]
+     if any(b not in s_neg for b in a_neg):
+         return "the answer negates something its cited sentence does not negate (a negation was added or moved)"
+-    a_words = set(seq(answer))
+-    if any(b is not None and b in a_words and b not in a_neg for b in s_neg):
++    # every occurrence of a word the source negates must itself be negated in the answer: "allowed ..., not allowed
++    # elsewhere" asserts "allowed" once more than it negates it (M16 r3)
++    a_seq = seq(answer)
++    if any(b is not None and a_seq.count(b) > a_neg.count(b) for b in set(s_neg)):
+         return "the answer asserts a word that its cited sentence negates (a negation was dropped or moved)"
+     ctxs = [(c["quote"], number_context(c["quote"]), set(terms(x))) for c, x in zip(ok, sents)]
+     for n, actx, anext in number_context(answer):

@@ -1,0 +1,23 @@
+a01 HOLDS N1 bypass: the 'not' moved to a trailing clause, meaning reversed
+      observed: ('unsupported_claim', {'content_coverage': 0.875, 'numbers_not_in_quotes': [], 'problem': 'the answer negates something its cited sentence does not negate (a negation was added or moved)'})
+a02 HOLDS N1 bypass: a different negator word ('nothing') in an added clause
+      observed: ('unsupported_claim', {'content_coverage': 0.667, 'numbers_not_in_quotes': [], 'problem': 'the answer negates something its cited sentence does not negate (a negation was added or moved)'})
+a03 HOLDS control: correct contracted negation (aren't) still supported
+      observed: ('correct_supported', {'content_coverage': 0.8, 'numbers_not_in_quotes': []})
+a04 HOLDS N7 bypass: fabricated quote plus a self-declared other corpus_sha256 in meta
+      observed: ('invalid_citation', [{'detail': 'quote is not in the snapshot; its doc_sha256 differs, but the answers file does not say it was made for another snapshot, so a source change cannot be shown', 'doc': 'plots.md', 'status': 'invalid'}])
+a05 HOLDS N5 bypass: evaluate --out SNAP/plots.md (case variant; fs case-insensitive=True)
+      observed: (2, 'source unchanged', '{"error": "plots.md: is inside the snapshot folder; write outputs elsewhere", "schema": "solaris.grounded-eval-report/1"')
+a06 HOLDS N5 bypass: answer --out Snap/new-answers.jsonl writes a new file into the snapshot folder
+      observed: (2, ['plots.md', 'pond.md', 'shed-2025.md', 'shed-2026.md', 'waiting.md', 'water.md'])
+a07 HOLDS control: --out through a symlink to the snapshot is refused
+      observed: (2, '{"error": "plots.md: is inside the snapshot folder; write outputs elsewhere", "schema": "solaris.gro')
+a08 HOLDS N11 over-filter: legit pond rule mentioning model boats and 'answer' is still usable
+      observed: (False, 'Model boats may be sailed on the pond at weekends; the warden will answer any questions.')
+a09 GAP   N4 over-abstain: 'full allotment plot' (extra modifier) still answered
+      observed: (True, 'no_sentence_covers_the_question')
+a10 HOLDS N8: journal with a middle entry removed is refused on resume
+      observed: (2, 'invalid: journal: entry 3 fails its integrity check (edited, reordered or corrupted); refusing to resume; start a new journal\nnothing writte', 13)
+a11 HOLDS N9: fault values 100 (fires, exit 3), 101/'2'/2.0/{} exit 2, 0 no fault
+      observed: [('100', 3, False), ('101', 2, False), ('0', 0, False), ('"2"', 2, False), ('2.0', 2, False), ('{}', 2, False)]
+ADVERSARIAL 10/11 hold

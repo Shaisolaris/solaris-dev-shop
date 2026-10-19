@@ -1,0 +1,36 @@
+subject	m16_oracle_core	builder_oracle	builder_tests
+candidate	SUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversarial 0/0 rejected the attack (0 findings) 	15/15 checks passed 	rc=0 Ran 27 tests in 10.903s OK 
+r2-df25d6a	SUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o15 14/15 checks passed 	rc=1 Ran 27 tests in 5.352s FAILED (failures=16, errors=1) 
+stub-noop	k1 k2 k3 k4 k5 k6 k7 k8 k9 k10 SUMMARY core 0/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o1 o2 o3 o4 o5 o6 o7 o8 o9 o10 o11 o12 o13 o14 o15 0/15 checks passed 	n/a
+stub-always_abstain	k1 k2 k4 k5 k6 k7 k8 k9 SUMMARY core 2/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o1 o3 o4 o5 o6 o7 o8 o9 o10 o11 o13 o14 o15 2/15 checks passed 	n/a
+stub-copy_question	k1 k2 k4 k5 k6 k7 k8 k9 SUMMARY core 2/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o1 o3 o4 o5 o6 o7 o9 o10 o11 o13 o14 o15 3/15 checks passed 	n/a
+builder-noop_stub	k1 k2 k3 k4 k5 k6 k7 k8 k9 k10 SUMMARY core 0/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o1 o2 o3 o4 o5 o6 o7 o8 o9 o10 o11 o12 o13 o14 o15 0/15 checks passed 	n/a
+builder-naive_stub	k1 k2 k3 k4 k5 k6 k7 k8 k10 SUMMARY core 1/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o1 o2 o3 o4 o5 o6 o7 o9 o10 o11 o12 o13 o14 o15 1/15 checks passed 	n/a
+abstain_truthy	k10 SUMMARY core 9/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o12 14/15 checks passed 	rc=1 Ran 27 tests in 5.567s FAILED (failures=1) 
+any_answer_on_unanswerable_ok	k3 k10 SUMMARY core 8/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o2 o4 o12 12/15 checks passed 	rc=1 Ran 27 tests in 5.528s FAILED (failures=4) 
+baseline_label_trusted	k6 SUMMARY core 9/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o7 14/15 checks passed 	rc=1 Ran 27 tests in 5.466s FAILED (failures=2) 
+cite_corpus_sha	k1 k2 k4 k5 SUMMARY core 6/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o4 o13 o15 12/15 checks passed 	rc=1 Ran 27 tests in 5.461s FAILED (failures=4) 
+cite_offset_shift	k1 k2 k4 k5 SUMMARY core 6/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o1 o3 o4 o10 11/15 checks passed 	rc=1 Ran 27 tests in 5.649s FAILED (failures=3) 
+conflict_check_off	k1 k4 k5 SUMMARY core 7/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o13 14/15 checks passed 	rc=1 Ran 27 tests in 5.633s FAILED (failures=2, errors=1) 
+coverage_not_checked	k3 SUMMARY core 9/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o12 14/15 checks passed 	rc=1 Ran 27 tests in 5.932s FAILED (failures=1) 
+fabricated_quote_accepted	k3 k5 SUMMARY core 8/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o2 o4 o12 o15 11/15 checks passed 	rc=1 Ran 27 tests in 5.477s FAILED (failures=3, errors=7) 
+facts_not_in_quote_ok	k3 SUMMARY core 9/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o12 14/15 checks passed 	rc=1 Ran 27 tests in 5.586s FAILED (failures=2) 
+failure_still_writes	k1 k2 k3 k4 k5 k6 k7 k8 k9 k10 SUMMARY core 0/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o1 o2 o3 o4 o5 o6 o7 o8 o9 o10 o11 o12 o13 o14 o15 0/15 checks passed 	rc=1 Ran 27 tests in 1.493s FAILED (failures=16, errors=30) 
+fault_plan_ignored	k7 SUMMARY core 9/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o5 o6 o14 12/15 checks passed 	rc=1 Ran 27 tests in 5.510s FAILED (failures=3) 
+identifiers_not_exact	SUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o15 14/15 checks passed 	rc=1 Ran 27 tests in 5.842s FAILED (failures=2) 
+imported_called_verified	k3 k6 SUMMARY core 8/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o2 14/15 checks passed 	rc=1 Ran 27 tests in 5.786s FAILED (failures=2) 
+invalid_input_writes	SUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversarial 0/0 rejected the attack (0 findings) 	15/15 checks passed 	rc=0 Ran 27 tests in 10.853s OK 
+journal_header_unchecked	k7 SUMMARY core 9/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o6 14/15 checks passed 	rc=1 Ran 27 tests in 5.772s FAILED (failures=2) 
+min_coverage_ignored	k1 k5 SUMMARY core 8/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o1 o3 o4 o10 o13 10/15 checks passed 	rc=1 Ran 27 tests in 5.873s FAILED (failures=7) 
+missed_answer_passes	k3 SUMMARY core 9/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o2 14/15 checks passed 	rc=1 Ran 27 tests in 6.399s FAILED (failures=3) 
+missing_record_ignored	k3 k10 SUMMARY core 8/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o12 14/15 checks passed 	rc=1 Ran 27 tests in 5.839s FAILED (failures=2) 
+need_number_ignored	k4 SUMMARY core 9/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o13 14/15 checks passed 	rc=1 Ran 27 tests in 5.650s FAILED (failures=3) 
+numbers_not_checked	SUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversarial 0/0 rejected the attack (0 findings) 	15/15 checks passed 	rc=0 Ran 27 tests in 10.843s OK 
+order_dependent_output	k9 SUMMARY core 9/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o13 14/15 checks passed 	rc=1 Ran 27 tests in 5.780s FAILED (failures=2) 
+overwrite_input_allowed	k8 SUMMARY core 9/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o9 o11 o15 12/15 checks passed 	rc=1 Ran 27 tests in 5.709s FAILED (failures=2) 
+relocation_not_allowed	k3 k5 SUMMARY core 8/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o2 o4 o12 12/15 checks passed 	rc=1 Ran 27 tests in 5.703s FAILED (failures=2) 
+resume_redoes_all	k7 SUMMARY core 9/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o5 o14 13/15 checks passed 	rc=1 Ran 27 tests in 5.728s FAILED (failures=3) 
+stale_reported_invalid	k5 SUMMARY core 9/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o4 o15 13/15 checks passed 	rc=1 Ran 27 tests in 6.022s FAILED (failures=4) 
+symlink_doc_followed	SUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversarial 0/0 rejected the attack (0 findings) 	15/15 checks passed 	rc=0 Ran 27 tests in 11.190s OK 
+torn_tail_parsed	k7 SUMMARY core 9/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o6 14/15 checks passed 	rc=1 Ran 27 tests in 5.757s FAILED (failures=2) 
+wrong_source_off	k3 SUMMARY core 9/10 pass; oracle REJECTS candidate; adversarial 0/0 rejected the attack (0 findings) 	o2 14/15 checks passed 	rc=1 Ran 27 tests in 5.705s FAILED (failures=2) 
