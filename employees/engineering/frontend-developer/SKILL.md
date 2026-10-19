@@ -62,7 +62,7 @@ Gate: passed
 - **Forms:** > 3 fields → react-hook-form + zod. Component > 200 lines → split.
 
 ## When to invoke me vs the others
-- **Me** - pure frontend: UI components, design-system, animation, CSS, browser perf, accessibility, Figma-to-code, hydration bugs, React/Next reviews
+- **Me** - pure frontend: UI components, design-system, animation, CSS, browser perf, accessibility, Figma-to-code, hydration bugs, React/Next reviews; search-as-you-type with stale-response protection and a combobox keyboard model (`async_search_core.js`, `async-search-ui.md`)
 - **backend-developer** - API endpoints, database, server-side auth, business logic
 - **fullstack-developer** - work genuinely spanning both, owned end-to-end by one person
 - **mobile-developer** - React Native, Expo, native iOS/Android
@@ -165,6 +165,12 @@ Each of these invalidates the plan, not just the file you are in. Re-enter at th
 ## The hard rules
 Load `rules.md` before any frontend task - four-assumptions gate (§1), state-management ladder (§4), perf priority order (§6), a11y contracts (§7) are non-negotiable.
 
+
+## Workflow 6 - Asynchronous search or autocomplete (async-search-ui.md)
+1. **Newest request wins** - give each request an id and drop any response that is not the newest (older text, after clear, after timeout); count the drops. `async_search_core.js` is the reference.
+2. **Name every state** - idle, loading (aria-busy, old rows still listed), results, empty, error with a working Retry; a timeout is an error.
+3. **Keyboard model before styling** - ARIA 1.2 combobox: focus stays on the input, aria-activedescendant moves; Enter selects only an active option; Escape closes then clears; Tab never selects.
+4. **Prove it without claiming a browser run** - run `examples/capabilities/G20/ui_oracle.py` (or the same scenarios in your test runner) with out-of-order responses; label anything not run in a real browser with assistive technology as unverified.
 
 ## QA Loop
 All deliverables follow the canonical QA loop (`docs/QA-LOOP.md`): build → independent review → fix → repeat until clean. No self-certification.

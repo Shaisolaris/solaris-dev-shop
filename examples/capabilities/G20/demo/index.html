@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solaris help search (G20 fixture demo)</title>
+<!-- G20 fixture demo. Browser behaviour (rendering, keyboard, focus, screen reader) has NOT been run by any check;
+     the checks run the DOM-free core in JavaScriptCore and inspect this file statically. -->
+<style>
+  :root {
+    --sol-navy: #102033;      /* navy, cream, amber, line and the Georgia font: assets/social-preview.svg */
+    --sol-cream: #f4f1ea;
+    --sol-amber: #e8a54b;
+    --sol-ink-2: #1d3a5f;     /* not in the brand file: a darker navy for text and focus rings (contrast not measured) */
+    --sol-line: #d7deea;
+    --sol-surface: #ffffff;
+    --sol-font: Georgia, "Times New Roman", serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--sol-cream); color: var(--sol-navy); font: 1rem/1.5 var(--sol-font); }
+  main { max-width: 56rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+  h1 { font-size: 1.6rem; margin: 0 0 .25rem; }
+  .brand-rule { height: .25rem; width: 4rem; background: var(--sol-amber); border: 0; margin: 0 0 1.25rem; }
+  label { display: block; font-weight: bold; margin-bottom: .25rem; }
+  .combo { position: relative; }
+  #q { width: 100%; min-height: 2.75rem; padding: .5rem .75rem; font: inherit; color: var(--sol-navy);
+       background: var(--sol-surface); border: 2px solid var(--sol-ink-2); border-radius: .375rem; }
+  #q:focus-visible, button:focus-visible { outline: 3px solid var(--sol-ink-2); outline-offset: 2px; }
+  #results { list-style: none; margin: .5rem 0 0; padding: .25rem; background: var(--sol-surface);
+             border: 1px solid var(--sol-line); border-radius: .375rem; display: grid; grid-template-columns: 1fr; gap: .25rem; }
+  #results[hidden] { display: none; }
+  #results [role="option"] { min-height: 2.75rem; padding: .5rem .75rem; border-radius: .25rem; cursor: pointer; }
+  #results [role="option"][aria-selected="true"] { background: var(--sol-navy); color: var(--sol-cream); }
+  #results [role="option"][aria-selected="true"]::before { content: "\25B8\00a0"; }  /* not colour alone */
+  .status { min-height: 1.5rem; margin-top: .5rem; color: var(--sol-ink-2); }
+  [aria-busy="true"] { opacity: .75; }
+  .error { margin-top: .5rem; padding: .5rem .75rem; border-left: .375rem solid var(--sol-amber);
+           background: var(--sol-surface); color: var(--sol-navy); }
+  .error[hidden] { display: none; }
+  button { font: inherit; min-height: 2.75rem; padding: .25rem 1rem; color: var(--sol-cream); background: var(--sol-navy);
+           border: 0; border-radius: .375rem; cursor: pointer; }
+  .chosen { margin-top: 1rem; }
+  .controls { margin-top: 1.5rem; font-size: .9rem; color: var(--sol-ink-2); }
+  @media (min-width: 40rem) {
+    #results { grid-template-columns: 1fr 1fr; }
+    #results [role="option"] { min-height: 2rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Search help articles</h1>
+  <hr class="brand-rule" aria-hidden="true">
+  <div class="combo">
+    <label for="q" id="q-label">Search help articles</label>
+    <input id="q" type="text" role="combobox" autocomplete="off" spellcheck="false"
+           aria-autocomplete="list" aria-expanded="false" aria-controls="results" aria-describedby="q-hint">
+    <p id="q-hint" class="status" style="margin:0">Type to search. Up and down arrows move through results, Enter chooses, Escape closes.</p>
+    <ul id="results" role="listbox" aria-labelledby="q-label" hidden></ul>
+  </div>
+  <div id="status" class="status" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div id="error" class="error" role="alert" hidden>
+    <span id="error-text"></span>
+    <button type="button" id="retry">Retry</button>
+  </div>
+  <p class="chosen" id="chosen" aria-live="polite"></p>
+  <fieldset class="controls">
+    <legend>Fixture controls (synthetic latency and faults)</legend>
+    <label><input type="checkbox" id="fail"> Fail the next request</label>
+    <label><input type="checkbox" id="shuffle" checked> Random latency (responses may arrive out of order)</label>
+  </fieldset>
+</main>
+<script src="fixture-data.js"></script>
+<script src="../../../../employees/engineering/frontend-developer/async_search_core.js"></script>
+<script>
+(function () {
+  "use strict";
+  var S = window.SolarisAsyncSearch, data = window.G20_FIXTURE || [];
+  var q = document.getElementById("q"), list = document.getElementById("results"), status = document.getElementById("status");
+  var errBox = document.getElementById("error"), errText = document.getElementById("error-text");
+  var retry = document.getElementById("retry"), chosen = document.getElementById("chosen");
+  var failNext = document.getElementById("fail"), shuffle = document.getElementById("shuffle");
+  var ui = { open: false, active: -1 }, view = null;
+
+  function fakeFetch(query, o) {  // synthetic backend: substring match with random latency; never touches the network
+    return new Promise(function (resolve, reject) {
+      var ms = shuffle.checked ? 40 + Math.floor(Math.random() * 900) : 120;
+      var t = setTimeout(function () {
+        if (failNext.checked) { failNext.checked = false; reject(new Error("the fixture backend returned 503")); return; }
+        var needle = query.toLowerCase();
+        resolve(data.filter(function (r) { return r.label.toLowerCase().indexOf(needle) !== -1; }));
+      }, ms);
+      if (o && o.signal) o.signal.addEventListener("abort", function () { clearTimeout(t); });
+    });
+  }
+  function render(next) {
+    var said = S.announcement(view, next);
+    if (said) status.textContent = said;
+    var replaced = !view || view.results.length !== next.results.length || view.requestId !== next.requestId;
+    view = next;
+    list.setAttribute("aria-busy", next.busy ? "true" : "false");
+    if (replaced) {
+      ui = S.onResults({ open: next.results.length > 0 && document.activeElement === q }, next.results.length);
+      list.textContent = "";
+      next.results.forEach(function (r, i) {
+        var li = document.createElement("li");
+        li.id = "opt-" + r.id; li.setAttribute("role", "option"); li.setAttribute("aria-selected", "false");
+        li.textContent = r.label;
+        li.addEventListener("mousedown", function (e) { e.preventDefault(); choose(i); });  // keep focus on the input
+        list.appendChild(li);
+      });
+    }
+    errBox.hidden = next.status !== "error";
+    errText.textContent = next.status === "error" ? "Search failed: " + next.error + "." : "";
+    paint();
+  }
+  function paint() {
+    var opts = list.children, open = ui.open && opts.length > 0;
+    list.hidden = !open;
+    q.setAttribute("aria-expanded", open ? "true" : "false");
+    for (var i = 0; i < opts.length; i++) opts[i].setAttribute("aria-selected", i === ui.active ? "true" : "false");
+    if (open && ui.active >= 0) { q.setAttribute("aria-activedescendant", opts[ui.active].id); opts[ui.active].scrollIntoView({ block: "nearest" }); }
+    else q.removeAttribute("aria-activedescendant");
+  }
+  function choose(i) {
+    var r = view && view.results[i];
+    if (!r) return;
+    q.value = r.label; chosen.textContent = "Chosen: " + r.label;
+    ui = { open: false, active: -1 }; paint(); q.focus();
+  }
+  var c = S.createSearchController({ fetch: fakeFetch, schedule: function (f, ms) { return setTimeout(f, ms); },
+                                     cancel: function (h) { clearTimeout(h); }, debounceMs: 150, timeoutMs: 4000, onChange: render });
+  q.addEventListener("input", function () { ui = { open: true, active: -1 }; c.input(q.value); paint(); });
+  q.addEventListener("keydown", function (e) {
+    var n = list.children.length, r = S.listboxKey(ui, e.key, n);
+    if (r.preventDefault) e.preventDefault();
+    ui = { open: r.open, active: r.active };
+    if (r.select >= 0) choose(r.select);
+    if (r.clearInput) { q.value = ""; c.clear(); }
+    paint();
+  });
+  q.addEventListener("blur", function () { ui = { open: false, active: -1 }; paint(); });
+  retry.addEventListener("click", function () { c.retry(); q.focus(); });
+})();
+</script>
+</body>
+</html>
