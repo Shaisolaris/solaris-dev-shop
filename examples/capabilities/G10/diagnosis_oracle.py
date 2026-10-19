@@ -351,6 +351,20 @@ def main():
                     bad.append(f"{san} on {host}: {codes(j)}, a real name mismatch must be reported")
                 elif not any("not host names" in x for x in j.get("notes", [])):
                     bad.append(f"{san} on {host}: the ignored non-host entry is not named in the notes")
+        # G10 r5 (M10 r3 Q1): keytool and certutil spellings of non-host types, too
+        for n, extra in (("kt-uri", "URIName: spiffe://svc.example/a"), ("kt-oid", "OIDName: 1.2.3.4"),
+                         ("kt-other", "Other-Name: Unrecognized ObjectIdentifier: 1.3.6.1.4.1.311.20.2.3"),
+                         ("cu-url", "URL=spiffe://svc.example/a")):
+            j = variant(f"nh-{n}", lambda o, extra=extra: o["cert"].update(san=["DNS:other.example", extra]))
+            if "TLS_NAME_MISMATCH" not in codes(j):
+                bad.append(f"{extra} beside DNS:other.example on {host}: {codes(j)}, a real name mismatch must be reported")
+        j = variant("nh-uri-alone", lambda o: o["cert"].update(san=["URIName: spiffe://svc.example/a"]))
+        if any("paste them as DNS" in x or ("not understood" in x and "do not rewrite" not in x) for x in j.get("notes", [])):
+            bad.append("a URI that is not understood must not be advised to be pasted as DNS")
+        # G10 r5 (M10 r3 Q2): a bare name after a typed entry in one list is its own entry
+        j = variant("mixed-cover", lambda o: o["cert"].update(san=[f"DNS:other.example, {host}"]))
+        if codes(j) != ["TLS_ALERT"]:
+            bad.append(f"'DNS:other.example, {host}' covers {host}: {codes(j)}, expected only TLS_ALERT")
         j = variant("nh-cover", lambda o: o["cert"].update(san=[f"DNS:{host}", "URI:spiffe://svc.example/a"]))
         if codes(j) != ["TLS_ALERT"]:
             bad.append(f"covering DNS entry plus URI: {codes(j)}, expected only TLS_ALERT")
@@ -372,7 +386,7 @@ def main():
         rc, j, _ = run("diagnose", str(sdir / "ns-trunc.json"), "--json")
         if rc == 2 or "TLS_CERT_EXPIRED" not in codes(j if isinstance(j, dict) else {}):
             bad.append(f"not_after .1234567 before capture .123457: exit {rc}, expected TLS_CERT_EXPIRED (truncate, not round)")
-        check("o14_san_spellings_and_inputs", not bad, "keytool/Windows/one-line SANs cover; non-host SAN types never hide a mismatch; suffix wildcards, non-ASCII, double dot refused; SNI flagged; deep JSON and non-RFC 3339 times exit 2; any fraction digit count accepted" if not bad else "; ".join(bad[:3]))
+        check("o14_san_spellings_and_inputs", not bad, "keytool/Windows/one-line SANs cover; non-host SAN types (openssl, keytool, certutil) never hide a mismatch; a bare name after a typed one covers; suffix wildcards, non-ASCII, double dot refused; SNI flagged; deep JSON and non-RFC 3339 times exit 2; any fraction digit count accepted" if not bad else "; ".join(bad[:3]))
     n = sum(results)
     print(f"SUMMARY {n}/{len(results)} pass; candidate {'ACCEPTED by oracle' if n == len(results) else 'REJECTED'}")
     return 0 if n == len(results) else 1

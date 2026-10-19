@@ -545,5 +545,61 @@ class M10R2Rework(Base):
                 self.assertIn('TLS_NAME_MISMATCH', self.codes(self.alert(['DNS:*.lab.example'], sni=host, host=host)))
 
 
+class M10R3Rework(Base):
+    """G10 r5 (M10 r3 Grok self-validation of 69c6081): keytool and certutil spellings of non-host SAN types
+    (Q1), a bare name after a typed entry in one list (Q2), and the not-understood note's advice."""
+
+    TOOL_EXTRA = ('URIName: spiffe://lab.example/ns/a/sa/b', 'OIDName: 1.2.3.4',
+                  'Other-Name: Unrecognized ObjectIdentifier: 1.3.6.1.4.1.311.20.2.3', 'URL=spiffe://lab.example/a',
+                  'DirectoryName: CN=web, O=Example Lab', 'URI Name: spiffe://lab.example/b')
+
+    codes = M10R2Rework.codes
+    alert = M10R2Rework.alert
+
+    def test_q1_keytool_and_certutil_non_host_spellings_never_hide_a_mismatch(self):
+        for extra in self.TOOL_EXTRA:
+            for san in (['DNS:other.example', extra], [f'DNS:other.example, {extra}'], [f'{extra}, DNS:other.example'],
+                        ['DNSName: other.example', extra]):
+                with self.subTest(san=san):
+                    r = self.alert(san)
+                    self.assertIn('TLS_NAME_MISMATCH', self.codes(r))
+                    self.assertTrue(any('not host names were ignored' in n for n in r['notes']), r['notes'])
+                    self.assertFalse(any('not understood' in n for n in r['notes']), r['notes'])
+            with self.subTest(cover=extra):
+                self.assertEqual(self.codes(self.alert(['DNSName: web.lab.example', extra])), ['TLS_ALERT'])
+            with self.subTest(alone=extra):
+                r = self.alert([extra])
+                self.assertNotIn('TLS_NAME_MISMATCH', self.codes(r))
+                self.assertTrue(any('not understood' in n for n in r['notes']), r['notes'])
+
+    def test_q1_note_never_advises_rewriting_a_uri_as_dns(self):
+        r = self.alert(['URIName: spiffe://lab.example/a'])
+        note = next(n for n in r['notes'] if 'not understood' in n)
+        self.assertNotIn('paste them as DNS', note)
+        self.assertIn('do not rewrite them as DNS', note)
+        r = self.alert(['DNS:other.example', 'Foo Name:web.lab.example'])
+        self.assertTrue(any('if one of them is really a host name' in n for n in r['notes']), r['notes'])
+
+    def test_q2_bare_name_after_a_typed_entry_is_its_own_entry(self):
+        self.assertEqual(nd._san_parts('DNS:a.example, web.lab.example'), ['DNS:a.example', 'web.lab.example'])
+        self.assertEqual(nd._san_parts('DNS:a.example, web.lab.example, IP Address:192.0.2.1'),
+                         ['DNS:a.example', 'web.lab.example', 'IP Address:192.0.2.1'])
+        self.assertEqual(self.codes(self.alert(['DNS:a.example, web.lab.example'])), ['TLS_ALERT'])
+        self.assertEqual(self.codes(self.alert(['DNSName: a.example, web.lab.example'])), ['TLS_ALERT'])
+        self.assertIn('TLS_NAME_MISMATCH', self.codes(self.alert(['DNS:a.example, b.example'])))
+        # non-host values keep their commas, so a host-like part inside them never covers
+        self.assertEqual(nd._san_parts('DNS:a.example, DirName:/C=GB, O=web.lab.example'),
+                         ['DNS:a.example', 'DirName:/C=GB, O=web.lab.example'])
+        self.assertEqual(nd._san_parts('URI:spiffe://x.example/a,web.lab.example, DNS:a.example'),
+                         ['URI:spiffe://x.example/a,web.lab.example', 'DNS:a.example'])
+        self.assertIn('TLS_NAME_MISMATCH', self.codes(self.alert(['URI:spiffe://x.example/a,web.lab.example, DNS:a.example'])))
+
+    def test_mismatch_detail_lists_parsed_host_names(self):
+        r = self.alert(['DNS:other.example, URI:spiffe://lab.example/a'])
+        detail = next(f['detail'] for f in r['findings'] if f['code'] == 'TLS_NAME_MISMATCH')
+        self.assertIn("['other.example']", detail)
+        self.assertNotIn('spiffe', detail)
+
+
 if __name__ == '__main__':
     unittest.main()

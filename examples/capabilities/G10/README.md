@@ -47,5 +47,8 @@ not the suffix rule; o14 adds URI, email, othername, DirName and Registered ID e
 non-covering DNS entry (must stay TLS_NAME_MISMATCH), 7 and 9 digit fractions, and a nanosecond
 not_after before the capture (TLS_CERT_EXPIRED), with extra digits dropped and never rounded.
 Also: certutil "Principal Name=" (not understood) stays separate from a lone othername entry.
+r5 (M10 r3 Q1, Q2): o14 adds keytool URIName, OIDName, Other-Name and certutil URL= beside a
+non-covering DNS entry (still a mismatch), a lone URI whose note must not advise pasting it as DNS,
+and a one-line list `DNS:other.example, <host>` whose bare second name covers the host.
 The naive stub blames the first bad-looking observation, is always certain, uses the wall
 clock for certificates, does a live lookup and copies headers.

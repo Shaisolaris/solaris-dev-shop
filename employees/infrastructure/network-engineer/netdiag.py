@@ -281,11 +281,14 @@ def _observation(o: Any, i: int) -> Dict[str, Any]:
 # Windows certutil "DNS Name=", "IP Address=". Anything else typed is not understood.
 SAN_PREFIX_RE = re.compile(r"^\s*(dns ?name|dns|ip ?address|ip)\s*[:=]\s*", re.I)
 OTHER_TYPE_RE = re.compile(r"^\s*[A-Za-z][A-Za-z0-9 ._-]{0,30}\s*[:=]")
-# SAN types that are never host names (RFC 6125: only dNSName and iPAddress identify a TLS server).
-NON_HOST_TYPE_RE = re.compile(r"^\s*(uri|email|rfc822 ?name|other ?name|dir ?name|directory ?address|"
-                              r"registered ?id|x400(?: ?name| ?address)?|edi ?party ?name)\s*[:=]", re.I)
-TYPED_SPLIT_RE = re.compile(r",\s*(?=(?:dns ?name|dns|ip ?address|ip|uri|email|rfc822 ?name|other ?name|dir ?name|"
-                            r"directory ?address|registered ?id|x400(?: ?name| ?address)?|edi ?party ?name)\s*[:=])", re.I)
+# SAN types that are never host names (RFC 6125: only dNSName and iPAddress identify a TLS server), in the
+# spellings of openssl (URI:, email:, othername:, DirName:, Registered ID:), Java keytool (URIName:, OIDName:,
+# Other-Name:, RFC822Name:, DirectoryName:, EDIPartyName:, X400Address:) and Windows certutil (URL=,
+# RFC822 Name=, Other Name:, Directory Address:, Registered ID=).
+NON_HOST_TYPES = (r"uri ?name|uri|url|email|rfc822 ?name|other[ -]?name|oid ?name|dir ?name|directory ?name|"
+                  r"directory ?address|registered ?id|x400(?: ?name| ?address)?|edi ?party ?name")
+NON_HOST_TYPE_RE = re.compile(r"^\s*(" + NON_HOST_TYPES + r")\s*[:=]", re.I)
+TYPED_SPLIT_RE = re.compile(r",\s*(?=(?:dns ?name|dns|ip ?address|ip|" + NON_HOST_TYPES + r")\s*[:=])", re.I)
 # Multi-label public suffixes a wildcard may not sit on (a short list, not the full PSL).
 PUBLIC_SUFFIXES = frozenset("""co.uk org.uk ac.uk gov.uk ltd.uk plc.uk me.uk net.uk sch.uk nhs.uk
 com.au net.au org.au edu.au gov.au co.nz org.nz net.nz govt.nz co.jp ne.jp or.jp ac.jp go.jp
@@ -306,7 +309,15 @@ def _san_parts(raw: str) -> List[str]:
     if "," not in raw:
         return [raw]
     typed = SAN_PREFIX_RE.match(raw) or NON_HOST_TYPE_RE.match(raw)
-    parts = TYPED_SPLIT_RE.split(raw) if typed else raw.split(",")
+    if not typed:
+        parts = raw.split(",")
+    else:
+        # split before each type prefix, then split a DNS, IP or bare piece at its own commas, so a bare
+        # name after a typed one ('DNS:a.example, api.example') is its own entry; a non-host value
+        # (DirName, URI, ...) keeps its commas
+        parts = []
+        for piece in TYPED_SPLIT_RE.split(raw):
+            parts.extend([piece] if NON_HOST_TYPE_RE.match(piece) else piece.split(","))
     return [p for p in (x.strip() for x in parts) if p]
 
 
@@ -539,9 +550,10 @@ def analyse(trace: Dict[str, Any], input_sha256: str) -> Dict[str, Any]:
                     notes.append(f"certificate SAN entries that are not host names were ignored: {sorted(other)[:4]}")
                 if unknown:
                     notes.append(f"certificate SAN entries not understood and not used: {sorted(unknown)[:4]}; "
-                                 "paste them as DNS:<name> or IP:<address>")
+                                 "if one of them is really a host name, give it as DNS:<name> or IP:<address>. "
+                                 "URI, email and other non-host types never name a TLS server: do not rewrite them as DNS")
                 if c["san"] and not unknown and not _san_matches(o["sni"] or host, c["san"]):
-                    problems.append(("TLS_NAME_MISMATCH", f"certificate names {c['san'][:4]} do not cover {o['sni'] or host}"))
+                    problems.append(("TLS_NAME_MISMATCH", f"certificate host names {hostnames[:4]} do not cover {o['sni'] or host}"))
                     verified = bool(cfg["expected_addresses"]) and bool(set(answers) & set(cfg["expected_addresses"]))
                     if not is_ip and not verified:
                         ambiguous.setdefault("tls", []).append("dns")
