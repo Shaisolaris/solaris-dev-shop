@@ -1,0 +1,333 @@
+{
+ "tool": "/tmp/m33teeth-gq056ep9/g13_value_ok/employees/product-project/product-manager/evidence_decision.py",
+ "python": "3.9.6",
+ "rows": [
+  {
+   "row": "E01 clean control: preferred portal; totals equal an independent Decimal model; C9 (segment) and C10 (stale) excluded; no market size computed",
+   "pass": true,
+   "detail": {
+    "rc": 0,
+    "pref": "portal",
+    "mine": {
+     "portal": [
+      "3.5000",
+      "3.9500",
+      "3.8214"
+     ],
+     "ai-schedule": [
+      "0.9500",
+      "0.9500",
+      "0.9500"
+     ],
+     "reports": [
+      "1.0500",
+      "2.3000",
+      null
+     ]
+    },
+    "got": {
+     "ai-schedule": {
+      "high": "0.9500",
+      "low": "0.9500",
+      "point": "0.9500",
+      "unknown_dimensions": []
+     },
+     "portal": {
+      "high": "3.9500",
+      "low": "3.5000",
+      "point": "3.8214",
+      "unknown_dimensions": []
+     },
+     "reports": {
+      "high": "2.3000",
+      "low": "1.0500",
+      "point": null,
+      "unknown_dimensions": [
+       "proof"
+      ]
+     }
+    },
+    "excluded": [
+     "C10",
+     "C9"
+    ]
+   }
+  },
+  {
+   "row": "E02 no invented market numbers: top-level TAM/SAM/SOM/market_size/adoption refused and nothing written; a fresh analyst figure is score-checked, used only as evidence; invented values and quotes blocked",
+   "pass": false,
+   "detail": {
+    "top_tam": [
+     true,
+     2
+    ],
+    "top_sam": [
+     true,
+     2
+    ],
+    "top_som": [
+     true,
+     2
+    ],
+    "top_market_size": [
+     true,
+     2
+    ],
+    "top_adoption": [
+     false,
+     0
+    ],
+    "fresh_market_number_score_checked": [
+     true,
+     {
+      "rc": 1,
+      "codes": [
+       "stated_score_mismatch"
+      ]
+     }
+    ],
+    "fresh_market_number_consistent_is_used_not_computed": [
+     true,
+     {
+      "rc": 0,
+      "proof": {
+       "claims": [
+        "C10",
+        "C8"
+       ],
+       "conflict": true,
+       "dimension": "proof",
+       "high": "5",
+       "low": "2",
+       "mean": "2.7500",
+       "option": "portal"
+      }
+     }
+    ],
+    "value_not_in_quote": [
+     true,
+     [
+      "value_not_in_quote"
+     ]
+    ],
+    "invented_quote": [
+     true,
+     [
+      "quote_not_in_source"
+     ]
+    ],
+    "quote_whitespace_case_normalized_ok": [
+     true,
+     []
+    ]
+   }
+  },
+  {
+   "row": "E03 source integrity: edited or missing snapshots, unknown sources, late retrieval, unscored claims and bad scores never feed a cell",
+   "pass": true,
+   "detail": {
+    "snapshot_edited": [
+     true,
+     [
+      "snapshot_mismatch"
+     ]
+    ],
+    "snapshot_missing": [
+     true,
+     [
+      "snapshot_mismatch"
+     ]
+    ],
+    "unknown_source": [
+     true,
+     [
+      "unknown_source"
+     ]
+    ],
+    "retrieved_after_as_of": [
+     true,
+     2
+    ],
+    "unscored_claim": [
+     true,
+     [
+      "unscored_claim"
+     ]
+    ],
+    "float_score_invalid": [
+     true,
+     2
+    ],
+    "score_above_5_invalid": [
+     true,
+     2
+    ]
+   }
+  },
+  {
+   "row": "E04 conflicting evidence: a strong contrary interview claim makes the portal pain cell a conflict (1..5), lists it as contrary, and the decision becomes no_robust_choice naming that cell",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "status": "no_robust_choice",
+    "cell": {
+     "claims": [
+      "C1",
+      "C20",
+      "C5",
+      "C6"
+     ],
+     "conflict": true,
+     "dimension": "pain",
+     "high": "5",
+     "low": "1",
+     "mean": "3.6000",
+     "option": "portal"
+    },
+    "contrary": [
+     {
+      "against": "cell mean 3.6000",
+      "claim": "C20",
+      "dimension": "pain",
+      "option": "portal",
+      "score": "1"
+     }
+    ],
+    "deciding": [
+     {
+      "dimension": "pain",
+      "option": "portal",
+      "weighted_range": "1.8000",
+      "why": "evidence spans 1 to 5"
+     },
+     {
+      "dimension": "proof",
+      "option": "reports",
+      "weighted_range": "1.2500",
+      "why": "no evidence"
+     }
+    ],
+    "mine": {
+     "portal": [
+      "2.1500",
+      "3.9500",
+      "3.3200"
+     ],
+     "ai-schedule": [
+      "0.9500",
+      "0.9500",
+      "0.9500"
+     ],
+     "reports": [
+      "1.0500",
+      "2.3000",
+      null
+     ]
+    }
+   }
+  },
+  {
+   "row": "E05 the decision moves predictably: sweeping C1 over scores 0..5 and every confidence gives the model's totals and preference each time",
+   "pass": true,
+   "detail": {
+    "bad": []
+   }
+  },
+  {
+   "row": "E06 unknown dimension spans 0..5 with no point and blocks a robust win; a mutable source is usable at max_age_days and excluded one day later",
+   "pass": true,
+   "detail": {
+    "unknown_dimension": [
+     true,
+     {
+      "rc": 1,
+      "portal": {
+       "high": "4.2500",
+       "low": "2.3000",
+       "point": null,
+       "unknown_dimensions": [
+        "fit"
+       ]
+      }
+     }
+    ],
+    "mutable_age_30": [
+     true,
+     {
+      "rc": 0,
+      "used": true,
+      "verify": []
+     }
+    ],
+    "mutable_age_31": [
+     true,
+     {
+      "rc": 0,
+      "used": false,
+      "verify": [
+       {
+        "age_days": 31,
+        "claim": "C10",
+        "max_age_days": 30,
+        "retrieved_at": "2026-09-05",
+        "source": "S-mkt",
+        "url": "https://analyst.example.invalid/market/clinic-software"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "row": "E07 G13 evidence: gaps lower confidence to low; a wrong value, a missing contract and a stated score against the metric scale are named",
+   "pass": false,
+   "detail": {
+    "g13_gaps_low_confidence": [
+     true,
+     {
+      "rc": 0,
+      "C8": "low",
+      "codes": []
+     }
+    ],
+    "g13_value_mismatch": [
+     false,
+     []
+    ],
+    "g13_unavailable": [
+     true,
+     [
+      "g13_unavailable"
+     ]
+    ],
+    "stated_score_vs_metric": [
+     true,
+     [
+      "stated_score_mismatch"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "E08 recovery: --out refuses the package, an invalid run keeps the earlier result, verify names an edited or truncated result",
+   "pass": true,
+   "detail": {
+    "out": 0,
+    "verify": 0,
+    "over_pkg": 2,
+    "pkg_unchanged": true,
+    "invalid": 2,
+    "kept": true,
+    "edited": 1,
+    "truncated": 2
+   }
+  },
+  {
+   "row": "E09 seeded soak: 30 random packages (2-4 options, random weights, scores, confidences, out-of-ICP claims, real quotes) match the independent model exactly",
+   "pass": true,
+   "detail": {
+    "bad": []
+   }
+  }
+ ]
+}
