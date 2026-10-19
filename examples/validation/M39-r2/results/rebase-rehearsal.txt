@@ -1,0 +1,7 @@
+== rebase rehearsal (Grok self-validation, a scratch copy, nothing pushed): G39 r2 tree plus the G05 r2 and G19 h1 deltas
+G05 delta applied
+G19 delta applied
+OK
+DRILL PASSED
+ACCEPTED 18/18
+M39 ORACLE 8/9 core FAIL

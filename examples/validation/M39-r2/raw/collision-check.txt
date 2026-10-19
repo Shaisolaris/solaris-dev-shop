@@ -1,0 +1,6 @@
+Mon Oct 19 11:26:25 PDT 2026
+my prefixes: /tmp/m39r2*, /tmp/m40*, /tmp/m41*
+builder dirs present: /tmp/g39 /tmp/g40-inspect 
+other writer dirs present: /tmp/m08-pub /tmp/m16r7-pub-sanitize /tmp/r01 
+repo worktrees under /tmp/m*: /private/tmp/m38-peek /private/tmp/m39r2-eval 
+none of my prefixes start with /tmp/g; /tmp/m38-peek is not mine and is left alone

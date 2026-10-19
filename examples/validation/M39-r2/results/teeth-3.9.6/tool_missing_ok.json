@@ -1,0 +1,1237 @@
+{
+ "rows": [
+  {
+   "row": "D01 clean control: a full delivery (G04 order, G13 reconcile, G03 snapshot) is GO with true digests, real exits, a sound chain and head, and one delivery",
+   "pass": true,
+   "sub": {
+    "steps_exit_0": true,
+    "clean_go_exit_0": true,
+    "true_output_digest": true,
+    "real_exit_codes": true,
+    "chain_prev_is_sha_of_previous_line": true,
+    "head_is_sha_of_last_line": true,
+    "tool_digest_of_csv_reconcile": true,
+    "log_digest_true": true,
+    "one_delivery": true
+   },
+   "detail": {
+    "steps_exit_0": [
+     true,
+     [
+      0,
+      0,
+      0
+     ]
+    ],
+    "clean_go_exit_0": [
+     true,
+     [
+      0,
+      "GO",
+      [],
+      false
+     ]
+    ],
+    "true_output_digest": [
+     true,
+     {
+      "reports/metrics.json": "4b9e952939c102fb938361a3fece2d2f072e7533923c486293d3766c8720c707"
+     }
+    ],
+    "real_exit_codes": [
+     true,
+     [
+      0,
+      0
+     ]
+    ],
+    "chain_prev_is_sha_of_previous_line": [
+     true,
+     "50c34065c6ec"
+    ],
+    "head_is_sha_of_last_line": [
+     true,
+     {
+      "seq": 1,
+      "sha256": "78c742a9112c17a12690b815f55a398ac0dd3ff2464233d35a3b6fa883927a58"
+     }
+    ],
+    "tool_digest_of_csv_reconcile": [
+     true,
+     [
+      "repo:employees/data/data-engineer/csv_reconcile.py"
+     ]
+    ],
+    "log_digest_true": [
+     true,
+     ".delivery/logs/e52a1f7acd6e40f082a376b843a17db0.log"
+    ],
+    "one_delivery": [
+     true,
+     1
+    ]
+   }
+  },
+  {
+   "row": "D02 crashes at other points: G04 crash after activate or brief, a recorder killed mid-command, a crash between line and head, a cut-short line and a stray head temp file all recover safely",
+   "pass": false,
+   "sub": {
+    "g04_crash_after_activate_no_go_then_resume_go": true,
+    "g04_crash_after_brief_no_go_then_resume_go": true,
+    "killed_recorder_leaves_no_record_and_next_worker_records": true,
+    "head_lag_one_tolerated_and_repaired": false,
+    "torn_tail_ignored_then_dropped": true,
+    "stray_head_temp_file_harmless": true
+   },
+   "detail": {
+    "g04_crash_after_activate_no_go_then_resume_go": [
+     true,
+     [
+      75,
+      1,
+      "incomplete",
+      0,
+      0,
+      {
+       "activate": "ben",
+       "brief": "ben",
+       "deliver": "ben"
+      }
+     ]
+    ],
+    "g04_crash_after_brief_no_go_then_resume_go": [
+     true,
+     [
+      75,
+      1,
+      "incomplete",
+      0,
+      0,
+      {
+       "activate": "ana",
+       "brief": "ben",
+       "deliver": "ben"
+      }
+     ]
+    ],
+    "killed_recorder_leaves_no_record_and_next_worker_records": [
+     true,
+     [
+      2,
+      2,
+      0,
+      0,
+      0
+     ]
+    ],
+    "head_lag_one_tolerated_and_repaired": [
+     false,
+     [
+      1,
+      0,
+      2
+     ]
+    ],
+    "torn_tail_ignored_then_dropped": [
+     true,
+     [
+      1,
+      {
+       "data/data-engineer": "evidenced",
+       "infrastructure/database-administrator": "unevidenced"
+      },
+      0,
+      2,
+      0
+     ]
+    ],
+    "stray_head_temp_file_harmless": [
+     true,
+     [
+      0,
+      0
+     ]
+    ]
+   }
+  },
+  {
+   "row": "D03 stale and forged records: a later failed run supersedes an ok one; a changed ROOT tool script or a changed output folder is not evidenced; a record copied in from another delivery breaks the chain and blocks record (exit 3)",
+   "pass": false,
+   "sub": {
+    "later_failed_run_supersedes_ok": true,
+    "root_tool_changed_stale": true,
+    "output_dir_member_added_or_removed_blocks": true,
+    "output_dir_member_added_not_covered_no_traceback": true,
+    "output_edited_stale_names_file_and_rerun": true,
+    "root_tool_removed_stale": false,
+    "record_from_other_folder_breaks_chain": true
+   },
+   "detail": {
+    "later_failed_run_supersedes_ok": [
+     true,
+     [
+      1,
+      1,
+      "failed"
+     ]
+    ],
+    "root_tool_changed_stale": [
+     true,
+     [
+      0,
+      1,
+      "stale"
+     ]
+    ],
+    "output_dir_member_added_or_removed_blocks": [
+     true,
+     [
+      "not_covered",
+      "stale",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "output_dir_member_added_not_covered_no_traceback": [
+     true,
+     [
+      "not_covered",
+      ""
+     ]
+    ],
+    "output_edited_stale_names_file_and_rerun": [
+     true,
+     [
+      1,
+      "stale",
+      [
+       "reports/metrics.json"
+      ]
+     ]
+    ],
+    "root_tool_removed_stale": [
+     false,
+     "evidenced"
+    ],
+    "record_from_other_folder_breaks_chain": [
+     true,
+     [
+      1,
+      {
+       "chain": "broken",
+       "reason": "line 2 does not follow line 1 (edited, removed or reordered record)"
+      },
+      3
+     ]
+    ]
+   }
+  },
+  {
+   "row": "D04 edits to the log head and tail: an edited, re-serialised, removed, reordered or duplicated record, first or last, and a removed, unreadable, ahead or two-behind head all make verify NO_GO with every contribution unevidenced and make record refuse (exit 3)",
+   "pass": true,
+   "sub": {
+    "seq_gap_rechained": true,
+    "complete_last_record_without_newline_head_lagging": true,
+    "edit_first_record": true,
+    "reserialise_first_record": true,
+    "remove_first_record": true,
+    "edit_last_record": true,
+    "remove_last_record": true,
+    "reorder_records": true,
+    "duplicate_last_record": true,
+    "head_removed": true,
+    "head_unreadable": true,
+    "head_ahead": true,
+    "head_lags_two": true,
+    "complete_last_record_without_newline": true,
+    "broken_ledger_refused_before_running": true
+   },
+   "detail": {
+    "seq_gap_rechained": [
+     true,
+     [
+      1,
+      "broken",
+      3
+     ]
+    ],
+    "complete_last_record_without_newline_head_lagging": [
+     true,
+     [
+      1,
+      "broken",
+      3
+     ]
+    ],
+    "edit_first_record": [
+     true,
+     [
+      1,
+      "broken",
+      3
+     ]
+    ],
+    "reserialise_first_record": [
+     true,
+     [
+      1,
+      "broken",
+      3
+     ]
+    ],
+    "remove_first_record": [
+     true,
+     [
+      1,
+      "broken",
+      3
+     ]
+    ],
+    "edit_last_record": [
+     true,
+     [
+      1,
+      "broken",
+      3
+     ]
+    ],
+    "remove_last_record": [
+     true,
+     [
+      1,
+      "broken",
+      3
+     ]
+    ],
+    "reorder_records": [
+     true,
+     [
+      1,
+      "broken",
+      3
+     ]
+    ],
+    "duplicate_last_record": [
+     true,
+     [
+      1,
+      "broken",
+      3
+     ]
+    ],
+    "head_removed": [
+     true,
+     [
+      1,
+      "broken",
+      3
+     ]
+    ],
+    "head_unreadable": [
+     true,
+     [
+      1,
+      "broken",
+      3
+     ]
+    ],
+    "head_ahead": [
+     true,
+     [
+      1,
+      "broken",
+      3
+     ]
+    ],
+    "head_lags_two": [
+     true,
+     [
+      1,
+      "broken",
+      3
+     ]
+    ],
+    "complete_last_record_without_newline": [
+     true,
+     [
+      1,
+      "broken",
+      3
+     ]
+    ],
+    "broken_ledger_refused_before_running": [
+     true,
+     [
+      3,
+      false
+     ]
+    ]
+   }
+  },
+  {
+   "row": "D05 duplicate-delivery suppression: resuming twice after a crash after delivery leaves one delivery and GO; a duplicated delivery line or a new revision without its delivery is NO_GO; the new revision delivered once is GO",
+   "pass": true,
+   "sub": {
+    "crash_after_delivery_resume_twice_one_delivery_go": true,
+    "duplicated_delivery_line_no_go": true,
+    "new_revision_without_its_delivery_no_go": true,
+    "new_revision_delivered_once_go": true
+   },
+   "detail": {
+    "crash_after_delivery_resume_twice_one_delivery_go": [
+     true,
+     [
+      75,
+      0,
+      0,
+      1,
+      0
+     ]
+    ],
+    "duplicated_delivery_line_no_go": [
+     true,
+     [
+      1,
+      "delivery_count_wrong"
+     ]
+    ],
+    "new_revision_without_its_delivery_no_go": [
+     true,
+     [
+      1,
+      "incomplete"
+     ]
+    ],
+    "new_revision_delivered_once_go": [
+     true,
+     [
+      0,
+      0,
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "row": "D06 exit codes by default: a dirty-month reconciliation (exit 1) and an invalid-input run (exit 2) block the delivery",
+   "pass": true,
+   "sub": {
+    "dirty_month_exit_1_blocks_by_default": true,
+    "invalid_input_exit_2_blocks_by_default": true,
+    "exit_0_but_output_missing_not_ok": true
+   },
+   "detail": {
+    "dirty_month_exit_1_blocks_by_default": [
+     true,
+     [
+      1,
+      1,
+      "failed"
+     ]
+    ],
+    "invalid_input_exit_2_blocks_by_default": [
+     true,
+     [
+      1,
+      1
+     ]
+    ],
+    "exit_0_but_output_missing_not_ok": [
+     true,
+     [
+      1,
+      false,
+      "outputs: reports/never.txt is not a regular file"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "D07 upstream input changed after review (M39 goal): a changed source CSV or a changed data contract makes the delivery NO_GO",
+   "pass": true,
+   "sub": {
+    "orders_csv_row_added": true,
+    "contract_timezone_changed": true
+   },
+   "detail": {
+    "orders_csv_row_added": [
+     true,
+     [
+      0,
+      1,
+      "NO_GO",
+      {
+       "data/data-engineer": "stale",
+       "infrastructure/database-administrator": "evidenced"
+      }
+     ]
+    ],
+    "contract_timezone_changed": [
+     true,
+     [
+      0,
+      1,
+      "NO_GO",
+      {
+       "data/data-engineer": "stale",
+       "infrastructure/database-administrator": "evidenced"
+      }
+     ]
+    ]
+   }
+  },
+  {
+   "row": "D08 fresh-caller input errors: an unknown role, a credential-shaped argument, outputs inside .delivery, outside ROOT or absolute, and a missing claims file give exit 2 with no traceback and write nothing secret",
+   "pass": true,
+   "sub": {
+    "unknown_role_in_claims_exit_2": true,
+    "credential_in_command_refused_never_written": true,
+    "output_in_ledger_dir_refused": true,
+    "output_outside_root_refused": true,
+    "absolute_output_refused": true,
+    "record_role_dotdot_refused": true,
+    "record_role_upper_refused": true,
+    "record_role_double_slash_refused": true,
+    "claims_role_twice_exit_2": true,
+    "claims_order_outside_root_exit_2": true,
+    "verify_writes_no_bytecode_in_repo": true,
+    "verify_out_only_the_named_file": true,
+    "missing_claims_exit_2": true
+   },
+   "detail": {
+    "unknown_role_in_claims_exit_2": [
+     true,
+     [
+      2,
+      "invalid: data/no-such-role is not an employee in this repository (no employees/data/no-such-role/SKILL.md)"
+     ]
+    ],
+    "credential_in_command_refused_never_written": [
+     true,
+     2
+    ],
+    "output_in_ledger_dir_refused": [
+     true,
+     2
+    ],
+    "output_outside_root_refused": [
+     true,
+     2
+    ],
+    "absolute_output_refused": [
+     true,
+     2
+    ],
+    "record_role_dotdot_refused": [
+     true,
+     2
+    ],
+    "record_role_upper_refused": [
+     true,
+     2
+    ],
+    "record_role_double_slash_refused": [
+     true,
+     2
+    ],
+    "claims_role_twice_exit_2": [
+     true,
+     2
+    ],
+    "claims_order_outside_root_exit_2": [
+     true,
+     2
+    ],
+    "verify_writes_no_bytecode_in_repo": [
+     true,
+     []
+    ],
+    "verify_out_only_the_named_file": [
+     true,
+     [
+      [
+       "verdict.json"
+      ],
+      "GO",
+      0
+     ]
+    ],
+    "missing_claims_exit_2": [
+     true,
+     2
+    ]
+   }
+  },
+  {
+   "row": "D09 concurrency and timeouts: eight concurrent recorders all append under the lock with an intact chain; a timed-out command is killed and recorded as not ok; out-of-range timeouts give exit 2",
+   "pass": true,
+   "sub": {
+    "eight_concurrent_recorders_all_appended_chain_intact": true,
+    "timeout_kills_and_records_not_ok": true,
+    "timeout_zero_refused": true,
+    "timeout_too_long_refused": true,
+    "no_wait_with_lock_held_exit_4_nothing_appended": true
+   },
+   "detail": {
+    "eight_concurrent_recorders_all_appended_chain_intact": [
+     true,
+     [
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ],
+      9,
+      true,
+      [
+       "w0",
+       "w1",
+       "w2",
+       "w3",
+       "w4",
+       "w5",
+       "w6",
+       "w7"
+      ]
+     ]
+    ],
+    "timeout_kills_and_records_not_ok": [
+     true,
+     [
+      1,
+      false,
+      "timeout after 1s",
+      1.1
+     ]
+    ],
+    "timeout_zero_refused": [
+     true,
+     2
+    ],
+    "timeout_too_long_refused": [
+     true,
+     2
+    ],
+    "no_wait_with_lock_held_exit_4_nothing_appended": [
+     true,
+     [
+      4,
+      0
+     ]
+    ]
+   }
+  },
+  {
+   "row": "O09 OBS: accepted non-zero exits, claims without an order, intake changed after delivery, a forged single append, a failed record removed with the head rewritten, a deleted ledger, an output restored byte for byte (recorded, not scored)",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "ok_exit_0_1_with_exit_1_verdict": [
+     0,
+     "NO_GO",
+     "evidenced_with_gaps"
+    ],
+    "text_output_mentions_exit_1": true,
+    "ok_exit_0_1_2_invalid_input_verdict": [
+     2,
+     "GO"
+    ],
+    "claims_without_order_outbox_removed_verdict": "EVIDENCED_NO_ORDER",
+    "intake_changed_after_delivery_verdict": "NO_GO",
+    "forged_append_no_run_no_log_head_untouched_verdict": "NO_GO",
+    "failed_record_removed_head_rewritten_verdict": "GO",
+    "ledger_deleted_head_kept_then_record_exit": [
+     3,
+     1
+    ],
+    "output_changed_then_restored_verdict": "GO",
+    "db_changed_after_snapshot_verdict": "GO",
+    "full_consistent_rewrite_verdict_doc_limit": "GO"
+   }
+  },
+  {
+   "row": "C01 explicit inputs named in the command are bound in every common spelling (positional, --flag VALUE, --flag=VALUE, a folder, an absolute path inside ROOT, a symlink)",
+   "pass": false,
+   "sub": {
+    "positional_file_change_not_go": true,
+    "flag_then_value_change_not_go": true,
+    "flag_equals_value_change_not_go": false,
+    "positional_folder_file_added_not_go": false,
+    "absolute_path_inside_root_change_not_go": false,
+    "symlink_named_refused_or_target_change_not_go": false
+   },
+   "detail": {
+    "positional_file_change_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "flag_then_value_change_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "flag_equals_value_change_not_go": [
+     false,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       0,
+       "GO",
+       "evidenced"
+      ]
+     ]
+    ],
+    "positional_folder_file_added_not_go": [
+     false,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       0,
+       "GO",
+       "evidenced"
+      ]
+     ]
+    ],
+    "absolute_path_inside_root_change_not_go": [
+     false,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       0,
+       "GO",
+       "evidenced"
+      ]
+     ]
+    ],
+    "symlink_named_refused_or_target_change_not_go": [
+     false,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       0,
+       "GO",
+       "evidenced"
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "row": "C02 indirect inputs declared with --inputs: change, add, remove, rename, symlink swap and a helper module all leave GO; a restore returns GO; bad --inputs are refused before running",
+   "pass": true,
+   "sub": {
+    "declared_folder_file_changed_not_go": true,
+    "declared_folder_file_added_not_go": true,
+    "declared_folder_file_removed_not_go": true,
+    "declared_folder_file_renamed_not_go": true,
+    "declared_file_replaced_by_identical_symlink_not_go": true,
+    "declared_helper_module_changed_not_go": true,
+    "restored_input_go_again": true,
+    "symlink_inside_declared_folder_refused_or_bound": true,
+    "bad_inputs_missing_exit_2_nothing_run_or_appended": true,
+    "bad_inputs_symlink_exit_2_nothing_run_or_appended": true,
+    "bad_inputs_absolute_exit_2_nothing_run_or_appended": true,
+    "bad_inputs_dotdot_exit_2_nothing_run_or_appended": true,
+    "bad_inputs_ledger_dir_exit_2_nothing_run_or_appended": true
+   },
+   "detail": {
+    "declared_folder_file_changed_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "declared_folder_file_added_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "declared_folder_file_removed_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "declared_folder_file_renamed_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "declared_file_replaced_by_identical_symlink_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "declared_helper_module_changed_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "restored_input_go_again": [
+     true,
+     [
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ],
+      [
+       0,
+       "GO",
+       "evidenced"
+      ]
+     ]
+    ],
+    "symlink_inside_declared_folder_refused_or_bound": [
+     true,
+     [
+      2,
+      0,
+      [
+       1,
+       "NO_GO",
+       "unevidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "unevidenced"
+      ]
+     ]
+    ],
+    "bad_inputs_missing_exit_2_nothing_run_or_appended": [
+     true,
+     [
+      2,
+      false,
+      0,
+      "invalid: input 'inp/nope.csv' does not exist in ROOT (or is a symlink)"
+     ]
+    ],
+    "bad_inputs_symlink_exit_2_nothing_run_or_appended": [
+     true,
+     [
+      2,
+      false,
+      0,
+      "invalid: input 'inp/sl' does not exist in ROOT (or is a symlink)"
+     ]
+    ],
+    "bad_inputs_absolute_exit_2_nothing_run_or_appended": [
+     true,
+     [
+      2,
+      false,
+      0,
+      "lders/vd/dn87bf4x3fl7nylswx7lm1l80000gn/T/m39o-jnay1lwr/d/inp' must be a relative path inside ROOT and outside .delivery"
+     ]
+    ],
+    "bad_inputs_dotdot_exit_2_nothing_run_or_appended": [
+     true,
+     [
+      2,
+      false,
+      0,
+      "invalid: input '../x' must be a relative path inside ROOT and outside .delivery"
+     ]
+    ],
+    "bad_inputs_ledger_dir_exit_2_nothing_run_or_appended": [
+     true,
+     [
+      2,
+      false,
+      0,
+      "invalid: input '.delivery' must be a relative path inside ROOT and outside .delivery"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "C03 output-folder membership is complete: a member removed, renamed, added (also nested), swapped or replaced by a symlink, and the folder deleted or emptied, are all not GO; a restore returns GO",
+   "pass": true,
+   "sub": {
+    "member_removed_not_go": true,
+    "member_renamed_not_go": true,
+    "member_added_not_go": true,
+    "member_added_in_new_nested_folder_not_go": true,
+    "output_folder_deleted_not_go": true,
+    "output_folder_emptied_not_go": true,
+    "member_replaced_by_identical_symlink_not_go": true,
+    "two_members_swapped_not_go": true,
+    "removed_then_restored_go_again": true
+   },
+   "detail": {
+    "member_removed_not_go": [
+     true,
+     [
+      "GO",
+      "NO_GO",
+      "stale",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "member_renamed_not_go": [
+     true,
+     [
+      "GO",
+      "NO_GO",
+      "stale",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "member_added_not_go": [
+     true,
+     [
+      "GO",
+      "NO_GO",
+      "not_covered",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "member_added_in_new_nested_folder_not_go": [
+     true,
+     [
+      "GO",
+      "NO_GO",
+      "not_covered",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "output_folder_deleted_not_go": [
+     true,
+     [
+      "GO",
+      "NO_GO",
+      "stale",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "output_folder_emptied_not_go": [
+     true,
+     [
+      "GO",
+      "NO_GO",
+      "stale",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "member_replaced_by_identical_symlink_not_go": [
+     true,
+     [
+      "GO",
+      "NO_GO",
+      "stale",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "two_members_swapped_not_go": [
+     true,
+     [
+      "GO",
+      "NO_GO",
+      "stale",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "removed_then_restored_go_again": [
+     true,
+     [
+      "NO_GO",
+      "GO"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "C04 exit honesty: --ok-exit outside 0 or 0,1 is refused before running; a tool exit 2 never counts, even with accept_gaps; exit 1 is never a plain GO",
+   "pass": true,
+   "sub": {
+    "ok_exit_0_2_refused_exit_2_not_run": true,
+    "ok_exit_0_1_2_refused_exit_2_not_run": true,
+    "ok_exit_2_refused_exit_2_not_run": true,
+    "ok_exit_1_refused_exit_2_not_run": true,
+    "ok_exit_0_3_refused_exit_2_not_run": true,
+    "ok_exit_0_255_refused_exit_2_not_run": true,
+    "ok_exit_0_m2_refused_exit_2_not_run": true,
+    "ok_exit_1_2_refused_exit_2_not_run": true,
+    "tool_exit_2_under_0_1_never_go_even_with_accept_gaps": true,
+    "exit_1_default_ok_exit_not_go": true,
+    "exit_1_accepted_without_accept_gaps_not_go": true,
+    "exit_1_with_accept_gaps_is_go_with_gaps_not_go": true
+   },
+   "detail": {
+    "ok_exit_0_2_refused_exit_2_not_run": [
+     true,
+     [
+      2,
+      false
+     ]
+    ],
+    "ok_exit_0_1_2_refused_exit_2_not_run": [
+     true,
+     [
+      2,
+      false
+     ]
+    ],
+    "ok_exit_2_refused_exit_2_not_run": [
+     true,
+     [
+      2,
+      false
+     ]
+    ],
+    "ok_exit_1_refused_exit_2_not_run": [
+     true,
+     [
+      2,
+      false
+     ]
+    ],
+    "ok_exit_0_3_refused_exit_2_not_run": [
+     true,
+     [
+      2,
+      false
+     ]
+    ],
+    "ok_exit_0_255_refused_exit_2_not_run": [
+     true,
+     [
+      2,
+      false
+     ]
+    ],
+    "ok_exit_0_m2_refused_exit_2_not_run": [
+     true,
+     [
+      2,
+      false
+     ]
+    ],
+    "ok_exit_1_2_refused_exit_2_not_run": [
+     true,
+     [
+      2,
+      false
+     ]
+    ],
+    "tool_exit_2_under_0_1_never_go_even_with_accept_gaps": [
+     true,
+     [
+      1,
+      [
+       1,
+       "NO_GO",
+       "failed"
+      ],
+      [
+       1,
+       "NO_GO",
+       "failed"
+      ]
+     ]
+    ],
+    "exit_1_default_ok_exit_not_go": [
+     true,
+     [
+      1,
+      [
+       1,
+       "NO_GO",
+       "failed"
+      ]
+     ]
+    ],
+    "exit_1_accepted_without_accept_gaps_not_go": [
+     true,
+     [
+      0,
+      [
+       1,
+       "NO_GO",
+       "evidenced_with_gaps"
+      ]
+     ]
+    ],
+    "exit_1_with_accept_gaps_is_go_with_gaps_not_go": [
+     true,
+     [
+      0,
+      "GO_WITH_GAPS",
+      "evidenced_with_gaps"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "Q05 OBS: undeclared indirect inputs, empty subfolders, an input rewritten during the run, verify exit codes per verdict, a rewritten exit-2 record (recorded, not scored)",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "undeclared_indirect_file_changed_verdict": "GO",
+    "undeclared_imported_helper_changed_verdict": "GO",
+    "declared_folder_empty_subfolder_added_verdict": "GO",
+    "output_folder_empty_subfolder_added_verdict": "GO",
+    "input_rewritten_during_run": [
+     0,
+     "GO",
+     [
+      "inp/a.csv"
+     ]
+    ],
+    "verify_exit_GO_WITH_GAPS": [
+     0,
+     "GO_WITH_GAPS"
+    ],
+    "verify_exit_EVIDENCED_NO_ORDER": [
+     0,
+     "EVIDENCED_NO_ORDER"
+    ],
+    "rewritten_record_exit_2_ok_true_verdict": [
+     0,
+     "GO",
+     "evidenced"
+    ]
+   }
+  }
+ ]
+}

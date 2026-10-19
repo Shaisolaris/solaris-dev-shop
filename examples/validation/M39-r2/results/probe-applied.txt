@@ -1,0 +1,5 @@
+equals claimed_inputs [] | reader output changes after the input change: True | verdict after change GO
+folder claimed_inputs [] | reader output changes after the input change: True | verdict after change GO
+absolute claimed_inputs [] | reader output changes after the input change: True | verdict after change GO
+symlink claimed_inputs [] | reader output changes after the input change: True | verdict after change GO
+positional claimed_inputs ['inp/a.csv'] | reader output changes after the input change: True | verdict after change NO_GO

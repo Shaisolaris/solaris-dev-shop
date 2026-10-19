@@ -1,0 +1,19 @@
+patch applies cleanly to 05378c4
+== contract on fixed copy (3.13.15)
+PASS C01 explicit inputs named in the command are bound in every common spelling (positional, --flag VALUE, --flag= {"positional_file_change_not_go": [true, [0, [0, "GO", "evidenced"], [1, "NO_GO", "stale"]]], "flag_then_value_change_not_go": [true, [0, [0, "GO", "evidenced"], [1, "NO_GO", "stale"]]], "flag_equals_value_change_not_go": [true, [0, [0, "GO", "evidenced"], [1, "NO_GO", "stale"]]], "p
+PASS C02 indirect inputs declared with --inputs: change, add, remove, rename, symlink swap and a helper module all  {"declared_folder_file_changed_not_go": [true, [0, [0, "GO", "evidenced"], [1, "NO_GO", "stale"]]], "declared_folder_file_added_not_go": [true, [0, [0, "GO", "evidenced"], [1, "NO_GO", "stale"]]], "declared_folder_file_removed_not_go": [true, [0, [0, "GO", "evidenced"], [1, "NO_GO", 
+PASS C03 output-folder membership is complete: a member removed, renamed, added (also nested), swapped or replaced  {"member_removed_not_go": [true, ["GO", "NO_GO", "stale", ["app.db", "manifest.json"]]], "member_renamed_not_go": [true, ["GO", "NO_GO", "stale", ["app.db", "manifest.json"]]], "member_added_not_go": [true, ["GO", "NO_GO", "not_covered", ["app.db", "manifest.json"]]], "member_added_i
+PASS C04 exit honesty: --ok-exit outside 0 or 0,1 is refused before running; a tool exit 2 never counts, even with  {"ok_exit_0_2_refused_exit_2_not_run": [true, [2, false]], "ok_exit_0_1_2_refused_exit_2_not_run": [true, [2, false]], "ok_exit_2_refused_exit_2_not_run": [true, [2, false]], "ok_exit_1_refused_exit_2_not_run": [true, [2, false]], "ok_exit_0_3_refused_exit_2_not_run": [true, [2, fals
+M39R2 CONTRACT 4/4 core PASS
+Q05 rewritten exit-2 record on fix: [[1, 'NO_GO', 'failed']]
+== M39 oracle on fixed copy (3.13.15)
+FAIL D02 crashes at other points: G04 crash after activate or brief, a recorder killed mid-command, a crash between {"g04_crash_after_activate_no_go_then_resume_go": [true, [75, 1, "incomplete", 0, 0, {"activate": "ben", "brief": "ben", "deliver": "ben"}]], "g04_crash_after_brief_no_go_then_resume_g
+M39 ORACLE 8/9 core FAIL
+== builder G39 tests, drill, drill_oracle on fixed copy (3.13.15 and 3.9.6)
+OK
+DRILL PASSED
+ACCEPTED 18/18
+OK
+DRILL PASSED
+ACCEPTED 18/18
+M39 oracle on fix: failing subs only D02 head_lag_one_tolerated_and_repaired (the M39 P3-2 behaviour change the builder made on request)

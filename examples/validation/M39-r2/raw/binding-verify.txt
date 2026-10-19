@@ -1,0 +1,15 @@
+Mon Oct 19 11:26:23 PDT 2026
+candidate 05378c4ed33525e4c1dcafdfd0a2bb01506f9c6e parent(s) f04d34dbf41364b6dcdb03104a647c2e499bccac (expected G39 r1 f04d34dbf41364b6dcdb03104a647c2e499bccac)
+G39 r1 parent fabed6adf227e936dcd5690b26697e0fadf667d1 (fabed6a expected)
+8fdae9cead8d136211f596bf1e501a41c5a78078	refs/heads/review/grok-g02-activation
+d4d98f2180ed9b92fd058a2350285f60f83b877d	refs/heads/review/grok-g03-recovery
+155fc33ad284b8c8f79c235d96f240abcd64f662	refs/heads/review/grok-g04-handoff
+30563781f175d3f012e881fe8d302f5a7aed5c20	refs/heads/review/grok-g05-revision-bound-evidence
+5666e7beb161d1252ddd5dcc0a166aca83255370	refs/heads/review/grok-g13-csv-reconciliation
+350d175e5cf43438e95476f945ea16804e4bba85	refs/heads/review/grok-g19-duplicate-safe-api
+05378c4ed33525e4c1dcafdfd0a2bb01506f9c6e	refs/heads/review/grok-g39-delivery-drill
+0f593a1d1903aa05c126473c2310364310856147	refs/heads/review/grok-g40-fresh-install
+50429506620691dc9ddb620f2397b1f3dcd39f67	refs/heads/review/grok-g41-release-inventory
+diff sha 4e6d66da864357176fa26497ddc2f26a7187aca39c9d69c3e7d3f51a814dba44 patch file sha 4e6d66da864357176fa26497ddc2f26a7187aca39c9d69c3e7d3f51a814dba44
+manifest entries 11 mismatches 0
+manifest set == diff set

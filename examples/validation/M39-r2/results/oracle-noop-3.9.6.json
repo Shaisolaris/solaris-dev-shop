@@ -1,0 +1,142 @@
+{
+ "tool": "/tmp/m39r2mx-irxzsG/examples/capabilities/G39/noop_evidence.py",
+ "python": "3.9.6",
+ "rows": [
+  {
+   "row": "d01 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "FileNotFoundError(2, 'No such file or directory')"
+   }
+  },
+  {
+   "row": "d02 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "FileNotFoundError(2, 'No such file or directory')"
+   }
+  },
+  {
+   "row": "d03 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "FileNotFoundError(2, 'No such file or directory')"
+   }
+  },
+  {
+   "row": "d04 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "FileNotFoundError(2, 'No such file or directory')"
+   }
+  },
+  {
+   "row": "D05 duplicate-delivery suppression: resuming twice after a crash after delivery leaves one delivery and GO; a duplicated delivery line or a new revision without its delivery is NO_GO; the new revision delivered once is GO",
+   "pass": false,
+   "sub": {
+    "crash_after_delivery_resume_twice_one_delivery_go": true,
+    "duplicated_delivery_line_no_go": false,
+    "new_revision_without_its_delivery_no_go": false,
+    "new_revision_delivered_once_go": true
+   },
+   "detail": {
+    "crash_after_delivery_resume_twice_one_delivery_go": [
+     true,
+     [
+      75,
+      0,
+      0,
+      1,
+      0
+     ]
+    ],
+    "duplicated_delivery_line_no_go": [
+     false,
+     [
+      0,
+      null
+     ]
+    ],
+    "new_revision_without_its_delivery_no_go": [
+     false,
+     [
+      0,
+      null
+     ]
+    ],
+    "new_revision_delivered_once_go": [
+     true,
+     [
+      0,
+      0,
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "row": "d06 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "FileNotFoundError(2, 'No such file or directory')"
+   }
+  },
+  {
+   "row": "D07 upstream input changed after review (M39 goal): a changed source CSV or a changed data contract makes the delivery NO_GO",
+   "pass": false,
+   "sub": {
+    "orders_csv_row_added": false,
+    "contract_timezone_changed": false
+   },
+   "detail": {
+    "orders_csv_row_added": [
+     false,
+     [
+      0,
+      0,
+      null,
+      {}
+     ]
+    ],
+    "contract_timezone_changed": [
+     false,
+     [
+      0,
+      0,
+      null,
+      {}
+     ]
+    ]
+   }
+  },
+  {
+   "row": "d08 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "FileNotFoundError(2, 'No such file or directory')"
+   }
+  },
+  {
+   "row": "d09 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "FileNotFoundError(2, 'No such file or directory')"
+   }
+  },
+  {
+   "row": "o09 crash",
+   "pass": false,
+   "sub": {},
+   "detail": {
+    "crash": "FileNotFoundError(2, 'No such file or directory')"
+   }
+  }
+ ]
+}

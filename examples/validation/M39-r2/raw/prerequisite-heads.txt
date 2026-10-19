@@ -1,0 +1,29 @@
+== prerequisite heads now vs the integration base fabed6a
+G02: base used bbe682b28e96296723826c1f113e138ccc39c530, remote head now 8fdae9cead8d136211f596bf1e501a41c5a78078; descendant: yes; in fabed6a: no
+   8fdae9c 2026-10-19 10:40:30 -0700 G02 r3: blank-looking and disguised UNRESOLVED stay unresolved; nested journal/lock bounded (root QA)
+ 6 files changed, 131 insertions(+), 12 deletions(-)
+     employees/product-project/project-onboarding/SKILL.md
+     employees/product-project/project-onboarding/activate.py
+     employees/product-project/project-onboarding/learnings.md
+     examples/capabilities/G02/README.md
+     examples/capabilities/G02/activation_oracle.py
+     tests/test_g02_capability.py
+G04: base used 314b4dbf980437cf14bc32438117e5b5b777f942, remote head now 155fc33ad284b8c8f79c235d96f240abcd64f662; descendant: yes; in fabed6a: no
+   155fc33 2026-10-19 10:43:36 -0700 G04 r2: bind owner into activate/brief receipt inputs (root QA)
+ 3 files changed, 35 insertions(+), 6 deletions(-)
+     employees/infrastructure/fleet-dispatcher/handoff-work-orders.md
+     employees/infrastructure/fleet-dispatcher/handoff.py
+     tests/test_g04_capability.py
+G05: base used 8b38a72f2183ad7427594d6557d7e308baf0469b, remote head now 30563781f175d3f012e881fe8d302f5a7aed5c20; descendant: yes; in fabed6a: no
+   3056378 2026-10-19 10:45:29 -0700 G05 r2: waiver-governed closure stays current; reopen refuses (root QA)
+ 3 files changed, 53 insertions(+), 10 deletions(-)
+     employees/quality-security/assurance/ASSURANCE.md
+     employees/quality-security/assurance/quality_os.py
+     tests/test_closure_hardening.py
+G19: base used 5606672b464f5daaf08e28cbfa5a8d307f730c27, remote head now 350d175e5cf43438e95476f945ea16804e4bba85; descendant: yes; in fabed6a: no
+   350d175 2026-10-19 10:54:22 -0700 G19 h1: post-acceptance hardening, oracle stop() after-exit race and demo boundaries
+ 4 files changed, 76 insertions(+), 2 deletions(-)
+     employees/engineering/backend-developer/duplicate-safe-api.md
+     examples/capabilities/G19/README.md
+     examples/capabilities/G19/boundary_oracle.py
+     tests/test_g19_capability.py
