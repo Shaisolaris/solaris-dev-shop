@@ -17,7 +17,8 @@ Commands
             simulator's ground truth. --record writes commands.jsonl and events.jsonl as received.
 
 Exit codes: 0 clean, 1 anomalies found (each is listed), 2 invalid invocation or input file,
-3 crash drill (--crash-after) stopped the run; the checkpoint is kept, rerun to resume.
+3 crash drill (--crash-after) stopped the run; the checkpoint is kept, rerun to resume,
+4 the --state checkpoint is damaged or edited (its body hash or structure does not check out).
 Python 3.9+; standard library only.
 """
 from __future__ import annotations
@@ -34,19 +35,19 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-TOOL_VERSION = "1.0.0"
+TOOL_VERSION = "1.1.0"
 REPORT_SCHEMA = "solaris.device-protocol-report/1"
-STATE_SCHEMA = "solaris.device-protocol-state/1"
+STATE_SCHEMA = "solaris.device-protocol-state/2"   # /2 adds body_sha256 (M25 S1)
 CLAIM_SCOPE = "simulated valve actuations from a synthetic event stream; not hardware evidence"
 MAX_LINE = 64 * 1024            # longer lines are quarantined, never parsed
 MAX_DEVICES = 10000
 MAX_SEQ = 2 ** 53
 MAX_BOOT = 2 ** 31
-WINDOW = 32                     # reorder buffer per device; beyond it the gap is declared
+WINDOW = 32                     # reorder buffer per device: next+1 .. next+32 may wait (M25 S3); beyond it a gap
 MAX_LISTED = 200                # anomaly details listed in a report (all are counted)
 CHECKPOINT_EVERY = 50
-DEVICE_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}$")
-CMD_RE = re.compile(r"^c-[0-9a-f]{1,32}$")
+DEVICE_RE = re.compile(r"[a-z0-9][a-z0-9-]{0,63}")   # used with fullmatch: "$" would accept a trailing newline (M25 S4)
+CMD_RE = re.compile(r"c-[0-9a-f]{1,32}")
 KINDS = ("hello", "telemetry", "state", "ack")
 STATES = ("closed", "open", "fault")
 ACTIONS = {"open": "open", "close": "closed"}
@@ -59,6 +60,10 @@ class Invalid(Exception):
 
 class Crash(Exception):
     pass
+
+
+class Damaged(Exception):
+    """The --state checkpoint does not check out (exit 4)."""
 
 
 # -- parsing ------------------------------------------------------------------------------
@@ -99,7 +104,7 @@ def check_event(e: Dict[str, Any]) -> Optional[str]:
     """Why an event is malformed, or None. Bounded: only known fields are read."""
     if e.get("v") != 1:
         return "bad_version"
-    if not isinstance(e.get("device"), str) or not DEVICE_RE.match(e["device"]):
+    if not isinstance(e.get("device"), str) or not DEVICE_RE.fullmatch(e["device"]):
         return "bad_device"
     if not _int(e.get("boot"), 0, MAX_BOOT):
         return "bad_boot"
@@ -119,7 +124,7 @@ def check_event(e: Dict[str, Any]) -> Optional[str]:
     if k == "state" and e.get("state") not in STATES:
         return "bad_payload"
     if k == "ack":
-        if not isinstance(e.get("cmd"), str) or not CMD_RE.match(e["cmd"]):
+        if not isinstance(e.get("cmd"), str) or not CMD_RE.fullmatch(e["cmd"]):
             return "bad_payload"
         if e.get("result") not in RESULTS or e.get("state") not in STATES:
             return "bad_payload"
@@ -139,8 +144,8 @@ def load_commands(path: Path) -> Dict[str, Dict[str, Any]]:
         c, why = parse_line(line)
         if c is None:
             raise Invalid(f"commands line {n}: {why}")
-        if set(c) != {"cmd", "device", "action"} or not isinstance(c["cmd"], str) or not CMD_RE.match(c["cmd"]) \
-                or not isinstance(c["device"], str) or not DEVICE_RE.match(c["device"]) or c["action"] not in ACTIONS:
+        if set(c) != {"cmd", "device", "action"} or not isinstance(c["cmd"], str) or not CMD_RE.fullmatch(c["cmd"]) \
+                or not isinstance(c["device"], str) or not DEVICE_RE.fullmatch(c["device"]) or c["action"] not in ACTIONS:
             raise Invalid(f"commands line {n}: needs exactly cmd (c-<hex>), device and action (open or close)")
         if c["cmd"] in cmds:
             raise Invalid(f"commands line {n}: command {c['cmd']} issued twice")
@@ -202,7 +207,7 @@ class Controller:
             self._count("duplicates_dropped")
             return
         if s > d["next"]:
-            if s - d["next"] < WINDOW and len(d["buffer"]) < WINDOW:
+            if s - d["next"] <= WINDOW and len(d["buffer"]) < WINDOW:
                 d["buffer"][s] = e
                 self._count("reordered_buffered")
                 return
@@ -346,10 +351,13 @@ def run_ingest(a) -> Tuple[int, Dict[str, Any]]:
             try:
                 st = json.loads(spath.read_text(encoding="utf-8"), object_pairs_hook=_no_dupes)
             except (OSError, ValueError, RecursionError):
-                raise Invalid(f"state: {spath.name} is not a readable checkpoint; remove it to start over") from None
-            if not isinstance(st, dict) or st.get("schema") != STATE_SCHEMA or st.get("commands_sha256") != csha \
-                    or not _int(st.get("offset"), 0, 2 ** 62) or not _int(st.get("lines"), 0, 2 ** 62):
+                raise Damaged(f"state: {spath.name} is not a readable checkpoint; remove it to start over") from None
+            if not isinstance(st, dict) or st.get("schema") != STATE_SCHEMA or st.get("commands_sha256") != csha:
                 raise Invalid(f"state: {spath.name} belongs to another command log or tool; remove it to start over")
+            why = None if _int(st.get("offset"), 0, 2 ** 62) and _int(st.get("lines"), 0, 2 ** 62) else "offset or lines is not a count"
+            why = why or check_snapshot(st, cmds)
+            if why:
+                raise Damaged(f"state: {spath.name}: {why}; remove it to start over")
             prefix = efh.read(st["offset"])
             if len(prefix) != st["offset"] or hashlib.sha256(prefix).hexdigest() != st.get("events_prefix_sha256"):
                 raise Invalid("state: the events file no longer starts with the part already ingested; remove the state to start over")
@@ -360,8 +368,9 @@ def run_ingest(a) -> Tuple[int, Dict[str, Any]]:
 
         def checkpoint() -> None:
             if spath:
+                snap = ctl.snapshot()
                 body = dict(schema=STATE_SCHEMA, tool_version=TOOL_VERSION, commands_sha256=csha, offset=offset, lines=lines,
-                            events_prefix_sha256=h.hexdigest(), **ctl.snapshot())
+                            events_prefix_sha256=h.hexdigest(), body_sha256=_body_sha(snap), **snap)
                 _write_atomic(spath, (json.dumps(body, sort_keys=True) + "\n").encode("utf-8"))
 
         if st is None:
@@ -398,6 +407,49 @@ def run_ingest(a) -> Tuple[int, Dict[str, Any]]:
     rep = ctl.report({"inputs": {"commands_sha256": csha, "events_sha256": h.hexdigest(), "event_lines": lines},
                       "resumed_from_line": resumed_from})
     return (0 if rep["status"] == "clean" else 1), rep
+
+
+def _body_sha(snap: Dict[str, Any]) -> str:
+    return hashlib.sha256(json.dumps(snap, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+
+
+def check_snapshot(st: Dict[str, Any], cmds: Dict[str, Dict[str, Any]]) -> Optional[str]:
+    """Why a checkpoint's controller state is not one this tool could have written, or None (M25 S1)."""
+    snap = {k: st.get(k) for k in ("devices", "claims", "counts", "anomalies")}
+    if st.get("body_sha256") != _body_sha(snap):
+        return "its body does not match body_sha256 (edited or damaged)"
+    devs, claims, counts, anomalies = snap["devices"], snap["claims"], snap["counts"], snap["anomalies"]
+    if not isinstance(devs, dict) or len(devs) > MAX_DEVICES:
+        return "devices is not a map of at most 10000 devices"
+    for name, d in devs.items():
+        if not DEVICE_RE.fullmatch(name) or not isinstance(d, dict) or set(d) != {"boot", "next", "buffer", "state", "acked"}:
+            return f"device {name[:64]!r} is not a device record"
+        if not (d["boot"] is None or _int(d["boot"], 0, MAX_BOOT)) or not _int(d["next"], 1, MAX_SEQ + 1) \
+                or d["state"] not in STATES or not isinstance(d["acked"], list) or not isinstance(d["buffer"], dict) \
+                or len(d["buffer"]) > WINDOW:
+            return f"device {name!r} has a bad field"
+        if any(not isinstance(c, str) or cmds.get(c, {}).get("device") != name for c in d["acked"]) or len(set(d["acked"])) != len(d["acked"]):
+            return f"device {name!r} lists an ack that is not one of its commands"
+        for k, e in d["buffer"].items():
+            if not k.isdigit() or not isinstance(e, dict) or check_event(e) is not None or e["seq"] != int(k) \
+                    or e["device"] != name or not d["next"] < e["seq"] <= d["next"] + WINDOW:
+                return f"device {name!r} has a bad buffered record"
+    if not isinstance(claims, list):
+        return "claims is not a list"
+    seen = set()
+    for c in claims:
+        if not isinstance(c, dict) or set(c) != {"cmd", "device", "action"} or c.get("cmd") in seen:
+            return "a claim is malformed or repeated"
+        seen.add(c["cmd"])
+        if cmds.get(c["cmd"]) != c or c["cmd"] not in devs.get(c["device"], {}).get("acked", []):
+            return f"claim {str(c.get('cmd'))[:40]!r} is not a logged command that its device acknowledged"
+    if not isinstance(counts, dict) or any(not isinstance(k, str) or not _int(v, 0, 2 ** 62) for k, v in counts.items()):
+        return "counts is not a map of non-negative integers"
+    if not isinstance(anomalies, list) or len(anomalies) > MAX_LISTED or any(not isinstance(x, dict) or not isinstance(x.get("kind"), str) for x in anomalies):
+        return "anomalies is not a list of at most 200 records"
+    if counts.get("applied", 0) < len(claims):
+        return "fewer records applied than effects claimed"
+    return None
 
 
 def st_lines(spath: Optional[Path]) -> int:
@@ -467,8 +519,8 @@ def run_simulate(a) -> Tuple[int, Dict[str, Any]]:
         raise Invalid("--devices must be 1..1000 and --steps 1..100000")
     faults = parse_faults(a.faults)
     rec = Path(a.record) if a.record else None
-    if rec and not rec.is_dir():
-        raise Invalid(f"--record: {rec} is not a folder")
+    if rec and (rec.is_symlink() or (rec.exists() and not rec.is_dir())):
+        raise Invalid(f"--record: {rec} exists and is not a folder")
     rng = random.Random(a.seed)
     devs = [SimDevice(f"valve-{i:03d}") for i in range(a.devices)]
     for d in devs:
@@ -547,6 +599,7 @@ def run_simulate(a) -> Tuple[int, Dict[str, Any]]:
            "claims_match_ground_truth": claimed == truth, "lines_received": len(received),
            "simulator": "synthetic devices and link in this process; no hardware"}
     if rec:
+        rec.mkdir(parents=True, exist_ok=True)  # a fresh folder works as the doc shows (M25 S2)
         _write_atomic(rec / "commands.jsonl", b"".join(l + b"\n" for l in cmd_log))
         _write_atomic(rec / "events.jsonl", b"".join(l + b"\n" for l in received))
     rep = ctl.report({"simulation": sim})
@@ -596,6 +649,12 @@ def main(argv: Optional[List[str]] = None) -> int:
     except Crash as exc:
         sys.stdout.write(f"crash drill: {exc}\nrerun the same command without --crash-after to resume\n")
         return 3
+    except Damaged as exc:
+        if getattr(a, "json", False):
+            sys.stdout.write(json.dumps({"schema": REPORT_SCHEMA, "status": "damaged_state", "error": str(exc)}) + "\n")
+        else:
+            sys.stdout.write(f"damaged checkpoint: {exc}\nnothing written\n")
+        return 4
     except Invalid as exc:
         if getattr(a, "json", False):
             sys.stdout.write(json.dumps({"schema": REPORT_SCHEMA, "status": "invalid", "error": str(exc)}) + "\n")

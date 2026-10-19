@@ -20,11 +20,11 @@ One flat JSON object per line, at most 64 KiB (longer lines are skipped without 
 | field | rule |
 |---|---|
 | `v` | must be 1 |
-| `device` | `^[a-z0-9][a-z0-9-]{0,63}$` |
+| `device` | `^[a-z0-9][a-z0-9-]{0,63}$` (whole string; a trailing newline is not allowed) |
 | `boot` | integer 0..2^31, increments on every device restart (kept in flash) |
 | `seq` | integer 1..2^53, restarts at 1 in each boot, +1 per record the device emits |
 | `kind` | `hello`, `telemetry` (`flow_lpm` finite number), `state` (`closed`, `open`, `fault`), `ack` |
-| `ack` | `cmd` `^c-[0-9a-f]{1,32}$`, `result` `done` or `rejected`, `state` after execution |
+| `ack` | `cmd` `^c-[0-9a-f]{1,32}$` (whole string; a trailing newline is not allowed), `result` `done` or `rejected`, `state` after execution |
 
 Unknown fields, duplicate keys, booleans as integers, NaN or infinite numbers, out-of-range values,
 invalid UTF-8, over-long lines, pathologically nested lines and records from more than 10000
@@ -38,7 +38,8 @@ a duplicate command id, unknown field or bad action makes the whole run invalid 
 1. **Sessions** are `(device, boot)`. A record from a lower boot than the device's current one is a
    `stale_boot_replay`: reported, never applied. A higher boot starts a new session.
 2. **Ordering** inside a session is strict by `seq`. Records ahead of the next expected number wait in
-   a buffer of 32; a buffer overflow, or the end of the stream with a hole, declares a `gap` and moves on.
+   a buffer of 32 (seqs next+1 to next+32); a record further ahead, or the end of the stream with a hole,
+   declares a `gap` and moves on.
    Duplicates (same session and seq, or seq already applied) are dropped and counted, not anomalies.
 3. **Effects** are claimed only by an `ack` with `result: done`, for a command in the log, addressed to
    that same device, whose `state` equals the command's target. Each command id is claimed at most once
@@ -48,7 +49,13 @@ a duplicate command id, unknown field or bad action makes the whole run invalid 
 4. **State** follows the device's own reports. A change no ack explains is `unexplained_transition`.
 5. **Recovery**: with `--state S.json` the controller checkpoints atomically (write temp, fsync,
    rename) every 50 lines and at the end. The checkpoint binds the sha256 of the events prefix already
-   read and of the command log; a resume onto changed input is refused (exit 2). `--crash-after N`
+   read and of the command log; a resume onto changed input is refused (exit 2). It also carries
+   `body_sha256` over its controller state, and on load that state is checked for structure (device
+   records, buffered records inside the window, every claim a logged command its device acknowledged);
+   an edited, truncated or damaged checkpoint exits 4 and nothing is written. Limit: the hash is not a
+   signature; someone who rewrites the body and recomputes it passes the hash, and only the structure
+   checks stand between them and a resumed run. A checkpoint from tool 1.0.0
+   (state schema /1) is refused with exit 2. `--crash-after N`
    drills a crash after N lines (exit 3); rerunning resumes and gives the same report as an unbroken run.
 
 ## Device side (what the simulator models, and what firmware must do)
@@ -61,10 +68,13 @@ a duplicate command id, unknown field or bad action makes the whole run invalid 
     python3 device_protocol.py simulate --devices 12 --steps 300 --seed 7 \
         --faults drop=0.2,dup=0.2,reorder=0.3,disconnect=0.05,reboot=0.02 --record out/
     python3 device_protocol.py ingest --commands out/commands.jsonl --events out/events.jsonl --json
-    python3 device_protocol.py ingest --commands C --events E --state st.json --crash-after 500   # exit 3
-    python3 device_protocol.py ingest --commands C --events E --state st.json                     # resumes
+    python3 device_protocol.py ingest --commands out/commands.jsonl --events out/events.jsonl --state out/st.json --crash-after 500   # exit 3
+    python3 device_protocol.py ingest --commands out/commands.jsonl --events out/events.jsonl --state out/st.json   # resumes, exit 1
 
-Exit codes: 0 clean, 1 anomalies listed, 2 invalid invocation or input, 3 crash drill.
+These run as written in an empty folder: `--record` creates its folder (an existing file there is exit 2).
+The faulted simulation exits 0 (claims equal ground truth) and its stream has anomalies, so `ingest` exits 1.
+
+Exit codes: 0 clean, 1 anomalies listed, 2 invalid invocation or input, 3 crash drill, 4 damaged or edited checkpoint.
 `simulate` exits 0 when claims equal the simulator's ground truth exactly once (anomalies from the
 faults are still listed), 1 otherwise.
 

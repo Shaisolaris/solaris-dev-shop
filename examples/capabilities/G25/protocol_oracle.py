@@ -136,6 +136,12 @@ def main(argv=None):
         code, rep, _ = ingest([ev("valve-a", 1, 1, "hello"), ack("valve-a", 1, 3, "c-01", "open")])  # the hole is at the end
         if code != 1 or (rep or {}).get("anomalies_found", {}).get("gap") != 1 or claims(rep) != ["c-01"]:
             e.append(f"a hole before the last record: exit {code}, gaps {(rep or {}).get('anomalies_found', {}).get('gap')}, claims {claims(rep)}")
+        for ahead, want in ((32, 0), (33, 1)):  # the documented window: seqs next+1 to next+32 wait for a hole
+            s = [ev("valve-a", 1, i, "telemetry", flow_lpm=1.0) for i in range(2, 2 + ahead)] + [ev("valve-a", 1, 1, "hello")]
+            code, rep, _ = ingest(s)
+            got = (rep or {}).get("anomalies_found", {}).get("gap", 0)
+            if got != want:
+                e.append(f"{ahead} records ahead of a hole: {got} gaps, the documented 32-record window gives {want}")
         return e
     check("o3", "a missing sequence number, mid-stream or before the last record, is a reported gap; later events still apply once", o3)
 
@@ -205,7 +211,20 @@ def main(argv=None):
         if len(json.dumps(rep)) > 200000:
             e.append("report is not bounded (echoes malformed input)")
         return e
-    check("o6", "malformed, over-long, deeply nested and out-of-range lines are quarantined; valid lines still apply; report bounded", o6)
+    def o6b():
+        e = []
+        code, rep, _ = ingest([ev("valve-a\n", 1, 1, "hello"), ev("valve-a", 1, 1, "hello")])
+        if (rep or {}).get("anomalies_found", {}).get("quarantined", 0) < 1 and (rep or {}).get("anomalies_found", {}).get("bad_device", 0) < 1:
+            e.append(f"a device id with a trailing newline was accepted: {(rep or {}).get('anomalies_found')}")
+        C3 = tmp / "nl-commands.jsonl"
+        write_lines(C3, [{"cmd": "c-01\n", "device": "valve-a", "action": "open"}])
+        code, _, _ = ingest([ev("valve-a", 1, 1, "hello")], cmds=C3)
+        if code != 2:
+            e.append(f"a command id with a trailing newline in the log: exit {code}, expected 2")
+        return e
+
+    check("o6", "malformed, over-long, deeply nested and out-of-range lines are quarantined; valid lines still apply; report bounded; "
+          "ids with a trailing newline are refused", lambda: o6() + o6b())
 
     def o7():
         s = [ev("valve-a", 1, 1, "hello"), ev("valve-a", 1, 2, "state", state="open"),  # opened with no command
@@ -291,8 +310,18 @@ def main(argv=None):
         code, out, _ = run(a.tool, "ingest", "--commands", C2, "--events", Ed, "--state", S, "--json")
         if code != 2:
             e.append(f"resume with another command log: exit {code}, expected 2")
+        body = json.loads(S.read_text())
+        if body.get("claims"):
+            S2 = d / "statedropped.json"
+            S2.write_text(json.dumps(dict(body, claims=[])) + "\n")
+            code, out, err = run(a.tool, "ingest", "--commands", Cd, "--events", Ed, "--state", S2, "--json")
+            if code != 4 or "Traceback" in err:
+                e.append(f"resume from a checkpoint with its claims deleted: exit {code}, expected 4 (damaged checkpoint)")
+        else:
+            e.append("the half-way checkpoint holds no claims, so the edit drill cannot run")
         return e
-    check("o9", "crash drill at six points then resume equals an unbroken run; a changed input refuses to resume", o9)
+    check("o9", "crash drill at six points then resume equals an unbroken run; a changed input refuses to resume (2); "
+          "an edited checkpoint is refused (4)", o9)
 
     def o10():
         e = []

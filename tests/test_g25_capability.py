@@ -224,5 +224,116 @@ class Oracle(unittest.TestCase):
         self.assertEqual(self.score(G25 / "naive_stub.py"), (1, 1, 12))
 
 
+
+def _ev(dev, seq, boot=1, **kw):
+    return dict({"v": 1, "device": dev, "boot": boot, "seq": seq, "kind": "hello"}, **kw)
+
+
+def _far_buffered(b):
+    name, d = next((n, d) for n, d in b["devices"].items() if d["boot"] is not None)
+    s = d["next"] + dp.WINDOW + 8
+    d["buffer"] = {str(s): _ev(name, s, d["boot"])}
+
+
+class M25Rework(unittest.TestCase):
+    """G25 r2: regression tests for the M25 Grok self-validation findings S1 to S4 and its two survivors (on 822db7d)."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix="g25r2-test-"))
+        code, _, _ = cli("simulate", "--devices", 4, "--steps", 200, "--seed", 5, "--faults", HEAVY, "--record", self.tmp / "rec")
+        self.assertEqual(code, 0)
+        self.C, self.E = self.tmp / "rec" / "commands.jsonl", self.tmp / "rec" / "events.jsonl"
+
+    def _state(self, cut=70):
+        S = self.tmp / "s.json"
+        if S.exists():
+            S.unlink()
+        self.assertEqual(cli("ingest", "--commands", self.C, "--events", self.E, "--state", S, "--crash-after", cut)[0], 3)
+        return S, json.loads(S.read_text())
+
+    def _resume(self, S, body):
+        S.write_text(json.dumps(body, sort_keys=True) + "\n")
+        return cli("ingest", "--commands", self.C, "--events", self.E, "--state", S, "--json")
+
+    def test_s1_edited_or_damaged_checkpoint_exits_4(self):
+        S, st = self._state()
+        self.assertTrue(st["claims"], "the cut must fall after some claims")
+        cases = {"claims removed": dict(st, claims=[]),
+                 "one value edited": dict(st, counts=dict(st["counts"], applied=st["counts"]["applied"] + 1)),
+                 "devices not records": dict(st, devices={"valve-000": 5})}
+        for name, body in cases.items():
+            with self.subTest(case=name):
+                code, out, err = self._resume(S, body)
+                self.assertEqual(code, 4, out)
+                self.assertEqual(json.loads(out)["status"], "damaged_state")
+                self.assertNotIn("Traceback", err)
+        # a forger who recomputes the body hash still fails the structure checks
+        for name, mutate in {"claim without an ack": lambda b: b["devices"][b["claims"][0]["device"]]["acked"].remove(b["claims"][0]["cmd"]),
+                             "claim for an unlogged command": lambda b: b["claims"].append({"cmd": "c-fffff", "device": "valve-000", "action": "open"}),
+                             "devices not records": lambda b: b.update(devices={"valve-000": 5}),
+                             "claim with another action": lambda b: b["claims"][0].update(action="close" if b["claims"][0]["action"] == "open" else "open"),
+                             "device record with an extra field": lambda b: next(iter(b["devices"].values())).update(owner="x"),
+                             "buffered record beyond the window": _far_buffered}.items():
+            with self.subTest(forged=name):
+                b = json.loads(json.dumps(st))
+                mutate(b)
+                b["body_sha256"] = dp._body_sha({k: b[k] for k in ("devices", "claims", "counts", "anomalies")})
+                code, out, err = self._resume(S, b)
+                self.assertEqual(code, 4, out)
+                self.assertNotIn("Traceback", err)
+        S.write_text("{not json")
+        self.assertEqual(cli("ingest", "--commands", self.C, "--events", self.E, "--state", S)[0], 4)
+        S, st = self._state()  # an untouched checkpoint still resumes to the unbroken report
+        _, ref, _ = ingest(self.E, commands=self.C)
+        code, got, _ = ingest(self.E, "--state", S, commands=self.C)
+        self.assertEqual((claims(got), got["counts"]), (claims(ref), ref["counts"]))
+        self.assertEqual(self._resume(S, dict(st, schema="solaris.device-protocol-state/1"))[0], 2)  # another tool version
+
+    def test_s2_doc_commands_run_verbatim_in_a_fresh_folder(self):
+        doc = (TOOL.parent / "device-event-protocol.md").read_text()
+        block = doc.split("## Commands\n", 1)[1].split("\n\n", 1)[0]
+        cmds = [c.split("#")[0].strip() for c in block.replace("\\\n", " ").splitlines() if c.strip()]
+        fresh = self.tmp / "fresh"
+        fresh.mkdir()
+        (fresh / "device_protocol.py").write_bytes(TOOL.read_bytes())
+        got = []
+        for c in cmds:
+            argv = c.split()
+            self.assertEqual(argv[:2], ["python3", "device_protocol.py"])
+            p = subprocess.run([sys.executable] + argv[1:], cwd=fresh, capture_output=True, text=True, timeout=300)
+            got.append(p.returncode)
+            self.assertNotIn("Traceback", p.stderr)
+        self.assertEqual(got, [0, 1, 3, 1], cmds)
+        self.assertEqual(cli("simulate", "--steps", 20, "--record", self.C)[0], 2)  # a file is not a folder
+
+    def test_s3_window_holds_32_records_ahead_of_a_hole(self):
+        for ahead, gaps in ((32, 0), (33, 1)):
+            ctl = dp.Controller({})
+            for sq in range(2, 2 + ahead):
+                ctl.receive(json.dumps(_ev("d", sq)).encode(), sq)
+            ctl.receive(json.dumps(_ev("d", 1)).encode(), 99)
+            ctl.finish()
+            with self.subTest(ahead=ahead):
+                self.assertEqual(ctl.counts.get("gap", 0), gaps)
+                self.assertEqual(ctl.devices["d"]["next"], 2 + ahead)
+
+    def test_s4_trailing_newline_is_not_an_id(self):
+        self.assertEqual(dp.check_event(_ev("v1\n", 1)), "bad_device")
+        self.assertEqual(dp.check_event(_ev("v1", 1, kind="ack", cmd="c-1\n", result="done", state="open")), "bad_payload")
+        C = self.tmp / "c.jsonl"
+        C.write_text(json.dumps({"cmd": "c-1\n", "device": "v1", "action": "open"}) + "\n")
+        E = self.tmp / "e.jsonl"
+        E.write_text("")
+        self.assertEqual(cli("ingest", "--commands", C, "--events", E)[0], 2)
+
+    def test_rejected_then_done_ack_of_one_command_claims_nothing(self):
+        cmds = {"c-1": {"cmd": "c-1", "device": "v1", "action": "open"}}
+        ctl = dp.Controller(cmds)
+        ctl.receive(json.dumps(_ev("v1", 1, kind="ack", cmd="c-1", result="rejected", state="closed")).encode(), 1)
+        ctl.receive(json.dumps(_ev("v1", 2, kind="ack", cmd="c-1", result="done", state="open")).encode(), 2)
+        self.assertEqual(ctl.claims, [])
+        self.assertEqual(ctl.counts.get("duplicate_acks"), 1)
+
+
 if __name__ == "__main__":
     unittest.main()
