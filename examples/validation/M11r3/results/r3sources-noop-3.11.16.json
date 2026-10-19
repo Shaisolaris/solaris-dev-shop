@@ -1,0 +1,1167 @@
+[
+ {
+  "id": "T01_clean_three_sources_met",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "mismatch": {
+    "good": [
+     180000,
+     null
+    ],
+    "total": [
+     180000,
+     null
+    ],
+    "measured_minutes": [
+     200,
+     null
+    ],
+    "coverage": [
+     "1.000000",
+     null
+    ],
+    "status": [
+     "met",
+     null
+    ],
+    "partial_minutes": [
+     0,
+     null
+    ],
+    "partial_ranges": [
+     [],
+     null
+    ],
+    "missing_minutes": [
+     0,
+     null
+    ],
+    "basis": [
+     "inferred",
+     null
+    ],
+    "expected": [
+     [
+      "lb-0",
+      "lb-1",
+      "lb-2"
+     ],
+     []
+    ]
+   },
+   "status": null,
+   "partial": null,
+   "extra_ok": "extra check crashed: KeyError('slo')"
+  }
+ },
+ {
+  "id": "T02_source_retired_mid_window",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "mismatch": {
+    "good": [
+     171000,
+     null
+    ],
+    "total": [
+     171000,
+     null
+    ],
+    "measured_minutes": [
+     190,
+     null
+    ],
+    "coverage": [
+     "0.950000",
+     null
+    ],
+    "status": [
+     "insufficient_telemetry",
+     null
+    ],
+    "partial_minutes": [
+     10,
+     null
+    ],
+    "partial_ranges": [
+     [
+      {
+       "start": "2026-09-07T15:10:00Z",
+       "end": "2026-09-07T15:20:00Z",
+       "minutes": 10
+      }
+     ],
+     null
+    ],
+    "missing_minutes": [
+     0,
+     null
+    ],
+    "basis": [
+     "inferred",
+     null
+    ],
+    "expected": [
+     [
+      "lb-0",
+      "lb-1",
+      "lb-2"
+     ],
+     []
+    ]
+   },
+   "status": null,
+   "partial": null,
+   "extra_ok": false
+  }
+ },
+ {
+  "id": "T03_source_added_mid_window",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "mismatch": {
+    "good": [
+     171000,
+     null
+    ],
+    "total": [
+     171000,
+     null
+    ],
+    "measured_minutes": [
+     190,
+     null
+    ],
+    "coverage": [
+     "0.950000",
+     null
+    ],
+    "status": [
+     "insufficient_telemetry",
+     null
+    ],
+    "partial_minutes": [
+     10,
+     null
+    ],
+    "partial_ranges": [
+     [
+      {
+       "start": "2026-09-07T12:00:00Z",
+       "end": "2026-09-07T12:10:00Z",
+       "minutes": 10
+      }
+     ],
+     null
+    ],
+    "missing_minutes": [
+     0,
+     null
+    ],
+    "basis": [
+     "inferred",
+     null
+    ],
+    "expected": [
+     [
+      "lb-0",
+      "lb-1",
+      "lb-3"
+     ],
+     []
+    ]
+   },
+   "status": null,
+   "partial": null,
+   "extra_ok": false
+  }
+ },
+ {
+  "id": "T04_source_replaced_mid_window",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "mismatch": {
+    "good": [
+     0,
+     null
+    ],
+    "total": [
+     0,
+     null
+    ],
+    "measured_minutes": [
+     0,
+     null
+    ],
+    "coverage": [
+     "0.000000",
+     null
+    ],
+    "status": [
+     "insufficient_telemetry",
+     null
+    ],
+    "partial_minutes": [
+     200,
+     null
+    ],
+    "partial_ranges": [
+     [
+      {
+       "start": "2026-09-07T12:00:00Z",
+       "end": "2026-09-07T15:20:00Z",
+       "minutes": 200
+      }
+     ],
+     null
+    ],
+    "missing_minutes": [
+     0,
+     null
+    ],
+    "basis": [
+     "inferred",
+     null
+    ],
+    "expected": [
+     [
+      "lb-0",
+      "lb-2",
+      "lb-9"
+     ],
+     []
+    ]
+   },
+   "status": null,
+   "partial": null,
+   "extra_ok": false
+  }
+ },
+ {
+  "id": "T05a_recovery_split_before",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "mismatch": {
+    "good": [
+     171000,
+     null
+    ],
+    "total": [
+     171000,
+     null
+    ],
+    "measured_minutes": [
+     190,
+     null
+    ],
+    "coverage": [
+     "1.000000",
+     null
+    ],
+    "status": [
+     "met",
+     null
+    ],
+    "partial_minutes": [
+     0,
+     null
+    ],
+    "partial_ranges": [
+     [],
+     null
+    ],
+    "missing_minutes": [
+     0,
+     null
+    ],
+    "basis": [
+     "declared",
+     null
+    ],
+    "expected": [
+     [
+      "lb-0",
+      "lb-1",
+      "lb-2"
+     ],
+     []
+    ]
+   },
+   "status": null,
+   "partial": null,
+   "extra_ok": "extra check crashed: KeyError('slo')"
+  }
+ },
+ {
+  "id": "T05b_recovery_split_after",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "mismatch": {
+    "good": [
+     6000,
+     null
+    ],
+    "total": [
+     6000,
+     null
+    ],
+    "measured_minutes": [
+     10,
+     null
+    ],
+    "coverage": [
+     "1.000000",
+     null
+    ],
+    "status": [
+     "met",
+     null
+    ],
+    "partial_minutes": [
+     0,
+     null
+    ],
+    "partial_ranges": [
+     [],
+     null
+    ],
+    "missing_minutes": [
+     0,
+     null
+    ],
+    "basis": [
+     "declared",
+     null
+    ],
+    "expected": [
+     [
+      "lb-0",
+      "lb-1"
+     ],
+     []
+    ]
+   },
+   "status": null,
+   "partial": null,
+   "extra_ok": "extra check crashed: KeyError('slo')"
+  }
+ },
+ {
+  "id": "T06_declared_list_missing_a_reporting_source_refused",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "want": "exit 2",
+   "stderr": ""
+  }
+ },
+ {
+  "id": "T07_breach_in_complete_minutes_still_reported",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "mismatch": {
+    "good": [
+     165000,
+     null
+    ],
+    "total": [
+     171000,
+     null
+    ],
+    "measured_minutes": [
+     190,
+     null
+    ],
+    "coverage": [
+     "0.950000",
+     null
+    ],
+    "status": [
+     "breached",
+     null
+    ],
+    "partial_minutes": [
+     10,
+     null
+    ],
+    "partial_ranges": [
+     [
+      {
+       "start": "2026-09-07T15:10:00Z",
+       "end": "2026-09-07T15:20:00Z",
+       "minutes": 10
+      }
+     ],
+     null
+    ],
+    "missing_minutes": [
+     0,
+     null
+    ],
+    "basis": [
+     "inferred",
+     null
+    ],
+    "expected": [
+     [
+      "lb-0",
+      "lb-1",
+      "lb-2"
+     ],
+     []
+    ]
+   },
+   "status": null,
+   "partial": null,
+   "extra_ok": "extra check crashed: KeyError('slo')"
+  }
+ },
+ {
+  "id": "T08_errors_only_in_partial_minutes",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "mismatch": {
+    "good": [
+     171000,
+     null
+    ],
+    "total": [
+     171000,
+     null
+    ],
+    "measured_minutes": [
+     190,
+     null
+    ],
+    "coverage": [
+     "0.950000",
+     null
+    ],
+    "status": [
+     "insufficient_telemetry",
+     null
+    ],
+    "partial_minutes": [
+     10,
+     null
+    ],
+    "partial_ranges": [
+     [
+      {
+       "start": "2026-09-07T15:10:00Z",
+       "end": "2026-09-07T15:20:00Z",
+       "minutes": 10
+      }
+     ],
+     null
+    ],
+    "missing_minutes": [
+     0,
+     null
+    ],
+    "basis": [
+     "inferred",
+     null
+    ],
+    "expected": [
+     [
+      "lb-0",
+      "lb-1",
+      "lb-2"
+     ],
+     []
+    ]
+   },
+   "status": null,
+   "partial": null,
+   "extra_ok": "extra check crashed: KeyError('slo')"
+  }
+ },
+ {
+  "id": "T09_names_trimmed_collapsed_casefolded",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "mismatch": {
+    "good": [
+     120000,
+     null
+    ],
+    "total": [
+     120000,
+     null
+    ],
+    "measured_minutes": [
+     200,
+     null
+    ],
+    "coverage": [
+     "1.000000",
+     null
+    ],
+    "status": [
+     "met",
+     null
+    ],
+    "partial_minutes": [
+     0,
+     null
+    ],
+    "partial_ranges": [
+     [],
+     null
+    ],
+    "missing_minutes": [
+     0,
+     null
+    ],
+    "basis": [
+     "declared",
+     null
+    ],
+    "expected": [
+     [
+      "lb-a",
+      "us east"
+     ],
+     []
+    ]
+   },
+   "status": null,
+   "partial": null,
+   "extra_ok": "extra check crashed: KeyError('slo')"
+  }
+ },
+ {
+  "id": "T10_two_spellings_refused",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "want": "exit 2",
+   "stderr": ""
+  }
+ },
+ {
+  "id": "T11_declared_duplicate_refused",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "want": "exit 2",
+   "stderr": ""
+  }
+ },
+ {
+  "id": "T12_unnamed_record_with_declared_list_refused",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "want": "exit 2",
+   "stderr": ""
+  }
+ },
+ {
+  "id": "T13_declared_never_reporting",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "mismatch": {
+    "good": [
+     0,
+     null
+    ],
+    "total": [
+     0,
+     null
+    ],
+    "measured_minutes": [
+     0,
+     null
+    ],
+    "coverage": [
+     "0.000000",
+     null
+    ],
+    "status": [
+     "insufficient_telemetry",
+     null
+    ],
+    "partial_minutes": [
+     200,
+     null
+    ],
+    "partial_ranges": [
+     [
+      {
+       "start": "2026-09-07T12:00:00Z",
+       "end": "2026-09-07T15:20:00Z",
+       "minutes": 200
+      }
+     ],
+     null
+    ],
+    "missing_minutes": [
+     0,
+     null
+    ],
+    "basis": [
+     "declared",
+     null
+    ],
+    "expected": [
+     [
+      "lb-a",
+      "lb-b",
+      "lb-c"
+     ],
+     []
+    ]
+   },
+   "status": null,
+   "partial": null,
+   "extra_ok": true
+  }
+ },
+ {
+  "id": "T14_single_unnamed_source",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "mismatch": {
+    "good": [
+     200000,
+     null
+    ],
+    "total": [
+     200000,
+     null
+    ],
+    "measured_minutes": [
+     200,
+     null
+    ],
+    "coverage": [
+     "1.000000",
+     null
+    ],
+    "status": [
+     "met",
+     null
+    ],
+    "partial_minutes": [
+     0,
+     null
+    ],
+    "partial_ranges": [
+     [],
+     null
+    ],
+    "missing_minutes": [
+     0,
+     null
+    ],
+    "basis": [
+     "inferred",
+     null
+    ]
+   },
+   "status": null,
+   "partial": null,
+   "extra_ok": "extra check crashed: KeyError('slo')"
+  }
+ },
+ {
+  "id": "T15a_silent_after_change_insufficient_evidence",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "mismatch": {
+    "good": [
+     171000,
+     null
+    ],
+    "total": [
+     171000,
+     null
+    ],
+    "measured_minutes": [
+     190,
+     null
+    ],
+    "coverage": [
+     "0.950000",
+     null
+    ],
+    "status": [
+     "insufficient_telemetry",
+     null
+    ],
+    "partial_minutes": [
+     10,
+     null
+    ],
+    "partial_ranges": [
+     [
+      {
+       "start": "2026-09-07T15:10:00Z",
+       "end": "2026-09-07T15:20:00Z",
+       "minutes": 10
+      }
+     ],
+     null
+    ],
+    "missing_minutes": [
+     0,
+     null
+    ],
+    "basis": [
+     "inferred",
+     null
+    ],
+    "expected": [
+     [
+      "lb-0",
+      "lb-1",
+      "lb-2"
+     ],
+     []
+    ]
+   },
+   "status": null,
+   "partial": null,
+   "extra_ok": false
+  }
+ },
+ {
+  "id": "T15b_all_report_after_change_do_not_rollback",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "mismatch": {
+    "good": [
+     180000,
+     null
+    ],
+    "total": [
+     180000,
+     null
+    ],
+    "measured_minutes": [
+     200,
+     null
+    ],
+    "coverage": [
+     "1.000000",
+     null
+    ],
+    "status": [
+     "met",
+     null
+    ],
+    "partial_minutes": [
+     0,
+     null
+    ],
+    "partial_ranges": [
+     [],
+     null
+    ],
+    "missing_minutes": [
+     0,
+     null
+    ],
+    "basis": [
+     "inferred",
+     null
+    ],
+    "expected": [
+     [
+      "lb-0",
+      "lb-1",
+      "lb-2"
+     ],
+     []
+    ]
+   },
+   "status": null,
+   "partial": null,
+   "extra_ok": false
+  }
+ },
+ {
+  "id": "T18_silent_while_others_excludes_missing",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "rc": 0,
+   "mismatch": {
+    "good": [
+     166500,
+     null
+    ],
+    "total": [
+     166500,
+     null
+    ],
+    "measured_minutes": [
+     185,
+     null
+    ],
+    "coverage": [
+     "0.925000",
+     null
+    ],
+    "status": [
+     "insufficient_telemetry",
+     null
+    ],
+    "partial_minutes": [
+     10,
+     null
+    ],
+    "partial_ranges": [
+     [
+      {
+       "start": "2026-09-07T15:10:00Z",
+       "end": "2026-09-07T15:20:00Z",
+       "minutes": 10
+      }
+     ],
+     null
+    ],
+    "missing_minutes": [
+     5,
+     null
+    ],
+    "basis": [
+     "inferred",
+     null
+    ],
+    "expected": [
+     [
+      "lb-0",
+      "lb-1",
+      "lb-2"
+     ],
+     []
+    ]
+   },
+   "status": null,
+   "partial": null,
+   "extra_ok": false
+  }
+ },
+ {
+  "id": "T16_random_lifetimes_property",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "run": 40,
+   "mismatches": [
+    {
+     "k": 0,
+     "rc": 0,
+     "life": {
+      "lb-0": [
+       0,
+       200,
+       [
+        0,
+        0
+       ]
+      ],
+      "lb-1": [
+       5,
+       200,
+       [
+        42,
+        1
+       ]
+      ],
+      "lb-2": [
+       13,
+       183,
+       [
+        0,
+        0
+       ]
+      ]
+     },
+     "declared": [
+      "lb-0",
+      "lb-1",
+      "lb-2"
+     ],
+     "mismatch": {
+      "good": [
+       151918,
+       null
+      ],
+      "total": [
+       152100,
+       null
+      ],
+      "measured_minutes": [
+       169,
+       null
+      ],
+      "coverage": [
+       "0.845000",
+       null
+      ],
+      "status": [
+       "insufficient_telemetry",
+       null
+      ],
+      "partial_minutes": [
+       31,
+       null
+      ],
+      "partial_ranges": [
+       [
+        {
+         "start": "2026-09-07T12:00:00Z",
+         "end": "2026-09-07T12:13:00Z",
+         "minutes": 13
+        },
+        {
+         "start": "2026-09-07T12:42:00Z",
+         "end": "2026-09-07T12:43:00Z",
+         "minutes": 1
+        },
+        {
+         "start": "2026-09-07T15:03:00Z",
+         "end": "2026-09-07T15:20:00Z",
+         "minutes": 17
+        }
+       ],
+       null
+      ],
+      "missing_minutes": [
+       0,
+       null
+      ],
+      "basis": [
+       "declared",
+       null
+      ],
+      "expected": [
+       [
+        "lb-0",
+        "lb-1",
+        "lb-2"
+       ],
+       []
+      ]
+     }
+    },
+    {
+     "k": 1,
+     "rc": 0,
+     "life": {
+      "lb-0": [
+       0,
+       186,
+       [
+        0,
+        0
+       ]
+      ],
+      "lb-1": [
+       0,
+       200,
+       [
+        44,
+        0
+       ]
+      ],
+      "lb-2": [
+       5,
+       200,
+       [
+        0,
+        0
+       ]
+      ]
+     },
+     "declared": [
+      "lb-0",
+      "lb-1",
+      "lb-2"
+     ],
+     "mismatch": {
+      "good": [
+       162651,
+       null
+      ],
+      "total": [
+       162900,
+       null
+      ],
+      "measured_minutes": [
+       181,
+       null
+      ],
+      "coverage": [
+       "0.905000",
+       null
+      ],
+      "status": [
+       "insufficient_telemetry",
+       null
+      ],
+      "partial_minutes": [
+       19,
+       null
+      ],
+      "partial_ranges": [
+       [
+        {
+         "start": "2026-09-07T12:00:00Z",
+         "end": "2026-09-07T12:05:00Z",
+         "minutes": 5
+        },
+        {
+         "start": "2026-09-07T15:06:00Z",
+         "end": "2026-09-07T15:20:00Z",
+         "minutes": 14
+        }
+       ],
+       null
+      ],
+      "missing_minutes": [
+       0,
+       null
+      ],
+      "basis": [
+       "declared",
+       null
+      ],
+      "expected": [
+       [
+        "lb-0",
+        "lb-1",
+        "lb-2"
+       ],
+       []
+      ]
+     }
+    },
+    {
+     "k": 2,
+     "rc": 0,
+     "life": {
+      "lb-0": [
+       22,
+       200,
+       [
+        0,
+        0
+       ]
+      ],
+      "lb-1": [
+       17,
+       200,
+       [
+        134,
+        6
+       ]
+      ]
+     },
+     "declared": null,
+     "mismatch": {
+      "good": [
+       103066,
+       null
+      ],
+      "total": [
+       103200,
+       null
+      ],
+      "measured_minutes": [
+       172,
+       null
+      ],
+      "coverage": [
+       "0.860000",
+       null
+      ],
+      "status": [
+       "insufficient_telemetry",
+       null
+      ],
+      "partial_minutes": [
+       11,
+       null
+      ],
+      "partial_ranges": [
+       [
+        {
+         "start": "2026-09-07T12:17:00Z",
+         "end": "2026-09-07T12:22:00Z",
+         "minutes": 5
+        },
+        {
+         "start": "2026-09-07T14:14:00Z",
+         "end": "2026-09-07T14:20:00Z",
+         "minutes": 6
+        }
+       ],
+       null
+      ],
+      "missing_minutes": [
+       17,
+       null
+      ],
+      "basis": [
+       "inferred",
+       null
+      ],
+      "expected": [
+       [
+        "lb-0",
+        "lb-1"
+       ],
+       []
+      ]
+     }
+    }
+   ]
+  }
+ },
+ {
+  "id": "O17_retired_source_reader_view",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "labels": null,
+   "lb2": [],
+   "timeline_source_silent": 0,
+   "import": null
+  }
+ }
+]

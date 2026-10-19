@@ -1,0 +1,401 @@
+[
+ {
+  "detail": {
+   "labels": [],
+   "mismatch": {
+    "measured_minutes": [
+     60,
+     null
+    ]
+   },
+   "rc": 0,
+   "status": "met",
+   "total": 54000
+  },
+  "id": "S01_three_sources_summed",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "labels": [],
+   "mismatch": {
+    "measured_minutes": [
+     60,
+     null
+    ]
+   },
+   "rc": 0,
+   "status": "met",
+   "total": 60000
+  },
+  "id": "S02_equal_counts_four_sources",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "labels": [],
+   "mismatch": {
+    "bad": [
+     120,
+     140
+    ],
+    "good": [
+     59880,
+     69860
+    ],
+    "measured_minutes": [
+     60,
+     null
+    ],
+    "total": [
+     60000,
+     70000
+    ]
+   },
+   "rc": 0,
+   "status": "met",
+   "total": 70000
+  },
+  "id": "S03_same_source_repeat_once",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "labels": [],
+   "mismatch": {
+    "availability": [
+     "1.000000",
+     "0.993058"
+    ],
+    "bad": [
+     0,
+     420
+    ],
+    "burn_rate": [
+     "0.000000",
+     "0.694215"
+    ],
+    "conflicting_minutes": [
+     1,
+     0
+    ],
+    "coverage": [
+     "0.983333",
+     "1.000000"
+    ],
+    "good": [
+     59000,
+     60080
+    ],
+    "measured_minutes": [
+     59,
+     null
+    ],
+    "total": [
+     59000,
+     60500
+    ]
+   },
+   "rc": 0,
+   "status": "met",
+   "total": 60500
+  },
+  "id": "S04_one_source_conflict_drops_minute",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "labels": [],
+   "mismatch": {
+    "availability": [
+     "1.000000",
+     "0.996711"
+    ],
+    "bad": [
+     0,
+     100
+    ],
+    "burn_rate": [
+     "0.000000",
+     "0.328947"
+    ],
+    "conflicting_minutes": [
+     1,
+     0
+    ],
+    "coverage": [
+     "0.983333",
+     "1.000000"
+    ],
+    "good": [
+     29500,
+     30300
+    ],
+    "measured_minutes": [
+     59,
+     null
+    ],
+    "total": [
+     29500,
+     30400
+    ]
+   },
+   "rc": 0,
+   "status": "met",
+   "total": 30400
+  },
+  "id": "S05_unnamed_is_one_source",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "labels": [],
+   "mismatch": {
+    "availability": [
+     "0.995000",
+     "0.993468"
+    ],
+    "bad": [
+     295,
+     405
+    ],
+    "burn_rate": [
+     "0.500000",
+     "0.653226"
+    ],
+    "conflicting_minutes": [
+     1,
+     0
+    ],
+    "coverage": [
+     "0.983333",
+     "1.000000"
+    ],
+    "good": [
+     58705,
+     61595
+    ],
+    "measured_minutes": [
+     59,
+     null
+    ],
+    "total": [
+     59000,
+     62000
+    ]
+   },
+   "rc": 0,
+   "status": "met",
+   "total": 62000
+  },
+  "id": "S06_no_source_bundle_r1_semantics",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "cases": 40,
+   "fails": [
+    {
+     "case": 0,
+     "mismatch": {
+      "availability": [
+       "0.987196",
+       "0.990585"
+      ],
+      "bad": [
+       50,
+       51
+      ],
+      "burn_rate": [
+       "1.280410",
+       "0.941481"
+      ],
+      "conflicting_minutes": [
+       1,
+       0
+      ],
+      "coverage": [
+       "0.833333",
+       "1.000000"
+      ],
+      "good": [
+       3855,
+       5366
+      ],
+      "measured_minutes": [
+       25,
+       null
+      ],
+      "missing_minutes": [
+       4,
+       0
+      ],
+      "status": [
+       "insufficient_telemetry",
+       "met"
+      ],
+      "total": [
+       3905,
+       5417
+      ]
+     },
+     "rc": 0
+    },
+    {
+     "case": 1,
+     "mismatch": {
+      "availability": [
+       "0.990233",
+       "0.991087"
+      ],
+      "bad": [
+       126,
+       149
+      ],
+      "burn_rate": [
+       "0.976744",
+       "0.891308"
+      ],
+      "conflicting_minutes": [
+       4,
+       0
+      ],
+      "coverage": [
+       "0.800000",
+       "1.000000"
+      ],
+      "good": [
+       12774,
+       16568
+      ],
+      "measured_minutes": [
+       24,
+       null
+      ],
+      "missing_minutes": [
+       2,
+       0
+      ],
+      "status": [
+       "insufficient_telemetry",
+       "met"
+      ],
+      "total": [
+       12900,
+       16717
+      ]
+     },
+     "rc": 0
+    },
+    {
+     "case": 2,
+     "mismatch": {
+      "availability": [
+       "0.982625",
+       "0.984241"
+      ],
+      "bad": [
+       792,
+       824
+      ],
+      "burn_rate": [
+       "1.737452",
+       "1.575857"
+      ],
+      "conflicting_minutes": [
+       4,
+       0
+      ],
+      "coverage": [
+       "0.916667",
+       "1.000000"
+      ],
+      "good": [
+       44792,
+       51465
+      ],
+      "measured_minutes": [
+       55,
+       null
+      ],
+      "missing_minutes": [
+       1,
+       0
+      ],
+      "total": [
+       45584,
+       52289
+      ]
+     },
+     "rc": 0
+    }
+   ]
+  },
+  "id": "S07_random_sources_property",
+  "kind": "core",
+  "result": "FAIL"
+ },
+ {
+  "detail": {
+   "same": true,
+   "status": "met"
+  },
+  "id": "S08_split_equals_combined",
+  "kind": "core",
+  "result": "PASS"
+ },
+ {
+  "detail": {
+   "labels": [],
+   "measured_minutes": null,
+   "note": "one of two LBs silent for 30 min: minutes still count as measured",
+   "rc": 0,
+   "total": 45000
+  },
+  "id": "O09_partial_source_dropout",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "rc": 0,
+   "total": 60000
+  },
+  "id": "O10_source_name_case_space",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "conflicting": 0,
+   "rc": 0,
+   "total": 60000
+  },
+  "id": "O11_empty_string_vs_missing_source",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "rc": 0
+  },
+  "id": "O12_non_string_source",
+  "kind": "OBS",
+  "result": "OBS"
+ },
+ {
+  "detail": {
+   "rc": 0,
+   "total": 60500
+  },
+  "id": "O13_mirror_added_as_documented",
+  "kind": "OBS",
+  "result": "OBS"
+ }
+]

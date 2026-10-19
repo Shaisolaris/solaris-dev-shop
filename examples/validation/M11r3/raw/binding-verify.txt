@@ -1,0 +1,11 @@
+Mon Oct 19 04:57:23 PDT 2026
+candidate 13ba7055537e305732856aea3c74ff28f0848be8 parent 62fd4b88ba48a0f82576db4d4af5a2cf325f46c0
+02ba9c571b10ad1dba792d2ac5534bcad3171e67	refs/heads/main
+d4d98f2180ed9b92fd058a2350285f60f83b877d	refs/heads/review/grok-g03-recovery
+13ba7055537e305732856aea3c74ff28f0848be8	refs/heads/review/grok-g11-incident-slo
+f79be61580dec0911f6aba56c3bdc746a30898e7	refs/heads/review/grok-g10-network-diagnosis
+fast-forward from r2 62fd4b8: yes; G03 d4d98f2 ancestor: yes; G10 f79be61 ancestor: yes
+patch sha 784882b2d926c0e84d55c2129b0f78e237ef8ee90decabefbe790dabaf8bf5ef diff sha 784882b2d926c0e84d55c2129b0f78e237ef8ee90decabefbe790dabaf8bf5ef
+manifest entries 13 mismatches 0
+manifest set == diff set
+M11 r2 validated 62fd4b8 (bc1d0f6); this round's fix is builder design (handback: no validator patch used)

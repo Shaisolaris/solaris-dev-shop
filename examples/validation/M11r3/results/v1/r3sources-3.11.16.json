@@ -1,0 +1,250 @@
+[
+ {
+  "id": "T01_clean_three_sources_met",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "mismatch": {},
+   "status": "met",
+   "partial": 0,
+   "extra_ok": true
+  }
+ },
+ {
+  "id": "T02_source_retired_mid_window",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "mismatch": {},
+   "status": "insufficient_telemetry",
+   "partial": 10,
+   "extra_ok": true
+  }
+ },
+ {
+  "id": "T03_source_added_mid_window",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "mismatch": {},
+   "status": "insufficient_telemetry",
+   "partial": 10,
+   "extra_ok": true
+  }
+ },
+ {
+  "id": "T04_source_replaced_mid_window",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "mismatch": {},
+   "status": "insufficient_telemetry",
+   "partial": 200,
+   "extra_ok": true
+  }
+ },
+ {
+  "id": "T05a_recovery_split_before",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "mismatch": {},
+   "status": "met",
+   "partial": 0,
+   "extra_ok": true
+  }
+ },
+ {
+  "id": "T05b_recovery_split_after",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "mismatch": {},
+   "status": "met",
+   "partial": 0,
+   "extra_ok": true
+  }
+ },
+ {
+  "id": "T06_declared_list_missing_a_reporting_source_refused",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "want": "exit 2",
+   "stderr": "invalid: telemetry[2].source 'lb-2' is not in telemetry_sources"
+  }
+ },
+ {
+  "id": "T07_breach_in_complete_minutes_still_reported",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "mismatch": {},
+   "status": "breached",
+   "partial": 10,
+   "extra_ok": true
+  }
+ },
+ {
+  "id": "T08_errors_only_in_partial_minutes",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "mismatch": {},
+   "status": "insufficient_telemetry",
+   "partial": 10,
+   "extra_ok": true
+  }
+ },
+ {
+  "id": "T09_names_trimmed_collapsed_casefolded",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "mismatch": {},
+   "status": "met",
+   "partial": 0,
+   "extra_ok": true
+  }
+ },
+ {
+  "id": "T10_two_spellings_refused",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "want": "exit 2",
+   "stderr": "invalid: source names ['LB-0 ', 'lb-0'] differ only in case or spacing; ambiguous (one reporter or several?): fix the export or name them distinctly"
+  }
+ },
+ {
+  "id": "T11_declared_duplicate_refused",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "want": "exit 2",
+   "stderr": "invalid: telemetry_sources: two names are the same after trimming and case folding"
+  }
+ },
+ {
+  "id": "T12_unnamed_record_with_declared_list_refused",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 2,
+   "want": "exit 2",
+   "stderr": "invalid: telemetry[400] has no source but telemetry_sources is declared; every record must name one"
+  }
+ },
+ {
+  "id": "T13_declared_never_reporting",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "mismatch": {},
+   "status": "insufficient_telemetry",
+   "partial": 200,
+   "extra_ok": true
+  }
+ },
+ {
+  "id": "T14_single_unnamed_source",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "mismatch": {},
+   "status": "met",
+   "partial": 0,
+   "extra_ok": true
+  }
+ },
+ {
+  "id": "T15a_silent_after_change_insufficient_evidence",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "mismatch": {},
+   "status": "insufficient_telemetry",
+   "partial": 10,
+   "extra_ok": true
+  }
+ },
+ {
+  "id": "T15b_all_report_after_change_do_not_rollback",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0,
+   "mismatch": {},
+   "status": "met",
+   "partial": 0,
+   "extra_ok": true
+  }
+ },
+ {
+  "id": "T16_random_lifetimes_property",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "run": 40,
+   "mismatches": []
+  }
+ },
+ {
+  "id": "O17_retired_source_reader_view",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "labels": [
+    "source lb-2 silent for 10 of 200 minute(s) while other sources reported (coverage 0.950000); minutes without every expected source are left out of the SLO, which cannot be reported as met"
+   ],
+   "lb2": [
+    {
+     "coverage": "0.950000",
+     "partial_ranges": [
+      {
+       "end": "2026-09-07T15:20:00Z",
+       "minutes": 10,
+       "start": "2026-09-07T15:10:00Z"
+      }
+     ],
+     "reported_minutes": 190,
+     "silent_ranges": [
+      {
+       "end": "2026-09-07T15:20:00Z",
+       "minutes": 10,
+       "start": "2026-09-07T15:10:00Z"
+      }
+     ],
+     "silent_while_others_report": 10,
+     "source": "lb-2"
+    }
+   ],
+   "timeline_source_silent": 1,
+   "import": {
+    "event_duplicates": 0,
+    "event_records": 0,
+    "events_late": 0,
+    "telemetry_duplicates": 0,
+    "telemetry_late": 0,
+    "telemetry_minutes_multi_source": 200,
+    "telemetry_outside_window": 0,
+    "telemetry_records": 590
+   }
+  }
+ }
+]
