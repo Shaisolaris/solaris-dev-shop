@@ -15,7 +15,7 @@ an events export into a readout that states what the data supports and nothing m
 | `timezone` | IANA zone for timestamps without an offset |
 | `cohort` | `{start, end}`: units first assigned in `[start, end)` are the fixed cohort |
 | `as_of` | data cut; units whose horizon ends after it are immature |
-| `outcome` | `{event, horizon_days}`: converted means the event within the horizon after assignment |
+| `outcome` | `{event, horizon_days}`: converted means the event in `[assigned_at, assigned_at + horizon_days)`; an event exactly at the end does not count |
 | `min_sample_per_arm` | below this in either arm the readout is insufficient_information |
 | `alpha` | optional, default 0.05 |
 | `assignments`, `events` | `{file, header_aliases?, delimiter?}` read by the G13 data-engineer reader |
@@ -31,10 +31,18 @@ previous report is left unchanged.
    as non-converted.
 3. Units seen in both arms are excluded and named. If they exceed 5% of the cohort the experiment
    is invalid.
-4. Outcome events before assignment or after the horizon do not count. Events of unassigned units
+4. Outcome events before assignment or at or after the end of the horizon do not count. Events of unassigned units
    are ignored and counted.
 5. A sample-ratio mismatch (chi-square against the planned split, p < 0.001) makes the experiment
    invalid; no effect is read.
+   The same test runs per assignment week (weeks from cohort start with at least 20 units,
+   p < 0.001 divided by the number of weeks tested). A ramp or allocation change inside the cohort
+   makes the experiment invalid even when the pooled split matches the plan: pooling periods with
+   different base rates can reverse the sign of the effect (Simpson). The split must also be the same
+   across those weeks: a chi-square test of arm against week (weeks - 1 degrees of freedom,
+   p < 0.001) catches a gradual drift in which no single week fails its own test.
+   `allocation_by_week` in the JSON shows the worst week and both p-values. Weeks are 7-day blocks
+   from `cohort.start`, not calendar weeks.
 6. Effect: difference in rates with a (1 - alpha) Wald interval and a pooled two-proportion z test.
 
 ## Outcomes

@@ -49,7 +49,7 @@ class G15Capability(unittest.TestCase):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_oracle_accepts_tool_and_rejects_controls(self):
-        for target, want in ((TOOL, 'ACCEPTED: 12/12'), (EX / 'naive_stub.py', 'REJECTED'), (EX / 'noop_stub.py', 'REJECTED')):
+        for target, want in ((TOOL, 'ACCEPTED: 13/13'), (EX / 'naive_stub.py', 'REJECTED'), (EX / 'noop_stub.py', 'REJECTED')):
             p = subprocess.run([sys.executable, str(EX / 'readout_oracle.py')] + (['--quick'] if target != TOOL else []) + ['--', sys.executable, str(target)],
                                capture_output=True, text=True, env=ENV, timeout=600)
             self.assertIn(want, p.stdout.strip().splitlines()[-1], (target.name, p.stdout[-1500:], p.stderr[-800:]))
@@ -79,6 +79,37 @@ class G15Capability(unittest.TestCase):
         self.assertTrue(r['srm']['mismatch'])
         self.assertEqual(r['outcome'], 'invalid_experiment')
         self.assertEqual(r['claims_allowed'], {'causal': False, 'significance': False})
+
+    def test_allocation_drift_simpson_cases_invalid(self):
+        o = oracle_module()
+        c, t = 'control', 'treatment'
+        # the Grok self-validation M15 X13 and X13b cases: variant 5 points better in both periods
+        for plan, pooled_sign in (([(c, 100, 0.50, 0, 7), (t, 400, 0.55, 0, 7), (c, 400, 0.10, 7, 24), (t, 100, 0.15, 7, 24)], 1),
+                                  ([(c, 400, 0.50, 0, 7), (t, 100, 0.55, 0, 7), (c, 100, 0.10, 7, 24), (t, 400, 0.15, 7, 24)], -1)):
+            pkg, A, E = o.periods(random.Random(14), plan)
+            r = rep(o.write(self.tmp / ('s%d' % pooled_sign), pkg, A, E))
+            self.assertFalse(r['srm']['mismatch'])
+            self.assertEqual(pooled_sign, 1 if float(r['effect']['difference']) > 0 else -1)
+            self.assertEqual(r['outcome'], 'invalid_experiment')
+            self.assertEqual(r['claims_allowed'], {'causal': False, 'significance': False})
+            self.assertTrue(r['allocation_by_week']['mismatch'])
+            self.assertEqual(r['allocation_by_week']['worst_week'], 0)
+            self.assertIn('allocation drifted', r['trace'][0])
+        for f in ('clean-aa', 'retention-lift', 'sample-ratio-mismatch'):
+            self.assertFalse(rep(FIX / f / 'package.json')['allocation_by_week']['mismatch'], f)
+
+    def test_chi2_tail(self):
+        sys.path.insert(0, str(DS))
+        old = sys.dont_write_bytecode
+        sys.dont_write_bytecode = True
+        try:
+            import experiment_readout as er
+        finally:
+            sys.path.pop(0)
+            sys.dont_write_bytecode = old
+        for x, df, want in ((3.841458820694124, 1, 0.05), (5.991464547107979, 2, 0.05), (16.26623619623813, 3, 0.001),
+                            (11.070497693516351, 5, 0.05), (0.0, 3, 1.0)):
+            self.assertAlmostEqual(er.chi2_sf(x, df), want, places=9)
 
     def test_observational_never_causal(self):
         d = self.tmp / 'obs'

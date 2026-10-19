@@ -33,6 +33,7 @@ checks 12 properties:
 | o10 | invalid packages refused with exit 2, previous report kept |
 | o11 | 120 000 units (skipped by `--quick`) |
 | o12 | no bytecode or files written next to the inputs; local only |
+| o13 | allocation drift (Simpson): three ramps and one gradual drift with a balanced pooled split are invalid_experiment with no claim; a steady planned 30/70 split with a falling base rate reads the true positive difference |
 
 Controls (both must be REJECTED): `naive_stub.py` (dashboard read: event rows as units, no cohort,
 no leakage or SRM checks, any positive gap called a causal win) and `noop_stub.py`.

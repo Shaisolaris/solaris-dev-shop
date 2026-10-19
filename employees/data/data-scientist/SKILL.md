@@ -152,7 +152,8 @@ Verdict uses the shared decision table (same one Data Analyst holds): ship / hol
 For any A/B or retention readout from exported assignments and events, run `experiment_readout.py`
 (see `experiment-readout.md`) before writing a verdict. It counts one outcome per unit on a fixed,
 mature cohort, excludes units seen in both arms, ignores outcome events before assignment or after
-the horizon, refuses to read an effect under a sample-ratio mismatch, and reports the difference with
+the horizon, refuses to read an effect under a sample-ratio mismatch or an allocation that drifts across
+assignment weeks (Simpson), and reports the difference with
 an interval. Repeat only what its `claims_allowed` permits: no causal claim from observational data,
 and "no detectable difference" is never "no effect".
 

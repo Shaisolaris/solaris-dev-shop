@@ -89,6 +89,24 @@ def experiment(rng, n=(800, 800), p=(0.2, 0.2), exact=False, outside=0, contamin
     return pkg, A, E, truth, sorted(cont)
 
 
+def periods(rng, plan, split=(0.5, 0.5)):
+    """Allocation that changes over time. plan: [(arm, units, rate, start_day, days)]; conversions are exact."""
+    A, E, k = [], [], 0
+    for arm, n, rate, d0, days in plan:
+        conv = set(rng.sample(range(n), int(round(rate * n))))
+        for i in range(n):
+            u = "p%06d" % k
+            k += 1
+            t = CS + dt.timedelta(days=d0, minutes=rng.randrange(0, days * 1440))
+            A.append([u, arm, iso(t)])
+            if i in conv:
+                E.append([u, "retained", iso(t + dt.timedelta(hours=3)), "s0"])
+    rng.shuffle(A)
+    pkg = experiment(rng, n=(1, 1))[0]
+    pkg["planned_split"] = list(split)
+    return pkg, A, E
+
+
 def write(d, pkg, A, E):
     d = Path(d)
     d.mkdir(parents=True, exist_ok=True)
@@ -295,6 +313,38 @@ def main():
         ok = rc == 0 and tree(tmp / "o2") == before and rep["outcome"] == "difference_detected"
         return ok, "socket-denying guard; package folder byte-identical" if ok else "rc %s" % rc
     check("o12 offline and read-only", o12)
+
+    def o13():
+        # Simpson by allocation drift: the variant is 5 points better in every period, but the split changes
+        # between a high-rate and a low-rate period while the pooled split matches the plan
+        c, t = "control", "treatment"
+        cases = {
+            "ramp_variant_first": [(c, 100, 0.50, 0, 7), (t, 400, 0.55, 0, 7), (c, 400, 0.10, 7, 24), (t, 100, 0.15, 7, 24)],
+            "ramp_control_first": [(c, 400, 0.50, 0, 7), (t, 100, 0.55, 0, 7), (c, 100, 0.10, 7, 24), (t, 400, 0.15, 7, 24)],
+            "ramp_mid_week": [(c, 150, 0.45, 0, 10), (t, 450, 0.50, 0, 10), (c, 450, 0.12, 10, 21), (t, 150, 0.17, 10, 21)],
+            # gradual: treatment share 47, 49, 51, 53% of 2500 a week; no single week fails its corrected test,
+            # but the split is not the same across weeks (homogeneity test)
+            "gradual_drift": [x for w, (sh, r) in enumerate(((0.47, 0.40), (0.49, 0.30), (0.51, 0.20), (0.53, 0.10)))
+                              for x in ((c, 2500 - int(2500 * sh), r, 7 * w, 7), (t, int(2500 * sh), r + 0.02, 7 * w, 7))],
+        }
+        bad = []
+        for name, plan in cases.items():
+            pkg, A, E = periods(rng, plan)
+            rc, rep, _ = run(write(tmp / ("o13-" + name), pkg, A, E))
+            srm_ok = ((rep or {}).get("srm") or {}).get("mismatch") is False  # the pooled check alone passes
+            if not (rc == 0 and srm_ok and (rep or {}).get("outcome") == "invalid_experiment"
+                    and (rep or {}).get("claims_allowed") == {"causal": False, "significance": False}):
+                bad.append((name, rc, (rep or {}).get("outcome"), ((rep or {}).get("effect") or {}).get("difference")))
+        # no false alarm: a constant 30/70 split as planned, with the base rate falling over time
+        plan = [(c, 120, 0.50, 0, 7), (t, 280, 0.55, 0, 7), (c, 300, 0.10, 7, 24), (t, 700, 0.15, 7, 24)]
+        pkg, A, E = periods(rng, plan, split=(0.3, 0.7))
+        rc, rep, _ = run(write(tmp / "o13-steady", pkg, A, E))
+        steady = rc == 0 and (rep or {}).get("outcome") == "difference_detected" and \
+            float(((rep or {}).get("effect") or {}).get("difference", "nan")) > 0
+        ok = not bad and steady
+        return ok, "four drifting allocations (three ramps, one gradual) with a balanced pooled split are invalid_experiment with no claim; a steady planned 30/70 split with a falling base rate reads the true positive difference" if ok \
+            else "ramps not caught %s; steady control %s" % (bad, (rep or {}).get("outcome"))
+    check("o13 allocation drift (Simpson)", o13)
 
     n = sum(RESULTS)
     print("%s: %d/%d checks passed (seed %d)" % ("ACCEPTED" if n == len(RESULTS) else "REJECTED", n, len(RESULTS), a.seed))

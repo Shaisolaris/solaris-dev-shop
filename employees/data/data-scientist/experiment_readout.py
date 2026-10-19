@@ -12,8 +12,10 @@ What it guarantees:
   * Fixed cohort: only units first assigned inside [cohort.start, cohort.end); units whose horizon is
     not complete by as_of are immature and excluded, never counted as non-converted.
   * Leakage: units seen in more than one arm are excluded and named; outcome events before
-    assignment or after the horizon do not count; events of unassigned units are ignored and counted;
-    a sample-ratio mismatch (chi-square against the planned split, p < 0.001) invalidates the readout.
+    assignment or at or after assignment + horizon do not count; events of unassigned units are ignored
+    and counted; a sample-ratio mismatch (chi-square against the planned split, p < 0.001) invalidates
+    the readout, and so does allocation drift: a per-week sample-ratio test (Bonferroni over the weeks)
+    or a split that differs between weeks (arm x week chi-square, p < 0.001).
   * Uncertainty: per-arm rates, difference with a 95% (1 - alpha) Wald interval and a two-sided
     two-proportion z test. A difference is claimed only when the interval excludes 0, both arms meet
     the minimum sample and assignment was randomized; observational data gets "association only".
@@ -106,6 +108,38 @@ def z_quantile(p: float) -> float:
 
 def chi2_sf_df1(x: float) -> float:
     return math.erfc(math.sqrt(x / 2.0)) if x > 0 else 1.0
+
+
+def chi2_sf(x: float, df: int) -> float:
+    """Upper tail of the chi-square distribution: the regularized upper incomplete gamma Q(df/2, x/2)."""
+    if x <= 0:
+        return 1.0
+    a, z = df / 2.0, x / 2.0
+    lg = math.lgamma(a)
+    if z < a + 1:  # series for P, then Q = 1 - P
+        term = total = 1.0 / a
+        ap = a
+        for _ in range(1000):
+            ap += 1
+            term *= z / ap
+            total += term
+            if abs(term) < abs(total) * 1e-15:
+                break
+        return max(0.0, 1.0 - total * math.exp(-z + a * math.log(z) - lg))
+    b, c, d = z + 1 - a, 1e300, 1 / (z + 1 - a)  # continued fraction for Q (Lentz)
+    h = d
+    for i in range(1, 1000):
+        an = -i * (i - a)
+        b += 2
+        d = an * d + b
+        d = 1e-300 if abs(d) < 1e-300 else d
+        c = b + an / c
+        c = 1e-300 if abs(c) < 1e-300 else c
+        d = 1 / d
+        h *= d * c
+        if abs(d * c - 1) < 1e-15:
+            break
+    return min(1.0, math.exp(-z + a * math.log(z) - lg) * h)
 
 
 def r6(x: Optional[float]) -> Optional[str]:
@@ -253,6 +287,36 @@ def analyse(path: str) -> Dict[str, Any]:
         chi = (n[c] - e0) ** 2 / e0 + (n[t] - e1) ** 2 / e1
         srm = {"chi_square": r6(chi), "p_value": r6(chi2_sf_df1(chi)), "mismatch": chi2_sf_df1(chi) < SRM_P,
                "planned_split": list(P["split"])}
+    drift = None
+    if total and P["randomized"]:
+        weeks: Dict[int, Dict[str, int]] = {}
+        for v in units.values():
+            wk = int((v["at"] - P["cs"]).total_seconds() // (7 * 86400))
+            weeks.setdefault(wk, {a: 0 for a in P["arms"]})[v["arm"]] += 1
+        tested = [(wk, w) for wk, w in sorted(weeks.items()) if w[c] + w[t] >= 20]
+        worst = None
+        for wk, w in tested:
+            m = w[c] + w[t]
+            e0, e1 = m * P["split"][0], m * P["split"][1]
+            pw = chi2_sf_df1((w[c] - e0) ** 2 / e0 + (w[t] - e1) ** 2 / e1)
+            if worst is None or pw < worst[1]:
+                worst = (wk, pw, w[c], w[t])
+        if worst is not None:
+            drift = {"weeks_tested": len(tested), "worst_week": worst[0], "worst_week_units": [worst[2], worst[3]],
+                     "p_value": r6(worst[1]), "mismatch": worst[1] < SRM_P / len(tested)}
+            # a split that changes between weeks, even when every week stays near the plan: arm x week
+            # independence (chi-square, weeks - 1 degrees of freedom) over the same weeks
+            if len(tested) > 1:
+                mt = sum(w[c] + w[t] for _, w in tested)
+                share = sum(w[t] for _, w in tested) / mt
+                hom = 0.0
+                if 0 < share < 1:
+                    for _, w in tested:
+                        m = w[c] + w[t]
+                        hom += (w[c] - m * (1 - share)) ** 2 / (m * (1 - share)) + (w[t] - m * share) ** 2 / (m * share)
+                ph = chi2_sf(hom, len(tested) - 1)
+                drift["homogeneity_p_value"] = r6(ph)
+                drift["mismatch"] = drift["mismatch"] or ph < SRM_P
     effect = None
     trace: List[str] = []
     if n[c] and n[t]:
@@ -271,6 +335,9 @@ def analyse(path: str) -> Dict[str, Any]:
     elif P["randomized"] and srm["mismatch"]:
         outcome = "invalid_experiment"
         trace.append(f"sample ratio mismatch: {n[c]}/{n[t]} against planned {P['split'][0]}/{P['split'][1]} (p {srm['p_value']}); assignment is broken, no effect is read")
+    elif P["randomized"] and drift is not None and drift["mismatch"]:
+        outcome = "invalid_experiment"
+        trace.append(f"allocation drifted over the cohort: week {drift['worst_week']} has {drift['worst_week_units'][0]}/{drift['worst_week_units'][1]} against planned {P['split'][0]}/{P['split'][1]} (p {drift['p_value']}, Bonferroni over {drift['weeks_tested']} weeks; split homogeneity across weeks p {drift.get('homogeneity_p_value')}); the pooled comparison mixes periods with different base rates, no effect is read")
     elif P["randomized"] and len(contaminated) > 0.05 * (total + len(contaminated)):
         outcome = "invalid_experiment"
         trace.append(f"{len(contaminated)} units were exposed to both arms (over 5% of the cohort); no effect is read")
@@ -290,7 +357,7 @@ def analyse(path: str) -> Dict[str, Any]:
             "unit_of_analysis": "unit_id", "assignment": P["doc"]["assignment"],
             "cohort": {"start": P["cs"].isoformat(), "end": P["ce"].isoformat(), "as_of": P["as_of"].isoformat(),
                        "outcome_event": P["event"], "horizon_days": P["hz"]},
-            "arms": arms_out, "srm": srm, "effect": effect, "outcome": outcome, "claims_allowed": claims_allowed,
+            "arms": arms_out, "srm": srm, "allocation_by_week": drift, "effect": effect, "outcome": outcome, "claims_allowed": claims_allowed,
             "trace": trace, "exclusions": excl,
             "inputs": [{"file": f["file"], "sha256": f["sha256"], "data_rows": f["data_rows"]} for f in (af, ef)],
             "read_only": "local files only; nothing was changed or sent"}

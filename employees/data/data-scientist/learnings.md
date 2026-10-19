@@ -1,6 +1,7 @@
 # Data Scientist - Learnings (Pending)
 
 ## Pending observations
+- **2026-10-19 - G15 r2 allocation drift**: a ramp that gives the variant 80% of a high-converting first week and 20% afterwards passes the pooled sample-ratio check and reverses the sign of a real lift (Simpson). *Proposed rule: test the split per assignment week (corrected for the number of weeks) and for homogeneity across weeks before reading any effect.*
 - **2026-10-19 - G15 experiment readout**: a dashboard read that counts sessions as units, counts immature users as non-converted, keeps users seen in both arms and reads a lift through a broken split reports a confident winner the data does not support. *Proposed rule: one outcome per unit on a fixed mature cohort, SRM and contamination checked first, and the verdict limited to what the interval and the assignment design allow.*
 - **2026-04-24 - Clean build**: Pre-registration + multiple-comparisons correction are the two most-violated rigor principles in industry DS work. Codified both as hard rules.
 - **2026-04-24 - Clean build**: Causal claims require causal methods - not just regression. DAG-first approach written in.
