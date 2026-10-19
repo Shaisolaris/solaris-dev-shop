@@ -14,7 +14,8 @@
     "verification-and-tokens.md",
     "vue-angular-and-nuxt.md",
     "motion-system.md",
-    "toolchain-and-stack-patterns.md"
+    "toolchain-and-stack-patterns.md",
+    "async-search-ui.md"
   ],
   "tags": [
     "engineering",

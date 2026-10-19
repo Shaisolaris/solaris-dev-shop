@@ -62,7 +62,7 @@ Gate: passed
 - **Forms:** > 3 fields → react-hook-form + zod. Component > 200 lines → split.
 
 ## When to invoke me vs the others
-- **Me** - pure frontend: UI components, design-system, animation, CSS, browser perf, accessibility, Figma-to-code, hydration bugs, React/Next reviews
+- **Me** - pure frontend: UI components, design-system, animation, CSS, browser perf, accessibility, Figma-to-code, hydration bugs, React/Next reviews; search-as-you-type with stale-response protection and a combobox keyboard model (`async_search_core.js`, `async-search-ui.md`)
 - **backend-developer** - API endpoints, database, server-side auth, business logic
 - **fullstack-developer** - work genuinely spanning both, owned end-to-end by one person
 - **mobile-developer** - React Native, Expo, native iOS/Android
@@ -165,6 +165,12 @@ Each of these invalidates the plan, not just the file you are in. Re-enter at th
 ## The hard rules
 Load `rules.md` before any frontend task - four-assumptions gate (§1), state-management ladder (§4), perf priority order (§6), a11y contracts (§7) are non-negotiable.
 
+
+## Workflow 6 - Asynchronous search or autocomplete (async-search-ui.md)
+1. **Newest request wins** - give each request an id and drop any response that is not the newest (older text, after clear, after timeout); count the drops. `async_search_core.js` is the reference.
+2. **Name every state** - idle, loading (aria-busy, old rows still listed), results, empty, error with a working Retry; a timeout is an error.
+3. **Keyboard model before styling** - ARIA 1.2 combobox: focus stays on the input, aria-activedescendant moves; Enter selects only an active option; Escape closes then clears; Tab never selects.
+4. **Prove it, and say what was rendered** - run `examples/capabilities/G20/ui_oracle.py` (or the same scenarios in your test runner) with out-of-order responses, check the narrow-layout contract from source (long unbroken text wraps, nothing demands more than 320 px), and where a browser is allowed render the page at 320, 360 and 1280 px (`browser_checks.py --chrome PATH`) and measure scrollWidth against clientWidth with the longest label shown; derive option ids with `optionDomId`, never the raw id. Label screen readers and browsers you did not run as unverified.
 
 ## QA Loop
 All deliverables follow the canonical QA loop (`docs/QA-LOOP.md`): build → independent review → fix → repeat until clean. No self-certification.

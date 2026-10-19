@@ -8,3 +8,12 @@
 - Upstream: GoogleChrome/web-vitals (license not recorded); dequelabs/axe-core (license not recorded); microsoft/playwright (license not recorded); style-dictionary/style-dictionary (license not recorded); TanStack/query (license not recorded)
 - What was used: methodology only: GoogleChrome/web-vitals, dequelabs/axe-core, microsoft/playwright, style-dictionary/style-dictionary; methodology absorbed: TanStack/query; connected as external reference: TanStack/query
 - License notes: licenses not recorded in scan for: GoogleChrome/web-vitals, dequelabs/axe-core, microsoft/playwright, style-dictionary/style-dictionary, TanStack/query - verify before reuse; no code vendored
+
+## 2026-10-19 G20 rendered checks (pending)
+- A text-level layout check (breakpoint numbers, target sizes) passed while the real page was 1257 px wide at 320 px: one unbroken 167-character label under `overflow-wrap: normal` widened everything; `overflow-wrap: anywhere` on the body fixed it. Only measuring the rendered page found it; the source-level contract test now guards the CSS rule without a browser.
+- Raw ids with spaces or tabs made invalid `aria-activedescendant` targets; escaping each non-safe character one to one keeps them valid and distinct (`a b` and `a_b` stay different).
+- Proposed rule: render async UI at 320, 360 and 1280 px with the longest content shown, assert scrollWidth no greater than clientWidth, and drive it with real key events before calling layout or keyboard behaviour checked.
+
+## 2026-10-18 G20 asynchronous search (pending)
+- A search box that shows "the last response to arrive" shows the wrong results whenever answers come back out of order; the naive stub showed stale rows 447 times across 150 scripted sessions. Keying each response to the newest request id and dropping the rest is what fixed it, not a longer debounce.
+- Proposed rule: test async UI with a virtual clock and responses resolved by hand in any order, and label browser, focus and screen-reader behaviour as unrun until a real browser run exists.
