@@ -1,0 +1,155 @@
+{
+ "schema": "solaris.daily-integration/1",
+ "goal": "G36",
+ "base": "02ba9c571b10ad1dba792d2ac5534bcad3171e67",
+ "writable": [
+  "employees/quality-security/assurance/**",
+  "employees/quality-security/qa-engineer/**",
+  "examples/capabilities/G36/**",
+  "tests/test_g36_capability.py"
+ ],
+ "prerequisites": [
+  {
+   "id": "G04",
+   "commit": "155fc33ad284b8c8f79c235d96f240abcd64f662",
+   "note": "G04 r2 (root QA); also carried by G32 r3, same blobs",
+   "tests": [
+    "tests.test_g04_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G04/handoff_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G13",
+   "commit": "5666e7beb161d1252ddd5dcc0a166aca83255370",
+   "note": "carried by G31 via G17; parser read by G33 and G35 (x3)",
+   "tests": [
+    "tests.test_g13_capability"
+   ]
+  },
+  {
+   "id": "G14",
+   "commit": "6f7b23aa18413907c5fbd250daab475dc94e7a1e",
+   "note": "carried by G31 via G17; run by x2 against the G35 finance package",
+   "tests": [
+    "tests.test_g14_capability"
+   ]
+  },
+  {
+   "id": "G17",
+   "commit": "550f1848a76ad4d5b6688090afc0519354ac3370",
+   "note": "carried by G31; run by x1 against the G31 capacity package",
+   "tests": [
+    "tests.test_g17_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G17/decision_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G31",
+   "commit": "e998d2b434c082fe4cf129cec89dbeae458d8690",
+   "note": "G31 r2, base of the merge chain",
+   "tests": [
+    "tests.test_g31_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G31/scope_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G32",
+   "commit": "b69f3289f360ed0dc5d722f025940815787ff1af",
+   "note": "G32 r3 (root QA)",
+   "tests": [
+    "tests.test_g32_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G32/followthrough_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G33",
+   "commit": "327e631916db17170850d62d72479e13c89249dd",
+   "note": "G33 r3 (root QA)",
+   "tests": [
+    "tests.test_g33_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G33/evidence_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G34",
+   "commit": "de76fae516c3aab8adc5df7bfcaac2d751dc92d9",
+   "note": "saved HTML snapshots only, no browser",
+   "tests": [
+    "tests.test_g34_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G34/diag_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G35",
+   "commit": "34bb98f465901438fec47d6ac8beccc0edf8df70",
+   "tests": [
+    "tests.test_g35_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G35/campaign_oracle.py"
+    ]
+   ]
+  }
+ ],
+ "external": [],
+ "cross_checks": [
+  [
+   "examples/capabilities/G36/cross_checks.py"
+  ]
+ ],
+ "resolved_overlaps": [
+  {
+   "path": "employees/data/data-analyst/SKILL.md",
+   "reason": "G33 327e631 carries the G13 5666e7b blob a8726ce; G31 e998d2b and G35 34bb98f carry the G14 6f7b23a blob 91b5625, which builds on G13 and adds one line. HEAD is the G14 blob, a strict superset."
+  },
+  {
+   "path": "employees/leadership/cmo/SKILL.md",
+   "reason": "G33 327e631 adds one line and G35 34bb98f adds six lines at different places on the same G31 base blob 4b05356. HEAD (da4ee3e) is the line union: no line of either candidate is missing."
+  },
+  {
+   "path": "employees/leadership/cmo/capability.contract.json",
+   "reason": "G33 327e631 and G35 34bb98f each append one forward_tests entry, in two different forward_tests lists, to base blob 00ed372. HEAD (93770b1) holds both entries and parses as JSON."
+  },
+  {
+   "path": "employees/leadership/cmo/learnings.md",
+   "reason": "G33 327e631 and G35 34bb98f each add one observation to base blob 181e41c. HEAD (45ad2f9) keeps both."
+  },
+  {
+   "path": "employees/infrastructure/fleet-dispatcher/handoff.py",
+   "reason": "G32 b69f328 carries G04 r1 314b4db unchanged for this file (blob eb27607); G04 r2 155fc33 builds on 314b4db and changes it (blob cc545eb). HEAD is the G04 r2 blob, the newer of the two, so G32 loses nothing."
+  },
+  {
+   "path": "employees/infrastructure/fleet-dispatcher/handoff-work-orders.md",
+   "reason": "G32 b69f328 carries G04 r1 314b4db unchanged for this file (blob 2d607b2); G04 r2 155fc33 builds on 314b4db and changes it (blob 96af330). HEAD is the G04 r2 blob, the newer of the two, so G32 loses nothing."
+  },
+  {
+   "path": "tests/test_g04_capability.py",
+   "reason": "G32 b69f328 carries G04 r1 314b4db unchanged for this file (blob 6a63af7); G04 r2 155fc33 builds on 314b4db and changes it (blob 9751498). HEAD is the G04 r2 blob, the newer of the two, so G32 loses nothing."
+  }
+ ]
+}
