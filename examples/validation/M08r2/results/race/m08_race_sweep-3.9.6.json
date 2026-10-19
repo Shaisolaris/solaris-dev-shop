@@ -1,0 +1,3226 @@
+[
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 0,
+  "trial": 0,
+  "rcs": [
+   2,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 0,
+  "trial": 1,
+  "rcs": [
+   0,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 5,
+  "trial": 0,
+  "rcs": [
+   0,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 5,
+  "trial": 1,
+  "rcs": [
+   0,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 10,
+  "trial": 0,
+  "rcs": [
+   0,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 10,
+  "trial": 1,
+  "rcs": [
+   0,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 15,
+  "trial": 0,
+  "rcs": [
+   0,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 15,
+  "trial": 1,
+  "rcs": [
+   0,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 20,
+  "trial": 0,
+  "rcs": [
+   0,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 20,
+  "trial": 1,
+  "rcs": [
+   0,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 25,
+  "trial": 0,
+  "rcs": [
+   0,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 25,
+  "trial": 1,
+  "rcs": [
+   0,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 30,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 30,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 35,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 35,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 40,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 40,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 45,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 45,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 50,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 50,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 55,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 55,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 60,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 60,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 65,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 65,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 70,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 70,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 75,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 75,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 80,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 80,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 85,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 85,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 90,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 90,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 95,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 95,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 100,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 100,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 105,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 105,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 110,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 110,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 115,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 115,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 120,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 120,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 125,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 125,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 130,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 130,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 135,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 135,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 140,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 140,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 145,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 145,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 150,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r2x2_from_r1",
+  "offset_ms": 150,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": true,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 0,
+  "trial": 0,
+  "rcs": [
+   1,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 0,
+  "trial": 1,
+  "rcs": [
+   1,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 5,
+  "trial": 0,
+  "rcs": [
+   1,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 5,
+  "trial": 1,
+  "rcs": [
+   1,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 10,
+  "trial": 0,
+  "rcs": [
+   1,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 10,
+  "trial": 1,
+  "rcs": [
+   1,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 15,
+  "trial": 0,
+  "rcs": [
+   1,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 15,
+  "trial": 1,
+  "rcs": [
+   1,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 20,
+  "trial": 0,
+  "rcs": [
+   1,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 20,
+  "trial": 1,
+  "rcs": [
+   1,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 25,
+  "trial": 0,
+  "rcs": [
+   1,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 25,
+  "trial": 1,
+  "rcs": [
+   1,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 30,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 30,
+  "trial": 1,
+  "rcs": [
+   1,
+   2
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 35,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 35,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 40,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 40,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 45,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 45,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 50,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 50,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 55,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 55,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 60,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 60,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 65,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 65,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 70,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 70,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 75,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 75,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 80,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 80,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 85,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 85,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 90,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 90,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 95,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 95,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 100,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 100,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 105,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 105,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 110,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 110,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 115,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 115,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 120,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 120,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 125,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 125,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 130,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 130,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 135,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 135,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 140,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 140,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 145,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 145,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 150,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ },
+ {
+  "case": "r3brokenx2_from_r2",
+  "offset_ms": 150,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "tracebacks": [],
+  "live": "r2",
+  "pending": false,
+  "uv": 2,
+  "totals": [
+   1250,
+   4800,
+   990
+  ],
+  "columns": [
+   "id",
+   "customer",
+   "total_cents",
+   "note"
+  ],
+  "data_changed_vs_before": false,
+  "bad": false
+ }
+]

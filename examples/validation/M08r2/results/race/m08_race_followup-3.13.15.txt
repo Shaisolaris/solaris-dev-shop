@@ -1,0 +1,2 @@
+CASE A trials 27 inconsistent after documented recovery 0
+CASE B trials 14 inconsistent after documented recovery 0

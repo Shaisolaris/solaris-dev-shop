@@ -1,0 +1,342 @@
+[
+ {
+  "mutant": "env_name_unchecked",
+  "killed": true,
+  "rows": [
+   "D02_refusals_exit2_tree_identical"
+  ]
+ },
+ {
+  "mutant": "env_kind_unchecked",
+  "killed": true,
+  "rows": [
+   "D02_refusals_exit2_tree_identical"
+  ]
+ },
+ {
+  "mutant": "revision_unchecked",
+  "killed": true,
+  "rows": [
+   "D12_repinned_and_live_health_refusals"
+  ]
+ },
+ {
+  "mutant": "digest_unchecked",
+  "killed": true,
+  "rows": [
+   "D02_refusals_exit2_tree_identical"
+  ]
+ },
+ {
+  "mutant": "secrets_ok",
+  "killed": true,
+  "rows": [
+   "D12_repinned_and_live_health_refusals"
+  ]
+ },
+ {
+  "mutant": "symlink_ok",
+  "killed": true,
+  "rows": [
+   "D12_repinned_and_live_health_refusals"
+  ]
+ },
+ {
+  "mutant": "approval_missing_ok",
+  "killed": true,
+  "rows": [
+   "D02_refusals_exit2_tree_identical",
+   "L07_repeat_gate",
+   "L08_repeat_unhealthy_refused"
+  ]
+ },
+ {
+  "mutant": "approval_fields_unchecked",
+  "killed": true,
+  "rows": [
+   "D02_refusals_exit2_tree_identical",
+   "D07_rollback_needs_matching_approval",
+   "D12_repinned_and_live_health_refusals",
+   "L07_repeat_gate"
+  ]
+ },
+ {
+  "mutant": "approver_blank_ok",
+  "killed": true,
+  "rows": [
+   "D02_refusals_exit2_tree_identical",
+   "D07_rollback_needs_matching_approval"
+  ]
+ },
+ {
+  "mutant": "approval_action_any",
+  "killed": true,
+  "rows": [
+   "D12_repinned_and_live_health_refusals"
+  ]
+ },
+ {
+  "mutant": "live_health_skipped",
+  "killed": true,
+  "rows": [
+   "D12_repinned_and_live_health_refusals",
+   "L08_repeat_unhealthy_refused"
+  ]
+ },
+ {
+  "mutant": "pending_journal_ok",
+  "killed": true,
+  "rows": [
+   "D04_crash_drills_recover_then_redeploy"
+  ]
+ },
+ {
+  "mutant": "live_intact_unchecked",
+  "killed": true,
+  "rows": [
+   "D02_refusals_exit2_tree_identical"
+  ]
+ },
+ {
+  "mutant": "existing_release_ok",
+  "killed": true,
+  "rows": [
+   "D12_repinned_and_live_health_refusals"
+  ]
+ },
+ {
+  "mutant": "refuse_ignored",
+  "killed": true,
+  "rows": [
+   "D02_refusals_exit2_tree_identical",
+   "D04_crash_drills_recover_then_redeploy",
+   "D12_repinned_and_live_health_refusals",
+   "L07_repeat_gate"
+  ]
+ },
+ {
+  "mutant": "no_snapshot_verify_EQUIV",
+  "killed": false,
+  "rows": [],
+  "builder_tests_rc": 0
+ },
+ {
+  "mutant": "migration_no_txn",
+  "killed": true,
+  "rows": [
+   "D01_clean_deploy_upgrade_rollback",
+   "D04_crash_drills_recover_then_redeploy",
+   "D05_sigkill_during_deploy_16x",
+   "D07b_rollback_approval_reusable",
+   "D08_failed_deploys_restore_release_and_data",
+   "D09_repeat_live_deploy_noop",
+   "L01_deploy_vs_rollback_race",
+   "L02_recover_vs_recover_race",
+   "L03_held_lock_refuses_mutators_only",
+   "L04_symlink_alias_target_serialised",
+   "L05_no_stale_lock_after_sigkill",
+   "L06_stopped_holder_nonblocking",
+   "L07_repeat_gate"
+  ]
+ },
+ {
+  "mutant": "post_health_skipped",
+  "killed": true,
+  "rows": [
+   "D08_failed_deploys_restore_release_and_data",
+   "L01_deploy_vs_rollback_race",
+   "L05_no_stale_lock_after_sigkill"
+  ]
+ },
+ {
+  "mutant": "undo_no_data_restore",
+  "killed": true,
+  "rows": [
+   "D04_crash_drills_recover_then_redeploy",
+   "D05_sigkill_during_deploy_16x",
+   "D08_failed_deploys_restore_release_and_data",
+   "L01_deploy_vs_rollback_race",
+   "L02_recover_vs_recover_race",
+   "L05_no_stale_lock_after_sigkill"
+  ]
+ },
+ {
+  "mutant": "undo_restore_only_after_switch",
+  "killed": true,
+  "rows": [
+   "D04_crash_drills_recover_then_redeploy",
+   "L02_recover_vs_recover_race"
+  ]
+ },
+ {
+  "mutant": "undo_no_relink",
+  "killed": true,
+  "rows": [
+   "D04_crash_drills_recover_then_redeploy",
+   "D05_sigkill_during_deploy_16x",
+   "D08_failed_deploys_restore_release_and_data",
+   "L01_deploy_vs_rollback_race",
+   "L05_no_stale_lock_after_sigkill"
+  ]
+ },
+ {
+  "mutant": "undo_keeps_release",
+  "killed": true,
+  "rows": [
+   "D08_failed_deploys_restore_release_and_data"
+  ]
+ },
+ {
+  "mutant": "migrated_recorded_late",
+  "killed": true,
+  "rows": [
+   "D04_crash_drills_recover_then_redeploy",
+   "L02_recover_vs_recover_race"
+  ]
+ },
+ {
+  "mutant": "health_files_unchecked",
+  "killed": true,
+  "rows": [
+   "D08_failed_deploys_restore_release_and_data",
+   "L01_deploy_vs_rollback_race",
+   "L05_no_stale_lock_after_sigkill"
+  ]
+ },
+ {
+  "mutant": "health_user_version_ignored",
+  "killed": true,
+  "rows": [
+   "D08_failed_deploys_restore_release_and_data",
+   "D12_repinned_and_live_health_refusals",
+   "L08_repeat_unhealthy_refused"
+  ]
+ },
+ {
+  "mutant": "health_g03_ignored",
+  "killed": true,
+  "rows": [
+   "D02_refusals_exit2_tree_identical"
+  ]
+ },
+ {
+  "mutant": "rollback_approval_any_rev",
+  "killed": true,
+  "rows": [
+   "D07_rollback_needs_matching_approval"
+  ]
+ },
+ {
+  "mutant": "rollback_no_data",
+  "killed": true,
+  "rows": [
+   "D01_clean_deploy_upgrade_rollback",
+   "D07b_rollback_approval_reusable",
+   "L01_deploy_vs_rollback_race"
+  ]
+ },
+ {
+  "mutant": "rollback_refuse_ignored",
+  "killed": true,
+  "rows": [
+   "D07_rollback_needs_matching_approval"
+  ]
+ },
+ {
+  "mutant": "idempotent_off",
+  "killed": true,
+  "rows": [
+   "D05_sigkill_during_deploy_16x",
+   "D09_repeat_live_deploy_noop",
+   "L07_repeat_gate"
+  ]
+ },
+ {
+  "mutant": "path_escape_ok",
+  "killed": true,
+  "rows": [
+   "D02_refusals_exit2_tree_identical"
+  ]
+ },
+ {
+  "mutant": "required_files_empty_ok",
+  "killed": false,
+  "rows": [],
+  "builder_tests_rc": 1
+ },
+ {
+  "mutant": "recover_noop",
+  "killed": true,
+  "rows": [
+   "D04_crash_drills_recover_then_redeploy",
+   "D05_sigkill_during_deploy_16x",
+   "L02_recover_vs_recover_race"
+  ]
+ },
+ {
+  "mutant": "deploy_unlocked",
+  "killed": true,
+  "rows": [
+   "L01_deploy_vs_rollback_race",
+   "L03_held_lock_refuses_mutators_only",
+   "L04_symlink_alias_target_serialised",
+   "L06_stopped_holder_nonblocking"
+  ]
+ },
+ {
+  "mutant": "rollback_unlocked",
+  "killed": true,
+  "rows": [
+   "L01_deploy_vs_rollback_race",
+   "L03_held_lock_refuses_mutators_only"
+  ]
+ },
+ {
+  "mutant": "recover_unlocked",
+  "killed": true,
+  "rows": [
+   "L02_recover_vs_recover_race",
+   "L03_held_lock_refuses_mutators_only"
+  ]
+ },
+ {
+  "mutant": "lock_failure_ignored",
+  "killed": true,
+  "rows": [
+   "L02_recover_vs_recover_race",
+   "L03_held_lock_refuses_mutators_only",
+   "L06_stopped_holder_nonblocking"
+  ]
+ },
+ {
+  "mutant": "lock_released_early",
+  "killed": true,
+  "rows": [
+   "L02_recover_vs_recover_race",
+   "L04_symlink_alias_target_serialised",
+   "L06_stopped_holder_nonblocking"
+  ]
+ },
+ {
+  "mutant": "repeat_unchecked",
+  "killed": true,
+  "rows": [
+   "L07_repeat_gate",
+   "L08_repeat_unhealthy_refused"
+  ]
+ },
+ {
+  "mutant": "repeat_ignores_health",
+  "killed": true,
+  "rows": [
+   "L08_repeat_unhealthy_refused"
+  ]
+ },
+ {
+  "mutant": "repeat_ignores_authority",
+  "killed": true,
+  "rows": [
+   "L07_repeat_gate"
+  ]
+ }
+]

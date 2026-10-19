@@ -1,0 +1,11 @@
+rc=2 want=2 OK :: deploy plan-r1.json
+rc=0 want=0 OK :: deploy plan-r1.json --approval approval-r1.json
+rc=0 want=0 OK :: deploy plan-r2.json --approval approval-r2.json
+rc=1 want=1 OK :: deploy plan-r3-broken.json --approval approval-r3-broken.json
+rc=75 want=75 OK :: deploy plan-r3-broken.json --approval approval-r3-broken.json --fail-at migrated
+rc=2 want=2 OK :: deploy plan-r2.json --approval approval-r2.json
+rc=1 want=1 OK :: recover plan-r2.json
+rc=0 want=0 OK :: rollback plan-r2.json --approval approval-rollback-to-r1.json
+live r1 pending False
+user_version 1 totals [1250, 4800, 990]
+python3 = 3.9.6; pycache dirs left in the repo copy:

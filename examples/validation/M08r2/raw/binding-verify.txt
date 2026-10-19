@@ -1,0 +1,11 @@
+Mon Oct 19 03:13:46 PDT 2026
+candidate ddebe98707219aa2638cd424777b1255413d9ceb parent 52cb49db230ac95e28c2e880176335ccb097a2a6
+02ba9c571b10ad1dba792d2ac5534bcad3171e67	refs/heads/main
+d4d98f2180ed9b92fd058a2350285f60f83b877d	refs/heads/review/grok-g03-recovery
+ddebe98707219aa2638cd424777b1255413d9ceb	refs/heads/review/grok-g08-deploy-preflight
+dfc25e5797ef4073f7d41a2f8dc1b7c7c14b3809	refs/heads/review/grok-m08-validation
+fast-forward from r1 52cb49d: yes
+patch sha c615c9dd812549cdccdb6fb2aa18a056366e3fe83401075c3ab7ee463869a5ed diff sha c615c9dd812549cdccdb6fb2aa18a056366e3fe83401075c3ab7ee463869a5ed
+manifest entries 7 mismatches 0
+manifest set == diff set
+ 7 files changed, 209 insertions(+), 13 deletions(-)

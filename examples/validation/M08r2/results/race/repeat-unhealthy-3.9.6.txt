@@ -1,0 +1,17 @@
+r2 deployed rc=0
+preflight r2 rc=2 (health should fail)
+  environment  ok    target is staging-local (local-fixture)
+  artifact     ok    revision r2, sha256 matches
+  authority    ok    approved by release-manager: A. Example
+  health       FAIL  data: app.db user_version 3, release r2 needs 2
+  rollback     FAIL  release r2 is already live
+result: refused: r2 is already live but health failed; nothing changed
+repeat deploy r2 rc=2
+  environment  ok    target is staging-local (local-fixture)
+  artifact     ok    revision r2, sha256 matches
+  authority    FAIL  no approval file
+  health       FAIL  data: app.db user_version 3, release r2 needs 2
+  rollback     FAIL  release r2 is already live
+result: refused: r2 is already live but authority, health failed; nothing changed
+repeat deploy r2 with NO approval rc=2
+status live r2 pending False

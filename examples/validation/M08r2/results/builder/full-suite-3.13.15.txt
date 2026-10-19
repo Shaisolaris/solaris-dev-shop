@@ -1,0 +1,8 @@
+....................................................................................<frozen importlib._bootstrap>:488: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x10b1d0220>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+............................................................
+----------------------------------------------------------------------
+Ran 144 tests in 25.732s
+
+OK
+rc 0

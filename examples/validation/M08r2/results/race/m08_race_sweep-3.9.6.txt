@@ -1,0 +1,2 @@
+SWEEP trials 124, inconsistent 0
+rcs by case: {'r2x2_from_r1': [((0, 0), 50), ((0, 2), 12)], 'r3brokenx2_from_r2': [((1, 1), 49), ((1, 2), 13)]}

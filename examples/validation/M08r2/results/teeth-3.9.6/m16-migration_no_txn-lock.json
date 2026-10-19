@@ -1,0 +1,460 @@
+[
+ {
+  "id": "L01_deploy_vs_rollback_race",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "trials": 12,
+   "lock_refusals": 0,
+   "inconsistent": [
+    {
+     "off": 0,
+     "rcs": [
+      2,
+      2
+     ],
+     "live": null,
+     "consistent": false,
+     "lock_refusal": false
+    },
+    {
+     "off": 0,
+     "rcs": [
+      2,
+      2
+     ],
+     "live": null,
+     "consistent": false,
+     "lock_refusal": false
+    },
+    {
+     "off": 1,
+     "rcs": [
+      2,
+      2
+     ],
+     "live": null,
+     "consistent": false,
+     "lock_refusal": false
+    },
+    {
+     "off": 2,
+     "rcs": [
+      2,
+      2
+     ],
+     "live": null,
+     "consistent": false,
+     "lock_refusal": false
+    },
+    {
+     "off": 3,
+     "rcs": [
+      2,
+      2
+     ],
+     "live": null,
+     "consistent": false,
+     "lock_refusal": false
+    },
+    {
+     "off": 5,
+     "rcs": [
+      2,
+      2
+     ],
+     "live": null,
+     "consistent": false,
+     "lock_refusal": false
+    },
+    {
+     "off": 8,
+     "rcs": [
+      2,
+      2
+     ],
+     "live": null,
+     "consistent": false,
+     "lock_refusal": false
+    },
+    {
+     "off": 10,
+     "rcs": [
+      2,
+      2
+     ],
+     "live": null,
+     "consistent": false,
+     "lock_refusal": false
+    },
+    {
+     "off": 15,
+     "rcs": [
+      2,
+      2
+     ],
+     "live": null,
+     "consistent": false,
+     "lock_refusal": false
+    },
+    {
+     "off": 20,
+     "rcs": [
+      2,
+      2
+     ],
+     "live": null,
+     "consistent": false,
+     "lock_refusal": false
+    },
+    {
+     "off": 30,
+     "rcs": [
+      2,
+      2
+     ],
+     "live": null,
+     "consistent": false,
+     "lock_refusal": false
+    },
+    {
+     "off": 50,
+     "rcs": [
+      2,
+      2
+     ],
+     "live": null,
+     "consistent": false,
+     "lock_refusal": false
+    }
+   ],
+   "rc_pairs": [
+    [
+     2,
+     2
+    ]
+   ]
+  }
+ },
+ {
+  "id": "L02_recover_vs_recover_race",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "trials": 6,
+   "rc_pairs": [
+    [
+     1,
+     2
+    ]
+   ],
+   "bad": [
+    {
+     "off": 0,
+     "rcs": [
+      1,
+      2
+     ],
+     "live": null,
+     "pending": false
+    },
+    {
+     "off": 0,
+     "rcs": [
+      1,
+      2
+     ],
+     "live": null,
+     "pending": false
+    },
+    {
+     "off": 1,
+     "rcs": [
+      1,
+      2
+     ],
+     "live": null,
+     "pending": false
+    },
+    {
+     "off": 3,
+     "rcs": [
+      1,
+      2
+     ],
+     "live": null,
+     "pending": false
+    },
+    {
+     "off": 5,
+     "rcs": [
+      1,
+      2
+     ],
+     "live": null,
+     "pending": false
+    },
+    {
+     "off": 10,
+     "rcs": [
+      1,
+      2
+     ],
+     "live": null,
+     "pending": false
+    }
+   ]
+  }
+ },
+ {
+  "id": "L03_held_lock_refuses_mutators_only",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "deploy": {
+    "rc": 2,
+    "secs": 0.04,
+    "lock_msg": true
+   },
+   "repeat": {
+    "rc": 2,
+    "secs": 0.05,
+    "lock_msg": true
+   },
+   "rollback": {
+    "rc": 2,
+    "secs": 0.04,
+    "lock_msg": true
+   },
+   "recover": {
+    "rc": 2,
+    "secs": 0.04,
+    "lock_msg": true
+   },
+   "preflight": {
+    "rc": 2,
+    "secs": 0.04,
+    "lock_msg": false
+   },
+   "status": {
+    "rc": 0,
+    "secs": 0.04,
+    "lock_msg": false
+   },
+   "tree_identical": true
+  }
+ },
+ {
+  "id": "L04_symlink_alias_target_serialised",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "trials": [
+    {
+     "off": 0,
+     "rcs": [
+      2,
+      2
+     ],
+     "r2_deployed_events": 0,
+     "alias_refused_not_by_lock": false
+    },
+    {
+     "off": 0,
+     "rcs": [
+      2,
+      2
+     ],
+     "r2_deployed_events": 0,
+     "alias_refused_not_by_lock": true
+    },
+    {
+     "off": 1,
+     "rcs": [
+      2,
+      2
+     ],
+     "r2_deployed_events": 0,
+     "alias_refused_not_by_lock": true
+    },
+    {
+     "off": 2,
+     "rcs": [
+      2,
+      2
+     ],
+     "r2_deployed_events": 0,
+     "alias_refused_not_by_lock": true
+    },
+    {
+     "off": 4,
+     "rcs": [
+      2,
+      2
+     ],
+     "r2_deployed_events": 0,
+     "alias_refused_not_by_lock": true
+    },
+    {
+     "off": 8,
+     "rcs": [
+      2,
+      2
+     ],
+     "r2_deployed_events": 0,
+     "alias_refused_not_by_lock": true
+    }
+   ],
+   "bad": [
+    {
+     "off": 0,
+     "rcs": [
+      2,
+      2
+     ],
+     "r2_deployed_events": 0,
+     "alias_refused_not_by_lock": false
+    },
+    {
+     "off": 0,
+     "rcs": [
+      2,
+      2
+     ],
+     "r2_deployed_events": 0,
+     "alias_refused_not_by_lock": true
+    },
+    {
+     "off": 1,
+     "rcs": [
+      2,
+      2
+     ],
+     "r2_deployed_events": 0,
+     "alias_refused_not_by_lock": true
+    },
+    {
+     "off": 2,
+     "rcs": [
+      2,
+      2
+     ],
+     "r2_deployed_events": 0,
+     "alias_refused_not_by_lock": true
+    },
+    {
+     "off": 4,
+     "rcs": [
+      2,
+      2
+     ],
+     "r2_deployed_events": 0,
+     "alias_refused_not_by_lock": true
+    },
+    {
+     "off": 8,
+     "rcs": [
+      2,
+      2
+     ],
+     "r2_deployed_events": 0,
+     "alias_refused_not_by_lock": true
+    }
+   ]
+  }
+ },
+ {
+  "id": "L05_no_stale_lock_after_sigkill",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "trials": [
+    {
+     "delay": 0.15,
+     "recover_rc": 1,
+     "lock_msg": false,
+     "live": null,
+     "data_r2": false,
+     "pending": false
+    },
+    {
+     "delay": 0.25,
+     "recover_rc": 1,
+     "lock_msg": false,
+     "live": null,
+     "data_r2": false,
+     "pending": false
+    },
+    {
+     "delay": 0.35,
+     "recover_rc": 1,
+     "lock_msg": false,
+     "live": null,
+     "data_r2": false,
+     "pending": false
+    },
+    {
+     "delay": 0.5,
+     "recover_rc": 1,
+     "lock_msg": false,
+     "live": null,
+     "data_r2": false,
+     "pending": false
+    }
+   ]
+  }
+ },
+ {
+  "id": "L06_stopped_holder_nonblocking",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "second_rc": 2,
+   "secs": 0.04,
+   "lock_msg": false,
+   "first_rc": 2,
+   "r2_events": 0
+  }
+ },
+ {
+  "id": "L07_repeat_gate",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "no_approval": {
+    "rc": 2,
+    "identical": true
+   },
+   "approval_for_r1": {
+    "rc": 2,
+    "identical": true
+   },
+   "rollback_approval_as_deploy": {
+    "rc": 2,
+    "identical": true
+   },
+   "approved_healthy": {
+    "rc": 2,
+    "identical": true
+   },
+   "approval_other_env": {
+    "rc": 2,
+    "identical": true
+   },
+   "live_missing_required_file": {
+    "rc": 2,
+    "identical": true
+   }
+  }
+ },
+ {
+  "id": "L08_repeat_unhealthy_refused",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "approved_rc": 2,
+   "no_approval_rc": 2,
+   "identical": true
+  }
+ }
+]

@@ -1,0 +1,20 @@
+o1   ok
+o2   ok
+o3   ok
+o4   ok
+o5   ok
+o6   ok
+o7   ok
+o8   ok
+o9   ok
+o10  ok
+o11  ok
+o12  ok
+o13  ok
+o14  ok
+o15  ok
+o16  ok
+o17  ok
+s1   ok
+18/18
+rc 0

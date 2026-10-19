@@ -1,0 +1,296 @@
+[
+ {
+  "id": "L01_deploy_vs_rollback_race",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "trials": 12,
+   "lock_refusals": 11,
+   "inconsistent": [],
+   "rc_pairs": [
+    [
+     1,
+     0
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     0
+    ]
+   ]
+  }
+ },
+ {
+  "id": "L02_recover_vs_recover_race",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": {
+   "trials": 6,
+   "rc_pairs": [
+    [
+     0,
+     1
+    ],
+    [
+     1,
+     2
+    ]
+   ],
+   "bad": [
+    {
+     "off": 0,
+     "rcs": [
+      1,
+      2
+     ],
+     "live": "r2",
+     "pending": false
+    },
+    {
+     "off": 0,
+     "rcs": [
+      0,
+      1
+     ],
+     "live": "r2",
+     "pending": false
+    },
+    {
+     "off": 1,
+     "rcs": [
+      0,
+      1
+     ],
+     "live": "r2",
+     "pending": false
+    },
+    {
+     "off": 3,
+     "rcs": [
+      0,
+      1
+     ],
+     "live": "r2",
+     "pending": false
+    },
+    {
+     "off": 5,
+     "rcs": [
+      0,
+      1
+     ],
+     "live": "r2",
+     "pending": false
+    },
+    {
+     "off": 10,
+     "rcs": [
+      0,
+      1
+     ],
+     "live": "r2",
+     "pending": false
+    }
+   ]
+  }
+ },
+ {
+  "id": "L03_held_lock_refuses_mutators_only",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "deploy": {
+    "rc": 2,
+    "secs": 0.04,
+    "lock_msg": true
+   },
+   "repeat": {
+    "rc": 2,
+    "secs": 0.04,
+    "lock_msg": true
+   },
+   "rollback": {
+    "rc": 2,
+    "secs": 0.04,
+    "lock_msg": true
+   },
+   "recover": {
+    "rc": 2,
+    "secs": 0.04,
+    "lock_msg": true
+   },
+   "preflight": {
+    "rc": 0,
+    "secs": 0.06,
+    "lock_msg": false
+   },
+   "status": {
+    "rc": 0,
+    "secs": 0.04,
+    "lock_msg": false
+   },
+   "tree_identical": true
+  }
+ },
+ {
+  "id": "L04_symlink_alias_target_serialised",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "trials": [
+    {
+     "off": 0,
+     "rcs": [
+      0,
+      2
+     ],
+     "r2_deployed_events": 1,
+     "alias_refused_not_by_lock": false
+    },
+    {
+     "off": 0,
+     "rcs": [
+      0,
+      2
+     ],
+     "r2_deployed_events": 1,
+     "alias_refused_not_by_lock": false
+    },
+    {
+     "off": 1,
+     "rcs": [
+      2,
+      0
+     ],
+     "r2_deployed_events": 1,
+     "alias_refused_not_by_lock": false
+    },
+    {
+     "off": 2,
+     "rcs": [
+      0,
+      2
+     ],
+     "r2_deployed_events": 1,
+     "alias_refused_not_by_lock": false
+    },
+    {
+     "off": 4,
+     "rcs": [
+      0,
+      2
+     ],
+     "r2_deployed_events": 1,
+     "alias_refused_not_by_lock": false
+    },
+    {
+     "off": 8,
+     "rcs": [
+      0,
+      2
+     ],
+     "r2_deployed_events": 1,
+     "alias_refused_not_by_lock": false
+    }
+   ],
+   "bad": []
+  }
+ },
+ {
+  "id": "L05_no_stale_lock_after_sigkill",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "trials": [
+    {
+     "delay": 0.15,
+     "recover_rc": 0,
+     "lock_msg": false,
+     "live": "r2",
+     "data_r2": true,
+     "pending": false
+    },
+    {
+     "delay": 0.25,
+     "recover_rc": 0,
+     "lock_msg": false,
+     "live": "r2",
+     "data_r2": true,
+     "pending": false
+    },
+    {
+     "delay": 0.35,
+     "recover_rc": 0,
+     "lock_msg": false,
+     "live": "r2",
+     "data_r2": true,
+     "pending": false
+    },
+    {
+     "delay": 0.5,
+     "recover_rc": 0,
+     "lock_msg": false,
+     "live": "r2",
+     "data_r2": true,
+     "pending": false
+    }
+   ]
+  }
+ },
+ {
+  "id": "L06_stopped_holder_nonblocking",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "second_rc": 2,
+   "secs": 0.05,
+   "lock_msg": true,
+   "first_rc": 0,
+   "r2_events": 1
+  }
+ },
+ {
+  "id": "L07_repeat_gate",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "no_approval": {
+    "rc": 2,
+    "identical": true
+   },
+   "approval_for_r1": {
+    "rc": 2,
+    "identical": true
+   },
+   "rollback_approval_as_deploy": {
+    "rc": 2,
+    "identical": true
+   },
+   "approved_healthy": {
+    "rc": 0,
+    "identical": true
+   },
+   "approval_other_env": {
+    "rc": 2,
+    "identical": true
+   },
+   "live_missing_required_file": {
+    "rc": 2,
+    "identical": true
+   }
+  }
+ },
+ {
+  "id": "L08_repeat_unhealthy_refused",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "approved_rc": 2,
+   "no_approval_rc": 2,
+   "identical": true
+  }
+ }
+]
