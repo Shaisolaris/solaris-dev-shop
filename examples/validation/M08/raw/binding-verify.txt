@@ -1,0 +1,9 @@
+# M08 binding and prerequisite verify 2026-10-19 01:36:47 PDT (Grok self-validation)
+remote g08 head: 52cb49db230ac95e28c2e880176335ccb097a2a6	refs/heads/review/grok-g08-deploy-preflight
+parent: d4d98f2180ed9b92fd058a2350285f60f83b877d (want G03 r3 d4d98f2180ed9b92fd058a2350285f60f83b877d)
+G03 branch head now: d4d98f2180ed9b92fd058a2350285f60f83b877d	refs/heads/review/grok-g03-recovery
+G03 r3 validated: M03 r3 PASS on d4d98f2 (my earlier pass, review/grok-m03r3-validation 1020f11)
+patch sha256: fd66c679eed0a11620a465202226e68f383826842e4bf128c4bd6a317ba0df04
+diff --binary sha256: fd66c679eed0a11620a465202226e68f383826842e4bf128c4bd6a317ba0df04
+ 32 files changed, 1144 insertions(+), 3 deletions(-)
+manifest 32 match 32 manifest set == diff set True

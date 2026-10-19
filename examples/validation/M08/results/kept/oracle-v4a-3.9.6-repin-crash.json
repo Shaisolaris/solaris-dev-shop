@@ -1,0 +1,657 @@
+[
+ {
+  "id": "D01_clean_deploy_upgrade_rollback",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rcs": [
+    0,
+    0
+   ],
+   "live_after_r2": "r2",
+   "uv_r2": 2,
+   "rollback": 0,
+   "live_after_rb": "r1",
+   "data_back_to_r1": true
+  }
+ },
+ {
+  "id": "D02_refusals_exit2_tree_identical",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "no_approval": [
+    2,
+    true
+   ],
+   "approval_wrong_revision": [
+    2,
+    true
+   ],
+   "approval_wrong_digest": [
+    2,
+    true
+   ],
+   "approval_other_env": [
+    2,
+    true
+   ],
+   "approval_blank_approver": [
+    2,
+    true
+   ],
+   "rollback_approval_for_deploy": [
+    2,
+    true
+   ],
+   "env_kind_production": [
+    2,
+    true
+   ],
+   "env_name_mismatch": [
+    2,
+    true
+   ],
+   "artifact_changed_after_pin": [
+    2,
+    true
+   ],
+   "secret_file_in_artifact": [
+    2,
+    true
+   ],
+   "live_release_edited": [
+    2,
+    true
+   ],
+   "live_data_missing": [
+    2,
+    true
+   ],
+   "target_outside_plan_folder": [
+    2,
+    true
+   ],
+   "artifact_symlink_out": [
+    2,
+    true
+   ],
+   "data_symlink": [
+    2,
+    true
+   ]
+  }
+ },
+ {
+  "id": "D03_preflight_writes_nothing",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rcs": [
+    0,
+    2,
+    2
+   ]
+  }
+ },
+ {
+  "id": "D04_crash_drills_recover_then_redeploy",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "staged": {
+    "drill": 75,
+    "blocked": 2,
+    "blocked_unchanged": true,
+    "rollback_while_pending": 2,
+    "recover": 1,
+    "after": [
+     "r1",
+     true,
+     false,
+     []
+    ],
+    "recover_again": 0,
+    "redeploy": 0,
+    "live": "r2",
+    "uv": 2
+   },
+   "migrated": {
+    "drill": 75,
+    "blocked": 2,
+    "blocked_unchanged": true,
+    "rollback_while_pending": 2,
+    "recover": 1,
+    "after": [
+     "r1",
+     true,
+     false,
+     []
+    ],
+    "recover_again": 0,
+    "redeploy": 0,
+    "live": "r2",
+    "uv": 2
+   },
+   "switched": {
+    "drill": 75,
+    "blocked": 2,
+    "blocked_unchanged": true,
+    "rollback_while_pending": 2,
+    "recover": 1,
+    "after": [
+     "r1",
+     true,
+     false,
+     []
+    ],
+    "recover_again": 0,
+    "redeploy": 0,
+    "live": "r2",
+    "uv": 2
+   }
+  }
+ },
+ {
+  "id": "D05_sigkill_during_deploy_16x",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "bad": [],
+   "outcomes": [
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      true
+     ],
+     "r1",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      true
+     ],
+     "r1",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      false
+     ],
+     "r2",
+     0
+    ],
+    [
+     [
+      "r2",
+      true
+     ],
+     "r1",
+     0
+    ]
+   ]
+  }
+ },
+ {
+  "id": "D06_sigkill_during_rollback_10x",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": [
+   {
+    "live": "r2",
+    "uv": 2,
+    "mixed": false,
+    "preflight_rc": 2,
+    "rollback_again": 0,
+    "final": [
+     "r1",
+     true
+    ]
+   },
+   {
+    "live": "r2",
+    "uv": 2,
+    "mixed": false,
+    "preflight_rc": 2,
+    "rollback_again": 0,
+    "final": [
+     "r1",
+     true
+    ]
+   },
+   {
+    "live": "r2",
+    "uv": 2,
+    "mixed": false,
+    "preflight_rc": 2,
+    "rollback_again": 0,
+    "final": [
+     "r1",
+     true
+    ]
+   },
+   {
+    "live": "r1",
+    "uv": 1,
+    "mixed": false,
+    "preflight_rc": 0,
+    "rollback_again": null,
+    "final": [
+     "r1",
+     true
+    ]
+   },
+   {
+    "live": "r2",
+    "uv": 2,
+    "mixed": false,
+    "preflight_rc": 2,
+    "rollback_again": 0,
+    "final": [
+     "r1",
+     true
+    ]
+   },
+   {
+    "live": "r2",
+    "uv": 2,
+    "mixed": false,
+    "preflight_rc": 2,
+    "rollback_again": 0,
+    "final": [
+     "r1",
+     true
+    ]
+   },
+   {
+    "live": "r2",
+    "uv": 2,
+    "mixed": false,
+    "preflight_rc": 2,
+    "rollback_again": 0,
+    "final": [
+     "r1",
+     true
+    ]
+   },
+   {
+    "live": "r2",
+    "uv": 2,
+    "mixed": false,
+    "preflight_rc": 2,
+    "rollback_again": 0,
+    "final": [
+     "r1",
+     true
+    ]
+   },
+   {
+    "live": "r1",
+    "uv": 1,
+    "mixed": false,
+    "preflight_rc": 0,
+    "rollback_again": null,
+    "final": [
+     "r1",
+     true
+    ]
+   },
+   {
+    "live": "r2",
+    "uv": 2,
+    "mixed": false,
+    "preflight_rc": 2,
+    "rollback_again": 0,
+    "final": [
+     "r1",
+     true
+    ]
+   }
+  ]
+ },
+ {
+  "id": "D07_rollback_needs_matching_approval",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "missing": [
+    2,
+    true
+   ],
+   "wrong_revision_r2": [
+    2,
+    true
+   ],
+   "action_deploy": [
+    2,
+    true
+   ],
+   "other_env": [
+    2,
+    true
+   ],
+   "blank_approver": [
+    2,
+    true
+   ],
+   "wrong_schema": [
+    2,
+    true
+   ],
+   "deploy_approval_r1": [
+    2,
+    true
+   ],
+   "first_release_nothing_to_return_to": [
+    2,
+    true
+   ]
+  }
+ },
+ {
+  "id": "D07b_rollback_approval_reusable",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "first_rollback": 0,
+   "redeploy": 0,
+   "second_rollback_same_approval": 0
+  }
+ },
+ {
+  "id": "D08_failed_deploys_restore_release_and_data",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "badmig": [
+    1,
+    "r2",
+    true
+   ],
+   "broken": [
+    1,
+    "r2",
+    true
+   ]
+  }
+ },
+ {
+  "id": "D09_repeat_live_deploy_noop",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "rc": 0
+  }
+ },
+ {
+  "id": "D10_concurrent_deploys_same_target",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": [
+   {
+    "case": "2x r3-broken from r2",
+    "rcs": [
+     1,
+     2
+    ],
+    "errs": [],
+    "live": "r2",
+    "pending": false,
+    "data_equals_r2": true,
+    "totals": [
+     1250,
+     4800,
+     990
+    ],
+    "next_preflight_r2_repeat": 2
+   },
+   {
+    "case": "2x r3-broken from r2",
+    "rcs": [
+     1,
+     2
+    ],
+    "errs": [],
+    "live": "r2",
+    "pending": false,
+    "data_equals_r2": true,
+    "totals": [
+     1250,
+     4800,
+     990
+    ],
+    "next_preflight_r2_repeat": 2
+   },
+   {
+    "case": "2x r3-broken from r2",
+    "rcs": [
+     1,
+     2
+    ],
+    "errs": [],
+    "live": "r2",
+    "pending": false,
+    "data_equals_r2": true,
+    "totals": [
+     1250,
+     4800,
+     990
+    ],
+    "next_preflight_r2_repeat": 2
+   },
+   {
+    "case": "2x r3-broken from r2",
+    "rcs": [
+     1,
+     2
+    ],
+    "errs": [],
+    "live": "r2",
+    "pending": false,
+    "data_equals_r2": true,
+    "totals": [
+     1250,
+     4800,
+     990
+    ],
+    "next_preflight_r2_repeat": 2
+   },
+   {
+    "case": "6x r2 from r1",
+    "data_uv_before_rollback": null,
+    "rcs": [
+     2,
+     2,
+     2,
+     2,
+     0,
+     2
+    ],
+    "errs": [],
+    "live": "r1",
+    "pending": false,
+    "deployed_events_r2": 1,
+    "rollback_rc": 0,
+    "after_rollback_data_equals_r1": true,
+    "after_rollback_live": "r1"
+   },
+   {
+    "case": "6x r2 from r1",
+    "data_uv_before_rollback": null,
+    "rcs": [
+     2,
+     2,
+     2,
+     2,
+     0,
+     2
+    ],
+    "errs": [],
+    "live": "r1",
+    "pending": false,
+    "deployed_events_r2": 1,
+    "rollback_rc": 0,
+    "after_rollback_data_equals_r1": true,
+    "after_rollback_live": "r1"
+   },
+   {
+    "case": "6x r2 from r1",
+    "data_uv_before_rollback": null,
+    "rcs": [
+     2,
+     2,
+     2,
+     2,
+     2,
+     0
+    ],
+    "errs": [],
+    "live": "r1",
+    "pending": false,
+    "deployed_events_r2": 1,
+    "rollback_rc": 0,
+    "after_rollback_data_equals_r1": true,
+    "after_rollback_live": "r1"
+   },
+   {
+    "case": "6x r2 from r1",
+    "data_uv_before_rollback": null,
+    "rcs": [
+     2,
+     0,
+     2,
+     2,
+     2,
+     2
+    ],
+    "errs": [],
+    "live": "r1",
+    "pending": false,
+    "deployed_events_r2": 1,
+    "rollback_rc": 0,
+    "after_rollback_data_equals_r1": true,
+    "after_rollback_live": "r1"
+   }
+  ]
+ },
+ {
+  "id": "D10_timing",
+  "kind": "OBS",
+  "result": "OBS",
+  "detail": {
+   "deploy_seconds": 0.10909485816955566
+  }
+ },
+ {
+  "id": "D11_static_no_network_cloud_process",
+  "kind": "core",
+  "result": "PASS",
+  "detail": {
+   "found": []
+  }
+ },
+ {
+  "id": "D12",
+  "kind": "core",
+  "result": "FAIL",
+  "detail": "harness or tool crash: IndexError('list index out of range')"
+ }
+]

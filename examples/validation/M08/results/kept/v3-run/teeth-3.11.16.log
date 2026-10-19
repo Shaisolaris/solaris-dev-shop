@@ -1,0 +1,34 @@
+{"mutant": "env_name_unchecked", "killed": true, "rows": ["D02_refusals_exit2_tree_identical"]}
+{"mutant": "env_kind_unchecked", "killed": true, "rows": ["D02_refusals_exit2_tree_identical"]}
+{"mutant": "revision_unchecked", "killed": false, "rows": [], "builder_tests_rc": 1}
+{"mutant": "digest_unchecked", "killed": true, "rows": ["D02_refusals_exit2_tree_identical"]}
+{"mutant": "secrets_ok", "killed": false, "rows": [], "builder_tests_rc": 1}
+{"mutant": "symlink_ok", "killed": false, "rows": [], "builder_tests_rc": 1}
+{"mutant": "approval_missing_ok", "killed": true, "rows": ["D02_refusals_exit2_tree_identical"]}
+{"mutant": "approval_fields_unchecked", "killed": true, "rows": ["D02_refusals_exit2_tree_identical", "D07_rollback_needs_matching_approval"]}
+{"mutant": "approver_blank_ok", "killed": true, "rows": ["D02_refusals_exit2_tree_identical", "D07_rollback_needs_matching_approval"]}
+{"mutant": "approval_action_any", "killed": false, "rows": [], "builder_tests_rc": 1}
+{"mutant": "live_health_skipped", "killed": false, "rows": [], "builder_tests_rc": 1}
+{"mutant": "pending_journal_ok", "killed": true, "rows": ["D04_crash_drills_recover_then_redeploy"]}
+{"mutant": "live_intact_unchecked", "killed": true, "rows": ["D02_refusals_exit2_tree_identical"]}
+{"mutant": "existing_release_ok", "killed": true, "rows": ["D06"]}
+{"mutant": "refuse_ignored", "killed": true, "rows": ["D02_refusals_exit2_tree_identical", "D04_crash_drills_recover_then_redeploy"]}
+{"mutant": "no_snapshot_verify_EQUIV", "killed": false, "rows": [], "builder_tests_rc": 0}
+{"mutant": "migration_no_txn", "killed": true, "rows": ["D01_clean_deploy_upgrade_rollback", "D04_crash_drills_recover_then_redeploy", "D05_sigkill_during_deploy_16x", "D07b_rollback_approval_reusable", "D08_failed_deploys_restore_release_and_data", "D09_repeat_live_deploy_noop"]}
+{"mutant": "post_health_skipped", "killed": true, "rows": ["D08_failed_deploys_restore_release_and_data"]}
+{"mutant": "undo_no_data_restore", "killed": true, "rows": ["D04_crash_drills_recover_then_redeploy", "D05_sigkill_during_deploy_16x", "D08_failed_deploys_restore_release_and_data"]}
+{"mutant": "undo_restore_only_after_switch", "killed": true, "rows": ["D04_crash_drills_recover_then_redeploy"]}
+{"mutant": "undo_no_relink", "killed": true, "rows": ["D04_crash_drills_recover_then_redeploy", "D05_sigkill_during_deploy_16x", "D08_failed_deploys_restore_release_and_data"]}
+{"mutant": "undo_keeps_release", "killed": true, "rows": ["D08_failed_deploys_restore_release_and_data"]}
+{"mutant": "migrated_recorded_late", "killed": true, "rows": ["D04_crash_drills_recover_then_redeploy"]}
+{"mutant": "health_files_unchecked", "killed": true, "rows": ["D08_failed_deploys_restore_release_and_data"]}
+{"mutant": "health_user_version_ignored", "killed": true, "rows": ["D08_failed_deploys_restore_release_and_data"]}
+{"mutant": "health_g03_ignored", "killed": true, "rows": ["D02_refusals_exit2_tree_identical"]}
+{"mutant": "rollback_approval_any_rev", "killed": true, "rows": ["D07_rollback_needs_matching_approval"]}
+{"mutant": "rollback_no_data", "killed": true, "rows": ["D01_clean_deploy_upgrade_rollback", "D07b_rollback_approval_reusable"]}
+{"mutant": "rollback_refuse_ignored", "killed": true, "rows": ["D07_rollback_needs_matching_approval"]}
+{"mutant": "idempotent_off", "killed": true, "rows": ["D05_sigkill_during_deploy_16x", "D09_repeat_live_deploy_noop"]}
+{"mutant": "path_escape_ok", "killed": true, "rows": ["D02_refusals_exit2_tree_identical"]}
+{"mutant": "required_files_empty_ok", "killed": false, "rows": [], "builder_tests_rc": 1}
+{"mutant": "recover_noop", "killed": true, "rows": ["D04_crash_drills_recover_then_redeploy", "D05_sigkill_during_deploy_16x"]}
+TEETH 3.11.16: my oracle kills 26/33; survivors [('revision_unchecked', 1), ('secrets_ok', 1), ('symlink_ok', 1), ('approval_action_any', 1), ('live_health_skipped', 1), ('no_snapshot_verify_EQUIV', 0), ('required_files_empty_ok', 1)]

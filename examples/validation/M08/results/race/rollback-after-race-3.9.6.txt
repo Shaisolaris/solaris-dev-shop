@@ -1,0 +1,2 @@
+damaged case found: True
+{"trial": 23, "offset_ms": 10, "rcs": [1, 1], "uv": 3, "totals": [125000, 480000, 99000], "recover_rc": 0, "rollback_rc": 2, "after_rollback": {"live": "r2", "data_is_r1": false, "uv": 3}, "redeploy_r2_rc": 0, "after_redeploy": {"live": "r2", "data_is_r2": false}}

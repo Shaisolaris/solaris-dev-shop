@@ -1,0 +1,7 @@
+# teeth-tally from kept/v3-run/*.log (Grok self-validation; TEETH lines from teeth_m08.py)
+TEETH 3.11.16: my oracle kills 26/33; survivors [('revision_unchecked', 1), ('secrets_ok', 1), ('symlink_ok', 1), ('approval_action_any', 1), ('live_health_skipped', 1), ('no_snapshot_verify_EQUIV', 0), ('required_files_empty_ok', 1)]
+TEETH 3.13.15: my oracle kills 25/33; survivors [('revision_unchecked', 1), ('secrets_ok', 1), ('symlink_ok', 1), ('approval_action_any', 1), ('live_health_skipped', 1), ('existing_release_ok', 1), ('no_snapshot_verify_EQUIV', 0), ('required_files_empty_ok', 1)]
+# builder_tests_rc in the survivor tuples: 1 means builder tests failed (killed by builder); 0 means EQUIV or builder also passed.
+# Differing survivor: existing_release_ok killed on 3.11.16 (row D06), survived on 3.13.15 (builder_tests_rc 1).
+# Non-equivalent survivors with builder_tests_rc 1 on both: revision_unchecked, secrets_ok, symlink_ok, approval_action_any, live_health_skipped, required_files_empty_ok.
+# EQUIV: no_snapshot_verify_EQUIV (builder_tests_rc 0).

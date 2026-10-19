@@ -1,0 +1,1023 @@
+[
+ {
+  "case": "A",
+  "offset_ms": 0,
+  "trial": 0,
+  "rcs": [
+   2,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 0,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 0,
+  "trial": 2,
+  "rcs": [
+   1,
+   2
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 2,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 2,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 2,
+  "trial": 2,
+  "rcs": [
+   1,
+   2
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 4,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": false,
+   "uv": 3
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": false,
+   "uv": 3,
+   "totals": [
+    125000,
+    480000,
+    99000
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 2,
+  "bad": true
+ },
+ {
+  "case": "A",
+  "offset_ms": 4,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 4,
+  "trial": 2,
+  "rcs": [
+   1,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 5,
+  "trial": 0,
+  "rcs": [
+   1,
+   2
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 5,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 5,
+  "trial": 2,
+  "rcs": [
+   1,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 6,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 6,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": false,
+   "uv": 3
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": false,
+   "uv": 3,
+   "totals": [
+    125000,
+    480000,
+    99000
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 2,
+  "bad": true
+ },
+ {
+  "case": "A",
+  "offset_ms": 6,
+  "trial": 2,
+  "rcs": [
+   1,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 8,
+  "trial": 0,
+  "rcs": [
+   1,
+   2
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 8,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 8,
+  "trial": 2,
+  "rcs": [
+   1,
+   2
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 10,
+  "trial": 0,
+  "rcs": [
+   1,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": false,
+   "uv": 3
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": false,
+   "uv": 3,
+   "totals": [
+    125000,
+    480000,
+    99000
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 2,
+  "bad": true
+ },
+ {
+  "case": "A",
+  "offset_ms": 10,
+  "trial": 1,
+  "rcs": [
+   1,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 10,
+  "trial": 2,
+  "rcs": [
+   1,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 12,
+  "trial": 0,
+  "rcs": [
+   1,
+   2
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 12,
+  "trial": 1,
+  "rcs": [
+   1,
+   2
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 12,
+  "trial": 2,
+  "rcs": [
+   1,
+   1
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": false,
+   "uv": 3
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": false,
+   "uv": 3,
+   "totals": [
+    125000,
+    480000,
+    99000
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 2,
+  "bad": true
+ },
+ {
+  "case": "A",
+  "offset_ms": 15,
+  "trial": 0,
+  "rcs": [
+   1,
+   2
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 15,
+  "trial": 1,
+  "rcs": [
+   1,
+   2
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "A",
+  "offset_ms": 15,
+  "trial": 2,
+  "rcs": [
+   1,
+   2
+  ],
+  "after_race": {
+   "live": "r2",
+   "pending": false,
+   "data_is_r2": true,
+   "uv": 2
+  },
+  "recover_rc": null,
+  "final": {
+   "live": "r2",
+   "data_is_r2": true,
+   "uv": 2,
+   "totals": [
+    1250,
+    4800,
+    990
+   ],
+   "pending": false
+  },
+  "next_preflight_rc": 0,
+  "bad": false
+ },
+ {
+  "case": "B",
+  "offset_ms": 0,
+  "trial": 0,
+  "rcs": [
+   2,
+   0
+  ],
+  "deployed_r2_events": 1,
+  "rollback_rc": 0,
+  "final": {
+   "live": "r1",
+   "data_is_r1": true,
+   "uv": 1
+  },
+  "bad": false
+ },
+ {
+  "case": "B",
+  "offset_ms": 0,
+  "trial": 1,
+  "rcs": [
+   0,
+   1
+  ],
+  "deployed_r2_events": 1,
+  "rollback_rc": 0,
+  "final": {
+   "live": "r1",
+   "data_is_r1": true,
+   "uv": 1
+  },
+  "bad": false
+ },
+ {
+  "case": "B",
+  "offset_ms": 10,
+  "trial": 0,
+  "rcs": [
+   0,
+   2
+  ],
+  "deployed_r2_events": 1,
+  "rollback_rc": 0,
+  "final": {
+   "live": "r1",
+   "data_is_r1": true,
+   "uv": 1
+  },
+  "bad": false
+ },
+ {
+  "case": "B",
+  "offset_ms": 10,
+  "trial": 1,
+  "rcs": [
+   0,
+   2
+  ],
+  "deployed_r2_events": 1,
+  "rollback_rc": 0,
+  "final": {
+   "live": "r1",
+   "data_is_r1": true,
+   "uv": 1
+  },
+  "bad": false
+ },
+ {
+  "case": "B",
+  "offset_ms": 20,
+  "trial": 0,
+  "rcs": [
+   0,
+   2
+  ],
+  "deployed_r2_events": 1,
+  "rollback_rc": 0,
+  "final": {
+   "live": "r1",
+   "data_is_r1": true,
+   "uv": 1
+  },
+  "bad": false
+ },
+ {
+  "case": "B",
+  "offset_ms": 20,
+  "trial": 1,
+  "rcs": [
+   0,
+   2
+  ],
+  "deployed_r2_events": 1,
+  "rollback_rc": 0,
+  "final": {
+   "live": "r1",
+   "data_is_r1": true,
+   "uv": 1
+  },
+  "bad": false
+ },
+ {
+  "case": "B",
+  "offset_ms": 30,
+  "trial": 0,
+  "rcs": [
+   0,
+   2
+  ],
+  "deployed_r2_events": 1,
+  "rollback_rc": 0,
+  "final": {
+   "live": "r1",
+   "data_is_r1": true,
+   "uv": 1
+  },
+  "bad": false
+ },
+ {
+  "case": "B",
+  "offset_ms": 30,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "deployed_r2_events": 1,
+  "rollback_rc": 0,
+  "final": {
+   "live": "r1",
+   "data_is_r1": true,
+   "uv": 1
+  },
+  "bad": false
+ },
+ {
+  "case": "B",
+  "offset_ms": 40,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "deployed_r2_events": 1,
+  "rollback_rc": 0,
+  "final": {
+   "live": "r1",
+   "data_is_r1": true,
+   "uv": 1
+  },
+  "bad": false
+ },
+ {
+  "case": "B",
+  "offset_ms": 40,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "deployed_r2_events": 1,
+  "rollback_rc": 0,
+  "final": {
+   "live": "r1",
+   "data_is_r1": true,
+   "uv": 1
+  },
+  "bad": false
+ },
+ {
+  "case": "B",
+  "offset_ms": 50,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "deployed_r2_events": 1,
+  "rollback_rc": 0,
+  "final": {
+   "live": "r1",
+   "data_is_r1": true,
+   "uv": 1
+  },
+  "bad": false
+ },
+ {
+  "case": "B",
+  "offset_ms": 50,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "deployed_r2_events": 1,
+  "rollback_rc": 0,
+  "final": {
+   "live": "r1",
+   "data_is_r1": true,
+   "uv": 1
+  },
+  "bad": false
+ },
+ {
+  "case": "B",
+  "offset_ms": 60,
+  "trial": 0,
+  "rcs": [
+   0,
+   0
+  ],
+  "deployed_r2_events": 1,
+  "rollback_rc": 0,
+  "final": {
+   "live": "r1",
+   "data_is_r1": true,
+   "uv": 1
+  },
+  "bad": false
+ },
+ {
+  "case": "B",
+  "offset_ms": 60,
+  "trial": 1,
+  "rcs": [
+   0,
+   0
+  ],
+  "deployed_r2_events": 1,
+  "rollback_rc": 0,
+  "final": {
+   "live": "r1",
+   "data_is_r1": true,
+   "uv": 1
+  },
+  "bad": false
+ }
+]

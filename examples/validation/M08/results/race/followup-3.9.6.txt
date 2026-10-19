@@ -1,0 +1,6 @@
+CASE A trials 27 inconsistent after documented recovery 4
+  {"case": "A", "offset_ms": 4, "trial": 0, "rcs": [1, 1], "after_race": {"live": "r2", "pending": false, "data_is_r2": false, "uv": 3}, "recover_rc": null, "final": {"live": "r2", "data_is_r2": false, "uv": 3, "totals": [125000, 480000, 99000], "pending": false}, "next_preflight_rc": 2, "bad": true}
+  {"case": "A", "offset_ms": 6, "trial": 1, "rcs": [1, 1], "after_race": {"live": "r2", "pending": false, "data_is_r2": false, "uv": 3}, "recover_rc": null, "final": {"live": "r2", "data_is_r2": false, "uv": 3, "totals": [125000, 480000, 99000], "pending": false}, "next_preflight_rc": 2, "bad": true}
+  {"case": "A", "offset_ms": 10, "trial": 0, "rcs": [1, 1], "after_race": {"live": "r2", "pending": false, "data_is_r2": false, "uv": 3}, "recover_rc": null, "final": {"live": "r2", "data_is_r2": false, "uv": 3, "totals": [125000, 480000, 99000], "pending": false}, "next_preflight_rc": 2, "bad": true}
+  {"case": "A", "offset_ms": 12, "trial": 2, "rcs": [1, 1], "after_race": {"live": "r2", "pending": false, "data_is_r2": false, "uv": 3}, "recover_rc": null, "final": {"live": "r2", "data_is_r2": false, "uv": 3, "totals": [125000, 480000, 99000], "pending": false}, "next_preflight_rc": 2, "bad": true}
+CASE B trials 14 inconsistent after documented recovery 0

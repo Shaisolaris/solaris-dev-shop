@@ -1,0 +1,7 @@
+r2 deployed rc=0
+preflight r2 rc=2 (health should fail)
+result: r2 is already live with this artifact; nothing changed
+repeat deploy r2 rc=0
+result: r2 is already live with this artifact; nothing changed
+repeat deploy r2 with NO approval rc=0
+status live r2 pending False

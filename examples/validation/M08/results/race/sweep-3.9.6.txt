@@ -1,0 +1,5 @@
+SWEEP trials 124, inconsistent 3
+{"case": "r2x2_from_r1", "offset_ms": 0, "trial": 0, "rcs": [0, 1], "tracebacks": [], "live": "r2", "pending": false, "uv": 2, "totals": [1250, 4800, 990], "columns": ["id", "customer", "total_cents", "note"], "data_changed_vs_before": true, "bad": true}
+{"case": "r2x2_from_r1", "offset_ms": 5, "trial": 1, "rcs": [0, 1], "tracebacks": [], "live": "r2", "pending": false, "uv": 2, "totals": [1250, 4800, 990], "columns": ["id", "customer", "total_cents", "note"], "data_changed_vs_before": true, "bad": true}
+{"case": "r3brokenx2_from_r2", "offset_ms": 5, "trial": 1, "rcs": [1, 1], "tracebacks": [], "live": "r3", "pending": true, "uv": 3, "totals": [125000, 480000, 99000], "columns": ["id", "customer", "total_cents", "note"], "data_changed_vs_before": true, "bad": true}
+rcs by case: {'r2x2_from_r1': [((0, 0), 49), ((0, 2), 11), ((0, 1), 2)], 'r3brokenx2_from_r2': [((1, 1), 48), ((1, 2), 14)]}
