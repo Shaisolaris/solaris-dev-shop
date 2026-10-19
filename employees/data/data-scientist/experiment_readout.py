@@ -203,6 +203,13 @@ def allocation_scan(units: Dict[str, Dict[str, Any]], arms: List[str], split: Li
             "mismatch": pv < SCAN_ALPHA / K}
 
 
+def bucket_arm(salt: str, unit_id: str, arms: List[str], split: Tuple[float, float]) -> str:
+    """The declared assignment rule: sha256 of salt:unit_id, first 15 hex digits as a fraction of 16**15;
+    below the control share goes to control."""
+    b = int(hashlib.sha256((salt + ":" + unit_id).encode("utf-8")).hexdigest()[:15], 16) / 16 ** 15
+    return arms[0] if b < split[0] else arms[1]
+
+
 def r6(x: Optional[float]) -> Optional[str]:
     return None if x is None else f"{x:.6f}"
 
@@ -222,7 +229,7 @@ def load(path: str) -> Dict[str, Any]:
     if not isinstance(doc, dict) or doc.get("schema") != PACKAGE_SCHEMA:
         raise Invalid(f"schema must be {PACKAGE_SCHEMA!r}")
     known = {"schema", "experiment", "unit", "assignment", "arms", "planned_split", "timezone", "cohort", "as_of",
-             "outcome", "min_sample_per_arm", "alpha", "assignments", "events"}
+             "outcome", "min_sample_per_arm", "alpha", "assignments", "events", "randomization"}
     extra = sorted(set(doc) - known)
     if extra:
         raise Invalid(f"unknown field(s) {extra}; refusing to ignore evidence")
@@ -263,6 +270,13 @@ def load(path: str) -> Dict[str, Any]:
     if isinstance(ms, bool) or not isinstance(ms, int) or ms < 1:
         raise Invalid("min_sample_per_arm: a whole number of units, at least 1")
     alpha = _num(doc.get("alpha", 0.05), "alpha", 0, 0.5)
+    rz = doc.get("randomization")
+    if rz is not None:
+        if doc["assignment"] != "randomized":
+            raise Invalid("randomization: only for assignment randomized")
+        if not (isinstance(rz, dict) and set(rz) == {"method", "salt"} and rz.get("method") == "sha256_bucket"
+                and isinstance(rz.get("salt"), str) and rz["salt"].strip()):
+            raise Invalid('randomization: {"method": "sha256_bucket", "salt": "<non-empty salt>"}')
     base = p.resolve().parent
     tables = {}
     for kind, cols in (("assignments", ASSIGN_COLS), ("events", EVENT_COLS)):
@@ -275,7 +289,7 @@ def load(path: str) -> Dict[str, Any]:
             raise Invalid(str(exc)) from None
     return {"g": g, "tz": tz, "doc": doc, "arms": arms, "split": (s0, s1), "cs": cs, "ce": ce, "as_of": as_of,
             "event": o["event"], "horizon": dt.timedelta(days=hz), "hz": hz, "min": ms, "alpha": alpha,
-            "randomized": doc["assignment"] == "randomized", "tables": tables, "sha": hashlib.sha256(raw).hexdigest()}
+            "randomized": doc["assignment"] == "randomized", "randomization": rz, "tables": tables, "sha": hashlib.sha256(raw).hexdigest()}
 
 
 def analyse(path: str) -> Dict[str, Any]:
@@ -307,6 +321,20 @@ def analyse(path: str) -> Dict[str, Any]:
         else:
             excl["repeat_assignment_rows"] += 1
     units: Dict[str, Dict[str, Any]] = {}
+    check = None
+    if P["randomization"] is not None:
+        mism = []
+        checked = 0
+        for u, r in seen.items():
+            if len(arms_of[u]) > 1 or not (P["cs"] <= r["assigned_at"] < P["ce"]):
+                continue
+            checked += 1
+            if bucket_arm(P["randomization"]["salt"], u, P["arms"], P["split"]) != r["arm"]:
+                mism.append(u)
+        check = {"contract": "sha256_bucket", "units_checked": checked, "mismatched": len(mism),
+                 "examples": sorted(mism)[:5], "verified": checked > 0 and not mism}
+    else:
+        check = {"contract": None, "units_checked": 0, "mismatched": None, "examples": [], "verified": False}
     for u, r in seen.items():
         if len(arms_of[u]) > 1:
             excl["multiple_arms"].append(u)
@@ -394,6 +422,9 @@ def analyse(path: str) -> Dict[str, Any]:
     if total == 0 or min(n.values()) < P["min"]:
         outcome = "insufficient_information"
         trace.append(f"mature cohort units per arm {n[c]}/{n[t]}, minimum {P['min']}: not enough to read")
+    elif P["randomized"] and check["contract"] and not check["verified"]:
+        outcome = "invalid_experiment"
+        trace.append(f"assignment does not follow the declared randomization: {check['mismatched']} of {check['units_checked']} cohort units are in an arm the sha256_bucket rule does not give them (e.g. {', '.join(check['examples'])}); no effect is read")
     elif P["randomized"] and srm["mismatch"]:
         outcome = "invalid_experiment"
         trace.append(f"sample ratio mismatch: {n[c]}/{n[t]} against planned {P['split'][0]}/{P['split'][1]} (p {srm['p_value']}); assignment is broken, no effect is read")
@@ -410,9 +441,12 @@ def analyse(path: str) -> Dict[str, Any]:
     elif effect["_lo"] <= 0 <= effect["_hi"]:
         outcome = "no_detectable_difference"
         trace.append(f"{r6(1 - P['alpha'])} interval [{effect['ci_low']}, {effect['ci_high']}] includes 0: no difference detected at this sample size; this is not evidence of no effect")
+    elif P["randomized"] and not check["verified"]:
+        outcome = "association_only"
+        trace.append(f"interval [{effect['ci_low']}, {effect['ci_high']}] excludes 0, but assignment is declared randomized without a randomization contract the tool can verify per unit; the allocation tests are guards with limited power (an all-variant burst interleaved with a day's traffic can pass), so this is an association, not a causal effect. Add randomization {{method: sha256_bucket, salt}} to verify every unit's arm")
     elif P["randomized"]:
         outcome = "difference_detected"
-        trace.append(f"randomized assignment, interval [{effect['ci_low']}, {effect['ci_high']}] excludes 0: {t} differs from {c} on {P['event']} within {P['hz']} days in this experiment")
+        trace.append(f"randomized assignment verified for all {check['units_checked']} cohort units, interval [{effect['ci_low']}, {effect['ci_high']}] excludes 0: {t} differs from {c} on {P['event']} within {P['hz']} days in this experiment")
     else:
         outcome = "association_only"
         trace.append(f"interval [{effect['ci_low']}, {effect['ci_high']}] excludes 0 but assignment was observational: an association, not a causal effect")
@@ -423,7 +457,7 @@ def analyse(path: str) -> Dict[str, Any]:
             "unit_of_analysis": "unit_id", "assignment": P["doc"]["assignment"],
             "cohort": {"start": P["cs"].isoformat(), "end": P["ce"].isoformat(), "as_of": P["as_of"].isoformat(),
                        "outcome_event": P["event"], "horizon_days": P["hz"]},
-            "arms": arms_out, "srm": srm, "allocation_by_week": drift, "allocation_scan": scan, "effect": effect, "outcome": outcome, "claims_allowed": claims_allowed,
+            "arms": arms_out, "srm": srm, "allocation_by_week": drift, "allocation_scan": scan, "assignment_check": check, "effect": effect, "outcome": outcome, "claims_allowed": claims_allowed,
             "trace": trace, "exclusions": excl,
             "inputs": [{"file": f["file"], "sha256": f["sha256"], "data_rows": f["data_rows"]} for f in (af, ef)],
             "read_only": "local files only; nothing was changed or sent"}

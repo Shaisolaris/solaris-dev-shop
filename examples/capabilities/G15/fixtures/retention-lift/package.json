@@ -28,5 +28,9 @@
  },
  "events": {
   "file": "events.csv"
+ },
+ "randomization": {
+  "method": "sha256_bucket",
+  "salt": "g15-retention-lift"
  }
 }

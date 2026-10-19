@@ -18,6 +18,7 @@ an events export into a readout that states what the data supports and nothing m
 | `outcome` | `{event, horizon_days}`: converted means the event in `[assigned_at, assigned_at + horizon_days)`; an event exactly at the end does not count |
 | `min_sample_per_arm` | below this in either arm the readout is insufficient_information |
 | `alpha` | optional, default 0.05 |
+| `randomization` | optional, randomized only: `{"method": "sha256_bucket", "salt": "..."}`, the rule that assigned the arms (rule 7); without it no causal claim is made |
 | `assignments`, `events` | `{file, header_aliases?, delimiter?}` read by the G13 data-engineer reader |
 
 Assignments carry `unit_id, arm, assigned_at`; events carry `unit_id, event, occurred_at, session_id`.
@@ -58,16 +59,30 @@ previous report is left unchanged.
    they replace the day's traffic and can be missed when they straddle midnight); the scan is a
    guard against allocation changes, not proof that none happened.
 6. Effect: difference in rates with a (1 - alpha) Wald interval and a pooled two-proportion z test.
+7. Causal claims need a verified assignment. The allocation tests in rule 5 are guards with limited power: with
+   60 units a day, an all-variant, high-converting burst of 30 to 60 units interleaved with one day's traffic is
+   missed in most runs and can produce an interval that excludes 0 with no true effect. So "randomized" alone
+   is not evidence. The package may declare the assignment rule as `randomization`
+   `{"method": "sha256_bucket", "salt": S}`: a unit's arm is the control arm when the first 15 hex digits of
+   sha256 of `S:unit_id` (UTF-8), read as a fraction of 16^15, are below the control share, otherwise the other
+   arm. The tool recomputes that arm for every cohort unit (units in both arms are excluded and named as in
+   rule 3). One unit in an arm the rule does not give it makes the experiment invalid, because the data did not
+   come from the declared randomization; an injected burst of n all-variant units passes this check only with
+   probability (treatment share)^n (about 1 in 4,000 for 12 units at 50/50). Without a contract, a randomized
+   readout whose interval excludes 0 is `association_only`: significance, never causal. `assignment_check` in
+   the JSON shows the contract, the units checked, the mismatches (first five named) and `verified`. Units
+   that happen to satisfy the rule are indistinguishable from randomized ones; the other rule 5 tests still
+   apply to them.
 
 ## Outcomes
 
 | Outcome | When | Claims allowed |
 |---|---|---|
 | `insufficient_information` | an arm is below `min_sample_per_arm` | none |
-| `invalid_experiment` | SRM or contamination above 5% | none |
+| `invalid_experiment` | SRM, allocation drift or scan, contamination above 5%, or a unit off the declared randomization | none |
 | `no_detectable_difference` | interval includes 0 | none; not evidence of no effect |
-| `difference_detected` | randomized and interval excludes 0 | causal and significance, for this experiment |
-| `association_only` | observational and interval excludes 0 | significance only, never causal |
+| `difference_detected` | randomized, every cohort unit verified against the declared `randomization`, and interval excludes 0 | causal and significance, for this experiment |
+| `association_only` | interval excludes 0 and assignment is observational, or randomized without a `randomization` contract | significance only, never causal |
 
 `claims_allowed {causal, significance}` in the JSON is what a PM or exec summary may repeat.
 Exit 0 means analysed (any outcome), 2 means the package was refused.

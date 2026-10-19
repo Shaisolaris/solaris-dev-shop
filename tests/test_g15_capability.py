@@ -49,7 +49,7 @@ class G15Capability(unittest.TestCase):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_oracle_accepts_tool_and_rejects_controls(self):
-        for target, want in ((TOOL, 'ACCEPTED: 16/16'), (EX / 'naive_stub.py', 'REJECTED'), (EX / 'noop_stub.py', 'REJECTED')):
+        for target, want in ((TOOL, 'ACCEPTED: 18/18'), (EX / 'naive_stub.py', 'REJECTED'), (EX / 'noop_stub.py', 'REJECTED')):
             p = subprocess.run([sys.executable, str(EX / 'readout_oracle.py')] + (['--quick'] if target != TOOL else []) + ['--', sys.executable, str(target)],
                                capture_output=True, text=True, env=ENV, timeout=600)
             self.assertIn(want, p.stdout.strip().splitlines()[-1], (target.name, p.stdout[-1500:], p.stderr[-800:]))
@@ -170,10 +170,82 @@ class G15Capability(unittest.TestCase):
         shutil.copytree(FIX / 'retention-lift', d)
         p = json.loads((d / 'package.json').read_text())
         p['assignment'] = 'observational'
+        del p['randomization']  # a randomization rule is refused on observational data
         (d / 'package.json').write_text(json.dumps(p))
         r = rep(d / 'package.json')
         self.assertEqual(r['outcome'], 'association_only')
         self.assertEqual(r['claims_allowed'], {'causal': False, 'significance': True})
+
+    def test_interleaved_burst_without_contract_never_causal(self):
+        # root G15: zero true effect, a 40-unit all-variant burst interleaved with one day's traffic; the
+        # allocation tests miss most of these, so without a declared randomization rule nothing is causal
+        o = oracle_module()
+        seen = set()
+        for k in range(8):
+            pkg, A, E = o.bursty(random.Random(4000 + k), 40, 9 * 24, interleave=True)
+            r = rep(o.write(self.tmp / ('ib%d' % k), pkg, A, E))
+            seen.add(r['outcome'])
+            self.assertFalse(r['claims_allowed']['causal'], r['outcome'])
+            self.assertNotEqual(r['outcome'], 'difference_detected')
+            self.assertEqual(r['assignment_check'], {'contract': None, 'units_checked': 0, 'mismatched': None, 'examples': [], 'verified': False})
+        self.assertIn('association_only', seen)  # the significant runs are reported, as associations
+
+    def test_randomization_contract_verified_per_unit(self):
+        o = oracle_module()
+        pkg, A, E = o.bursty(random.Random(77), 30, 9 * 24, interleave=True, contract=True)
+        r = rep(o.write(self.tmp / 'cb', pkg, A, E))
+        self.assertEqual(r['outcome'], 'invalid_experiment')
+        self.assertGreaterEqual(r['assignment_check']['mismatched'], 1)
+        self.assertEqual(r['claims_allowed'], {'causal': False, 'significance': False})
+        self.assertIn('does not follow the declared randomization', ' '.join(r['trace']))
+        # the fixture: every cohort unit verified, causal claim allowed
+        r = rep(FIX / 'retention-lift' / 'package.json')
+        self.assertEqual(r['assignment_check']['units_checked'], 1200)
+        self.assertTrue(r['assignment_check']['verified'])
+        # one unit moved to the other arm invalidates; a wrong salt invalidates
+        d = self.tmp / 'flip'
+        shutil.copytree(FIX / 'retention-lift', d)
+        rows = (d / 'assignments.csv').read_text().splitlines()
+        u, arm, at = rows[1].split(',')
+        rows[1] = ','.join([u, 'control' if arm == 'treatment' else 'treatment', at])
+        (d / 'assignments.csv').write_text('\n'.join(rows) + '\n')
+        r = rep(d / 'package.json')
+        self.assertEqual((r['outcome'], r['assignment_check']['mismatched'], r['assignment_check']['examples']), ('invalid_experiment', 1, [u]))
+        d2 = self.tmp / 'salt'
+        shutil.copytree(FIX / 'retention-lift', d2)
+        p = json.loads((d2 / 'package.json').read_text()); p['randomization']['salt'] = 'other'
+        (d2 / 'package.json').write_text(json.dumps(p))
+        self.assertEqual(rep(d2 / 'package.json')['outcome'], 'invalid_experiment')
+        # without the rule the same data is significant but not causal
+        del p['randomization']; (d2 / 'package.json').write_text(json.dumps(p))
+        r = rep(d2 / 'package.json')
+        self.assertEqual((r['outcome'], r['claims_allowed']), ('association_only', {'causal': False, 'significance': True}))
+        for bad in ({'method': 'sha256_bucket'}, {'method': 'sha1', 'salt': 'x'}, {'method': 'sha256_bucket', 'salt': ''}, ['sha256_bucket', 'x'],
+                    {'method': 'sha256_bucket', 'salt': 'x', 'tolerance': 1}):
+            p['randomization'] = bad; (d2 / 'package.json').write_text(json.dumps(p))
+            r2 = cli('analyse', d2 / 'package.json', '--json')
+            self.assertEqual(r2.returncode, 2, bad)
+            self.assertIn('randomization', r2.stderr)
+        p['randomization'] = {'method': 'sha256_bucket', 'salt': 'x'}; p['assignment'] = 'observational'
+        (d2 / 'package.json').write_text(json.dumps(p))
+        r2 = cli('analyse', d2 / 'package.json', '--json')
+        self.assertEqual(r2.returncode, 2)
+        self.assertIn('only for assignment randomized', r2.stderr)
+
+    def test_bucket_rule_matches_the_documented_formula(self):
+        import hashlib
+        sys.path.insert(0, str(DS)); old = sys.dont_write_bytecode; sys.dont_write_bytecode = True
+        try:
+            import experiment_readout as er
+        finally:
+            sys.path.pop(0); sys.dont_write_bytecode = old
+        from fractions import Fraction
+        arms = ['a', 'b']
+        for split in ((0.5, 0.5), (0.3, 0.7), (0.9, 0.1)):
+            for k in range(5000):
+                u = 'unit-%d' % k
+                frac = Fraction(int(hashlib.sha256(('s1:' + u).encode('utf-8')).hexdigest()[:15], 16), 16 ** 15)
+                self.assertEqual(er.bucket_arm('s1', u, arms, split), 'a' if frac < Fraction(split[0]) else 'b', (u, split))
 
     def test_immature_units_excluded_not_failures(self):
         o = oracle_module()

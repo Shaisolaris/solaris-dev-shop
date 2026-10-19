@@ -30,6 +30,12 @@ CMD, RESULTS = [], []
 UTC = dt.timezone.utc
 CS, CE, AS_OF = dt.datetime(2026, 8, 1, tzinfo=UTC), dt.datetime(2026, 9, 1, tzinfo=UTC), dt.datetime(2026, 9, 20, tzinfo=UTC)
 H = 7
+SALT = "g15-oracle-salt"
+
+
+def hash_arm(u, split=(0.5, 0.5), arms=("control", "treatment")):
+    """Independent copy of the documented sha256_bucket rule."""
+    return arms[0] if int(hashlib.sha256(("%s:%s" % (SALT, u)).encode()).hexdigest()[:15], 16) / 16 ** 15 < split[0] else arms[1]
 
 
 def iso(t):
@@ -37,8 +43,10 @@ def iso(t):
 
 
 def experiment(rng, n=(800, 800), p=(0.2, 0.2), exact=False, outside=0, contaminated=0, unassigned=0, sessions=3,
-               assignment="randomized", min_sample=200, dup_rows=0, split=(0.5, 0.5)):
-    """Rows plus truth. exact=True converts every fourth unit in each arm (a deterministic A/A control)."""
+               assignment="randomized", min_sample=200, dup_rows=0, split=(0.5, 0.5), contract=True):
+    """Rows plus truth. exact=True converts every fourth unit in each arm (a deterministic A/A control).
+    contract=True (randomized only): unit ids are chosen so the declared sha256_bucket rule gives each unit its arm."""
+    contract = contract and assignment == "randomized"
     arms = ("control", "treatment")
     A, E = [], []
     truth = {a: [0, 0] for a in arms}
@@ -55,6 +63,8 @@ def experiment(rng, n=(800, 800), p=(0.2, 0.2), exact=False, outside=0, contamin
             E.append([u, "retained", iso(t + dt.timedelta(days=H, hours=rng.randrange(1, 100))), "late"])  # after horizon
     for i, a in enumerate(arms):
         for j in range(n[i]):
+            while contract and hash_arm("u%06d" % k, split) != a:
+                k += 1
             u = "u%06d" % k
             k += 1
             t = CS + dt.timedelta(minutes=rng.randrange(0, int((CE - CS).total_seconds() // 60)))
@@ -86,15 +96,19 @@ def experiment(rng, n=(800, 800), p=(0.2, 0.2), exact=False, outside=0, contamin
            "arms": list(arms), "planned_split": list(split), "timezone": "UTC", "cohort": {"start": iso(CS), "end": iso(CE)}, "as_of": iso(AS_OF),
            "outcome": {"event": "retained", "horizon_days": H}, "min_sample_per_arm": min_sample, "alpha": 0.05,
            "assignments": {"file": "assignments.csv"}, "events": {"file": "events.csv"}}
+    if contract:
+        pkg["randomization"] = {"method": "sha256_bucket", "salt": SALT}
     return pkg, A, E, truth, sorted(cont)
 
 
-def periods(rng, plan, split=(0.5, 0.5)):
+def periods(rng, plan, split=(0.5, 0.5), contract=False):
     """Allocation that changes over time. plan: [(arm, units, rate, start_day, days)]; conversions are exact."""
     A, E, k = [], [], 0
     for arm, n, rate, d0, days in plan:
         conv = set(rng.sample(range(n), int(round(rate * n))))
         for i in range(n):
+            while contract and hash_arm("p%06d" % k, split) != arm:
+                k += 1
             u = "p%06d" % k
             k += 1
             t = CS + dt.timedelta(days=d0, minutes=rng.randrange(0, days * 1440))
@@ -102,12 +116,14 @@ def periods(rng, plan, split=(0.5, 0.5)):
             if i in conv:
                 E.append([u, "retained", iso(t + dt.timedelta(hours=3)), "s0"])
     rng.shuffle(A)
-    pkg = experiment(rng, n=(1, 1))[0]
+    pkg = experiment(rng, n=(1, 1), contract=False)[0]
     pkg["planned_split"] = list(split)
+    if contract:
+        pkg["randomization"] = {"method": "sha256_bucket", "salt": SALT}
     return pkg, A, E
 
 
-def bursty(rng, vol, start_h, days=28, per_day=60, rate=0.10, burst_rate=0.90, cs=None):
+def bursty(rng, vol, start_h, days=28, per_day=60, rate=0.10, burst_rate=0.90, cs=None, interleave=False, contract=False):
     """Healthy 50/50 traffic per_day units a day with a true effect of zero, except that for 24 hours from
     start_h (hours after the cohort start) every one of vol units goes to the treatment and converts at
     burst_rate. The M15 r2 O08 shape, placed anywhere against the 7-day blocks."""
@@ -116,21 +132,24 @@ def bursty(rng, vol, start_h, days=28, per_day=60, rate=0.10, burst_rate=0.90, c
     for d in range(days):
         for _ in range(per_day):
             m = d * 1440 + rng.randrange(0, 1440)
-            if b0 <= m < b1:
+            if b0 <= m < b1 and not interleave:
                 continue  # the burst replaces this day's normal traffic
-            A.append(("control" if rng.random() < 0.5 else "treatment", m, rate))
+            A.append((None if contract else ("control" if rng.random() < 0.5 else "treatment"), m, rate))
     for _ in range(vol):
         A.append(("treatment", rng.randrange(b0, b1), burst_rate))
     rows, ev = [], []
     for arm, m, r in A:
         u = "b%06d" % k
         k += 1
+        arm = arm or hash_arm(u)
         t = CS + dt.timedelta(minutes=m)
         rows.append([u, arm, iso(t)])
         if rng.random() < r:
             ev.append([u, "retained", iso(t + dt.timedelta(hours=3)), "s0"])
     rng.shuffle(rows)
-    pkg = experiment(rng, n=(1, 1))[0]
+    pkg = experiment(rng, n=(1, 1), contract=False)[0]
+    if contract:
+        pkg["randomization"] = {"method": "sha256_bucket", "salt": SALT}
     if cs is not None:
         pkg["cohort"]["start"] = iso(cs)
     return pkg, rows, ev
@@ -366,12 +385,12 @@ def main():
                 bad.append((name, rc, (rep or {}).get("outcome"), ((rep or {}).get("effect") or {}).get("difference")))
         # no false alarm: a constant 30/70 split as planned, with the base rate falling over time
         plan = [(c, 120, 0.50, 0, 7), (t, 280, 0.55, 0, 7), (c, 300, 0.10, 7, 24), (t, 700, 0.15, 7, 24)]
-        pkg, A, E = periods(rng, plan, split=(0.3, 0.7))
+        pkg, A, E = periods(rng, plan, split=(0.3, 0.7), contract=True)
         rc, rep, _ = run(write(tmp / "o13-steady", pkg, A, E))
         steady = rc == 0 and (rep or {}).get("outcome") == "difference_detected" and \
             float(((rep or {}).get("effect") or {}).get("difference", "nan")) > 0
         ok = not bad and steady
-        return ok, "four drifting allocations (three ramps, one gradual) with a balanced pooled split are invalid_experiment with no claim; a steady planned 30/70 split with a falling base rate reads the true positive difference" if ok \
+        return ok, "four drifting allocations (three ramps, one gradual) with a balanced pooled split are invalid_experiment with no claim; a steady planned 30/70 split with a verified randomization contract and a falling base rate reads the true positive difference" if ok \
             else "ramps not caught %s; steady control %s" % (bad, (rep or {}).get("outcome"))
     check("o13 allocation drift (Simpson)", o13)
 
@@ -419,6 +438,58 @@ def main():
         ok = inv <= max(1, n // 100)
         return ok, "%d of %d healthy runs invalidated (limit about 1%%)" % (inv, n)
     check("o16 healthy runs rarely invalidated", o16)
+
+    def o17():
+        # root G15: interleaved all-variant bursts, zero true effect, no randomization contract: never a causal claim
+        runs = 6 if a.quick else 15
+        bad = []
+        for size in (30, 40, 60):
+            for k in range(runs):
+                r2 = random.Random(a.seed * 7000 + size * 31 + k)
+                pkg, A, E = bursty(r2, size, 9 * 24, interleave=True)
+                rc, rep, _ = run(write(tmp / "o17", pkg, A, E))
+                cl = (rep or {}).get("claims_allowed") or {}
+                if rc != 0 or cl.get("causal") is not False or (rep or {}).get("outcome") == "difference_detected" \
+                        or ((rep or {}).get("assignment_check") or {}).get("verified") is not False:
+                    bad.append((size, k, rc, (rep or {}).get("outcome")))
+                shutil.rmtree(str(tmp / "o17"), ignore_errors=True)
+        ok = not bad
+        return ok, "%d interleaved-burst runs (30, 40, 60 units) without a randomization contract: no causal claim, assignment unverified" % (3 * runs) if ok else "causal or wrong: %s" % bad[:4]
+    check("o17 no causal claim without a verified assignment", o17)
+
+    def o18():
+        # with a declared sha256_bucket contract: bursts are caught unit by unit; honest data still reads causally
+        runs = 4 if a.quick else 10
+        res = []
+        for size in (12, 30, 60):
+            for k in range(runs):
+                r2 = random.Random(a.seed * 9000 + size * 31 + k)
+                pkg, A, E = bursty(r2, size, 9 * 24, interleave=True, contract=True)
+                rc, rep, _ = run(write(tmp / "o18", pkg, A, E))
+                ac = (rep or {}).get("assignment_check") or {}
+                res.append(rc == 0 and rep["outcome"] == "invalid_experiment" and ac.get("verified") is False and ac.get("mismatched", 0) >= 1
+                           and rep["claims_allowed"] == {"causal": False, "significance": False})
+                shutil.rmtree(str(tmp / "o18"), ignore_errors=True)
+        caught = sum(res)
+        pkg, A, E, t, _ = experiment(rng, n=(900, 900), p=(0.15, 0.30))
+        rc, rep, _ = run(write(tmp / "o18-honest", pkg, A, E))
+        honest = rc == 0 and rep["outcome"] == "difference_detected" and rep["claims_allowed"] == {"causal": True, "significance": True} \
+            and rep["assignment_check"]["verified"] is True and rep["assignment_check"]["units_checked"] == 1800 and counts(rep) == t
+        flip = [r[:] for r in A]
+        for r in flip:
+            if r[0] == "u%06d" % min(int(x[0][1:]) for x in A):
+                r[1] = "treatment" if r[1] == "control" else "control"
+        rc2, rep2, _ = run(write(tmp / "o18-flip", pkg, flip, E))
+        flipped = rc2 == 0 and rep2["outcome"] == "invalid_experiment" and rep2["assignment_check"]["mismatched"] == 1
+        refused = 0
+        for bad in ({"method": "sha256_bucket"}, {"method": "md5", "salt": "x"}, {"method": "sha256_bucket", "salt": " "}, "sha256", {"method": "sha256_bucket", "salt": "x", "extra": 1}):
+            pk = json.loads(json.dumps(pkg)); pk["randomization"] = bad
+            refused += run(write(tmp / "o18-bad", pk, A, E))[0] == 2
+        pk = json.loads(json.dumps(pkg)); pk["assignment"] = "observational"
+        refused += run(write(tmp / "o18-obs", pk, A, E))[0] == 2
+        ok = caught == len(res) and honest and flipped and refused == 6
+        return ok, "contract: %d/%d burst runs (12, 30, 60 units) invalid by unit check; honest lift causal with 1800 units verified; one flipped unit invalidates; 6 malformed contracts refused" % (caught, len(res)) if ok else "caught %d/%d honest %s flipped %s refused %d" % (caught, len(res), honest, flipped, refused)
+    check("o18 a declared randomization contract is verified per unit", o18)
 
     n = sum(RESULTS)
     print("%s: %d/%d checks passed (seed %d)" % ("ACCEPTED" if n == len(RESULTS) else "REJECTED", n, len(RESULTS), a.seed))
