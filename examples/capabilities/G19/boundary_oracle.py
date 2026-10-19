@@ -62,13 +62,19 @@ class Server:
 
     def stop(self):
         if self.proc.poll() is None:
+            # The server may exit between poll() and killpg() (o8 crashes it by design). The group is then gone
+            # (ProcessLookupError) or its leader is an unreaped zombie, which macOS answers with EPERM
+            # (PermissionError). Either way it has stopped: reap it below instead of failing the check.
             try:
                 os.killpg(self.proc.pid, signal.SIGTERM)
+            except (ProcessLookupError, PermissionError):
+                pass
+            try:
                 self.proc.wait(5)
-            except (subprocess.TimeoutExpired, ProcessLookupError):
+            except subprocess.TimeoutExpired:
                 try:
                     os.killpg(self.proc.pid, signal.SIGKILL)
-                except ProcessLookupError:
+                except (ProcessLookupError, PermissionError):
                     pass
                 self.proc.wait(5)
         if self.proc.stderr:

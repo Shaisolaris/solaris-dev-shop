@@ -103,6 +103,20 @@ URL that is not loopback before sending a request, and it writes synthetic recor
 at a disposable instance. Exit 0 no findings, 1 findings, 2 refused, 3 inconclusive (the target did
 not behave like a working API).
 
+## Boundaries of the demo
+
+- **Canonical headers only.** A request is expected to carry exactly one `Authorization: Bearer <key>`
+  and, on writes, exactly one `Idempotency-Key`. Repeated headers are not refused: the server reads the
+  first of each and ignores the rest (two `Authorization` headers act as the first caller; two
+  `Idempotency-Key` headers store the effect under the first key only, so a retry that sends only the
+  second key makes a second effect). The tenant and duplicate guarantees above hold for canonical
+  single-header requests. Anything that merges, reorders or adds these headers (a proxy, gateway or
+  client library) is outside what was tested.
+- **Loopback demo only.** The server binds to a loopback address only (127.0.0.0/8 or ::1), the probe
+  refuses any other base URL, the G19 oracle connects to 127.0.0.1 only, and all keys and records are
+  synthetic. It was not run behind a proxy or on a network, and it makes no
+  production, hosted-service or security-certification claim.
+
 ## Limits
 
 One SQLite file and one process; writes are serialised, which is the point here but caps write
