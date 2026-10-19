@@ -118,9 +118,13 @@ NOT assessed: DAST on prod (no authz), mobile client, social-eng. Gate: passed
 
 ### Supply chain security
 - **SBOM** generation (SPDX, CycloneDX) - Syft, Trivy
-- **Attestations** - in-toto, SLSA levels
-- **Image signing** - cosign / Sigstore
-- **Provenance verification**
+- **Attestations** - in-toto, SLSA levels (needs the in-toto or slsa-verifier tool; when it is not installed,
+  report the attestation as UNAVAILABLE, never as verified)
+- **Image signing** - cosign / Sigstore (same rule: no cosign binary, no signature claim)
+- **Provenance verification** - locally, `provenance_check.py` (`provenance-integrity.md`): license declarations
+  against the LICENSE text, NOTICE coverage of upstream license files, and a sha256 manifest against the bytes on
+  disk (G05 `artifact_digests`, usable as a G05 subject binding). A match proves the listed bytes, not who made
+  them: a name in a file is a claim, not an authenticated identity, and the report is not a legal opinion
 - **Dependency confusion, typosquatting, malicious package defense**
 
 ### Compliance audits
@@ -255,6 +259,7 @@ For a quick check, a prototype, an early-stage repo, or a time-boxed spot-review
 | `audit-firm-methodology.md` | The post-finding firm LOOP: variant analysis (one bug -> the whole class), test-driven custom Semgrep-rule authoring, fix-verification (CLOSED/REOPEN/PARTIAL), engagement spine |
 | `elite-audit-delivery.md` | ELITE delivery: aggregate/normalize/de-dup multi-tool SARIF into one client risk register; 7-dimension exploitability triage matrix (EPSS/KEV/reachability/context); the CodeQL deep-query tier above the fast Semgrep tier |
 | `job-two-improvement.md` | Load on any revision / job-two / scoped-feedback pass. |
+| `provenance-integrity.md` | License / NOTICE consistency or an artifact manifest to check (`provenance_check.py`) |
 
 
 

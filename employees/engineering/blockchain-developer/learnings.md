@@ -1,6 +1,7 @@
 # Blockchain Developer - Learnings (Pending)
 
 ## Pending observations
+- **2026-10-19 - G38 event chain**: a hash chain proves only self-consistency. Rewriting from an event onward with recomputed hashes passes verify; only an anchor recorded outside the writer's reach catches it. Recovery writes the verified prefix to a new file and never touches the original.
 - **2026-04-25 - Clean rebuild from msitarzewski solidity-engineer**: Security-first principles (no tx.origin, no transfer, CEI pattern) + Foundry >95% coverage + external audit before mainnet are the consistent professional standards.
 - **2026-04-25 - Custom errors over require strings** is the gas optimization with biggest impact + clarity benefit.
 

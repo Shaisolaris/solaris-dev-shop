@@ -21,6 +21,10 @@ hosting production changes, or untrusted plugin/asset execution from fixtures.
 5. **Approval + receipts** - external mutations (deploy, mutate_external, network publish) use APPROVAL_PREVIEW (`AWAITING_HUMAN_AUTHORITY`); authorized runs return a RECEIPT with rollback_hint.
 6. **Synthetic fixtures only** - no production keys, no real device flash, no live store submit, no untrusted binary execution in evaluation fixtures.
 7. **Provenance** - pin official docs/SDKs with URL, title, retrieved date, license, and what was taken.
+8. **Immutable-event claims** - "append-only" or "tamper-evident" is claimed only after `event_chain.py verify`
+   (`immutable-event-validation.md`) passes on the actual log, and "not rewritten" only with an anchor recorded
+   outside the writer's reach. `claimed_by` and similar fields are plain-text claims, never an authenticated
+   signer; there is no wallet, key or transaction in this check.
 
 If a control fails, do not emit `Gate: passed` for the affected path. Prefer `PARTIAL` or `BLOCKED` with the missing list.
 

@@ -9,6 +9,7 @@
   ],
   "references": [
     "rules.md",
+    "provenance-integrity.md",
     "learnings.md",
     "trivy-and-dast.md",
     "scanning-stack.md",
