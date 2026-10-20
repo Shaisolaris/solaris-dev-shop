@@ -21,6 +21,14 @@ python3 host_portability.py report REPO [--out FILE]
 folder (build/, dist/, *.egg-info, caches and bytecode left out), so the checkout gains nothing and a stale
 `build/lib` file in it cannot reach the wheel; a `solaris_intake/` member with no source file is a finding
 (`wheel_member_not_in_source`). `--outside` at or under REPO is refused (exit 2).
+`--outside` must also be a new or empty folder: an existing file, or a folder that already holds anything, is refused with exit 2 before anything is
+created, and wheel-smoke never deletes or overwrites files there. Without `--outside` it uses a fresh temporary
+folder. If the build or install fails after the work folder is made, the message names that folder (it holds the
+source copy and is left for inspection) instead of saying nothing was written.
+
+The build step is `pip wheel`, which needs the build backend named in pyproject.toml (setuptools>=61). pip fetches
+it from the package index unless it is already available, so on an offline host without setuptools wheel-smoke
+exits 2 with the pip error.
 
 `skill-copy` copies only the role folder and lists missing references. It does not invent a host agent API.
 

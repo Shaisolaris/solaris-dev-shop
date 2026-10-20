@@ -9,7 +9,7 @@ source capability tools **3.9+**, and that a lone copied skill folder is incompl
 ```bash
 python3 employees/quality-security/qa-engineer/host_portability.py skill-copy . quality-security/qa-engineer   # exit 1 broken
 python3 employees/quality-security/qa-engineer/host_portability.py python-bounds .                             # exit 0
-python3 employees/quality-security/qa-engineer/host_portability.py wheel-smoke . --outside /tmp/g40-out        # exit 0 on 3.10+
+python3 employees/quality-security/qa-engineer/host_portability.py wheel-smoke . --outside "$(mktemp -d)"     # exit 0 on 3.10+; --outside must be new or empty
 python3 examples/capabilities/G40/portability_oracle.py                                                       # ACCEPTED 8/8
 python3 examples/capabilities/G40/portability_oracle.py --tool examples/capabilities/G40/naive_portability.py  # REJECTED
 python3 examples/capabilities/G40/portability_oracle.py --tool examples/capabilities/G40/noop_portability.py   # REJECTED

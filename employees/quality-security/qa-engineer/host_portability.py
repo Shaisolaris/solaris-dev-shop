@@ -18,10 +18,11 @@ What it checks, reading and running only local packaging commands:
   stdlib source tools under employees/ parse on the current interpreter (source tools: 3.9+).
 
 Exit codes: 0 pass / complete report; 1 findings (smoke failed or skill-copy broken);
-2 invalid input (nothing written). --out is written atomically. Python 3.9+, standard library
+2 invalid input or failed build (nothing written, or only the named work folder). --out is written atomically. Python 3.9+, standard library
 plus the pip/wheel already available to the interpreter. Never edits REPO: wheel-smoke builds from a private copy
 under its work folder (build/, dist/, *.egg-info, caches and bytecode skipped) and refuses an --outside folder at or
-under REPO; a wheel member with no source file is a finding (wheel_member_not_in_source).
+under REPO, or one that exists and is not empty (it never deletes or overwrites there); a wheel member with no source
+file is a finding (wheel_member_not_in_source).
 """
 from __future__ import annotations
 
@@ -41,7 +42,10 @@ SKIP_DIRS = {".git", "__pycache__", "node_modules", ".venv", "venv", "dist", "bu
 
 
 class Invalid(Exception):
-    pass
+    """Refused or failed run. `left` names the only folder the run wrote to, when it got that far."""
+    def __init__(self, msg, left=None):
+        super().__init__(msg)
+        self.left = left
 
 
 def _atomic(out, data):
@@ -94,6 +98,21 @@ def inspect_wheel_names(names):
         findings.append({"code": "wheel_ships_employees", "detail": "wheel contains employee skill paths"})
     return findings
 
+def _check_outside(root, outside):
+    """--outside must be outside the checkout and new or empty: wheel-smoke never deletes or overwrites there."""
+    work = Path(outside)
+    wr = Path(os.path.realpath(str(work)))
+    if wr == root or root in wr.parents:
+        raise Invalid("--outside must be a folder outside the checkout")
+    if work.exists() or work.is_symlink():
+        if not work.is_dir():
+            raise Invalid("--outside %s exists and is not a folder; name a new or empty folder" % work)
+        if any(work.iterdir()):
+            raise Invalid("--outside %s already exists and is not empty; name a new or empty folder "
+                          "(wheel-smoke never deletes or overwrites files there)" % work)
+    return work
+
+
 def wheel_smoke(root, outside=None):
     """Mirror .github/workflows/ci.yml wheel build and outside-checkout smoke."""
     root = _repo(root)
@@ -101,17 +120,22 @@ def wheel_smoke(root, outside=None):
     py = sys.version_info
     if (py.major, py.minor) < (3, 10):
         raise Invalid("wheel-smoke needs Python 3.10+ to build and install the wheel (this interpreter is %d.%d); source tools still run on 3.9+" % (py.major, py.minor))
+    if outside:
+        work = _check_outside(root, outside)
+        work.mkdir(parents=True, exist_ok=True)
+    else:
+        work = Path(tempfile.mkdtemp(prefix="g40-wheel-"))
+    try:
+        return _wheel_smoke_in(root, req, work)
+    except Invalid as ex:
+        raise Invalid(str(ex), left=work)
+
+
+def _wheel_smoke_in(root, req, work):
     findings = []
-    work = Path(outside) if outside else Path(tempfile.mkdtemp(prefix="g40-wheel-"))
-    wr = Path(os.path.realpath(str(work)))
-    if wr == root or root in wr.parents:
-        raise Invalid("--outside must be a folder outside the checkout")
-    work.mkdir(parents=True, exist_ok=True)
     # build from a private copy: pip/setuptools write build/ and *.egg-info next to the source, and a stale
-    # build/lib left in REPO would be packed into the wheel
+    # build/lib left in REPO would be packed into the wheel. work is new or empty, so nothing is replaced.
     srcdir = work / "src"
-    if srcdir.exists():
-        shutil.rmtree(srcdir)
     shutil.copytree(root, srcdir, ignore=shutil.ignore_patterns(*sorted(SKIP_DIRS), "*.egg-info", "*.pyc"))
     wheels = work / "wheels"
     venv = work / "venv"
@@ -278,6 +302,8 @@ def python_bounds(root):
 
 def report(root, outside=None):
     root = _repo(root)
+    if outside and sys.version_info >= (3, 10):
+        _check_outside(root, outside)  # refuse before skill-copy or anything else runs
     parts = {}
     # python bounds always
     parts["python_bounds"] = python_bounds(root)
@@ -349,7 +375,11 @@ def main(argv=None):
         if ns.out:
             _atomic(ns.out, text)
     except Invalid as ex:
-        print("invalid: %s. Nothing was written." % ex, file=sys.stderr)
+        if getattr(ex, "left", None):
+            print("invalid: %s. Files were written only under the work folder %s (left for inspection); "
+                  "the checkout and everything else were not changed." % (ex, ex.left), file=sys.stderr)
+        else:
+            print("invalid: %s. Nothing was written." % ex, file=sys.stderr)
         return 2
     print(text if ns.json else render(out), end="" if ns.json else "\n")
     return 0 if out.get("result") in ("pass", "skipped") and out.get("status", "complete") != "broken" else 1
