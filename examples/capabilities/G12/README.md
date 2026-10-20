@@ -7,8 +7,8 @@ rewriting it. G04, G05 and G07 all carry G04 `314b4db` and G02 `bbe682b`; G02 it
 
 | Check | What it composes | Result on this stack |
 |---|---|---|
-| x1 | G07 ownership transfer (epoch 1 to 2) with a G04 r2 fleet-bound order | stale owner refused (exit 2), new owner runs, brief names the new owner |
-| x2 | a G05 r3 receipt bound to the G04 brief digest | current on a plain re-run, stale after the owner change |
+| x1 | G07 ownership transfer (epoch 1 to 2) with a G04 r3 fleet-bound order | stale owner refused (exit 2); new owner on the delivered revision refused (exit 2); revision 2 for the new owner runs, brief names the new owner |
+| x2 | a G05 r3 receipt bound to the G04 brief digest | current on a plain re-run, stale for the revision reissued for the new owner |
 | x3 | a G05 r3 receipt bound to the reviewed G08 artifact (revision = its sha256) | current for the live r2, stale after a G08 rollback to r1 |
 
 Six files are changed by more than one prerequisite. Four have only one real change (G05 carries G04
@@ -16,7 +16,9 @@ Six files are changed by more than one prerequisite. Four have only one real cha
 `handoff-work-orders.md` both add a reason to the exit 2 line; r2 keeps both. `plan.json` names all six in
 `resolved_overlaps`, with reasons.
 
-No cross-goal defect was found on this stack; the checks stay as regression protection.
+No cross-goal defect was found on this stack; the checks stay as regression protection. r2 changed x1 and x2 to
+the G04 r3 contract: an owner change on a delivered revision is refused, so the transfer flow reissues the order
+as revision 2 for the new owner (as the G07 section of handoff-work-orders.md says).
 
 ```bash
 python3 employees/quality-security/assurance/daily_integration_oracle.py -- python3 employees/quality-security/assurance/daily_integration.py  # ACCEPTED 13/13

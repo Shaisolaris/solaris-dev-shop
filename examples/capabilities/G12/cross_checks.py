@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""G12 cross-goal checks for the day 2 candidates (G04 r2, G05 r2, G07, G08 r2, G09).
+"""G12 cross-goal checks for the day 2 candidates (G04 r3, G05 r3, G07, G08 r2, G09).
 
 Nothing in the checkout is written; every run uses copies of the candidates' own fixtures in a temporary
 folder. No network, no cluster, no browser.
 
-  x1  G04 r2 x G07: G07 hands a fleet machine from one owner to another (owner_epoch 1 -> 2). The same
-      order revision, updated to the new owner and epoch, must run on that machine, and G04 r2 must
-      render a new brief naming the new owner (owner is a receipt input). The old owner's order must be
-      refused by the G07 claim check.
-  x2  G05 r2 x G04 r2: a G05 gate receipt bound to the digest of the G04 brief must turn stale after the
-      owner change re-renders it, and stay current when the order is simply re-run.
+  x1  G04 r3 x G07: G07 hands a fleet machine from one owner to another (owner_epoch 1 -> 2). The old
+      owner's order must be refused by the G07 claim check. Revision 1 was already delivered, so G04 r3
+      refuses the same revision under the new owner (exit 2, a delivery cannot be recalled); the order
+      reissued as revision 2 for the new owner and epoch must run on that machine, and its brief must name
+      the new owner only (G07 doc: on transfer, reissue the order for the new owner).
+  x2  G05 r3 x G04 r3: a G05 gate receipt bound to the digest of the G04 brief must stay current when the
+      order is simply re-run, and be stale for the brief of the revision reissued for the new owner.
   x3  G05 r2 x G08 r2: a G05 receipt bound to the reviewed artifact (revision = the G08 plan's artifact
       sha256) must be current for the release G08 makes live, and stale after a G08 rollback to r1.
 
@@ -68,10 +69,12 @@ def fleet_world(tmp):
     return w
 
 
-def write_order(w, owner, epoch):
+def write_order(w, owner, epoch, revision=None):
     with open(os.path.join(w, "order.json")) as fh:
         o = json.load(fh)
     o["owner"] = owner
+    if revision is not None:
+        o["revision"] = revision
     o["fleet"] = {"machine": "mini1", "owner_epoch": epoch, "registry": "fleet"}
     with open(os.path.join(w, "order.json"), "w") as fh:
         json.dump(o, fh, indent=1)
@@ -81,15 +84,16 @@ def handoff(w, worker):
     return run([HANDOFF, "run", "order.json", "--worker", worker, "--identity", "id/identity-mini1.json"], cwd=w)
 
 
-def brief_path(w):
-    for d, _, fs in os.walk(w):
-        if "HANDOFF-BRIEF.md" in fs:
+def brief_path(w, revision=None):
+    """The brief of the given revision (folder revN), or the first one found when no revision is named."""
+    for d, _, fs in sorted(os.walk(w)):
+        if "HANDOFF-BRIEF.md" in fs and (revision is None or os.path.basename(d) == "rev%d" % revision):
             return os.path.join(d, "HANDOFF-BRIEF.md")
     return None
 
 
-def brief_digest(q, w, revision):
-    p = brief_path(w)
+def brief_digest(q, w, revision, order_revision=None):
+    p = brief_path(w, order_revision)
     root, name = os.path.dirname(p), os.path.basename(p)
     from pathlib import Path
     return {"digests": q.artifact_digests(Path(root), [name]), "revision": revision}
@@ -107,8 +111,10 @@ def x1(findings, lines):
             raise RuntimeError("G07 transfer rc %d: %s" % (rc, out[-300:]))
         rc_old, out_old = handoff(w, "ana")
         write_order(w, "ben", 2)
+        rc_same, out_same = handoff(w, "ben")
+        write_order(w, "ben", 2, revision=2)
         rc2, out2 = handoff(w, "ben")
-        p = brief_path(w)
+        p = brief_path(w, 2)
         text = ""
         if p:
             with open(p) as fh:
@@ -117,12 +123,14 @@ def x1(findings, lines):
             findings.append("x1 first fleet-bound run as ana exit %d: %s" % (rc1, out1[-200:]))
         elif rc_old != 2 or "fleet claim refused" not in out_old:
             findings.append("x1 G07 stale owner ana (epoch 1) after transfer: G04 exit %d, not refused: %s" % (rc_old, out_old[-200:]))
+        elif rc_same != 2 or "already delivered" not in out_same:
+            findings.append("x1 new owner ben (epoch 2) on the delivered revision 1: G04 exit %d, want 2 (owner change on a delivered revision): %s" % (rc_same, out_same[-200:]))
         elif rc2 != 0:
-            findings.append("x1 new owner ben (epoch 2), same revision: G04 exit %d: %s" % (rc2, out2[-200:]))
+            findings.append("x1 new owner ben (epoch 2), revision 2: G04 exit %d: %s" % (rc2, out2[-200:]))
         elif "- Owner: ben" not in text or "- Owner: ana" in text:
-            findings.append("x1 brief after the owner change does not name ben only (G04 r2 owner receipt input)")
+            findings.append("x1 revision 2 brief does not name ben only (G04 owner receipt input)")
         else:
-            lines.append("x1 G07 transfer ana->ben: stale ana order refused (exit 2), ben epoch 2 runs (exit 0), brief names ben")
+            lines.append("x1 G07 transfer ana->ben: stale ana order refused (exit 2), ben on delivered revision 1 refused (exit 2), ben revision 2 runs (exit 0), brief names ben")
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
@@ -142,15 +150,15 @@ def x2(findings, lines):
         again = q.binding_state(reviewed, brief_digest(q, w, rev))[0]
         run([REGISTRY, "transfer", "--root", "fleet", "--alias", "mini1", "--from-owner", "ana",
              "--expect-epoch", "1", "--to-owner", "ben", "--request-id", "t-1"], cwd=w)
-        write_order(w, "ben", 2)
+        write_order(w, "ben", 2, revision=2)
         rc2, out2 = handoff(w, "ben")
-        after = q.binding_state(reviewed, brief_digest(q, w, "sha256:" + "b" * 64))[0]
+        after = q.binding_state(reviewed, brief_digest(q, w, "sha256:" + "b" * 64, order_revision=2))[0]
         if again != "current":
             findings.append("x2 a plain re-run changed the reviewed brief: G05 says %s, want current" % again)
         elif rc2 != 0 or after != "stale":
-            findings.append("x2 brief re-rendered for ben (G04 exit %d) but G05 receipt is %s, want stale" % (rc2, after))
+            findings.append("x2 revision 2 brief rendered for ben (G04 exit %d) but G05 receipt is %s, want stale" % (rc2, after))
         else:
-            lines.append("x2 G05 receipt on the G04 brief: re-run current, owner change stale")
+            lines.append("x2 G05 receipt on the G04 brief: re-run current, revision reissued for the new owner stale")
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 

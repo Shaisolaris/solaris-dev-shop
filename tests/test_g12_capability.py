@@ -103,8 +103,8 @@ class CrossChecks(unittest.TestCase):
         out = r.stdout.decode()
         findings = [l for l in out.splitlines() if l.startswith("FINDING ")]
         self.assertEqual(r.returncode, 1 if findings else 0, out)
-        self.assertIn("x1 G07 transfer ana->ben: stale ana order refused (exit 2), ben epoch 2 runs (exit 0), brief names ben", out)
-        self.assertIn("x2 G05 receipt on the G04 brief: re-run current, owner change stale", out)
+        self.assertIn("x1 G07 transfer ana->ben: stale ana order refused (exit 2), ben on delivered revision 1 refused (exit 2), ben revision 2 runs (exit 0), brief names ben", out)
+        self.assertIn("x2 G05 receipt on the G04 brief: re-run current, revision reissued for the new owner stale", out)
         self.assertIn("x3 G05 receipt on artifact r2: current for G08 live r2, stale after rollback to r1", out)
         self.assertTrue(out.rstrip().splitlines()[-1].startswith("CROSS-CHECKS "), out)
 
@@ -179,6 +179,16 @@ class CrossChecks(unittest.TestCase):
             f = []
             mod.x1(f, [])
             self.assertTrue(any("x1 new owner ben" in x for x in f), f)
+
+    def test_x1_catches_a_handoff_that_lets_the_new_owner_rerun_a_delivered_revision(self):
+        # G04 r3: an owner change on a delivered revision is refused (exit 2); a G04 that runs it again would
+        # deliver revision 1 a second time
+        mod = self._load()
+        with tempfile.TemporaryDirectory() as d:
+            self._wrap_handoff(mod, d, "rc = 0")
+            f = []
+            mod.x1(f, [])
+            self.assertTrue(any("on the delivered revision 1" in x and "want 2" in x for x in f), f)
 
     def test_x2_catches_a_receipt_stale_after_a_plain_rerun(self):
         mod = self._load()
