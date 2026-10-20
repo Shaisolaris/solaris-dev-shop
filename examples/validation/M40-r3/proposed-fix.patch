@@ -1,0 +1,19 @@
+diff --git a/employees/quality-security/qa-engineer/host_portability.py b/employees/quality-security/qa-engineer/host_portability.py
+index a4b53b9..641aef6 100755
+--- a/employees/quality-security/qa-engineer/host_portability.py
++++ b/employees/quality-security/qa-engineer/host_portability.py
+@@ -106,12 +106,12 @@ def wheel_smoke(root, outside=None):
+     wr = Path(os.path.realpath(str(work)))
+     if wr == root or root in wr.parents:
+         raise Invalid("--outside must be a folder outside the checkout")
++    if outside and work.exists() and (not work.is_dir() or any(work.iterdir())):
++        raise Invalid("--outside %s already exists and is not empty; name a new or empty folder (nothing is deleted)" % work)
+     work.mkdir(parents=True, exist_ok=True)
+     # build from a private copy: pip/setuptools write build/ and *.egg-info next to the source, and a stale
+     # build/lib left in REPO would be packed into the wheel
+     srcdir = work / "src"
+-    if srcdir.exists():
+-        shutil.rmtree(srcdir)
+     shutil.copytree(root, srcdir, ignore=shutil.ignore_patterns(*sorted(SKIP_DIRS), "*.egg-info", "*.pyc"))
+     wheels = work / "wheels"
+     venv = work / "venv"

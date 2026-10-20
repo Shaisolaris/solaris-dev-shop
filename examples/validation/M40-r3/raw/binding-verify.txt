@@ -1,0 +1,6 @@
+candidate bb444782e65fa2ea1ca790a335faf7f3917b3191
+patch file 7650631b5f76af00899cac22e9dab0d2aa2eb4ba8e843dddee89b76cf5be8e2b
+recomputed format-patch 0f593a1..HEAD 7650631b5f76af00899cac22e9dab0d2aa2eb4ba8e843dddee89b76cf5be8e2b
+manifest OK 14 of 14
+manifest-set-equals-diff
+ff-from-r2

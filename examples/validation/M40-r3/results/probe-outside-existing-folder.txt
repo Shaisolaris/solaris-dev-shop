@@ -1,0 +1,22 @@
+# before
+./notes.txt
+./src/keep.txt
+./wheels/other-1.0-py3-none-any.whl
+rc=2
+stderr: )
+      ERROR: No matching distribution found for setuptools>=61
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+ERROR: Failed to build 'file://OUTSIDE/mine/src' when installing build dependencies
+. Nothing was written.
+# after
+./notes.txt
+./wheels/other-1.0-py3-none-any.whl
+src/keep.txt present: no
+checkout clean lines:        0
+# W3b: build isolation off (setuptools from the interpreter), existing folder with src/keep.txt
+rc=0
+result pass findings []
+src/keep.txt present after: no; notes.txt present: yes
+checkout clean lines:        0

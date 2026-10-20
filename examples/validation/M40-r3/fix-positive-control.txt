@@ -1,0 +1,19 @@
+# positive control on a copy with proposed-fix.patch
+# W3b: build isolation off (setuptools from the interpreter), existing folder with src/keep.txt
+rc=2
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+src/keep.txt present after: yes; notes.txt present: yes
+checkout clean lines:        1
+Python 3.9.6 g40 tests: OK (skipped=2) | m40 oracle: M40 ORACLE 5/5 scored PASS | portability_oracle: ACCEPTED 8/8
+Python 3.11.16 g40 tests: OK | m40 oracle: M40 ORACLE 8/8 scored PASS | portability_oracle: ACCEPTED 8/8
+Python 3.13.15 g40 tests: OK | m40 oracle: M40 ORACLE 4/4 scored PASS | portability_oracle: ACCEPTED 8/8
