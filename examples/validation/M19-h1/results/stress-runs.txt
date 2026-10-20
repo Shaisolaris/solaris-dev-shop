@@ -1,0 +1,128 @@
+##### stress-1-1.txt
+Ran 18 tests in 84.124s
+OK
+rc=0
+##### stress-1-2.txt
+Ran 18 tests in 84.309s
+OK
+rc=0
+##### stress-1-3.txt
+Ran 18 tests in 84.250s
+OK
+rc=0
+##### stress-1-4.txt
+Ran 18 tests in 84.164s
+OK
+rc=0
+##### stress-1-5.txt
+Ran 18 tests in 84.276s
+OK
+rc=0
+##### stress-1-6.txt
+Ran 18 tests in 84.257s
+OK
+rc=0
+##### stress-1-7.txt
+Ran 18 tests in 84.122s
+OK
+rc=0
+##### stress-1-8.txt
+Ran 18 tests in 84.324s
+OK
+rc=0
+##### stress-2-1.txt
+Ran 18 tests in 84.240s
+OK
+rc=0
+##### stress-2-2.txt
+Ran 18 tests in 84.180s
+OK
+rc=0
+##### stress-2-3.txt
+Ran 18 tests in 84.062s
+OK
+rc=0
+##### stress-2-4.txt
+Ran 18 tests in 84.216s
+OK
+rc=0
+##### stress-2-5.txt
+Ran 18 tests in 83.729s
+OK
+rc=0
+##### stress-2-6.txt
+Ran 18 tests in 84.210s
+OK
+rc=0
+##### stress-2-7.txt
+Ran 18 tests in 84.236s
+OK
+rc=0
+##### stress-2-8.txt
+Ran 18 tests in 84.003s
+OK
+rc=0
+##### stress-3-1.txt
+Ran 18 tests in 83.778s
+OK
+rc=0
+##### stress-3-2.txt
+Ran 18 tests in 84.158s
+OK
+rc=0
+##### stress-3-3.txt
+Ran 18 tests in 83.993s
+OK
+rc=0
+##### stress-3-4.txt
+Ran 18 tests in 84.209s
+OK
+rc=0
+##### stress-3-5.txt
+Ran 18 tests in 83.880s
+OK
+rc=0
+##### stress-3-6.txt
+Ran 18 tests in 84.131s
+OK
+rc=0
+##### stress-3-7.txt
+Ran 18 tests in 84.189s
+OK
+rc=0
+##### stress-3-8.txt
+Ran 18 tests in 84.080s
+OK
+rc=0
+##### control-accepted-1.txt
+Ran 16 tests in 84.172s
+OK
+rc=0
+##### control-accepted-2.txt
+Ran 16 tests in 84.238s
+OK
+rc=0
+##### control-accepted-3.txt
+Ran 16 tests in 84.221s
+OK
+rc=0
+##### control-accepted-4.txt
+Ran 16 tests in 84.187s
+OK
+rc=0
+##### control-accepted-5.txt
+Ran 16 tests in 84.170s
+OK
+rc=0
+##### control-accepted-6.txt
+Ran 16 tests in 84.200s
+OK
+rc=0
+##### control-accepted-7.txt
+Ran 16 tests in 84.168s
+OK
+rc=0
+##### control-accepted-8.txt
+Ran 16 tests in 84.134s
+OK
+rc=0

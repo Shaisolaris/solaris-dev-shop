@@ -1,0 +1,35 @@
+{
+ "rows": [
+  {
+   "row": "two Authorization headers act as the first caller",
+   "pass": true,
+   "detail": {
+    "status": 201,
+    "in_first": true,
+    "in_second": false
+   }
+  },
+  {
+   "row": "two Idempotency-Key headers store under the first key only",
+   "pass": true,
+   "detail": {
+    "replay_first_same": true
+   }
+  },
+  {
+   "row": "a retry with only the second key makes a second effect (documented, not refused)",
+   "pass": true,
+   "detail": {
+    "second_key_new_invoice": true
+   }
+  },
+  {
+   "row": "canonical single-header tenant split still holds",
+   "pass": true,
+   "detail": {
+    "brisk_list": 0,
+    "aldane_list_before_k-tests": 1
+   }
+  }
+ ]
+}

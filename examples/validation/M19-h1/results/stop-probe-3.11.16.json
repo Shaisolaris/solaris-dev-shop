@@ -1,0 +1,22 @@
+{
+ "rows": [
+  {
+   "row": "child that ignores SIGTERM is still killed",
+   "pass": true,
+   "detail": {
+    "returncode": -9,
+    "error": null,
+    "seconds": 5.0
+   }
+  },
+  {
+   "row": "normal child stops on SIGTERM",
+   "pass": true,
+   "detail": {
+    "returncode": -15,
+    "error": null,
+    "seconds": 0.0
+   }
+  }
+ ]
+}

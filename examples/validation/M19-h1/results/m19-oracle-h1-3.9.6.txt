@@ -1,0 +1,34 @@
+# m19_oracle candidate: /usr/bin/python3 $CANDIDATE/employees/engineering/backend-developer/ledger_api.py
+PASS k1_clean_control (0.3s): create/replay/get/list/pay/pay-rest/void exact; 409s exact; Location and Idempotent-Replayed right; check consistent
+PASS k2_concurrent_replays (0.6s): 48-way create replay (first attempts all 201): 1 invoice, 1 first answer; 32-way payment replay: paid once; 32-way same key with 2 bodies: 1 effect, losers 422 reused
+PASS k3_overspend_race (0.3s): 20-way 300-on-1000 race: exactly 3 accepted, paid 900; replays of all 20 identical; stored 409 stays 409 after the balance changed
+PASS k4_cross_tenant_reads (0.3s): other tenants' reads byte-identical to a missing id (editor, viewer, third tenant); lists never leak; foreign cursor = made-up cursor; paging 3/3/1 in order
+PASS k5_cross_tenant_writes (0.3s): cross-tenant pay/void = missing id; 4 tenant fields 422 tenant_is_server_derived, 5 variants 422; tenant headers and ?tenant ignored or refused; victim unchanged
+PASS k6_key_scope (0.3s): keys scoped per tenant; reuse with another body, endpoint or invoice 422 reused; same tenant other editor replays; no cross-tenant replay
+PASS k7_auth (0.3s): 7 bad credentials 401, viewer writes 403, nothing changed; keys stay usable after 401/403/422/404
+PASS k8_crash_recovery (1.6s): fail x2 then one effect; crash before commit: no effect, retry makes it once; crash after commit: committed, retry replays; same for payments; exit 70; kill -9 mid-burst of 64 (59 answered) then retries: exactly 64
+PASS k9_check_command (0.5s): clean consistent and read-only; paid_cents tamper names the invoice (exit 1); duplicated audit row exit 1; garbage and missing exit 2
+PASS k10_invalid_input (0.6s): 4 non-loopback hosts and 4 bad principals exit 2 with no ready file; 28 invalid requests exact status/code/shape, nothing made
+PASS k11_enumeration (0.3s): 40 ids random (18/39 ascending); other tenants' ids answer byte-identical to random ids (status, body, headers) on read, pay and void
+PASS k12_seeded_load (1.4s): shuffled duplicate-laden load over 4 tenants, 16 threads, matches the model; seed 7: 137+159 requests, seed 2026: 157+188 requests, seed 31337: 131+199 requests
+FINDING x1_unicode_digit_limit: (a finding only if a request gets no answer) limit = superscript two / Arabic-Indic three / fullwidth five: [('%C2%B2', 0, 'RemoteDisconnected: Remote end closed co'), ('%D9%A3', 200, ''), ('%EF%BC%95', 200, '')]
+FINDING x2_unicode_content_length: Content-Length superscript two / Arabic-Indic three: ['<no response>', 'HTTP/1.1 411 Length Required']
+FINDING x3_deep_json: 8000-deep array: <0  RemoteDisconnected: Remote end closed connection without response>; 2500-deep object (under 16 KiB): <0  RemoteDisconnected: Remote end closed connection without response>; server alive after: True
+FINDING x4_other_methods: unsupported methods (doc: errors always use {error:{code,message}}): [('HEAD', "HTTP/1.1 501 Unsupported method ('HEAD')", b''), ('OPTIONS', "HTTP/1.1 501 Unsupported method ('OPTIONS')", b'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"\n        "http://www.'), ('TRACE', "HTTP/1.1 501 Unsupported method ('TRACE')", b'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"\n        "http://www.'), ('BREW', "HTTP/1.1 501 Unsupported method ('BREW')", b'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"\n        "http://www.')]
+FINDING x5_malformed_request: malformed requests: [('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML ', b''), ('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML ', b''), ('HTTP/1.1 414 Request-URI Too Long', b'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"\n        "h')]
+FINDING x6_double_authorization: two Authorization headers (marlow first, kestrel second): GET kestrel invoice -> HTTP/1.1 404 Not Found; create -> HTTP/1.1 201 Created tenant=marlow
+FINDING x7_double_idempotency_key: two different Idempotency-Key headers -> HTTP/1.1 201 Created (invoices 1); then x7-two alone -> HTTP/1.1 201 Created (invoices 2)
+OK x8_scheme_case: auth scheme case (observation; RFC 7235 says case-insensitive, the doc says 'Bearer'): [('bearer', 401), ('BEARER', 401)]
+OK x9_path_confusion: other tenant, path variants: [('/api/v1/invoices/<id>/', 404, 'not_found'), ('/api/v1//invoices/<id>', 404, 'no_route'), ('/api/v1/invoices/INV_9829D40017D205D1', 404, 'not_found'), ('/api/v1/invoices/%69nv_<hex>', 404, 'not_found'), ('/api/v1/invoices/../invoices/<id>', 404, 'no_route'), ('/api/v1/invoices/<id>;tenant=kestrel', 404, 'not_found'), ('/API/V1/invoices/<id>', 404, 'no_route'), ('/api/v1/invoices/<id>%00', 404, 'not_found'), ('/api/v1/invoices/<id>?tenant=kestrel&tenant=ma', 404, 'not_found'), ('absolute-form http://other.invalid/...', 'HTTP/1.1 404 Not Found')]
+FINDING x10_check_orphan_invoice: an invoice row with no idempotency record and no audit row (an unrecorded second effect): check rc=0 consistent: 3 invoices, 3 idempotency records, 3 audit rows
+FINDING x11_check_deleted_invoice: a created invoice deleted (its idempotency record and audit row remain): check rc=0 consistent: 1 invoices, 3 idempotency records, 3 audit rows
+FINDING x12_check_orphan_payment: a duplicated payment row with paid_cents raised to match (a double charge without its own key): check rc=0 consistent: 2 invoices, 3 idempotency records, 3 audit rows
+FINDING x13_slow_clients: 40 clients sent 1 of 200 body bytes: a normal create took 0.00s (201); after 20s 40/40 still held open (no read timeout)
+FINDING x14_burst_over_backlog: 256 simultaneous replays of one create: statuses [0, 201], 30 reset or refused; invoices made 1
+FINDING x15_ipv6_loopback: --host ::1 (loopback, so allowed by the doc): served=False rc=2 ['invalid: cannot listen on ::1:0 (nodename nor servname provided, or not known)']
+OK x16_probe_url_guard: probe base URLs that are not plain loopback -> exit (2 = refused before sending): [('http://127.0.0.1[at]example.invalid:9/', 2), ('http://user[at]127.0.0.1:9/', 2), ('http://localhost.example.invalid:9/', 2), ('http://0.0.0.0:9/', 2), ('http://127.0.0.1.example.invalid:9/', 2), ('https://127.0.0.1:9/', 2), ('http://[::ffff:10.0.0.1]:9/', 2), ('http://2130706433:9/', 2), ('http://127.0.0.1:9/api?x=1', 2), ('http://example.invalid:9/', 2)]
+OK x17_probe_teeth: boundary_probe exit codes vs candidate and M19 stubs (0 none, 1 findings, 3 inconclusive): [('candidate', 0), ('vulnerable', 1), ('racy', 1), ('naive', 1), ('noop', 3)]
+OK x18_pay_void_race: 5 rounds of 10 payments racing 10 voids: inconsistent rounds []; check rc=0
+OK x19_two_processes_one_db: two server processes on one db, 32 concurrent duplicates split across them: statuses [201], 1 ids, 1 invoices, check rc=0
+SUMMARY core 12/12 pass; oracle ACCEPTS candidate; adversarial 6/19 rejected the attack (13 findings)
+[exit 0]

@@ -1,0 +1,3 @@
+PASS child that ignores SIGTERM is still killed {'returncode': -9, 'error': None, 'seconds': 5.0}
+PASS normal child stops on SIGTERM {'returncode': -15, 'error': None, 'seconds': 0.0}
+M19H1 STOP PROBE 2/2
