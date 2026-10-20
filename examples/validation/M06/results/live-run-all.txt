@@ -1,0 +1,31 @@
+daily integration G06 at 7d5dae5f969c (tree ab2c7cb7df04)
+  G01 aa0b083f1eb1 ACCEPTED_OTHER_REVISION
+  G02 90a5ec9c316e CANDIDATE
+  G03 d4d98f2180ed ACCEPTED
+  P01 external 2577f3ed7146 ACCEPTED
+  P02 external no code comm ACCEPTED
+  run test G01 python3 -m unittest tests.test_fixture_runner rc=0 4.6s
+  run test G01 python3 -m unittest tests.test_assurance_packets rc=0 0.3s
+  run test G01 python3 -m unittest tests.test_closure_hardening rc=0 0.7s
+  run test G02 python3 -m unittest tests.test_g02_capability rc=0 1.9s
+  run command G02 python3 examples/capabilities/G02/activation_oracle.py -- {python} emp rc=0 2.0s
+  run test G03 python3 -m unittest tests.test_g03_capability rc=0 4.5s
+  run command G03 python3 examples/capabilities/G03/recovery_oracle.py -- {python} emplo rc=0 11.1s
+  run cross_check G06 python3 examples/capabilities/G06/cross_checks.py rc=0 0.4s
+  run gate suite python3 -m unittest discover -s tests rc=0 38.9s
+  run gate control_plane python3 control-plane/meta_control_plane.py self-test rc=0 0.2s
+  run gate quality_audit quality_os.py audit rc=0 0.1s
+  run gate manifests python3 -c 
+import glob, json
+bad = []
+for f in sorted(glob.glob('empl rc=0 0.0s
+  run gate catalog python3 tools/build_skill_catalog.py --check rc=0 0.0s
+  run gate symlinks git ls-files -s rc=0 0.0s
+  run gate metadata python3 tools/validate_skill_metadata.py rc=0 0.1s
+  not run: external=P01; reason=reply body not supplied; only its recorded hash is compared
+  not run: external=P01; reason=validation manifest not supplied; only its recorded hash is compared
+  not run: external=P02; reason=reply body not supplied; only its recorded hash is compared
+  not run: external=P02; reason=validation manifest not supplied; only its recorded hash is compared
+VERDICT INTEGRATED
+rc=0
+fresh clone dirty after: 0

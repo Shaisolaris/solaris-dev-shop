@@ -1,0 +1,23 @@
+# binding check G06-r2, 2026-10-19 21:53:17 PDT
+remote head of review/grok-g06-daily-integration: 7d5dae5f969c147987e84b552b3289b481012d9a (expected 7d5dae5f969c147987e84b552b3289b481012d9a)
+worktree HEAD: 7d5dae5f969c147987e84b552b3289b481012d9a
+base is ancestor: yes; commits since: 5
+handback patch G06-r2.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/product-project/project-onboarding/SKILL.md: OK
+  employees/product-project/project-onboarding/activate.py: OK
+  employees/product-project/project-onboarding/learnings.md: OK
+  employees/quality-security/assurance/ASSURANCE.md: OK
+  examples/capabilities/G06/README.md: OK
+  examples/capabilities/G06/plan.json: OK
+  tests/test_g02_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../product-project/project-onboarding/SKILL.md     |  2 +-
+   .../product-project/project-onboarding/activate.py  | 21 +++++++++++++--------
+   .../product-project/project-onboarding/learnings.md |  1 +
+   employees/quality-security/assurance/ASSURANCE.md   | 14 ++++++++++----
+   examples/capabilities/G06/README.md                 |  7 ++++---
+   examples/capabilities/G06/plan.json                 |  9 +++++----
+   tests/test_g02_capability.py                        | 17 +++++++++++++++++
+   7 files changed, 51 insertions(+), 20 deletions(-)
