@@ -1,0 +1,21 @@
+# binding check G24-r2, 2026-10-19 22:32:40 PDT
+remote head of review/grok-g24-daily-integration: 13eea6264ce9ae64fd2387b140aa77b779203591 (expected 13eea6264ce9ae64fd2387b140aa77b779203591)
+worktree HEAD: 13eea6264ce9ae64fd2387b140aa77b779203591
+base is ancestor: yes; commits since: 3
+handback patch G24-r2.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/engineering/backend-developer/duplicate-safe-api.md: OK
+  examples/capabilities/G19/README.md: OK
+  examples/capabilities/G19/boundary_oracle.py: OK
+  examples/capabilities/G24/README.md: OK
+  examples/capabilities/G24/plan.json: OK
+  tests/test_g19_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../backend-developer/duplicate-safe-api.md        | 14 ++++++
+   examples/capabilities/G19/README.md                |  2 +
+   examples/capabilities/G19/boundary_oracle.py       | 10 ++++-
+   examples/capabilities/G24/README.md                |  4 +-
+   examples/capabilities/G24/plan.json                |  4 +-
+   tests/test_g19_capability.py                       | 52 ++++++++++++++++++++++
+   6 files changed, 80 insertions(+), 6 deletions(-)

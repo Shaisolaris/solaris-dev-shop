@@ -1,0 +1,37 @@
+daily integration G24 at 13eea6264ce9 (tree 4369638a9b3b)
+  G13 5666e7beb161 ACCEPTED
+  G14 6f7b23aa1841 ACCEPTED
+  G15 7e7f361208a4 CANDIDATE
+  G16 49aba3fd978a CANDIDATE
+  G17 550f1848a76a ACCEPTED
+  G19 350d175e5cf4 ACCEPTED_OTHER_REVISION
+  P03 external bee80893c03b ACCEPTED
+  P04 external no code comm ACCEPTED
+  run test G13 python3 -m unittest tests.test_g13_capability rc=0 7.8s
+  run test G14 python3 -m unittest tests.test_g14_capability rc=0 4.3s
+  run test G15 python3 -m unittest tests.test_g15_capability rc=0 27.9s
+  run command G15 python3 examples/capabilities/G15/readout_oracle.py --quick -- {python rc=0 7.1s
+  run test G16 python3 -m unittest tests.test_g16_capability rc=0 12.9s
+  run command G16 python3 examples/capabilities/G16/grounding_oracle.py --tool {python}  rc=0 18.5s
+  run test G17 python3 -m unittest tests.test_g17_capability rc=0 8.8s
+  run command G17 python3 examples/capabilities/G17/decision_oracle.py rc=0 2.1s
+  run test G19 python3 -m unittest tests.test_g19_capability rc=0 84.5s
+  run command G19 python3 examples/capabilities/G19/boundary_oracle.py --server {python} rc=0 4.1s
+  run cross_check G24 python3 examples/capabilities/G24/cross_checks.py rc=0 0.2s
+  run gate suite python3 -m unittest discover -s tests rc=0 177.1s
+  run gate control_plane python3 control-plane/meta_control_plane.py self-test rc=0 0.2s
+  run gate quality_audit quality_os.py audit rc=0 0.1s
+  run gate manifests python3 -c 
+import glob, json
+bad = []
+for f in sorted(glob.glob('empl rc=0 0.0s
+  run gate catalog python3 tools/build_skill_catalog.py --check rc=0 0.0s
+  run gate symlinks git ls-files -s rc=0 0.0s
+  run gate metadata python3 tools/validate_skill_metadata.py rc=0 0.1s
+  not run: external=P03; reason=reply body not supplied; only its recorded hash is compared
+  not run: external=P03; reason=validation manifest not supplied; only its recorded hash is compared
+  not run: external=P04; reason=reply body not supplied; only its recorded hash is compared
+  not run: external=P04; reason=validation manifest not supplied; only its recorded hash is compared
+VERDICT INTEGRATED
+rc=0
+fresh clone dirty after: 0
