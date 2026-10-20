@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """host_portability.py: fresh install and host skill-copy boundaries (G40).
 
-  host_portability.py wheel-smoke REPO [--outside DIR] [--json]
+  host_portability.py wheel-smoke REPO [--outside DIR] [--wheelhouse DIR] [--json]
   host_portability.py skill-copy REPO ROLE [--dest DIR] [--json]
   host_portability.py python-bounds REPO [--json]
-  host_portability.py report REPO [--out FILE] [--json]
+  host_portability.py report REPO [--outside DIR] [--wheelhouse DIR] [--out FILE] [--json]
 
 What it checks, reading and running only local packaging commands:
 - wheel-smoke: build a wheel from REPO (as .github/workflows/ci.yml does), install it into a
@@ -23,6 +23,12 @@ plus the pip/wheel already available to the interpreter. Never edits REPO: wheel
 under its work folder (build/, dist/, *.egg-info, caches and bytecode skipped) and refuses an --outside folder at or
 under REPO, or one that exists and is not empty (it never deletes or overwrites there); a wheel member with no source
 file is a finding (wheel_member_not_in_source).
+
+Build backend: `pip wheel` installs the backend named in pyproject.toml (setuptools>=61) into an isolated build
+environment, from the package index. Offline, pass --wheelhouse DIR: a folder holding a setuptools>=61 wheel (for
+example the one bundled in Python 3.11's ensurepip/_bundled). The build then runs with --no-index --find-links DIR and
+needs no network. A --wheelhouse that is missing or holds no setuptools>=61 wheel is refused before anything is
+written. When the backend cannot be obtained, the error says so (build_backend_unavailable) and names --wheelhouse.
 """
 from __future__ import annotations
 
@@ -113,9 +119,32 @@ def _check_outside(root, outside):
     return work
 
 
-def wheel_smoke(root, outside=None):
+_SETUPTOOLS_WHL = re.compile(r"^setuptools-(\d+)(?:\.[^-]*)?-.*\.whl$")
+
+
+def _check_wheelhouse(wheelhouse):
+    """--wheelhouse must be a folder with a setuptools>=61 wheel; checked before anything is written."""
+    if wheelhouse is None:
+        return None
+    wh = Path(wheelhouse)
+    if not wh.is_dir():
+        raise Invalid("--wheelhouse %s is not a folder; name a folder holding a setuptools>=61 wheel" % wh)
+    ok = [p.name for p in sorted(wh.iterdir()) if _SETUPTOOLS_WHL.match(p.name) and int(_SETUPTOOLS_WHL.match(p.name).group(1)) >= 61]
+    if not ok:
+        raise Invalid("--wheelhouse %s holds no setuptools>=61 wheel (the build backend named in pyproject.toml); "
+                      "add one, for example from Python 3.11's ensurepip/_bundled" % wh)
+    return Path(os.path.realpath(str(wh)))
+
+
+def _backend_unavailable(text):
+    t = text or ""
+    return ("installing build dependencies" in t or "build dependencies" in t) and "setuptools" in t
+
+
+def wheel_smoke(root, outside=None, wheelhouse=None):
     """Mirror .github/workflows/ci.yml wheel build and outside-checkout smoke."""
     root = _repo(root)
+    wh = _check_wheelhouse(wheelhouse)
     req = _requires_python(root)
     py = sys.version_info
     if (py.major, py.minor) < (3, 10):
@@ -126,12 +155,12 @@ def wheel_smoke(root, outside=None):
     else:
         work = Path(tempfile.mkdtemp(prefix="g40-wheel-"))
     try:
-        return _wheel_smoke_in(root, req, work)
+        return _wheel_smoke_in(root, req, work, wh)
     except Invalid as ex:
         raise Invalid(str(ex), left=work)
 
 
-def _wheel_smoke_in(root, req, work):
+def _wheel_smoke_in(root, req, work, wh=None):
     findings = []
     # build from a private copy: pip/setuptools write build/ and *.egg-info next to the source, and a stale
     # build/lib left in REPO would be packed into the wheel. work is new or empty, so nothing is replaced.
@@ -142,10 +171,18 @@ def _wheel_smoke_in(root, req, work):
     wheels.mkdir(exist_ok=True)
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
     # build
-    b = subprocess.run([sys.executable, "-m", "pip", "wheel", str(srcdir), "--no-deps", "--wheel-dir", str(wheels)],
-                       capture_output=True, text=True, env=env, timeout=300)
+    cmd = [sys.executable, "-m", "pip", "wheel", str(srcdir), "--no-deps", "--wheel-dir", str(wheels)]
+    if wh is not None:
+        cmd += ["--no-index", "--find-links", str(wh)]
+    b = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=300)
     if b.returncode != 0:
-        raise Invalid("pip wheel failed: %s" % ((b.stderr or b.stdout)[-400:]))
+        tail = (b.stderr or b.stdout)[-400:].strip()
+        if _backend_unavailable(b.stderr or b.stdout):
+            how = ("the --wheelhouse folder did not supply it" if wh is not None else
+                   "the package index was not reachable or is disabled; offline, rerun with --wheelhouse DIR holding a setuptools>=61 wheel")
+            raise Invalid("build_backend_unavailable: pip could not install the build backend setuptools>=61 named in "
+                          "pyproject.toml (%s). pip said: %s" % (how, tail))
+        raise Invalid("pip wheel failed: %s" % tail)
     whls = sorted(wheels.glob("*.whl"))
     if len(whls) != 1:
         raise Invalid("expected one wheel, found %d" % len(whls))
@@ -188,6 +225,7 @@ def _wheel_smoke_in(root, req, work):
     return {
         "schema": SCHEMA, "command": "wheel-smoke", "result": result,
         "requires_python": req, "wheel": wheel.name, "outside": str(work),
+        "build_backend_from": ("wheelhouse %s (--no-index)" % wh) if wh is not None else "package index or pip configuration",
         "wheel_files_sample": sorted([n for n in names if n.endswith((".py", ".json", ".md"))])[:12],
         "employees_in_wheel": any(n.startswith("employees/") for n in names),
         "findings": findings,
@@ -300,10 +338,11 @@ def python_bounds(root):
     }
 
 
-def report(root, outside=None):
+def report(root, outside=None, wheelhouse=None):
     root = _repo(root)
+    _check_wheelhouse(wheelhouse)  # refuse before skill-copy or anything else runs
     if outside and sys.version_info >= (3, 10):
-        _check_outside(root, outside)  # refuse before skill-copy or anything else runs
+        _check_outside(root, outside)
     parts = {}
     # python bounds always
     parts["python_bounds"] = python_bounds(root)
@@ -311,7 +350,7 @@ def report(root, outside=None):
     parts["skill_copy_qa_engineer"] = skill_copy(root, "quality-security/qa-engineer")
     # wheel smoke only on 3.10+
     if sys.version_info >= (3, 10):
-        parts["wheel_smoke"] = wheel_smoke(root, outside=outside)
+        parts["wheel_smoke"] = wheel_smoke(root, outside=outside, wheelhouse=wheelhouse)
     else:
         parts["wheel_smoke"] = {
             "schema": SCHEMA, "command": "wheel-smoke", "result": "skipped",
@@ -357,20 +396,20 @@ def render(r):
 def main(argv=None):
     ap = argparse.ArgumentParser(description="fresh install and host skill-copy boundaries")
     sub = ap.add_subparsers(dest="cmd", required=True)
-    w = sub.add_parser("wheel-smoke"); w.add_argument("repo"); w.add_argument("--outside"); w.add_argument("--json", action="store_true"); w.add_argument("--out")
+    w = sub.add_parser("wheel-smoke"); w.add_argument("repo"); w.add_argument("--outside"); w.add_argument("--wheelhouse"); w.add_argument("--json", action="store_true"); w.add_argument("--out")
     s = sub.add_parser("skill-copy"); s.add_argument("repo"); s.add_argument("role"); s.add_argument("--dest"); s.add_argument("--json", action="store_true"); s.add_argument("--out")
     p = sub.add_parser("python-bounds"); p.add_argument("repo"); p.add_argument("--json", action="store_true"); p.add_argument("--out")
-    r = sub.add_parser("report"); r.add_argument("repo"); r.add_argument("--outside"); r.add_argument("--json", action="store_true"); r.add_argument("--out")
+    r = sub.add_parser("report"); r.add_argument("repo"); r.add_argument("--outside"); r.add_argument("--wheelhouse"); r.add_argument("--json", action="store_true"); r.add_argument("--out")
     ns = ap.parse_args(argv)
     try:
         if ns.cmd == "wheel-smoke":
-            out = wheel_smoke(ns.repo, ns.outside)
+            out = wheel_smoke(ns.repo, ns.outside, ns.wheelhouse)
         elif ns.cmd == "skill-copy":
             out = skill_copy(ns.repo, ns.role, ns.dest)
         elif ns.cmd == "python-bounds":
             out = python_bounds(ns.repo)
         else:
-            out = report(ns.repo, ns.outside)
+            out = report(ns.repo, ns.outside, ns.wheelhouse)
         text = json.dumps(out, indent=2, sort_keys=True) + "\n"
         if ns.out:
             _atomic(ns.out, text)

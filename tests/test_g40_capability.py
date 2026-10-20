@@ -8,9 +8,34 @@ TOOL = ROOT / "employees/quality-security/qa-engineer/host_portability.py"
 ENV = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
 
 
-def run(*args, tool=TOOL, timeout=300):
+def run(*args, tool=TOOL, timeout=300, env=None):
     return subprocess.run([sys.executable, str(tool)] + [str(a) for a in args],
-                          capture_output=True, text=True, env=ENV, timeout=timeout)
+                          capture_output=True, text=True, env=env or ENV, timeout=timeout)
+
+
+def _offline_env():
+    env = {k: v for k, v in ENV.items() if not k.startswith("PIP_")}
+    env["PIP_NO_INDEX"] = "1"
+    env["PIP_DISABLE_PIP_VERSION_CHECK"] = "1"
+    return env
+
+
+def _local_wheelhouse():
+    """A folder with a setuptools>=61 wheel, found without network: $G40_WHEELHOUSE or this Python's ensurepip bundle."""
+    import re
+    cands = [os.environ.get("G40_WHEELHOUSE")]
+    try:
+        import ensurepip
+        cands.append(os.path.join(os.path.dirname(ensurepip.__file__), "_bundled"))
+    except ImportError:
+        pass
+    for c in cands:
+        if c and os.path.isdir(c):
+            for n in os.listdir(c):
+                m = re.match(r"^setuptools-(\d+)", n)
+                if m and n.endswith(".whl") and int(m.group(1)) >= 61:
+                    return c
+    return None
 
 
 class G40Oracle(unittest.TestCase):
@@ -141,6 +166,52 @@ class G40Direct(unittest.TestCase):
         self.assertNotIn("Nothing was written", r.stderr)
         self.assertIn(str(work), r.stderr)
         self.assertTrue((work / "src").is_dir())
+
+    def test_wheelhouse_that_is_not_a_folder_is_refused_and_nothing_written(self):
+        d = Path(tempfile.mkdtemp(prefix="g40w-")); self.addCleanup(shutil.rmtree, d, True)
+        out = d / "out"
+        r = run("wheel-smoke", ROOT, "--outside", out, "--wheelhouse", d / "missing", "--json")
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+        self.assertIn("--wheelhouse", r.stderr); self.assertIn("Nothing was written", r.stderr)
+        self.assertFalse(out.exists())
+
+    def test_wheelhouse_without_setuptools_is_refused_before_anything_is_written(self):
+        # M40 P3-2: an offline wheelhouse that cannot supply the backend fails up front, not as a cut pip tail
+        d = Path(tempfile.mkdtemp(prefix="g40w-")); self.addCleanup(shutil.rmtree, d, True)
+        wh = d / "wh"; wh.mkdir(); (wh / "setuptools-60.0.0-py3-none-any.whl").write_text("old\n")
+        out = d / "out"
+        for cmd in ("wheel-smoke", "report"):
+            r = run(cmd, ROOT, "--outside", out, "--wheelhouse", wh, "--json")
+            self.assertEqual(r.returncode, 2, cmd + r.stdout + r.stderr)
+            self.assertIn("setuptools>=61", r.stderr); self.assertIn("Nothing was written", r.stderr)
+            self.assertFalse(out.exists())
+
+    @unittest.skipIf(sys.version_info < (3, 10), "wheel-smoke needs 3.10+")
+    def test_offline_without_wheelhouse_names_the_backend_and_the_remedy(self):
+        d = Path(tempfile.mkdtemp(prefix="g40off-")); self.addCleanup(shutil.rmtree, d, True)
+        work = d / "work"
+        r = run("wheel-smoke", ROOT, "--outside", work, "--json", env=_offline_env(), timeout=600)
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+        self.assertIn("build_backend_unavailable", r.stderr)
+        self.assertIn("--wheelhouse", r.stderr)
+        self.assertIn(str(work), r.stderr)
+
+    @unittest.skipIf(sys.version_info < (3, 10), "wheel-smoke needs 3.10+")
+    def test_offline_build_with_a_local_wheelhouse_passes(self):
+        wh = _local_wheelhouse()
+        if not wh:
+            self.skipTest("no local setuptools>=61 wheel (set G40_WHEELHOUSE)")
+        d = Path(tempfile.mkdtemp(prefix="g40off-")); self.addCleanup(shutil.rmtree, d, True)
+        r = run("wheel-smoke", ROOT, "--outside", d / "work", "--wheelhouse", wh, "--json", env=_offline_env(), timeout=600)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        j = json.loads(r.stdout)
+        self.assertEqual(j["result"], "pass", j)
+        self.assertTrue(j["build_backend_from"].startswith("wheelhouse "), j)
+        self.assertFalse(j["employees_in_wheel"])
+
+    def test_docs_state_offline_wheelhouse(self):
+        for p in ("employees/quality-security/qa-engineer/host-portability.md", "examples/capabilities/G40/README.md", "docs/install.md"):
+            self.assertIn("--wheelhouse", (ROOT / p).read_text(), p)
 
     def test_docs_state_outside_rule(self):
         doc = (ROOT / "employees/quality-security/qa-engineer/host-portability.md").read_text()
