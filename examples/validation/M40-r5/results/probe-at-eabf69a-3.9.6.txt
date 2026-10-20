@@ -1,0 +1,6 @@
+FAIL C3 setuptools<61 wheelhouse refused, nothing written rc=2 exists=False
+PASS C4 non-wheel file named setuptools refused rc=2
+PASS C5 wheelhouse that is a file refused and kept rc=2
+PASS C6 report refuses bad wheelhouse before skill-copy runs rc=2 new_skill_dirs=0
+PASS C8 checkout unchanged dirty=0
+M40R5 PROBE 4/5

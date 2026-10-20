@@ -1,0 +1,46 @@
+{
+  "python": "3.13.15",
+  "checkout_head": "eabf69ac9cf4f539bc39482b75681bf75e6e97e5",
+  "cases": [
+    {
+      "case": "C1 offline wheelhouse build passes",
+      "ok": false,
+      "note": "rc=2 result=None from=None"
+    },
+    {
+      "case": "C2 offline no wheelhouse names backend and remedy",
+      "ok": false,
+      "note": "rc=2 msg=invalid: pip wheel failed: not find a version that satisfies the requirement setuptools>=61 (from versions: none)\n      ERROR: No matching distribution found fo"
+    },
+    {
+      "case": "C7 corrupt setuptools wheel fails with exit 2, no traceback from the tool",
+      "ok": true,
+      "note": "rc=2 backend_named=False"
+    },
+    {
+      "case": "C3 setuptools<61 wheelhouse refused, nothing written",
+      "ok": false,
+      "note": "rc=2 exists=False"
+    },
+    {
+      "case": "C4 non-wheel file named setuptools refused",
+      "ok": true,
+      "note": "rc=2"
+    },
+    {
+      "case": "C5 wheelhouse that is a file refused and kept",
+      "ok": true,
+      "note": "rc=2"
+    },
+    {
+      "case": "C6 report refuses bad wheelhouse before skill-copy runs",
+      "ok": true,
+      "note": "rc=2 new_skill_dirs=0"
+    },
+    {
+      "case": "C8 checkout unchanged",
+      "ok": true,
+      "note": "dirty=0"
+    }
+  ]
+}

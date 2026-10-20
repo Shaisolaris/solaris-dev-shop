@@ -1,0 +1,106 @@
+{
+ "python": "3.12.14",
+ "rows": [
+  {
+   "id": "V1",
+   "desc": "existing folder with user files: exit 2, every file kept, nothing added",
+   "pass": true,
+   "detail": {
+    "rc": 2,
+    "stderr": "gn/T/m40r4-nucy2wtk/mine already exists and is not empty; name a new or empty folder (wheel-smoke never deletes or overwrites files there). Nothing was written."
+   }
+  },
+  {
+   "id": "V2",
+   "desc": "report --outside on the same folder: exit 2, kept",
+   "pass": true,
+   "detail": {
+    "rc": 2
+   }
+  },
+  {
+   "id": "V3",
+   "desc": "folder holding only a hidden file counts as not empty",
+   "pass": true,
+   "detail": {
+    "rc": 2
+   }
+  },
+  {
+   "id": "V4",
+   "desc": "a file as --outside: exit 2, no traceback, file kept",
+   "pass": true,
+   "detail": {
+    "rc": 2
+   }
+  },
+  {
+   "id": "V5",
+   "desc": "dangling symlink as --outside: exit 2, target not created",
+   "pass": true,
+   "detail": {
+    "rc": 2
+   }
+  },
+  {
+   "id": "V6",
+   "desc": "symlink to a non-empty folder: exit 2, target kept",
+   "pass": true,
+   "detail": {
+    "rc": 2
+   }
+  },
+  {
+   "id": "V7",
+   "desc": "new nested folder: created, exit 0, result pass",
+   "pass": true,
+   "detail": {
+    "rc": 0,
+    "result": "pass",
+    "stderr": ""
+   }
+  },
+  {
+   "id": "V8",
+   "desc": "rerun into the folder the first run filled: exit 2, its files kept",
+   "pass": true,
+   "detail": {
+    "rc": 2
+   }
+  },
+  {
+   "id": "V9",
+   "desc": "existing empty folder: exit 0 pass",
+   "pass": true,
+   "detail": {
+    "rc": 0
+   }
+  },
+  {
+   "id": "V10",
+   "desc": "failed build: exit 2, names the work folder, nothing else created next to it",
+   "pass": true,
+   "detail": {
+    "rc": 2,
+    "new_entries": [
+     "wfail"
+    ],
+    "stderr_tail": " the work folder <tmpdir> (left for inspection); the checkout and everything else were not changed."
+   }
+  },
+  {
+   "id": "V11",
+   "desc": "--outside under REPO still refused, nothing created",
+   "pass": true,
+   "detail": {
+    "rc": 2
+   }
+  },
+  {
+   "id": "V12",
+   "desc": "checkout copy unchanged after every run",
+   "pass": true,
+   "detail": {}
+  }
+ ]
+}

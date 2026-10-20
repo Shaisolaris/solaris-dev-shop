@@ -1,0 +1,19 @@
+{
+ "python": "3.9.6",
+ "rows": [
+  {
+   "id": "V0",
+   "desc": "3.9: wheel-smoke refused with exit 2, nothing created",
+   "pass": true,
+   "detail": {
+    "rc": 2
+   }
+  },
+  {
+   "id": "V12",
+   "desc": "checkout copy unchanged after every run",
+   "pass": true,
+   "detail": {}
+  }
+ ]
+}

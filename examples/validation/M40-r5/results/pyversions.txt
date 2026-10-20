@@ -1,0 +1,5 @@
+== 3.9.6 | r5 probe: M40R5 PROBE 5/5 | at eabf69a: M40R5 PROBE 4/5 | M40 r4 probe on r5: M40R4 PROBE 2/2 | M40 oracle on r5: M40 ORACLE 5/5 scored PASS
+== 3.11.16 | r5 probe: M40R5 PROBE 8/8 | at eabf69a: M40R5 PROBE 5/8 | M40 r4 probe on r5: M40R4 PROBE 12/12 | M40 oracle on r5: M40 ORACLE 8/8 scored PASS
+== 3.12.14 | r5 probe: M40R5 PROBE 8/8 | at eabf69a: M40R5 PROBE 5/8 | M40 r4 probe on r5: M40R4 PROBE 12/12 | M40 oracle on r5: M40 ORACLE 4/4 scored PASS
+== 3.13.15 | r5 probe: M40R5 PROBE 8/8 | at eabf69a: M40R5 PROBE 5/8 | M40 r4 probe on r5: M40R4 PROBE 12/12 | M40 oracle on r5: M40 ORACLE 4/4 scored PASS
+checkout status lines: 0

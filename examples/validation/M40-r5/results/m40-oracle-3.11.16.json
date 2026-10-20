@@ -1,0 +1,273 @@
+{
+ "python": "3.11.16",
+ "can_wheel": true,
+ "rows": [
+  {
+   "row": "A01 python-bounds: requires-python and the 3.10+/3.9+ split are reported truthfully, every employee script is parsed, nothing is written, a 3.10-only script is caught on 3.9",
+   "pass": true,
+   "sub": {
+    "exit_0": true,
+    "requires_python_from_pyproject": true,
+    "wheel_3_10_source_3_9": true,
+    "every_employee_script_parsed": true,
+    "interpreter_reported": true,
+    "no_file_written_in_repo": true,
+    "py310_syntax_parses_on_3_10_plus": true
+   },
+   "detail": {
+    "exit_0": [
+     true,
+     0
+    ],
+    "requires_python_from_pyproject": [
+     true,
+     ">=3.10"
+    ],
+    "wheel_3_10_source_3_9": [
+     true,
+     [
+      "3.10+",
+      "3.9+"
+     ]
+    ],
+    "every_employee_script_parsed": [
+     true,
+     [
+      13,
+      13
+     ]
+    ],
+    "interpreter_reported": [
+     true,
+     "3.11.16"
+    ],
+    "no_file_written_in_repo": [
+     true,
+     0
+    ],
+    "py310_syntax_parses_on_3_10_plus": [
+     true,
+     [
+      0,
+      []
+     ]
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "A02 skill-copy: a lone qa-engineer copy is broken (exit 1) and names the shared standard and assurance paths it lost; bad roles and repos exit 2",
+   "pass": true,
+   "sub": {
+    "lone_qa_engineer_copy_broken_exit_1": true,
+    "names_missing_standard_and_assurance": true,
+    "copy_really_made": true,
+    "missing_paths_really_missing_in_copy": true,
+    "bad_role_dotdot_exit_2": true,
+    "bad_role_absolute_exit_2": true,
+    "bad_role_missing_exit_2": true,
+    "bad_role_no_contract_exit_2": true,
+    "bad_repo_exit_2": true
+   },
+   "detail": {
+    "lone_qa_engineer_copy_broken_exit_1": [
+     true,
+     [
+      1,
+      "broken"
+     ]
+    ],
+    "names_missing_standard_and_assurance": [
+     true,
+     [
+      "../QUALITY-SECURITY-STANDARD.md",
+      "../QUALITY-SECURITY-STANDARD.md",
+      "../assurance/ASSURANCE.md",
+      "../assurance/quality_os.py"
+     ]
+    ],
+    "copy_really_made": [
+     true,
+     "<tmpdir>"
+    ],
+    "missing_paths_really_missing_in_copy": [
+     true,
+     4
+    ],
+    "bad_role_dotdot_exit_2": [
+     true,
+     [
+      2,
+      "alid: ROLE must be a relative employees path like quality-security/qa-engineer. Nothing was written."
+     ]
+    ],
+    "bad_role_absolute_exit_2": [
+     true,
+     [
+      2,
+      "invalid: ROLE path does not exist under employees/: etc. Nothing was written."
+     ]
+    ],
+    "bad_role_missing_exit_2": [
+     true,
+     [
+      2,
+      "invalid: ROLE path does not exist under employees/: quality-security/nope. Nothing was written."
+     ]
+    ],
+    "bad_role_no_contract_exit_2": [
+     true,
+     [
+      2,
+      "invalid: ROLE has no capability.contract.json. Nothing was written."
+     ]
+    ],
+    "bad_repo_exit_2": [
+     true,
+     2
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "A03 --out is written atomically and equals the JSON report; a missing --out folder or a bad repo exits 2 with nothing written",
+   "pass": true,
+   "sub": {
+    "out_written_equals_stdout": true,
+    "out_missing_folder_exit_2_nothing": true,
+    "bad_repo_exit_2": true
+   },
+   "detail": {
+    "out_written_equals_stdout": [
+     true,
+     0
+    ],
+    "out_missing_folder_exit_2_nothing": [
+     true,
+     2
+    ],
+    "bad_repo_exit_2": [
+     true,
+     2
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "A04 wheel member inspection flags bytecode, employee skills, a missing control-plane policy and checkout layout, and passes a clean member list",
+   "pass": true,
+   "sub": {
+    "clean_names_no_findings": true,
+    "pyc_found": true,
+    "employees_found": true,
+    "missing_policy_found": true,
+    "checkout_layout_found": true
+   },
+   "detail": {
+    "clean_names_no_findings": [
+     true,
+     []
+    ],
+    "pyc_found": [
+     true,
+     0
+    ],
+    "employees_found": [
+     true,
+     0
+    ],
+    "missing_policy_found": [
+     true,
+     0
+    ],
+    "checkout_layout_found": [
+     true,
+     0
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "A05 wheel-smoke clean control: a wheel is built, installed outside the checkout, its command runs, and it carries no employee skills",
+   "pass": true,
+   "sub": {
+    "exit_0_pass": true,
+    "employees_not_in_wheel": true,
+    "wheel_really_built_with_policy": true,
+    "installed_command_runs_outside": true
+   },
+   "detail": {
+    "exit_0_pass": [
+     true,
+     [
+      0,
+      "pass",
+      ""
+     ]
+    ],
+    "employees_not_in_wheel": [
+     true,
+     false
+    ],
+    "wheel_really_built_with_policy": [
+     true,
+     15
+    ],
+    "installed_command_runs_outside": [
+     true,
+     0
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "A06 wheel-smoke never edits REPO (its docstring: Never edits REPO)",
+   "pass": true,
+   "sub": {
+    "repo_unchanged": true
+   },
+   "detail": {
+    "repo_unchanged": [
+     true,
+     []
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "A07 a stale build/lib left in REPO is neither packed into the smoked wheel nor passed silently",
+   "pass": true,
+   "sub": {
+    "stale_build_not_packed_or_reported": true
+   },
+   "detail": {
+    "stale_build_not_packed_or_reported": [
+     true,
+     [
+      0,
+      "pass",
+      []
+     ]
+    ]
+   },
+   "scored": true
+  },
+  {
+   "row": "A08 --outside inside the checkout is refused (the smoke claims an install outside the checkout)",
+   "pass": true,
+   "sub": {
+    "outside_inside_checkout_refused_exit_2": true
+   },
+   "detail": {
+    "outside_inside_checkout_refused_exit_2": [
+     true,
+     [
+      2,
+      false
+     ]
+    ]
+   },
+   "scored": true
+  }
+ ]
+}
