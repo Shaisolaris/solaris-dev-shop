@@ -66,10 +66,17 @@ def _num(tok):
 
 def _value_in_quote(value, quote):
     """A numeric value must equal a whole number the quote states (18 never matches 18,000; 4 never 40).
-    Non-numeric values keep the substring rule."""
+    Values the scorer would read as a number but that are not plain numbers (1,5, +18, -5) never match.
+    Other non-numeric values keep the substring rule."""
     want = _num(value)
     if want is None:
-        return value in quote
+        try:
+            Decimal(value.replace(",", "").rstrip("%"))
+        except (InvalidOperation, AttributeError):
+            return value in quote
+        # the scorer would read it as a number (1,5 / +18 / -5) but it is not a plain number: a substring match
+        # could be a fragment of a larger number, so it never matches (fails closed)
+        return False
     return any(_num(m.group(0)) == want for m in NUM.finditer(quote))
 
 

@@ -175,6 +175,29 @@ class G33Capability(unittest.TestCase):
         self.claim('C1')['value'] = '40'
         self.assertEqual(self.decide(0)['findings'], [])
 
+    def test_signed_or_odd_grouped_value_is_not_a_fragment_match(self):
+        """M33 r3 P2-1: a value the scorer reads as a number but that is not a plain number (1,5 / +18 / -5) must not
+        fall back to substring matching, or a digit fragment of a larger number is used and scored."""
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('g33_ed', str(TOOL)); m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        self.assertFalse(m._value_in_quote('1,5', 'surveyed 11,500 clinics'))
+        self.assertFalse(m._value_in_quote('+18', 'growth of +180 seats'))
+        self.assertFalse(m._value_in_quote('-5', 'a change of -50 points'))
+        self.assertFalse(m._value_in_quote('-5', 'a change of -5 points'))  # fails closed: a sign is not compared
+        self.assertTrue(m._value_in_quote('ten minutes', 'saves ten minutes a day'))
+        self.assertTrue(m._value_in_quote('Q3 2026', 'launch in Q3 2026'))
+        text = 'Survey: clinics surveyed 11,500; seat growth +180.'
+        (self.d / 'sources' / 'market.txt').write_text(text + '\n')
+        self.src('S-mkt')['snapshot']['sha256'] = hashlib.sha256((self.d / 'sources' / 'market.txt').read_bytes()).hexdigest()
+        self.src('S-mkt')['retrieved_at'] = '2026-09-20'
+        c = self.claim('C10'); c['quote'] = text
+        for v, sc in (('1,5', '3'), ('+18', '3')):
+            c['value'], c['score'] = v, sc
+            self.assertEqual(self.codes(self.decide(1)), {('value_not_in_quote', 'C10')}, v)
+        c['value'], c['score'] = '11,500', '5'
+        self.assertEqual(self.decide(0)['findings'], [])
+
     def test_staleness_boundary(self):
         self.src('S-mkt')['max_age_days'] = 127
         self.claim('C10')['score'] = '5'  # matches the metric scale for 18,000

@@ -27,3 +27,4 @@
 - What was used: methodology only: deanpeters/Product-Manager-Skills; methodology absorbed: msitarzewski/agency-agents, alirezarezvani/the coding agent-skills; rejected (not used): Digidai/product-manager-skills, pratikshadake/the coding agent-product-management-skills
 - License notes: deanpeters/Product-Manager-Skills: NOASSERTION (FLAG); Digidai/product-manager-skills: NOASSERTION (FLAG)
 - G33: prefer a product option only when its low confidence-weighted total strictly beats every other high; out-of-ICP and stale mutable claims are excluded, never averaged in.
+- 2026-10-19 r4: a value the scorer reads as a number but that is not a plain number (1,5, +18, -5) fell back to substring matching, so 1,5 matched 11,500 and scored as 15; such values now never match (M33 r3 P2-1).
