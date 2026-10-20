@@ -7,6 +7,7 @@ version metadata, tags and releases after the final gates.
 ```bash
 T=employees/quality-security/assurance/release_candidate.py
 python3 $T inventory . --queue WORK-QUEUE.json --acceptance ACCEPTANCE-*.json --candidates candidate-index.json --git
+git ls-remote origin 'refs/heads/review/*' > heads.txt   # then add: --remote-heads heads.txt
 ```
 
 ## Dispositions
@@ -18,6 +19,16 @@ python3 $T inventory . --queue WORK-QUEUE.json --acceptance ACCEPTANCE-*.json --
 | candidate_only | a candidate exists, no acceptance record |
 | excluded | the queue marks the goal excluded or rejected; it never appears in `included_if_released` |
 | missing | neither a candidate nor an acceptance record |
+| not_selected | the queue sets `selected_for_week: false` and the goal is not a required final goal; listed, but it does not block the gate and is not included unless accepted |
+
+## Remote heads (`--remote-heads`, with `--git`)
+
+The candidate index can fall behind the review branches. Give a `git ls-remote` listing and every branch whose
+name holds the goal id as a word (`review/grok-g19-...`) is compared with the goal's accepted commit and index
+candidate. A head that descends from either and differs from both is a revision nobody indexed: an accepted
+goal becomes `acceptance_stale` (with `newer_remote_heads`), and "candidate index is stale" is a gate reason.
+A listed head that is not in REPO cannot be checked and is a gate reason too; fetch first. Heads on another
+history (an older validation branch, for example) are ignored. The tool never fetches.
 
 ## Metadata reconciliation
 
@@ -27,7 +38,9 @@ mismatch is a reason, never fixed here.
 
 ## Gate
 
-The computed gate is READY only when every selected goal is accepted or excluded, every required final goal
+The computed gate is READY only when every selected goal (every goal the queue does not mark
+`selected_for_week: false`) is accepted or excluded, no remote head is newer than the index (with
+`--remote-heads`), every required final goal
 is accepted, no two acceptance records conflict, the metadata agrees, and the queue's `release_gate` names a
 `candidate_commit`, `checks_revision` and `reviewed_revision`. Otherwise NOT_READY with every reason (exit 1).
 `applied` is always false. The proposed version is one minor step from the current version and is not
