@@ -1,0 +1,30 @@
+{
+  "captured_at": "2026-10-18T16:00:00Z",
+  "config": {
+    "addresses": [
+      {
+        "cidr": "10.20.0.15/24",
+        "dev": "eth0"
+      }
+    ],
+    "resolvers": [
+      "10.99.0.53"
+    ],
+    "routes": []
+  },
+  "observations": [
+    {
+      "qname": "api.shop.example",
+      "rcode": "TIMEOUT",
+      "resolver": "10.99.0.53",
+      "stage": "dns"
+    }
+  ],
+  "schema": "solaris.net-trace/1",
+  "target": {
+    "host": "api.shop.example",
+    "path": "/health",
+    "port": 443,
+    "scheme": "https"
+  }
+}

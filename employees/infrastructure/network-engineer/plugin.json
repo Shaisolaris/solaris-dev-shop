@@ -12,7 +12,8 @@
     "learnings.md",
     "homelab-and-network-ops.md",
     "enterprise-network-ops.md",
-    "server-hardening-tls-headers.md"
+    "server-hardening-tls-headers.md",
+    "offline-trace-diagnosis.md"
   ],
   "tags": [
     "infrastructure",

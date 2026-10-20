@@ -171,6 +171,7 @@ Refuse to fast-lane anything touching production data, customer PII, or shared n
 | Data tier sizing | database-administrator | Engine choice + replication topology |
 | Compliance build | security-auditor | Audit-ready architecture (logging, encryption, segmentation) |
 | Spend governance | CFO / the owner | Cost model, chargeback tags, monthly review |
+| "Can't reach it" on a cloud path (VPC route, security group, LB TLS) | network-engineer | Captured trace; they run `netdiag.py` offline and return the failing layer before any redesign |
 
 ## References
 | File | When to load |
