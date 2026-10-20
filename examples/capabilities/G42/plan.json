@@ -10,9 +10,19 @@
  ],
  "prerequisites": [
   {
+   "id": "G01",
+   "commit": "aa0b083f1eb105349bc29d4d6d45cb2d1877d6b8",
+   "note": "G01 h1, newest remote head; also stacked by G06",
+   "tests": [
+    "tests.test_fixture_runner",
+    "tests.test_assurance_packets",
+    "tests.test_closure_hardening"
+   ]
+  },
+  {
    "id": "G02",
-   "commit": "8fdae9cead8d136211f596bf1e501a41c5a78078",
-   "note": "G02 r3 (root QA), merged here so the G39 drill runs the repaired activation",
+   "commit": "90a5ec9c316e4d3fde84591faac1f8a00de73805",
+   "note": "G02 r4, newest remote head; also stacked by G06",
    "tests": [
     "tests.test_g02_capability"
    ],
@@ -28,7 +38,7 @@
   {
    "id": "G03",
    "commit": "d4d98f2180ed9b92fd058a2350285f60f83b877d",
-   "note": "carried by G39",
+   "note": "G03, newest remote head; also stacked by G06, G18",
    "tests": [
     "tests.test_g03_capability"
    ],
@@ -43,8 +53,8 @@
   },
   {
    "id": "G04",
-   "commit": "155fc33ad284b8c8f79c235d96f240abcd64f662",
-   "note": "G04 r2 (root QA), merged here so the G39 drill runs the repaired handoff",
+   "commit": "e9fa278f6fc967720118937c746287adf7cd6dad",
+   "note": "G04 r3, newest remote head; also stacked by G12, G36",
    "tests": [
     "tests.test_g04_capability"
    ],
@@ -56,10 +66,11 @@
   },
   {
    "id": "G05",
-   "commit": "30563781f175d3f012e881fe8d302f5a7aed5c20",
-   "note": "G05 r2 (root QA), carried by G39 r3",
+   "commit": "04b3cf2127c2e6abda01c7a0d4c8a0bfadabeaa0",
+   "note": "G05 r3, newest remote head; also stacked by G12",
    "tests": [
-    "tests.test_g05_capability"
+    "tests.test_g05_capability",
+    "tests.test_closure_hardening"
    ],
    "commands": [
     [
@@ -68,9 +79,80 @@
    ]
   },
   {
+   "id": "G07",
+   "commit": "0d6a78d56cdb4c3b8d87ed25bb41704e99bc5382",
+   "note": "G07, newest remote head; also stacked by G12",
+   "tests": [
+    "tests.test_g07_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G07/registry_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G08",
+   "commit": "ddebe98707219aa2638cd424777b1255413d9ceb",
+   "note": "G08, newest remote head; also stacked by G12",
+   "tests": [
+    "tests.test_g08_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G08/deploy_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G09",
+   "commit": "edfa64d4d86532d18164e37175c7b0e4d734d0e0",
+   "note": "G09, newest remote head; also stacked by G12",
+   "tests": [
+    "tests.test_g09_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G09/k8s_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G10",
+   "commit": "f79be61580dec0911f6aba56c3bdc746a30898e7",
+   "note": "G10, newest remote head; also stacked by G18",
+   "tests": [
+    "tests.test_g10_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G10/diagnosis_oracle.py",
+     "--",
+     "{python}",
+     "employees/infrastructure/network-engineer/netdiag.py"
+    ]
+   ]
+  },
+  {
+   "id": "G11",
+   "commit": "13ba7055537e305732856aea3c74ff28f0848be8",
+   "note": "G11, newest remote head; also stacked by G18",
+   "tests": [
+    "tests.test_g11_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G11/incident_oracle.py",
+     "--",
+     "{python}",
+     "employees/infrastructure/site-reliability-engineer/incident_slo.py"
+    ]
+   ]
+  },
+  {
    "id": "G13",
    "commit": "5666e7beb161d1252ddd5dcc0a166aca83255370",
-   "note": "carried by G37 and G39",
+   "note": "G13, newest remote head; also stacked by G18, G24, G30, G36",
    "tests": [
     "tests.test_g13_capability"
    ],
@@ -83,9 +165,70 @@
    ]
   },
   {
+   "id": "G14",
+   "commit": "6f7b23aa18413907c5fbd250daab475dc94e7a1e",
+   "note": "G14, newest remote head; also stacked by G18, G24, G30, G36",
+   "tests": [
+    "tests.test_g14_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G14/cash_oracle.py",
+     "--",
+     "{python}",
+     "employees/leadership/cfo/cash_revenue_reconcile.py"
+    ]
+   ]
+  },
+  {
+   "id": "G15",
+   "commit": "7e7f361208a40ac55a18a6089c820f92a74147c2",
+   "note": "G15 r4, newest remote head; also stacked by G24",
+   "tests": [
+    "tests.test_g15_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G15/readout_oracle.py",
+     "--quick",
+     "--",
+     "{python}",
+     "employees/data/data-scientist/experiment_readout.py"
+    ]
+   ]
+  },
+  {
+   "id": "G16",
+   "commit": "49aba3fd978a21545f525ad6e82156e39653b257",
+   "note": "G16 r8, newest remote head; also stacked by G24",
+   "tests": [
+    "tests.test_g16_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G16/grounding_oracle.py",
+     "--tool",
+     "{python} employees/engineering/llm-agent-designer/grounded_eval.py"
+    ]
+   ]
+  },
+  {
+   "id": "G17",
+   "commit": "550f1848a76ad4d5b6688090afc0519354ac3370",
+   "note": "G17, newest remote head; also stacked by G24, G30, G36",
+   "tests": [
+    "tests.test_g17_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G17/decision_oracle.py"
+    ]
+   ]
+  },
+  {
    "id": "G19",
    "commit": "350d175e5cf43438e95476f945ea16804e4bba85",
-   "note": "G19 h1 (final docs hardening), carried by G39 r3",
+   "note": "G19 h1, newest remote head; also stacked by G24",
    "tests": [
     "tests.test_g19_capability"
    ],
@@ -98,9 +241,144 @@
    ]
   },
   {
+   "id": "G20",
+   "commit": "0d4db6949ee225e26f6df6cba3fc8047a2742d8a",
+   "note": "G20 r3, newest remote head; also stacked by G30",
+   "tests": [
+    "tests.test_g20_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G20/ui_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G21",
+   "commit": "822a9c1aaf2da3a0dace1bd0a0640d992406efa0",
+   "note": "G21, newest remote head; also stacked by G30",
+   "tests": [
+    "tests.test_g21_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G21/sync_oracle.py",
+     "--quick"
+    ]
+   ]
+  },
+  {
+   "id": "G22",
+   "commit": "29cd7fc6a07384db28fca3824b7fc4efe1d13fe3",
+   "note": "G22 h2, newest remote head; also stacked by G30",
+   "tests": [
+    "tests.test_g22_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G22/ledger_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G23",
+   "commit": "0ff2641c56c852d9525adaa71442274d8c8453a6",
+   "note": "G23, newest remote head; also stacked by G30",
+   "tests": [
+    "tests.test_g23_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G23/wp_oracle.py",
+     "--tool",
+     "{python} employees/specialized/wordpress-master/wp_trace_diag.py"
+    ]
+   ]
+  },
+  {
+   "id": "G25",
+   "commit": "eb9c7c47384ec5d8ba951aca72240ed57ca7b383",
+   "note": "G25, newest remote head; also stacked by G30",
+   "tests": [
+    "tests.test_g25_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G25/protocol_oracle.py",
+     "--tool",
+     "{python} employees/engineering/iot-engineer/device_protocol.py"
+    ]
+   ]
+  },
+  {
+   "id": "G31",
+   "commit": "fcf492af1ba12599503fe2d25202d3d1a40f2059",
+   "note": "G31 r3, newest remote head; also stacked by G36",
+   "tests": [
+    "tests.test_g31_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G31/scope_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G32",
+   "commit": "b69f3289f360ed0dc5d722f025940815787ff1af",
+   "note": "G32 r3, newest remote head; also stacked by G36",
+   "tests": [
+    "tests.test_g32_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G32/followthrough_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G33",
+   "commit": "a4ae555bdabffdc932b279d97ed2928bdef73df5",
+   "note": "G33 r4, newest remote head; also stacked by G36",
+   "tests": [
+    "tests.test_g33_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G33/evidence_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G34",
+   "commit": "de76fae516c3aab8adc5df7bfcaac2d751dc92d9",
+   "note": "G34, newest remote head; also stacked by G36",
+   "tests": [
+    "tests.test_g34_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G34/diag_oracle.py"
+    ]
+   ]
+  },
+  {
+   "id": "G35",
+   "commit": "34bb98f465901438fec47d6ac8beccc0edf8df70",
+   "note": "G35, newest remote head; also stacked by G36",
+   "tests": [
+    "tests.test_g35_capability"
+   ],
+   "commands": [
+    [
+     "examples/capabilities/G35/campaign_oracle.py"
+    ]
+   ]
+  },
+  {
    "id": "G37",
    "commit": "e9b7a7772636f927bf21128dc2802ffcac742b44",
-   "note": "G37 h1 (final docs hardening) on accepted 9b0f58e",
+   "note": "G37 h1, newest remote head",
    "tests": [
     "tests.test_g37_capability"
    ],
@@ -113,7 +391,7 @@
   {
    "id": "G38",
    "commit": "ba70b6934a13f931b8533df9fa947802d610d15b",
-   "note": "G38 r4 (M38 r3 fix)",
+   "note": "G38 r4, newest remote head",
    "tests": [
     "tests.test_g38_capability"
    ],
@@ -126,7 +404,7 @@
   {
    "id": "G39",
    "commit": "9ab356256d5147c89c0f780d4ab639c584971326",
-   "note": "G39 r3 (M39 r2 fix), on G05 r2 and G19 h1",
+   "note": "G39 r3, newest remote head",
    "tests": [
     "tests.test_g39_capability"
    ],
@@ -139,7 +417,7 @@
   {
    "id": "G40",
    "commit": "eabf69ac9cf4f539bc39482b75681bf75e6e97e5",
-   "note": "G40 r4 (M40 r3 fix), on G39 r3",
+   "note": "G40 r4, newest remote head",
    "tests": [
     "tests.test_g40_capability"
    ],
@@ -152,7 +430,7 @@
   {
    "id": "G41",
    "commit": "a1bd6c41641c9849912c93e9dbe8db7a13229b55",
-   "note": "G41 r3: G41 merged onto G40 r4 (its commit subject says r2 in error; 9b98d9b was r2)",
+   "note": "G41 r3, newest remote head; its commit subject says r2 in error (9b98d9b was r2)",
    "tests": [
     "tests.test_g41_capability"
    ],
@@ -171,80 +449,180 @@
  ],
  "resolved_overlaps": [
   {
+   "path": "docs/install.md",
+   "reason": "G01 adds 2 lines and G41 adds 12 at different places; HEAD 5137aef is their union, checked line by line: HEAD keeps every line each candidate adds to base."
+  },
+  {
+   "path": "employees/data/data-analyst/SKILL.md",
+   "reason": "G15, G33, G37 and G41 carry the G13 blob a8726ce; G22, G31 and G35 carry the G17 blob 91b5625, which keeps those lines and adds the CFO line from G14. HEAD is 91b5625, a strict superset."
+  },
+  {
+   "path": "employees/engineering/backend-developer/duplicate-safe-api.md",
+   "reason": "G21 and G22 carry the accepted G19 5606672 blob b0e3357; G41 carries the G19 h1 350d175 blob 7d64e01, which builds on it. HEAD is the G19 h1 blob, so nothing is lost."
+  },
+  {
+   "path": "employees/engineering/full-stack-developer/SKILL.md",
+   "reason": "G22 and G41 carry the G19 blob a02222b unchanged; G21 builds on it and adds one offline-client line (01a06eb). HEAD is the G21 blob, a strict superset."
+  },
+  {
+   "path": "employees/engineering/full-stack-developer/learnings.md",
+   "reason": "G22 and G41 carry the G19 blob c17671a unchanged; G21 builds on it and adds one pending observation (1ad3fa5). HEAD is the G21 blob, a strict superset."
+  },
+  {
+   "path": "employees/engineering/llm-agent-designer/learnings.md",
+   "reason": "G16 adds 11 lines and G41 carries one added line; HEAD e647149 is their union, checked line by line: HEAD keeps every line each candidate adds to base."
+  },
+  {
+   "path": "employees/infrastructure/cloud-architect/SKILL.md",
+   "reason": "G09 and G11 each add one line; HEAD cba8a22 keeps both, checked line by line: HEAD keeps every line each candidate adds to base."
+  },
+  {
+   "path": "employees/infrastructure/fleet-dispatcher/SKILL.md",
+   "reason": "G04, G05, G32, G38 and G41 carry the G04 blob d8ab8eb (same in G04 r1 and r3); G07 builds on it and adds two lines (a465504). HEAD is the G07 blob, a strict superset."
+  },
+  {
+   "path": "employees/infrastructure/fleet-dispatcher/capability.contract.json",
+   "reason": "G04, G05, G32, G38 and G41 carry the G04 r3 blob f4a9db0; G07 appends one forward test (b00741e), so the G04 entry gains a list comma. HEAD is the G07 blob; no entry is lost."
+  },
+  {
    "path": "employees/infrastructure/fleet-dispatcher/handoff-work-orders.md",
-   "reason": "G38 and G41 carry the same older copy (blob 2d607b2 from 314b4db). G04 (through commit 155fc33) builds on that commit and changes the file (blob 96af330). HEAD is the G04 blob, the newest, so nothing is lost."
+   "reason": "G05, G32, G38 and G41 carry the older G04 copy 2d607b2; G04 r3 and G07 both change it. HEAD d63653c keeps every G04 r3 and G07 change; the exit 2 line is rewrapped to list every reason from both (checked phrase by phrase), as in G12 r2."
   },
   {
    "path": "employees/infrastructure/fleet-dispatcher/handoff.py",
-   "reason": "G38 and G41 carry the same older copy (blob eb27607 from 314b4db). G04 (through commit 155fc33) builds on that commit and changes the file (blob cc545eb). HEAD is the G04 blob, the newest, so nothing is lost."
+   "reason": "G05, G32, G38 and G41 carry the older G04 copy eb27607; G04 r3 (212a4b5) and G07 (8e0d47b) change different lines of it. HEAD f9569ce is the clean merge: every line either changed is in HEAD, and each missing line is one the other replaced."
+  },
+  {
+   "path": "employees/infrastructure/fleet-dispatcher/learnings.md",
+   "reason": "G05, G07, G32, G38 and G41 carry the older G04 blob 14a4b7b; G04 r3 builds on it and adds one line (c32c58a). HEAD is the G04 r3 blob, a strict superset."
+  },
+  {
+   "path": "employees/infrastructure/site-reliability-engineer/SKILL.md",
+   "reason": "G09 adds 2 lines, G11 adds 8 and G41 carries one added line; HEAD 7c048a5 is their union, checked line by line: HEAD keeps every line each candidate adds to base."
+  },
+  {
+   "path": "employees/infrastructure/site-reliability-engineer/capability.contract.json",
+   "reason": "G09 and G11 each append one forward test at the end of the list; HEAD keeps both (the G09 entry gains a list comma) and the G11 scripts list. No entry is lost."
+  },
+  {
+   "path": "employees/infrastructure/site-reliability-engineer/learnings.md",
+   "reason": "G09 and G41 carry the blob 6f9b98d; G11 builds on it and adds lines (f66a6cf). HEAD is the G11 blob, a strict superset."
+  },
+  {
+   "path": "employees/leadership/cmo/SKILL.md",
+   "reason": "G33 adds 1 line and G35 adds 5; HEAD da4ee3e is their union, checked line by line: HEAD keeps every line each candidate adds to base."
+  },
+  {
+   "path": "employees/leadership/cmo/capability.contract.json",
+   "reason": "G33 and G35 each add entries; HEAD 93770b1 is their union, checked line by line: HEAD keeps every line each candidate adds to base."
+  },
+  {
+   "path": "employees/leadership/cmo/learnings.md",
+   "reason": "G33 and G35 each add one line; HEAD 45ad2f9 keeps both, checked line by line: HEAD keeps every line each candidate adds to base."
+  },
+  {
+   "path": "employees/leadership/coo/SKILL.md",
+   "reason": "G11, G31 and G41 each add lines; HEAD bb8ce9a is their union, checked line by line: HEAD keeps every line each candidate adds to base."
+  },
+  {
+   "path": "employees/leadership/coo/capability.contract.json",
+   "reason": "G11 and G31 (which carries G17) each append forward tests at the end of the list; HEAD keeps all entries (the G11 entry gains a list comma). No entry is lost."
   },
   {
    "path": "employees/legal-compliance/legal-advisor/SKILL.md",
-   "reason": "G37 9b0f58e and G38 41ad344 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob eb6f60c)."
+   "reason": "G37 h1 and G38 r4 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob eb6f60c)."
   },
   {
    "path": "employees/legal-compliance/legal-advisor/capability.contract.json",
-   "reason": "G37 9b0f58e and G38 41ad344 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob f691132)."
+   "reason": "G37 h1 and G38 r4 both append to the same list from base 02ba9c5; HEAD f691132 keeps both entries (the G37 entry gains a list comma). Checked line by line: nothing either side added is lost."
   },
   {
    "path": "employees/legal-compliance/legal-advisor/learnings.md",
-   "reason": "G37 9b0f58e and G38 41ad344 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob 7a7c6f4)."
+   "reason": "G37 h1 and G38 r4 each add one line from base 02ba9c5; HEAD 7a7c6f4 keeps both. Checked line by line."
   },
   {
    "path": "employees/product-project/delivery-lead/SKILL.md",
-   "reason": "G04 and G38 carry the same older copy (blob 7bb0a17 from 314b4db). G41 (through commit 05378c4) builds on that commit and changes the file (blob 302fd88). HEAD is the G41 blob, the newest, so nothing is lost."
+   "reason": "G04, G05, G07, G32 and G38 carry the older copy 7bb0a17; G11 adds one line and G41 builds on 7bb0a17 (302fd88). HEAD 498d43d is their union; checked line by line, nothing either adds is lost."
+  },
+  {
+   "path": "employees/product-project/delivery-lead/capability.contract.json",
+   "reason": "G11 and G41 each add entries; HEAD b4b611c is their union, checked line by line: HEAD keeps every line each candidate adds to base."
+  },
+  {
+   "path": "employees/product-project/product-manager/SKILL.md",
+   "reason": "G15 adds 1 line and G33 adds 8; HEAD 1066d34 is their union, checked line by line: HEAD keeps every line each candidate adds to base."
+  },
+  {
+   "path": "employees/product-project/product-manager/capability.contract.json",
+   "reason": "G15 and G33 each add entries; HEAD 72742ac is their union, checked line by line: HEAD keeps every line each candidate adds to base."
   },
   {
    "path": "employees/product-project/project-onboarding/SKILL.md",
-   "reason": "G04 and G38 and G41 carry the same older copy (blob 1801847 from bbe682b). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob 1921766). HEAD is the G02 blob, the newest, so nothing is lost."
+   "reason": "G04, G05, G07, G32, G38 and G41 carry the older copy 1801847 (from bbe682b); G02 r4 builds on it and changes the file (8afc093). HEAD is the G02 r4 blob; each missing older line is one G02 replaced."
   },
   {
    "path": "employees/product-project/project-onboarding/activate.py",
-   "reason": "G04 and G38 and G41 carry the same older copy (blob 37e7d6a from bbe682b). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob daf9978). HEAD is the G02 blob, the newest, so nothing is lost."
+   "reason": "G04, G05, G07, G32, G38 and G41 carry the older copy 37e7d6a (from bbe682b); G02 r4 builds on it and changes the file (5f97784). HEAD is the G02 r4 blob; each missing older line is one G02 replaced."
   },
   {
    "path": "employees/product-project/project-onboarding/learnings.md",
-   "reason": "G04 and G38 and G41 carry the same older copy (blob ceba76e from bbe682b). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob d3321aa). HEAD is the G02 blob, the newest, so nothing is lost."
+   "reason": "G04, G05, G07, G32, G38 and G41 carry the older copy ceba76e (from bbe682b); G02 r4 builds on it and adds lines (64af8b3). HEAD is the G02 r4 blob, a strict superset."
   },
   {
    "path": "employees/quality-security/assurance/ASSURANCE.md",
-   "reason": "G38 carries an older copy (blob 6b57a82 from 8b38a72). G41 (through commit 3056378) builds on that commit and changes the file (blob 612ee22). HEAD is the G41 blob, the newest, so nothing is lost."
+   "reason": "G38 and G41 carry older G05 copies (6b57a82, 612ee22); G05 r3 (36386c6) and G01 h1 (774f8fa) add different sections. HEAD 915e945 keeps both sections (G01 text first); each missing older line is one G05 r3 replaced."
   },
   {
    "path": "employees/quality-security/assurance/quality_os.py",
-   "reason": "G38 carries an older copy (blob 6bbd6b3 from 8b38a72). G41 (through commit 3056378) builds on that commit and changes the file (blob d3d32f5). HEAD is the G41 blob, the newest, so nothing is lost."
+   "reason": "G38 and G41 carry older G05 copies (6bbd6b3, d3d32f5); G05 r3 (281b16c) and G01 h1 (c2825eb) change different parts. HEAD 203a0ca is the clean merge; each missing older line is one G05 r3 replaced."
   },
   {
    "path": "employees/quality-security/qa-engineer/SKILL.md",
-   "reason": "G38 carries an older copy (blob c2b2092 from 8b38a72). G41 (through commit 8ebabfd) builds on that commit and changes the file (blob e585eb6). HEAD is the G41 blob, the newest, so nothing is lost."
+   "reason": "G05 and G38 carry the older copy c2b2092; G41 builds on it and adds lines (e585eb6). HEAD is the G41 blob, a strict superset."
   },
   {
    "path": "employees/quality-security/security-auditor/SKILL.md",
-   "reason": "G38 41ad344 and G41 5606672 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob 845b475)."
+   "reason": "G21, G22 and G41 carry the G19 blob d839695; G38 r4 edits the same file from base (5a3d380). HEAD 845b475 keeps both sides; checked line by line, every line either added is in HEAD."
   },
   {
    "path": "employees/quality-security/security-auditor/capability.contract.json",
-   "reason": "G38 41ad344 and G41 5606672 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob d9671a9)."
+   "reason": "G21, G22 and G41 carry the G19 blob 8def17f; G38 r4 edits it from base. HEAD d9671a9 has one scripts list with provenance_check.py (G38, now with a list comma) and boundary_probe.py (G19); nothing is lost."
   },
   {
    "path": "employees/quality-security/security-auditor/learnings.md",
-   "reason": "G38 41ad344 and G41 5606672 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob 99b0320)."
+   "reason": "G21, G22 and G41 carry the G19 blob 9b1cc3f; G38 r4 adds one line from base (bd0abb2). HEAD 99b0320 keeps both; checked line by line."
   },
   {
    "path": "examples/capabilities/G02/README.md",
-   "reason": "G04 and G38 and G41 carry the same older copy (blob 7645664 from 4113204). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob c95aecc). HEAD is the G02 blob, the newest, so nothing is lost."
+   "reason": "G04, G05, G07, G32, G38 and G41 carry the older copy 7645664 (from 4113204); G02 r4 builds on it and changes the file (c95aecc). HEAD is the G02 r4 blob; the one missing older line is one G02 replaced."
   },
   {
    "path": "examples/capabilities/G02/activation_oracle.py",
-   "reason": "G04 and G38 and G41 carry the same older copy (blob 228c3ec from 4113204). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob 24cc8ef). HEAD is the G02 blob, the newest, so nothing is lost."
+   "reason": "G04, G05, G07, G32, G38 and G41 carry the older copy 228c3ec (from 4113204); G02 r4 builds on it (24cc8ef). HEAD is the G02 r4 blob, a strict superset."
+  },
+  {
+   "path": "examples/capabilities/G19/README.md",
+   "reason": "G21 and G22 carry the accepted G19 5606672 blob 1fbd02f; G41 carries the G19 h1 350d175 blob 661900b, which builds on it. HEAD is the G19 h1 blob."
+  },
+  {
+   "path": "examples/capabilities/G19/boundary_oracle.py",
+   "reason": "G21 and G22 carry the accepted G19 5606672 blob 489366c; G41 carries the G19 h1 350d175 blob 4b7d0b5, which replaces two except lines (the stop() race fix). HEAD is the G19 h1 blob."
+  },
+  {
+   "path": "tests/test_closure_hardening.py",
+   "reason": "G41 carries the G05 r2 blob 700c976; G05 r3 04b3cf2 (fe8b12a) builds on it and replaces three r2 assertions (waiver-governed closure stays current). HEAD is the G05 r3 blob."
   },
   {
    "path": "tests/test_g02_capability.py",
-   "reason": "G04 and G38 and G41 carry the same older copy (blob 129cdc6 from bbe682b). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob ac855ef). HEAD is the G02 blob, the newest, so nothing is lost."
+   "reason": "G04, G05, G07, G32, G38 and G41 carry the older copy 129cdc6 (from bbe682b); G02 r4 builds on it and changes the file (6708853). HEAD is the G02 r4 blob; each missing older line is one G02 replaced."
   },
   {
    "path": "tests/test_g04_capability.py",
-   "reason": "G38 and G41 carry the same older copy (blob 6a63af7 from 314b4db). G04 (through commit 155fc33) builds on that commit and changes the file (blob 9751498). HEAD is the G04 blob, the newest, so nothing is lost."
+   "reason": "G05, G07, G32, G38 and G41 carry the older G04 copy 6a63af7 (from 314b4db); G04 r3 builds on it (8a13bb1). HEAD is the G04 r3 blob, a strict superset."
+  },
+  {
+   "path": "tests/test_g19_capability.py",
+   "reason": "G21 and G22 carry the accepted G19 5606672 blob 130a096; G41 carries the G19 h1 350d175 blob 8919362, which builds on it. HEAD is the G19 h1 blob."
   }
  ]
 }

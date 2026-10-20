@@ -5,7 +5,7 @@ Nothing in the checkout is written; every tool runs on this tree or on temporary
 no socket, no browser.
 
   x1  G39 drill on this stack: the delivery drill composes G04 handoff, G02 activation, G13, G19, G03 and
-      G05 tools; this stack carries G02 r3, G04 r2, G05 r2 and G19 h1, so the drill must still pass with
+      G05 tools; this stack carries G02 r4, G04 r3, G05 r3 and G19 h1, so the drill must still pass with
       the repaired tools (not only with the copies G39 was built on).
   x2  G38 provenance on the integrated tree: with G38's own fixtures excluded, every license declaration
       the stack brings agrees and the result is consistent.
@@ -54,11 +54,11 @@ def x1(findings, lines):
     last = out.rstrip().splitlines()[-1] if out.strip() else ""
     bad = [l for l in out.splitlines() if l.startswith("FAIL")]
     if rc != 0 or last != "DRILL PASSED" or bad:
-        findings.append("x1 G39 drill does not pass on G02 r3 / G04 r2 / G05 r2 / G19 h1: exit %d, %s"
+        findings.append("x1 G39 drill does not pass on G02 r4 / G04 r3 / G05 r3 / G19 h1: exit %d, %s"
                         % (rc, "; ".join(bad[:3]) or last))
     else:
         steps = len([l for l in out.splitlines() if l.startswith("ok ")])
-        lines.append("x1 G39 drill passes on G02 r3, G04 r2, G05 r2 and G19 h1 (%d steps ok)" % steps)
+        lines.append("x1 G39 drill passes on G02 r4, G04 r3, G05 r3 and G19 h1 (%d steps ok)" % steps)
 
 
 def x2(findings, lines):

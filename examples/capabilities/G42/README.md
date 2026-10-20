@@ -1,13 +1,19 @@
 # G42 day 7 daily integration
 
-Stack on v0.61 `02ba9c5`: G41 r3 `a1bd6c4` (carries G40 r4 `eabf69a`, G39 r3 `9ab3562`, G05 r2 `3056378`, G19 h1
-`350d175`, G13 r3 `5666e7b` and G03 `d4d98f2`), then merges G37 h1 `e9b7a77`, G38 r4 `ba70b69`, G02 r3
-`8fdae9c` and G04 r2 `155fc33`. G02 r3 and G04 r2 are merged because the G39 drill runs their tools and the
-G39 lineage still carried the unrepaired G02 and G04. There are no outside contributions on this day.
+Revision r3 (final integration refresh) stacks every build goal at its newest remote head on v0.61 `02ba9c5`:
+G01 h1 `aa0b083`, G02 r4 `90a5ec9`, G03 `d4d98f2`, G04 r3 `e9fa278`, G05 r3 `04b3cf2`, G07 `0d6a78d`, G08 `ddebe98`,
+G09 `edfa64d`, G10 `f79be61`, G11 `13ba705`, G13 `5666e7b`, G14 `6f7b23a`, G15 r4 `7e7f361`, G16 r8 `49aba3f`,
+G17 `550f184`, G19 h1 `350d175`, G20 r3 `0d4db69`, G21 `822a9c1`, G22 h2 `29cd7fc`, G23 `0ff2641`, G25 `eb9c7c4`,
+G31 r3 `fcf492a`, G32 r3 `b69f328`, G33 r4 `a4ae555`, G34 `de76fae`, G35 `34bb98f`, G37 h1 `e9b7a77`, G38 r4
+`ba70b69`, G39 r3 `9ab3562`, G40 r4 `eabf69a` and G41 r3 `a1bd6c4` (its commit subject says r2 in error). The
+goal heads are merged one by one on top of r2 `956792e` without rewriting it; plan.json names all 31.
 
-Revision r2 rebinds the stack to the newest heads: G41 r3 (G41 merged onto G40 r4; its commit subject says r2 in error, since 9b98d9b was already r2) and G38 r4 are merged on top
-of the r1 chain (48bfa86) without rewriting it, and plan.json names G38 r4, G40 r4 and G41 r3. Neither revision touches a
-file another candidate changes, so no new overlap is added; the cross-checks and `--run all` were rerun on this tree.
+The six daily integrations (G06 r2, G12 r2, G18, G24 r2, G30 r3, G36 r2) are not stacked as prerequisites: each
+one's own plan test (`test_stack_binds_this_tree`) binds its exact tree, so their evidence folders fail on any
+other tree. Every build they integrate is here at the same head, and this tree equals the union of all six
+integration trees with only their own `examples/capabilities/GXX/` folders and tests removed (checked with
+`git diff`). G18's carried G11 x2 cross-check finding is not changed here; it stays for root. There are no outside
+contributions on this day (P03 and P04 stay bound by G24).
 
 | Check | What it compares | Result on this stack |
 |---|---|---|
@@ -20,14 +26,17 @@ No cross-goal defect was found on this stack. The checks are not blind: the test
 conflicting license declaration, a removed listed script, a skill copy missing a script and a G37 report with
 no legal boundary, and each one is reported.
 
-The G38 merge had three conflicts, resolved as unions in the merge commit (nothing from either side dropped):
-the legal-advisor contract and learnings keep the G37 and the G38 entry, and the security-auditor contract has
-one scripts list with `provenance_check.py` (G38) and `boundary_probe.py` (G19).
+Conflicts. r1 (G38 merge): the legal-advisor contract and learnings keep the G37 and the G38 entry, and the
+security-auditor contract has one scripts list with `provenance_check.py` (G38) and `boundary_probe.py` (G19). r3,
+each resolved as a union in its merge commit (nothing from either side dropped): ASSURANCE.md (G01 h1 fixture-runner
+text, then the G05 r3 Revision binding section), handoff-work-orders.md (the exit 2 line lists every reason from
+G04 r3 and G07), and the site-reliability-engineer contract (G09 and G11 forward tests) and COO contract (G11 and
+G17 forward tests), each appending one list entry.
 
-Nineteen overlaps are named in `resolved_overlaps`, each with its reason. Thirteen are files where one candidate
-carries an older copy and another builds on it (G02 r3 and G04 r2 over the copies G38 and G41 carry, G05 r2 and
-G39 over the copies G38 carries); HEAD is the newest blob. Six are the legal-advisor and security-auditor files
-both G37 or G19 and G38 edit; each was checked line by line, and HEAD keeps every line either side added or changed.
+Forty-four overlaps are named in `resolved_overlaps`, each with its reason. Most are files where one candidate
+carries an older copy and another builds on it (HEAD is the newest blob); the rest are files two or more goals
+edit, checked line by line (HEAD keeps every line any side added; a line missing from an older copy is one a newer
+candidate replaced).
 
 No check here starts a browser or opens a network connection beyond the loopback server the G19 oracle starts.
 

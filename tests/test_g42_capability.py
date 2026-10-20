@@ -60,7 +60,14 @@ class Plan(unittest.TestCase):
         self.assertEqual(self.plan["goal"], "G42")
         self.assertEqual(self.plan["base"], "02ba9c571b10ad1dba792d2ac5534bcad3171e67")
         ids = [p["id"] for p in self.plan["prerequisites"]]
-        self.assertEqual(ids, ["G02", "G03", "G04", "G05", "G13", "G19", "G37", "G38", "G39", "G40", "G41"])
+        # r3 (owner request, 2026-10-19): the final integration stacks every build goal's newest head. The six
+        # daily integrations (G06, G12, G18, G24, G30, G36) are not stacked: each one's own plan test binds its
+        # exact tree, so their evidence folders cannot share this tree; every build they integrate is here.
+        self.assertEqual(ids, ["G01", "G02", "G03", "G04", "G05", "G07", "G08", "G09", "G10", "G11", "G13", "G14", "G15",
+                               "G16", "G17", "G19", "G20", "G21", "G22", "G23", "G25", "G31", "G32", "G33", "G34", "G35",
+                               "G37", "G38", "G39", "G40", "G41"])
+        for daily in ("G06", "G12", "G18", "G24", "G30", "G36"):
+            self.assertNotIn(daily, ids)
         self.assertEqual([e["id"] for e in self.plan["external"]], [])
         self.assertEqual(self.plan["writable"], ["employees/quality-security/assurance/**", "employees/quality-security/qa-engineer/**",
                                                  "examples/capabilities/G42/**", "tests/test_g42_capability.py"])
@@ -102,7 +109,7 @@ class CrossChecks(unittest.TestCase):
         r = run([os.path.join(CAP, "cross_checks.py")])
         out = r.stdout.decode()
         self.assertEqual(r.returncode, 0, out)
-        self.assertIn("x1 G39 drill passes on G02 r3, G04 r2, G05 r2 and G19 h1 (14 steps ok)", out)
+        self.assertIn("x1 G39 drill passes on G02 r4, G04 r3, G05 r3 and G19 h1 (14 steps ok)", out)
         self.assertIn("x2 G38 provenance on the integrated tree: consistent, 65 declarations all MIT", out)
         self.assertIn("x3 security-auditor lists provenance_check.py and boundary_probe.py, both present and compiling; "
                       "G40 skill-copy misses only 3 shared standards", out)
