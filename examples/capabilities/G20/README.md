@@ -4,9 +4,12 @@ A small search-as-you-type interaction with stale-response protection, a combobo
 error states with Retry, and a narrow/wide layout decision. The core is
 `employees/engineering/frontend-developer/async_search_core.js`; the role guide is `async-search-ui.md` next to it.
 
-**Rendering (opt-in, not run for this revision):** `browser_checks.py` opens the shipped demo in headless Google Chrome
-at 320, 360 and 1280 px CSS widths, drives it with real key events and measures the rendered layout (scrollWidth no
-greater than clientWidth for the page and every option). It starts a browser only when `--chrome PATH` or `G20_CHROME`
+**Rendering (run once for this revision, recorded in `rendered/`):** `browser_checks.py` opens the shipped demo in
+headless Google Chrome, drives it with real key events and measures the rendered layout (scrollWidth no greater than
+clientWidth for the page and every option). One Chrome launch covers 320, 360 and 1280 px CSS widths (the viewport is
+resized inside the same session) and, with `--controls`, both control cores. A second launch in the same run is refused
+before anything starts, a failed start is not retried, the browser is closed in a `finally` block, and a watchdog kills
+only that Chrome's process id after `--timeout` seconds. It starts a browser only when `--chrome PATH` or `G20_CHROME`
 names one; nothing here discovers or starts a browser by default. The 320 px overflow contract is checked from the
 demo source in `tests.test_g20_capability.NarrowLayoutContract`. **Unrun:** screen-reader output, other browsers (Safari, Firefox),
 touch, zoom and colour contrast as rendered. `ui_oracle.py` runs the DOM-free core in JavaScriptCore (`jsc`, which
@@ -29,12 +32,14 @@ python3 examples/capabilities/G20/ui_oracle.py                                  
 python3 examples/capabilities/G20/ui_oracle.py --core examples/capabilities/G20/naive_core.js   # exit 1
 python3 examples/capabilities/G20/ui_oracle.py --seed 2026 --scale 10            # unseen sessions, larger run
 python3 examples/capabilities/G20/browser_checks.py           # no browser named: UNRUN, exit 3, nothing started
+python3 examples/capabilities/G20/browser_checks.py --chrome PATH --controls --out DIR   # one Chrome launch: 33/33 and both controls rejected
 python3 -m unittest tests.test_g20_capability
 ```
 Exit codes: 0 all checks pass; 1 a check failed; 2 no JavaScript shell, or an invalid argument. Set `G20_JSC` to use
 another shell binary. `browser_checks.py` exits 3 unless `G20_CHROME` or `--chrome` names a binary, and says nothing was run;
-with one named it expects 33/33 (exit 0) and exit 1 for `--core naive_core.js`. The unit tests skip the rendered
-checks, with that label, unless `G20_CHROME` is set.
+with one named it expects 33/33 (exit 0) and exit 1 for `--core naive_core.js`. The unit tests read the recorded report
+(`RecordedRendered`) and check the one-launch guard without a browser (`LaunchGuard`); the single live test starts
+Chrome once, only when `G20_CHROME` is set.
 
 ## Checks
 | Id | Behaviour |
@@ -63,10 +68,12 @@ checks, with that label, unless `G20_CHROME` is set.
 | naive_core.js | 0/11 | 447 |
 | noop_core.js | 0/11 | 132 (it never shows the current results) |
 
-Rendered checks were not run for this revision (no browser is started by the repair checks). An earlier headless
-Chrome run during the repair, on the previous page (8d45038 with only the test transport line added), gave 21/33: at
-320 px the long label made the page 1257 px wide (L01), option ids contained spaces and tabs (K02), and the long label
-and chosen line ran off screen (K03, K05). That run is the origin of the repair, not evidence for this revision.
+Rendered result for this revision (`rendered/report.json`, one run, one Chrome launch, Chrome 155.0.8059.80, macOS):
+33/33 at 320, 360 and 1280 px; `naive_core.js` 3/9 and `noop_core.js` 3/9 in the same session (both rejected). The
+screenshots `rendered/screenshot-320.png`, `-360.png` and `-1280.png` show the 167-character label wrapping inside the
+list (one column below 640 px, two at 1280 px) and the 3 px focus ring on the input. An earlier headless run on the
+unrepaired page 8d45038 gave 21/33: at 320 px the long label made the page 1257 px wide (L01), option ids contained
+spaces and tabs (K02), and the long label and chosen line ran off screen (K03, K05).
 
 Performance is measured the same way for every core (o11, same seed and scale, same machine, one run each, so treat
 small differences as noise). At seed 2026, scale 50 (7,500 sessions; 20,000 key presses over 500,000 options):

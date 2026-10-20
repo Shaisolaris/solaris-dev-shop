@@ -12,6 +12,7 @@
 ## 2026-10-19 G20 rendered checks (pending)
 - A text-level layout check (breakpoint numbers, target sizes) passed while the real page was 1257 px wide at 320 px: one unbroken 167-character label under `overflow-wrap: normal` widened everything; `overflow-wrap: anywhere` on the body fixed it. Only measuring the rendered page found it; the source-level contract test now guards the CSS rule without a browser.
 - Raw ids with spaces or tabs made invalid `aria-activedescendant` targets; escaping each non-safe character one to one keeps them valid and distinct (`a b` and `a_b` stay different).
+- A rendered check that starts a new browser per width or per test case can turn into a launch loop on a shared machine; one launch per run, viewport resized inside the session, a guard that refuses a second launch, no retry, close in `finally`, and a watchdog that kills only its own process id keep it to one browser.
 - Proposed rule: render async UI at 320, 360 and 1280 px with the longest content shown, assert scrollWidth no greater than clientWidth, and drive it with real key events before calling layout or keyboard behaviour checked.
 
 ## 2026-10-18 G20 asynchronous search (pending)

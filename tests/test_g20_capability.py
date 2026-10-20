@@ -1,8 +1,10 @@
 """G20: accessible asynchronous search (stale responses, keyboard model, states, layout).
 
 The behaviour tests run the DOM-free core in a JavaScript shell (JavaScriptCore's jsc on macOS). Without one they are
-skipped and say so. The Rendered tests start headless Chrome ONLY when G20_CHROME names a binary; by default they are
-skipped and labelled, so the full suite never starts a browser. NarrowLayoutContract checks the 320 px overflow
+skipped and say so. RecordedRendered reads the report of the one recorded browser run (rendered/report.json) and starts
+nothing; LaunchGuard checks, without a browser, that browser_checks.py can start Chrome at most once per run. The single
+Rendered test starts headless Chrome once, ONLY when G20_CHROME names a binary; by default it is skipped, so the full
+suite never starts a browser. NarrowLayoutContract checks the 320 px overflow
 contract from the demo source without a browser. Screen-reader output is not covered."""
 import json
 import os
@@ -13,6 +15,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 G = ROOT / "examples/capabilities/G20"
@@ -110,33 +113,104 @@ if CHROME and not Path(CHROME).is_file():
 needs_chrome = unittest.skipUnless(CHROME, "G20_CHROME not set: rendered checks (320/360/1280 px) not run; no browser started")
 
 
-def browser(*args):
-    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", G20_CHROME=CHROME or "")
-    p = subprocess.run([sys.executable, str(G / "browser_checks.py"), "--json"] + [str(a) for a in args], capture_output=True, text=True, env=env, timeout=300)
-    return p.returncode, json.loads(p.stdout.rsplit("BROWSER CHECKS", 1)[0])
+REPORT = G / "rendered" / "report.json"  # written by the one recorded browser_checks.py run (see rendered/README.md)
 
 
-@needs_chrome
-class Rendered(unittest.TestCase):
-    def test_rendered_layout_keyboard_focus_and_stale_responses(self):
-        rc, rep = browser()
-        bad = [r for r in rep["rows"] if not r["pass"]]
-        self.assertEqual((rc, bad), (0, []))
-        ids = {r["id"] for r in rep["rows"]}
+def load_bc():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("g20_browser_checks", G / "browser_checks.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+class RecordedRendered(unittest.TestCase):
+    """Reads the report of the single recorded run (one Chrome launch for all widths and both controls); starts nothing."""
+
+    def setUp(self):
+        self.rep = json.loads(REPORT.read_text(encoding="utf-8"))
+
+    def test_one_launch_covered_every_width_and_check(self):
+        self.assertEqual(self.rep["launches"], 1)
+        bad = [r["id"] for r in self.rep["rows"] if not r["pass"]]
+        self.assertEqual(bad, [])
+        ids = {r["id"] for r in self.rep["rows"]}
         for w in (320, 360, 1280):
             for k in ("L01", "L02", "K01", "K02", "K03", "K04", "K05", "K06", "K07", "S01", "X01"):
                 self.assertIn("%s-%d" % (k, w), ids)
-        l01 = {r["id"]: r["detail"] for r in rep["rows"] if r["id"].startswith("L01")}
+        l01 = {r["id"]: r["detail"] for r in self.rep["rows"] if r["id"].startswith("L01")}
         for w in (320, 360, 1280):
             self.assertLessEqual(l01["L01-%d" % w]["docSW"], l01["L01-%d" % w]["docCW"])
             self.assertEqual(l01["L01-%d" % w]["docCW"], w)
 
-    def test_controls_rejected(self):
-        for stub in ("naive_core.js", "noop_core.js"):
-            with self.subTest(stub=stub):
-                rc, rep = browser("--core", G / stub)
-                self.assertEqual(rc, 1)
-                self.assertTrue(any(not r["pass"] for r in rep["rows"]))
+    def test_controls_were_rejected_in_the_same_session(self):
+        self.assertEqual(sorted(self.rep["controls"]), ["naive_core.js", "noop_core.js"])
+        for k, v in self.rep["controls"].items():
+            self.assertTrue(v["rejected"] and v["passed"] < v["total"], (k, v))
+
+    def test_screenshots_exist_for_every_width(self):
+        for w in ("320", "360", "1280"):
+            p = REPORT.parent / self.rep["screenshots"][w]
+            self.assertTrue(p.is_file(), p)
+            self.assertEqual(p.read_bytes()[:8], b"\x89PNG\r\n\x1a\n")
+
+
+class LaunchGuard(unittest.TestCase):
+    """No browser: the guard that keeps browser_checks.py to one Chrome launch per run."""
+
+    def test_second_launch_is_refused_before_popen(self):
+        mod = load_bc()
+        calls = []
+        mod.LAUNCHES.append(4242)
+        with mock.patch.object(mod.subprocess, "Popen", lambda *a, **k: calls.append(a) or (_ for _ in ()).throw(AssertionError("Popen reached"))):
+            with self.assertRaises(mod.LaunchRefused):
+                mod.Browser("/nonexistent/chrome")
+        self.assertEqual(calls, [])
+
+    def test_failed_start_is_closed_and_not_retried(self):
+        mod = load_bc()
+        started = []
+
+        class Dead:
+            pid, returncode = 999999, 1
+            def poll(self):
+                return 1
+            def terminate(self):
+                raise AssertionError("not running, nothing to terminate")
+            def kill(self):
+                pass
+            def wait(self, t=None):
+                return 1
+        with mock.patch.object(mod.subprocess, "Popen", lambda *a, **k: started.append(a) or Dead()):
+            rows, shots, ctl, version = mod.run("/nonexistent/chrome", str(mod.CORE), None, controls=["x.js"])
+        self.assertEqual(len(started), 1)
+        self.assertEqual(mod.LAUNCHES, [999999])
+        self.assertEqual([r["id"] for r in rows], ["E-run"])
+        self.assertIn("not retried", rows[0]["detail"])
+        with self.assertRaises(mod.LaunchRefused):
+            mod.Browser("/nonexistent/chrome")
+
+    def test_source_has_one_launch_site_outside_any_loop(self):
+        src = (G / "browser_checks.py").read_text(encoding="utf-8")
+        self.assertEqual(src.count("subprocess.Popen("), 1)
+        self.assertEqual(src.count("subprocess.run("), 0)  # the binary is never run again (no --version call)
+        self.assertEqual(len(re.findall(r"\bBrowser\(chrome", src)), 1)
+        run_src = src[src.index("def run("):src.index("def one_width(")]
+        self.assertLess(run_src.index("b = Browser("), run_src.index("for label, c in"))
+        self.assertIn("finally:", run_src)
+        self.assertIn("b.close()", run_src[run_src.index("finally:"):])
+        self.assertIn("self.proc.kill()", src[src.index("def _watchdog"):src.index("def cmd(")])
+
+
+@needs_chrome
+class Rendered(unittest.TestCase):
+    """Opt-in (G20_CHROME): ONE run of browser_checks.py, one Chrome launch, all widths and both controls."""
+
+    def test_one_live_run(self):
+        env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", G20_CHROME=CHROME or "")
+        p = subprocess.run([sys.executable, str(G / "browser_checks.py"), "--json", "--controls"], capture_output=True, text=True, env=env, timeout=300)
+        rep = json.loads(p.stdout.rsplit("BROWSER CHECKS", 1)[0])
+        self.assertEqual((p.returncode, rep["launches"], [r["id"] for r in rep["rows"] if not r["pass"]]), (0, 1, []))
 
 
 def demo_css():
@@ -161,7 +235,7 @@ def rules(css, base=False):
 
 class NarrowLayoutContract(unittest.TestCase):
     """The 320 px overflow contract read from the demo source (no browser): long unbroken text must wrap, and nothing
-    may demand more than 320 px of width. This is a static proxy; the rendered proof is browser_checks.py (opt-in)."""
+    may demand more than 320 px of width. This is a static proxy beside the rendered proof (rendered/report.json)."""
 
     def test_long_unbroken_text_wraps(self):
         r = dict(rules(demo_css(), base=True))
