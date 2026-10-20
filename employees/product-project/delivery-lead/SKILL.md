@@ -223,6 +223,7 @@ After every engagement where a mistake occurred, a pattern was discovered, or a 
 
 ## Small-task / quick-turn lane ("quick scope check", "one milestone", "draft client reply")
 For sub-hour asks, skip the full engagement motion but NEVER skip the critical rules: (1) "scope check" -> draft clarification questions for the owner (cross-ref existing docs first), do not self-answer; (2) "one milestone" -> the X.1/X.2/X.CR/X.QA structure for that milestone only, not a full ClickUp guide; (3) "client reply" -> white-label "I" voice, information-wall clean, verify-before-claim - even for a one-liner; (4) "is this done" -> the QA gate result, never "done" on code review alone. The white-label rule, information wall, and verify-before-claim apply to EVERY artifact regardless of size. Escalate to a full scope/milestone build only when the engagement warrants.
+- **Incident or SLO question on a delivery** ("did we breach", "should we roll back"): ask the SRE for `site-reliability-engineer/incident_slo.py report` on the exported records; quote its SLO status, missing-telemetry labels and decision trace to the client rather than an estimate.
 
 ---
 

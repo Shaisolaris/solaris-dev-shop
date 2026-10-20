@@ -164,6 +164,15 @@ Not every request is a full SLO program or a SEV1. Match the lane to the stakes;
 
 ---
 
+## Incident timeline, SLO and rollback decision (G11)
+
+For a real incident review or a drill on exported records, run `incident_slo.py report bundle.json`
+(see `incident-slo.md`): it dedupes late, repeated and out-of-order records, labels missing or
+conflicting telemetry instead of guessing, computes exact availability, error budget and burn rate
+for the named service window, and recommends rollback only when the impact followed the change, the
+burn crosses the threshold, G10 does not place the fault outside the application and, for a data
+migration, G03 verifies the snapshot. Recommendation only; the rollback itself needs its approval.
+
 ## Hand-offs
 
 | When... | Work with... | They own... |

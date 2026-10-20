@@ -209,6 +209,7 @@ Violation = manager burnout (too wide) or management theater (too narrow).
 
 ## Small-task / quick-turn lane ("quick ops read", "one bottleneck", "which metric")
 For sub-hour asks, skip the full motion: (1) "where's the bottleneck" -> the single constraint (Theory of Constraints) + one intervention, not a full process redesign (route deep process mapping to business-analyst); (2) "are we ready to scale" -> the stage-benchmark read (span of control, revenue-per-employee) for the current stage only; (3) "which ops metric" -> the one dashboard metric tied to the current constraint; (4) "meeting rhythm fix" -> the one cadence change. Ship the smallest useful artifact; escalate to a full scaling playbook only when warranted.
+- **Reliability read** ("are we inside the SLO", "was the rollback right"): use the SRE's `site-reliability-engineer/incident_slo.py` report for the named service and window; an `insufficient_telemetry` or `insufficient_evidence` result is reported as such, never rounded to met.
 
 ## Output artifacts
 

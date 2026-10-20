@@ -1,6 +1,8 @@
 # Site Reliability Engineer - Learnings (Pending)
 
 ## Pending observations
+- **2026-10-19 - G11 r3 silent source**: summing per-source telemetry hid a load balancer that stopped reporting for 30 minutes: every minute still had a record, coverage stayed 1.0 and traffic was halved. *Rule: know which sources are expected, treat a minute missing one as partial, and never call an SLO met on partial sources.*
+- **2026-10-19 - G11 r2 per-source telemetry**: with traffic split across load balancers, treating "two counts for one minute" as a conflict dropped the only error minute and read the SLO as met at 1.000000, and treating equal counts as a duplicate halved the totals. *Proposed rule: sum per-source counts first; only one source reporting two different counts for a minute is a conflict.*
 - **2026-04-24 - Clean build**: Google SRE workbook multi-burn-rate alerting pattern is industry-standard now; codified in alert-design reference.
 - **2026-04-24 - Clean build**: "100% reliability is wrong target" - counter-intuitive but defensible core principle. Error budget lets teams ship.
 - **2026-06-13 - Depth pass (v0.6.0)**: chaos engineering re-grounded from a real source (chaos-mesh) after v0.4.0 dropped the unsourced claim - the discipline (hypothesis/steady-state/blast-radius/abort) is what's defensible, the K8s tool is optional and agency clients usually need the manual game-day drill instead.
@@ -17,6 +19,7 @@
 - Provider adapters retain default_deny + require_human for deploy/spend/mutate_external.
 - Evaluation packet: meta/skill-rotation/evaluations/20260724/platform-reliability/.
 - **2026-10-18 - G03 recovery**: A recovery drill is only evidence when the interrupted state is real. The DBA tool's `--simulate-crash-after N` exits after an actual rename, and `recover` is then judged on read-back row values, not on its exit code.
+- **2026-10-19 - G11 incident review**: summing every telemetry row double-counts re-delivered minutes and silently treats a gap as no traffic, and a rollback rule that only looks at burn after a deploy rolls back code for a DNS fault. *Proposed rule: one value per minute, gaps labelled and excluded, and a rollback recommendation only when the impact followed the change and the network diagnosis does not place the fault elsewhere.*
 
 ## Sources
 

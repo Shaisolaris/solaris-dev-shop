@@ -10,6 +10,7 @@
   "references": [
     "rules.md",
     "learnings.md",
+    "incident-slo.md",
     "promql-patterns.md",
     "chaos-and-slo-as-code.md",
     "ai-rca-investigation-playbook.md"

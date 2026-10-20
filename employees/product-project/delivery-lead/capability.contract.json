@@ -468,7 +468,8 @@
       "python3 scripts/skill_runtime_contract.py validate solaris/employees/product-project/delivery-lead/capability.contract.json"
     ],
     "forward_tests": [
-      "fixtures/evaluation/leadership-operations/delivery-lead/"
+      "fixtures/evaluation/leadership-operations/delivery-lead/",
+      "delivery incident or SLO question routed to site-reliability-engineer incident_slo.py; status and decision quoted, not estimated (tests/test_g11_capability.py)"
     ],
     "adversarial_tests": [
       "fixtures/evaluation/leadership-operations/delivery-lead/adversarial.json",

@@ -1,0 +1,46 @@
+{
+ "captured_at": "2026-10-18T09:30:00Z",
+ "config": {
+  "addresses": [
+   {
+    "cidr": "10.20.0.15/24",
+    "dev": "eth0"
+   }
+  ],
+  "expected_addresses": [
+   "203.0.113.10"
+  ],
+  "resolvers": [
+   "10.20.0.2",
+   "10.20.0.3"
+  ],
+  "routes": [
+   {
+    "dev": "eth0",
+    "dst": "default",
+    "via": "10.20.0.1"
+   }
+  ]
+ },
+ "observations": [
+  {
+   "qname": "api.shop.example",
+   "rcode": "NXDOMAIN",
+   "resolver": "10.20.0.2",
+   "stage": "dns"
+  },
+  {
+   "qname": "api.shop.example",
+   "rcode": "NXDOMAIN",
+   "resolver": "10.20.0.3",
+   "stage": "dns"
+  }
+ ],
+ "schema": "solaris.net-trace/1",
+ "target": {
+  "host": "api.shop.example",
+  "path": "/health",
+  "port": 443,
+  "scheme": "https"
+ }
+}

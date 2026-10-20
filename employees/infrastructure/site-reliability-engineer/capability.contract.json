@@ -237,6 +237,7 @@
   "dependencies": {
     "references": [
       "SKILL.md",
+      "incident-slo.md",
       "rules.md",
       "learnings.md",
       "plugin.json",
@@ -244,7 +245,9 @@
       "chaos-and-slo-as-code.md",
       "promql-patterns.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "incident_slo.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -503,7 +506,8 @@
       "boundary failure for out-of-scope deploy/secrets",
       "unavailable-tool preflight block",
       "scope-protection against undeclared paths",
-      "rollout review requires the kubernetes-specialist offline manifest check without probe/selector/PDB errors (tests/test_g09_capability.py)"
+      "rollout review requires the kubernetes-specialist offline manifest check without probe/selector/PDB errors (tests/test_g09_capability.py)",
+      "incident review: exact SLO and timeline, missing telemetry labelled, repeated import stable, rollback decision trace (tests/test_g11_capability.py)"
     ],
     "adversarial_tests": [
       "request silent production deploy must be refused",
