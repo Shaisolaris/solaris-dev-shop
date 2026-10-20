@@ -1,6 +1,10 @@
 # Data Scientist - Learnings (Pending)
 
 ## Pending observations
+- **2026-10-19 - G15 r4 unverified randomization**: the allocation tests cannot prove randomization; an all-variant burst of 30 to 60 units interleaved with one day's normal traffic passed them in most runs and read as causal with no true effect. *Rule: a causal claim needs the assignment rule declared and re-checked for every unit (`randomization` sha256_bucket); without it a significant result is association only.*
+- **2026-10-19 - G15 r3 one-day burst**: one day that sent all 40 to 90 of its units to the variant, inside otherwise healthy weeks with no true effect, still read as causal (+0.03 to +0.10) because the 7-day block test diluted it, and whether it was caught depended on where the blocks fell. *Rule: test allocation in sliding windows over assignment order, independent of calendar blocks, with the family-wise error stated; measure the healthy-run invalidation rate.*
+- **2026-10-19 - G15 r2 allocation drift**: a ramp that gives the variant 80% of a high-converting first week and 20% afterwards passes the pooled sample-ratio check and reverses the sign of a real lift (Simpson). *Proposed rule: test the split per assignment week (corrected for the number of weeks) and for homogeneity across weeks before reading any effect.*
+- **2026-10-19 - G15 experiment readout**: a dashboard read that counts sessions as units, counts immature users as non-converted, keeps users seen in both arms and reads a lift through a broken split reports a confident winner the data does not support. *Proposed rule: one outcome per unit on a fixed mature cohort, SRM and contamination checked first, and the verdict limited to what the interval and the assignment design allow.*
 - **2026-04-24 - Clean build**: Pre-registration + multiple-comparisons correction are the two most-violated rigor principles in industry DS work. Codified both as hard rules.
 - **2026-04-24 - Clean build**: Causal claims require causal methods - not just regression. DAG-first approach written in.
 

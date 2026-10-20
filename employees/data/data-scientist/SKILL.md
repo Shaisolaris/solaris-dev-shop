@@ -147,6 +147,17 @@ Verdict uses the shared decision table (same one Data Analyst holds): ship / hol
 | A guardrail breaches its stop condition | stop now and report. Guardrail failure overrides a winning primary; do not run on to N to "confirm". |
 | Forecast input CoV drops into the unusable band mid-build | cohort decomposition. Ship a soft floor plus range, never the three-number forecast. |
 
+## Experiment and retention readout (G15)
+
+For any A/B or retention readout from exported assignments and events, run `experiment_readout.py`
+(see `experiment-readout.md`) before writing a verdict. It counts one outcome per unit on a fixed,
+mature cohort, excludes units seen in both arms, ignores outcome events before assignment or after
+the horizon, refuses to read an effect under a sample-ratio mismatch or an allocation that drifts across
+assignment weeks (Simpson) or changes in any sliding window of assignments, and reports the
+difference with an interval. Repeat only what its `claims_allowed` permits: no causal claim from observational data or from a
+randomized export whose assignment is not verified against a declared `randomization` rule (the allocation
+tests miss interleaved bursts), and "no detectable difference" is never "no effect".
+
 ## Escalation & hand-offs
 
 | Situation | Goes to |

@@ -369,7 +369,8 @@
     "acceptance": "No autonomous publish/purchase; licenses pinned; accessibility addressed when UI in scope; tool unavailability is honest PARTIAL/BLOCKED; Gate: passed only when rubric holds",
     "redaction": "Strip secrets, tokens, raw emails/phones, and connector payloads from receipts",
     "forward_tests": [
-      "synthetic product-manager brief produces typed deliverable + gate without external mutation"
+      "synthetic product-manager brief produces typed deliverable + gate without external mutation",
+      "experiment result in a launch decision routed to data-scientist experiment_readout.py; only its claims_allowed repeated (tests/test_g15_capability.py)"
     ],
     "receipts": [
       "draft paths",
