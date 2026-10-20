@@ -1,0 +1,5 @@
+browser processes seen during the run: 0
+py311: Ran 165 tests in 108.836s OK  rc=0 Python 3.11.16 at 8bc3553713c31548dda240da81a816802de1d375
+py312: Ran 165 tests in 109.713s OK  rc=0 Python 3.12.14 at 8bc3553713c31548dda240da81a816802de1d375
+py313: Ran 165 tests in 110.715s OK  rc=0 Python 3.13.15 at 8bc3553713c31548dda240da81a816802de1d375
+py39: Ran 165 tests in 118.528s OK  rc=0 Python 3.9.6 at 8bc3553713c31548dda240da81a816802de1d375

@@ -1,0 +1,21 @@
+# binding check G22-h1, 2026-10-19 19:17:10 PDT
+remote head of review/grok-g22-payment-ledger: 8bc3553713c31548dda240da81a816802de1d375 (expected 8bc3553713c31548dda240da81a816802de1d375)
+worktree HEAD: 8bc3553713c31548dda240da81a816802de1d375
+base is ancestor: yes; commits since: 1
+handback patch G22-h1.patch equals regenerated (format): yes
+MANIFEST.sha256 check against worktree:
+  employees/specialized/payments-specialist/SKILL.md: OK
+  employees/specialized/payments-specialist/learnings.md: OK
+  employees/specialized/payments-specialist/payment_ledger.py: OK
+  employees/specialized/payments-specialist/webhook-ledger.md: OK
+  examples/capabilities/G22/README.md: OK
+  tests/test_g22_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   employees/specialized/payments-specialist/SKILL.md |  3 +-
+   .../specialized/payments-specialist/learnings.md   |  1 +
+   .../payments-specialist/payment_ledger.py          | 22 +++++++++++-
+   .../payments-specialist/webhook-ledger.md          |  6 +++-
+   examples/capabilities/G22/README.md                |  9 +++--
+   tests/test_g22_capability.py                       | 42 +++++++++++++++++++++-
+   6 files changed, 76 insertions(+), 7 deletions(-)
