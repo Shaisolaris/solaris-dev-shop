@@ -1,0 +1,4 @@
+mutant M1-no-default-ignorable: suite tests.test_g32_capability -> FAILED (failures=1)
+mutant M2-skip-bad-json-line: suite tests.test_g32_capability -> FAILED (failures=1)
+mutant M3-skip-bad-row: suite tests.test_g32_capability -> FAILED (failures=1)
+mutant M4-truncate-torn-tail: suite tests.test_g32_capability -> FAILED (failures=1)

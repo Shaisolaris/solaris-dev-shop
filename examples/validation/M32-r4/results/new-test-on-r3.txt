@@ -1,0 +1,4 @@
+FAIL: test_invisible_characters_and_damaged_suppression_file (tests.test_g32_capability.G32Capability)
+AssertionError: 'crm:ana-clinic' != 'crm:an͏a-clinic'
+Ran 1 test in 0.004s
+FAILED (failures=1)

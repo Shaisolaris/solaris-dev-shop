@@ -1,0 +1,27 @@
+PASS Q01 merge drops opt-out history: no drafts for the person (0, [])
+PASS Q02 merge with case/width/space variant: no drafts (0, [])
+PASS Q03 duplicate with ZWSP refused (exit 2) 2
+PASS Q03 duplicate with ZWJ refused (exit 2) 2
+PASS Q03 duplicate with SHY refused (exit 2) 2
+PASS Q03 duplicate with BOM refused (exit 2) 2
+PASS Q03 duplicate with LRM refused (exit 2) 2
+PASS Q03 duplicate with WJ refused (exit 2) 2
+PASS Q04 merge to ZWSP variant with history dropped: no drafts (0, [])
+PASS Q05 durable marketing opt-out: ack drafted, onboarding suppressed ['ack']
+PASS Q06 durable hard bounce: no drafts []
+PASS Q07 opt_in after merge: consent_review_required and no drafts ([], [{'contact': 'c-ana2', 'detail': 'opt_in after an opt-out or bounce; the contact stays suppressed until a person reviews it', 'event': 'E12', 'note': 'consent_review_required'}])
+PASS Q08 refused duplicate run leaves state byte-identical 2
+PASS Q09 reruns do not duplicate suppression rows 1
+PASS Q10 state without the suppression file: rc 0 and person suppressed (0, [])
+OBS  Q11 corrupted suppression line + history dropped (what happens) (2, [], 'INVALID: person_suppressions.jsonl line 1 is not readable JSON; repair the file before running. Nothing was written.\n')
+OBS  Q12 garbage line in suppression file, history kept (what happens) (2, 'INVALID: person_suppressions.jsonl line 2 is not readable JSON; repair the file before running. Nothing was written.\n')
+OBS  Q13 merge to CGJ U+034F variant, history dropped (drafts) (0, [])
+OBS  Q13 duplicate with CGJ U+034F (rc, drafts for second record) (2, [])
+OBS  Q13 merge to VS16 U+FE0F variant, history dropped (drafts) (0, [])
+OBS  Q13 duplicate with VS16 U+FE0F (rc, drafts for second record) (2, [])
+OBS  Q13 merge to Hangul filler U+3164 variant, history dropped (drafts) (0, [])
+OBS  Q13 duplicate with Hangul filler U+3164 (rc, drafts for second record) (2, [])
+OBS  Q13 merge to Braille blank U+2800 variant, history dropped (drafts) (0, [])
+OBS  Q13 duplicate with Braille blank U+2800 (rc, drafts for second record) (2, [])
+OBS  Q14 merge that changes handle and drops history (drafts) (0, ['welcome'])
+PROBE 15/15
