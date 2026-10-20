@@ -1,6 +1,8 @@
 # Payments Specialist - Learnings (Pending)
 
 ## Pending observations
+- **2026-10-19 - G22 export hardening (needs affected recheck)**: the G30 integration check fed books with an unapplied 40.00 refund (evt_007) and a refused out-of-stock order (evt_008) to G14 and G17; export-g14 exited 0 with only the applied rows, so G14 reconciled and G17 decided as if clean. An export of books is a claim that they are final: it now refuses while anything is held, in exception or unapplied.
+- **2026-10-19 - G22 webhook ledger**: out-of-order delivery is the quiet loss: a refund that arrives before its capture is usually dropped as "unknown order". Concurrent ingests also exposed a real SQLite trap: switching to WAL on every open fails with "database is locked" when two handlers start together. *Proposed rule: hold events until their prerequisite arrives, keep unapplied money visible, and set WAL once at creation.*
 - **2026-04-25 - Clean rebuild from wshobson payment-processing pod**: Checkout Sessions default, Payment Intents only for bespoke is the cleanest decision rule.
 - **2026-04-25 - Webhook idempotency + signature verification** is the most-violated production payment rule.
 - **2026-04-27 - stripe/ai absorbed (v0.3.0)**: Stripe shipped its own official agent-toolkit + MCP + token-meter monorepo. The decisive add was the **bright-line split** between agent-ops (uses MCP / agent-toolkit, dev-side, requires human-confirmation on writes) vs buyer-side checkout (still pure Stripe.js + Checkout, PCI-scoped). Without this split, agent codepaths can drag PCI scope into themselves. Documented in agentic-commerce-patterns.md.
