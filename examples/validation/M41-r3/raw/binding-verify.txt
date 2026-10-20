@@ -1,0 +1,21 @@
+# binding check G41-r3, 2026-10-19 19:55:23 PDT
+remote head of review/grok-g41-release-inventory: a1bd6c41641c9849912c93e9dbe8db7a13229b55 (expected a1bd6c41641c9849912c93e9dbe8db7a13229b55)
+worktree HEAD: a1bd6c41641c9849912c93e9dbe8db7a13229b55
+base is ancestor: yes; commits since: 2
+handback patch G41-r3.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/quality-security/qa-engineer/host-portability.md: OK
+  employees/quality-security/qa-engineer/host_portability.py: OK
+  examples/capabilities/G40/README.md: OK
+  tests/test_g40_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../qa-engineer/host-portability.md                |  8 ++++
+   .../qa-engineer/host_portability.py                | 54 +++++++++++++++++-----
+   examples/capabilities/G40/README.md                |  2 +-
+   tests/test_g40_capability.py                       | 51 ++++++++++++++++++++
+   4 files changed, 102 insertions(+), 13 deletions(-)
+parents: 9b98d9b749a32fb5987a12657e2fc9903ab9edb5 eabf69ac9cf4f539bc39482b75681bf75e6e97e5
+merge-tree --write-tree 9b98d9b eabf69a: ff6c2b5b361afd0c2b893d3a773bb3c2277e9ac9
+candidate tree:            ff6c2b5b361afd0c2b893d3a773bb3c2277e9ac9
+files changed since 9b98d9b in release_candidate.py, examples/capabilities/G41, tests/test_g41_capability.py: 0
