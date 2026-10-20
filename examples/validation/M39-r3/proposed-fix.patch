@@ -1,0 +1,19 @@
+diff --git a/employees/product-project/delivery-lead/delivery_evidence.py b/employees/product-project/delivery-lead/delivery_evidence.py
+index 02b9a3e..858ca05 100644
+--- a/employees/product-project/delivery-lead/delivery_evidence.py
++++ b/employees/product-project/delivery-lead/delivery_evidence.py
+@@ -213,6 +213,14 @@ def _named_inputs(root, argv, outputs, explicit):
+                 a = Path(os.path.realpath(a)).relative_to(base).as_posix()
+             except ValueError:
+                 continue  # outside ROOT: cannot be re-checked later
++        if ".." in Path(a).parts:  # inp/../inp/a.csv or ../ROOT/inp/a.csv: bind the normalised path if it stays inside ROOT
++            n = os.path.normpath(os.path.join(str(base), a))
++            if os.path.islink(n):
++                raise Invalid("input %r named in the command is a symlink; name its target" % a[:80])
++            try:
++                a = Path(n).relative_to(base).as_posix()
++            except ValueError:
++                continue  # outside ROOT: cannot be re-checked later
+         if not _safe_rel(a):
+             continue
+         k = Path(a).as_posix().rstrip("/")

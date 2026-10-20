@@ -1,0 +1,16 @@
+oracle-3.13.15.json D02 crashes at other points: G04 crash after activate or bri ['head_lag_one_tolerated_and_repaired']
+contract-3.13.15.json Q05 OBS: undeclared indirect inputs, empty subfold {"undeclared_indirect_file_changed_verdict": "GO", "undeclared_imported_helper_changed_verdict": "GO", "declared_folder_empty_subfolder_added_verdict": "GO", "output_folder_empty_subfolder_added_verdict": "GO", "input_rewritten_during_run": [0, "GO", ["inp/a.csv"]], "verify_exit_GO_WITH_GAPS": [0, "GO_WITH_GAPS"], "verify_exit_EVIDENCED_NO_ORDER": [0, "EVIDENCED_NO_ORDER"], "rewritten_record_exit_2_ok_true_verdict": [1, "NO_GO", "failed"]}
+probe-3.13.15.json R01 an input spelled with a dot-dot segment inside ROOT (inp ['caught']
+probe-3.13.15.json R06 an input spelled through the parent of ROOT (../d/inp/a. ['caught']
+probe-3.13.15.json Q07 (M39 r2 P3-3) verify exit code when the verdic {"record_exit": 0, "verify_rc": 0, "verdict": "GO_WITH_GAPS"}
+23:python3 examples/capabilities/G39/drill_oracle.py --tool examples/capabilities/G39/naive_evidence.py  # REJECTED 12/18
+24:python3 examples/capabilities/G39/drill_oracle.py --tool examples/capabilities/G39/noop_evidence.py   # REJECTED 0/18
+44:`naive_evidence.py` is the real tool with three shortcuts (trust recorded digests, no chain check, any
+45:delivery counts); `noop_evidence.py` records nothing and answers GO.
+candidate 9ab356256d5147c89c0f780d4ab639c584971326
+patch file 9307e3226595e9665bc34c04065573c8802e9a2b49d92a4fbeae70ca9eb1c9b8
+recomputed format-patch 9307e3226595e9665bc34c04065573c8802e9a2b49d92a4fbeae70ca9eb1c9b8
+11
+      11
+manifest-set-equals-diff
+ff-from-r2

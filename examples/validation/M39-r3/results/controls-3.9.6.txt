@@ -1,0 +1,4 @@
+naive REJECTED 12/18
+noop REJECTED 0/18
+contract naive M39R2 CONTRACT 3/4 core FAIL
+probe naive M39R3 PROBES 4/6

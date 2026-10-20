@@ -1,0 +1,203 @@
+{
+ "rows": [
+  {
+   "row": "R01 an input spelled with a dot-dot segment inside ROOT (inp/../inp/a.csv) is bound or refused",
+   "pass": false,
+   "sub": {
+    "caught": false
+   },
+   "detail": {
+    "caught": [
+     false,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       0,
+       "GO",
+       "evidenced"
+      ]
+     ]
+    ],
+    "claimed_inputs": []
+   }
+  },
+  {
+   "row": "R02 a named folder holding a symlink to a file outside ROOT: refused at record, or the outside change is caught",
+   "pass": true,
+   "sub": {
+    "caught": true
+   },
+   "detail": {
+    "caught": [
+     true,
+     [
+      2,
+      [
+       1,
+       "NO_GO",
+       "unevidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "unevidenced"
+      ],
+      "invalid: inputs: inp/ext.csv is a symlink; digest the file it points to inside the root instead"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "R03 an input reached through a symlinked parent folder (lnk/a.csv, lnk -> inp) is bound or refused",
+   "pass": true,
+   "sub": {
+    "caught": true
+   },
+   "detail": {
+    "caught": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ],
+      ""
+     ]
+    ]
+   }
+  },
+  {
+   "row": "R04 retargeting that symlinked parent to other content is caught (or the record was refused)",
+   "pass": true,
+   "sub": {
+    "caught": true
+   },
+   "detail": {
+    "caught": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "row": "R05 ./inp/a.csv is bound",
+   "pass": true,
+   "sub": {
+    "caught": true
+   },
+   "detail": {
+    "caught": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "row": "R06 an input spelled through the parent of ROOT (../d/inp/a.csv, still inside ROOT) is bound or refused",
+   "pass": false,
+   "sub": {
+    "caught": false
+   },
+   "detail": {
+    "caught": [
+     false,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       0,
+       "GO",
+       "evidenced"
+      ]
+     ]
+    ],
+    "claimed_inputs": []
+   }
+  },
+  {
+   "row": "Q05 an absolute input outside ROOT (documented: cannot be re-checked) - verdict after it changes, and whether the record says so",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "record_exit": 0,
+    "go_before": [
+     0,
+     "GO",
+     "evidenced"
+    ],
+    "go_after": [
+     0,
+     "GO",
+     "evidenced"
+    ],
+    "record_mentions_outside": false
+   }
+  },
+  {
+   "row": "Q06 (M39 r2 P3-2) an input rewritten by the run: verdict and how the record shows it",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "record_exit": 0,
+    "verdict": [
+     0,
+     "GO",
+     "evidenced"
+    ],
+    "inputs_changed_during_run": [
+     "inp/a.csv"
+    ]
+   }
+  },
+  {
+   "row": "Q07 (M39 r2 P3-3) verify exit code when the verdict is GO_WITH_GAPS",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "record_exit": 0,
+    "verify_rc": 0,
+    "verdict": "GO_WITH_GAPS"
+   }
+  }
+ ]
+}

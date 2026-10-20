@@ -1,0 +1,12 @@
+PASS R01 an input spelled with a dot-dot segment inside ROOT (inp/../inp/a.csv) is bound or refused {"caught": [true, [0, [0, "GO", "evidenced"], [1, "NO_GO", "stale"]]], "claimed_inputs": ["inp/a.csv
+PASS R02 a named folder holding a symlink to a file outside ROOT: refused at record, or the outside change is caugh {"caught": [true, [2, [1, "NO_GO", "unevidenced"], [1, "NO_GO", "unevidenced"], "inv
+PASS R03 an input reached through a symlinked parent folder (lnk/a.csv, lnk -> inp) is bound or refused {"caught": [true, [0, [0, "GO", "evidenced"], [1, "NO_GO", "stale"], ""]]}
+PASS R04 retargeting that symlinked parent to other content is caught (or the record was refused) {"caught": [true, [0, [0, "GO", "evidenced"], [1, "NO_GO", "stale"]]]}
+PASS R05 ./inp/a.csv is bound {"caught": [true, [0, [0, "GO", "evidenced"], [1, "NO_GO", "stale"]]]}
+PASS R06 an input spelled through the parent of ROOT (../d/inp/a.csv, still inside ROOT) is bound or refused {"caught": [true, [0, [0, "GO", "evidenced"], [1, "NO_GO", "stale"]]], "claimed_inputs": ["
+PASS Q05 an absolute input outside ROOT (documented: cannot be re-checked) - verdict after it changes, and whether  {"record_exit": 0, "go_before": [0, "GO", "evidenced"], "go_after": [0, "GO", "evide
+PASS Q06 (M39 r2 P3-2) an input rewritten by the run: verdict and how the record shows it {"record_exit": 0, "verdict": [0, "GO", "evidenced"], "inputs_changed_during_run": ["inp/a.csv"]}
+PASS Q07 (M39 r2 P3-3) verify exit code when the verdict is GO_WITH_GAPS {"record_exit": 0, "verify_rc": 0, "verdict": "GO_WITH_GAPS"}
+M39R3 PROBES 6/6
+OK
+M39R2 CONTRACT 4/4 core PASS

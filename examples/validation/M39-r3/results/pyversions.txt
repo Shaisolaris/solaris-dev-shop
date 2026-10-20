@@ -1,0 +1,11 @@
+== 3.9.6 | probes: M39R3 PROBES 4/6 | m39r2-contract: M39R2 CONTRACT 4/4 core PASS | m39-oracle: M39 ORACLE 8/9 core FAIL | g39 tests: OK | drill: DRILL PASSED | drill_oracle: ACCEPTED 18/18
+== 3.11.16 | probes: M39R3 PROBES 4/6 | m39r2-contract: M39R2 CONTRACT 4/4 core PASS | m39-oracle: M39 ORACLE 8/9 core FAIL | g39 tests: OK | drill: DRILL PASSED | drill_oracle: ACCEPTED 18/18
+== 3.12.14 | probes: M39R3 PROBES 4/6 | m39r2-contract: M39R2 CONTRACT 4/4 core PASS | m39-oracle: M39 ORACLE 8/9 core FAIL | g39 tests: OK | drill: DRILL PASSED | drill_oracle: ACCEPTED 18/18
+== 3.13.15 | probes: M39R3 PROBES 4/6 | m39r2-contract: M39R2 CONTRACT 4/4 core PASS | m39-oracle: M39 ORACLE 8/9 core FAIL | g39 tests: OK | drill: DRILL PASSED | drill_oracle: ACCEPTED 18/18
+README.md
+drill.py
+drill_oracle.py
+fixtures
+naive_evidence.py
+noop_evidence.py
+tree clean lines:        0
