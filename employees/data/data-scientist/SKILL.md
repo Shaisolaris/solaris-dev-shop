@@ -156,7 +156,8 @@ the horizon, refuses to read an effect under a sample-ratio mismatch or an alloc
 assignment weeks (Simpson) or changes in any sliding window of assignments, and reports the
 difference with an interval. Repeat only what its `claims_allowed` permits: no causal claim from observational data or from a
 randomized export whose assignment is not verified against a declared `randomization` rule (the allocation
-tests miss interleaved bursts), and "no detectable difference" is never "no effect".
+tests miss interleaved bursts), and "no detectable difference" is never "no effect". The per-unit check cannot
+see units missing from the log; give `randomization.expected_units` when the assignment system has the count.
 
 ## Escalation & hand-offs
 
