@@ -1,0 +1,766 @@
+{
+ "base": "02ba9c571b10ad1dba792d2ac5534bcad3171e67",
+ "drift": [],
+ "external": [],
+ "findings": [],
+ "goal": "G42",
+ "head": "956792e8c205f60f35aeb1d2baca749eb9a1171e",
+ "head_tree": "f3439fd25319ccc500f055c2093a1533d3a993c5",
+ "integration_files": 9,
+ "interpreter": "3.9.6",
+ "not_run": [],
+ "notes": [
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G04",
+    "G38",
+    "G41"
+   ],
+   "path": "employees/infrastructure/fleet-dispatcher/handoff-work-orders.md",
+   "reason": "G38 and G41 carry the same older copy (blob 2d607b2 from 314b4db). G04 (through commit 155fc33) builds on that commit and changes the file (blob 96af330). HEAD is the G04 blob, the newest, so nothing is lost."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G04",
+    "G38",
+    "G41"
+   ],
+   "path": "employees/infrastructure/fleet-dispatcher/handoff.py",
+   "reason": "G38 and G41 carry the same older copy (blob eb27607 from 314b4db). G04 (through commit 155fc33) builds on that commit and changes the file (blob cc545eb). HEAD is the G04 blob, the newest, so nothing is lost."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G37",
+    "G38"
+   ],
+   "path": "employees/legal-compliance/legal-advisor/SKILL.md",
+   "reason": "G37 9b0f58e and G38 41ad344 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob eb6f60c)."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G37",
+    "G38"
+   ],
+   "path": "employees/legal-compliance/legal-advisor/capability.contract.json",
+   "reason": "G37 9b0f58e and G38 41ad344 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob f691132)."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G37",
+    "G38"
+   ],
+   "path": "employees/legal-compliance/legal-advisor/learnings.md",
+   "reason": "G37 9b0f58e and G38 41ad344 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob 7a7c6f4)."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G04",
+    "G38",
+    "G41"
+   ],
+   "path": "employees/product-project/delivery-lead/SKILL.md",
+   "reason": "G04 and G38 carry the same older copy (blob 7bb0a17 from 314b4db). G41 (through commit 05378c4) builds on that commit and changes the file (blob 302fd88). HEAD is the G41 blob, the newest, so nothing is lost."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G02",
+    "G04",
+    "G38",
+    "G41"
+   ],
+   "path": "employees/product-project/project-onboarding/SKILL.md",
+   "reason": "G04 and G38 and G41 carry the same older copy (blob 1801847 from bbe682b). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob 1921766). HEAD is the G02 blob, the newest, so nothing is lost."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G02",
+    "G04",
+    "G38",
+    "G41"
+   ],
+   "path": "employees/product-project/project-onboarding/activate.py",
+   "reason": "G04 and G38 and G41 carry the same older copy (blob 37e7d6a from bbe682b). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob daf9978). HEAD is the G02 blob, the newest, so nothing is lost."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G02",
+    "G04",
+    "G38",
+    "G41"
+   ],
+   "path": "employees/product-project/project-onboarding/learnings.md",
+   "reason": "G04 and G38 and G41 carry the same older copy (blob ceba76e from bbe682b). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob d3321aa). HEAD is the G02 blob, the newest, so nothing is lost."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G38",
+    "G41"
+   ],
+   "path": "employees/quality-security/assurance/ASSURANCE.md",
+   "reason": "G38 carries an older copy (blob 6b57a82 from 8b38a72). G41 (through commit 3056378) builds on that commit and changes the file (blob 612ee22). HEAD is the G41 blob, the newest, so nothing is lost."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G38",
+    "G41"
+   ],
+   "path": "employees/quality-security/assurance/quality_os.py",
+   "reason": "G38 carries an older copy (blob 6bbd6b3 from 8b38a72). G41 (through commit 3056378) builds on that commit and changes the file (blob d3d32f5). HEAD is the G41 blob, the newest, so nothing is lost."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G38",
+    "G41"
+   ],
+   "path": "employees/quality-security/qa-engineer/SKILL.md",
+   "reason": "G38 carries an older copy (blob c2b2092 from 8b38a72). G41 (through commit 8ebabfd) builds on that commit and changes the file (blob e585eb6). HEAD is the G41 blob, the newest, so nothing is lost."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G38",
+    "G41"
+   ],
+   "path": "employees/quality-security/security-auditor/SKILL.md",
+   "reason": "G38 41ad344 and G41 5606672 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob 845b475)."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G38",
+    "G41"
+   ],
+   "path": "employees/quality-security/security-auditor/capability.contract.json",
+   "reason": "G38 41ad344 and G41 5606672 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob d9671a9)."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G38",
+    "G41"
+   ],
+   "path": "employees/quality-security/security-auditor/learnings.md",
+   "reason": "G38 41ad344 and G41 5606672 both edit this file from base 02ba9c5; the merge keeps both sides. Checked line by line: every line either one added or changed is in HEAD (blob 99b0320)."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G02",
+    "G04",
+    "G38",
+    "G41"
+   ],
+   "path": "examples/capabilities/G02/README.md",
+   "reason": "G04 and G38 and G41 carry the same older copy (blob 7645664 from 4113204). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob c95aecc). HEAD is the G02 blob, the newest, so nothing is lost."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G02",
+    "G04",
+    "G38",
+    "G41"
+   ],
+   "path": "examples/capabilities/G02/activation_oracle.py",
+   "reason": "G04 and G38 and G41 carry the same older copy (blob 228c3ec from 4113204). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob 24cc8ef). HEAD is the G02 blob, the newest, so nothing is lost."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G02",
+    "G04",
+    "G38",
+    "G41"
+   ],
+   "path": "tests/test_g02_capability.py",
+   "reason": "G04 and G38 and G41 carry the same older copy (blob 129cdc6 from bbe682b). G02 (through commit 8fdae9c) builds on that commit and changes the file (blob ac855ef). HEAD is the G02 blob, the newest, so nothing is lost."
+  },
+  {
+   "code": "RESOLVED_OVERLAP",
+   "ids": [
+    "G04",
+    "G38",
+    "G41"
+   ],
+   "path": "tests/test_g04_capability.py",
+   "reason": "G38 and G41 carry the same older copy (blob 6a63af7 from 314b4db). G04 (through commit 155fc33) builds on that commit and changes the file (blob 9751498). HEAD is the G04 blob, the newest, so nothing is lost."
+  }
+ ],
+ "overlaps": [],
+ "plan_sha256": "55cf54e851ee92f1c74f30389fb57aff5b1fa2302a45c6190c5c41fcb46ecc24",
+ "prerequisites": [
+  {
+   "acceptance": "UNKNOWN",
+   "ancestor_of_head": true,
+   "changed_files": 11,
+   "commit": "8fdae9cead8d136211f596bf1e501a41c5a78078",
+   "id": "G02"
+  },
+  {
+   "acceptance": "UNKNOWN",
+   "ancestor_of_head": true,
+   "changed_files": 13,
+   "commit": "d4d98f2180ed9b92fd058a2350285f60f83b877d",
+   "id": "G03"
+  },
+  {
+   "acceptance": "UNKNOWN",
+   "ancestor_of_head": true,
+   "changed_files": 27,
+   "commit": "155fc33ad284b8c8f79c235d96f240abcd64f662",
+   "id": "G04"
+  },
+  {
+   "acceptance": "UNKNOWN",
+   "ancestor_of_head": true,
+   "changed_files": 48,
+   "commit": "30563781f175d3f012e881fe8d302f5a7aed5c20",
+   "id": "G05"
+  },
+  {
+   "acceptance": "UNKNOWN",
+   "ancestor_of_head": true,
+   "changed_files": 21,
+   "commit": "5666e7beb161d1252ddd5dcc0a166aca83255370",
+   "id": "G13"
+  },
+  {
+   "acceptance": "UNKNOWN",
+   "ancestor_of_head": true,
+   "changed_files": 18,
+   "commit": "350d175e5cf43438e95476f945ea16804e4bba85",
+   "id": "G19"
+  },
+  {
+   "acceptance": "UNKNOWN",
+   "ancestor_of_head": true,
+   "changed_files": 50,
+   "commit": "e9b7a7772636f927bf21128dc2802ffcac742b44",
+   "id": "G37"
+  },
+  {
+   "acceptance": "UNKNOWN",
+   "ancestor_of_head": true,
+   "changed_files": 80,
+   "commit": "ba70b6934a13f931b8533df9fa947802d610d15b",
+   "id": "G38"
+  },
+  {
+   "acceptance": "UNKNOWN",
+   "ancestor_of_head": true,
+   "changed_files": 116,
+   "commit": "9ab356256d5147c89c0f780d4ab639c584971326",
+   "id": "G39"
+  },
+  {
+   "acceptance": "UNKNOWN",
+   "ancestor_of_head": true,
+   "changed_files": 132,
+   "commit": "eabf69ac9cf4f539bc39482b75681bf75e6e97e5",
+   "id": "G40"
+  },
+  {
+   "acceptance": "UNKNOWN",
+   "ancestor_of_head": true,
+   "changed_files": 140,
+   "commit": "a1bd6c41641c9849912c93e9dbe8db7a13229b55",
+   "id": "G41"
+  }
+ ],
+ "read_only": true,
+ "run_mode": "all",
+ "runs": [
+  {
+   "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "tests.test_g02_capability"
+   ],
+   "id": "G02",
+   "kind": "test",
+   "rc": 0,
+   "seconds": 1.9,
+   "tail": [
+    "Ran 49 tests in 1.864s",
+    "",
+    "OK"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "examples/capabilities/G02/activation_oracle.py",
+    "--",
+    "{python}",
+    "employees/product-project/project-onboarding/activate.py"
+   ],
+   "id": "G02",
+   "kind": "command",
+   "rc": 0,
+   "seconds": 2.0,
+   "tail": [
+    "PASS o10_scale: 3000 owner files identical; activation 0.04s",
+    "PASS o11_ambiguous_deploy_and_corrupt_journal: blank-looking/disguised UNRESOLVED -> partial; deep journal blocked, file preserved",
+    "SUMMARY 11/11 pass; candidate ACCEPTED by oracle"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "tests.test_g03_capability"
+   ],
+   "id": "G03",
+   "kind": "test",
+   "rc": 0,
+   "seconds": 4.5,
+   "tail": [
+    "Ran 48 tests in 4.478s",
+    "",
+    "OK"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "examples/capabilities/G03/recovery_oracle.py",
+    "--",
+    "{python}",
+    "employees/infrastructure/database-administrator/sqlite_recovery.py"
+   ],
+   "id": "G03",
+   "kind": "command",
+   "rc": 0,
+   "seconds": 11.0,
+   "tail": [
+    "PASS c17_health_mid_swap_opens_nothing: health mid-swap names the journal, opens nothing, creates nothing; snapshot refuses; recover then completes",
+    "PASS c18_empty_db_bad_manifest_bad_timeout: 0-byte and table-less DBs unhealthy; failed snapshot leaves no folder; malformed manifest refused (2) and not verified; nan/inf/-1/0/601 timeouts exit 2",
+    "SUMMARY 18/18 pass; candidate ACCEPTED by oracle"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "tests.test_g04_capability"
+   ],
+   "id": "G04",
+   "kind": "test",
+   "rc": 0,
+   "seconds": 7.8,
+   "tail": [
+    "Ran 14 tests in 7.793s",
+    "",
+    "OK"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "examples/capabilities/G04/handoff_oracle.py"
+   ],
+   "id": "G04",
+   "kind": "command",
+   "rc": 0,
+   "seconds": 14.1,
+   "tail": [
+    "scale: {\"orders\": 200, \"workers\": 4, \"runs\": 1000, \"crash_drills\": 224, \"seconds\": 12.3}",
+    "16/16 checks passed",
+    "not run: workers on other machines or a shared network folder (locks are local fcntl locks), a router or scheduler launching workers, Hermes jobs, and any live delivery; the outbox is a local file."
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "tests.test_g05_capability"
+   ],
+   "id": "G05",
+   "kind": "test",
+   "rc": 0,
+   "seconds": 0.9,
+   "tail": [
+    "Ran 11 tests in 0.881s",
+    "",
+    "OK"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "examples/capabilities/G05/binding_oracle.py"
+   ],
+   "id": "G05",
+   "kind": "command",
+   "rc": 0,
+   "seconds": 0.4,
+   "tail": [
+    "scale: {\"subject_files\": 5000, \"gates\": 11, \"changed\": 37, \"stale_expected\": 3, \"seconds\": 0.009}",
+    "16/16 checks passed",
+    "not run: whether a reviewer really examined the named revision (receipts are declarations), git itself (revisions are compared as declared ids), and any release or external action."
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "tests.test_g13_capability"
+   ],
+   "id": "G13",
+   "kind": "test",
+   "rc": 0,
+   "seconds": 8.4,
+   "tail": [
+    "Ran 40 tests in 8.332s",
+    "",
+    "OK"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "examples/capabilities/G13/reconcile_oracle.py",
+    "--tool",
+    "{python} employees/data/data-engineer/csv_reconcile.py"
+   ],
+   "id": "G13",
+   "kind": "command",
+   "rc": 0,
+   "seconds": 9.7,
+   "tail": [
+    "PASS o14 export timestamp spellings (PostgreSQL +00/-07, 7 and 9 digit fractions, -0700, SQL Server) read exactly; date-only days on midnight DST changes",
+    "scale: 248000 data rows in 4.68s",
+    "14/14 checks passed"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "tests.test_g19_capability"
+   ],
+   "id": "G19",
+   "kind": "test",
+   "rc": 0,
+   "seconds": 84.9,
+   "tail": [
+    "Ran 18 tests in 84.878s",
+    "",
+    "OK"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "examples/capabilities/G19/boundary_oracle.py",
+    "--server",
+    "{python} employees/engineering/backend-developer/ledger_api.py"
+   ],
+   "id": "G19",
+   "kind": "command",
+   "rc": 0,
+   "seconds": 4.2,
+   "tail": [
+    "o3: {'race_accepted': 3, 'race_refused': 13, 'race_paid': 900}",
+    "o9: {'unique': 2000, 'requests': 2500, 'workers': 16, 'seconds': 0.98}",
+    "10/10 checks passed"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "tests.test_g37_capability"
+   ],
+   "id": "G37",
+   "kind": "test",
+   "rc": 0,
+   "seconds": 5.1,
+   "tail": [
+    "Ran 13 tests in 5.017s",
+    "",
+    "OK"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "examples/capabilities/G37/privacy_oracle.py"
+   ],
+   "id": "G37",
+   "kind": "command",
+   "rc": 0,
+   "seconds": 2.9,
+   "tail": [
+    "PASS o8 qualified-review boundaries are visible (free text, retention hold, deletion conflict, unknown and configured clocks); every obligation traceable",
+    "PASS o9 scale: 20 000 people and 40 000 orders, retention equal to construction in under 120 s",
+    "ACCEPTED 9/9"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "tests.test_g38_capability"
+   ],
+   "id": "G38",
+   "kind": "test",
+   "rc": 0,
+   "seconds": 14.0,
+   "tail": [
+    "Ran 21 tests in 13.937s",
+    "",
+    "OK"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "examples/capabilities/G38/authority_oracle.py"
+   ],
+   "id": "G38",
+   "kind": "command",
+   "rc": 0,
+   "seconds": 2.9,
+   "tail": [
+    "PASS e4 8 concurrent appenders x 25 events: 200 verified, no lost or forked write",
+    "PASS s1 no network, process, wallet or chain library use in either tool; fixtures byte-identical",
+    "ACCEPTED 8/8"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "tests.test_g39_capability"
+   ],
+   "id": "G39",
+   "kind": "test",
+   "rc": 0,
+   "seconds": 14.9,
+   "tail": [
+    "Ran 47 tests in 14.877s",
+    "",
+    "OK"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "examples/capabilities/G39/drill_oracle.py"
+   ],
+   "id": "G39",
+   "kind": "command",
+   "rc": 0,
+   "seconds": 8.1,
+   "tail": [
+    "PASS o17_unconfirmed_and_log    lag 1/unconfirmed, next append 0 -> 0, forged 1/unconfirmed, forged+head 1/log_mismatch",
+    "PASS o18_order_intake_ledger    no order 0 EVIDENCED_NO_ORDER; intake 0->1 intake_changed; ledger deleted 1 broken record 3",
+    "ACCEPTED 18/18"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "tests.test_g40_capability"
+   ],
+   "id": "G40",
+   "kind": "test",
+   "rc": 0,
+   "seconds": 1.1,
+   "tail": [
+    "Ran 18 tests in 1.066s",
+    "",
+    "OK (skipped=5)"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "examples/capabilities/G40/portability_oracle.py"
+   ],
+   "id": "G40",
+   "kind": "command",
+   "rc": 0,
+   "seconds": 0.3,
+   "tail": [
+    "PASS o7 report marks qa-engineer skill-copy broken; rc=1 status=broken",
+    "PASS o8 missing --out folder -> exit 2; rc=2",
+    "ACCEPTED 8/8"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "tests.test_g41_capability"
+   ],
+   "id": "G41",
+   "kind": "test",
+   "rc": 0,
+   "seconds": 1.8,
+   "tail": [
+    "Ran 18 tests in 1.781s",
+    "",
+    "OK"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "examples/capabilities/G41/inventory_oracle.py"
+   ],
+   "id": "G41",
+   "kind": "command",
+   "rc": 0,
+   "seconds": 0.6,
+   "tail": [
+    "PASS o9_conflict_and_invalid      conflict True invalid (2, 2, 2)",
+    "PASS o10_git_ancestry             rc 1 {'G05': 'candidate descends from the accepted commit', 'G06': 'candidate does not descend from it'}",
+    "ACCEPTED 10/10"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "examples/capabilities/G42/cross_checks.py"
+   ],
+   "id": "G42",
+   "kind": "cross_check",
+   "rc": 0,
+   "seconds": 1.6,
+   "tail": [
+    "x3 security-auditor lists provenance_check.py and boundary_probe.py, both present and compiling; G40 skill-copy misses only 3 shared standards",
+    "x4 legal-advisor names the G37 and G38 tests; G37 not legal advice, G38 not a legal opinion",
+    "CROSS-CHECKS CLEAN (0 findings)"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests"
+   ],
+   "id": "suite",
+   "kind": "gate",
+   "rc": 0,
+   "seconds": 191.4,
+   "tail": [
+    "Ran 394 tests in 191.332s",
+    "",
+    "OK (skipped=5)"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "control-plane/meta_control_plane.py",
+    "self-test"
+   ],
+   "id": "control_plane",
+   "kind": "gate",
+   "rc": 0,
+   "seconds": 0.2,
+   "tail": [
+    "meta control-plane selftest: OK (engine 1.3.0, providers [names removed for the safety scan])"
+   ]
+  },
+  {
+   "argv": [
+    "quality_os.py",
+    "audit"
+   ],
+   "id": "quality_audit",
+   "kind": "gate",
+   "rc": 0,
+   "seconds": 0.1,
+   "tail": [
+    "scanned=61 gaps=0"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "-c",
+    "\nimport glob, json\nbad = []\nfor f in sorted(glob.glob('employees/*/*/plugin.json') + glob.glob('employees/*/*/capability.contract.json') + glob.glob('chief-of-staff/capability.contract.json')):\n    try:\n        d = json.load(open(f))\n        if f.endswith('plugin.json'):\n            bad += ['%s: missing %s' % (f, k) for k in ('name', 'version', 'description') if k not in d]\n    except Exception as e:\n        bad.append('%s: %s' % (f, e))\nprint('\\n'.join(bad) if bad else 'all manifests parse OK')\nraise SystemExit(1 if bad else 0)\n"
+   ],
+   "id": "manifests",
+   "kind": "gate",
+   "rc": 0,
+   "seconds": 0.0,
+   "tail": [
+    "all manifests parse OK"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "tools/build_skill_catalog.py",
+    "--check"
+   ],
+   "id": "catalog",
+   "kind": "gate",
+   "rc": 0,
+   "seconds": 0.0,
+   "tail": [
+    "Skill catalog matches source contracts and active roster"
+   ]
+  },
+  {
+   "argv": [
+    "git",
+    "ls-files",
+    "-s"
+   ],
+   "id": "symlinks",
+   "kind": "gate",
+   "rc": 0,
+   "seconds": 0.0,
+   "tail": [
+    "no symbolic links"
+   ]
+  },
+  {
+   "argv": [
+    "python3",
+    "tools/validate_skill_metadata.py"
+   ],
+   "id": "metadata",
+   "kind": "gate",
+   "rc": 0,
+   "seconds": 0.1,
+   "tail": [
+    "Skill metadata: 62/62 entrypoints valid"
+   ]
+  }
+ ],
+ "schema": "solaris.daily-integration-report/1",
+ "verdict": "INTEGRATED"
+}

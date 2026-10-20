@@ -1,0 +1,42 @@
+# binding check G42-r2, 2026-10-19 19:56:36 PDT
+remote head of review/grok-g42-daily-integration: 956792e8c205f60f35aeb1d2baca749eb9a1171e (expected 956792e8c205f60f35aeb1d2baca749eb9a1171e)
+worktree HEAD: 956792e8c205f60f35aeb1d2baca749eb9a1171e
+base is ancestor: yes; commits since: 6
+handback patch G42-r2.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/quality-security/qa-engineer/host-portability.md: OK
+  employees/quality-security/qa-engineer/host_portability.py: OK
+  employees/quality-security/security-auditor/provenance-integrity.md: OK
+  employees/quality-security/security-auditor/provenance_check.py: OK
+  examples/capabilities/G40/README.md: OK
+  examples/capabilities/G42/README.md: OK
+  examples/capabilities/G42/plan.json: OK
+  tests/test_g38_capability.py: OK
+  tests/test_g40_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../qa-engineer/host-portability.md                |  8 ++++
+   .../qa-engineer/host_portability.py                | 54 +++++++++++++++++-----
+   .../security-auditor/provenance-integrity.md       | 10 ++++
+   .../security-auditor/provenance_check.py           | 35 ++++++++++----
+   examples/capabilities/G40/README.md                |  2 +-
+   examples/capabilities/G42/README.md                |  8 +++-
+   examples/capabilities/G42/plan.json                | 12 ++---
+   tests/test_g38_capability.py                       | 32 +++++++++++++
+   tests/test_g40_capability.py                       | 51 ++++++++++++++++++++
+   9 files changed, 182 insertions(+), 30 deletions(-)
+plan G02 8fdae9cead8d branch review/grok-g02-activation remote 8fdae9cead8d current
+plan G03 d4d98f2180ed branch review/grok-g03-recovery remote d4d98f2180ed current
+plan G04 155fc33ad284 branch review/grok-g04-handoff remote 155fc33ad284 current
+plan G05 30563781f175 branch review/grok-g05-revision-bound-evidence remote 30563781f175 current
+plan G13 5666e7beb161 branch review/grok-g13-csv-reconciliation remote 5666e7beb161 current
+plan G19 350d175e5cf4 branch review/grok-g19-duplicate-safe-api remote 350d175e5cf4 current
+plan G37 e9b7a7772636 branch review/grok-g37-privacy-inventory remote e9b7a7772636 current
+plan G38 ba70b6934a13 branch review/grok-g38-authority-consistency remote ba70b6934a13 current
+plan G39 9ab356256d51 branch review/grok-g39-delivery-drill remote 9ab356256d51 current
+plan G40 eabf69ac9cf4 branch review/grok-g40-fresh-install remote eabf69ac9cf4 current
+plan G41 a1bd6c41641c branch review/grok-g41-release-inventory remote a1bd6c41641c current
+plan commits equal to current remote heads: 11, not: 0
+merge 2193465: tree f3bf4b7c666532882e1d834ad5e27bf7d0083197 merge-tree f3bf4b7c666532882e1d834ad5e27bf7d0083197
+merge 46aa14d: tree 1b8420b19b8d9f051956e110dcb807e29e7160e9 merge-tree 1b8420b19b8d9f051956e110dcb807e29e7160e9
+956792e changes only: examples/capabilities/G42/README.md examples/capabilities/G42/plan.json 
