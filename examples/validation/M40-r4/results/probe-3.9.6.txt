@@ -1,0 +1,3 @@
+V0 PASS 3.9: wheel-smoke refused with exit 2, nothing created {"rc": 2}
+V12 PASS checkout copy unchanged after every run {}
+M40R4 PROBE 2/2

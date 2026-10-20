@@ -1,0 +1,13 @@
+V1 PASS existing folder with user files: exit 2, every file kept, nothing added
+V2 PASS report --outside on the same folder: exit 2, kept
+V3 PASS folder holding only a hidden file counts as not empty
+V4 PASS a file as --outside: exit 2, no traceback, file kept
+V5 PASS dangling symlink as --outside: exit 2, target not created
+V6 PASS symlink to a non-empty folder: exit 2, target kept
+V7 PASS new nested folder: created, exit 0, result pass
+V8 PASS rerun into the folder the first run filled: exit 2, its files kept
+V9 PASS existing empty folder: exit 0 pass
+V10 PASS failed build: exit 2, names the work folder, nothing else created next to it
+V11 PASS --outside under REPO still refused, nothing created
+V12 PASS checkout copy unchanged after every run
+M40R4 PROBE 12/12

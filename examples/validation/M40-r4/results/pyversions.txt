@@ -1,0 +1,5 @@
+== 3.9.6 | probe: M40R4 PROBE 2/2 | M40 oracle: M40 ORACLE 5/5 scored PASS | G40 tests: Ran 18 tests in 1.406s OK (skipped=5) 
+== 3.11.16 | probe: M40R4 PROBE 12/12 | M40 oracle: M40 ORACLE 8/8 scored PASS | G40 tests: Ran 18 tests in 24.898s OK 
+== 3.12.14 | probe: M40R4 PROBE 12/12 | M40 oracle: M40 ORACLE 4/4 scored PASS | G40 tests: Ran 18 tests in 24.760s OK 
+== 3.13.15 | probe: M40R4 PROBE 12/12 | M40 oracle: M40 ORACLE 4/4 scored PASS | G40 tests: Ran 18 tests in 23.373s OK 
+checkout status lines: 0

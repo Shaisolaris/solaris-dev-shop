@@ -1,0 +1,13 @@
+V1 PASS existing folder with user files: exit 2, every file kept, nothing added {"rc": 2, "stderr": "gn/T/m40r4-hrusojsu/mine already exists and is not empty; name a new or empty folder (wheel-smoke never deletes or overwrites files there). Nothing was written."}
+V2 PASS report --outside on the same folder: exit 2, kept {"rc": 2}
+V3 PASS folder holding only a hidden file counts as not empty {"rc": 2}
+V4 PASS a file as --outside: exit 2, no traceback, file kept {"rc": 2}
+V5 PASS dangling symlink as --outside: exit 2, target not created {"rc": 2}
+V6 PASS symlink to a non-empty folder: exit 2, target kept {"rc": 2}
+V7 PASS new nested folder: created, exit 0, result pass {"rc": 0, "result": "pass", "stderr": ""}
+V8 PASS rerun into the folder the first run filled: exit 2, its files kept {"rc": 2}
+V9 PASS existing empty folder: exit 0 pass {"rc": 0}
+V10 PASS failed build: exit 2, names the work folder, nothing else created next to it {"rc": 2, "new_entries": ["wfail"], "stderr_tail": " the work folder $TMPDIR/m40r4-hrusojsu/wfail (left for inspection); the checkout and everything else were not changed."}
+V11 PASS --outside under REPO still refused, nothing created {"rc": 2}
+V12 PASS checkout copy unchanged after every run {}
+M40R4 PROBE 12/12

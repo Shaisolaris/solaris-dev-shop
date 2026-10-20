@@ -1,0 +1,6 @@
+# offline wheel-smoke on 3.13.15 (PIP_NO_INDEX=1), new --outside folder
+rc=2
+stderr tail: 7lm1l80000gn/T/tmp.XiMSdHN6Am/w/src' when installing build dependencies . Files were written only under the work folder $WORK/w (left for inspection); the checkout and everything else were not changed. 
+entries created next to it: err
+w
+checkout status lines: 0

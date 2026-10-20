@@ -1,0 +1,17 @@
+# binding check G40-r4, 2026-10-19 19:11:31 PDT
+remote head of review/grok-g40-fresh-install: eabf69ac9cf4f539bc39482b75681bf75e6e97e5 (expected eabf69ac9cf4f539bc39482b75681bf75e6e97e5)
+worktree HEAD: eabf69ac9cf4f539bc39482b75681bf75e6e97e5
+base is ancestor: yes; commits since: 1
+handback patch G40-r4.patch equals regenerated (format): yes
+MANIFEST.sha256 check against worktree:
+  employees/quality-security/qa-engineer/host-portability.md: OK
+  employees/quality-security/qa-engineer/host_portability.py: OK
+  examples/capabilities/G40/README.md: OK
+  tests/test_g40_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../qa-engineer/host-portability.md                |  8 ++++
+   .../qa-engineer/host_portability.py                | 54 +++++++++++++++++-----
+   examples/capabilities/G40/README.md                |  2 +-
+   tests/test_g40_capability.py                       | 51 ++++++++++++++++++++
+   4 files changed, 102 insertions(+), 13 deletions(-)
