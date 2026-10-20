@@ -67,8 +67,8 @@
   },
   {
    "id": "G22",
-   "commit": "8bc3553713c31548dda240da81a816802de1d375",
-   "note": "G22 h1 on accepted 1faee8d (export-g14 refuses open exceptions; needs affected recheck); carries G19 5606672 (accepted), G13 5666e7b, G14 6f7b23a",
+   "commit": "29cd7fc6a07384db28fca3824b7fc4efe1d13fe3",
+   "note": "G22 h2 on h1 8bc3553 and accepted 1faee8d (audited resolve path, so later clean periods export; needs affected recheck); carries G19 5606672 (accepted), G13 5666e7b, G14 6f7b23a",
    "tests": [
     "tests.test_g22_capability"
    ],
@@ -116,11 +116,11 @@
  "resolved_overlaps": [
   {
    "path": "employees/engineering/full-stack-developer/SKILL.md",
-   "reason": "G22 8bc3553 carries the G19 5606672 blob a02222b unchanged; G21 822a9c1 builds on G19 and adds one offline-client line (blob 01a06eb). HEAD is the G21 blob, a strict superset, so nothing from G19 or G22 is lost."
+   "reason": "G22 29cd7fc carries the G19 5606672 blob a02222b unchanged; G21 822a9c1 builds on G19 and adds one offline-client line (blob 01a06eb). HEAD is the G21 blob, a strict superset, so nothing from G19 or G22 is lost."
   },
   {
    "path": "employees/engineering/full-stack-developer/learnings.md",
-   "reason": "G22 8bc3553 carries the G19 5606672 blob c17671a unchanged; G21 822a9c1 builds on G19 and adds one pending observation (blob 1ad3fa5). HEAD is the G21 blob, a strict superset."
+   "reason": "G22 29cd7fc carries the G19 5606672 blob c17671a unchanged; G21 822a9c1 builds on G19 and adds one pending observation (blob 1ad3fa5). HEAD is the G21 blob, a strict superset."
   }
  ]
 }

@@ -1,8 +1,8 @@
 # G30 day 5 daily integration
 
 Stack on v0.61 `02ba9c5`: G17 `550f184` (accepted; carries G14 r2 `6f7b23a` and G13 r3 `5666e7b`, both
-accepted), G21 `822a9c1` (carries G19 `5606672`), G22 h1 `8bc3553` (hardening on accepted `1faee8d`, needs
-affected recheck; carries G19, G13 and G14), G20 r3 `0d4db69` (newest repair head, root QA), G23 `0ff2641` (accepted) and G25 `eb9c7c4` (accepted). G24 is not
+accepted), G21 `822a9c1` (carries G19 `5606672`), G22 h2 `29cd7fc` (on h1 `8bc3553` and accepted `1faee8d`:
+export refuses open exceptions and an audited resolve path clears them; needs affected recheck; carries G19, G13 and G14), G20 r3 `0d4db69` (newest repair head, root QA), G23 `0ff2641` (accepted) and G25 `eb9c7c4` (accepted). G24 is not
 stacked: its own plan test binds its exact HEAD, and nothing here needs G15 or G16. There are no outside
 contributions on this day.
 
@@ -17,7 +17,8 @@ money rows and exited 0 while `ingest` had left exceptions open. The 40.00 refun
 as succeeded was not in the books, G14 reconciled them (net cash 32.69, the same as a stream without
 those events), and G17 decided on them. G30 reported it and did not edit G22's files; the fix is G22's own
 hardening commit `8bc3553` (export refuses while anything is held, in exception or unapplied), merged
-here. `raw/` keeps the run on `1faee8d` that showed the finding.
+here. G22 h2 `29cd7fc` keeps that refusal and adds an audited `resolve` (retry or close) so later clean
+periods can export; x2 still holds on it. `raw/` keeps the run on `1faee8d` that showed the finding.
 
 Two overlaps are resolved in the plan: G21 and G22 both touch `employees/engineering/full-stack-developer/`
 `SKILL.md` and `learnings.md`. G22 carries the G19 blobs unchanged; G21 builds on G19 and adds one line to
