@@ -176,14 +176,19 @@ def _visible(text: str) -> bool:
 
 
 def _answer_token(text: str) -> str:
-    """NFKC-fold and drop format/whitespace/blank-looking marks so UNRESOLVED can be matched."""
-    folded = unicodedata.normalize("NFKC", text)
-    return "".join(
-        ch for ch in folded
-        if not ch.isspace()
-        and ch not in _BLANK_LOOKING
-        and unicodedata.category(ch) not in ("Cf", "Cc", "Zs", "Zl", "Zp", "Mn", "Me")
-    )
+    """Fold an answer so a disguised UNRESOLVED can be matched at its start.
+
+    NFKD, then drop format, control and combining marks (zero-width joiners, accents put on letters), and turn every
+    kind of space or blank-looking filler into one plain space. Spaces are kept, not deleted, so "UNRESOLVED ask the
+    owner" still starts with the word UNRESOLVED and the word boundary in UNRESOLVED_ANSWER still holds.
+    """
+    out = []
+    for ch in unicodedata.normalize("NFKD", text):
+        cat = unicodedata.category(ch)
+        if cat in ("Cf", "Cc", "Mn", "Me"):
+            continue
+        out.append(" " if ch.isspace() or ch in _BLANK_LOOKING or cat in ("Zs", "Zl", "Zp") else ch)
+    return " ".join("".join(out).split())
 
 
 def _without_commit_ids(text: str) -> str:

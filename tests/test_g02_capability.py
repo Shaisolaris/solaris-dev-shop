@@ -564,6 +564,23 @@ class M02Rework(Base):
         self.assertIsNone(intake['deploy_model'])
         self.assertEqual(problems, [])
 
+    def test_unresolved_followed_by_words_or_with_accents_stays_unresolved(self):
+        """G02 r4 (M02 r3 P2): G02 r3 deleted spaces before matching, so "UNRESOLVED ask the owner" lost its word
+        boundary and was recorded as a real answer; an accent on a letter also hid the word."""
+        for deploy in ('UNRESOLVED ask the owner', 'Unresolved until the owner decides', 'unresolved pending call',
+                       'UNRESOLVED\u00a0ask', 'UNRESOLVED\u3164ask', 'U\u0301NRESOLVED', 'UNRE\u0301SOLVED',
+                       'UNR\u00c9SOLVED', 'UN\u200bRESOLVED: ask', ' \u200b unresolved - pending'):
+            with self.subTest(deploy=deploy):
+                r = self.activate(deploy_model=deploy)
+                self.assertEqual(r['status'], 'partial')
+                self.assertIsNone(r['intake']['deploy_model'])
+                self.assertIn('DEPLOY-MODEL: UNRESOLVED (no answer recorded',
+                              (self.project / 'STATUS.md').read_text())
+        for deploy in ('manual uploads, unresolved staging', 'unresolvedness is not a model', 'Vercel'):
+            with self.subTest(deploy=deploy):
+                r = self.activate(deploy_model=deploy)
+                self.assertEqual(r['intake']['deploy_model'], deploy)
+
     def test_deeply_nested_journal_and_lock_give_bounded_results(self):
         """Corrupted / deeply nested JSON must not escape as a traceback (root G02 contract)."""
         deep = '[' * 50000
