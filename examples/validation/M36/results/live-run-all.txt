@@ -1,0 +1,40 @@
+daily integration G36 at 92ca6c3272b9 (tree 039a50de2116)
+  G04 e9fa278f6fc9 CANDIDATE
+  G13 5666e7beb161 ACCEPTED
+  G14 6f7b23aa1841 ACCEPTED
+  G17 550f1848a76a ACCEPTED
+  G31 fcf492af1ba1 CANDIDATE
+  G32 b69f3289f360 CANDIDATE
+  G33 a4ae555bdabf CANDIDATE
+  G34 de76fae516c3 ACCEPTED
+  G35 34bb98f46590 ACCEPTED
+  run test G04 python3 -m unittest tests.test_g04_capability rc=0 8.9s
+  run command G04 python3 examples/capabilities/G04/handoff_oracle.py rc=0 16.3s
+  run test G13 python3 -m unittest tests.test_g13_capability rc=0 9.5s
+  run test G14 python3 -m unittest tests.test_g14_capability rc=0 5.0s
+  run test G17 python3 -m unittest tests.test_g17_capability rc=0 9.9s
+  run command G17 python3 examples/capabilities/G17/decision_oracle.py rc=0 2.2s
+  run test G31 python3 -m unittest tests.test_g31_capability rc=0 13.5s
+  run command G31 python3 examples/capabilities/G31/scope_oracle.py rc=0 4.6s
+  run test G32 python3 -m unittest tests.test_g32_capability rc=0 10.1s
+  run command G32 python3 examples/capabilities/G32/followthrough_oracle.py rc=0 3.8s
+  run test G33 python3 -m unittest tests.test_g33_capability rc=0 7.5s
+  run command G33 python3 examples/capabilities/G33/evidence_oracle.py rc=0 2.7s
+  run test G34 python3 -m unittest tests.test_g34_capability rc=0 3.0s
+  run command G34 python3 examples/capabilities/G34/diag_oracle.py rc=0 1.1s
+  run test G35 python3 -m unittest tests.test_g35_capability rc=0 8.6s
+  run command G35 python3 examples/capabilities/G35/campaign_oracle.py rc=0 3.9s
+  run cross_check G36 python3 examples/capabilities/G36/cross_checks.py rc=0 0.8s
+  run gate suite python3 -m unittest discover -s tests rc=0 111.3s
+  run gate control_plane python3 control-plane/meta_control_plane.py self-test rc=0 0.2s
+  run gate quality_audit quality_os.py audit rc=0 0.1s
+  run gate manifests python3 -c 
+import glob, json
+bad = []
+for f in sorted(glob.glob('empl rc=0 0.0s
+  run gate catalog python3 tools/build_skill_catalog.py --check rc=0 0.0s
+  run gate symlinks git ls-files -s rc=0 0.0s
+  run gate metadata python3 tools/validate_skill_metadata.py rc=0 0.1s
+VERDICT INTEGRATED
+rc=0
+fresh clone dirty after: 0

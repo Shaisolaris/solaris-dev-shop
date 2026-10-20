@@ -1,0 +1,37 @@
+# binding check G36-r2, 2026-10-19 21:58:49 PDT
+remote head of review/grok-g36-daily-integration: 92ca6c3272b9dcbfd854fc5cfdf9359ddefa1ab4 (expected 92ca6c3272b9dcbfd854fc5cfdf9359ddefa1ab4)
+worktree HEAD: 92ca6c3272b9dcbfd854fc5cfdf9359ddefa1ab4
+base is ancestor: yes; commits since: 7
+handback patch G36-r2.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/infrastructure/fleet-dispatcher/handoff-work-orders.md: OK
+  employees/infrastructure/fleet-dispatcher/handoff.py: OK
+  employees/infrastructure/fleet-dispatcher/learnings.md: OK
+  employees/product-project/business-analyst/learnings.md: OK
+  employees/product-project/business-analyst/scope-estimate-acceptance.md: OK
+  employees/product-project/business-analyst/scope_acceptance.py: OK
+  employees/product-project/product-manager/evidence-product-decision.md: OK
+  employees/product-project/product-manager/evidence_decision.py: OK
+  employees/product-project/product-manager/learnings.md: OK
+  examples/capabilities/G36/README.md: OK
+  examples/capabilities/G36/plan.json: OK
+  tests/test_g04_capability.py: OK
+  tests/test_g31_capability.py: OK
+  tests/test_g33_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../fleet-dispatcher/handoff-work-orders.md        |  6 ++--
+   .../infrastructure/fleet-dispatcher/handoff.py     | 22 +++++++++++-
+   .../infrastructure/fleet-dispatcher/learnings.md   |  1 +
+   .../product-project/business-analyst/learnings.md  |  1 +
+   .../business-analyst/scope-estimate-acceptance.md  |  2 +-
+   .../business-analyst/scope_acceptance.py           |  8 +++--
+   .../product-manager/evidence-product-decision.md   |  2 +-
+   .../product-manager/evidence_decision.py           | 11 ++++--
+   .../product-project/product-manager/learnings.md   |  1 +
+   examples/capabilities/G36/README.md                | 11 +++---
+   examples/capabilities/G36/plan.json                | 30 +++++++++-------
+   tests/test_g04_capability.py                       | 41 ++++++++++++++++++++--
+   tests/test_g31_capability.py                       | 20 +++++++++++
+   tests/test_g33_capability.py                       | 23 ++++++++++++
+   14 files changed, 148 insertions(+), 31 deletions(-)
