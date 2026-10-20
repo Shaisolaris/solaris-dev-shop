@@ -102,10 +102,16 @@ The fixture runner fails closed on its own contract (added after engine
   `text`, `freshness_days`, and `requested_actions` or `sources` when the
   object has no packet key), or any top-level key other than `fixture_kind`,
   `kind`, `name`, `description` and `notes` whose string value names a
-  non-packet fixture kind in any case or spelling (`"fixture_type":
-  "legal"`, `"category": "planted_defect"`, `"type": "Planted-Defect"`).
-  Blocked legal text or a planted defect therefore cannot pass because its
-  kind key was misspelled, renamed or left out. `legal_text`,
+  non-packet fixture kind (`"fixture_type": "legal"`, `"category":
+  "planted_defect"`, `"type": "Planted-Defect"`). The value is compared only
+  after lowercasing and removing underscores, hyphens and spaces, so
+  `PLANTED DEFECT` and `planted-defect` match. Other spellings are not
+  matched: a typo (`plantd_defect`), other punctuation (`planted.defect`),
+  look-alike letters from another script, or invisible characters leave the
+  value as an ordinary packet field. Blocked legal text or a planted defect
+  therefore cannot pass because its kind key was renamed or left out
+  while its kind word is written in one of those matched forms; a misspelled
+  kind key itself is caught by the near-miss check above. `legal_text`,
   `requested_actions` and `sources` stay packet fields: an unwrapped packet
   (one with `legal_text`, `risk_level`, `dimensions`, `completed_gates`,
   `evidence` or `planted_defects`) carrying them is evaluated, and the legal
