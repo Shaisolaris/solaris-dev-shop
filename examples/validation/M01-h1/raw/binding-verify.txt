@@ -1,0 +1,14 @@
+# binding check G01-h1, 2026-10-19 18:39:08 PDT
+remote head of review/grok-g01-fixture-runner: aa0b083f1eb105349bc29d4d6d45cb2d1877d6b8 (expected aa0b083f1eb105349bc29d4d6d45cb2d1877d6b8)
+worktree HEAD: aa0b083f1eb105349bc29d4d6d45cb2d1877d6b8
+accepted parent is ancestor: yes; commits since: 1
+handback patch G01-h1.patch equals regenerated diff: yes
+MANIFEST.sha256 check against worktree:
+  docs/install.md: OK
+  employees/quality-security/assurance/ASSURANCE.md: OK
+  employees/quality-security/assurance/quality_os.py: OK
+  tests/test_fixture_runner.py: OK
+MANIFEST.sha256 file sha256: ec5ac4490f3d5a9a64afe1238b314ed1397c3c669b9802a05f4ba83d4b8d8416
+files changed since accepted:
+   employees/quality-security/assurance/ASSURANCE.md | 14 ++++++++++----
+   1 file changed, 10 insertions(+), 4 deletions(-)

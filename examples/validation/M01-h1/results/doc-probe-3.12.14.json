@@ -1,0 +1,100 @@
+{
+ "rows": [
+  {
+   "row": "category='legal' documented matched (refused)",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "invalid_packet": true
+   }
+  },
+  {
+   "row": "category='planted_defect' documented matched (refused)",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "invalid_packet": true
+   }
+  },
+  {
+   "row": "category='Planted-Defect' documented matched (refused)",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "invalid_packet": true
+   }
+  },
+  {
+   "row": "category='PLANTED DEFECT' documented matched (refused)",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "invalid_packet": true
+   }
+  },
+  {
+   "row": "category='planted-defect' documented matched (refused)",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "invalid_packet": true
+   }
+  },
+  {
+   "row": "category='plantd_defect' documented not matched (ordinary field)",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "invalid_packet": false
+   }
+  },
+  {
+   "row": "category='planted.defect' documented not matched (ordinary field)",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "invalid_packet": false
+   }
+  },
+  {
+   "row": "category='l\u0435gal' documented not matched (ordinary field)",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "invalid_packet": false
+   }
+  },
+  {
+   "row": "category='le\\u200bgal' documented not matched (ordinary field)",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "invalid_packet": false
+   }
+  },
+  {
+   "row": "misspelled kind key 'Fixture_Kind' caught by the near-miss check",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "invalid_packet": true
+   }
+  },
+  {
+   "row": "misspelled kind key 'fixture-kind' caught by the near-miss check",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "invalid_packet": true
+   }
+  },
+  {
+   "row": "misspelled kind key 'FIXTURE KIND' caught by the near-miss check",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "invalid_packet": true
+   }
+  }
+ ]
+}
