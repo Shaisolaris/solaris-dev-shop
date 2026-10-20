@@ -42,7 +42,7 @@ python3 scope_acceptance.py verify RESULT PACKAGE [DELIVERY]          # 0 identi
 | unescalated_ambiguity | vague wording (listed in the tool's `VAGUE`, such as real-time, seamless, scalable, fast, asap, tbd) in a requirement or criterion, or a criterion with no measure, with no ambiguity entry about it |
 | open_ambiguity | an escalated ambiguity still open; also listed under `escalations` with its owner |
 | unresolved_conflict | two in-scope requirements contradict each other, or one contradicts an input or assumption it traces, and no ambiguity entry about every requirement involved exists (see Contradictions) |
-| conflicting_commitment | a commitment's own text takes one side of an opposite-term family that an in-scope requirement, criterion or traced input takes the other side of, with no resolved ambiguity about that commitment and requirement |
+| conflicting_commitment | a commitment's own text takes one side of an opposite-term family that an in-scope requirement, criterion or traced input, or another commitment's text, takes the other side of, with no resolved ambiguity about that commitment and that requirement or other commitment |
 | commitment_on_blocked_requirement | a commitment resting on a requirement with an open, unescalated, untraced, undemonstrated or unresolved-conflict finding |
 | estimate_mismatch | stated hours differ from the sum of in-scope estimates, or price differs from hours x rate rounded half up to cents |
 | unsupported_fixed_estimate | a fixed estimate below the high sum, with an open ambiguity in scope, or resting on an unconfirmed assumption (and any estimate commitment to it) |

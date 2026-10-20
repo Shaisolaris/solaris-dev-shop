@@ -208,6 +208,26 @@ class G31Capability(unittest.TestCase):
                                       'resolution': {'text': 'support line only', 'source': 'owner call 2026-10-03', 'date': '2026-10-03'}})
         self.assertNotIn(('conflicting_commitment', 'C9'), self.codes(self.check(0)))
 
+    def test_commitments_contradicting_each_other(self):
+        # two commitment texts of the same proposal on opposite sides of a family, requirements silent (M31 r2 P2-1)
+        self.p['proposal']['commitments'].append({'id': 'C8', 'kind': 'sla', 'text': 'Support desk answers 24/7', 'refs': ['R2']})
+        self.p['proposal']['commitments'].append({'id': 'C9', 'kind': 'sla', 'text': 'Support desk answers during office hours only', 'refs': ['R2']})
+        r = self.check(1)
+        self.assertTrue({('conflicting_commitment', 'C8'), ('conflicting_commitment', 'C9')} <= self.codes(r))
+        self.assertTrue(any(f['detail'] == 'availability: commitment text vs commitment C9' for f in r['findings'] if f['ref'] == 'C8'), r['findings'])
+        # an open ambiguity about both commitments does not settle it
+        self.p['ambiguities'].append({'id': 'AMB8', 'about': ['C8', 'C9'], 'question': 'which hours?', 'escalated_to': 'Clinic owner', 'status': 'open'})
+        self.assertIn(('conflicting_commitment', 'C8'), self.codes(self.check(1)))
+        # a resolved ambiguity about both commitments does
+        self.p['ambiguities'][-1]['status'] = 'resolved'
+        self.p['ambiguities'][-1]['resolution'] = {'text': 'office hours; 24/7 is the answering machine', 'source': 'owner call 2026-10-03', 'date': '2026-10-03'}
+        self.check(0)
+        # same side twice is not a contradiction
+        self.p = json.loads((self.d / 'portal.json').read_text())
+        self.p['proposal']['commitments'].append({'id': 'C8', 'kind': 'sla', 'text': 'Support desk answers 24/7', 'refs': ['R2']})
+        self.p['proposal']['commitments'].append({'id': 'C9', 'kind': 'sla', 'text': 'Booking open around the clock', 'refs': ['R1']})
+        self.check(0)
+
     def test_declared_conflict_and_word_boundaries(self):
         self.add_r6('Front desk can block days for staff training', 'Front desk wants to block days')
         self.req('R6')['conflicts_with'] = ['R3']

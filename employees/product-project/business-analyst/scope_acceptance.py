@@ -477,10 +477,14 @@ def check(path):
                 F.append({"code": "unsupported_date", "ref": k, "detail": cap_problem})
             elif finish > c["_date"]:
                 F.append({"code": "unsupported_date", "ref": k, "detail": "G17 downside finish %s is after the committed %s" % (finish, c["_date"])})
-        # a commitment whose own text takes one side of a family that an in-scope text takes the other side of
+        # a commitment whose own text takes one side of a family that an in-scope text, or another commitment's text,
+        # takes the other side of
         csd = sides(c["text"])
         clash = sorted({"%s: commitment text vs %s" % (f, where) for (f, sd) in csd for k2 in scope for where, (f2, s2) in texts[k2]
-                        if f2 == f and s2 != sd and not any(set([k, k2]) <= set(a["_about"]) and a["id"] in resolved_amb for a in P["ambiguities"].values())})
+                        if f2 == f and s2 != sd and not any(set([k, k2]) <= set(a["_about"]) and a["id"] in resolved_amb for a in P["ambiguities"].values())}
+                       | {"%s: commitment text vs commitment %s" % (f, k2) for (f, sd) in csd for k2, c2 in P["commitments"].items() if k2 != k
+                          for (f2, s2) in sides(c2["text"]) if f2 == f and s2 != sd
+                          and not any(set([k, k2]) <= set(a["_about"]) and a["id"] in resolved_amb for a in P["ambiguities"].values())})
         if clash:
             F.append({"code": "conflicting_commitment", "ref": k, "detail": "; ".join(clash)})
         roots = sorted({t for x in refs if x in reqs for t in reqs[x]["_traces"] if t in known_src} | {x for x in refs if x in known_src})
