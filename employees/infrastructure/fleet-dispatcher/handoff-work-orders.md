@@ -22,7 +22,7 @@ local `fcntl` locks, so all workers must share one machine (POSIX); a network fo
 }
 ```
 
-- `owner` is required: the person or role accountable for the order (who is working it is recorded separately). The owner is bound into the activate and brief receipt inputs, so changing the owner at the same revision makes those receipts stale and rewrites the brief; it does not reuse a brief that still names the old owner.
+- `owner` is required: the person or role accountable for the order (who is working it is recorded separately). The owner is bound into the activate and brief receipt inputs, so changing the owner at the same revision before delivery makes those receipts stale and rewrites the brief; it does not reuse a brief that still names the old owner. Once a revision has been delivered (even by a worker that crashed before its receipt), changing its owner is refused with exit 2 and nothing is written: a delivery cannot be recalled, so issue a new revision to change the owner.
 - `revision` is an integer from 1. Change the intake, then issue a new revision with the new hash.
 - Every path is relative and stays inside the order's folder. `steps` may be omitted; if given it must be
   exactly `["activate", "brief", "deliver"]`.
@@ -70,8 +70,9 @@ transfer, reissue the order for the new owner and epoch. Orders without `fleet` 
 
 - `0` every step is done (finished now or reused).
 - `1` a step failed; the journal records why. Fix the cause and run again.
-- `2` invalid order, a refused fleet claim (G07), intake hash mismatch, a revision older than one already worked, a journal belonging to
-  another order, or a journal that does not verify. Nothing runs and nothing is written.
+- `2` invalid order, a refused fleet claim (G07), intake hash mismatch, a revision older than one already worked, an
+  owner change on a revision that was already delivered, a journal belonging to another order, or a journal that
+  does not verify. Nothing runs and nothing is written.
 - `3` stopped on request after `--stop-after`; another worker can resume.
 - `4` another worker holds the order; nothing is written.
 - `75` a `--fail-at` crash drill: the process ends abruptly after the step's effect and before its receipt.

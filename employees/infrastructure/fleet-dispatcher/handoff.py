@@ -211,6 +211,12 @@ def ledger_records(outbox):
     return out
 
 
+def other_owner_deliveries(o, records):
+    """Owners other than the order's current owner that this order revision was already delivered under."""
+    return sorted({str(r.get("owner")) for r in records if r.get("order_id") == o["order_id"]
+                   and r.get("revision") == o["revision"] and r.get("owner") != o["owner"]})
+
+
 def render_brief(o, intake, status_sha):
     lines = ["# Handoff brief: %s revision %d" % (o["order_id"], o["revision"]), "",
              "- Owner: %s" % o["owner"],
@@ -272,6 +278,11 @@ def _run(o, sdir, worker, stop_after, fail_at):
         raise OrderError("revision %d is older than revision %d already worked; refusing a stale order"
                          % (o["revision"], max(worked)))
     check_intake(o)
+    others = other_owner_deliveries(o, ledger_records(o["outbox"]))
+    if others:
+        # a delivery cannot be recalled: re-delivering this revision under a new owner would deliver it twice
+        raise OrderError("revision %d was already delivered with owner %s; a delivery cannot be recalled, so issue "
+                         "revision %d to change the owner" % (o["revision"], ", ".join(others), o["revision"] + 1))
     try:
         intake = json.loads(o["intake"].read_text(encoding="utf-8"))
         if not isinstance(intake, dict):
@@ -355,8 +366,17 @@ def _run(o, sdir, worker, stop_after, fail_at):
             lfd = os.open(str(o["outbox"] / ".ledger.lock"), os.O_RDWR | os.O_CREAT, 0o644)
             try:
                 fcntl.flock(lfd, fcntl.LOCK_EX)
-                if any(r.get("key") == key for r in ledger_records(o["outbox"])):
+                recs = ledger_records(o["outbox"])
+                others = other_owner_deliveries(o, recs)
+                if any(r.get("key") == key for r in recs):
                     outcome = "done (already delivered; duplicate suppressed)"
+                elif others:  # delivered meanwhile under another owner (checked again under the ledger lock)
+                    j.append({"type": "step_failed", "step": step, "revision": o["revision"], "worker": worker,
+                              "status": "owner_conflict", "errors": ["already delivered with owner %s" % ", ".join(others)]})
+                    j.append({"type": "release", "worker": worker})
+                    report["steps"][step] = "failed: revision %d already delivered with owner %s; issue a new revision" % (
+                        o["revision"], ", ".join(others))
+                    return 1, report
                 else:
                     line = canon({"key": key, "order_id": o["order_id"], "revision": o["revision"],
                                   "owner": o["owner"], "brief_sha256": ins["brief"], "delivered_by": worker})
