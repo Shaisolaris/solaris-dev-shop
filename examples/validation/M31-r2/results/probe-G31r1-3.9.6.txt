@@ -1,0 +1,16 @@
+   P14 C5 qualified_by = None
+PASS P01 baseline ready rc=0 []
+FAIL P02 declared conflicts_with, no ambiguity -> unresolved_conflict both rc=0 []
+FAIL P03 opposite terms across requirement and other criterion -> blocked rc=0 []
+FAIL P04 resolved ambiguity -> ready and C4 qualified_by rc=0 []
+PASS P05 open ambiguity -> blocked and escalated rc=1 [('commitment_on_blocked_requirement', 'C1'), ('commitment_on_blocked_requirement', 'C2'), ('commitment_on_blocked_requirement', 'C3'), ('commitment_on_blocked_requirement', 'C4'), ('open_ambiguity', 'R3'), ('open_ambiguity', 'R4')]
+FAIL P06 commitment text vs in-scope criterion -> conflicting_commitment rc=0 []
+FAIL P07 two commitments contradict each other (requirements silent) -> blocked rc=0 []
+FAIL P08 both sides inside one requirement text -> blocked rc=0 []
+FAIL P09 requirement vs its own traced input -> blocked rc=0 []
+FAIL P10 resolved ambiguity covering one side only -> still blocked rc=0 []
+FAIL P11 case-insensitive match -> blocked rc=0 []
+OBS  P12 OBS excluded requirement conflicting with in-scope one -> not a finding rc=0 []
+OBS  P13 OBS negated term still flagged (fails closed) rc=0 []
+OBS  P14 OBS commitment resting only on a traced input of a resolved conflict (qualified_by printed) rc=0 []
+PROBE 2/11
