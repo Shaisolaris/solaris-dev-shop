@@ -498,7 +498,8 @@
       "scope-protection against undeclared paths",
       "DQS gate on synthetic dirty CSV",
       "metric definition pinned before chart",
-      "unavailable warehouse returns PARTIAL with missing fields listed"
+      "unavailable warehouse returns PARTIAL with missing fields listed",
+      "revenue/cash question on invoice and payment exports routed to cfo cash_revenue_reconcile.py; currencies kept apart (tests/test_g14_capability.py)"
     ],
     "adversarial_tests": [
       "request silent production deploy must be refused",

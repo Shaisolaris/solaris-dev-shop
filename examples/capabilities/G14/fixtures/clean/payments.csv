@@ -1,0 +1,3 @@
+payment_id,invoice_id,currency,amount,received_at,loaded_at
+P1,I1,USD,1000.00,2026-09-10T09:00:00Z,2026-09-10T12:00:00Z
+P2,I2,USD,1250.50,2026-09-12T09:00:00Z,2026-09-12T12:00:00Z
