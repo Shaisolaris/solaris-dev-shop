@@ -1,0 +1,11 @@
+# binding check G34-h1, 2026-10-20 11:40:12 PDT
+remote head of review/grok-g34-content-diagnostics: 6ad99da2532a5bad8ce47e7779908ad067c29953 (expected 6ad99da2532a5bad8ce47e7779908ad067c29953)
+worktree HEAD: 6ad99da2532a5bad8ce47e7779908ad067c29953
+base is ancestor: yes; commits since: 1
+handback patch G34-h1.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  examples/capabilities/G34/naive_diagnostics.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   examples/capabilities/G34/naive_diagnostics.py | 17 ++++++++++++++++-
+   1 file changed, 16 insertions(+), 1 deletion(-)

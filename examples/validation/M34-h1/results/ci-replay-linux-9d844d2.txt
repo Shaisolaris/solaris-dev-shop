@@ -1,0 +1,6 @@
+# local replay of .github/workflows/ci.yml at G42 r3 9d844d2 (fresh clones, Linux x86_64, 2026-10-20 10:20 PDT): before G34 h1
+3.10.22: self-test 0, unittest rc=1 (811 run, failures=1, skipped=6), wheel-smoke 0, json 0, quality-audit 0, manifests 0, catalog 0, no-symlinks 0, metadata 0, dirty 0
+3.12.15: same, unittest rc=1 (811 run, failures=1, skipped=6)
+3.13.5:  same, unittest rc=1 (811 run, failures=1, skipped=6)
+The one failure on all three: test_g34_capability.Oracle.test_oracle_rejects_both_controls_for_the_right_reasons (stub='naive_diagnostics.py')
+# same replay on macOS arm64, Python 3.12.14: every step rc=0, 811 tests OK (skipped=2), dirty 0

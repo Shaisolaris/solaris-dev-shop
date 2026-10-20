@@ -1,0 +1,6 @@
+# tests.test_g34_capability on Linux x86_64 (the box), fresh clone of de76fae, then with the G34 h1 diff applied
+3.10.22 before: FAILED (failures=1)   after: OK
+3.12.15 before: FAILED (failures=1)   after: OK
+3.13.5  before: FAILED (failures=1)   after: OK
+Failure before: test_oracle_rejects_both_controls_for_the_right_reasons (stub='naive_diagnostics.py'): o1, o5, o6, o10, o12, o13
+also failed, because the control died with MemoryError at page_diagnostics.py scan(): f.read(max_bytes + 1) with max_bytes = 1 << 40.

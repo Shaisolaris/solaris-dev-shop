@@ -1,0 +1,11 @@
+# M34 h1 Linux recheck at 6ad99da, 2026-10-20 11:39:20 PDT, Linux x86_64, fresh clone
+Python 3.10.22 tests: OK | oracle: 14/14 fail=[] | naive: 9/14 fail=['o2', 'o3', 'o4', 'o8', 'o9'] | noop: 3/14 fail=['o1', 'o10', 'o11', 'o12', 'o13', 'o2', 'o3', 'o4', 'o5', 'o8', 'o9']
+Python 3.12.15 tests: OK | oracle: 14/14 fail=[] | naive: 9/14 fail=['o2', 'o3', 'o4', 'o8', 'o9'] | noop: 3/14 fail=['o1', 'o10', 'o11', 'o12', 'o13', 'o2', 'o3', 'o4', 'o5', 'o8', 'o9']
+Python 3.13.5 tests: OK | oracle: 14/14 fail=[] | naive: 9/14 fail=['o2', 'o3', 'o4', 'o8', 'o9'] | noop: 3/14 fail=['o1', 'o10', 'o11', 'o12', 'o13', 'o2', 'o3', 'o4', 'o5', 'o8', 'o9']
+dirty: 0
+# naive control failure reasons (3.13.5)
+o2 missing ['redirected_link|/pricing.html|link /start -> /signup.html'], extra ['broken_link|/pricing.html|link /start', 'orphan_page|/signup.html|no internal link from another page']
+o3 exit 0, fixed 30/29
+o4 missing redirect_chain, redirect_loop and redirected_link findings; extra broken_link findings (redirects ignored)
+o8 exit 3, skipped ['/loopdir']  (the link out of the snapshot was followed, not skipped)
+o9 exit 0, skipped 0  (no size cap)
