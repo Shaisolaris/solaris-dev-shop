@@ -266,6 +266,7 @@ If yes to all 4 → fine-tune. Otherwise → don't.
 | Model security / adversarial | Security Auditor | Adversarial ML audits |
 | On-device model deployment | Mobile Developer | Core ML / TFLite conversion |
 | Automation wiring | AI Automation Engineer | Model in workflow |
+| Grounded answers must be graded against frozen sources | LLM Agent Designer | Offline grading with `grounded_eval.py` (cited spans, abstention, source change); ship the model run's own logs with the answers file |
 
 ---
 

@@ -234,6 +234,15 @@ Default to the smallest lane that fits, but never downgrade a production task to
 8. **Eval** - retrieval recall@k, downstream answer quality, latency
 9. **Cache** - semantic cache for repeat queries
 
+### Grounded answers - offline eval over a supplied snapshot
+Use this when answers must be graded against frozen public sources, with no model or network (see `grounded-answer-evals.md`).
+1. **Freeze the snapshot** - a folder of `.md`/`.txt` files, plus a question JSONL with `answerable`, `facts` and `support_docs`. Include unanswerable questions and near-miss traps (a sibling model number, another site's version of the same rule).
+2. **Baseline** - `python3 grounded_eval.py answer --corpus S --questions Q --out A --journal J`. It is extractive and deterministic. Label its score as fixture behaviour, never as model quality.
+3. **Grade** - `python3 grounded_eval.py evaluate --corpus S --questions Q --answers A --json`. Grade imported model or host output the same way: a supported statement must quote the snapshot exactly, every number must be in the quote, and unanswerable questions must be abstained on.
+4. **Source change** - grade the old answers against the new snapshot. Stale and relocated citations are named per question. Then re-answer.
+5. **Tool failure** - exit 3 keeps the journal. Fix the cause and rerun with `--resume`. A changed snapshot or a corrupted journal is refused.
+6. **Report provenance** - quote `provenance.evidence`. Say "imported, not executed" for outside output unless you show that run separately.
+
 ### Agent system - design protocol
 1. **Single agent first** - never start with multi-agent; prove single agent can't do it
 2. **Tool inventory** - minimum tools, clear schemas, LLM-readable errors
@@ -274,6 +283,7 @@ Cross-reference `mcp-builder` + `skill-creator` skills. In summary:
 | Backend integration | Full-Stack Developer | API layer, auth, rate limiting |
 | Security review | Security Auditor | Prompt injection testing, data exfil risk |
 | Evaluation framework setup | QA Engineer | Regression suite, CI eval gates |
+| Model output must be graded against frozen sources | AI/ML Engineer | They supply the run (with its own logs); grade it with `grounded_eval.py evaluate` and keep the imported label |
 
 ---
 
@@ -324,6 +334,7 @@ After every LLM-design session:
 | `learnings.md` | Session start |
 | `superpowers-methodology.md` | FIRST, before designing ANY new agent / app / skill / MCP / workflow |
 | `eval-methodology.md` | Designing evals, RAG eval, agent/MCP scoring, memory scoping, orchestration |
+| `grounded-answer-evals.md` | Offline grounded-answer evals: cited spans, abstention, source change, resume after a failed step (`grounded_eval.py`) |
 
 Canonical VoltAgent llm-architect (external upstream; absorbed into this skill)
 Canonical alirezarezvani prompt engineer (external upstream; absorbed into this skill)
