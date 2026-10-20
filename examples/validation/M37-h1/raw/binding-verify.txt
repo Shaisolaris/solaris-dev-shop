@@ -1,0 +1,41 @@
+# binding check G37-h1, 2026-10-19 18:39:10 PDT
+remote head of review/grok-g37-privacy-inventory: e9b7a7772636f927bf21128dc2802ffcac742b44 (expected e9b7a7772636f927bf21128dc2802ffcac742b44)
+worktree HEAD: e9b7a7772636f927bf21128dc2802ffcac742b44
+accepted parent is ancestor: yes; commits since: 1
+handback patch G37-h1.patch equals regenerated diff: yes
+MANIFEST.sha256 check against worktree:
+  employees/legal-compliance/compliance-auditor/SKILL.md: OK
+  employees/legal-compliance/compliance-auditor/capability.contract.json: OK
+  employees/legal-compliance/compliance-auditor/learnings.md: OK
+  employees/legal-compliance/compliance-auditor/plugin.json: OK
+  employees/legal-compliance/compliance-auditor/privacy-inventory.md: OK
+  employees/legal-compliance/compliance-auditor/privacy_inventory.py: OK
+  employees/legal-compliance/compliance-auditor/rules.md: OK
+  employees/legal-compliance/legal-advisor/SKILL.md: OK
+  employees/legal-compliance/legal-advisor/capability.contract.json: OK
+  employees/legal-compliance/legal-advisor/learnings.md: OK
+  examples/capabilities/G37/README.md: OK
+  examples/capabilities/G37/fixtures/clean/data/contract.json: OK
+  examples/capabilities/G37/fixtures/clean/data/customers.csv: OK
+  examples/capabilities/G37/fixtures/clean/data/orders.csv: OK
+  examples/capabilities/G37/fixtures/clean/inventory.json: OK
+  examples/capabilities/G37/fixtures/clean/package.json: OK
+  examples/capabilities/G37/fixtures/clean/requests.jsonl: OK
+  examples/capabilities/G37/fixtures/september/data/contract.json: OK
+  examples/capabilities/G37/fixtures/september/data/customers.csv: OK
+  examples/capabilities/G37/fixtures/september/data/orders.csv: OK
+  examples/capabilities/G37/fixtures/september/inventory.json: OK
+  examples/capabilities/G37/fixtures/september/package.json: OK
+  examples/capabilities/G37/fixtures/september/requests.jsonl: OK
+  examples/capabilities/G37/fixtures/september/support/contract.json: OK
+  examples/capabilities/G37/fixtures/september/support/tickets.csv: OK
+  examples/capabilities/G37/naive_inventory.py: OK
+  examples/capabilities/G37/noop_inventory.py: OK
+  examples/capabilities/G37/privacy_oracle.py: OK
+  tests/test_g37_capability.py: OK
+MANIFEST.sha256 file sha256: 7df8be9d78765186ed6759a98116a5087473ce1c6a317caa27127c80977b3e21
+files changed since accepted:
+   employees/legal-compliance/compliance-auditor/SKILL.md     | 4 ++--
+   employees/legal-compliance/compliance-auditor/learnings.md | 2 +-
+   employees/legal-compliance/compliance-auditor/rules.md     | 4 +++-
+   3 files changed, 6 insertions(+), 4 deletions(-)

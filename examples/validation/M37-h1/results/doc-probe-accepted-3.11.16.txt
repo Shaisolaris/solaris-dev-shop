@@ -1,0 +1,11 @@
+FAIL SKILL.md: no 30-day DSAR clock left ['- **GDPR:** 30-day DSAR response; 72-hour breach notification to supervisory authority; ≥7', '2. Run the eight-point sweep (rules.md): data inventory → lawful basis per activity → cons']
+FAIL SKILL.md: states one month and the two-month extension with Art. 12(3) 
+FAIL rules.md: no 30-day DSAR clock left ['4. Data-subject rights implementation - access / deletion / portability, 30-day DSAR respo']
+FAIL rules.md: states one month and the two-month extension with Art. 12(3) 
+FAIL SKILL.md: says the extension needs notice within the first month with reasons 
+FAIL learnings.md: pending note records the correction 
+PASS tool month clock 2026-01-31 + 1 month = 2026-02-28 2026-02-28
+PASS tool month clock 2028-01-31 + 1 month = 2028-02-29 2028-02-29
+PASS tool month clock 2026-03-15 + 1 month = 2026-04-15 2026-04-15
+PASS tool month clock 2026-12-31 + 1 month = 2027-01-31 2027-01-31
+M37H1 DOC PROBE 4/10

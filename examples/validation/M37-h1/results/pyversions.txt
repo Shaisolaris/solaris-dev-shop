@@ -1,0 +1,4 @@
+== 3.9.6 | M37 oracle at e9b7a77: M37 ORACLE 11/11 core PASS | M37 oracle at 9b0f58e: M37 ORACLE 11/11 core PASS | g37 tests: OK
+== 3.11.16 | M37 oracle at e9b7a77: M37 ORACLE 11/11 core PASS | M37 oracle at 9b0f58e: M37 ORACLE 11/11 core PASS | g37 tests: OK
+== 3.12.14 | M37 oracle at e9b7a77: M37 ORACLE 11/11 core PASS | M37 oracle at 9b0f58e: M37 ORACLE 11/11 core PASS | g37 tests: OK
+== 3.13.15 | M37 oracle at e9b7a77: M37 ORACLE 11/11 core PASS | M37 oracle at 9b0f58e: M37 ORACLE 11/11 core PASS | g37 tests: OK
