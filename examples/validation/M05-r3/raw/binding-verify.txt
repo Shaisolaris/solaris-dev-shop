@@ -1,0 +1,11 @@
+# binding check G05-r4, 2026-10-19 23:14:51 PDT
+remote head of review/grok-g05-revision-bound-evidence: 1b840cdee716ceaee3d84e19c23f46e558135b71 (expected 1b840cdee716ceaee3d84e19c23f46e558135b71)
+worktree HEAD: 1b840cdee716ceaee3d84e19c23f46e558135b71
+base is ancestor: yes; commits since: 1
+handback patch G05-r4.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  examples/capabilities/G05/binding_oracle.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   examples/capabilities/G05/binding_oracle.py | 6 +++++-
+   1 file changed, 5 insertions(+), 1 deletion(-)

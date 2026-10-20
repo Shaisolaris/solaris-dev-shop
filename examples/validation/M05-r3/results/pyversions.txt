@@ -1,0 +1,4 @@
+== 3.9.6 | G05 tests: OK | binding oracle: 16/16 checks passed
+== 3.11.16 | G05 tests: OK | binding oracle: 16/16 checks passed
+== 3.12.14 | G05 tests: OK | binding oracle: 16/16 checks passed
+== 3.13.15 | G05 tests: OK | binding oracle: 16/16 checks passed

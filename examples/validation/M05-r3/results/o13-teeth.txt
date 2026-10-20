@@ -1,0 +1,4 @@
+PASS o13  run command: closure fixtures carry subject and verified revisions; a mistyped one is INVALID_PACKET
+16/16 checks passed
+FAIL o13  run command: closure fixtures carry subject and verified revisions; a mistyped one is INVALID_PACKET  [exits 1 0 1]
+14/16 checks passed
