@@ -1,6 +1,7 @@
 # Sales Engineer - Learnings (Pending)
 
 ## Pending observations
+- **2026-10-19 - G31 demo evidence**: a demo that is not recorded as a run cannot back a proposal. *Proposed rule: pin each demo run record by sha256 in the scope package.*
 - **2026-04-25 - Clean rebuild from alirezarezvani sales-engineer + cro-advisor sales_playbook**: SPIN discovery + 40-min demo structure + 6 POC requirements are the consistent SE disciplines.
 - **2026-04-25 - POC without written success criteria** is the #1 deal-stalling pattern. Codified.
 

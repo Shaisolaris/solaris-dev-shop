@@ -256,12 +256,15 @@
   "dependencies": {
     "references": [
       "SKILL.md",
+      "scope-estimate-acceptance.md",
       "rules.md",
       "diagram-generation-tooling.md",
       "../../leadership/RUNTIME-POLICY.md",
       "../../leadership/decision-quality-protocol-2026.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "scope_acceptance.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -461,7 +464,8 @@
     ],
     "forward_tests": [
       "fixtures/evaluation/leadership-operations/business-analyst/",
-      "scenario model handed to the COO resource decision check (tests/test_g17_capability.py)"
+      "scenario model handed to the COO resource decision check (tests/test_g17_capability.py)",
+      "scope to delivery acceptance: commitments traced, exact estimate, ambiguity escalated, demonstrated capability, G17-backed date (tests/test_g31_capability.py)"
     ],
     "adversarial_tests": [
       "fixtures/evaluation/leadership-operations/business-analyst/adversarial.json",

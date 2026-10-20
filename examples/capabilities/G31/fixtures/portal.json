@@ -1,0 +1,296 @@
+{
+ "schema": "solaris.scope-package/1",
+ "engagement": {
+  "id": "clinic-portal",
+  "customer": "Synthetic Clinic Group",
+  "owner": "Account lead (synthetic role)",
+  "as_of": "2026-10-06",
+  "currency": "USD"
+ },
+ "inputs": [
+  {
+   "id": "IN1",
+   "text": "Patients book, move and cancel appointments online",
+   "source": "rfp.md section 2",
+   "date": "2026-09-14"
+  },
+  {
+   "id": "IN2",
+   "text": "Front desk sees the day's bookings and no-shows",
+   "source": "rfp.md section 3",
+   "date": "2026-09-14"
+  },
+  {
+   "id": "IN3",
+   "text": "Patients get a reminder text 24 hours before",
+   "source": "discovery call notes 2026-09-21",
+   "date": "2026-09-21"
+  },
+  {
+   "id": "IN4",
+   "text": "Go live before the spring intake on 2027-02-12",
+   "source": "rfp.md section 1",
+   "date": "2026-09-14"
+  },
+  {
+   "id": "IN5",
+   "text": "Some reports for the board",
+   "source": "discovery call notes 2026-09-21",
+   "date": "2026-09-21"
+  }
+ ],
+ "assumptions": [
+  {
+   "id": "A1",
+   "text": "The clinic provides a calendar API sandbox",
+   "source": "IT lead email 2026-09-25",
+   "date": "2026-09-25",
+   "confirmed": true
+  },
+  {
+   "id": "A2",
+   "text": "Patient records arrive as one CSV under 50,000 rows",
+   "source": "estimate workshop 2026-09-29",
+   "date": "2026-09-29",
+   "confirmed": false
+  }
+ ],
+ "ambiguities": [
+  {
+   "id": "AMB1",
+   "about": [
+    "R2"
+   ],
+   "question": "What does real-time mean for the front desk view?",
+   "escalated_to": "Clinic operations manager",
+   "status": "resolved",
+   "resolution": {
+    "text": "the view refreshes within 60 seconds",
+    "source": "call notes 2026-09-28",
+    "date": "2026-09-28"
+   }
+  }
+ ],
+ "capabilities": [
+  {
+   "id": "CAP-booking",
+   "name": "slot booking with conflict lock",
+   "demo": {
+    "path": "demos/CAP-booking.json",
+    "sha256": "ee0d9952c2664d2ece45a47b6c8cfc4ff815f2f1d3d74868b18ac4a1ceacb8e7"
+   }
+  },
+  {
+   "id": "CAP-dashboard",
+   "name": "front desk day view",
+   "demo": {
+    "path": "demos/CAP-dashboard.json",
+    "sha256": "2d535ab9385a9a0ac406da5649847174a8d52c0fe3f9db028ed861368520d2f1"
+   }
+  },
+  {
+   "id": "CAP-sms",
+   "name": "reminder scheduler (sandbox gateway, nothing sent)",
+   "demo": {
+    "path": "demos/CAP-sms.json",
+    "sha256": "00be7ced88563376b3f243ae141b276377bbc244d549fa02e35f6a1ccd4f833e"
+   }
+  },
+  {
+   "id": "CAP-import",
+   "name": "CSV patient import with row validation",
+   "demo": {
+    "path": "demos/CAP-import.json",
+    "sha256": "f0d852057c1278fea5f00ee5d85539b5f4eccd7a6dd0df9909dca79eadcd1334"
+   }
+  }
+ ],
+ "requirements": [
+  {
+   "id": "R1",
+   "text": "Online booking, moving and cancelling of appointments",
+   "traces": [
+    "IN1",
+    "A1"
+   ],
+   "capability": "CAP-booking",
+   "estimate_hours": {
+    "low": "120",
+    "likely": "160",
+    "high": "220"
+   },
+   "acceptance": [
+    {
+     "id": "AC1",
+     "criterion": "book, move and cancel pass the demo script",
+     "measure": "12 of 12 scripted steps pass"
+    },
+    {
+     "id": "AC2",
+     "criterion": "no double booking under load",
+     "measure": "0 double bookings in 500 concurrent attempts"
+    }
+   ]
+  },
+  {
+   "id": "R2",
+   "text": "Front desk day view with real-time bookings and no-shows",
+   "traces": [
+    "IN2"
+   ],
+   "depends_on": [
+    "R1"
+   ],
+   "capability": "CAP-dashboard",
+   "estimate_hours": {
+    "low": "60",
+    "likely": "80",
+    "high": "110"
+   },
+   "acceptance": [
+    {
+     "id": "AC3",
+     "criterion": "the day view shows bookings and no-shows",
+     "measure": "refresh within 60 s; 3 of 3 sample days match"
+    }
+   ]
+  },
+  {
+   "id": "R3",
+   "text": "Reminder text 24 hours before each appointment",
+   "traces": [
+    "IN3"
+   ],
+   "depends_on": [
+    "R1"
+   ],
+   "capability": "CAP-sms",
+   "estimate_hours": {
+    "low": "30",
+    "likely": "40",
+    "high": "60"
+   },
+   "acceptance": [
+    {
+     "id": "AC4",
+     "criterion": "reminder is queued 24 hours before",
+     "measure": "within 15 minutes of T-24h for 50 of 50 sandbox bookings"
+    }
+   ]
+  },
+  {
+   "id": "R4",
+   "text": "Import existing patient records from CSV",
+   "traces": [
+    "A2"
+   ],
+   "capability": "CAP-import",
+   "estimate_hours": {
+    "low": "20",
+    "likely": "30",
+    "high": "50"
+   },
+   "acceptance": [
+    {
+     "id": "AC5",
+     "criterion": "every valid row imports and every invalid row is reported",
+     "measure": "row counts reconcile exactly"
+    }
+   ]
+  },
+  {
+   "id": "R5",
+   "text": "Some reports for the board",
+   "traces": [
+    "IN5"
+   ],
+   "optional": true,
+   "capability": null,
+   "estimate_hours": {
+    "low": "20",
+    "likely": "40",
+    "high": "80"
+   },
+   "acceptance": []
+  }
+ ],
+ "rate": {
+  "per_hour": "150.00",
+  "source": "rate card 2026 (synthetic)",
+  "date": "2026-01-05"
+ },
+ "capacity": {
+  "package": "capacity/studio.json",
+  "result": "capacity/studio-result.json",
+  "option": "descope-reporting",
+  "milestone": "launch"
+ },
+ "proposal": {
+  "scope": [
+   "R1",
+   "R2",
+   "R3",
+   "R4"
+  ],
+  "exclusions": [
+   "R5"
+  ],
+  "estimate": {
+   "type": "range",
+   "hours": {
+    "low": "230",
+    "likely": "310",
+    "high": "440"
+   },
+   "price": {
+    "low": "34500.00",
+    "high": "66000.00"
+   }
+  },
+  "commitments": [
+   {
+    "id": "C1",
+    "kind": "scope",
+    "text": "Booking, front desk view, reminders and CSV import",
+    "refs": [
+     "R1",
+     "R2",
+     "R3",
+     "R4"
+    ]
+   },
+   {
+    "id": "C2",
+    "kind": "estimate",
+    "text": "230 to 440 hours, 34,500.00 to 66,000.00 USD",
+    "refs": [
+     "R1",
+     "R2",
+     "R3",
+     "R4"
+    ]
+   },
+   {
+    "id": "C3",
+    "kind": "date",
+    "text": "Live by 2027-02-12",
+    "value": "2027-02-12",
+    "refs": [
+     "IN4",
+     "R1",
+     "R2",
+     "R3",
+     "R4"
+    ]
+   },
+   {
+    "id": "C4",
+    "kind": "feature",
+    "text": "Reminder text 24 hours before each appointment",
+    "refs": [
+     "R3"
+    ]
+   }
+  ]
+ }
+}

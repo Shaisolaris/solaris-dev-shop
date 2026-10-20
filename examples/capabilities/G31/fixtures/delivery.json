@@ -1,0 +1,51 @@
+{
+ "schema": "solaris.scope-delivery/1",
+ "as_of": "2027-02-08",
+ "results": [
+  {
+   "criterion": "AC1",
+   "outcome": "pass",
+   "date": "2027-02-05",
+   "evidence": {
+    "path": "evidence/AC1.txt",
+    "sha256": "1f72d22a2497caf334d7472121f4b25b1be39746bfc8fc222f7e44022ba37de7"
+   }
+  },
+  {
+   "criterion": "AC2",
+   "outcome": "pass",
+   "date": "2027-02-05",
+   "evidence": {
+    "path": "evidence/AC2.txt",
+    "sha256": "c412438bbd0edfc50f4a73e43833f327ad7c4ea6e2aee74438a586a759e14f1b"
+   }
+  },
+  {
+   "criterion": "AC3",
+   "outcome": "pass",
+   "date": "2027-02-05",
+   "evidence": {
+    "path": "evidence/AC3.txt",
+    "sha256": "f931f5cb3e6de542a08e25ec850c848d27b3c58c91d23653a30d43f45e12417a"
+   }
+  },
+  {
+   "criterion": "AC4",
+   "outcome": "pass",
+   "date": "2027-02-05",
+   "evidence": {
+    "path": "evidence/AC4.txt",
+    "sha256": "705ca6916db189836c5b045f5c3bcca3de21f52328d6a25556142e4f6ffd532d"
+   }
+  },
+  {
+   "criterion": "AC5",
+   "outcome": "pass",
+   "date": "2027-02-05",
+   "evidence": {
+    "path": "evidence/AC5.txt",
+    "sha256": "13c093ef76fd6453017e8791eadd4a3b79d5081783afb661cb9d5adc6ddb743d"
+   }
+  }
+ ]
+}

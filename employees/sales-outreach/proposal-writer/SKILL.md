@@ -335,6 +335,8 @@ Every SOW has:
 
 ## Hand-offs
 
+- **Scope and estimate check (G31)**: before an SOW or quote goes to the owner, run the business analyst `scope_acceptance.py check`; send nothing while it reports a finding (invented commitment, estimate mismatch, unsupported fixed price or date, open ambiguity).
+
 | When... | Proposal Writer works with... | To... |
 |---------|-------------------------------|-------|
 | Scope definition | Product Manager / CTO | Technical feasibility + effort |

@@ -147,6 +147,16 @@ Why 10/10: numbered and parent-linked, numeric NFR, failure case included, opera
    table + risk + pilot rollout (90-day checkpoint) + confidence level + next-review trigger; exec
    summary ≤500 words, SCQA.
 
+## Scope, estimate and acceptance check (G31)
+
+Before a proposal goes to the owner, run `scope_acceptance.py check` (see `scope-estimate-acceptance.md`):
+every commitment traced to a customer input, assumption or in-scope requirement; hours and price reconciled
+exactly; vague wording escalated and resolved; contradictory requirements (declared or in a documented
+opposite-term family) escalated to the owner and resolved before they become commitments, with general
+free-text coherence left to the owner; capabilities backed by recorded demo runs; a fixed price only
+when supported; a delivery date only when a G17 resource decision reruns identically and finishes in time.
+`accept` then checks delivery evidence against every acceptance criterion.
+
 ## Workflow 5 - Scope-change impact analysis
 1. Every "could we also..." → written CR (CR-nn, linked BR/FR ids). No silent absorption.
 2. Quantify impact on all five dimensions: scope / schedule / cost (hrs × fully-loaded rate) /

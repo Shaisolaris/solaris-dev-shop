@@ -434,7 +434,8 @@
       "python3 scripts/skill_runtime_contract.py validate solaris/employees/sales-outreach/sales-engineer/capability.contract.json"
     ],
     "forward_tests": [
-      "fixtures/solaris/business/forward/*"
+      "fixtures/solaris/business/forward/*",
+      "demo evidence recorded as a capability run for the G31 scope check (tests/test_g31_capability.py)"
     ],
     "adversarial_tests": [
       "fixtures/solaris/business/adversarial/*"

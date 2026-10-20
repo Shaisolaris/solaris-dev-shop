@@ -198,6 +198,8 @@ Midpoint review is mandatory - catch criteria drift before the readout, not at i
 ---
 
 ## Proposal structure
+
+Scope or POC proposals go through the business analyst `scope_acceptance.py` (G31) before they reach the owner: record each demo run as a capability run file (capability, exit_code, result, ran_at) and pin its sha256, so the proposal can only offer what was demonstrated.
 1. **Problem statement** (their words) 2. **Proposed solution** (mapped to their workflow) 3. **ROI summary** 4. **Pricing options** (2-3, anchors decision) 5. **Next steps** with dates. **Always present live. Never email a proposal cold.**
 
 ---

@@ -1,0 +1,4 @@
+invoice_id,customer_id,currency,amount,issued_at,delivered_at,status,loaded_at
+S1,client-a,USD,48000.00,2026-09-01T10:00:00Z,2026-09-01T10:00:00Z,issued,2026-09-01T11:00:00Z
+S2,client-b,USD,36000.00,2026-09-01T10:00:00Z,2026-09-01T10:00:00Z,issued,2026-09-01T11:00:00Z
+S3,client-c,USD,24000.00,2026-09-15T10:00:00Z,2026-09-15T10:00:00Z,issued,2026-09-15T11:00:00Z
