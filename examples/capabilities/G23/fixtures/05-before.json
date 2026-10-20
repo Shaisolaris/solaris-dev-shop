@@ -1,0 +1,949 @@
+{
+ "active_plugins": [
+  "acme-seo/acme-seo.php",
+  "acme-forms/acme-forms.php",
+  "shop-core/shop-core.php",
+  "shop-filters/shop-filters.php"
+ ],
+ "autoload_bytes": 412000,
+ "autoload_top": [
+  {
+   "bytes": 61000,
+   "option": "acme_seo_settings"
+  },
+  {
+   "bytes": 40000,
+   "option": "shop_core_options"
+  }
+ ],
+ "bisect": [],
+ "dropins": [
+  "advanced-cache.php",
+  "object-cache.php"
+ ],
+ "env": {
+  "host": "synthetic-vm",
+  "php": "8.3.12",
+  "wp": "6.6.2"
+ },
+ "environment": "production",
+ "measurement": {
+  "concurrency": 1,
+  "runs_per_url": 7,
+  "tool": "synthetic curl loop",
+  "warm_cache": true
+ },
+ "php_errors": [],
+ "requests": [
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 3.38
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 1.77
+    }
+   ],
+   "id": "home-1",
+   "peak_memory_mb": 60.1,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.466,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 1.753,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'home' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.297,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.265,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.833,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.314,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 260.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 414.84,
+   "url": "/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 3.72
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 0.58
+    }
+   ],
+   "id": "home-2",
+   "peak_memory_mb": 54.9,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.59,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 1.434,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'home' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.606,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.222,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.491,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.513,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 260.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 384.11,
+   "url": "/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 1.67
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 1.14
+    }
+   ],
+   "id": "home-3",
+   "peak_memory_mb": 56.7,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.429,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 1.536,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'home' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.373,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.486,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.321,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.866,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 260.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 404.37,
+   "url": "/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 3.7
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 0.55
+    }
+   ],
+   "id": "home-4",
+   "peak_memory_mb": 50.0,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.427,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 0.578,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'home' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.547,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.705,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.323,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.247,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 260.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 313.23,
+   "url": "/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 2.02
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 1.79
+    }
+   ],
+   "id": "home-5",
+   "peak_memory_mb": 51.9,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.492,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 0.591,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'home' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.169,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.412,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.537,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.415,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 260.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 396.82,
+   "url": "/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 1.07
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 0.79
+    }
+   ],
+   "id": "home-6",
+   "peak_memory_mb": 51.4,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.561,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 1.609,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'home' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.444,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.465,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.406,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.146,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 260.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 393.62,
+   "url": "/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 3.16
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 0.78
+    }
+   ],
+   "id": "home-7",
+   "peak_memory_mb": 53.1,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.287,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 1.037,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'home' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.797,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.393,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.956,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.923,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 260.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 364.38,
+   "url": "/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 3.85
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 1.84
+    }
+   ],
+   "id": "shop-1",
+   "peak_memory_mb": 64.8,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.526,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 1.175,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'shop' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.904,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.297,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.796,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.037,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 260.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 396.4,
+   "url": "/shop/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 2.7
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 1.19
+    }
+   ],
+   "id": "shop-2",
+   "peak_memory_mb": 64.6,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.542,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 1.942,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'shop' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.085,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.628,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.336,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.221,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 260.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 340.71,
+   "url": "/shop/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 1.67
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 1.34
+    }
+   ],
+   "id": "shop-3",
+   "peak_memory_mb": 61.7,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.28,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 0.748,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'shop' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.247,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.178,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.218,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.685,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 260.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 405.93,
+   "url": "/shop/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 3.83
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 0.73
+    }
+   ],
+   "id": "shop-4",
+   "peak_memory_mb": 59.6,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.337,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 0.979,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'shop' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.098,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.523,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.631,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.933,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 260.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 323.46,
+   "url": "/shop/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 2.72
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 1.25
+    }
+   ],
+   "id": "shop-5",
+   "peak_memory_mb": 54.0,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.326,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 1.232,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'shop' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.266,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.436,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.134,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.762,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 260.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 336.78,
+   "url": "/shop/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 1.54
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 0.52
+    }
+   ],
+   "id": "shop-6",
+   "peak_memory_mb": 51.9,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.446,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 1.103,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'shop' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.219,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.974,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.73,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.483,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 260.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 372.36,
+   "url": "/shop/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 2.3
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 2.0
+    }
+   ],
+   "id": "shop-7",
+   "peak_memory_mb": 63.2,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.237,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 1.603,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'shop' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.315,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.587,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.009,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.227,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 260.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 314.78,
+   "url": "/shop/"
+  }
+ ],
+ "schema": "solaris.wp-trace/1",
+ "site": "synthetic-shop",
+ "source": "synthetic fixture written for G23; not captured from a real site",
+ "system_cron": true,
+ "wp_config": {
+  "AUTH_KEY": "synthetic-not-a-key",
+  "DB_PASSWORD": "synthetic-not-a-secret",
+  "DISABLE_WP_CRON": true,
+  "WP_CACHE": true,
+  "WP_DEBUG": false,
+  "WP_DEBUG_DISPLAY": false,
+  "WP_DEBUG_LOG": true,
+  "WP_MEMORY_LIMIT": "256M"
+ }
+}

@@ -1,0 +1,2181 @@
+{
+ "active_plugins": [
+  "acme-seo/acme-seo.php",
+  "acme-forms/acme-forms.php",
+  "shop-core/shop-core.php",
+  "shop-filters/shop-filters.php"
+ ],
+ "autoload_bytes": 412000,
+ "autoload_top": [
+  {
+   "bytes": 61000,
+   "option": "acme_seo_settings"
+  },
+  {
+   "bytes": 40000,
+   "option": "shop_core_options"
+  }
+ ],
+ "bisect": [],
+ "dropins": [
+  "advanced-cache.php",
+  "object-cache.php"
+ ],
+ "env": {
+  "host": "synthetic-vm",
+  "php": "8.3.12",
+  "wp": "6.6.2"
+ },
+ "environment": "production",
+ "measurement": {
+  "concurrency": 1,
+  "runs_per_url": 7,
+  "tool": "synthetic curl loop",
+  "warm_cache": true
+ },
+ "php_errors": [],
+ "requests": [
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 2.76
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 1.27
+    }
+   ],
+   "id": "shop-1",
+   "peak_memory_mb": 56.4,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.51,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 1.747,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'shop' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.251,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.714,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.141,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.186,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.621,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 500 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.426,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 501 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.544,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 502 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.335,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 503 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.489,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 504 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.556,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 505 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.794,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 506 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.654,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 507 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.549,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 508 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.448,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 509 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.489,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 510 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.702,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 511 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.567,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 512 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.404,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 513 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.793,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 514 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.645,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 515 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.881,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 516 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.622,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 517 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.674,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 518 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.557,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 519 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.665,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 520 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.851,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 521 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.889,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 522 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.697,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 523 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.558,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 524 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.338,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 525 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.804,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 526 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.535,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 527 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.529,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 528 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.334,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 529 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.32,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 530 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.534,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 531 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.885,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 532 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.744,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 533 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.725,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 534 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.701,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 535 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.464,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 536 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.401,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 537 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.661,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 538 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.338,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 539 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 420.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 87.75,
+   "url": "/shop/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 3.2
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 0.61
+    }
+   ],
+   "id": "shop-2",
+   "peak_memory_mb": 50.7,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.227,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 1.21,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'shop' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.389,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.034,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.602,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.007,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.75,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 500 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.664,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 501 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.619,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 502 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.418,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 503 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.508,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 504 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.887,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 505 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.461,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 506 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.471,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 507 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.596,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 508 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.628,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 509 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.774,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 510 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.477,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 511 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.878,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 512 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.313,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 513 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.774,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 514 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.642,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 515 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.841,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 516 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.392,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 517 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.714,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 518 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.868,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 519 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.7,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 520 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.367,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 521 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.853,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 522 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.882,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 523 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.366,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 524 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.796,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 525 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.348,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 526 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.349,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 527 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.777,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 528 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.732,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 529 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.874,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 530 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.679,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 531 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.607,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 532 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.463,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 533 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.644,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 534 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.895,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 535 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.688,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 536 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.825,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 537 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.418,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 538 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.741,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 539 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 420.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 112.55,
+   "url": "/shop/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 3.86
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 1.87
+    }
+   ],
+   "id": "shop-3",
+   "peak_memory_mb": 51.9,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.287,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 0.592,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'shop' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.061,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.385,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.468,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.2,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.786,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 500 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.756,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 501 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.642,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 502 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.643,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 503 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.779,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 504 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.682,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 505 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.384,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 506 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.778,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 507 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.512,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 508 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.65,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 509 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.607,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 510 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.842,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 511 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.549,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 512 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.812,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 513 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.349,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 514 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.496,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 515 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.702,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 516 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.667,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 517 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.799,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 518 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.425,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 519 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.783,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 520 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.777,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 521 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.386,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 522 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.384,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 523 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.65,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 524 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.885,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 525 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.668,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 526 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.557,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 527 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.604,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 528 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.786,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 529 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.613,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 530 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.622,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 531 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.656,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 532 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.859,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 533 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.78,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 534 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.803,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 535 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.46,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 536 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.66,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 537 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.794,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 538 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.731,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 539 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 420.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 129.21,
+   "url": "/shop/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 3.2
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 1.66
+    }
+   ],
+   "id": "shop-4",
+   "peak_memory_mb": 59.2,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.343,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 0.808,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'shop' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.851,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.479,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.199,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.329,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.449,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 500 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.522,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 501 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.831,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 502 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.576,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 503 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.396,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 504 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.63,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 505 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.448,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 506 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.323,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 507 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.656,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 508 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.895,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 509 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.766,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 510 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.742,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 511 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.392,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 512 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.637,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 513 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.682,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 514 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.755,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 515 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.568,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 516 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.332,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 517 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.857,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 518 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.459,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 519 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.743,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 520 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.579,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 521 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.768,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 522 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.503,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 523 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.355,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 524 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.557,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 525 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.588,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 526 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.776,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 527 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.542,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 528 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.7,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 529 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.526,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 530 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.74,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 531 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.405,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 532 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.828,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 533 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.867,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 534 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.314,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 535 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.815,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 536 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.767,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 537 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.716,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 538 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.364,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 539 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 420.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 87.66,
+   "url": "/shop/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 3.19
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 1.62
+    }
+   ],
+   "id": "shop-5",
+   "peak_memory_mb": 69.2,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.579,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 1.45,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'shop' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.403,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.387,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.588,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.889,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.614,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 500 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.872,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 501 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.682,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 502 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.673,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 503 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.673,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 504 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.867,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 505 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.54,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 506 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.744,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 507 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.66,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 508 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.541,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 509 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.503,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 510 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.392,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 511 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.307,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 512 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.502,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 513 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.48,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 514 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.349,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 515 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.591,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 516 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.511,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 517 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.856,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 518 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.768,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 519 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.699,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 520 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.808,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 521 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.465,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 522 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.37,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 523 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.666,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 524 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.436,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 525 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.891,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 526 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.555,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 527 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.832,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 528 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.447,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 529 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.356,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 530 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.676,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 531 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.716,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 532 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.454,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 533 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.856,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 534 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.884,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 535 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.712,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 536 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.889,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 537 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.89,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 538 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.389,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 539 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 420.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 117.58,
+   "url": "/shop/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 3.63
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 1.37
+    }
+   ],
+   "id": "shop-6",
+   "peak_memory_mb": 55.5,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.417,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 1.382,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'shop' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.305,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.267,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.688,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.609,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.775,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 500 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.37,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 501 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.337,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 502 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.369,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 503 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.37,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 504 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.561,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 505 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.819,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 506 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.513,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 507 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.361,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 508 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.702,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 509 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.5,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 510 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.643,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 511 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.749,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 512 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.574,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 513 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.74,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 514 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.672,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 515 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.811,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 516 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.757,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 517 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.841,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 518 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.748,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 519 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.469,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 520 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.603,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 521 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.763,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 522 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.771,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 523 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.738,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 524 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.806,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 525 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.795,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 526 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.625,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 527 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.684,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 528 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.326,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 529 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.586,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 530 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.736,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 531 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.848,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 532 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.809,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 533 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.564,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 534 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.438,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 535 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.831,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 536 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.694,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 537 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.415,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 538 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.323,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 539 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 420.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 123.91,
+   "url": "/shop/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 1.25
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 0.87
+    }
+   ],
+   "id": "shop-7",
+   "peak_memory_mb": 69.8,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.435,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 1.638,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'shop' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.248,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.533,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.879,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.424,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.667,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 500 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.561,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 501 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.774,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 502 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.369,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 503 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.423,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 504 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.532,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 505 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.301,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 506 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.544,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 507 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.878,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 508 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.819,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 509 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.408,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 510 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.799,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 511 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.435,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 512 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.444,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 513 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.683,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 514 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.476,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 515 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.421,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 516 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.351,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 517 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.406,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 518 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.415,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 519 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.847,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 520 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.325,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 521 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.624,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 522 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.427,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 523 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.732,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 524 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.302,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 525 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.523,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 526 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.743,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 527 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.316,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 528 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.547,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 529 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.496,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 530 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.591,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 531 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.677,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 532 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.348,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 533 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.82,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 534 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.462,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 535 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.763,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 536 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.38,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 537 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.356,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 538 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Widget->render",
+     "component": "plugin:shop-filters",
+     "ms": 0.416,
+     "sql": "SELECT meta_value FROM wp_postmeta WHERE post_id = 539 AND meta_key = '_price'"
+    },
+    {
+     "caller": "Shop_Filters_Query->run",
+     "component": "plugin:shop-filters",
+     "ms": 420.0,
+     "sql": "SELECT p.ID FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_color' AND m.meta_value LIKE '%blue%' ORDER BY p.post_date DESC"
+    }
+   ],
+   "total_ms": 86.57,
+   "url": "/shop/"
+  }
+ ],
+ "schema": "solaris.wp-trace/1",
+ "site": "synthetic-shop",
+ "source": "synthetic fixture written for G23; not captured from a real site",
+ "system_cron": true,
+ "wp_config": {
+  "AUTH_KEY": "synthetic-not-a-key",
+  "DB_PASSWORD": "synthetic-not-a-secret",
+  "DISABLE_WP_CRON": true,
+  "WP_CACHE": true,
+  "WP_DEBUG": false,
+  "WP_DEBUG_DISPLAY": false,
+  "WP_DEBUG_LOG": true,
+  "WP_MEMORY_LIMIT": "256M"
+ }
+}

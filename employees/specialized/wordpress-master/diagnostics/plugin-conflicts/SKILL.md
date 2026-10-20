@@ -69,6 +69,10 @@ wp plugin activate plugin1 plugin2 plugin3
 # Repeat until you isolate the conflicting plugin(s)
 ```
 
+Record each activation test as a bisect run (`{"plugins": [...], "result": "fail" | "ok"}`) and keep the PHP error log lines.
+`wp_trace_diag.py diagnose` (see `wp-trace-diagnosis.md` in the wordpress-master folder) then names the plugin or pair that every
+failing run shares and no passing run has, cross-checks a `Cannot redeclare` fatal, and says when the runs do not yet separate the candidates.
+
 ### Step 3: Theme Test
 
 ```bash

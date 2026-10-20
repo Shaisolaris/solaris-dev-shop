@@ -1,0 +1,210 @@
+{
+ "active_plugins": [
+  "acme-seo/acme-seo.php",
+  "acme-forms/acme-forms.php",
+  "shop-core/shop-core.php",
+  "shop-filters/shop-filters.php"
+ ],
+ "autoload_bytes": 412000,
+ "autoload_top": [
+  {
+   "bytes": 61000,
+   "option": "acme_seo_settings"
+  },
+  {
+   "bytes": 40000,
+   "option": "shop_core_options"
+  }
+ ],
+ "bisect": [
+  {
+   "plugins": [
+    "acme-seo",
+    "acme-forms",
+    "shop-core",
+    "shop-filters"
+   ],
+   "result": "fail"
+  },
+  {
+   "plugins": [
+    "acme-seo",
+    "shop-core"
+   ],
+   "result": "ok"
+  },
+  {
+   "plugins": [
+    "acme-forms",
+    "shop-filters"
+   ],
+   "result": "ok"
+  },
+  {
+   "plugins": [
+    "acme-seo",
+    "acme-forms"
+   ],
+   "result": "fail"
+  },
+  {
+   "plugins": [
+    "acme-forms",
+    "shop-core",
+    "shop-filters"
+   ],
+   "result": "ok"
+  }
+ ],
+ "dropins": [
+  "advanced-cache.php",
+  "object-cache.php"
+ ],
+ "env": {
+  "host": "synthetic-vm",
+  "php": "8.3.12",
+  "wp": "6.6.2"
+ },
+ "environment": "production",
+ "measurement": {
+  "concurrency": 1,
+  "runs_per_url": 7,
+  "tool": "synthetic curl loop",
+  "warm_cache": true
+ },
+ "php_errors": [
+  "[18-Oct-2026 10:12:03 UTC] PHP Fatal error:  Cannot redeclare acme_sanitize_phone() (previously declared in /srv/www/wp-content/plugins/acme-seo/inc/helpers.php:41) in /srv/www/wp-content/plugins/acme-forms/includes/format.php on line 17"
+ ],
+ "requests": [
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 2.86
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 1.3
+    }
+   ],
+   "id": "contact-1",
+   "peak_memory_mb": 55.2,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.254,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 0.639,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'contact' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.314,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.468,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.755,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.612,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    }
+   ],
+   "total_ms": 115.48,
+   "url": "/contact/"
+  },
+  {
+   "hooks": [
+    {
+     "callback": "Acme_SEO::init",
+     "component": "plugin:acme-seo",
+     "hook": "init",
+     "ms": 3.94
+    },
+    {
+     "callback": "acme_seo_meta",
+     "component": "plugin:acme-seo",
+     "hook": "wp_head",
+     "ms": 1.97
+    }
+   ],
+   "id": "contact-2",
+   "peak_memory_mb": 57.6,
+   "queries": [
+    {
+     "caller": "get_option",
+     "component": "core",
+     "ms": 0.345,
+     "sql": "SELECT option_value FROM wp_options WHERE option_name = 'siteurl' LIMIT 1"
+    },
+    {
+     "caller": "WP_Query->get_posts",
+     "component": "core",
+     "ms": 1.477,
+     "sql": "SELECT * FROM wp_posts WHERE post_name = 'contact' AND post_type = 'page'"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.168,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (100, 200)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.403,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (101, 201)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 0.605,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (102, 202)"
+    },
+    {
+     "caller": "update_meta_cache",
+     "component": "core",
+     "ms": 1.352,
+     "sql": "SELECT meta_key, meta_value FROM wp_postmeta WHERE post_id IN (103, 203)"
+    }
+   ],
+   "total_ms": 131.54,
+   "url": "/contact/"
+  }
+ ],
+ "schema": "solaris.wp-trace/1",
+ "site": "synthetic-shop",
+ "source": "synthetic fixture written for G23; not captured from a real site",
+ "system_cron": true,
+ "wp_config": {
+  "AUTH_KEY": "synthetic-not-a-key",
+  "DB_PASSWORD": "synthetic-not-a-secret",
+  "DISABLE_WP_CRON": true,
+  "WP_CACHE": true,
+  "WP_DEBUG": false,
+  "WP_DEBUG_DISPLAY": false,
+  "WP_DEBUG_LOG": true,
+  "WP_MEMORY_LIMIT": "256M"
+ }
+}
