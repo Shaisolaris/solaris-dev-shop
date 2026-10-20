@@ -70,7 +70,8 @@ class G22Capability(unittest.TestCase):
         self.assertEqual([r for r in res if r[1] == "refused"], [(None, "refused"), (None, "refused")])
         self.assertEqual([e["reason"] for e in out["events"] if e["result"] == "refused"], ["bad_signature", "timestamp_outside_tolerance"])
         r = self.report()
-        self.assertEqual(r["money"], {"captured": "45.29", "refunded": "12.60", "unapplied_captures": "0.00", "unapplied_refunds": "40.00"})
+        self.assertEqual(r["money"], {"captured": "45.29", "refunded": "12.60", "unapplied_captures": "0.00", "unapplied_refunds": "40.00",
+                                      "closed_unapplied_captures": "0.00", "closed_unapplied_refunds": "0.00"})
         self.assertEqual(r["net_cash"], "32.69")
         st = {s["sku"]: (s["on_hand"], s["reserved"], s["shipped"], s["restocked"]) for s in r["stock"]}
         self.assertEqual(st, {"mug-blue": (9, 0, 2, 1), "poster": (1, 0, 3, 1), "tee-m": (3, 0, 1, 0)})
@@ -258,12 +259,135 @@ class G22Capability(unittest.TestCase):
             self.assertEqual(run(TOOL, "init", "--db", self.tmp / "n.db", "--catalog", bad_cat).returncode, 2)
         self.assertEqual(run(TOOL, "init", "--db", self.db, "--catalog", FIX / "catalog.json").returncode, 2)
 
+    # G22 h2: open events are resolved on the record (M22 h1 P3: an exception could never be cleared)
+    def resolve(self, eid, action, *extra, by="Ana Ops", note="checked with the provider"):
+        r = run(TOOL, "resolve", "--db", self.db, "--event", eid, "--action", action, "--by", by, "--note", note, "--now", NOW + 900, *extra)
+        return r.returncode, (json.loads(r.stdout) if r.stdout.strip().startswith("{") else None), r.stderr
+
+    def export(self, name):
+        out = self.tmp / name
+        r = run(TOOL, "export-g14", "--db", self.db, "--out", out, "--period-start", "2026-09-01T00:00:00Z", "--period-end", "2026-10-01T00:00:00Z")
+        return r, out
+
+    def test_close_resolves_exceptions_and_books_then_export(self):
+        self.ingest(FIX / "september.jsonl")
+        rc, doc, _ = self.resolve("evt_008", "close", note="out of stock, customer told, never charged")
+        self.assertEqual((rc, doc["money_closed"], doc["open_now"]), (0, None, 1))
+        r, out = self.export("still-open")
+        self.assertEqual(r.returncode, 1)
+        self.assertEqual([e["id"] for e in json.loads(r.stdout)["open"]], ["evt_007"])
+        before = self.report()
+        rc, _, err = self.resolve("evt_007", "close")
+        self.assertEqual(rc, 2)
+        self.assertIn("unapplied refund 40.00", err)
+        self.assertEqual(self.report(), before)
+        rc, doc, _ = self.resolve("evt_007", "close", "--reference", "provider case PC-1001", note="provider reversed the 40.00 refund")
+        self.assertEqual((rc, doc["money_closed"], doc["open_now"], doc["unapplied_money_now"]), (0, {"amount": "40.00", "kind": "refund"}, 0, 0))
+        rep = self.report()
+        self.assertEqual((rep["net_cash"], rep["money"]["unapplied_refunds"], rep["money"]["closed_unapplied_refunds"]), ("32.69", "0.00", "40.00"))
+        self.assertEqual(rep["open"], [])
+        self.assertEqual([(x["event_id"], x["action"], x["prior_state"], x["resolved_by"], x["reference"], x["amount"]) for x in rep["resolutions"]],
+                         [("evt_008", "close", "exception", "Ana Ops", None, None), ("evt_007", "close", "exception", "Ana Ops", "provider case PC-1001", "40.00")])
+        self.assertTrue(rep["resolutions"][1]["prior_reason"].startswith("refund_exceeds_captured"))
+        self.assertEqual(self.check().returncode, 0)
+        r, out = self.export("books")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertEqual(json.loads(r.stdout)["closed_money_not_in_books"],
+                         [{"amount": "40.00", "event_id": "evt_007", "money_kind": "refund", "reference": "provider case PC-1001", "superseded_by": None}])
+        g = run(G14, "reconcile", out / "package.json", "--json")
+        c = json.loads(g.stdout)["currencies"]["USD"]
+        self.assertEqual((g.returncode, c["net_cash"], c["recognized_revenue"]), (0, "32.69", "32.69"))
+        # re-delivering a closed event is a duplicate and does not reopen it
+        rc, out2 = self.ingest(FIX / "september.jsonl")
+        self.assertEqual(out2["open_held_or_exceptions"], 0)
+        self.assertEqual([e["state"] for e in out2["events"] if e.get("id") == "evt_007"], ["resolved"])
+
+    def test_retry_applies_once_the_block_is_gone(self):
+        a = ev("r_1", "order.placed", 0, order_id="oa", currency="USD", lines=[{"sku": "tee-m", "qty": 3}])
+        b = ev("r_2", "order.placed", 10, order_id="ob", currency="USD", lines=[{"sku": "tee-m", "qty": 2}])
+        pay = ev("r_3", "payment.captured", 20, order_id="ob", payment_id="p_ob", amount="39.98")
+        self.ingest([env(a), env(b), env(pay)])
+        rep = self.report()
+        self.assertEqual({o["id"]: o["state"] for o in rep["open"]}, {"r_2": "exception", "r_3": "held"})
+        rc, doc, err = self.resolve("r_2", "retry")
+        self.assertEqual((rc, doc["resolved"], doc["state"]), (1, False, "exception"))
+        self.assertIn("nothing changed", err)
+        self.assertEqual(self.report(), rep)
+        self.ingest([env(ev("r_4", "order.cancelled", 30, order_id="oa"))])
+        rc, doc, _ = self.resolve("r_2", "retry", note="stock released by the cancel of oa")
+        self.assertEqual((rc, doc["open_now"]), (0, 0))
+        rep = self.report()
+        self.assertEqual({o["id"]: o["status"] for o in rep["orders"]}, {"oa": "cancelled", "ob": "captured"})
+        self.assertEqual((rep["money"]["captured"], [s["shipped"] for s in rep["stock"] if s["sku"] == "tee-m"]), ("39.98", [2]))
+        self.assertEqual([(x["event_id"], x["action"]) for x in rep["resolutions"]], [("r_2", "retry")])
+        self.assertEqual(self.check().returncode, 0)
+
+    def test_close_superseded_by_a_redelivered_event(self):
+        o = ev("s_1", "order.placed", 0, order_id="os", currency="USD", lines=[{"sku": "mug-blue", "qty": 1}])
+        bad = ev("s_2", "payment.captured", 10, order_id="os", payment_id="p_bad", amount="12.00")
+        other = ev("s_9", "order.placed", 5, order_id="ot", currency="USD", lines=[{"sku": "poster", "qty": 1}])
+        self.ingest([env(o), env(bad), env(other)])
+        for sup in ("s_2", "s_404", "s_9"):
+            rc, _, err = self.resolve("s_2", "close", "--superseded-by", sup)
+            self.assertEqual(rc, 2, (sup, err))
+        good = ev("s_3", "payment.captured", 20, order_id="os", payment_id="p_good", amount="12.50")
+        self.ingest([env(good)])
+        rc, doc, _ = self.resolve("s_2", "close", "--superseded-by", "s_3", note="provider re-delivered the capture with the right amount")
+        self.assertEqual((rc, doc["money_closed"]), (0, {"amount": "12.00", "kind": "capture"}))
+        rep = self.report()
+        self.assertEqual((rep["money"]["captured"], rep["money"]["unapplied_captures"], rep["money"]["closed_unapplied_captures"]), ("12.50", "0.00", "12.00"))
+        self.assertEqual(rep["resolutions"][0]["superseded_by"], "s_3")
+        self.assertEqual(self.check().returncode, 0)
+
+    def test_resolve_refusals_and_tampering(self):
+        self.ingest(FIX / "september.jsonl")
+        before = self.report()
+        for args in (("evt_404", "close"), ("evt_001", "close"), ("evt_008", "retry", "--reference", "x"),
+                     ("evt_007", "close", "--reference", "a", "--superseded-by", "evt_006"), ("evt_007", "close", "--reference", " ")):
+            rc, _, err = self.resolve(*args)
+            self.assertEqual(rc, 2, (args, err))
+        rc, doc, _ = self.resolve("evt_007", "retry")
+        self.assertEqual((rc, doc["state"]), (1, "exception"))
+        self.assertTrue(doc["reason"].startswith("refund_exceeds_captured"), doc)
+        self.assertEqual(self.resolve("evt_008", "close", by=" ")[0], 2)
+        self.assertEqual(self.resolve("evt_008", "close", note="")[0], 2)
+        self.assertEqual(self.report(), before)
+        self.assertEqual(self.resolve("evt_008", "close")[0], 0)
+        self.assertEqual(self.resolve("evt_008", "close")[0], 2)
+        self.assertEqual(self.resolve("evt_007", "close", "--reference", "case 7")[0], 0)
+        for sql, needle in (("DELETE FROM resolutions WHERE event_id = 'evt_008'", "resolved event evt_008 has no close record"),
+                            ("UPDATE events SET state = 'exception' WHERE id = 'evt_008'", "resolution of evt_008 (close) does not match"),
+                            ("UPDATE resolutions SET money_cents = 100 WHERE event_id = 'evt_007'", "closed money of evt_007 differs"),
+                            ("UPDATE resolutions SET reference = NULL WHERE event_id = 'evt_007'", "closed money of evt_007 has no reference")):
+            with self.subTest(sql=sql):
+                c = self.tmp / "copy.db"
+                for ext in ("", "-wal", "-shm"):
+                    if Path(str(self.db) + ext).exists():
+                        shutil.copy(str(self.db) + ext, str(c) + ext)
+                con = sqlite3.connect(str(c)); con.execute(sql); con.commit(); con.close()
+                r = self.check(c)
+                self.assertEqual(r.returncode, 1, r.stdout)
+                self.assertIn(needle, r.stdout)
+                for ext in ("", "-wal", "-shm"):
+                    if Path(str(c) + ext).exists():
+                        Path(str(c) + ext).unlink()
+
+    def test_ledger_made_before_resolve_still_works(self):
+        self.ingest(FIX / "september.jsonl")
+        con = sqlite3.connect(str(self.db)); con.execute("DROP TABLE resolutions"); con.commit(); con.close()
+        self.assertEqual(self.report()["resolutions"], [])
+        self.assertEqual(self.check().returncode, 0)
+        self.assertEqual(self.resolve("evt_008", "close")[0], 0)
+        self.assertEqual([x["event_id"] for x in self.report()["resolutions"]], ["evt_008"])
+
     def test_doc_and_contract_match(self):
         doc = (ROOT / "employees" / "specialized" / "payments-specialist" / "webhook-ledger.md").read_text()
-        for cmd in ("init", "sign", "ingest", "report", "check", "export-g14"):
+        for cmd in ("init", "sign", "ingest", "report", "check", "export-g14", "resolve"):
             self.assertIn("payment_ledger.py %s" % cmd, doc)
         for code in ("0", "1", "2", "3", "70"):
             self.assertIn("| %s |" % code, doc)
+        for word in ("--action retry", "--action close", "--reference", "--superseded-by", "closed_unapplied_refunds"):
+            self.assertIn(word, doc)
         c = json.loads((ROOT / "employees" / "specialized" / "payments-specialist" / "capability.contract.json").read_text())
         self.assertIn("payment_ledger.py", c["dependencies"]["scripts"])
         self.assertIn("webhook-ledger.md", c["dependencies"]["references"])
