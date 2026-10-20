@@ -1,0 +1,4 @@
+FAIL: test_anchor_alias_tag_on_a_sequence_item_names_its_own_line (tests.test_g09_capability.G09Check)
+AssertionError: Tuples differ: (2, 'YAML_UNSUPPORTED', 5) != (2, 'YAML_UNSUPPORTED', 4)
+Ran 1 test in 0.029s
+FAILED (failures=1)

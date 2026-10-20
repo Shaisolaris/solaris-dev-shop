@@ -1,0 +1,13 @@
+# binding check G09-h1, 2026-10-20 12:18:37 PDT
+remote head of review/grok-g09-k8s-manifest-check: 1cab0f8b68077b4dbd006ad37c1d20f3b538d7c7 (expected 1cab0f8b68077b4dbd006ad37c1d20f3b538d7c7)
+worktree HEAD: 1cab0f8b68077b4dbd006ad37c1d20f3b538d7c7
+base is ancestor: yes; commits since: 1
+handback patch G09-h1.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/infrastructure/kubernetes-specialist/k8s_manifest_check.py: OK
+  tests/test_g09_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../infrastructure/kubernetes-specialist/k8s_manifest_check.py   | 3 +++
+   tests/test_g09_capability.py                                     | 9 +++++++++
+   2 files changed, 12 insertions(+)

@@ -1,0 +1,10 @@
+FAIL anchor on container item {"rc": 2, "line": 18, "reason": "multi-line plain scalar"}
+FAIL tag on container item {"rc": 2, "line": 18, "reason": "multi-line plain scalar"}
+PASS anchor on port item {"rc": 2, "line": 20, "reason": "anchors, aliases and tags are not read; expand them first"}
+PASS alias as port item {"rc": 2, "line": 20, "reason": "anchors, aliases and tags are not read; expand them first"}
+PASS tag on port item {"rc": 2, "line": 20, "reason": "anchors, aliases and tags are not read; expand them first"}
+FAIL anchor on a bare item, mapping below {"rc": 2, "line": 18, "reason": "multi-line plain scalar"}
+PASS clean control {"rc": 0, "unusable": null}
+PASS ampersand inside a value stays a value {"rc": 0, "unusable": null}
+PASS item key starting with a letter then & {"rc": 0, "unusable": null}
+M09H1 PROBE 6/9

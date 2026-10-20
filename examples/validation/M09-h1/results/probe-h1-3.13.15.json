@@ -1,0 +1,92 @@
+{
+ "python": "3.13.15",
+ "rows": [
+  {
+   "id": "anchor on container item",
+   "pass": true,
+   "expected_line": 17,
+   "got": {
+    "rc": 2,
+    "line": 17,
+    "reason": "anchors, aliases and tags are not read; expand them first"
+   }
+  },
+  {
+   "id": "tag on container item",
+   "pass": true,
+   "expected_line": 17,
+   "got": {
+    "rc": 2,
+    "line": 17,
+    "reason": "anchors, aliases and tags are not read; expand them first"
+   }
+  },
+  {
+   "id": "anchor on port item",
+   "pass": true,
+   "expected_line": 20,
+   "got": {
+    "rc": 2,
+    "line": 20,
+    "reason": "anchors, aliases and tags are not read; expand them first"
+   }
+  },
+  {
+   "id": "alias as port item",
+   "pass": true,
+   "expected_line": 20,
+   "got": {
+    "rc": 2,
+    "line": 20,
+    "reason": "anchors, aliases and tags are not read; expand them first"
+   }
+  },
+  {
+   "id": "tag on port item",
+   "pass": true,
+   "expected_line": 20,
+   "got": {
+    "rc": 2,
+    "line": 20,
+    "reason": "anchors, aliases and tags are not read; expand them first"
+   }
+  },
+  {
+   "id": "anchor on a bare item, mapping below",
+   "pass": true,
+   "expected_line": 17,
+   "got": {
+    "rc": 2,
+    "line": 17,
+    "reason": "anchors, aliases and tags are not read; expand them first"
+   }
+  },
+  {
+   "id": "clean control",
+   "pass": true,
+   "expected_line": null,
+   "got": {
+    "rc": 0,
+    "unusable": null
+   }
+  },
+  {
+   "id": "ampersand inside a value stays a value",
+   "pass": true,
+   "expected_line": null,
+   "got": {
+    "rc": 0,
+    "unusable": null
+   }
+  },
+  {
+   "id": "item key starting with a letter then &",
+   "pass": true,
+   "expected_line": null,
+   "got": {
+    "rc": 0,
+    "unusable": null
+   }
+  }
+ ]
+}

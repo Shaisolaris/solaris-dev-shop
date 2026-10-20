@@ -1,0 +1,4 @@
+== 3.9.6 | G09 tests: OK | k8s_oracle: ACCEPTED 17/17 | naive: REJECTED 3/17 | no-op: REJECTED 2/17 | M09 oracle: M09 ORACLE 60/60 core PASS | dirty: 0
+== 3.11.16 | G09 tests: OK (skipped=1) | k8s_oracle: ACCEPTED 17/17 | naive: REJECTED 3/17 | no-op: REJECTED 2/17 | M09 oracle: M09 ORACLE 60/60 core PASS | dirty: 0
+== 3.12.14 | G09 tests: OK (skipped=1) | k8s_oracle: ACCEPTED 17/17 | naive: REJECTED 3/17 | no-op: REJECTED 2/17 | M09 oracle: M09 ORACLE 60/60 core PASS | dirty: 0
+== 3.13.15 | G09 tests: OK (skipped=1) | k8s_oracle: ACCEPTED 17/17 | naive: REJECTED 3/17 | no-op: REJECTED 2/17 | M09 oracle: M09 ORACLE 60/60 core PASS | dirty: 0
