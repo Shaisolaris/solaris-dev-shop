@@ -107,6 +107,8 @@ class CrossChecks(unittest.TestCase):
         findings = [l for l in out.splitlines() if l.startswith("FINDING ")]
         self.assertEqual(r.returncode, 1 if findings else 0, out)
         self.assertFalse([f for f in findings if f.startswith(("FINDING x1", "FINDING x3"))], out)
+        # r2 stacks G11 h1 94a0de4, which fixes the x2 finding r1 carried; a G11 that regresses brings it back
+        self.assertEqual(findings, [], out)
         self.assertIn("x3 loaded exactly at as_of ('30.00'): G13 included, G14 included", out)
         self.assertIn("x3 sub-cent ('10.005'): G13 included, G14 left out (documented difference)", out)
         self.assertTrue(out.rstrip().splitlines()[-1].startswith("CROSS-CHECKS "), out)

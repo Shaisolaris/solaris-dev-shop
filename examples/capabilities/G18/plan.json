@@ -42,7 +42,7 @@
   },
   {
    "id": "G11",
-   "commit": "13ba7055537e305732856aea3c74ff28f0848be8",
+   "commit": "94a0de462a82e0d55e1bf58ee468bf7953d1c59a",
    "tests": [
     "tests.test_g11_capability"
    ],
