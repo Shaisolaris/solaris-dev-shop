@@ -9,6 +9,7 @@
   ],
   "references": [
     "rules.md",
+    "k8s-manifest-check.md",
     "learnings.md",
     "platform-patterns.md"
   ],

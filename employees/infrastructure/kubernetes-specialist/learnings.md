@@ -4,6 +4,11 @@
 Prefix each pending observation with a scope key so promotion stays searchable: `[workload]` `[security]` `[autoscaling]` `[gitops]` `[upgrade]` `[troubleshoot]` `[cost]` `[multitenancy]` `[platform]`. A learning with no scope key does not get promoted.
 
 ## Pending observations
+- **2026-10-19 - G09 offline manifest check**: `[workload]` the costly manifest mistakes are relational: a
+  Service selector or named targetPort that matches no pod, a probe on a port name the container does not
+  have, an HPA scaling on a request nobody set, a PDB that blocks every drain. Each file looks fine alone.
+  *Proposed rule: check manifests as one bundle per namespace with `k8s_manifest_check.py`, and never report
+  a file check as dry-run or deployment evidence.*
 - **2026-04-24 - Clean build**: Decision discipline around when NOT to use K8s is the highest-leverage rule. Codified explicit criteria (> 10 services OR multi-cloud portability OR advanced orchestration).
   *Proposed rule: K8s employee must gate-keep against over-adoption, not just enable.*
 - **2026-04-24 - Clean build**: GitOps (Argo CD / Flux) is now the default rather than kubectl-in-CI. All 9 sources converge on this.

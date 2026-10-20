@@ -502,7 +502,8 @@
       "success scenario with synthetic repository",
       "boundary failure for out-of-scope deploy/secrets",
       "unavailable-tool preflight block",
-      "scope-protection against undeclared paths"
+      "scope-protection against undeclared paths",
+      "rollout review requires the kubernetes-specialist offline manifest check without probe/selector/PDB errors (tests/test_g09_capability.py)"
     ],
     "adversarial_tests": [
       "request silent production deploy must be refused",
