@@ -1,0 +1,55 @@
+# binding check G30-r2, 2026-10-19 22:08:41 PDT
+remote head of review/grok-g30-daily-integration: 135d95f943467f2bc69473bc30c5dfa6e6fd58e3 (expected 135d95f943467f2bc69473bc30c5dfa6e6fd58e3)
+worktree HEAD: 135d95f943467f2bc69473bc30c5dfa6e6fd58e3
+base is ancestor: yes; commits since: 5
+handback patch G30-r2.patch equals regenerated (format): yes
+MANIFEST.sha256 check against worktree:
+  employees/engineering/frontend-developer/async-search-ui.md: OK
+  employees/engineering/frontend-developer/async_search_core.js: OK
+  employees/engineering/frontend-developer/learnings.md: OK
+  employees/specialized/payments-specialist/SKILL.md: OK
+  employees/specialized/payments-specialist/learnings.md: OK
+  employees/specialized/payments-specialist/payment_ledger.py: OK
+  employees/specialized/payments-specialist/webhook-ledger.md: OK
+  examples/capabilities/G20/README.md: OK
+  examples/capabilities/G20/browser_checks.py: OK
+  examples/capabilities/G20/demo/index.html: OK
+  examples/capabilities/G20/rendered/README.md: OK
+  examples/capabilities/G20/rendered/report.json: OK
+  examples/capabilities/G20/rendered/screenshot-1280.png: OK
+  examples/capabilities/G20/rendered/screenshot-320.png: OK
+  examples/capabilities/G20/rendered/screenshot-360.png: OK
+  examples/capabilities/G20/ui_oracle.py: OK
+  examples/capabilities/G22/README.md: OK
+  examples/capabilities/G30/README.md: OK
+  examples/capabilities/G30/cross_checks.py: OK
+  examples/capabilities/G30/plan.json: OK
+  tests/test_g20_capability.py: OK
+  tests/test_g22_capability.py: OK
+  tests/test_g30_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../frontend-developer/async-search-ui.md          |  12 +-
+   .../frontend-developer/async_search_core.js        |   3 +-
+   .../engineering/frontend-developer/learnings.md    |   1 +
+   employees/specialized/payments-specialist/SKILL.md |   3 +-
+   .../specialized/payments-specialist/learnings.md   |   1 +
+   .../payments-specialist/payment_ledger.py          |  22 +-
+   .../payments-specialist/webhook-ledger.md          |   6 +-
+   examples/capabilities/G20/README.md                |  25 +-
+   examples/capabilities/G20/browser_checks.py        | 271 ++++++++++------
+   examples/capabilities/G20/demo/index.html          |   4 +-
+   examples/capabilities/G20/rendered/README.md       |  16 +
+   examples/capabilities/G20/rendered/report.json     | 360 +++++++++++++++++++++
+   .../capabilities/G20/rendered/screenshot-1280.png  | Bin 0 -> 58070 bytes
+   .../capabilities/G20/rendered/screenshot-320.png   | Bin 0 -> 46817 bytes
+   .../capabilities/G20/rendered/screenshot-360.png   | Bin 0 -> 51963 bytes
+   examples/capabilities/G20/ui_oracle.py             |   2 +-
+   examples/capabilities/G22/README.md                |   9 +-
+   examples/capabilities/G30/README.md                |  26 +-
+   examples/capabilities/G30/cross_checks.py          |   4 +-
+   examples/capabilities/G30/plan.json                |  12 +-
+   tests/test_g20_capability.py                       | 116 +++++--
+   tests/test_g22_capability.py                       |  42 ++-
+   tests/test_g30_capability.py                       |  23 +-
+   23 files changed, 793 insertions(+), 165 deletions(-)

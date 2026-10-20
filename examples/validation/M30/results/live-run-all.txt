@@ -1,0 +1,37 @@
+daily integration G30 at 135d95f94346 (tree f8daf922d427)
+  G13 5666e7beb161 ACCEPTED
+  G14 6f7b23aa1841 ACCEPTED
+  G17 550f1848a76a ACCEPTED
+  G20 0d4db6949ee2 CANDIDATE
+  G21 822a9c1aaf2d ACCEPTED
+  G22 8bc3553713c3 ACCEPTED_OTHER_REVISION
+  G23 0ff2641c56c8 ACCEPTED
+  G25 eb9c7c47384e ACCEPTED
+  run test G13 python3 -m unittest tests.test_g13_capability rc=0 7.8s
+  run test G14 python3 -m unittest tests.test_g14_capability rc=0 4.3s
+  run test G17 python3 -m unittest tests.test_g17_capability rc=0 8.4s
+  run command G17 python3 examples/capabilities/G17/decision_oracle.py rc=0 1.9s
+  run test G20 python3 -m unittest tests.test_g20_capability rc=0 0.4s
+  run command G20 python3 examples/capabilities/G20/ui_oracle.py rc=0 0.0s
+  run test G21 python3 -m unittest tests.test_g21_capability rc=0 59.5s
+  run command G21 python3 examples/capabilities/G21/sync_oracle.py --quick rc=0 22.4s
+  run test G22 python3 -m unittest tests.test_g22_capability rc=0 7.2s
+  run command G22 python3 examples/capabilities/G22/ledger_oracle.py rc=0 2.6s
+  run test G23 python3 -m unittest tests.test_g23_capability rc=0 6.4s
+  run command G23 python3 examples/capabilities/G23/wp_oracle.py --tool {python} employe rc=0 2.1s
+  run test G25 python3 -m unittest tests.test_g25_capability rc=0 6.1s
+  run command G25 python3 examples/capabilities/G25/protocol_oracle.py --tool {python} e rc=0 2.1s
+  run cross_check G30 python3 examples/capabilities/G30/cross_checks.py rc=0 0.7s
+  run gate suite python3 -m unittest discover -s tests rc=0 215.2s
+  run gate control_plane python3 control-plane/meta_control_plane.py self-test rc=0 0.2s
+  run gate quality_audit quality_os.py audit rc=0 0.1s
+  run gate manifests python3 -c 
+import glob, json
+bad = []
+for f in sorted(glob.glob('empl rc=0 0.0s
+  run gate catalog python3 tools/build_skill_catalog.py --check rc=0 0.0s
+  run gate symlinks git ls-files -s rc=0 0.0s
+  run gate metadata python3 tools/validate_skill_metadata.py rc=0 0.1s
+VERDICT INTEGRATED
+rc=0
+fresh clone dirty after: 0
