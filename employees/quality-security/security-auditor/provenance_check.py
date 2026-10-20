@@ -92,11 +92,16 @@ BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
 governing permissions and limitations under the License.""")
 # A copyright line is "copyright [(c)] YEAR[S] HOLDER[.] [all rights reserved.]" (M38 r2 P2-1). The holder may not hold a
 # sentence (no . ; : ! ? inside) and may not use words that grant, limit or condition use; such a line is not dropped,
-# so the text no longer matches. This is a guard, not a parser: a restriction worded without these words still passes.
+# so the text no longer matches. After the holder's first comma only a company suffix or "and contributors" may follow
+# (M38 r3 P2-1: ", which cannot be resold"). This is a guard, not a parser: a restriction with no comma and none of these
+# words could still pass, so the report lists every copyright line it set aside (license_copyright_lines) for a person.
 YEARS = r"\d{4}(?:\s*[-,\u2013]\s*\d{4})*,?"
 HOLDER_RE = re.compile(r"^(?P<h>[^.;:!?]{1,200}?)\.?(?: all rights reserved\.?)?$")
-OPERATIVE = re.compile(r"\b(?:may|must|shall|not|no|only|unless|except\w*|prohibit\w*|forbid\w*|permi\w*|commercial\w*"
-                       r"|restrict\w*|licen[cs]\w*|terms?|conditions?|software|use[ds]?|without)\b")
+OPERATIVE = re.compile(r"\b(?:may|must|shall|not|no|only|unless|except\w*|prohibit\w*|forbid\w*|permi\w*|\w*commercial\w*"
+                       r"|restrict\w*|licen[cs]\w*|terms?|conditions?|software|use[ds]?|usage|without|cannot|can't|never"
+                       r"|allow\w*|resal\w*|resel\w*|resold|sell\w*|sold|purposes?|exclusive\w*|solely|redistribut\w*"
+                       r"|distribut\w*|copy|copies|modif\w*)\b")
+HOLDER_TAIL = re.compile(r"(?:inc|llc|ltd|gmbh|corp|co|plc|ag|sa|bv|and (?:its |other )?contributors|et al)")
 COPYRIGHT_RE = re.compile(r"^(?:copyright(?: \(c\)| \u00a9)?|\(c\)|\u00a9) (?P<rest>" + YEARS + r" .+)$")
 
 
@@ -104,7 +109,10 @@ def _years_holder_ok(s):
     """'YEAR[S] HOLDER[.] [all rights reserved.]' with a plain holder name."""
     m = re.match("^" + YEARS + r" (.+)$", s)
     h = HOLDER_RE.match(m.group(1)) if m else None
-    return bool(h) and not OPERATIVE.search(h.group("h"))
+    if not h or OPERATIVE.search(h.group("h")):
+        return False
+    # a holder is a name: after its first comma only company suffixes or "and contributors" may follow
+    return all(HOLDER_TAIL.fullmatch(x.strip()) for x in h.group("h").split(",")[1:])
 
 
 def _copyright_line(s):
@@ -126,19 +134,25 @@ def _appendix_ok(tail):
 
 def identify(text):
     """The whole text must be the license: a fragment, a header or added terms are not recognised (nothing guessed)."""
+    return identify_detail(text)[0]
+
+
+def identify_detail(text):
+    """(license or None, the copyright lines set aside before comparing the MIT body)."""
     lines = [l.strip() for l in text.splitlines() if l.strip()]
     if lines and _norm(lines[0]) in MIT_TITLES:
         lines.pop(0)
+    dropped = []
     while lines and _copyright_line(_norm(lines[0])):
-        lines.pop(0)
+        dropped.append(lines.pop(0))
     if _norm(" ".join(lines)) == MIT_BODY:
-        return "MIT"
+        return "MIT", dropped
     t = _norm(text); j = t.find(APACHE_END)
     if j > 0 and hashlib.sha256(t[:j + len(APACHE_END)].encode("utf-8")).hexdigest() == APACHE_TERMS_SHA:
         tail = t[j + len(APACHE_END):].strip()
         if _appendix_ok(tail):
-            return "Apache-2.0"
-    return None
+            return "Apache-2.0", []
+    return None, []
 
 
 _TOML_STR = r"""(?:"([^"\n]*)"|'([^'\n]*)')"""
@@ -218,7 +232,7 @@ def check(root, manifest=None, exclude=()):
     ex = tuple(sorted(set(ex)))
     F, decl = [], []
     lic_text = _read(root / "LICENSE")
-    actual = identify(lic_text) if lic_text is not None else None
+    actual, cr_lines = identify_detail(lic_text) if lic_text is not None else (None, [])
     if lic_text is None:
         F.append({"code": "license_missing", "path": "LICENSE", "detail": "no readable root LICENSE file"})
     elif actual is None:
@@ -279,6 +293,7 @@ def check(root, manifest=None, exclude=()):
         integ = verify_manifest(root, manifest, F)
     return {"schema": SCHEMA, "result": "consistent" if not F else "findings", "license": actual or "unrecognized",
             "declarations": len(decl), "declared_values": sorted({str(x["declared"]) for x in decl}),
+            "license_copyright_lines": cr_lines,
             "upstream_license_files": others, "excluded": skipped, "integrity": integ, "findings": F,
             "statement": "consistency of declarations and file digests only; not a legal opinion; no identity is authenticated"}
 
@@ -340,6 +355,8 @@ def _atomic(out, data):
 
 def render(r):
     out = ["provenance check: %s; LICENSE %s; %d declaration(s) %s" % (r["result"], r["license"], r["declarations"], "/".join(r["declared_values"]))]
+    for line in r.get("license_copyright_lines") or []:
+        out.append("  LICENSE copyright line set aside before comparing (read it): %s" % line)
     if r["integrity"]:
         out.append("integrity: %d of %d listed file(s) match" % (r["integrity"]["matching"], r["integrity"]["listed"]))
     for f in r["findings"]:
