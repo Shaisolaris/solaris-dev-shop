@@ -1,8 +1,9 @@
 # G36 day 6 daily integration
 
-Stack on v0.61 `02ba9c5`: G31 r2 `e998d2b` (carries G17 `550f184`, G14 r2 `6f7b23a` and G13 r3 `5666e7b`),
-G33 r3 `327e631`, G35 `34bb98f`, G34 `de76fae`, G04 r2 `155fc33` and G32 r3 `b69f328`. There are no
-outside contributions on this day.
+Stack on v0.61 `02ba9c5`: G31 r3 `fcf492a` (via r2 `e998d2b`; carries G17 `550f184`, G14 r2 `6f7b23a` and G13 r3 `5666e7b`),
+G33 r4 `a4ae555`, G35 `34bb98f`, G34 `de76fae`, G04 r3 `e9fa278` and G32 r3 `b69f328`. There are no
+outside contributions on this day. G36 r2 merges G04 r3, G31 r3 and G33 r4 (the M04 r2, M31 r2 and M33 r3 P2
+repairs) onto the r1 stack `7a407bb` without rewriting it.
 
 | Check | What it compares | Result on this stack |
 |---|---|---|
@@ -22,8 +23,8 @@ Seven overlaps are resolved in the plan, each with its reason:
 - `employees/data/data-analyst/SKILL.md`: G33 carries the G13 blob, G31 and G35 carry the G14 blob that
   builds on it; HEAD is the G14 blob.
 - `employees/infrastructure/fleet-dispatcher/handoff.py`, `handoff-work-orders.md` and
-  `tests/test_g04_capability.py`: G32 carries G04 r1 `314b4db` unchanged; G04 r2 builds on it; HEAD is the
-  G04 r2 blob.
+  `tests/test_g04_capability.py`: G32 carries G04 r1 `314b4db` unchanged; G04 r3 builds on it; HEAD is the
+  G04 r3 blob.
 
 G34 reads saved HTML snapshots only. No check here starts a browser or opens a network connection.
 

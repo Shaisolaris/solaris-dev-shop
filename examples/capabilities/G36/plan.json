@@ -11,8 +11,8 @@
  "prerequisites": [
   {
    "id": "G04",
-   "commit": "155fc33ad284b8c8f79c235d96f240abcd64f662",
-   "note": "G04 r2 (root QA); also carried by G32 r3, same blobs",
+   "commit": "e9fa278f6fc967720118937c746287adf7cd6dad",
+   "note": "G04 r3 (M04 r2 P2 repair); G32 r3 carries G04 r1 314b4db",
    "tests": [
     "tests.test_g04_capability"
    ],
@@ -53,8 +53,8 @@
   },
   {
    "id": "G31",
-   "commit": "e998d2b434c082fe4cf129cec89dbeae458d8690",
-   "note": "G31 r2, base of the merge chain",
+   "commit": "fcf492af1ba12599503fe2d25202d3d1a40f2059",
+   "note": "G31 r3 (M31 r2 P2 repair), base of the merge chain via r2 e998d2b",
    "tests": [
     "tests.test_g31_capability"
    ],
@@ -79,8 +79,8 @@
   },
   {
    "id": "G33",
-   "commit": "327e631916db17170850d62d72479e13c89249dd",
-   "note": "G33 r3 (root QA)",
+   "commit": "a4ae555bdabffdc932b279d97ed2928bdef73df5",
+   "note": "G33 r4 (M33 r3 P2 repair)",
    "tests": [
     "tests.test_g33_capability"
    ],
@@ -125,31 +125,35 @@
  "resolved_overlaps": [
   {
    "path": "employees/data/data-analyst/SKILL.md",
-   "reason": "G33 327e631 carries the G13 5666e7b blob a8726ce; G31 e998d2b and G35 34bb98f carry the G14 6f7b23a blob 91b5625, which builds on G13 and adds one line. HEAD is the G14 blob, a strict superset."
+   "reason": "G33 a4ae555 carries the G13 5666e7b blob a8726ce; G31 fcf492a and G35 34bb98f carry the G14 6f7b23a blob 91b5625, which builds on G13 and adds one line. HEAD is the G14 blob, a strict superset."
   },
   {
    "path": "employees/leadership/cmo/SKILL.md",
-   "reason": "G33 327e631 adds one line and G35 34bb98f adds six lines at different places on the same G31 base blob 4b05356. HEAD (da4ee3e) is the line union: no line of either candidate is missing."
+   "reason": "G33 a4ae555 adds one line and G35 34bb98f adds six lines at different places on the same G31 base blob 4b05356. HEAD (da4ee3e) is the line union: no line of either candidate is missing."
   },
   {
    "path": "employees/leadership/cmo/capability.contract.json",
-   "reason": "G33 327e631 and G35 34bb98f each append one forward_tests entry, in two different forward_tests lists, to base blob 00ed372. HEAD (93770b1) holds both entries and parses as JSON."
+   "reason": "G33 a4ae555 and G35 34bb98f each append one forward_tests entry, in two different forward_tests lists, to base blob 00ed372. HEAD (93770b1) holds both entries and parses as JSON."
   },
   {
    "path": "employees/leadership/cmo/learnings.md",
-   "reason": "G33 327e631 and G35 34bb98f each add one observation to base blob 181e41c. HEAD (45ad2f9) keeps both."
+   "reason": "G33 a4ae555 and G35 34bb98f each add one observation to base blob 181e41c. HEAD (45ad2f9) keeps both."
   },
   {
    "path": "employees/infrastructure/fleet-dispatcher/handoff.py",
-   "reason": "G32 b69f328 carries G04 r1 314b4db unchanged for this file (blob eb27607); G04 r2 155fc33 builds on 314b4db and changes it (blob cc545eb). HEAD is the G04 r2 blob, the newer of the two, so G32 loses nothing."
+   "reason": "G32 b69f328 carries G04 r1 314b4db unchanged for this file (blob eb27607); G04 r3 e9fa278 builds on 314b4db and changes it (blob 212a4b5). HEAD is the G04 r3 blob, the newer of the two, so G32 loses nothing."
   },
   {
    "path": "employees/infrastructure/fleet-dispatcher/handoff-work-orders.md",
-   "reason": "G32 b69f328 carries G04 r1 314b4db unchanged for this file (blob 2d607b2); G04 r2 155fc33 builds on 314b4db and changes it (blob 96af330). HEAD is the G04 r2 blob, the newer of the two, so G32 loses nothing."
+   "reason": "G32 b69f328 carries G04 r1 314b4db unchanged for this file (blob 2d607b2); G04 r3 e9fa278 builds on 314b4db and changes it (blob 771b82e). HEAD is the G04 r3 blob, the newer of the two, so G32 loses nothing."
   },
   {
    "path": "tests/test_g04_capability.py",
-   "reason": "G32 b69f328 carries G04 r1 314b4db unchanged for this file (blob 6a63af7); G04 r2 155fc33 builds on 314b4db and changes it (blob 9751498). HEAD is the G04 r2 blob, the newer of the two, so G32 loses nothing."
+   "reason": "G32 b69f328 carries G04 r1 314b4db unchanged for this file (blob 6a63af7); G04 r3 e9fa278 builds on 314b4db and changes it (blob 8a13bb1). HEAD is the G04 r3 blob, the newer of the two, so G32 loses nothing."
+  },
+  {
+   "path": "employees/infrastructure/fleet-dispatcher/learnings.md",
+   "reason": "G32 b69f328 carries G04 r1 314b4db unchanged for this file (blob 14a4b7b); G04 r3 e9fa278 builds on 314b4db and adds one line (blob c32c58a). HEAD is the G04 r3 blob, so G32 loses nothing."
   }
  ]
 }
