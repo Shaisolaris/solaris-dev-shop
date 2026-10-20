@@ -112,8 +112,8 @@
   },
   {
    "id": "G38",
-   "commit": "b5428517178c032cea8af6bd7ef626e8db4a07b4",
-   "note": "G38 r3",
+   "commit": "ba70b6934a13f931b8533df9fa947802d610d15b",
+   "note": "G38 r4 (M38 r3 fix)",
    "tests": [
     "tests.test_g38_capability"
    ],
@@ -138,8 +138,8 @@
   },
   {
    "id": "G40",
-   "commit": "bb444782e65fa2ea1ca790a335faf7f3917b3191",
-   "note": "G40 r3 (M40 fix), on G39 r3",
+   "commit": "eabf69ac9cf4f539bc39482b75681bf75e6e97e5",
+   "note": "G40 r4 (M40 r3 fix), on G39 r3",
    "tests": [
     "tests.test_g40_capability"
    ],
@@ -151,8 +151,8 @@
   },
   {
    "id": "G41",
-   "commit": "9b98d9b749a32fb5987a12657e2fc9903ab9edb5",
-   "note": "G41 on G40 r3, base of the merge chain",
+   "commit": "a1bd6c41641c9849912c93e9dbe8db7a13229b55",
+   "note": "G41 r3: G41 merged onto G40 r4 (its commit subject says r2 in error; 9b98d9b was r2)",
    "tests": [
     "tests.test_g41_capability"
    ],

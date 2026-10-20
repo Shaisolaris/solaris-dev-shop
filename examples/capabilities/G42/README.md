@@ -1,9 +1,13 @@
 # G42 day 7 daily integration
 
-Stack on v0.61 `02ba9c5`: G41 `9b98d9b` (carries G40 r3 `bb44478`, G39 r3 `9ab3562`, G05 r2 `3056378`, G19 h1
-`350d175`, G13 r3 `5666e7b` and G03 `d4d98f2`), then merges G37 h1 `e9b7a77`, G38 r3 `b542851`, G02 r3
+Stack on v0.61 `02ba9c5`: G41 r3 `a1bd6c4` (carries G40 r4 `eabf69a`, G39 r3 `9ab3562`, G05 r2 `3056378`, G19 h1
+`350d175`, G13 r3 `5666e7b` and G03 `d4d98f2`), then merges G37 h1 `e9b7a77`, G38 r4 `ba70b69`, G02 r3
 `8fdae9c` and G04 r2 `155fc33`. G02 r3 and G04 r2 are merged because the G39 drill runs their tools and the
 G39 lineage still carried the unrepaired G02 and G04. There are no outside contributions on this day.
+
+Revision r2 rebinds the stack to the newest heads: G41 r3 (G41 merged onto G40 r4; its commit subject says r2 in error, since 9b98d9b was already r2) and G38 r4 are merged on top
+of the r1 chain (48bfa86) without rewriting it, and plan.json names G38 r4, G40 r4 and G41 r3. Neither revision touches a
+file another candidate changes, so no new overlap is added; the cross-checks and `--run all` were rerun on this tree.
 
 | Check | What it compares | Result on this stack |
 |---|---|---|
