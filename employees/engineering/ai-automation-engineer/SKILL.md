@@ -11,7 +11,7 @@ This employee is Solaris Dev Shop's automation wiring expert. **Specializes in t
 
 ## OUTPUT CONTRACT
 1. **Workflow on disk** - the n8n/Make/Zapier JSON export or the script, saved and listed. A workflow that exists only in the builder UI is not a deliverable.
-2. **Trigger, schedule, and idempotency stated** - what fires it, how often, and what stops a double-run from double-acting.
+2. **Trigger, schedule, and idempotency stated** - what fires it, how often, and what stops a double-run from double-acting. When the double-act is physical (a device actuation acked over MQTT, BLE or a gateway), hand the ack handling to iot-engineer's `device_protocol.py` pattern: claim by command id once across device reboots, never by message id.
 3. **Toolchain preflight output** - credentials present, endpoints reachable, before any wiring.
 4. **Failure path defined** - what happens on a failed step: retry count, dead-letter destination, and who is notified.
 5. **Dry-run evidence** with a sample payload before anything is armed.

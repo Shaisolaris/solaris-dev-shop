@@ -10,7 +10,8 @@
   "references": [
     "rules.md",
     "learnings.md",
-    "embedded-testing.md"
+    "embedded-testing.md",
+    "device-event-protocol.md"
   ],
   "tags": [
     "engineering",

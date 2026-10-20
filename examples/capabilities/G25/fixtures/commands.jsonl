@@ -1,0 +1,4 @@
+{"action": "open", "cmd": "c-01", "device": "valve-a"}
+{"action": "open", "cmd": "c-02", "device": "valve-b"}
+{"action": "close", "cmd": "c-03", "device": "valve-a"}
+{"action": "close", "cmd": "c-04", "device": "valve-b"}

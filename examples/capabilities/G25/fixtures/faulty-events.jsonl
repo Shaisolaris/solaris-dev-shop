@@ -1,0 +1,17 @@
+{"boot": 1, "device": "valve-a", "kind": "hello", "seq": 1, "v": 1}
+{"boot": 1, "device": "valve-b", "kind": "hello", "seq": 1, "v": 1}
+{"boot": 1, "device": "valve-a", "kind": "state", "seq": 2, "state": "closed", "v": 1}
+{"boot": 1, "cmd": "c-01", "device": "valve-a", "kind": "ack", "result": "done", "seq": 3, "state": "open", "v": 1}
+{"boot": 1, "device": "valve-b", "kind": "state", "seq": 2, "state": "closed", "v": 1}
+{"boot": 1, "cmd": "c-01", "device": "valve-a", "kind": "ack", "result": "done", "seq": 3, "state": "open", "v": 1}
+{"boot": 1, "device": "valve-a", "flow_lpm": 12.5, "kind": "telemetry", "seq": 4, "v": 1}
+{"boot": 1, "cmd": "c-02", "device": "valve-b", "kind": "ack", "result": "done", "seq": 3, "state": "open", "v": 1}
+{"boot": 1, "cmd": "c-02", "device": "valve-b", "kind": "ack", "result": "done", "seq": 3, "state": "open", "v": 1}
+{"boot": 2, "device": "valve-b", "kind": "hello", "seq": 1, "v": 1}
+{"boot": 2, "cmd": "c-02", "device": "valve-b", "kind": "ack", "result": "done", "seq": 2, "state": "open", "v": 1}
+{"boot": 2, "device": "valve-b", "kind": "state", "seq": 3, "state": "open", "v": 1}
+{"boot": 1, "cmd": "c-02", "device": "valve-b", "kind": "ack", "result": "done", "seq": 3, "state": "open", "v": 1}
+{"boot": 1, "cmd": "c-03", "device": "valve-a", "kind": "ack", "result": "done", "seq": 5, "state": "closed", "v": 1}
+{"boot": 1, "cmd": "c-03", "device": "valve-a", "kind": "ack", "result": "done", "seq": 6, "state": "closed", "v": 1}
+{"boot": 2, "cmd": "c-04", "device": "valve-b", "kind": "ack", "result": "done", "seq": 4, "state": "closed", "v": 1}
+{"boot": 2, "cmd": "c-04", "device": "valve-b", "kind": "ack", "result": "done", "seq": 4, "state": "closed", "v": 1}
