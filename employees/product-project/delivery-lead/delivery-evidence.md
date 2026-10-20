@@ -21,7 +21,13 @@ a symlink named in the command is refused (exit 2) like one given to `--inputs`.
 command that lies outside ROOT cannot be re-checked later; it is listed in the record as `unbound_inputs`, and
 `verify` repeats that list with a note on the contribution, so a reader can see what was not bound. Add `--inputs PATH...` for files
 and folders the tool reads without naming them (the CSVs a data contract points to). Inputs
-are digested after the run; an input the run itself rewrote is listed in `inputs_changed_during_run`. Each
+are digested after the run; every input that changed, appeared or disappeared during the run is listed in
+`inputs_changed_during_run`. One that existed before the run and was changed or removed by it is also listed in
+`inputs_rewritten_during_run` and is a gap at verify (below), because the record binds only its after-run bytes,
+not what the tool read (r5). A file that appeared during the run was not there to be read, and a SQLite `-shm`
+file next to a bound database is an index every reader updates with no data in it, so neither is a gap (a `-wal`
+or `-journal` file holds data and is). A record written before r5 has no such list; its whole
+`inputs_changed_during_run` list counts. Each
 line carries the sha256 of the line before it. `--ok-exit` is 0 (default) or 0,1: a data reconciliation that
 exits 1 for disclosed gaps is recorded as ok but counts only as `evidenced_with_gaps` (below). Any other exit
 code, such as 2 for invalid input, never counts: `verify` also re-checks each record, so a record whose exit is not
@@ -35,12 +41,13 @@ The role must be an employee in this repository. Credential-shaped values in the
  "contributions": [{"role": "data/data-engineer", "outputs": ["reports/metrics.json"], "accept_gaps": false}]}
 ```
 
-`verify ROOT --claims CLAIMS.json [--json] [--out F]` gives GO only when every claimed contribution is
+`verify ROOT --claims CLAIMS.json [--json] [--out F] [--strict]` gives GO only when every claimed contribution is
 `evidenced` and the G04 work order (`handoff.py status`) has every step done, exactly one delivery for its
 revision and its intake still matching the sha256 in the order. The other verdicts:
 
 - GO_WITH_GAPS: as GO, but at least one contribution is `evidenced_with_gaps` and its claim says
-  `"accept_gaps": true`. The text verdict names the roles and says exit 1 was accepted. Never a plain GO.
+  `"accept_gaps": true`. The text verdict names each role and its gaps (exit 1, or the input files the run
+  rewrote); the JSON has `gap_details` (role to `exit_1` and/or `input_rewritten_by_run`). Never a plain GO.
 - EVIDENCED_NO_ORDER: every contribution counts but the claim names no work order, so nothing about the
   delivery itself was checked. This is not a delivery GO.
 - NO_GO (exit 1), with the state and the action for each blocker:
@@ -48,7 +55,7 @@ revision and its intake still matching the sha256 in the order. The other verdic
 | State | Meaning | Action |
 |-------|---------|--------|
 | evidenced | latest record ok (exit 0); outputs, inputs, tool scripts and run log hash as recorded | none |
-| evidenced_with_gaps | as evidenced, but the run exited 1 under `--ok-exit 0,1` | counts only if the claim sets `accept_gaps` |
+| evidenced_with_gaps | as evidenced, but the run exited 1 under `--ok-exit 0,1` (`exit_1`), or it rewrote an input it read (`input_rewritten_by_run`, files in `inputs_rewritten_by_run`) | counts only if the claim sets `accept_gaps`; for a rewritten input, give the tool a copy it does not change and re-run |
 | unconfirmed | the latest record is the last line and head.json is one record behind it | re-run; the next append confirms |
 | log_mismatch | the record's run log is missing or no longer matches its digest | re-run |
 | unevidenced | no record for the role, or the ledger chain is broken | run it through `record` |
@@ -56,8 +63,11 @@ revision and its intake still matching the sha256 in the order. The other verdic
 | not_covered | a claimed output is not in the record | re-run naming it in `--outputs` |
 | stale | an output, input or recorded tool script changed (`changed`, `inputs_changed`, `tool_changed`), or a recorded output file was removed (`removed`) | re-run the named command |
 
-verify exits 0 for GO, GO_WITH_GAPS and EVIDENCED_NO_ORDER, so a caller must read the verdict word, not only
-the exit code.
+By default verify exits 0 for GO, GO_WITH_GAPS and EVIDENCED_NO_ORDER and 1 for NO_GO, so a caller must read
+the verdict word (or `clean_go` in the JSON), not only the exit code. A caller that gates on the exit code passes
+`--strict`: 0 only for a clean GO, 1 NO_GO, 2 invalid input, 3 GO_WITH_GAPS, 4 EVIDENCED_NO_ORDER (r5). The
+default is kept so existing callers and drills that read the verdict word keep working; `exit_policy` in the JSON
+says which mapping was used.
 
 ## Interruption and resume
 

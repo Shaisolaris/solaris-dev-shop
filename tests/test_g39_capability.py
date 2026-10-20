@@ -285,7 +285,12 @@ class Direct(unittest.TestCase):
         self.assertEqual(self.rec("--inputs", "state.txt", cmd=cmd)[0], 0)
         r = json.loads((self.root / ".delivery/contributions.jsonl").read_text().splitlines()[-1])
         self.assertEqual(r["inputs_changed_during_run"], ["state.txt"])
-        self.assertEqual(self.claims(self._body())[0], 0)
+        # r5 (older M39 r2 P3-2): bound to the after-run bytes only, so it is a gap, never a clean contribution
+        rc, out = self.claims(self._body())
+        c = json.loads(out)["contributions"][0]
+        self.assertEqual((rc, c["state"], c["gap_kinds"], c["inputs_rewritten_by_run"]),
+                         (1, "evidenced_with_gaps", ["input_rewritten_by_run"], ["state.txt"]), out)
+        self.assertIn("state.txt", c["action"])
 
     def test_ok_exit_only_0_or_0_1(self):
         for bad in ("0,2", "1", "0,1,2", "-1,0"):
@@ -403,6 +408,94 @@ class Direct(unittest.TestCase):
         rep = json.loads(txt)
         self.assertEqual(rep["ledger"]["chain"], "intact", txt)
         self.assertEqual((rc, rep["verdict"], rep["contributions"][0]["state"]), (1, "NO_GO", "failed"))
+
+
+    # ---- r5 (older M39 r2 P3-2 and P3-3)
+    def _delivered_order(self):
+        for f in ("intake.json", "order.json"):
+            shutil.copy2(X / "fixtures" / f, self.root / f)
+        h = X.parents[2] / "employees/infrastructure/fleet-dispatcher/handoff.py"
+        p = subprocess.run([sys.executable, str(h), "run", "order.json", "--worker", "ana"], cwd=str(self.root),
+                           env=ENV, capture_output=True, text=True, timeout=120)
+        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
+
+    def test_rewritten_input_with_order_is_go_with_gaps_never_go(self):
+        self._delivered_order()
+        (self.root / "state.txt").write_text("old")
+        cmd = [sys.executable, "-c", "open('state.txt','w').write('new');open('a.txt','w').write('x')", "state.txt"]
+        self.assertEqual(self.rec(cmd=cmd)[0], 0)
+        body = dict(self._body(), order="order.json")
+        rc, out = self.claims(body)
+        rep = json.loads(out)
+        self.assertEqual((rc, rep["verdict"], rep["clean_go"]), (1, "NO_GO", False), out)
+        body = dict(self._body(accept_gaps=True), order="order.json")
+        rc, out = self.claims(body)
+        rep = json.loads(out)
+        self.assertEqual((rc, rep["verdict"], rep["clean_go"], rep["gaps"], rep["gap_details"]),
+                         (0, "GO_WITH_GAPS", False, ["data/data-engineer"],
+                          {"data/data-engineer": ["input_rewritten_by_run"]}), out)
+        rc, txt = self.run_tool("verify", ".", "--claims", "c.json")
+        self.assertIn("GO_WITH_GAPS", txt)
+        self.assertIn("rewrote its input state.txt", txt)
+        # control: the same run without the rewrite is a clean GO
+        cmd = [sys.executable, "-c", "open('a.txt','w').write(open('state.txt').read())", "state.txt"]
+        self.assertEqual(self.rec(cmd=cmd)[0], 0)
+        rc, out = self.claims(dict(self._body(), order="order.json"))
+        rep = json.loads(out)
+        self.assertEqual((rc, rep["verdict"], rep["clean_go"], rep["gaps"]), (0, "GO", True, []), out)
+
+    def test_which_run_changes_are_rewrites(self):
+        # a file read then changed or removed is a rewrite; a new file or a SQLite -shm index is not; -wal is
+        (self.root / "db").mkdir()
+        for f, t in (("t.db", "d"), ("t.db-shm", "i"), ("t.db-wal", "w"), ("gone.csv", "g")):
+            (self.root / "db" / f).write_text(t)
+        cases = (("open('db/t.db-shm','w').write('i2');open('db/new.csv','w').write('n')", []),
+                 ("open('db/t.db-wal','w').write('w2')", ["db/t.db-wal"]),
+                 ("import os;os.remove('db/gone.csv')", ["db/gone.csv"]))
+        for code, want in cases:
+            cmd = [sys.executable, "-c", code + ";open('a.txt','w').write('x')", "db"]
+            self.assertEqual(self.rec(cmd=cmd)[0], 0, code)
+            r = json.loads((self.root / ".delivery/contributions.jsonl").read_text().splitlines()[-1])
+            self.assertEqual(r["inputs_rewritten_during_run"], want, (code, r["inputs_changed_during_run"]))
+            rc, out = self.claims(self._body())
+            c = json.loads(out)["contributions"][0]
+            self.assertEqual((rc, c["state"]), (0, "evidenced") if not want else (1, "evidenced_with_gaps"), code)
+        # a record written before r5 has no inputs_rewritten_during_run: every listed change counts
+        led = self.root / ".delivery/contributions.jsonl"
+        lines = led.read_text().splitlines()
+        r = json.loads(lines[-1])
+        del r["inputs_rewritten_during_run"]
+        r["inputs_changed_during_run"] = ["db/new.csv"]
+        line = json.dumps(r, sort_keys=True, separators=(",", ":"))
+        led.write_text("\n".join(lines[:-1] + [line]) + "\n")
+        (self.root / ".delivery/head.json").write_text(json.dumps(
+            {"seq": r["seq"], "sha256": hashlib.sha256(line.encode()).hexdigest()}))
+        rc, out = self.claims(self._body())
+        c = json.loads(out)["contributions"][0]
+        self.assertEqual((rc, c["state"], c["inputs_rewritten_by_run"]), (1, "evidenced_with_gaps", ["db/new.csv"]), out)
+
+    def test_strict_exit_codes_tell_go_from_non_clean_verdicts(self):
+        self._delivered_order()
+        def strict():
+            return self.run_tool("verify", ".", "--claims", "c.json", "--json", "--strict")
+        self.assertEqual(self.rec()[0], 0)
+        self.claims(dict(self._body(), order="order.json"))
+        rc, out = strict()
+        self.assertEqual((rc, json.loads(out)["verdict"], json.loads(out)["exit_policy"]), (0, "GO", "strict"), out)
+        self.claims(self._body())
+        rc, out = strict()
+        self.assertEqual((rc, json.loads(out)["verdict"]), (4, "EVIDENCED_NO_ORDER"), out)
+        self.assertEqual(self.claims(self._body())[0], 0)  # the default mapping is unchanged
+        cmd = [sys.executable, "-c", "import sys;open('a.txt','w').write('x');sys.exit(1)"]
+        self.assertEqual(self.rec("--ok-exit", "0,1", cmd=cmd)[0], 0)
+        self.claims(dict(self._body(accept_gaps=True), order="order.json"))
+        rc, out = strict()
+        rep = json.loads(out)
+        self.assertEqual((rc, rep["verdict"], rep["gap_details"]), (3, "GO_WITH_GAPS", {"data/data-engineer": ["exit_1"]}))
+        self.assertEqual(self.claims(dict(self._body(accept_gaps=True), order="order.json"))[0], 0)
+        self.claims(dict(self._body(), order="order.json"))
+        self.assertEqual(strict()[0], 1)
+        self.assertEqual(self.run_tool("verify", ".", "--claims", "missing.json", "--strict")[0], 2)
 
 
 if __name__ == "__main__":
