@@ -2,8 +2,8 @@
 
 Stack on v0.61 `02ba9c5`: G15 r4 `7e7f361` (newest repair head, root QA batch), G16 r8 `49aba3f`
 (candidate), G17 `550f184` (accepted; carries G14 r2 `6f7b23a` and G13 r3 `5666e7b`, both accepted)
-and G19 `5606672` (accepted revision; its test-shutdown repair lives on the docs and CI branch and is
-not stacked here). P03 (insta `bee80893`) and P04 (ez-vcard#166, a design discussion with no code
+and G19 h1 `350d175` (newest head: post-acceptance hardening of the accepted revision `5606672`, the oracle
+stop() race and demo boundaries; not accepted yet, so the matrix reports it as another revision). P03 (insta `bee80893`) and P04 (ez-vcard#166, a design discussion with no code
 commit: the maintainer chose LaciString in vinnie and asked for no PR code update) are outside
 contributions, bound by their acceptance records, reply hashes and validation manifest hashes.
 

@@ -70,8 +70,8 @@
   },
   {
    "id": "G19",
-   "commit": "5606672b464f5daaf08e28cbfa5a8d307f730c27",
-   "note": "accepted revision; the test-shutdown repair is on the docs and CI branch",
+   "commit": "350d175e5cf43438e95476f945ea16804e4bba85",
+   "note": "G19 h1 newest head (post-acceptance hardening: oracle stop() race and demo boundaries; not accepted, needs affected recheck); accepted revision 5606672",
    "tests": [
     "tests.test_g19_capability"
    ],
