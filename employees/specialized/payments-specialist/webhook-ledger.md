@@ -30,6 +30,9 @@ replacement for the provider's own idempotency or for reconciliation against the
    `order_already_captured`, `refund_exceeds_captured`, `restock_exceeds_shipped`,
    `refund_on_uncaptured_order`, `cannot_cancel_<status>_order`, `out_of_stock`. A capture or refund
    that is not applied is kept as unapplied money in the report, never dropped.
+7. **Open events are resolved on the record.** A held or exception event leaves the open list only
+   through `resolve`, which writes who, when, why and the prior state and reason as a row of its own
+   (see "Resolving open events").
 
 ## Commands
 
@@ -40,6 +43,7 @@ python3 employees/specialized/payments-specialist/payment_ledger.py ingest --db 
 python3 employees/specialized/payments-specialist/payment_ledger.py report --db ledger.db --json
 python3 employees/specialized/payments-specialist/payment_ledger.py check --db ledger.db
 python3 employees/specialized/payments-specialist/payment_ledger.py export-g14 --db ledger.db --out books/ --period-start 2026-09-01T00:00:00Z --period-end 2026-10-01T00:00:00Z
+python3 employees/specialized/payments-specialist/payment_ledger.py resolve --db ledger.db --event evt_008 --action close --by "Ana Ops" --note "out of stock, customer told, never charged"
 ```
 
 Events: `order.placed {order_id, currency, lines:[{sku, qty}]}` (prices come from the catalog),
@@ -56,20 +60,44 @@ G14 then reconciles with recognized revenue and net cash equal to the ledger's n
 While any event is held or in exception, or any money row is unapplied, `export-g14` refuses: it
 exits 1, writes nothing (not even the `--out` folder), prints the open events and unapplied amounts as
 JSON and names them on stderr. Exported books must not look clean while money is unexplained; resolve
-or re-deliver the events first.
+or re-deliver the events first (below). A successful export also prints `closed_money_not_in_books`:
+every closed money row with its reference, so the books carry the trail of what was settled elsewhere.
+
+## Resolving open events
+
+Re-delivering the same event id is a duplicate and changes nothing, so an open event is cleared with
+`resolve --event ID --by WHO --note WHY`, one of two actions:
+
+- `--action retry` applies the event again against the ledger as it is now, for when what blocked it has
+  changed (an out-of-stock order after a cancel released stock). If it still does not apply, nothing
+  changes, the new reason is printed and the exit is 1. If it applies, held events that waited on it are
+  applied too.
+- `--action close` takes the event off the open list without applying it. An event that carries
+  unapplied money (a refund above what was captured, a capture of the wrong amount) needs either
+  `--reference REF` (where that money was settled, for example a provider case or bank line) or
+  `--superseded-by EVENT_ID` (the applied event for the same order that re-delivered it correctly). The
+  event state becomes `resolved`; its money stays in the report under `closed_unapplied_captures` or
+  `closed_unapplied_refunds` and never counts as applied cash.
+
+Every resolution is a row with the event, action, prior state and reason, who, note, reference or
+superseding event, closed amount and time (`--now UNIX`, default the clock), listed by `report` under
+`resolutions`. Only held or exception events can be resolved, once. `check` names a resolved event
+without its close record, a record that disagrees with the event state, and closed money without a
+reference. Ledgers made before `resolve` existed get the table on the first resolve.
 
 | Exit | Meaning |
 |---|---|
-| 0 | `ingest`: every event applied or duplicate; `check`: consistent |
-| 1 | `ingest`: held events or exceptions are open; `check`: violations; `export-g14`: refused, open events or unapplied money, nothing written |
-| 2 | invalid input or file, nothing written |
+| 0 | `ingest`: every event applied or duplicate; `check`: consistent; `resolve`: resolved |
+| 1 | `ingest`: held events or exceptions are open; `check`: violations; `export-g14`: refused, open events or unapplied money, nothing written; `resolve`: retry did not apply, nothing changed |
+| 2 | invalid input or file, nothing written (`resolve`: unknown event, event not open, missing who or why, closing money without a reference) |
 | 3 | `ingest`: at least one envelope refused (signature, time, malformed or conflicting replay) |
 | 70 | deliberate crash drill |
 
 ## Limits
 
 One currency per ledger and one capture per order (no partial or multi-capture, no disputes or
-chargebacks, no tax or shipping lines). Held events wait forever; there is no expiry or alert. The
+chargebacks, no tax or shipping lines). Held events wait until applied or resolved; there is no expiry or alert.
+`resolve` records who the operator says they are; it does not authenticate them. The
 signature scheme mirrors common provider schemes but is local; real handlers must use the
 provider's verification library and secret rotation. `examples/capabilities/G22/ledger_oracle.py`
 judges a ledger against its own reference model; naive and no-op controls sit beside it.

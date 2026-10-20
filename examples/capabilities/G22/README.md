@@ -32,6 +32,10 @@ python3 $S ingest --db $T/ledger.db --secret-file $F/test-secret.txt --events $F
 python3 $S report --db $T/ledger.db
 python3 $S check --db $T/ledger.db
 python3 $S export-g14 --db $T/ledger.db --out $T/books --period-start 2026-09-01T00:00:00Z --period-end 2026-10-01T00:00:00Z || echo "export exit $? (1: evt_007 and evt_008 are open)"
+python3 $S resolve --db $T/ledger.db --event evt_008 --action retry --by "Ana Ops" --note "stock back?" || echo "retry exit $? (1: still out of stock, nothing changed)"
+python3 $S resolve --db $T/ledger.db --event evt_008 --action close --by "Ana Ops" --note "out of stock, customer told, never charged"
+python3 $S resolve --db $T/ledger.db --event evt_007 --action close --by "Ana Ops" --note "provider reversed the 40.00 refund" --reference "provider case PC-1001"
+python3 $S export-g14 --db $T/ledger.db --out $T/books --period-start 2026-09-01T00:00:00Z --period-end 2026-10-01T00:00:00Z
 rm -rf $T
 ```
 
@@ -42,3 +46,10 @@ above what was captured, unapplied) and evt_008 (an out-of-stock order) are open
 events the same stream exports and G14 reconciles to net cash 32.69 (`test_export_reconciles_in_g14`).
 Before the hardening commit export-g14 exited 0 here and G14 reconciled the books as clean (found by
 the G30 integration check x2).
+
+Then the two open events are resolved on the record (G22 h2): retrying evt_008 still finds 3 tee-m for
+5 wanted and exits 1 with nothing changed; closing it with a note takes it off the open list; closing
+evt_007 needs a reference because it carries 40.00 of unapplied refund. The second export exits 0, G14
+reconciles to net cash 32.69, and the export output lists the closed 40.00 with its reference under
+`closed_money_not_in_books`. The report keeps it as `closed_unapplied_refunds 40.00` and lists both
+resolutions with who and why.

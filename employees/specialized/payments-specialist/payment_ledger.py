@@ -21,6 +21,10 @@ that keep money and stock right when webhooks arrive twice, late, out of order o
 - Anomalies are exceptions, never silent: capture amount not equal to the order total, capture on a
   cancelled order, refund above what was captured, restock above what was shipped, out of stock.
   Their money is kept visible as unapplied.
+- Open events are resolved on the record. `resolve --action retry` applies an open event again once what
+  blocked it has changed; `resolve --action close` closes it with who, why and, when it carries money,
+  where that money was settled (`--reference`) or which applied event re-delivered it (`--superseded-by`).
+  Each resolution is a row of its own; closed money stays listed in the report as closed, never dropped.
 
 Commands:
     payment_ledger.py init --db FILE --catalog CATALOG.json
@@ -30,11 +34,13 @@ Commands:
     payment_ledger.py report --db FILE [--json]
     payment_ledger.py check --db FILE [--json]
     payment_ledger.py export-g14 --db FILE --out DIR --period-start ISO --period-end ISO
+    payment_ledger.py resolve --db FILE --event ID --action retry|close --by WHO --note TEXT
+                              [--reference REF | --superseded-by EVENT_ID] [--now UNIX]
 
 Exit codes: ingest 0 all applied or duplicate; 1 some held or exceptions; 3 any envelope refused
 (signature, timestamp or conflicting replay); check 0 consistent, 1 violations; export-g14 0 written,
 1 refused because held or exception events or unapplied money are open (nothing written);
-2 invalid input; 70 drill.
+resolve 0 resolved, 1 retry did not apply (nothing changed); 2 invalid input; 70 drill.
 Python 3.9+, no third-party packages, no network.
 """
 from __future__ import annotations
@@ -76,6 +82,10 @@ CREATE TABLE money (event_id TEXT PRIMARY KEY, order_id TEXT NOT NULL, kind TEXT
   cents INTEGER NOT NULL, at INTEGER NOT NULL, applied INTEGER NOT NULL);
 CREATE TABLE stock_moves (event_id TEXT NOT NULL, sku TEXT NOT NULL, d_on_hand INTEGER NOT NULL, d_reserved INTEGER NOT NULL);
 """
+# one audited row per resolved event; created on demand for ledgers made before resolve existed
+RESOLUTIONS_DDL = """CREATE TABLE IF NOT EXISTS resolutions (event_id TEXT PRIMARY KEY, action TEXT NOT NULL,
+  prior_state TEXT NOT NULL, prior_reason TEXT, resolved_by TEXT NOT NULL, note TEXT NOT NULL, reference TEXT,
+  superseded_by TEXT, money_kind TEXT, money_cents INTEGER, at INTEGER NOT NULL, seq INTEGER NOT NULL)"""
 
 
 class Invalid(Exception):
@@ -134,6 +144,7 @@ def cmd_init(a):
     con = sqlite3.connect(a.db, isolation_level=None)
     con.execute("PRAGMA journal_mode=WAL")
     con.executescript(DDL)
+    con.execute(RESOLUTIONS_DDL)
     con.execute("BEGIN IMMEDIATE")
     con.executemany("INSERT INTO meta VALUES (?, ?)", [("schema", SCHEMA), ("currency", cat["currency"]), ("seq", "0")])
     con.executemany("INSERT INTO skus (sku, price_cents, initial, on_hand) VALUES (?, ?, ?, ?)", rows)
@@ -392,10 +403,13 @@ def cmd_ingest(a):
 
 def report(con):
     cur = con.execute("SELECT v FROM meta WHERE k='currency'").fetchone()[0]
-    tot = {k: 0 for k in ("captured", "refunded", "unapplied_captures", "unapplied_refunds")}
-    for kind, applied, c in con.execute("SELECT kind, applied, SUM(cents) FROM money GROUP BY kind, applied"):
-        key = ("captured" if kind == "capture" else "refunded") if applied else ("unapplied_captures" if kind == "capture" else "unapplied_refunds")
-        tot[key] = c
+    tot = {k: 0 for k in ("captured", "refunded", "unapplied_captures", "unapplied_refunds", "closed_unapplied_captures",
+                          "closed_unapplied_refunds")}
+    for kind, applied, closed, c in con.execute("SELECT m.kind, m.applied, COALESCE(e.state, '') = 'resolved', SUM(m.cents) FROM money m "
+                                                "LEFT JOIN events e ON e.id = m.event_id GROUP BY 1, 2, 3"):
+        word = "captures" if kind == "capture" else "refunds"
+        key = ("captured" if kind == "capture" else "refunded") if applied else ("closed_unapplied_" if closed else "unapplied_") + word
+        tot[key] += c
     stock = [dict(zip(("sku", "initial", "on_hand", "reserved", "available", "shipped", "restocked"), r)) for r in
              con.execute("SELECT sku, initial, on_hand, reserved, on_hand - reserved, shipped, restocked FROM skus ORDER BY sku")]
     orders = [dict(zip(("id", "status", "total", "captured", "refunded"), (r[0], r[1], money_str(r[2]), money_str(r[3]), money_str(r[4]))))
@@ -404,7 +418,8 @@ def report(con):
              con.execute("SELECT id, type, state, reason FROM events WHERE state IN ('held', 'exception') ORDER BY received_seq")]
     return {"schema": SCHEMA, "currency": cur, "money": {k: money_str(v) for k, v in tot.items()},
             "net_cash": money_str(tot["captured"] - tot["refunded"]), "stock": stock, "orders": orders, "open": open_,
-            "events": dict(con.execute("SELECT state, COUNT(*) FROM events GROUP BY state").fetchall())}
+            "events": dict(con.execute("SELECT state, COUNT(*) FROM events GROUP BY state").fetchall()),
+            "resolutions": resolutions(con)}
 
 
 def cmd_report(a):
@@ -414,6 +429,9 @@ def cmd_report(a):
     else:
         print("%s net cash %s (captured %s, refunded %s); %d held or exception events" % (
             r["currency"], r["net_cash"], r["money"]["captured"], r["money"]["refunded"], len(r["open"])))
+        for x in r["resolutions"]:
+            print("  resolved %(event_id)s by %(action)s (%(prior_state)s: %(prior_reason)s), %(resolved_by)s: %(note)s" % x
+                  + ("; closed %s %s, %s" % (x["money_kind"], x["amount"], x["reference"] or "superseded by " + x["superseded_by"]) if x["amount"] else ""))
         for s in r["stock"]:
             print("  %(sku)s on_hand %(on_hand)d reserved %(reserved)d shipped %(shipped)d restocked %(restocked)d" % s)
     return 0
@@ -456,6 +474,21 @@ def violations(con):
         st = con.execute("SELECT state FROM events WHERE id = ?", (eid,)).fetchone()
         if not st or (st[0] == "applied") != bool(applied_flag):
             v.append("money row of event %s does not match the event state" % eid)
+    res = {}
+    if has_resolutions(con):
+        res = {r[0]: r[1:] for r in con.execute("SELECT event_id, action, reference, superseded_by, money_cents FROM resolutions")}
+    for (eid,) in con.execute("SELECT id FROM events WHERE state = 'resolved' ORDER BY id"):
+        if res.get(eid, ("",))[0] != "close":
+            v.append("resolved event %s has no close record" % eid)
+    for eid, (action, ref, sup, mc) in sorted(res.items()):
+        st = con.execute("SELECT state FROM events WHERE id = ?", (eid,)).fetchone()
+        if not st or st[0] != {"close": "resolved", "retry": "applied"}.get(action):
+            v.append("resolution of %s (%s) does not match the event state" % (eid, action))
+        m = con.execute("SELECT cents FROM money WHERE event_id = ? AND applied = 0", (eid,)).fetchone()
+        if action == "close" and (m[0] if m else None) != mc:
+            v.append("closed money of %s differs from its money row" % eid)
+        if action == "close" and mc is not None and not (ref or sup):
+            v.append("closed money of %s has no reference or superseding event" % eid)
     return v
 
 
@@ -480,8 +513,97 @@ def open_items(con):
     events = [dict(zip(("id", "type", "state", "reason"), r)) for r in
               con.execute("SELECT id, type, state, reason FROM events WHERE state IN ('held', 'exception') ORDER BY received_seq")]
     money = [{"event_id": e, "kind": k, "amount": money_str(c)} for e, k, c in
-             con.execute("SELECT event_id, kind, cents FROM money WHERE applied = 0 ORDER BY event_id")]
+             con.execute("SELECT m.event_id, m.kind, m.cents FROM money m LEFT JOIN events e ON e.id = m.event_id "
+                         "WHERE m.applied = 0 AND COALESCE(e.state, '') != 'resolved' ORDER BY m.event_id")]
     return events, money
+
+
+def has_resolutions(con):
+    return con.execute("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'resolutions'").fetchone() is not None
+
+
+def resolutions(con):
+    if not has_resolutions(con):
+        return []
+    keys = ("event_id", "action", "prior_state", "prior_reason", "resolved_by", "note", "reference", "superseded_by",
+            "money_kind", "money_cents", "at")
+    out = []
+    for r in con.execute("SELECT %s FROM resolutions ORDER BY seq" % ", ".join(keys)):
+        d = dict(zip(keys, r))
+        d["amount"] = None if d.pop("money_cents") is None else money_str(r[9])
+        d["at"] = iso(d["at"])
+        out.append(d)
+    return out
+
+
+def cmd_resolve(a):
+    """Resolve one held or exception event on the record: retry it now, or close it with who and why."""
+    if not a.by.strip() or not a.note.strip():
+        raise Invalid("--by and --note must name who resolves and why")
+    if a.action == "retry" and (a.reference or a.superseded_by):
+        raise Invalid("--reference and --superseded-by belong to --action close")
+    if a.reference is not None and a.superseded_by is not None:
+        raise Invalid("give --reference or --superseded-by, not both")
+    if a.reference is not None and not a.reference.strip():
+        raise Invalid("--reference must not be empty")
+    con = connect(a.db)
+    now = int(time.time()) if a.now is None else a.now
+    con.execute(RESOLUTIONS_DDL)
+    con.execute("BEGIN IMMEDIATE")
+    try:
+        row = con.execute("SELECT body, state, reason FROM events WHERE id = ?", (a.event,)).fetchone()
+        if not row:
+            raise Invalid("no event %s in this ledger" % a.event)
+        body, state, reason = row
+        if state not in ("held", "exception"):
+            raise Invalid("event %s is %s, not held or in exception; nothing to resolve" % (a.event, state))
+        ev = json.loads(body)
+        money = con.execute("SELECT kind, cents FROM money WHERE event_id = ?", (a.event,)).fetchone()
+        seq = int(con.execute("SELECT v FROM meta WHERE k='seq'").fetchone()[0]) + 1
+        if a.action == "retry":
+            con.execute("SAVEPOINT r")
+            con.execute("DELETE FROM money WHERE event_id = ?", (a.event,))  # apply records its own money row again
+            try:
+                new, why = apply(con, ev)
+            except Invalid as e:
+                new, why = "exception", "invalid: %s" % e
+            if new != "applied":
+                con.execute("ROLLBACK TO r")
+                con.execute("RELEASE r")
+                con.execute("ROLLBACK")
+                print(json.dumps({"event": a.event, "action": "retry", "resolved": False, "state": new, "reason": why}, sort_keys=True))
+                print("error: retry of %s did not apply (%s: %s); nothing changed" % (a.event, new, why), file=sys.stderr)
+                return 1
+            con.execute("RELEASE r")
+            con.execute("UPDATE events SET state = 'applied', reason = NULL WHERE id = ?", (a.event,))
+            money = None
+        else:
+            if money and a.reference is None and a.superseded_by is None:
+                raise Invalid("event %s carries unapplied %s %s; close it with --reference (where that money was settled) "
+                              "or --superseded-by (the applied event that re-delivered it)" % (a.event, money[0], money_str(money[1])))
+            if a.superseded_by is not None:
+                s = con.execute("SELECT state, body FROM events WHERE id = ?", (a.superseded_by,)).fetchone()
+                if a.superseded_by == a.event or not s or s[0] != "applied":
+                    raise Invalid("--superseded-by %s must be another event that is applied" % a.superseded_by)
+                if json.loads(s[1])["data"]["order_id"] != ev["data"]["order_id"]:
+                    raise Invalid("--superseded-by %s is for another order" % a.superseded_by)
+            con.execute("UPDATE events SET state = 'resolved' WHERE id = ?", (a.event,))
+        con.execute("INSERT INTO resolutions VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    (a.event, a.action, state, reason, a.by.strip(), a.note.strip(), a.reference, a.superseded_by,
+                     money[0] if money else None, money[1] if money else None, now, seq))
+        con.execute("UPDATE meta SET v = ? WHERE k='seq'", (str(seq),))
+        if a.action == "retry":
+            retry_held(con)
+        con.execute("COMMIT")
+    except BaseException:
+        if con.in_transaction:
+            con.execute("ROLLBACK")
+        raise
+    events, open_money = open_items(con)
+    print(json.dumps({"event": a.event, "action": a.action, "resolved": True, "prior_state": state, "prior_reason": reason,
+                      "money_closed": None if not money else {"kind": money[0], "amount": money_str(money[1])},
+                      "open_now": len(events), "unapplied_money_now": len(open_money)}, sort_keys=True))
+    return 0
 
 
 def cmd_export_g14(a):
@@ -493,7 +615,7 @@ def cmd_export_g14(a):
     # the export and G14 would reconcile the rest as clean. Refuse before writing anything.
     events, money = open_items(con)
     if events or money:
-        print(json.dumps({"refused": "open held or exception events or unapplied money; resolve them before export",
+        print(json.dumps({"refused": "open held or exception events or unapplied money; resolve them (payment_ledger.py resolve) before export",
                           "open": events, "unapplied_money": money}, sort_keys=True))
         print("error: export-g14 refused: %d open event(s) %s, %d unapplied money row(s); nothing written"
               % (len(events), ",".join(e["id"] for e in events), len(money)), file=sys.stderr)
@@ -521,7 +643,9 @@ def cmd_export_g14(a):
     (out / "package.json").write_text(json.dumps({"schema": "solaris.cash-revenue/1", "timezone": "UTC",
         "period": {"start": a.period_start, "end": a.period_end}, "invoices": {"file": "invoices.csv"},
         "payments": {"file": "payments.csv"}, "credits": {"file": "credits.csv"}}, indent=1) + "\n")
-    print(json.dumps({"out": str(out), "files": ["invoices.csv", "payments.csv", "credits.csv", "package.json"]}))
+    closed = [{k: x[k] for k in ("event_id", "money_kind", "amount", "reference", "superseded_by")} for x in resolutions(con) if x["amount"]]
+    print(json.dumps({"out": str(out), "files": ["invoices.csv", "payments.csv", "credits.csv", "package.json"],
+                      "closed_money_not_in_books": closed}))
     return 0
 
 
@@ -538,9 +662,13 @@ def main(argv=None):
     s = sub.add_parser("check"); s.add_argument("--db", required=True); s.add_argument("--json", action="store_true")
     s = sub.add_parser("export-g14"); s.add_argument("--db", required=True); s.add_argument("--out", required=True)
     s.add_argument("--period-start", required=True); s.add_argument("--period-end", required=True)
+    s = sub.add_parser("resolve"); s.add_argument("--db", required=True); s.add_argument("--event", required=True)
+    s.add_argument("--action", required=True, choices=("retry", "close")); s.add_argument("--by", required=True)
+    s.add_argument("--note", required=True); s.add_argument("--reference"); s.add_argument("--superseded-by")
+    s.add_argument("--now", type=int)
     a = p.parse_args(argv)
     fn = {"init": cmd_init, "sign": cmd_sign, "ingest": cmd_ingest, "report": cmd_report, "check": cmd_check,
-          "export-g14": cmd_export_g14}[a.cmd]
+          "export-g14": cmd_export_g14, "resolve": cmd_resolve}[a.cmd]
     try:
         return fn(a)
     except Invalid as e:

@@ -106,7 +106,9 @@ signature and timestamp before reading; one effect per event id (same id, other 
 amounts as two-decimal strings in integer cents; out-of-order events held until their order or capture
 arrives; partial refunds never above the capture; stock reserved only if available and restocked only
 up to what shipped. Its export reconciles in the CFO's G14 check and is refused (exit 1, nothing written)
-while any held or exception event or unapplied money is open. Local fake events only, never live keys.
+while any held or exception event or unapplied money is open. Open events leave only through `resolve`
+(retry, or close with who, why and, for money, a reference or the re-delivered event), each on the record.
+Local fake events only, never live keys.
 
 ## WHEN TO INVOKE
 - **Me** - Stripe and payment integrations, subscription and billing design, webhook idempotency, dunning, dispute flows
