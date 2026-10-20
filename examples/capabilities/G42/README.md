@@ -16,6 +16,12 @@ favour of G39 r4.
 G09 h1, G11 h1 and G34 h1 are hardening commits on top of accepted revisions and are not accepted themselves.
 The union statement below holds for the r3 tree; r4 adds only the seven goals' own diffs to it.
 
+Revision r5 (2026-10-20) merges two newer heads on top of r4 `1611581`, one merge each, without rewriting it:
+G39 r5 `3f09063` and G40 r5 `99b49c6`. The G39 merge touches no file changed on both sides. The G40 merge auto-merges
+`docs/install.md` (r5 adds two lines; every line either side added is kept). G41 r4 stacks G40 r4, so plan.json now
+resolves six G40/G41 overlaps: five in favour of the G40 r5 blob, and the technical-writer SKILL.md in favour of
+G41 r4's edit, which G40 r5 does not touch. The three G39 overlaps now resolve to the G39 r5 blobs.
+
 The six daily integrations (G06 r2, G12 r2, G18, G24 r2, G30 r3, G36 r2) are not stacked as prerequisites: each
 one's own plan test (`test_stack_binds_this_tree`) binds its exact tree, so their evidence folders fail on any
 other tree. Every build they integrate is here at the same head, and this tree equals the union of all six

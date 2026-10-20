@@ -403,8 +403,8 @@
   },
   {
    "id": "G39",
-   "commit": "97d3d05d92daa452c3eab668aa821fafd0d25bfa",
-   "note": "G39 r4, newest remote head",
+   "commit": "3f0906314894de4a91c1a16802762549fd4303e1",
+   "note": "G39 r5, newest remote head",
    "tests": [
     "tests.test_g39_capability"
    ],
@@ -416,8 +416,8 @@
   },
   {
    "id": "G40",
-   "commit": "eabf69ac9cf4f539bc39482b75681bf75e6e97e5",
-   "note": "G40 r4, newest remote head",
+   "commit": "99b49c63b56eb17ac8223fd264ff87b2dd99a545",
+   "note": "G40 r5, newest remote head",
    "tests": [
     "tests.test_g40_capability"
    ],
@@ -630,15 +630,39 @@
   },
   {
    "path": "employees/product-project/delivery-lead/delivery-evidence.md",
-   "reason": "G40 r4 and G41 r4 carry the G39 r3 blob ff80c1f; G39 r4 carries b88c297, which is r3 plus the M39 r3 P3-1/P3-2 change (r4 fast-forwards r3). HEAD is the G39 r4 blob b88c297: the newer revision of the same file, not a line union (r4 rewrites some r3 lines)."
+   "reason": "G40 r5 and G41 r4 carry the G39 r3 blob ff80c1f; G39 r5 carries 5a664e7, which fast-forwards r4 b88c297 and r3 (M39 P3 fixes). HEAD is the G39 r5 blob 5a664e7: the newer revision of the same file, not a line union (r4 and r5 rewrite some r3 lines)."
   },
   {
    "path": "employees/product-project/delivery-lead/delivery_evidence.py",
-   "reason": "G40 r4 and G41 r4 carry the G39 r3 blob 02b9a3e; G39 r4 carries 6cd0523, which is r3 plus the M39 r3 P3-1/P3-2 change (r4 fast-forwards r3). HEAD is the G39 r4 blob 6cd0523: the newer revision of the same file, not a line union (r4 rewrites some r3 lines)."
+   "reason": "G40 r5 and G41 r4 carry the G39 r3 blob 02b9a3e; G39 r5 carries e431d64, which fast-forwards r4 6cd0523 and r3 (M39 P3 fixes). HEAD is the G39 r5 blob e431d64: the newer revision of the same file, not a line union (r4 and r5 rewrite some r3 lines)."
   },
   {
    "path": "tests/test_g39_capability.py",
-   "reason": "G40 r4 and G41 r4 carry the G39 r3 blob 02b0ed6; G39 r4 carries 92a41b3, which is r3 plus the M39 r3 P3-1/P3-2 change (r4 fast-forwards r3). HEAD is the G39 r4 blob 92a41b3: the newer revision of the same file, not a line union (r4 rewrites some r3 lines)."
+   "reason": "G40 r5 and G41 r4 carry the G39 r3 blob 02b0ed6; G39 r5 carries b29ca8f, which fast-forwards r4 92a41b3 and r3 (M39 P3 fixes). HEAD is the G39 r5 blob b29ca8f: the newer revision of the same file, not a line union (r4 and r5 rewrite some r3 lines)."
+  },
+  {
+   "path": "employees/quality-security/qa-engineer/host-portability.md",
+   "reason": "G41 r4 stacks G40 r4 and carries its blob c535079 unchanged; G40 r5 carries b97ae8e, which fast-forwards r4 (M40 P3-2 offline --wheelhouse). HEAD is the G40 r5 blob b97ae8e: the newer revision of the same file, not a line union."
+  },
+  {
+   "path": "employees/quality-security/qa-engineer/host_portability.py",
+   "reason": "G41 r4 stacks G40 r4 and carries its blob c7ef99b unchanged; G40 r5 carries bfea0f0, which fast-forwards r4 (M40 P3-2 offline --wheelhouse). HEAD is the G40 r5 blob bfea0f0: the newer revision of the same file, not a line union."
+  },
+  {
+   "path": "examples/capabilities/G40/README.md",
+   "reason": "G41 r4 stacks G40 r4 and carries its blob c9d2de6 unchanged; G40 r5 carries b3e3658, which fast-forwards r4 (M40 P3-2 offline --wheelhouse). HEAD is the G40 r5 blob b3e3658: the newer revision of the same file, not a line union."
+  },
+  {
+   "path": "examples/capabilities/G40/portability_oracle.py",
+   "reason": "G41 r4 stacks G40 r4 and carries its blob 8237b97 unchanged; G40 r5 carries 2fc1878, which fast-forwards r4 (M40 P3-2 offline --wheelhouse). HEAD is the G40 r5 blob 2fc1878: the newer revision of the same file, not a line union."
+  },
+  {
+   "path": "tests/test_g40_capability.py",
+   "reason": "G41 r4 stacks G40 r4 and carries its blob cb1aa47 unchanged; G40 r5 carries c42bf1c, which fast-forwards r4 (M40 P3-2 offline --wheelhouse). HEAD is the G40 r5 blob c42bf1c: the newer revision of the same file, not a line union."
+  },
+  {
+   "path": "employees/design/technical-writer/SKILL.md",
+   "reason": "G40 r4 and G40 r5 carry blob 7d7b78b (r5 does not touch it); G41 r4 stacks G40 r4 and edits it to e4c15a3. HEAD is the G41 r4 blob e4c15a3, which builds on the G40 blob, so nothing from either side is lost."
   }
  ]
 }

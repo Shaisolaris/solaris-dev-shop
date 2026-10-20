@@ -61,7 +61,7 @@ class Plan(unittest.TestCase):
         self.assertEqual(self.plan["base"], "02ba9c571b10ad1dba792d2ac5534bcad3171e67")
         ids = [p["id"] for p in self.plan["prerequisites"]]
         # r3 (owner request, 2026-10-19): the final integration stacks every build goal's newest head; r4 (2026-10-20)
-        # moves G09, G11, G15, G32, G34, G39 and G41 to their newer heads, same ids. The six
+        # moves G09, G11, G15, G32, G34, G39 and G41 to their newer heads, and r5 moves G39 and G40, same ids. The six
         # daily integrations (G06, G12, G18, G24, G30, G36) are not stacked: each one's own plan test binds its
         # exact tree, so their evidence folders cannot share this tree; every build they integrate is here.
         self.assertEqual(ids, ["G01", "G02", "G03", "G04", "G05", "G07", "G08", "G09", "G10", "G11", "G13", "G14", "G15",
