@@ -120,5 +120,94 @@ class Direct(unittest.TestCase):
         self.assertEqual(m.metadata(ROOT)["problems"], [])
 
 
+class Selection(unittest.TestCase):
+    """M41 P3-1: a goal the queue does not select for the week does not block the gate."""
+    def tearDown(self):
+        O.cleanup()
+
+    def _queue(self, t, sel):
+        q = json.loads((t / "queue.json").read_text())
+        for g in q["goals"]:
+            if g["id"] in sel:
+                g["selected_for_week"] = sel[g["id"]]
+        (t / "queue.json").write_text(json.dumps(q))
+
+    def test_unselected_goal_does_not_block_but_a_required_one_does(self):
+        acc = {g: O.sha(g) for g in O.ALL}
+        goals = dict(O.ALL, G26="held_environment_unverified")
+        t = O.prog(goals, acc, dict(acc), gate_fields=True)
+        rc, rep, _ = O.inv(t)
+        self.assertEqual((rc, O.disp(rep, "G26")), (1, "missing"))  # selected by default: it blocks
+        self._queue(t, {"G26": False})
+        rc, rep, _ = O.inv(t)
+        self.assertEqual((rc, O.state(rep), O.disp(rep, "G26"), rep["not_selected"]), (0, "READY", "not_selected", ["G26"]))
+        self.assertNotIn("G26", rep["included_if_released"])
+        self._queue(t, {"G26": False, "G41": False})  # a required final goal counts even when not selected
+        acc.pop("G41")
+        (t / "acc.json").write_text(json.dumps({"entries": [{"id": g, "commit": c} for g, c in acc.items()]}))
+        rc, rep, _ = O.inv(t)
+        self.assertEqual(rc, 1)
+        self.assertIn("required final goal G41 is not accepted", rep["release_gate"]["reasons"])
+        self._queue(t, {"G26": "no"})
+        self.assertEqual(O.inv(t)[0], 2)
+
+
+class RemoteHeads(unittest.TestCase):
+    """M41 P3-2: a remote review branch that moved past the index makes the inventory say so."""
+    def tearDown(self):
+        O.cleanup()
+
+    def _repo(self):
+        import tempfile
+        g = Path(tempfile.mkdtemp(prefix="g41t-git-"))
+        O.MADE.append(g)
+        run = lambda *a: subprocess.run(["git", "-C", str(g)] + list(a), capture_output=True, text=True, env=O.ENV,
+                                        timeout=60).stdout.strip()
+        run("init", "-q")
+        c = {}
+        for n in ("a", "b"):
+            run("-c", "user.name=t", "-c", "user.email=t", "commit", "-q", "--allow-empty", "-m", n)
+            c[n] = run("rev-parse", "HEAD")
+        run("checkout", "-q", "--orphan", "other")
+        run("-c", "user.name=t", "-c", "user.email=t", "commit", "-q", "--allow-empty", "-m", "z")
+        c["z"] = run("rev-parse", "HEAD")
+        return g, c
+
+    def _prog(self, g, acc, cand):
+        import shutil
+        t = O.prog({g_: "accepted" for g_ in acc}, acc, cand, gate_fields=True)
+        for f in ("pyproject.toml", "CHANGELOG.md", "control-plane", "employees"):
+            shutil.move(str(t / "repo" / f), str(g / f))
+        shutil.rmtree(t / "repo")
+        os.symlink(str(g), str(t / "repo"))
+        return t
+
+    def test_newer_remote_head_makes_acceptance_stale(self):
+        g, c = self._repo()
+        t = self._prog(g, {"G19": c["a"], "G06": c["a"]}, {"G19": c["a"], "G06": c["a"]})
+        rc, rep, _ = O.inv(t, "--git")
+        self.assertEqual((rc, O.state(rep)), (0, "READY"))  # the index alone says everything is accepted
+        (t / "heads.txt").write_text("%s\trefs/heads/review/grok-g19-api\n%s\trefs/heads/review/grok-g06-day1\n"
+                                     "%s\trefs/heads/review/grok-m19-validation\n%s\tHEAD\n" % (c["b"], c["a"], c["z"], c["z"]))
+        rc, rep, _ = O.inv(t, "--git", "--remote-heads", str(t / "heads.txt"))
+        rows = {r["id"]: r for r in rep["goals"]}
+        self.assertEqual((rc, O.state(rep)), (1, "NOT_READY"))
+        self.assertEqual((rows["G19"]["disposition"], rows["G19"]["candidate_sha"]), ("acceptance_stale", c["b"]))
+        self.assertEqual(rows["G19"]["newer_remote_heads"], [{"branch": "review/grok-g19-api", "sha": c["b"]}])
+        self.assertEqual(rows["G06"]["disposition"], "accepted")  # head equals the accepted commit
+        self.assertIn("G19 candidate index is stale: review/grok-g19-api is at %s" % c["b"][:12], rep["release_gate"]["reasons"])
+        self.assertNotIn("G19", rep["included_if_released"])
+        # an unrelated head (another history) is ignored; a head this clone does not hold blocks, named
+        (t / "heads.txt").write_text("%s\trefs/heads/review/grok-g19-api\n%s\trefs/heads/review/grok-g06-x\n" % (c["z"], O.sha("gone")))
+        rc, rep, _ = O.inv(t, "--git", "--remote-heads", str(t / "heads.txt"))
+        rows = {r["id"]: r for r in rep["goals"]}
+        self.assertEqual((rows["G19"]["disposition"], rows["G06"]["disposition"]), ("accepted", "accepted"))
+        self.assertEqual(rc, 1)
+        self.assertTrue(any(r.startswith("G06 remote head(s) not in this clone") for r in rep["release_gate"]["reasons"]))
+        # --remote-heads needs --git; a malformed listing is refused
+        self.assertEqual(O.inv(t, "--remote-heads", str(t / "heads.txt"))[0], 2)
+        (t / "heads.txt").write_text("not a listing\n")
+        self.assertEqual(O.inv(t, "--git", "--remote-heads", str(t / "heads.txt"))[0], 2)
+
 if __name__ == "__main__":
     unittest.main()
