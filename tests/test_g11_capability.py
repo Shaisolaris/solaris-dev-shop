@@ -209,6 +209,41 @@ class G11Capability(unittest.TestCase):
         (self.tmp / 'b.json').write_text(json.dumps(b))
         self.assertEqual(cli('report', self.tmp / 'b.json').returncode, 2)
 
+    def test_unusable_g10_trace_never_dropped_before_a_rollback(self):
+        """G18 x2 (M18): a supplied G10 trace that G10 refuses, or that has no capture time, must show in the
+        decision trace and must not let a rollback through when it could place the fault outside the change."""
+        b = json.loads((FIX / '02-deploy-regression.json').read_text())
+        dns = json.loads((ROOT / 'examples/capabilities/G10/fixtures/02-dns-nxdomain.json').read_text())
+        app = json.loads((ROOT / 'examples/capabilities/G10/fixtures/09-app-upstream-503.json').read_text())
+        (self.tmp / 'traces').mkdir()
+        traces = {'refused.json': dict(dns, captured_at='18/10/2026 09:30'), 'dns-untimed.json': dict(dns, captured_at=None),
+                  'app-untimed.json': dict(app, captured_at=None), 'dns-before.json': dict(dns, captured_at='2026-10-18T09:05:00Z'),
+                  'dns-during.json': dict(dns, captured_at='2026-10-18T09:30:00Z')}
+        for name, t in traces.items():
+            (self.tmp / 'traces' / name).write_text(json.dumps(t))
+
+        def decide(*names):
+            (self.tmp / 'b.json').write_text(json.dumps(dict(b, diagnoses=['traces/' + n for n in names])))
+            d = report(self.tmp / 'b.json')['decision']
+            return d['decision'], d['reason'], [t for t in d['trace'] if t['check'].startswith('G10')]
+
+        self.assertEqual(decide()[0], 'rollback')  # the fixture without evidence still rolls back
+        for name in ('refused.json', 'dns-untimed.json'):
+            dec, reason, rows = decide(name)
+            self.assertEqual(dec, 'insufficient_evidence', name)
+            self.assertIn('traces/' + name, reason)
+            self.assertIn('r42', reason)
+            self.assertEqual([(r['result'], r['observed'].startswith('traces/' + name)) for r in rows], [('unusable', True)])
+        dec, _, rows = decide('app-untimed.json')
+        self.assertEqual(dec, 'rollback')  # untimed, but it does not exclude the application anyway
+        self.assertEqual([r['result'] for r in rows], ['does not exclude the application'])
+        self.assertIn('no capture time', rows[0]['observed'])
+        dec, _, rows = decide('dns-before.json')
+        self.assertEqual((dec, [r['result'] for r in rows]), ('rollback', ['outside the impact, not used']))
+        dec, reason, rows = decide('dns-during.json', 'refused.json')  # a usable dns trace in the impact still decides
+        self.assertEqual(dec, 'do_not_rollback')
+        self.assertIn('dns layer', reason)
+
     def test_loading_g03_and_g10_leaves_no_bytecode_behind(self):
         """A caller without PYTHONDONTWRITEBYTECODE must not leave __pycache__ in sibling roles."""
         copy_root = self.tmp / 'repo'

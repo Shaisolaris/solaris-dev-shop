@@ -81,6 +81,11 @@ Exit codes: 0 analysed; 2 invalid input, nothing written (a previous `--out` sta
 4. Burn rate from the change to the end of the impact below `rollback_burn_rate`: `do_not_rollback`.
 5. A G10 trace captured during the impact that places the fault at the dns, route or tls layer
    without the application as a candidate: `do_not_rollback` (rolling back code does not fix it).
+   Every supplied trace gets a line in the decision trace: one captured outside the impact is listed
+   as not used. A trace G10 refuses, or one with no capture time that places the fault at the dns,
+   route or tls layer, cannot be read or placed in the impact, so the decision is
+   `insufficient_evidence` rather than a rollback; fix the trace or remove it from the bundle. A trace
+   with no capture time that does not exclude the application is listed and does not block.
 6. Change migrated data: `rollback` only when G03 `verify` passes on the named snapshot, and the
    snapshot id is named; otherwise `rollback_blocked`. Otherwise `rollback` (code only).
 
