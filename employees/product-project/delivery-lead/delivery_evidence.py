@@ -190,10 +190,12 @@ def _safe_rel(a):
 
 def _named_inputs(root, argv, outputs, explicit):
     """Explicit --inputs plus every existing file or folder named in the command (plain, --flag VALUE, --flag=VALUE,
-    or absolute inside ROOT) that is not an output or a .py tool (tools are bound separately). A symlink named in
-    the command is refused. Returns a sorted, de-duplicated list of relative paths."""
+    or absolute inside ROOT, or relative with a ".." segment that resolves inside ROOT) that is not an output or a
+    .py tool (tools are bound separately). A symlink named in the command is refused. Returns a sorted,
+    de-duplicated list of relative paths, and the sorted arguments that name an existing path outside ROOT
+    (recorded as unbound_inputs: they cannot be re-checked later)."""
     outs = {Path(o).as_posix().rstrip("/") for o in outputs}
-    named = []
+    named, unbound = [], []
     for i in explicit or []:
         if not _safe_rel(i):
             raise Invalid("input %r must be a relative path inside ROOT and outside %s" % (i[:80], LEDGER_DIR))
@@ -212,7 +214,19 @@ def _named_inputs(root, argv, outputs, explicit):
             try:
                 a = Path(os.path.realpath(a)).relative_to(base).as_posix()
             except ValueError:
-                continue  # outside ROOT: cannot be re-checked later
+                if os.path.exists(a):
+                    unbound.append(a[:200])  # outside ROOT: cannot be re-checked later, but the record says so
+                continue
+        elif ".." in Path(a).parts:  # inp/../inp/a.csv or ../ROOT/inp/a.csv: resolve as the OS does (M39 r3 P3-1)
+            j = os.path.join(str(root), a)
+            if os.path.islink(j):
+                raise Invalid("input %r named in the command is a symlink; name its target" % a[:80])
+            try:
+                a = Path(os.path.realpath(j)).relative_to(base).as_posix()
+            except ValueError:
+                if os.path.exists(j):
+                    unbound.append(a[:200])
+                continue
         if not _safe_rel(a):
             continue
         k = Path(a).as_posix().rstrip("/")
@@ -223,7 +237,7 @@ def _named_inputs(root, argv, outputs, explicit):
             raise Invalid("input %r named in the command is a symlink; name its target" % a[:80])
         if q.is_file() or q.is_dir():
             named.append(k)
-    return sorted(set(named))
+    return sorted(set(named)), sorted(set(unbound))[:50]
 
 
 def _role_ok(role):
@@ -288,7 +302,7 @@ def cmd_record(ns):
     (d / "logs").mkdir(parents=True, exist_ok=True)
     read_ledger(root)  # refuse early on a broken ledger, before running anything
     qos = _load_qos()
-    named_inputs = _named_inputs(root, argv, ns.outputs, ns.inputs)
+    named_inputs, unbound_inputs = _named_inputs(root, argv, ns.outputs, ns.inputs)
     try:
         inputs_before = qos.artifact_digests(root, named_inputs) if named_inputs else {}
     except ValueError as e:
@@ -320,6 +334,7 @@ def cmd_record(ns):
            "reason": why if why else (None if ok else "exit %s not in %s" % (rc, ok_exit)),
            "claimed_outputs": list(ns.outputs), "outputs": outputs, "tools": _tool_digests(argv, root),
            "claimed_inputs": named_inputs, "inputs": inputs, "inputs_changed_during_run": touched[:50],
+           "unbound_inputs": unbound_inputs,
            "log": log.relative_to(root).as_posix(), "log_sha256": _sha_file(log),
            "started": started, "ended": _now(), "worker_identity": "claimed in plain text, not authenticated"}
     lockp = d / "ledger.lock"
@@ -444,6 +459,9 @@ def _contribution(qos, root, claim, recs, unconfirmed_seq=None):
     if drift:
         out.update(state="stale", tool_changed=drift, action="tool source changed; re-run: %s" % " ".join(r["argv"]))
         return out
+    if r.get("unbound_inputs"):
+        out["unbound_inputs"] = r["unbound_inputs"][:20]
+        out["unbound_note"] = "named in the command but outside ROOT: read by the run, never re-checked by verify"
     ins = r.get("inputs") or {}
     if r.get("claimed_inputs"):
         try:

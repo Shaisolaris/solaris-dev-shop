@@ -15,8 +15,11 @@ python3 $T record ROOT --role data/data-engineer --worker ana --inputs data --ou
 `ROOT/.delivery/contributions.jsonl`: role, worker (a plain-text claim), command, exit code, sha256 of every
 `.py` tool in the command, of every output (G05 `artifact_digests`) and of every input, and the log digest.
 Inputs are every existing file or folder named in the command that is not an output or a `.py` tool, in any of
-these spellings: a plain argument, `--flag VALUE`, `--flag=VALUE`, or an absolute path inside ROOT (stored relative);
-a symlink named in the command is refused (exit 2) like one given to `--inputs`. Add `--inputs PATH...` for files
+these spellings: a plain argument, `--flag VALUE`, `--flag=VALUE`, an absolute path inside ROOT, or a relative path
+with a `..` segment that resolves inside ROOT (both stored relative, resolved as the OS does);
+a symlink named in the command is refused (exit 2) like one given to `--inputs`. An existing path named in the
+command that lies outside ROOT cannot be re-checked later; it is listed in the record as `unbound_inputs`, and
+`verify` repeats that list with a note on the contribution, so a reader can see what was not bound. Add `--inputs PATH...` for files
 and folders the tool reads without naming them (the CSVs a data contract points to). Inputs
 are digested after the run; an input the run itself rewrote is listed in `inputs_changed_during_run`. Each
 line carries the sha256 of the line before it. `--ok-exit` is 0 (default) or 0,1: a data reconciliation that

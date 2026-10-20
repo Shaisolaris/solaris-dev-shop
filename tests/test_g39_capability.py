@@ -354,6 +354,32 @@ class Direct(unittest.TestCase):
         got = self._bound_then_stale(str((self.root / "b.csv").resolve()), lambda: (self.root / "b.csv").write_text("v2"))
         self.assertEqual(got, ["b.csv"])
 
+    def test_dotdot_spellings_inside_root_are_bound(self):
+        # M39 r3 P3-1: inp/../inp/a.csv and ../delivery/inp/a.csv point inside ROOT and were silently unbound
+        (self.root / "inp").mkdir()
+        for k, arg in enumerate(("inp/../inp/a.csv", "../delivery/inp/a.csv")):
+            (self.root / "inp/a.csv").write_text("v%d" % k)
+            got = self._bound_then_stale(arg, lambda: (self.root / "inp/a.csv").write_text("changed%d" % k))
+            self.assertEqual(got, ["inp/a.csv"], arg)
+        (self.root / "real.csv").write_text("v1")
+        os.symlink("real.csv", str(self.root / "inp/link.csv"))
+        cmd = [sys.executable, "-c", "open('ran.txt','w')", "inp/../inp/link.csv"]
+        self.assertEqual(self.rec(cmd=cmd)[0], 2)
+        self.assertFalse((self.root / "ran.txt").exists())
+
+    def test_input_outside_root_is_listed_unbound(self):
+        # M39 r3 P3-2: an existing path outside ROOT was skipped without a note
+        (self.parent / "outside.csv").write_text("v1")
+        absout = str((self.parent / "outside.csv").resolve())
+        cmd = [sys.executable, "-c", "open('a.txt','w').write('x')", absout, "../outside.csv", "../nothing-here.csv"]
+        self.assertEqual(self.rec(cmd=cmd)[0], 0)
+        r = json.loads((self.root / ".delivery/contributions.jsonl").read_text().splitlines()[-1])
+        self.assertEqual((r["claimed_inputs"], r["unbound_inputs"]), ([], sorted([absout, "../outside.csv"])))
+        rc, out = self.claims(self._body())
+        c = json.loads(out)["contributions"][0]
+        self.assertEqual((rc, c["unbound_inputs"]), (0, sorted([absout, "../outside.csv"])))
+        self.assertIn("never re-checked", c["unbound_note"])
+
     def test_symlink_named_in_command_is_refused_before_running(self):
         (self.root / "real.csv").write_text("v1")
         os.symlink("real.csv", str(self.root / "link.csv"))
