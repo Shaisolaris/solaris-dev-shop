@@ -1,0 +1,12 @@
+V0 PASS setup: a valid waiver closes the waived S1 finding (status closed, waiver id recorded, no revision) {"codes": [], "waiver_id": "wvr-m05r2"}
+V1 PASS root finding: while the waiver is valid the closure is current at any revision and reopen_finding refuses (WAIVER_GOVERNS) {"cur": [[true, []], [true, []]], "reopen": ["WAIVER_GOVERNS"]}
+V2 PASS after the waiver expires the closure is not current, and reopen_finding reopens it (status open, waiver id cleared) {"cur_after_expiry": [false, ["WAIVER_EXPIRED"]], "reopen": [[], "open", ""], "api_takes_waiver_and_as_of": true}
+V3-rejected PASS waiver record now rejected: closure not current and reopen allowed {"cur": [false, ["WAIVER_NOT_ACTIVE"]], "reopen": []}
+V3-expired PASS waiver record now expired: closure not current and reopen allowed {"cur": [false, ["WAIVER_NOT_ACTIVE"]], "reopen": []}
+V4 PASS a different waiver record (another id) neither keeps the closure current nor reopens it by itself {"cur": [false, ["WAIVER_MISMATCH"]], "reopen": ["WAIVER_MISMATCH"]}
+V5 PASS no waiver record supplied: not reported current (expiry cannot be checked) and not reopened (the waiver may still govern) {"cur": [false, ["WAIVER_RECORD_REQUIRED"]], "reopen": ["WAIVER_RECORD_REQUIRED"]}
+V6 PASS non-waiver closure: current at its revision, STALE_CLOSURE at another, reopen works {"cur": [[true, []], [false, ["STALE_CLOSURE"]]], "reopen": []}
+V7 PASS closed without revision or waiver: UNBOUND_CLOSURE {"cur": [false, ["UNBOUND_CLOSURE"]]}
+V8 PASS control: closing with a waiver for another finding is refused {"codes": ["WAIVER_FINDING_MISMATCH"]}
+V9 PASS ASSURANCE.md says how closure_is_current and reopen_finding treat an expired waiver {"mentions": ["expired", "expires", "WAIVER_EXPIRED"]}
+M05R2 PROBE 11/11

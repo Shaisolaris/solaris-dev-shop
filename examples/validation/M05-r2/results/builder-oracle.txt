@@ -1,0 +1,11 @@
+== Python 3.9.6
+16/16 checks passed
+== Python 3.11.16
+16/16 checks passed
+== Python 3.12.14
+16/16 checks passed
+== Python 3.13.15
+16/16 checks passed
+== controls (3.9.6)
+6/16 checks passed
+3/16 checks passed

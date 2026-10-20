@@ -1,0 +1,162 @@
+{
+ "python": "3.9.6",
+ "api_takes_waiver_and_as_of": false,
+ "rows": [
+  {
+   "id": "V0",
+   "desc": "setup: a valid waiver closes the waived S1 finding (status closed, waiver id recorded, no revision)",
+   "pass": true,
+   "detail": {
+    "codes": [],
+    "waiver_id": "wvr-m05r2"
+   }
+  },
+  {
+   "id": "V1",
+   "desc": "root finding: while the waiver is valid the closure is current at any revision and reopen_finding refuses (WAIVER_GOVERNS)",
+   "pass": true,
+   "detail": {
+    "cur": [
+     [
+      true,
+      []
+     ],
+     [
+      true,
+      []
+     ]
+    ],
+    "reopen": [
+     "WAIVER_GOVERNS"
+    ]
+   }
+  },
+  {
+   "id": "V2",
+   "desc": "after the waiver expires the closure is not current, and reopen_finding reopens it (status open, waiver id cleared)",
+   "pass": false,
+   "detail": {
+    "cur_after_expiry": [
+     true,
+     []
+    ],
+    "reopen": [
+     [
+      "WAIVER_GOVERNS"
+     ],
+     "closed",
+     "wvr-m05r2"
+    ],
+    "api_takes_waiver_and_as_of": false
+   }
+  },
+  {
+   "id": "V3-rejected",
+   "desc": "waiver record now rejected: closure not current and reopen allowed",
+   "pass": false,
+   "detail": {
+    "cur": [
+     true,
+     []
+    ],
+    "reopen": [
+     "WAIVER_GOVERNS"
+    ]
+   }
+  },
+  {
+   "id": "V3-expired",
+   "desc": "waiver record now expired: closure not current and reopen allowed",
+   "pass": false,
+   "detail": {
+    "cur": [
+     true,
+     []
+    ],
+    "reopen": [
+     "WAIVER_GOVERNS"
+    ]
+   }
+  },
+  {
+   "id": "V4",
+   "desc": "a different waiver record (another id) neither keeps the closure current nor reopens it by itself",
+   "pass": false,
+   "detail": {
+    "cur": [
+     true,
+     []
+    ],
+    "reopen": [
+     "WAIVER_GOVERNS"
+    ]
+   }
+  },
+  {
+   "id": "V5",
+   "desc": "no waiver record supplied: not reported current and not reopened (API has no waiver parameter)",
+   "pass": false,
+   "detail": {
+    "api_takes_waiver_and_as_of": false,
+    "cur_without_record": [
+     true,
+     []
+    ]
+   }
+  },
+  {
+   "id": "V6",
+   "desc": "non-waiver closure: current at its revision, STALE_CLOSURE at another, reopen works",
+   "pass": true,
+   "detail": {
+    "cur": [
+     [
+      true,
+      []
+     ],
+     [
+      false,
+      [
+       "STALE_CLOSURE"
+      ]
+     ]
+    ],
+    "reopen": []
+   }
+  },
+  {
+   "id": "V7",
+   "desc": "closed without revision or waiver: UNBOUND_CLOSURE",
+   "pass": true,
+   "detail": {
+    "cur": [
+     false,
+     [
+      "UNBOUND_CLOSURE"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "V8",
+   "desc": "control: closing with a waiver for another finding is refused",
+   "pass": true,
+   "detail": {
+    "codes": [
+     "WAIVER_FINDING_MISMATCH"
+    ]
+   }
+  },
+  {
+   "id": "V9",
+   "desc": "ASSURANCE.md says how closure_is_current and reopen_finding treat an expired waiver",
+   "pass": false,
+   "detail": {
+    "mentions": [
+     "expires",
+     "WAIVER_EXPIRED"
+    ]
+   }
+  }
+ ]
+}
