@@ -1,0 +1,5 @@
+m41r2 py39: Ran 341 tests in 137.582s OK (skipped=2)  rc=0 Python 3.9.6 at 9b98d9b749a32fb5987a12657e2fc9903ab9edb5
+m41r2 py311: Ran 341 tests in 146.830s OK  rc=0 Python 3.11.16 at 9b98d9b749a32fb5987a12657e2fc9903ab9edb5
+m41r2 py312: Ran 341 tests in 148.038s OK  rc=0 Python 3.12.14 at 9b98d9b749a32fb5987a12657e2fc9903ab9edb5
+m41r2 py313: Ran 341 tests in 147.044s OK  rc=0 Python 3.13.15 at 9b98d9b749a32fb5987a12657e2fc9903ab9edb5
+m41r2 browser processes seen during the run: 0

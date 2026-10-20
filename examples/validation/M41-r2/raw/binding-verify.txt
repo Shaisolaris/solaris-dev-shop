@@ -1,0 +1,5 @@
+candidate 9b98d9b749a32fb5987a12657e2fc9903ab9edb5 parents 50429506620691dc9ddb620f2397b1f3dcd39f67 bb444782e65fa2ea1ca790a335faf7f3917b3191
+manifest OK 14 of 14
+manifest-set-equals-diff
+G41 own files changed since 5042950 (release_candidate.py, examples/capabilities/G41, tests/test_g41_capability.py): 0
+merge tree equals git merge-tree of parents: yes
