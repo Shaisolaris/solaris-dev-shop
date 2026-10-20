@@ -1,0 +1,13 @@
+{"touch_id": "T1", "campaign_id": "C-search", "user": "u1", "kind": "click", "at": "2026-09-02T09:00:00Z", "loaded_at": "2026-09-02T10:00:00Z"}
+{"touch_id": "T1", "campaign_id": "C-search", "user": "u1", "kind": "click", "at": "2026-09-02T09:00:00Z", "loaded_at": "2026-09-02T10:00:00Z"}
+{"touch_id": "T2", "campaign_id": "C-search", "user": "u2", "kind": "click", "at": "2026-09-11T12:00:00Z", "loaded_at": "2026-09-11T13:00:00Z"}
+{"touch_id": "T3", "campaign_id": "C-social", "user": "u2", "kind": "click", "at": "2026-09-12T08:00:00Z", "loaded_at": "2026-09-12T09:00:00Z"}
+{"touch_id": "T4", "campaign_id": "C-search", "user": "u3", "kind": "click", "at": "2026-09-01T10:00:00Z", "loaded_at": "2026-09-01T11:00:00Z"}
+{"touch_id": "T5", "campaign_id": "C-search", "user": "u4", "kind": "click", "at": "2026-09-01T10:00:00Z", "loaded_at": "2026-09-01T11:00:00Z"}
+{"touch_id": "T6", "campaign_id": "C-social", "user": "u5", "kind": "view", "at": "2026-09-14T10:00:00Z", "loaded_at": "2026-09-14T11:00:00Z"}
+{"touch_id": "T7", "campaign_id": "C-eu", "user": "u6", "kind": "click", "at": "2026-09-05T10:00:00Z", "loaded_at": "2026-09-05T11:00:00Z"}
+{"touch_id": "T8", "campaign_id": "C-search", "user": "u7", "kind": "click", "at": "2026-09-20T10:00:00Z", "loaded_at": "2026-09-20T11:00:00Z"}
+{"touch_id": "T9", "campaign_id": "C-social", "user": "u7", "kind": "click", "at": "2026-09-20T10:00:00Z", "loaded_at": "2026-09-20T11:00:00Z"}
+{"touch_id": "T10", "campaign_id": "C-old", "user": "u8", "kind": "click", "at": "2026-09-06T10:00:00Z", "loaded_at": "2026-09-06T11:00:00Z"}
+{"touch_id": "T11", "campaign_id": "C-search", "user": "u3", "kind": "click", "at": "2026-09-08T10:00:01Z", "loaded_at": "2026-09-08T11:00:00Z"}
+{"touch_id": "T12", "campaign_id": "C-search", "user": "u5", "kind": "click"

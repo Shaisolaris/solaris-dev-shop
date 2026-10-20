@@ -1,0 +1,2 @@
+{"event_id": "E1", "order_id": "O1", "user": "u1", "at": "2026-09-03T10:00:00Z", "loaded_at": "2026-09-03T11:00:00Z", "source": "pixel", "value": "50.00", "currency": "USD"}
+{"event_id": "E2", "order_id": "O2", "user": "u2", "at": "2026-09-04T10:00:00Z", "loaded_at": "2026-09-04T11:00:00Z", "source": "server", "value": "25.00", "currency": "USD"}

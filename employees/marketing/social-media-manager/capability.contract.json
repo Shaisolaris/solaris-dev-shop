@@ -352,7 +352,8 @@
     "redaction": "Strip secrets, tokens, raw emails/phones, and connector payloads from receipts",
     "forward_tests": [
       "synthetic social-media-manager brief produces typed deliverable + gate without external mutation",
-      "growth-revenue fixtures for social-media-manager pass consent/suppression/approval gates"
+      "growth-revenue fixtures for social-media-manager pass consent/suppression/approval gates",
+      "draft creatives reviewed by paid-ads-manager campaign_ledger.py: numbers match computed figures, material connection disclosed, publish fields refused (tests/test_g35_capability.py)"
     ],
     "receipts": [
       "draft paths",

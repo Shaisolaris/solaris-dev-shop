@@ -112,6 +112,12 @@ Why 10/10: the competitive alternative is what customers actually do today, ever
 claim carries a proof point rather than an adjective, the positioning line respects the
 8-word cap, and growth is read against the bar instead of celebrated.
 
+## Reading a campaign brief (G35)
+Campaign results reach the CMO as the `campaign-brief.md` from paid-ads-manager `campaign_ledger.py`
+(INTERNAL DRAFT). Read ROAS with its attribution window, the unattributed order value beside it, and the
+difference to the CFO's recognized revenue (a credit note lowers revenue but not order value). A brief with
+findings is not a basis for a budget change; budget and publish decisions stay human, in the platform.
+
 ## HARD NUMBERS
 - Value propositions: **3-4**, each with a proof point. More than 4 is a positioning failure.
 - Positioning line: **<= 8 words**.

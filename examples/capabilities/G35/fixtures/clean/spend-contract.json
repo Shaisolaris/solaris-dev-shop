@@ -1,0 +1,17 @@
+{
+ "schema": "solaris.csv-reconcile/1",
+ "timezone": "UTC",
+ "facts": {
+  "file": "spend.csv",
+  "grain": ["campaign_id", "day"],
+  "columns": {"campaign_id": "str", "day": "timestamp", "spend": "decimal", "currency": "str", "loaded_at": "timestamp", "updated_at": "timestamp"},
+  "header_aliases": {"Campaign": "campaign_id", "Day": "day", "Cost": "spend"},
+  "required": ["spend", "currency"],
+  "uppercase": ["currency"],
+  "duplicate_policy": "latest:updated_at",
+  "loaded_at_column": "loaded_at"
+ },
+ "window": {"column": "day", "start": "2026-09-01T00:00:00Z", "end": "2026-10-01T00:00:00Z"},
+ "as_of": "2026-10-02T00:00:00Z",
+ "metrics": [{"name": "spend", "agg": "sum", "column": "spend", "by": ["campaign_id", "day", "currency"]}]
+}

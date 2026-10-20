@@ -1,0 +1,19 @@
+{"creatives": [
+ {"id": "K1", "campaign_id": "C-search", "channel": "search", "status": "draft",
+  "headline": "Generic search: ROAS 2.47",
+  "body": "Generic terms brought 2 orders.",
+  "claims": [{"text": "ROAS 2.47", "figure": "campaign:C-search:roas"}, {"text": "2 orders", "figure": "campaign:C-search:conversions"}]},
+ {"id": "K2", "campaign_id": "C-social", "channel": "social", "status": "draft", "material_connection": "paid",
+  "disclosure": "Paid partnership",
+  "headline": "Creators drove a 4.4x return", "body": "Paid partnership. See how teams plan launches.",
+  "claims": [{"text": "4.4x return", "figure": "campaign:C-social:roas"}]},
+ {"id": "K3", "campaign_id": "C-social", "channel": "social", "status": "draft", "material_connection": "none",
+  "headline": "Guaranteed 10x returns", "body": "Join now.", "claims": []},
+ {"id": "K4", "campaign_id": "C-search", "channel": "search", "status": "draft", "publish_at": "2026-10-05T09:00:00Z",
+  "headline": "Plan launches faster", "body": "Try the planner.", "claims": []},
+ {"id": "K5", "campaign_id": "C-search", "channel": "search", "status": "draft",
+  "headline": "Customers for CPA 30.00", "body": "Generic terms.",
+  "claims": [{"text": "CPA 30.00", "figure": "campaign:C-search:cpa"}]},
+ {"id": "K6", "campaign_id": "C-social", "channel": "social", "status": "draft",
+  "headline": "Our teammate loves it", "body": "Hear from the team.", "claims": []}
+]}

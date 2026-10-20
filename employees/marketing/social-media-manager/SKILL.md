@@ -129,6 +129,12 @@ Why 10/10: the white-label constraint shapes the plan instead of being worked ar
 month of content comes from one real artifact, formats are genuinely platform-native, and
 each post's success metric is fixed before it runs.
 
+## Draft creative check (G35)
+Paid or boosted social drafts that state a number go through the paid-ads-manager `campaign_ledger.py`
+creative review: each number is a declared claim matched to a computed figure, a paid, gifted, employee or
+affiliate connection carries a disclosure inside the copy, unknown connection status blocks, and any publish
+or schedule field is refused. Output is `ready_for_human_review` at most; a human publishes.
+
 ## HARD NUMBERS
 - Content ratio **40/20/15/10** - educational / proof / engagement / offer. Feeds that exceed the offer share: **0**.
 - Engagement benchmarks: LinkedIn **~2-3%**, X **~1%**. Compare against these, do not assert success.

@@ -1,0 +1,2 @@
+credit_id,invoice_id,kind,currency,amount,issued_at,loaded_at
+CN3,O3,credit_note,USD,60.00,2026-09-09T10:00:00Z,2026-09-09T11:00:00Z

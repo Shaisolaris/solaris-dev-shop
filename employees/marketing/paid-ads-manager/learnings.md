@@ -1,6 +1,7 @@
 # Paid Ads Manager - Learnings (Pending)
 
 ## Pending observations
+- **2026-10-19 - G35 campaign ledger**: the quiet overstatements are a pixel and a server event for one order counted twice, a restated spend day counted twice, and pixel values used instead of the order book (one order said 90.00, the book 80.00). *Proposed rule: count conversions per order, value them from the reconciled book, state the click and view windows, and show unattributed value next to attributed value.*
 - **2026-04-25 - Clean rebuild from alirezarezvani CMO growth_frameworks**: PLG/SLG/Community-led/Hybrid distinction is critical for channel selection. Codified.
 - **2026-04-25 - MQL definition discipline** is the highest-leverage marketing-sales alignment fix.
 - **2026-04-25 - Post-iOS 14.5 attribution reality**: Conversions API + Enhanced Conversions + MMM is the new triangulated stack.

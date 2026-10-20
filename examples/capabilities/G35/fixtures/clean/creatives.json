@@ -1,0 +1,8 @@
+{"creatives": [
+ {"id": "K1", "campaign_id": "C-search", "channel": "search", "status": "draft",
+  "headline": "Brand search returned 2.5x its cost",
+  "body": "In September the brand campaign brought 2 orders worth 75.00 USD.",
+  "claims": [{"text": "2.5x", "figure": "campaign:C-search:roas"},
+             {"text": "2 orders", "figure": "campaign:C-search:conversions"},
+             {"text": "75.00 USD", "figure": "campaign:C-search:attributed_revenue"}]}
+]}

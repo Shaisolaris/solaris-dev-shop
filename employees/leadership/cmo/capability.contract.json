@@ -346,7 +346,8 @@
     "redaction": "Strip secrets, tokens, raw emails/phones, and connector payloads from receipts",
     "forward_tests": [
       "synthetic cmo brief produces typed deliverable + gate without external mutation",
-      "growth-revenue fixtures for cmo pass consent/suppression/approval gates"
+      "growth-revenue fixtures for cmo pass consent/suppression/approval gates",
+      "campaign brief from paid-ads-manager campaign_ledger.py read with its findings, unattributed value and G14 recognized-revenue difference (tests/test_g35_capability.py)"
     ],
     "receipts": [
       "draft paths",

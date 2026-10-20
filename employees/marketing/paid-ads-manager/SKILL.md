@@ -107,6 +107,15 @@ Why 10/10: it refuses the requested action with a mechanical reason, catches tha
 edit reset the learning phase, pre-commits the kill criterion so it cannot be argued away
 later, and fixes the untestable creative matrix and the attribution mismatch.
 
+## Campaign accounting check (G35)
+
+Spend, conversion and creative claims are reconciled with `campaign_ledger.py` (`campaign-accounting.md`)
+before any report or draft goes to a human: spend and orders deduplicated by the data engineer's G13 check,
+pixel and server events counted once per order, last click inside the stated window (else last view),
+order-book value instead of pixel value, budgets checked to the cent, order value tied to the CFO's G14
+recognized revenue, and every number in a draft creative matched to a computed figure. Local files only;
+it never spends, publishes or touches an ad account.
+
 ## HARD NUMBERS
 - Target CPA derived from margin: keep CPA **< 35%** of gross profit per conversion.
 - Learning phase: roughly **50 conversions** per ad set. Judgements made before exit: **0**. Any edit resets it.
