@@ -1,0 +1,11 @@
+{
+ "schema": "solaris.cs-account/1",
+ "account_id": "northwind-clinic",
+ "owner": "Morgan (customer success, synthetic)",
+ "contacts": [
+  {"id": "c-ana", "name": "Ana", "handle": "contact-ana", "consent": "granted"},
+  {"id": "c-ben", "name": "Ben", "handle": "contact-ben", "consent": "granted"},
+  {"id": "c-cy", "name": "Cy", "handle": "contact-cy", "consent": "unknown"},
+  {"id": "c-dee", "name": "Dee", "handle": "contact-dee", "consent": "granted"}
+ ]
+}

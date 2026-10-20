@@ -1,0 +1,13 @@
+{"id": "E01", "type": "signup", "contact": "c-ana", "at": "2026-10-01T09:00:00-07:00"}
+{"id": "E02", "type": "signup", "contact": "c-ben", "at": "2026-10-01T09:05:00-07:00"}
+{"id": "E03", "type": "signup", "contact": "c-cy", "at": "2026-10-01T09:10:00-07:00"}
+{"id": "E04", "type": "signup", "contact": "c-dee", "at": "2026-10-01T09:15:00-07:00"}
+{"id": "E05", "type": "ticket_opened", "contact": "c-ben", "thread": "T1", "at": "2026-10-02T10:00:00-07:00"}
+{"id": "E06", "type": "agent_response", "contact": "c-ben", "thread": "T1", "at": "2026-10-02T11:00:00-07:00"}
+{"id": "E07", "type": "reply_received", "contact": "c-ben", "thread": "T1", "at": "2026-10-03T08:00:00-07:00"}
+{"id": "E08", "type": "agent_response", "contact": "c-ben", "thread": "T1", "at": "2026-10-03T09:00:00-07:00"}
+{"id": "E09", "type": "opt_out", "contact": "c-dee", "scope": "marketing", "at": "2026-10-03T12:00:00-07:00"}
+{"id": "E10", "type": "reply_received", "contact": "c-ana", "thread": "onboarding-c-ana", "at": "2026-10-04T08:30:00-07:00"}
+{"id": "E11", "type": "owner_change", "owner": "Priya (customer success lead, synthetic)", "at": "2026-10-05T08:00:00-07:00"}
+{"id": "E12", "type": "ticket_closed", "contact": "c-ben", "thread": "T1", "at": "2026-10-06T10:00:00-07:00"}
+{"id": "E13", "type": "opt_in", "contact": "c-dee", "at": "2026-10-06T11:00:00-07:00"}
