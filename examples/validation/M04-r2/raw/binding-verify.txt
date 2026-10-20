@@ -1,0 +1,20 @@
+# binding check G04-r3, 2026-10-19 20:50:49 PDT
+remote head of review/grok-g04-handoff: e9fa278f6fc967720118937c746287adf7cd6dad (expected e9fa278f6fc967720118937c746287adf7cd6dad)
+worktree HEAD: e9fa278f6fc967720118937c746287adf7cd6dad
+base is ancestor: yes; commits since: 1
+handback patch G04-r3.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/infrastructure/fleet-dispatcher/handoff-work-orders.md: OK
+  employees/infrastructure/fleet-dispatcher/handoff.py: OK
+  employees/infrastructure/fleet-dispatcher/learnings.md: OK
+  tests/test_g04_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../fleet-dispatcher/handoff-work-orders.md        |  6 ++--
+   .../infrastructure/fleet-dispatcher/handoff.py     | 22 +++++++++++-
+   .../infrastructure/fleet-dispatcher/learnings.md   |  1 +
+   tests/test_g04_capability.py                       | 41 ++++++++++++++++++++--
+   4 files changed, 63 insertions(+), 7 deletions(-)
+commits 314b4db..e9fa278: 2
+e9fa278 G04 r3: owner change on a delivered revision is refused, not delivered twice (review only, Grok build)
+155fc33 G04 r2: bind owner into activate/brief receipt inputs (root QA)

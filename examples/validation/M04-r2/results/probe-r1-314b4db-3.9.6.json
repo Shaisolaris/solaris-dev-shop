@@ -1,0 +1,119 @@
+{
+ "python": "3.9.6",
+ "rows": [
+  {
+   "id": "Q1",
+   "desc": "owner changed after --stop-after brief: resume exits 0, brief names only the new owner, one delivery naming the new owner and that brief",
+   "pass": false,
+   "detail": {
+    "rc": [
+     3,
+     0
+    ],
+    "ledger_owners": [
+     "support: Someone Else"
+    ],
+    "old_in_brief": true
+   }
+  },
+  {
+   "id": "Q2",
+   "desc": "owner changed after --stop-after activate: brief and the one delivery name the new owner",
+   "pass": true,
+   "detail": {
+    "rc": [
+     3,
+     0
+    ],
+    "ledger_owners": [
+     "support: Someone Else"
+    ]
+   }
+  },
+  {
+   "id": "Q3",
+   "desc": "owner changed after revision 1 was delivered: no second delivery of revision 1 (refused, exit 2, ledger stays 1)",
+   "pass": false,
+   "detail": {
+    "rc": [
+     0,
+     0
+    ],
+    "ledger": [
+     [
+      1,
+      "delivery-lead: A. Example"
+     ]
+    ],
+    "out": "WO-HARBOR-1 revision 1 (owner support: Someone Else)\n  activate reused (receipt by ana)\n  brief    reused (receipt by ana)\n  deliver  reused (receipt by ana)\n"
+   }
+  },
+  {
+   "id": "Q4",
+   "desc": "crash after delivery (75), owner changed, resume: revision 1 is not delivered a second time (exit 2, ledger stays 1)",
+   "pass": false,
+   "detail": {
+    "rc": [
+     75,
+     0
+    ],
+    "ledger": [
+     [
+      1,
+      "delivery-lead: A. Example"
+     ]
+    ],
+    "out": "n 1 (owner support: Someone Else)\n  activate reused (receipt by ana)\n  brief    reused (receipt by ana)\n  deliver  done (already delivered; duplicate suppressed)\n  resumed work left unfinished by ana\n"
+   }
+  },
+  {
+   "id": "Q5",
+   "desc": "owner changed and changed back before delivery: brief names the original owner, one delivery",
+   "pass": false,
+   "detail": {
+    "rc": [
+     0,
+     0
+    ],
+    "ledger_owners": [
+     "support: Someone Else"
+    ]
+   }
+  },
+  {
+   "id": "Q6",
+   "desc": "control: rerun with the same owner after delivery exits 0, all reused, ledger 1",
+   "pass": true,
+   "detail": {
+    "rc": 0,
+    "ledger": 1
+   }
+  },
+  {
+   "id": "Q7",
+   "desc": "control: revision 2 with a new owner delivers once (ledger 2, revision 1 noted superseded)",
+   "pass": true,
+   "detail": {
+    "rc": 0,
+    "ledger": [
+     [
+      1,
+      "delivery-lead: A. Example"
+     ],
+     [
+      2,
+      "support: Someone Else"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "Q8",
+   "desc": "non-ASCII owner set before delivery is written exactly into the brief and the ledger",
+   "pass": false,
+   "detail": {
+    "rc": 0
+   }
+  }
+ ]
+}

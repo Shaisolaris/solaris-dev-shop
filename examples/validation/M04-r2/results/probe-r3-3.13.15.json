@@ -1,0 +1,132 @@
+{
+ "python": "3.13.15",
+ "rows": [
+  {
+   "id": "Q1",
+   "desc": "owner changed after --stop-after brief: resume exits 0, brief names only the new owner, one delivery naming the new owner and that brief",
+   "pass": true,
+   "detail": {
+    "rc": [
+     3,
+     0
+    ],
+    "ledger_owners": [
+     "support: Someone Else"
+    ],
+    "old_in_brief": false
+   }
+  },
+  {
+   "id": "Q2",
+   "desc": "owner changed after --stop-after activate: brief and the one delivery name the new owner",
+   "pass": true,
+   "detail": {
+    "rc": [
+     3,
+     0
+    ],
+    "ledger_owners": [
+     "support: Someone Else"
+    ]
+   }
+  },
+  {
+   "id": "Q3",
+   "desc": "owner changed after revision 1 was delivered: no second delivery of revision 1 (refused, exit 2, ledger stays 1)",
+   "pass": true,
+   "detail": {
+    "rc": [
+     0,
+     2
+    ],
+    "ledger": [
+     [
+      1,
+      "delivery-lead: A. Example"
+     ]
+    ],
+    "out": "error: revision 1 was already delivered with owner delivery-lead: A. Example; a delivery cannot be recalled, so issue revision 2 to change the owner\n"
+   }
+  },
+  {
+   "id": "Q4",
+   "desc": "crash after delivery (75), owner changed, resume: revision 1 is not delivered a second time (exit 2, ledger stays 1)",
+   "pass": true,
+   "detail": {
+    "rc": [
+     75,
+     2
+    ],
+    "ledger": [
+     [
+      1,
+      "delivery-lead: A. Example"
+     ]
+    ],
+    "out": "error: revision 1 was already delivered with owner delivery-lead: A. Example; a delivery cannot be recalled, so issue revision 2 to change the owner\n"
+   }
+  },
+  {
+   "id": "Q5",
+   "desc": "owner changed and changed back before delivery: brief names the original owner, one delivery",
+   "pass": true,
+   "detail": {
+    "rc": [
+     3,
+     0
+    ],
+    "ledger_owners": [
+     "delivery-lead: A. Example"
+    ]
+   }
+  },
+  {
+   "id": "Q6",
+   "desc": "control: rerun with the same owner after delivery exits 0, all reused, ledger 1",
+   "pass": true,
+   "detail": {
+    "rc": 0,
+    "ledger": 1
+   }
+  },
+  {
+   "id": "Q7",
+   "desc": "control: revision 2 with a new owner delivers once (ledger 2, revision 1 noted superseded)",
+   "pass": true,
+   "detail": {
+    "rc": 0,
+    "ledger": [
+     [
+      1,
+      "delivery-lead: A. Example"
+     ],
+     [
+      2,
+      "support: Someone Else"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "Q8",
+   "desc": "non-ASCII owner set before delivery is written exactly into the brief and the ledger",
+   "pass": true,
+   "detail": {
+    "rc": 0
+   }
+  },
+  {
+   "id": "Q9",
+   "desc": "order delivered by G04 r1 314b4db, rerun by this tool with the same owner: exit 0, no second delivery (deliver reused or duplicate suppressed), ledger 1",
+   "pass": true,
+   "detail": {
+    "rc": [
+     0,
+     0
+    ],
+    "ledger": 1,
+    "out": "elivery-lead: A. Example)\n  activate done (activation partial, changed 0)\n  brief    done\n  deliver  reused (receipt by ana)\n  note: activate receipt is stale (inputs changed); redone\n  note: brief receipt is stale (inputs changed); redone\n"
+   }
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+== Python 3.9.6
+scale: {"orders": 200, "workers": 4, "runs": 1000, "crash_drills": 224, "seconds": 11.8}
+16/16 checks passed
+== Python 3.11.16
+scale: {"orders": 200, "workers": 4, "runs": 1000, "crash_drills": 224, "seconds": 9.0}
+16/16 checks passed
+== Python 3.12.14
+scale: {"orders": 200, "workers": 4, "runs": 1000, "crash_drills": 221, "seconds": 9.5}
+16/16 checks passed
+== Python 3.13.15
+scale: {"orders": 200, "workers": 4, "runs": 1000, "crash_drills": 224, "seconds": 9.5}
+16/16 checks passed
+== controls (3.9.6)
+scale: {"orders": 200, "workers": 4, "runs": 1000, "crash_drills": 306, "seconds": 11.8}
+9/16 checks passed
+scale: {"orders": 200, "workers": 4, "runs": 1000, "crash_drills": 0, "seconds": 4.7}
+1/16 checks passed

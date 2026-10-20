@@ -1,0 +1,9 @@
+Q1 FAIL owner changed after --stop-after brief: resume exits 0, brief names only the new owner, one delivery naming the new owner and that brief {"rc": [3, 0], "ledger_owners": ["support: Someone Else"], "old_in_brief": true}
+Q2 PASS owner changed after --stop-after activate: brief and the one delivery name the new owner {"rc": [3, 0], "ledger_owners": ["support: Someone Else"]}
+Q3 FAIL owner changed after revision 1 was delivered: no second delivery of revision 1 (refused, exit 2, ledger stays 1) {"rc": [0, 0], "ledger": [[1, "delivery-lead: A. Example"]], "out": "WO-HARBOR-1 revision 1 (owner support: Someone Else)\n  activate reused (receipt by ana)\n  brief    reused (receipt by ana)\n  deliver  reused (receipt by ana)\n"}
+Q4 FAIL crash after delivery (75), owner changed, resume: revision 1 is not delivered a second time (exit 2, ledger stays 1) {"rc": [75, 0], "ledger": [[1, "delivery-lead: A. Example"]], "out": "n 1 (owner support: Someone Else)\n  activate reused (receipt by ana)\n  brief    reused (receipt by ana)\n  deliver  done (already delivered; duplicate suppressed)\n  resumed work left unfinished by ana\n"}
+Q5 FAIL owner changed and changed back before delivery: brief names the original owner, one delivery {"rc": [0, 0], "ledger_owners": ["support: Someone Else"]}
+Q6 PASS control: rerun with the same owner after delivery exits 0, all reused, ledger 1 {"rc": 0, "ledger": 1}
+Q7 PASS control: revision 2 with a new owner delivers once (ledger 2, revision 1 noted superseded) {"rc": 0, "ledger": [[1, "delivery-lead: A. Example"], [2, "support: Someone Else"]]}
+Q8 FAIL non-ASCII owner set before delivery is written exactly into the brief and the ledger {"rc": 0}
+M04R2 PROBE 3/8
