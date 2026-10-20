@@ -314,5 +314,34 @@ class G32Capability(unittest.TestCase):
         self.assertEqual(r2["suppressed_contacts"], ["c-ana2"])
 
 
+    def test_invisible_characters_and_damaged_suppression_file(self):
+        """M32 r3 P3-1: every invisible character is ignored in a handle; P3-2: a damaged suppression file refuses."""
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('g32_ft', str(TOOL)); m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        for ch in ('\u034f', '\ufe0f', '\u3164', '\u2800', '\u115f', '\u180b', '\U000e0041'):
+            self.assertEqual(m.person_key('crm:ana-clinic'), m.person_key('crm:an' + ch + 'a-clinic'), repr(ch))
+        self.assertNotEqual(m.person_key('crm:ana-clinic'), m.person_key('crm:\u0430na-clinic'))  # look-alikes not matched
+        self.acc = {"schema": "solaris.cs-account/1", "account_id": "ac1", "owner": "ops",
+                    "contacts": [{"id": "c-ana", "name": "Ana", "handle": "crm:ana-clinic", "consent": "granted"}]}
+        self.ev = [{"id": "e1", "type": "signup", "contact": "c-ana", "at": "2026-05-01T00:00:00+00:00"},
+                   {"id": "e2", "type": "opt_out", "contact": "c-ana", "scope": "all", "at": "2026-05-02T00:00:00+00:00"}]
+        self.assertEqual(self.run_("2026-06-01T00:00:00+00:00")["drafted"], [])
+        # the CRM merge drops the opt-out history and the handle gains a combining grapheme joiner: still suppressed
+        self.acc = {"schema": "solaris.cs-account/1", "account_id": "ac1", "owner": "ops",
+                    "contacts": [{"id": "c-ana2", "name": "Ana", "handle": "crm:an\u034fa-clinic", "consent": "granted"}]}
+        self.ev = [{"id": "e3", "type": "signup", "contact": "c-ana2", "at": "2026-05-01T00:00:00+00:00"}]
+        self.assertEqual(self.run_("2026-06-01T00:00:00+00:00")["drafted"], [])
+        sup = self.s / "person_suppressions.jsonl"
+        good = sup.read_bytes()
+        for damage in (b"{not json\n", b'{"person": "x"}\n', b"[1, 2]\n", b'{"person": "p", "scope": "all", "reason": "r"}'):
+            sup.write_bytes(good + damage)
+            before = {f: f.read_bytes() for f in self.s.rglob('*') if f.is_file()}
+            r = self.run_("2026-06-02T00:00:00+00:00", 'w1', 2)
+            self.assertIn("person_suppressions.jsonl", r.stderr + r.stdout, damage)
+            self.assertEqual({f: f.read_bytes() for f in self.s.rglob('*') if f.is_file()}, before, damage)
+        sup.write_bytes(good)
+        self.assertEqual(self.run_("2026-06-02T00:00:00+00:00")["drafted"], [])
+
 if __name__ == '__main__':
     unittest.main()

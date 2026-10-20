@@ -63,41 +63,60 @@ class Invalid(Exception):
 def person_key(handle):
     """One person, however the import spelled the handle.
 
-    NFKC, Unicode format characters (category Cf: zero-width space, soft hyphen, ...) stripped,
-    whitespace collapsed, case folded. Format characters cannot mint a new identity for an opted-out
-    person. Plus-addressing, dots, look-alike scripts and domain aliases are NOT matched: the importer
-    must resolve those before the account is loaded.
+    NFKC, then every invisible character stripped: Unicode format characters (category Cf: zero-width
+    space, soft hyphen, ...), every Default_Ignorable_Code_Point (combining grapheme joiner, variation
+    selectors, Hangul fillers, ...) and the braille blank U+2800; whitespace collapsed, case folded.
+    Invisible characters cannot mint a new identity for an opted-out person. Plus-addressing, dots,
+    look-alike scripts and domain aliases are NOT matched: the importer must resolve those before the
+    account is loaded.
     """
     folded = unicodedata.normalize("NFKC", handle)
-    cleaned = "".join(ch for ch in folded if unicodedata.category(ch) != "Cf")
+    cleaned = "".join(ch for ch in folded if unicodedata.category(ch) != "Cf" and not _invisible(ord(ch)))
     return " ".join(cleaned.split()).casefold()
 
 
+# Unicode Default_Ignorable_Code_Point (DerivedCoreProperties.txt, Unicode 15.1), plus U+2800 BRAILLE PATTERN
+# BLANK, which renders as nothing in a handle. Category Cf is stripped separately (most Cf points are listed here
+# too). The stdlib has no property lookup for this, so the ranges are listed (M32 r3 P3-1).
+_INVISIBLE = ((0x00AD, 0x00AD), (0x034F, 0x034F), (0x061C, 0x061C), (0x115F, 0x1160), (0x17B4, 0x17B5),
+              (0x180B, 0x180F), (0x200B, 0x200F), (0x202A, 0x202E), (0x2060, 0x206F), (0x2800, 0x2800),
+              (0x3164, 0x3164), (0xFE00, 0xFE0F), (0xFEFF, 0xFEFF), (0xFFA0, 0xFFA0), (0xFFF0, 0xFFF8),
+              (0x1BCA0, 0x1BCA3), (0x1D173, 0x1D17A), (0xE0000, 0xE0FFF))
+
+
+def _invisible(cp):
+    return any(lo <= cp <= hi for lo, hi in _INVISIBLE)
+
+
 def load_person_suppressions(state):
-    """Read durable per-person suppressions from state/person_suppressions.jsonl (missing = empty)."""
+    """Read durable per-person suppressions from state/person_suppressions.jsonl (missing = empty).
+
+    The file is consent-critical, so it is held to the journal's bar (M32 r3 P3-2): an unreadable file,
+    a torn last line, or any line that is not a valid suppression row refuses the run (Invalid, exit 2,
+    nothing written) instead of being skipped. A person repairs the file from its rows and reruns.
+    """
     path = Path(state) / "person_suppressions.jsonl"
     out = {}
     if not path.exists():
         return out
     try:
         data = path.read_bytes()
-    except OSError:
-        return out
+    except OSError as exc:
+        raise Invalid("person_suppressions.jsonl cannot be read (%s); refusing to run without it" % exc.__class__.__name__)
     if data and not data.endswith(b"\n"):
-        data = data[: data.rfind(b"\n") + 1]
-    for line in data.splitlines():
+        raise Invalid("person_suppressions.jsonl: last line is incomplete (torn write); repair the file before running")
+    for n, line in enumerate(data.splitlines(), 1):
         if not line.strip():
             continue
         try:
             rec = json.loads(line.decode("utf-8"))
         except (ValueError, UnicodeDecodeError):
-            continue
-        if not isinstance(rec, dict):
-            continue
-        pk, scope, why = rec.get("person"), rec.get("scope"), rec.get("reason")
-        at = rec.get("at")
+            raise Invalid("person_suppressions.jsonl line %d is not readable JSON; repair the file before running" % n)
+        pk, scope, why = (rec.get("person"), rec.get("scope"), rec.get("reason")) if isinstance(rec, dict) else (None, None, None)
+        at = rec.get("at") if isinstance(rec, dict) else None
         if not isinstance(pk, str) or not pk or scope not in ("all", "marketing") or not isinstance(why, str):
-            continue
+            raise Invalid("person_suppressions.jsonl line %d is not a suppression row (person, scope all|marketing, reason); "
+                          "repair the file before running" % n)
         try:
             t = _time(at, "suppression at") if isinstance(at, str) else dt.datetime.min.replace(tzinfo=dt.timezone.utc)
         except Invalid:
