@@ -181,8 +181,48 @@ class G22Capability(unittest.TestCase):
         self.assertEqual(self.report()["net_cash"], "32.69")
         self.assertEqual(self.check().returncode, 0)
 
-    def test_export_reconciles_in_g14(self):
+    def test_export_refuses_open_exceptions(self):
+        # G30 x2 finding (needs affected recheck): with evt_007 (unapplied 40.00 refund) and evt_008
+        # (out-of-stock order) open, export-g14 exited 0 and G14 reconciled the rest as clean.
         self.ingest(FIX / "september.jsonl")
+        out = self.tmp / "g14open"
+        r = run(TOOL, "export-g14", "--db", self.db, "--out", out, "--period-start", "2026-09-01T00:00:00Z", "--period-end", "2026-10-01T00:00:00Z")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertFalse(out.exists())
+        doc = json.loads(r.stdout)
+        self.assertEqual([e["id"] for e in doc["open"]], ["evt_007", "evt_008"])
+        self.assertEqual(doc["unapplied_money"], [{"amount": "40.00", "event_id": "evt_007", "kind": "refund"}])
+        self.assertIn("evt_007,evt_008", r.stderr)
+
+    def test_export_refuses_unapplied_money_alone(self):
+        # defence in depth: an unapplied money row blocks export even if no event is marked open
+        self.ingest(FIX / "september.jsonl")
+        con = sqlite3.connect(str(self.db))
+        con.execute("UPDATE events SET state = 'applied' WHERE id IN ('evt_007', 'evt_008')")
+        con.commit(); con.close()
+        out = self.tmp / "g14money"
+        r = run(TOOL, "export-g14", "--db", self.db, "--out", out, "--period-start", "2026-09-01T00:00:00Z", "--period-end", "2026-10-01T00:00:00Z")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertEqual(json.loads(r.stdout)["open"], [])
+        self.assertFalse(out.exists())
+
+    def test_export_refuses_held_events(self):
+        lines = [l for l in (FIX / "september.jsonl").read_text().splitlines() if l.strip()]
+        held = self.tmp / "held.jsonl"
+        held.write_text("\n".join(l for l in lines if json.loads(json.loads(l)["body"])["type"] != "order.placed") + "\n")
+        self.ingest(held)
+        self.assertTrue(any(o["state"] == "held" for o in self.report()["open"]))
+        out = self.tmp / "g14held"
+        r = run(TOOL, "export-g14", "--db", self.db, "--out", out, "--period-start", "2026-09-01T00:00:00Z", "--period-end", "2026-10-01T00:00:00Z")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertFalse(out.exists())
+
+    def test_export_reconciles_in_g14(self):
+        lines = (FIX / "september.jsonl").read_text().splitlines()
+        clean = self.tmp / "clean.jsonl"
+        clean.write_text("\n".join(l for l in lines if l.strip() and json.loads(json.loads(l)["body"])["id"] not in ("evt_007", "evt_008")) + "\n")
+        self.ingest(clean)
+        self.assertEqual(self.report()["open"], [])
         out = self.tmp / "g14"
         r = run(TOOL, "export-g14", "--db", self.db, "--out", out, "--period-start", "2026-09-01T00:00:00Z", "--period-end", "2026-10-01T00:00:00Z")
         self.assertEqual(r.returncode, 0, r.stderr)

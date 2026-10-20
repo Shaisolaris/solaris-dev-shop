@@ -53,11 +53,15 @@ broken invariant (stock identity, stock moves, reservations, order totals, money
 invoice per captured order (goods ship at capture, so delivery evidence is the capture time), the
 captures as payments, and each applied refund as a credit note plus the cash refund it settles.
 G14 then reconciles with recognized revenue and net cash equal to the ledger's net cash.
+While any event is held or in exception, or any money row is unapplied, `export-g14` refuses: it
+exits 1, writes nothing (not even the `--out` folder), prints the open events and unapplied amounts as
+JSON and names them on stderr. Exported books must not look clean while money is unexplained; resolve
+or re-deliver the events first.
 
 | Exit | Meaning |
 |---|---|
 | 0 | `ingest`: every event applied or duplicate; `check`: consistent |
-| 1 | `ingest`: held events or exceptions are open; `check`: violations |
+| 1 | `ingest`: held events or exceptions are open; `check`: violations; `export-g14`: refused, open events or unapplied money, nothing written |
 | 2 | invalid input or file, nothing written |
 | 3 | `ingest`: at least one envelope refused (signature, time, malformed or conflicting replay) |
 | 70 | deliberate crash drill |
