@@ -10,7 +10,8 @@ source capability tools **3.9+**, and that a lone copied skill folder is incompl
 python3 employees/quality-security/qa-engineer/host_portability.py skill-copy . quality-security/qa-engineer   # exit 1 broken
 python3 employees/quality-security/qa-engineer/host_portability.py python-bounds .                             # exit 0
 python3 employees/quality-security/qa-engineer/host_portability.py wheel-smoke . --outside "$(mktemp -d)"     # exit 0 on 3.10+; --outside must be new or empty
-python3 examples/capabilities/G40/portability_oracle.py                                                       # ACCEPTED 8/8
+python3 examples/capabilities/G40/portability_oracle.py                                                       # ACCEPTED 8/8 (needs the package index for setuptools>=61)
+python3 examples/capabilities/G40/portability_oracle.py --wheelhouse DIR                                      # ACCEPTED 8/8 offline; DIR holds a setuptools>=61 wheel
 python3 examples/capabilities/G40/portability_oracle.py --tool examples/capabilities/G40/naive_portability.py  # REJECTED
 python3 examples/capabilities/G40/portability_oracle.py --tool examples/capabilities/G40/noop_portability.py   # REJECTED
 ```
@@ -24,5 +25,9 @@ Wheel builds, installs outside the checkout, and `solaris-intake` self-test / in
 
 Copying only `employees/quality-security/qa-engineer` drops `../QUALITY-SECURITY-STANDARD.md` and
 `../assurance/*`. `skill-copy` status is `broken`.
+
+Offline reproduction: `wheel-smoke . --outside "$(mktemp -d)" --wheelhouse DIR` builds with `--no-index --find-links DIR`.
+Python 3.11 ships a usable wheel in `ensurepip/_bundled`; 3.12 and 3.13 do not, so copy one there. The oracle also
+reads `$G40_WHEELHOUSE`. Without one, offline wheel-smoke exits 2 with `build_backend_unavailable`.
 
 POSIX. Tool itself: Python 3.9+. `wheel-smoke`: Python 3.10+.

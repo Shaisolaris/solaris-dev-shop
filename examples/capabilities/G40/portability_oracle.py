@@ -14,6 +14,8 @@ REPO = HERE.parents[2]
 TOOL = REPO / "employees/quality-security/qa-engineer/host_portability.py"
 ENV = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
 PY = sys.executable
+# offline reproduction: a folder holding a setuptools>=61 wheel, passed to wheel-smoke --wheelhouse
+WHEELHOUSE = []
 
 
 def run(tool, *args, timeout=300):
@@ -53,7 +55,7 @@ def o3_wheel_smoke(tool):
         return True, "wheel-smoke skipped on %d.%d (not scored)" % sys.version_info[:2]
     outside = Path(tempfile.mkdtemp(prefix="g40o3-"))
     try:
-        rc, j = js(tool, "wheel-smoke", REPO, "--outside", outside)
+        rc, j = js(tool, "wheel-smoke", REPO, "--outside", outside, *WHEELHOUSE)
         ok = (rc == 0 and j and j.get("result") == "pass" and j.get("employees_in_wheel") is False
               and not j.get("findings") and str(j.get("wheel", "")).endswith(".whl"))
         return ok, "wheel-smoke outside checkout; rc=%s employees_in_wheel=%s findings=%s" % (
@@ -67,7 +69,7 @@ def o4_wheel_omits_employees(tool):
         return True, "skipped on <3.10"
     outside = Path(tempfile.mkdtemp(prefix="g40o4-"))
     try:
-        rc, j = js(tool, "wheel-smoke", REPO, "--outside", outside)
+        rc, j = js(tool, "wheel-smoke", REPO, "--outside", outside, *WHEELHOUSE)
         if not j or not j.get("wheel"):
             return False, "no wheel name"
         base = Path(j["outside"]) if j.get("outside") else outside
@@ -103,7 +105,7 @@ def o6_invalid_role(tool):
 def o7_report_names_broken_copy(tool):
     outside = Path(tempfile.mkdtemp(prefix="g40o7-"))
     try:
-        args = ["report", REPO, "--outside", outside]
+        args = ["report", REPO, "--outside", outside] + WHEELHOUSE
         rc, j = js(tool, *args)
         part = (j or {}).get("parts", {}).get("skill_copy_qa_engineer") or {}
         ok = j and part.get("status") == "broken" and rc == 1
@@ -134,7 +136,11 @@ CHECKS = [
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--tool", type=Path, default=TOOL); ap.add_argument("--only")
+    ap.add_argument("--wheelhouse", default=os.environ.get("G40_WHEELHOUSE") or None,
+                    help="offline: folder with a setuptools>=61 wheel, passed to wheel-smoke (default $G40_WHEELHOUSE)")
     ns = ap.parse_args()
+    if ns.wheelhouse:
+        WHEELHOUSE[:] = ["--wheelhouse", ns.wheelhouse]
     only = set(ns.only.split(",")) if ns.only else None
     passed = 0; total = 0
     for name, fn in CHECKS:
