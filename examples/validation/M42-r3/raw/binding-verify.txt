@@ -1,0 +1,1001 @@
+# binding check G42-r3, 2026-10-19 23:59:42 PDT
+remote head of review/grok-g42-daily-integration: 9d844d22099cbf5c385963578c67c789951e8263 (expected 9d844d22099cbf5c385963578c67c789951e8263)
+worktree HEAD: 9d844d22099cbf5c385963578c67c789951e8263
+base is ancestor: yes; commits since: 91
+handback patch G42-r3.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  docs/install.md: OK
+  employees/data/data-analyst/SKILL.md: OK
+  employees/data/data-analyst/capability.contract.json: OK
+  employees/data/data-scientist/SKILL.md: OK
+  employees/data/data-scientist/capability.contract.json: OK
+  employees/data/data-scientist/experiment-readout.md: OK
+  employees/data/data-scientist/experiment_readout.py: OK
+  employees/data/data-scientist/learnings.md: OK
+  employees/data/data-scientist/plugin.json: OK
+  employees/engineering/ai-automation-engineer/SKILL.md: OK
+  employees/engineering/ai-ml-engineer/SKILL.md: OK
+  employees/engineering/ai-ml-engineer/learnings.md: OK
+  employees/engineering/devops-engineer/SKILL.md: OK
+  employees/engineering/devops-engineer/capability.contract.json: OK
+  employees/engineering/devops-engineer/learnings.md: OK
+  employees/engineering/devops-engineer/local-deploy-preflight.md: OK
+  employees/engineering/devops-engineer/local_deploy.py: OK
+  employees/engineering/devops-engineer/plugin.json: OK
+  employees/engineering/frontend-developer/SKILL.md: OK
+  employees/engineering/frontend-developer/async-search-ui.md: OK
+  employees/engineering/frontend-developer/async_search_core.js: OK
+  employees/engineering/frontend-developer/capability.contract.json: OK
+  employees/engineering/frontend-developer/learnings.md: OK
+  employees/engineering/frontend-developer/plugin.json: OK
+  employees/engineering/full-stack-developer/SKILL.md: OK
+  employees/engineering/full-stack-developer/capability.contract.json: OK
+  employees/engineering/full-stack-developer/learnings.md: OK
+  employees/engineering/iot-engineer/SKILL.md: OK
+  employees/engineering/iot-engineer/capability.contract.json: OK
+  employees/engineering/iot-engineer/device-event-protocol.md: OK
+  employees/engineering/iot-engineer/device_protocol.py: OK
+  employees/engineering/iot-engineer/learnings.md: OK
+  employees/engineering/iot-engineer/plugin.json: OK
+  employees/engineering/llm-agent-designer/SKILL.md: OK
+  employees/engineering/llm-agent-designer/capability.contract.json: OK
+  employees/engineering/llm-agent-designer/grounded-answer-evals.md: OK
+  employees/engineering/llm-agent-designer/grounded_eval.py: OK
+  employees/engineering/llm-agent-designer/learnings.md: OK
+  employees/engineering/llm-agent-designer/plugin.json: OK
+  employees/engineering/mobile-developer/SKILL.md: OK
+  employees/engineering/mobile-developer/capability.contract.json: OK
+  employees/engineering/mobile-developer/learnings.md: OK
+  employees/engineering/mobile-developer/offline-sync.md: OK
+  employees/engineering/mobile-developer/offline_sync.py: OK
+  employees/engineering/mobile-developer/plugin.json: OK
+  employees/infrastructure/cloud-architect/SKILL.md: OK
+  employees/infrastructure/cloud-architect/capability.contract.json: OK
+  employees/infrastructure/cloud-architect/learnings.md: OK
+  employees/infrastructure/fleet-dispatcher/SKILL.md: OK
+  employees/infrastructure/fleet-dispatcher/capability.contract.json: OK
+  employees/infrastructure/fleet-dispatcher/handoff-work-orders.md: OK
+  employees/infrastructure/fleet-dispatcher/handoff.py: OK
+  employees/infrastructure/fleet-dispatcher/learnings.md: OK
+  employees/infrastructure/fleet-provisioner/SKILL.md: OK
+  employees/infrastructure/fleet-provisioner/capability.contract.json: OK
+  employees/infrastructure/fleet-provisioner/fleet-registration.md: OK
+  employees/infrastructure/fleet-provisioner/learnings.md: OK
+  employees/infrastructure/fleet-provisioner/plugin.json: OK
+  employees/infrastructure/fleet-provisioner/registry.py: OK
+  employees/infrastructure/kubernetes-specialist/SKILL.md: OK
+  employees/infrastructure/kubernetes-specialist/capability.contract.json: OK
+  employees/infrastructure/kubernetes-specialist/k8s-manifest-check.md: OK
+  employees/infrastructure/kubernetes-specialist/k8s_manifest_check.py: OK
+  employees/infrastructure/kubernetes-specialist/learnings.md: OK
+  employees/infrastructure/kubernetes-specialist/plugin.json: OK
+  employees/infrastructure/network-engineer/SKILL.md: OK
+  employees/infrastructure/network-engineer/capability.contract.json: OK
+  employees/infrastructure/network-engineer/learnings.md: OK
+  employees/infrastructure/network-engineer/netdiag.py: OK
+  employees/infrastructure/network-engineer/offline-trace-diagnosis.md: OK
+  employees/infrastructure/network-engineer/plugin.json: OK
+  employees/infrastructure/site-reliability-engineer/SKILL.md: OK
+  employees/infrastructure/site-reliability-engineer/capability.contract.json: OK
+  employees/infrastructure/site-reliability-engineer/incident-slo.md: OK
+  employees/infrastructure/site-reliability-engineer/incident_slo.py: OK
+  employees/infrastructure/site-reliability-engineer/learnings.md: OK
+  employees/infrastructure/site-reliability-engineer/plugin.json: OK
+  employees/leadership/cfo/SKILL.md: OK
+  employees/leadership/cfo/capability.contract.json: OK
+  employees/leadership/cfo/cash-revenue-reconciliation.md: OK
+  employees/leadership/cfo/cash_revenue_reconcile.py: OK
+  employees/leadership/cfo/learnings.md: OK
+  employees/leadership/cfo/plugin.json: OK
+  employees/leadership/cmo/SKILL.md: OK
+  employees/leadership/cmo/capability.contract.json: OK
+  employees/leadership/cmo/learnings.md: OK
+  employees/leadership/coo/SKILL.md: OK
+  employees/leadership/coo/capability.contract.json: OK
+  employees/leadership/coo/learnings.md: OK
+  employees/leadership/coo/plugin.json: OK
+  employees/leadership/coo/resource-cash-decision.md: OK
+  employees/leadership/coo/resource_decision.py: OK
+  employees/marketing/content-marketer/SKILL.md: OK
+  employees/marketing/cro-landing-designer/SKILL.md: OK
+  employees/marketing/email-specialist/SKILL.md: OK
+  employees/marketing/email-specialist/capability.contract.json: OK
+  employees/marketing/email-specialist/learnings.md: OK
+  employees/marketing/market-researcher/SKILL.md: OK
+  employees/marketing/market-researcher/capability.contract.json: OK
+  employees/marketing/market-researcher/learnings.md: OK
+  employees/marketing/paid-ads-manager/SKILL.md: OK
+  employees/marketing/paid-ads-manager/campaign-accounting.md: OK
+  employees/marketing/paid-ads-manager/campaign_ledger.py: OK
+  employees/marketing/paid-ads-manager/capability.contract.json: OK
+  employees/marketing/paid-ads-manager/learnings.md: OK
+  employees/marketing/paid-ads-manager/plugin.json: OK
+  employees/marketing/seo-aso-specialist/SKILL.md: OK
+  employees/marketing/seo-aso-specialist/capability.contract.json: OK
+  employees/marketing/seo-aso-specialist/content-diagnostics.md: OK
+  employees/marketing/seo-aso-specialist/learnings.md: OK
+  employees/marketing/seo-aso-specialist/page_diagnostics.py: OK
+  employees/marketing/seo-aso-specialist/plugin.json: OK
+  employees/marketing/social-media-manager/SKILL.md: OK
+  employees/marketing/social-media-manager/capability.contract.json: OK
+  employees/marketing/social-media-manager/learnings.md: OK
+  employees/product-project/business-analyst/SKILL.md: OK
+  employees/product-project/business-analyst/capability.contract.json: OK
+  employees/product-project/business-analyst/learnings.md: OK
+  employees/product-project/business-analyst/plugin.json: OK
+  employees/product-project/business-analyst/scope-estimate-acceptance.md: OK
+  employees/product-project/business-analyst/scope_acceptance.py: OK
+  employees/product-project/delivery-lead/SKILL.md: OK
+  employees/product-project/delivery-lead/capability.contract.json: OK
+  employees/product-project/product-manager/SKILL.md: OK
+  employees/product-project/product-manager/capability.contract.json: OK
+  employees/product-project/product-manager/evidence-product-decision.md: OK
+  employees/product-project/product-manager/evidence_decision.py: OK
+  employees/product-project/product-manager/learnings.md: OK
+  employees/product-project/product-manager/plugin.json: OK
+  employees/product-project/project-onboarding/SKILL.md: OK
+  employees/product-project/project-onboarding/activate.py: OK
+  employees/product-project/project-onboarding/learnings.md: OK
+  employees/quality-security/assurance/ASSURANCE.md: OK
+  employees/quality-security/assurance/quality_os.py: OK
+  employees/quality-security/performance-engineer/SKILL.md: OK
+  employees/quality-security/performance-engineer/learnings.md: OK
+  employees/sales-outreach/customer-success/SKILL.md: OK
+  employees/sales-outreach/customer-success/capability.contract.json: OK
+  employees/sales-outreach/customer-success/consent-follow-through.md: OK
+  employees/sales-outreach/customer-success/followthrough.py: OK
+  employees/sales-outreach/customer-success/learnings.md: OK
+  employees/sales-outreach/customer-success/plugin.json: OK
+  employees/sales-outreach/outreach-specialist/SKILL.md: OK
+  employees/sales-outreach/outreach-specialist/capability.contract.json: OK
+  employees/sales-outreach/proposal-writer/SKILL.md: OK
+  employees/sales-outreach/proposal-writer/capability.contract.json: OK
+  employees/sales-outreach/sales-engineer/SKILL.md: OK
+  employees/sales-outreach/sales-engineer/capability.contract.json: OK
+  employees/sales-outreach/sales-engineer/learnings.md: OK
+  employees/specialized/ecommerce-specialist/SKILL.md: OK
+  employees/specialized/ecommerce-specialist/capability.contract.json: OK
+  employees/specialized/ecommerce-specialist/learnings.md: OK
+  employees/specialized/payments-specialist/SKILL.md: OK
+  employees/specialized/payments-specialist/capability.contract.json: OK
+  employees/specialized/payments-specialist/learnings.md: OK
+  employees/specialized/payments-specialist/payment_ledger.py: OK
+  employees/specialized/payments-specialist/plugin.json: OK
+  employees/specialized/payments-specialist/webhook-ledger.md: OK
+  employees/specialized/wordpress-master/SKILL.md: OK
+  employees/specialized/wordpress-master/capability.contract.json: OK
+  employees/specialized/wordpress-master/diagnostics/plugin-conflicts/SKILL.md: OK
+  employees/specialized/wordpress-master/learnings.md: OK
+  employees/specialized/wordpress-master/plugin.json: OK
+  employees/specialized/wordpress-master/wp-trace-diagnosis.md: OK
+  employees/specialized/wordpress-master/wp_trace_diag.py: OK
+  examples/capabilities/G05/binding_oracle.py: OK
+  examples/capabilities/G07/README.md: OK
+  examples/capabilities/G07/fixtures/identity-impostor.json: OK
+  examples/capabilities/G07/fixtures/identity-mini1.json: OK
+  examples/capabilities/G07/fixtures/identity-mini2.json: OK
+  examples/capabilities/G07/naive_registry.py: OK
+  examples/capabilities/G07/noop_registry.py: OK
+  examples/capabilities/G07/registry_oracle.py: OK
+  examples/capabilities/G08/README.md: OK
+  examples/capabilities/G08/deploy_oracle.py: OK
+  examples/capabilities/G08/fixtures/artifact-r1/REVISION: OK
+  examples/capabilities/G08/fixtures/artifact-r1/health.json: OK
+  examples/capabilities/G08/fixtures/artifact-r1/index.html: OK
+  examples/capabilities/G08/fixtures/artifact-r1/migrate.sql: OK
+  examples/capabilities/G08/fixtures/artifact-r2/REVISION: OK
+  examples/capabilities/G08/fixtures/artifact-r2/health.json: OK
+  examples/capabilities/G08/fixtures/artifact-r2/index.html: OK
+  examples/capabilities/G08/fixtures/artifact-r2/migrate.sql: OK
+  examples/capabilities/G08/fixtures/artifact-r3-badmigration/REVISION: OK
+  examples/capabilities/G08/fixtures/artifact-r3-badmigration/health.json: OK
+  examples/capabilities/G08/fixtures/artifact-r3-badmigration/index.html: OK
+  examples/capabilities/G08/fixtures/artifact-r3-badmigration/migrate.sql: OK
+  examples/capabilities/G08/fixtures/artifact-r3-broken/REVISION: OK
+  examples/capabilities/G08/fixtures/artifact-r3-broken/health.json: OK
+  examples/capabilities/G08/fixtures/artifact-r3-broken/index.html: OK
+  examples/capabilities/G08/fixtures/artifact-r3-broken/migrate.sql: OK
+  examples/capabilities/G08/fixtures/env/ENVIRONMENT.json: OK
+  examples/capabilities/G08/fixtures/seed.sql: OK
+  examples/capabilities/G08/make_world.py: OK
+  examples/capabilities/G08/naive_deploy.py: OK
+  examples/capabilities/G08/noop_deploy.py: OK
+  examples/capabilities/G09/README.md: OK
+  examples/capabilities/G09/fixtures/broken/shop-broken.yaml: OK
+  examples/capabilities/G09/fixtures/clean/shop.yaml: OK
+  examples/capabilities/G09/fixtures/clean/worker.yaml: OK
+  examples/capabilities/G09/k8s_oracle.py: OK
+  examples/capabilities/G09/naive_check.py: OK
+  examples/capabilities/G09/noop_check.py: OK
+  examples/capabilities/G10/README.md: OK
+  examples/capabilities/G10/diagnosis_oracle.py: OK
+  examples/capabilities/G10/fixtures/01-clean-control.json: OK
+  examples/capabilities/G10/fixtures/02-dns-nxdomain.json: OK
+  examples/capabilities/G10/fixtures/03-dns-timeout-no-route-to-resolver.json: OK
+  examples/capabilities/G10/fixtures/04-route-blackhole.json: OK
+  examples/capabilities/G10/fixtures/05-route-path-loss.json: OK
+  examples/capabilities/G10/fixtures/06-tls-expired.json: OK
+  examples/capabilities/G10/fixtures/07-tls-name-mismatch-unverified-dns.json: OK
+  examples/capabilities/G10/fixtures/08-app-not-listening.json: OK
+  examples/capabilities/G10/fixtures/09-app-upstream-503.json: OK
+  examples/capabilities/G10/fixtures/10-incomplete-dns-only.json: OK
+  examples/capabilities/G10/fixtures/11-traceroute-filtered-but-healthy.json: OK
+  examples/capabilities/G10/fixtures/12-tls-fail-no-dns-evidence.json: OK
+  examples/capabilities/G10/naive_stub.py: OK
+  examples/capabilities/G10/noop_stub.py: OK
+  examples/capabilities/G11/README.md: OK
+  examples/capabilities/G11/fixtures/01-clean-control.json: OK
+  examples/capabilities/G11/fixtures/02-deploy-regression.json: OK
+  examples/capabilities/G11/fixtures/03-dns-fault-during-impact.json: OK
+  examples/capabilities/G11/fixtures/04-impact-before-change.json: OK
+  examples/capabilities/G11/fixtures/05-gap-after-change.json: OK
+  examples/capabilities/G11/fixtures/06-migration-without-snapshot.json: OK
+  examples/capabilities/G11/fixtures/07-conflicting-minutes.json: OK
+  examples/capabilities/G11/fixtures/traces/dns-nxdomain-0930.json: OK
+  examples/capabilities/G11/incident_oracle.py: OK
+  examples/capabilities/G11/naive_stub.py: OK
+  examples/capabilities/G11/noop_stub.py: OK
+  examples/capabilities/G14/README.md: OK
+  examples/capabilities/G14/cash_oracle.py: OK
+  examples/capabilities/G14/fixtures/clean/bank.csv: OK
+  examples/capabilities/G14/fixtures/clean/credits.csv: OK
+  examples/capabilities/G14/fixtures/clean/invoices.csv: OK
+  examples/capabilities/G14/fixtures/clean/package.json: OK
+  examples/capabilities/G14/fixtures/clean/payments.csv: OK
+  examples/capabilities/G14/fixtures/september/bank.csv: OK
+  examples/capabilities/G14/fixtures/september/credits.csv: OK
+  examples/capabilities/G14/fixtures/september/invoices.csv: OK
+  examples/capabilities/G14/fixtures/september/package.json: OK
+  examples/capabilities/G14/fixtures/september/payments.csv: OK
+  examples/capabilities/G14/naive_stub.py: OK
+  examples/capabilities/G14/noop_stub.py: OK
+  examples/capabilities/G15/README.md: OK
+  examples/capabilities/G15/fixtures/clean-aa/assignments.csv: OK
+  examples/capabilities/G15/fixtures/clean-aa/events.csv: OK
+  examples/capabilities/G15/fixtures/clean-aa/package.json: OK
+  examples/capabilities/G15/fixtures/retention-lift/assignments.csv: OK
+  examples/capabilities/G15/fixtures/retention-lift/events.csv: OK
+  examples/capabilities/G15/fixtures/retention-lift/package.json: OK
+  examples/capabilities/G15/fixtures/sample-ratio-mismatch/assignments.csv: OK
+  examples/capabilities/G15/fixtures/sample-ratio-mismatch/events.csv: OK
+  examples/capabilities/G15/fixtures/sample-ratio-mismatch/package.json: OK
+  examples/capabilities/G15/naive_stub.py: OK
+  examples/capabilities/G15/noop_stub.py: OK
+  examples/capabilities/G15/readout_oracle.py: OK
+  examples/capabilities/G16/README.md: OK
+  examples/capabilities/G16/fixtures/answers-imported-example.jsonl: OK
+  examples/capabilities/G16/fixtures/fault-plan.json: OK
+  examples/capabilities/G16/fixtures/questions-v1.jsonl: OK
+  examples/capabilities/G16/fixtures/questions-v2.jsonl: OK
+  examples/capabilities/G16/fixtures/snapshot-v1/NOTICE.txt: OK
+  examples/capabilities/G16/fixtures/snapshot-v1/accessibility.md: OK
+  examples/capabilities/G16/fixtures/snapshot-v1/fares.md: OK
+  examples/capabilities/G16/fixtures/snapshot-v1/lost-found.md: OK
+  examples/capabilities/G16/fixtures/snapshot-v1/refunds.md: OK
+  examples/capabilities/G16/fixtures/snapshot-v2/NOTICE.txt: OK
+  examples/capabilities/G16/fixtures/snapshot-v2/accessibility.md: OK
+  examples/capabilities/G16/fixtures/snapshot-v2/fares.md: OK
+  examples/capabilities/G16/fixtures/snapshot-v2/lost-found.md: OK
+  examples/capabilities/G16/fixtures/snapshot-v2/paratransit.md: OK
+  examples/capabilities/G16/fixtures/snapshot-v2/refunds.md: OK
+  examples/capabilities/G16/grounding_oracle.py: OK
+  examples/capabilities/G16/naive_stub.py: OK
+  examples/capabilities/G16/noop_stub.py: OK
+  examples/capabilities/G17/README.md: OK
+  examples/capabilities/G17/decision_oracle.py: OK
+  examples/capabilities/G17/fixtures/books-sept/bank.csv: OK
+  examples/capabilities/G17/fixtures/books-sept/credits.csv: OK
+  examples/capabilities/G17/fixtures/books-sept/invoices.csv: OK
+  examples/capabilities/G17/fixtures/books-sept/package.json: OK
+  examples/capabilities/G17/fixtures/books-sept/payments.csv: OK
+  examples/capabilities/G17/fixtures/books-unreconciled/bank.csv: OK
+  examples/capabilities/G17/fixtures/books-unreconciled/credits.csv: OK
+  examples/capabilities/G17/fixtures/books-unreconciled/invoices.csv: OK
+  examples/capabilities/G17/fixtures/books-unreconciled/package.json: OK
+  examples/capabilities/G17/fixtures/books-unreconciled/payments.csv: OK
+  examples/capabilities/G17/fixtures/studio.json: OK
+  examples/capabilities/G17/naive_decision.py: OK
+  examples/capabilities/G17/noop_decision.py: OK
+  examples/capabilities/G20/README.md: OK
+  examples/capabilities/G20/browser_checks.py: OK
+  examples/capabilities/G20/core_tests.js: OK
+  examples/capabilities/G20/demo/fixture-data.js: OK
+  examples/capabilities/G20/demo/index.html: OK
+  examples/capabilities/G20/fixtures/articles.json: OK
+  examples/capabilities/G20/harness.js: OK
+  examples/capabilities/G20/make_fixtures.py: OK
+  examples/capabilities/G20/naive_core.js: OK
+  examples/capabilities/G20/noop_core.js: OK
+  examples/capabilities/G20/oracle_checks.js: OK
+  examples/capabilities/G20/rendered/README.md: OK
+  examples/capabilities/G20/rendered/report.json: OK
+  examples/capabilities/G20/rendered/screenshot-1280.png: OK
+  examples/capabilities/G20/rendered/screenshot-320.png: OK
+  examples/capabilities/G20/rendered/screenshot-360.png: OK
+  examples/capabilities/G20/ui_oracle.py: OK
+  examples/capabilities/G21/README.md: OK
+  examples/capabilities/G21/naive_sync.py: OK
+  examples/capabilities/G21/noop_sync.py: OK
+  examples/capabilities/G21/sync_oracle.py: OK
+  examples/capabilities/G22/README.md: OK
+  examples/capabilities/G22/fixtures/catalog.json: OK
+  examples/capabilities/G22/fixtures/september.jsonl: OK
+  examples/capabilities/G22/fixtures/test-secret.txt: OK
+  examples/capabilities/G22/ledger_oracle.py: OK
+  examples/capabilities/G22/make_stream.py: OK
+  examples/capabilities/G22/naive_ledger.py: OK
+  examples/capabilities/G22/noop_ledger.py: OK
+  examples/capabilities/G23/README.md: OK
+  examples/capabilities/G23/fixtures/01-clean-control.json: OK
+  examples/capabilities/G23/fixtures/02-plugin-conflict.json: OK
+  examples/capabilities/G23/fixtures/03-slow-and-repeated-query.json: OK
+  examples/capabilities/G23/fixtures/04-config-faults.json: OK
+  examples/capabilities/G23/fixtures/05-before.json: OK
+  examples/capabilities/G23/fixtures/06-after-same-measurements.json: OK
+  examples/capabilities/G23/fixtures/07-after-different-measurements.json: OK
+  examples/capabilities/G23/fixtures/08-bisect-ambiguous.json: OK
+  examples/capabilities/G23/make_fixtures.py: OK
+  examples/capabilities/G23/naive_stub.py: OK
+  examples/capabilities/G23/noop_stub.py: OK
+  examples/capabilities/G23/wp_oracle.py: OK
+  examples/capabilities/G25/README.md: OK
+  examples/capabilities/G25/fixtures/clean-events.jsonl: OK
+  examples/capabilities/G25/fixtures/commands.jsonl: OK
+  examples/capabilities/G25/fixtures/faulty-events.jsonl: OK
+  examples/capabilities/G25/fixtures/malformed-events.jsonl: OK
+  examples/capabilities/G25/fixtures/unexplained-events.jsonl: OK
+  examples/capabilities/G25/naive_stub.py: OK
+  examples/capabilities/G25/noop_stub.py: OK
+  examples/capabilities/G25/protocol_oracle.py: OK
+  examples/capabilities/G31/README.md: OK
+  examples/capabilities/G31/fixtures/capacity/books-sept/bank.csv: OK
+  examples/capabilities/G31/fixtures/capacity/books-sept/credits.csv: OK
+  examples/capabilities/G31/fixtures/capacity/books-sept/invoices.csv: OK
+  examples/capabilities/G31/fixtures/capacity/books-sept/package.json: OK
+  examples/capabilities/G31/fixtures/capacity/books-sept/payments.csv: OK
+  examples/capabilities/G31/fixtures/capacity/studio-result.json: OK
+  examples/capabilities/G31/fixtures/capacity/studio.json: OK
+  examples/capabilities/G31/fixtures/delivery.json: OK
+  examples/capabilities/G31/fixtures/demos/CAP-booking.json: OK
+  examples/capabilities/G31/fixtures/demos/CAP-dashboard.json: OK
+  examples/capabilities/G31/fixtures/demos/CAP-import.json: OK
+  examples/capabilities/G31/fixtures/demos/CAP-sms.json: OK
+  examples/capabilities/G31/fixtures/evidence/AC1.txt: OK
+  examples/capabilities/G31/fixtures/evidence/AC2.txt: OK
+  examples/capabilities/G31/fixtures/evidence/AC3.txt: OK
+  examples/capabilities/G31/fixtures/evidence/AC4.txt: OK
+  examples/capabilities/G31/fixtures/evidence/AC5.txt: OK
+  examples/capabilities/G31/fixtures/portal.json: OK
+  examples/capabilities/G31/naive_scope.py: OK
+  examples/capabilities/G31/noop_scope.py: OK
+  examples/capabilities/G31/scope_oracle.py: OK
+  examples/capabilities/G32/README.md: OK
+  examples/capabilities/G32/fixtures/account.json: OK
+  examples/capabilities/G32/fixtures/events.jsonl: OK
+  examples/capabilities/G32/followthrough_oracle.py: OK
+  examples/capabilities/G32/naive_followthrough.py: OK
+  examples/capabilities/G32/noop_followthrough.py: OK
+  examples/capabilities/G33/README.md: OK
+  examples/capabilities/G33/evidence_oracle.py: OK
+  examples/capabilities/G33/fixtures/choice.json: OK
+  examples/capabilities/G33/fixtures/g13-gaps/contract.json: OK
+  examples/capabilities/G33/fixtures/g13-gaps/control.csv: OK
+  examples/capabilities/G33/fixtures/g13-gaps/customers.csv: OK
+  examples/capabilities/G33/fixtures/g13-gaps/orders.csv: OK
+  examples/capabilities/G33/fixtures/g13/contract.json: OK
+  examples/capabilities/G33/fixtures/g13/control.csv: OK
+  examples/capabilities/G33/fixtures/g13/customers.csv: OK
+  examples/capabilities/G33/fixtures/g13/orders.csv: OK
+  examples/capabilities/G33/fixtures/sources/ana.txt: OK
+  examples/capabilities/G33/fixtures/sources/ben.txt: OK
+  examples/capabilities/G33/fixtures/sources/cy.txt: OK
+  examples/capabilities/G33/fixtures/sources/market.txt: OK
+  examples/capabilities/G33/fixtures/sources/reviews.txt: OK
+  examples/capabilities/G33/naive_decision.py: OK
+  examples/capabilities/G33/noop_decision.py: OK
+  examples/capabilities/G34/README.md: OK
+  examples/capabilities/G34/diag_oracle.py: OK
+  examples/capabilities/G34/fixtures/after/config.json: OK
+  examples/capabilities/G34/fixtures/after/expected.json: OK
+  examples/capabilities/G34/fixtures/after/site/about.html: OK
+  examples/capabilities/G34/fixtures/after/site/blog/decision-logs.html: OK
+  examples/capabilities/G34/fixtures/after/site/blog/index.html: OK
+  examples/capabilities/G34/fixtures/after/site/contact.html: OK
+  examples/capabilities/G34/fixtures/after/site/features.html: OK
+  examples/capabilities/G34/fixtures/after/site/index.html: OK
+  examples/capabilities/G34/fixtures/after/site/pricing.html: OK
+  examples/capabilities/G34/fixtures/after/site/signup.html: OK
+  examples/capabilities/G34/fixtures/after/site/sitemap.xml: OK
+  examples/capabilities/G34/fixtures/after/site/thanks.html: OK
+  examples/capabilities/G34/fixtures/before/config.json: OK
+  examples/capabilities/G34/fixtures/before/expected.json: OK
+  examples/capabilities/G34/fixtures/before/site/about.html: OK
+  examples/capabilities/G34/fixtures/before/site/blog/decision-logs.html: OK
+  examples/capabilities/G34/fixtures/before/site/blog/index.html: OK
+  examples/capabilities/G34/fixtures/before/site/contact.html: OK
+  examples/capabilities/G34/fixtures/before/site/features.html: OK
+  examples/capabilities/G34/fixtures/before/site/index.html: OK
+  examples/capabilities/G34/fixtures/before/site/pricing.html: OK
+  examples/capabilities/G34/fixtures/before/site/signup.html: OK
+  examples/capabilities/G34/fixtures/before/site/sitemap.xml: OK
+  examples/capabilities/G34/fixtures/before/site/spring-offer.html: OK
+  examples/capabilities/G34/fixtures/before/site/thanks.html: OK
+  examples/capabilities/G34/fixtures/clean/config.json: OK
+  examples/capabilities/G34/fixtures/clean/expected.json: OK
+  examples/capabilities/G34/fixtures/clean/site/guide/index.html: OK
+  examples/capabilities/G34/fixtures/clean/site/index.html: OK
+  examples/capabilities/G34/fixtures/clean/site/sitemap.xml: OK
+  examples/capabilities/G34/fixtures/clean/site/visit.html: OK
+  examples/capabilities/G34/fixtures/unseen/config.json: OK
+  examples/capabilities/G34/fixtures/unseen/expected.json: OK
+  examples/capabilities/G34/fixtures/unseen/site/Guides/index.html: OK
+  examples/capabilities/G34/fixtures/unseen/site/Guides/knots.html: OK
+  examples/capabilities/G34/fixtures/unseen/site/blog/tides-2019.html: OK
+  examples/capabilities/G34/fixtures/unseen/site/café.html: OK
+  examples/capabilities/G34/fixtures/unseen/site/checkout.html: OK
+  examples/capabilities/G34/fixtures/unseen/site/docs/index.html: OK
+  examples/capabilities/G34/fixtures/unseen/site/draft.html: OK
+  examples/capabilities/G34/fixtures/unseen/site/index.html: OK
+  examples/capabilities/G34/fixtures/unseen/site/kits.html: OK
+  examples/capabilities/G34/fixtures/unseen/site/legacy.html: OK
+  examples/capabilities/G34/fixtures/unseen/site/shop.html: OK
+  examples/capabilities/G34/fixtures/unseen/site/sitemap.xml: OK
+  examples/capabilities/G34/make_fixtures.py: OK
+  examples/capabilities/G34/naive_diagnostics.py: OK
+  examples/capabilities/G34/noop_diagnostics.py: OK
+  examples/capabilities/G35/README.md: OK
+  examples/capabilities/G35/campaign_oracle.py: OK
+  examples/capabilities/G35/fixtures/clean/campaign.json: OK
+  examples/capabilities/G35/fixtures/clean/conversions.jsonl: OK
+  examples/capabilities/G35/fixtures/clean/creatives.json: OK
+  examples/capabilities/G35/fixtures/clean/finance/bank.csv: OK
+  examples/capabilities/G35/fixtures/clean/finance/credits.csv: OK
+  examples/capabilities/G35/fixtures/clean/finance/invoices.csv: OK
+  examples/capabilities/G35/fixtures/clean/finance/package.json: OK
+  examples/capabilities/G35/fixtures/clean/finance/payments.csv: OK
+  examples/capabilities/G35/fixtures/clean/orders-contract.json: OK
+  examples/capabilities/G35/fixtures/clean/orders.csv: OK
+  examples/capabilities/G35/fixtures/clean/spend-contract.json: OK
+  examples/capabilities/G35/fixtures/clean/spend.csv: OK
+  examples/capabilities/G35/fixtures/clean/touches.jsonl: OK
+  examples/capabilities/G35/fixtures/september/campaign.json: OK
+  examples/capabilities/G35/fixtures/september/conversions.jsonl: OK
+  examples/capabilities/G35/fixtures/september/creatives.json: OK
+  examples/capabilities/G35/fixtures/september/finance/bank.csv: OK
+  examples/capabilities/G35/fixtures/september/finance/credits.csv: OK
+  examples/capabilities/G35/fixtures/september/finance/invoices.csv: OK
+  examples/capabilities/G35/fixtures/september/finance/package.json: OK
+  examples/capabilities/G35/fixtures/september/finance/payments.csv: OK
+  examples/capabilities/G35/fixtures/september/orders-contract.json: OK
+  examples/capabilities/G35/fixtures/september/orders.csv: OK
+  examples/capabilities/G35/fixtures/september/spend-contract.json: OK
+  examples/capabilities/G35/fixtures/september/spend.csv: OK
+  examples/capabilities/G35/fixtures/september/touches.jsonl: OK
+  examples/capabilities/G35/naive_ledger.py: OK
+  examples/capabilities/G35/noop_ledger.py: OK
+  examples/capabilities/G42/README.md: OK
+  examples/capabilities/G42/cross_checks.py: OK
+  examples/capabilities/G42/plan.json: OK
+  tests/test_closure_hardening.py: OK
+  tests/test_fixture_runner.py: OK
+  tests/test_g02_capability.py: OK
+  tests/test_g04_capability.py: OK
+  tests/test_g07_capability.py: OK
+  tests/test_g08_capability.py: OK
+  tests/test_g09_capability.py: OK
+  tests/test_g10_capability.py: OK
+  tests/test_g11_capability.py: OK
+  tests/test_g14_capability.py: OK
+  tests/test_g15_capability.py: OK
+  tests/test_g16_capability.py: OK
+  tests/test_g17_capability.py: OK
+  tests/test_g20_capability.py: OK
+  tests/test_g21_capability.py: OK
+  tests/test_g22_capability.py: OK
+  tests/test_g23_capability.py: OK
+  tests/test_g25_capability.py: OK
+  tests/test_g31_capability.py: OK
+  tests/test_g32_capability.py: OK
+  tests/test_g33_capability.py: OK
+  tests/test_g34_capability.py: OK
+  tests/test_g35_capability.py: OK
+  tests/test_g42_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   docs/install.md                                    |    5 +-
+   employees/data/data-analyst/SKILL.md               |    1 +
+   .../data/data-analyst/capability.contract.json     |    3 +-
+   employees/data/data-scientist/SKILL.md             |   11 +
+   .../data/data-scientist/capability.contract.json   |   13 +-
+   .../data/data-scientist/experiment-readout.md      |   91 +
+   .../data/data-scientist/experiment_readout.py      |  516 +++
+   employees/data/data-scientist/learnings.md         |    4 +
+   employees/data/data-scientist/plugin.json          |    3 +-
+   .../engineering/ai-automation-engineer/SKILL.md    |    2 +-
+   employees/engineering/ai-ml-engineer/SKILL.md      |    1 +
+   employees/engineering/ai-ml-engineer/learnings.md  |    4 +
+   employees/engineering/devops-engineer/SKILL.md     |    9 +
+   .../devops-engineer/capability.contract.json       |    8 +-
+   employees/engineering/devops-engineer/learnings.md |   10 +
+   .../devops-engineer/local-deploy-preflight.md      |   78 +
+   .../engineering/devops-engineer/local_deploy.py    |  488 +++
+   employees/engineering/devops-engineer/plugin.json  |    1 +
+   employees/engineering/frontend-developer/SKILL.md  |    8 +-
+   .../frontend-developer/async-search-ui.md          |   68 +
+   .../frontend-developer/async_search_core.js        |  208 +
+   .../frontend-developer/capability.contract.json    |   16 +-
+   .../engineering/frontend-developer/learnings.md    |   10 +
+   .../engineering/frontend-developer/plugin.json     |    3 +-
+   .../engineering/full-stack-developer/SKILL.md      |    1 +
+   .../full-stack-developer/capability.contract.json  |    3 +-
+   .../engineering/full-stack-developer/learnings.md  |    3 +
+   employees/engineering/iot-engineer/SKILL.md        |    9 +-
+   .../iot-engineer/capability.contract.json          |   16 +-
+   .../iot-engineer/device-event-protocol.md          |   96 +
+   .../engineering/iot-engineer/device_protocol.py    |  691 ++++
+   employees/engineering/iot-engineer/learnings.md    |    7 +
+   employees/engineering/iot-engineer/plugin.json     |    3 +-
+   employees/engineering/llm-agent-designer/SKILL.md  |   11 +
+   .../llm-agent-designer/capability.contract.json    |   16 +-
+   .../llm-agent-designer/grounded-answer-evals.md    |  152 +
+   .../llm-agent-designer/grounded_eval.py            |  989 +++++
+   .../engineering/llm-agent-designer/learnings.md    |   12 +
+   .../engineering/llm-agent-designer/plugin.json     |    3 +-
+   employees/engineering/mobile-developer/SKILL.md    |    9 +
+   .../mobile-developer/capability.contract.json      |   11 +-
+   .../engineering/mobile-developer/learnings.md      |    3 +
+   .../engineering/mobile-developer/offline-sync.md   |   81 +
+   .../engineering/mobile-developer/offline_sync.py   |  565 +++
+   employees/engineering/mobile-developer/plugin.json |    3 +-
+   employees/infrastructure/cloud-architect/SKILL.md  |    2 +
+   .../cloud-architect/capability.contract.json       |    3 +-
+   .../infrastructure/cloud-architect/learnings.md    |    2 +
+   employees/infrastructure/fleet-dispatcher/SKILL.md |    2 +
+   .../fleet-dispatcher/capability.contract.json      |    3 +-
+   .../fleet-dispatcher/handoff-work-orders.md        |   16 +-
+   .../infrastructure/fleet-dispatcher/handoff.py     |   65 +-
+   .../infrastructure/fleet-dispatcher/learnings.md   |    1 +
+   .../infrastructure/fleet-provisioner/SKILL.md      |    6 +
+   .../fleet-provisioner/capability.contract.json     |   10 +-
+   .../fleet-provisioner/fleet-registration.md        |   54 +
+   .../infrastructure/fleet-provisioner/learnings.md  |    3 +
+   .../infrastructure/fleet-provisioner/plugin.json   |    2 +-
+   .../infrastructure/fleet-provisioner/registry.py   |  336 ++
+   .../infrastructure/kubernetes-specialist/SKILL.md  |    8 +
+   .../kubernetes-specialist/capability.contract.json |    8 +-
+   .../kubernetes-specialist/k8s-manifest-check.md    |   63 +
+   .../kubernetes-specialist/k8s_manifest_check.py    | 1029 +++++
+   .../kubernetes-specialist/learnings.md             |    5 +
+   .../kubernetes-specialist/plugin.json              |    1 +
+   employees/infrastructure/network-engineer/SKILL.md |    6 +
+   .../network-engineer/capability.contract.json      |   16 +-
+   .../infrastructure/network-engineer/learnings.md   |    9 +-
+   .../infrastructure/network-engineer/netdiag.py     |  897 +++++
+   .../network-engineer/offline-trace-diagnosis.md    |   57 +
+   .../infrastructure/network-engineer/plugin.json    |    3 +-
+   .../site-reliability-engineer/SKILL.md             |   10 +
+   .../capability.contract.json                       |    9 +-
+   .../site-reliability-engineer/incident-slo.md      |   97 +
+   .../site-reliability-engineer/incident_slo.py      |  663 ++++
+   .../site-reliability-engineer/learnings.md         |    3 +
+   .../site-reliability-engineer/plugin.json          |    1 +
+   employees/leadership/cfo/SKILL.md                  |    8 +
+   employees/leadership/cfo/capability.contract.json  |   14 +-
+   .../leadership/cfo/cash-revenue-reconciliation.md  |   69 +
+   employees/leadership/cfo/cash_revenue_reconcile.py |  486 +++
+   employees/leadership/cfo/learnings.md              |    2 +
+   employees/leadership/cfo/plugin.json               |    1 +
+   employees/leadership/cmo/SKILL.md                  |    7 +
+   employees/leadership/cmo/capability.contract.json  |    6 +-
+   employees/leadership/cmo/learnings.md              |    2 +
+   employees/leadership/coo/SKILL.md                  |    9 +
+   employees/leadership/coo/capability.contract.json  |    9 +-
+   employees/leadership/coo/learnings.md              |    4 +
+   employees/leadership/coo/plugin.json               |    1 +
+   employees/leadership/coo/resource-cash-decision.md |   59 +
+   employees/leadership/coo/resource_decision.py      |  757 ++++
+   employees/marketing/content-marketer/SKILL.md      |    2 +-
+   employees/marketing/cro-landing-designer/SKILL.md  |    2 +-
+   employees/marketing/email-specialist/SKILL.md      |    1 +
+   .../email-specialist/capability.contract.json      |    3 +-
+   employees/marketing/email-specialist/learnings.md  |    1 +
+   employees/marketing/market-researcher/SKILL.md     |    3 +
+   .../market-researcher/capability.contract.json     |    3 +-
+   employees/marketing/market-researcher/learnings.md |    1 +
+   employees/marketing/paid-ads-manager/SKILL.md      |    9 +
+   .../paid-ads-manager/campaign-accounting.md        |   66 +
+   .../marketing/paid-ads-manager/campaign_ledger.py  |  704 ++++
+   .../paid-ads-manager/capability.contract.json      |   11 +-
+   employees/marketing/paid-ads-manager/learnings.md  |    1 +
+   employees/marketing/paid-ads-manager/plugin.json   |    1 +
+   employees/marketing/seo-aso-specialist/SKILL.md    |    3 +-
+   .../seo-aso-specialist/capability.contract.json    |   16 +-
+   .../seo-aso-specialist/content-diagnostics.md      |   48 +
+   .../marketing/seo-aso-specialist/learnings.md      |    6 +
+   .../seo-aso-specialist/page_diagnostics.py         |  677 ++++
+   employees/marketing/seo-aso-specialist/plugin.json |    3 +-
+   employees/marketing/social-media-manager/SKILL.md  |    6 +
+   .../social-media-manager/capability.contract.json  |    3 +-
+   .../marketing/social-media-manager/learnings.md    |    1 +
+   .../product-project/business-analyst/SKILL.md      |   11 +
+   .../business-analyst/capability.contract.json      |    9 +-
+   .../product-project/business-analyst/learnings.md  |    3 +
+   .../product-project/business-analyst/plugin.json   |    1 +
+   .../business-analyst/scope-estimate-acceptance.md  |   90 +
+   .../business-analyst/scope_acceptance.py           |  659 ++++
+   employees/product-project/delivery-lead/SKILL.md   |    1 +
+   .../delivery-lead/capability.contract.json         |    3 +-
+   employees/product-project/product-manager/SKILL.md |   13 +-
+   .../product-manager/capability.contract.json       |   14 +-
+   .../product-manager/evidence-product-decision.md   |   63 +
+   .../product-manager/evidence_decision.py           |  437 +++
+   .../product-project/product-manager/learnings.md   |    2 +
+   .../product-project/product-manager/plugin.json    |    1 +
+   .../product-project/project-onboarding/SKILL.md    |    2 +-
+   .../product-project/project-onboarding/activate.py |   21 +-
+   .../project-onboarding/learnings.md                |    1 +
+   employees/quality-security/assurance/ASSURANCE.md  |   77 +-
+   employees/quality-security/assurance/quality_os.py |  271 +-
+   .../quality-security/performance-engineer/SKILL.md |    1 +
+   .../performance-engineer/learnings.md              |    2 +
+   employees/sales-outreach/customer-success/SKILL.md |    7 +
+   .../customer-success/capability.contract.json      |    8 +-
+   .../customer-success/consent-follow-through.md     |   60 +
+   .../customer-success/followthrough.py              |  492 +++
+   .../sales-outreach/customer-success/learnings.md   |    1 +
+   .../sales-outreach/customer-success/plugin.json    |    3 +-
+   .../sales-outreach/outreach-specialist/SKILL.md    |    2 +
+   .../outreach-specialist/capability.contract.json   |    3 +-
+   employees/sales-outreach/proposal-writer/SKILL.md  |    2 +
+   .../proposal-writer/capability.contract.json       |    3 +-
+   employees/sales-outreach/sales-engineer/SKILL.md   |    2 +
+   .../sales-engineer/capability.contract.json        |    3 +-
+   .../sales-outreach/sales-engineer/learnings.md     |    1 +
+   .../specialized/ecommerce-specialist/SKILL.md      |    1 +
+   .../ecommerce-specialist/capability.contract.json  |    3 +-
+   .../specialized/ecommerce-specialist/learnings.md  |    1 +
+   employees/specialized/payments-specialist/SKILL.md |   11 +
+   .../payments-specialist/capability.contract.json   |   11 +-
+   .../specialized/payments-specialist/learnings.md   |    2 +
+   .../payments-specialist/payment_ledger.py          |  680 ++++
+   .../specialized/payments-specialist/plugin.json    |    1 +
+   .../payments-specialist/webhook-ledger.md          |  103 +
+   employees/specialized/wordpress-master/SKILL.md    |    9 +-
+   .../wordpress-master/capability.contract.json      |   16 +-
+   .../diagnostics/plugin-conflicts/SKILL.md          |    4 +
+   .../specialized/wordpress-master/learnings.md      |    7 +
+   employees/specialized/wordpress-master/plugin.json |    3 +-
+   .../wordpress-master/wp-trace-diagnosis.md         |   84 +
+   .../specialized/wordpress-master/wp_trace_diag.py  |  663 ++++
+   examples/capabilities/G05/binding_oracle.py        |    6 +-
+   examples/capabilities/G07/README.md                |   42 +
+   .../G07/fixtures/identity-impostor.json            |    1 +
+   .../capabilities/G07/fixtures/identity-mini1.json  |    1 +
+   .../capabilities/G07/fixtures/identity-mini2.json  |    1 +
+   examples/capabilities/G07/naive_registry.py        |   61 +
+   examples/capabilities/G07/noop_registry.py         |    6 +
+   examples/capabilities/G07/registry_oracle.py       |  275 ++
+   examples/capabilities/G08/README.md                |   43 +
+   examples/capabilities/G08/deploy_oracle.py         |  394 ++
+   .../capabilities/G08/fixtures/artifact-r1/REVISION |    1 +
+   .../G08/fixtures/artifact-r1/health.json           |    1 +
+   .../G08/fixtures/artifact-r1/index.html            |    1 +
+   .../G08/fixtures/artifact-r1/migrate.sql           |    1 +
+   .../capabilities/G08/fixtures/artifact-r2/REVISION |    1 +
+   .../G08/fixtures/artifact-r2/health.json           |    1 +
+   .../G08/fixtures/artifact-r2/index.html            |    2 +
+   .../G08/fixtures/artifact-r2/migrate.sql           |    3 +
+   .../G08/fixtures/artifact-r3-badmigration/REVISION |    1 +
+   .../fixtures/artifact-r3-badmigration/health.json  |    1 +
+   .../fixtures/artifact-r3-badmigration/index.html   |    1 +
+   .../fixtures/artifact-r3-badmigration/migrate.sql  |    3 +
+   .../G08/fixtures/artifact-r3-broken/REVISION       |    1 +
+   .../G08/fixtures/artifact-r3-broken/health.json    |    1 +
+   .../G08/fixtures/artifact-r3-broken/index.html     |    0
+   .../G08/fixtures/artifact-r3-broken/migrate.sql    |    2 +
+   .../capabilities/G08/fixtures/env/ENVIRONMENT.json |    1 +
+   examples/capabilities/G08/fixtures/seed.sql        |    2 +
+   examples/capabilities/G08/make_world.py            |   54 +
+   examples/capabilities/G08/naive_deploy.py          |   57 +
+   examples/capabilities/G08/noop_deploy.py           |    5 +
+   examples/capabilities/G09/README.md                |   28 +
+   .../G09/fixtures/broken/shop-broken.yaml           |  101 +
+   examples/capabilities/G09/fixtures/clean/shop.yaml |  101 +
+   .../capabilities/G09/fixtures/clean/worker.yaml    |   80 +
+   examples/capabilities/G09/k8s_oracle.py            |  385 ++
+   examples/capabilities/G09/naive_check.py           |   35 +
+   examples/capabilities/G09/noop_check.py            |   11 +
+   examples/capabilities/G10/README.md                |   57 +
+   examples/capabilities/G10/diagnosis_oracle.py      |  407 ++
+   .../G10/fixtures/01-clean-control.json             |   73 +
+   .../capabilities/G10/fixtures/02-dns-nxdomain.json |   46 +
+   .../03-dns-timeout-no-route-to-resolver.json       |   30 +
+   .../G10/fixtures/04-route-blackhole.json           |   53 +
+   .../G10/fixtures/05-route-path-loss.json           |   72 +
+   .../capabilities/G10/fixtures/06-tls-expired.json  |   65 +
+   .../07-tls-name-mismatch-unverified-dns.json       |   62 +
+   .../G10/fixtures/08-app-not-listening.json         |   49 +
+   .../G10/fixtures/09-app-upstream-503.json          |   74 +
+   .../G10/fixtures/10-incomplete-dns-only.json       |   43 +
+   .../11-traceroute-filtered-but-healthy.json        |   88 +
+   .../G10/fixtures/12-tls-fail-no-dns-evidence.json  |   46 +
+   examples/capabilities/G10/naive_stub.py            |   48 +
+   examples/capabilities/G10/noop_stub.py             |    5 +
+   examples/capabilities/G11/README.md                |   54 +
+   .../G11/fixtures/01-clean-control.json             |  448 +++
+   .../G11/fixtures/02-deploy-regression.json         |  485 +++
+   .../G11/fixtures/03-dns-fault-during-impact.json   |  488 +++
+   .../G11/fixtures/04-impact-before-change.json      |  485 +++
+   .../G11/fixtures/05-gap-after-change.json          |  418 ++
+   .../fixtures/06-migration-without-snapshot.json    |  485 +++
+   .../G11/fixtures/07-conflicting-minutes.json       |  497 +++
+   .../G11/fixtures/traces/dns-nxdomain-0930.json     |   46 +
+   examples/capabilities/G11/incident_oracle.py       |  512 +++
+   examples/capabilities/G11/naive_stub.py            |   52 +
+   examples/capabilities/G11/noop_stub.py             |    6 +
+   examples/capabilities/G14/README.md                |   51 +
+   examples/capabilities/G14/cash_oracle.py           |  480 +++
+   examples/capabilities/G14/fixtures/clean/bank.csv  |    2 +
+   .../capabilities/G14/fixtures/clean/credits.csv    |    1 +
+   .../capabilities/G14/fixtures/clean/invoices.csv   |    3 +
+   .../capabilities/G14/fixtures/clean/package.json   |   25 +
+   .../capabilities/G14/fixtures/clean/payments.csv   |    3 +
+   .../capabilities/G14/fixtures/september/bank.csv   |    4 +
+   .../G14/fixtures/september/credits.csv             |    4 +
+   .../G14/fixtures/september/invoices.csv            |    9 +
+   .../G14/fixtures/september/package.json            |   10 +
+   .../G14/fixtures/september/payments.csv            |   13 +
+   examples/capabilities/G14/naive_stub.py            |   36 +
+   examples/capabilities/G14/noop_stub.py             |    6 +
+   examples/capabilities/G15/README.md                |   44 +
+   .../G15/fixtures/clean-aa/assignments.csv          |  801 ++++
+   .../capabilities/G15/fixtures/clean-aa/events.csv  | 2601 +++++++++++++
+   .../G15/fixtures/clean-aa/package.json             |   32 +
+   .../G15/fixtures/retention-lift/assignments.csv    | 1233 ++++++
+   .../G15/fixtures/retention-lift/events.csv         | 4065 ++++++++++++++++++++
+   .../G15/fixtures/retention-lift/package.json       |   36 +
+   .../fixtures/sample-ratio-mismatch/assignments.csv |  721 ++++
+   .../G15/fixtures/sample-ratio-mismatch/events.csv  | 2347 +++++++++++
+   .../fixtures/sample-ratio-mismatch/package.json    |   32 +
+   examples/capabilities/G15/naive_stub.py            |   40 +
+   examples/capabilities/G15/noop_stub.py             |    6 +
+   examples/capabilities/G15/readout_oracle.py        |  501 +++
+   examples/capabilities/G16/README.md                |   68 +
+   .../G16/fixtures/answers-imported-example.jsonl    |   13 +
+   examples/capabilities/G16/fixtures/fault-plan.json |    1 +
+   .../capabilities/G16/fixtures/questions-v1.jsonl   |   12 +
+   .../capabilities/G16/fixtures/questions-v2.jsonl   |   12 +
+   .../G16/fixtures/snapshot-v1/NOTICE.txt            |    1 +
+   .../G16/fixtures/snapshot-v1/accessibility.md      |    4 +
+   .../capabilities/G16/fixtures/snapshot-v1/fares.md |    6 +
+   .../G16/fixtures/snapshot-v1/lost-found.md         |    3 +
+   .../G16/fixtures/snapshot-v1/refunds.md            |    4 +
+   .../G16/fixtures/snapshot-v2/NOTICE.txt            |    1 +
+   .../G16/fixtures/snapshot-v2/accessibility.md      |    3 +
+   .../capabilities/G16/fixtures/snapshot-v2/fares.md |    7 +
+   .../G16/fixtures/snapshot-v2/lost-found.md         |    3 +
+   .../G16/fixtures/snapshot-v2/paratransit.md        |    3 +
+   .../G16/fixtures/snapshot-v2/refunds.md            |    4 +
+   examples/capabilities/G16/grounding_oracle.py      |  900 +++++
+   examples/capabilities/G16/naive_stub.py            |   47 +
+   examples/capabilities/G16/noop_stub.py             |   17 +
+   examples/capabilities/G17/README.md                |   49 +
+   examples/capabilities/G17/decision_oracle.py       |  420 ++
+   .../capabilities/G17/fixtures/books-sept/bank.csv  |    2 +
+   .../G17/fixtures/books-sept/credits.csv            |    1 +
+   .../G17/fixtures/books-sept/invoices.csv           |    4 +
+   .../G17/fixtures/books-sept/package.json           |   10 +
+   .../G17/fixtures/books-sept/payments.csv           |    4 +
+   .../G17/fixtures/books-unreconciled/bank.csv       |    2 +
+   .../G17/fixtures/books-unreconciled/credits.csv    |    1 +
+   .../G17/fixtures/books-unreconciled/invoices.csv   |    4 +
+   .../G17/fixtures/books-unreconciled/package.json   |   10 +
+   .../G17/fixtures/books-unreconciled/payments.csv   |    4 +
+   examples/capabilities/G17/fixtures/studio.json     |  374 ++
+   examples/capabilities/G17/naive_decision.py        |   32 +
+   examples/capabilities/G17/noop_decision.py         |   15 +
+   examples/capabilities/G20/README.md                |   82 +
+   examples/capabilities/G20/browser_checks.py        |  348 ++
+   examples/capabilities/G20/core_tests.js            |  162 +
+   examples/capabilities/G20/demo/fixture-data.js     |    2 +
+   examples/capabilities/G20/demo/index.html          |  150 +
+   examples/capabilities/G20/fixtures/articles.json   |  962 +++++
+   examples/capabilities/G20/harness.js               |   33 +
+   examples/capabilities/G20/make_fixtures.py         |   38 +
+   examples/capabilities/G20/naive_core.js            |   31 +
+   examples/capabilities/G20/noop_core.js             |    9 +
+   examples/capabilities/G20/oracle_checks.js         |  226 ++
+   examples/capabilities/G20/rendered/README.md       |   16 +
+   examples/capabilities/G20/rendered/report.json     |  360 ++
+   .../capabilities/G20/rendered/screenshot-1280.png  |  Bin 0 -> 58070 bytes
+   .../capabilities/G20/rendered/screenshot-320.png   |  Bin 0 -> 46817 bytes
+   .../capabilities/G20/rendered/screenshot-360.png   |  Bin 0 -> 51963 bytes
+   examples/capabilities/G20/ui_oracle.py             |  122 +
+   examples/capabilities/G21/README.md                |   39 +
+   examples/capabilities/G21/naive_sync.py            |   72 +
+   examples/capabilities/G21/noop_sync.py             |   14 +
+   examples/capabilities/G21/sync_oracle.py           |  500 +++
+   examples/capabilities/G22/README.md                |   55 +
+   examples/capabilities/G22/fixtures/catalog.json    |    4 +
+   examples/capabilities/G22/fixtures/september.jsonl |   13 +
+   examples/capabilities/G22/fixtures/test-secret.txt |    1 +
+   examples/capabilities/G22/ledger_oracle.py         |  327 ++
+   examples/capabilities/G22/make_stream.py           |   44 +
+   examples/capabilities/G22/naive_ledger.py          |   37 +
+   examples/capabilities/G22/noop_ledger.py           |   15 +
+   examples/capabilities/G23/README.md                |   42 +
+   .../G23/fixtures/01-clean-control.json             | 1271 ++++++
+   .../G23/fixtures/02-plugin-conflict.json           |  210 +
+   .../G23/fixtures/03-slow-and-repeated-query.json   | 2181 +++++++++++
+   .../G23/fixtures/04-config-faults.json             |  167 +
+   examples/capabilities/G23/fixtures/05-before.json  |  949 +++++
+   .../G23/fixtures/06-after-same-measurements.json   |  865 +++++
+   .../fixtures/07-after-different-measurements.json  |  633 +++
+   .../G23/fixtures/08-bisect-ambiguous.json          |  135 +
+   examples/capabilities/G23/make_fixtures.py         |   97 +
+   examples/capabilities/G23/naive_stub.py            |   29 +
+   examples/capabilities/G23/noop_stub.py             |   13 +
+   examples/capabilities/G23/wp_oracle.py             |  447 +++
+   examples/capabilities/G25/README.md                |   47 +
+   .../capabilities/G25/fixtures/clean-events.jsonl   |   10 +
+   examples/capabilities/G25/fixtures/commands.jsonl  |    4 +
+   .../capabilities/G25/fixtures/faulty-events.jsonl  |   17 +
+   .../G25/fixtures/malformed-events.jsonl            |   19 +
+   .../G25/fixtures/unexplained-events.jsonl          |    4 +
+   examples/capabilities/G25/naive_stub.py            |   35 +
+   examples/capabilities/G25/noop_stub.py             |   11 +
+   examples/capabilities/G25/protocol_oracle.py       |  440 +++
+   examples/capabilities/G31/README.md                |   48 +
+   .../G31/fixtures/capacity/books-sept/bank.csv      |    2 +
+   .../G31/fixtures/capacity/books-sept/credits.csv   |    1 +
+   .../G31/fixtures/capacity/books-sept/invoices.csv  |    4 +
+   .../G31/fixtures/capacity/books-sept/package.json  |   10 +
+   .../G31/fixtures/capacity/books-sept/payments.csv  |    4 +
+   .../G31/fixtures/capacity/studio-result.json       |  870 +++++
+   .../capabilities/G31/fixtures/capacity/studio.json |  374 ++
+   examples/capabilities/G31/fixtures/delivery.json   |   51 +
+   .../G31/fixtures/demos/CAP-booking.json            |    8 +
+   .../G31/fixtures/demos/CAP-dashboard.json          |    8 +
+   .../G31/fixtures/demos/CAP-import.json             |    8 +
+   .../capabilities/G31/fixtures/demos/CAP-sms.json   |    8 +
+   .../capabilities/G31/fixtures/evidence/AC1.txt     |    1 +
+   .../capabilities/G31/fixtures/evidence/AC2.txt     |    1 +
+   .../capabilities/G31/fixtures/evidence/AC3.txt     |    1 +
+   .../capabilities/G31/fixtures/evidence/AC4.txt     |    1 +
+   .../capabilities/G31/fixtures/evidence/AC5.txt     |    1 +
+   examples/capabilities/G31/fixtures/portal.json     |  296 ++
+   examples/capabilities/G31/naive_scope.py           |   39 +
+   examples/capabilities/G31/noop_scope.py            |   13 +
+   examples/capabilities/G31/scope_oracle.py          |  436 +++
+   examples/capabilities/G32/README.md                |   47 +
+   examples/capabilities/G32/fixtures/account.json    |   11 +
+   examples/capabilities/G32/fixtures/events.jsonl    |   13 +
+   examples/capabilities/G32/followthrough_oracle.py  |  360 ++
+   examples/capabilities/G32/naive_followthrough.py   |   28 +
+   examples/capabilities/G32/noop_followthrough.py    |    4 +
+   examples/capabilities/G33/README.md                |   43 +
+   examples/capabilities/G33/evidence_oracle.py       |  291 ++
+   examples/capabilities/G33/fixtures/choice.json     |  252 ++
+   .../G33/fixtures/g13-gaps/contract.json            |   88 +
+   .../capabilities/G33/fixtures/g13-gaps/control.csv |    2 +
+   .../G33/fixtures/g13-gaps/customers.csv            |    7 +
+   .../capabilities/G33/fixtures/g13-gaps/orders.csv  |   21 +
+   .../capabilities/G33/fixtures/g13/contract.json    |   88 +
+   examples/capabilities/G33/fixtures/g13/control.csv |    2 +
+   .../capabilities/G33/fixtures/g13/customers.csv    |    4 +
+   examples/capabilities/G33/fixtures/g13/orders.csv  |    6 +
+   examples/capabilities/G33/fixtures/sources/ana.txt |    4 +
+   examples/capabilities/G33/fixtures/sources/ben.txt |    2 +
+   examples/capabilities/G33/fixtures/sources/cy.txt  |    2 +
+   .../capabilities/G33/fixtures/sources/market.txt   |    3 +
+   .../capabilities/G33/fixtures/sources/reviews.txt  |    4 +
+   examples/capabilities/G33/naive_decision.py        |   30 +
+   examples/capabilities/G33/noop_decision.py         |   12 +
+   examples/capabilities/G34/README.md                |   66 +
+   examples/capabilities/G34/diag_oracle.py           |  268 ++
+   .../capabilities/G34/fixtures/after/config.json    |   12 +
+   .../capabilities/G34/fixtures/after/expected.json  |    1 +
+   .../G34/fixtures/after/site/about.html             |   17 +
+   .../fixtures/after/site/blog/decision-logs.html    |   19 +
+   .../G34/fixtures/after/site/blog/index.html        |   17 +
+   .../G34/fixtures/after/site/contact.html           |   22 +
+   .../G34/fixtures/after/site/features.html          |   19 +
+   .../G34/fixtures/after/site/index.html             |   20 +
+   .../G34/fixtures/after/site/pricing.html           |   19 +
+   .../G34/fixtures/after/site/signup.html            |   22 +
+   .../G34/fixtures/after/site/sitemap.xml            |   11 +
+   .../G34/fixtures/after/site/thanks.html            |   17 +
+   .../capabilities/G34/fixtures/before/config.json   |   14 +
+   .../capabilities/G34/fixtures/before/expected.json |   31 +
+   .../G34/fixtures/before/site/about.html            |   16 +
+   .../fixtures/before/site/blog/decision-logs.html   |   19 +
+   .../G34/fixtures/before/site/blog/index.html       |   17 +
+   .../G34/fixtures/before/site/contact.html          |   22 +
+   .../G34/fixtures/before/site/features.html         |   19 +
+   .../G34/fixtures/before/site/index.html            |   20 +
+   .../G34/fixtures/before/site/pricing.html          |   19 +
+   .../G34/fixtures/before/site/signup.html           |   21 +
+   .../G34/fixtures/before/site/sitemap.xml           |   13 +
+   .../G34/fixtures/before/site/spring-offer.html     |   17 +
+   .../G34/fixtures/before/site/thanks.html           |   17 +
+   .../capabilities/G34/fixtures/clean/config.json    |    3 +
+   .../capabilities/G34/fixtures/clean/expected.json  |    1 +
+   .../G34/fixtures/clean/site/guide/index.html       |   17 +
+   .../G34/fixtures/clean/site/index.html             |   17 +
+   .../G34/fixtures/clean/site/sitemap.xml            |    6 +
+   .../G34/fixtures/clean/site/visit.html             |   18 +
+   .../capabilities/G34/fixtures/unseen/config.json   |   18 +
+   .../capabilities/G34/fixtures/unseen/expected.json |   16 +
+   .../G34/fixtures/unseen/site/Guides/index.html     |   17 +
+   .../G34/fixtures/unseen/site/Guides/knots.html     |   18 +
+   .../G34/fixtures/unseen/site/blog/tides-2019.html  |   17 +
+   .../G34/fixtures/unseen/site/café.html             |   17 +
+   .../G34/fixtures/unseen/site/checkout.html         |   17 +
+   .../G34/fixtures/unseen/site/docs/index.html       |   17 +
+   .../G34/fixtures/unseen/site/draft.html            |   17 +
+   .../G34/fixtures/unseen/site/index.html            |   20 +
+   .../G34/fixtures/unseen/site/kits.html             |   18 +
+   .../G34/fixtures/unseen/site/legacy.html           |   17 +
+   .../G34/fixtures/unseen/site/shop.html             |   20 +
+   .../G34/fixtures/unseen/site/sitemap.xml           |   13 +
+   examples/capabilities/G34/make_fixtures.py         |  357 ++
+   examples/capabilities/G34/naive_diagnostics.py     |   45 +
+   examples/capabilities/G34/noop_diagnostics.py      |    7 +
+   examples/capabilities/G35/README.md                |   75 +
+   examples/capabilities/G35/campaign_oracle.py       |  486 +++
+   .../capabilities/G35/fixtures/clean/campaign.json  |   15 +
+   .../G35/fixtures/clean/conversions.jsonl           |    2 +
+   .../capabilities/G35/fixtures/clean/creatives.json |    8 +
+   .../G35/fixtures/clean/finance/bank.csv            |    2 +
+   .../G35/fixtures/clean/finance/credits.csv         |    1 +
+   .../G35/fixtures/clean/finance/invoices.csv        |    3 +
+   .../G35/fixtures/clean/finance/package.json        |   10 +
+   .../G35/fixtures/clean/finance/payments.csv        |    3 +
+   .../G35/fixtures/clean/orders-contract.json        |   18 +
+   .../capabilities/G35/fixtures/clean/orders.csv     |    3 +
+   .../G35/fixtures/clean/spend-contract.json         |   17 +
+   examples/capabilities/G35/fixtures/clean/spend.csv |    4 +
+   .../capabilities/G35/fixtures/clean/touches.jsonl  |    2 +
+   .../G35/fixtures/september/campaign.json           |   19 +
+   .../G35/fixtures/september/conversions.jsonl       |   11 +
+   .../G35/fixtures/september/creatives.json          |   19 +
+   .../G35/fixtures/september/finance/bank.csv        |    3 +
+   .../G35/fixtures/september/finance/credits.csv     |    2 +
+   .../G35/fixtures/september/finance/invoices.csv    |    9 +
+   .../G35/fixtures/september/finance/package.json    |   10 +
+   .../G35/fixtures/september/finance/payments.csv    |    8 +
+   .../G35/fixtures/september/orders-contract.json    |   18 +
+   .../capabilities/G35/fixtures/september/orders.csv |   11 +
+   .../G35/fixtures/september/spend-contract.json     |   17 +
+   .../capabilities/G35/fixtures/september/spend.csv  |   13 +
+   .../G35/fixtures/september/touches.jsonl           |   13 +
+   examples/capabilities/G35/naive_ledger.py          |   60 +
+   examples/capabilities/G35/noop_ledger.py           |    5 +
+   examples/capabilities/G42/README.md                |   51 +-
+   examples/capabilities/G42/cross_checks.py          |    6 +-
+   examples/capabilities/G42/plan.json                |  450 ++-
+   tests/test_closure_hardening.py                    |   41 +-
+   tests/test_fixture_runner.py                       |  417 ++
+   tests/test_g02_capability.py                       |   17 +
+   tests/test_g04_capability.py                       |   41 +-
+   tests/test_g07_capability.py                       |  190 +
+   tests/test_g08_capability.py                       |  168 +
+   tests/test_g09_capability.py                       |  212 +
+   tests/test_g10_capability.py                       |  640 +++
+   tests/test_g11_capability.py                       |  255 ++
+   tests/test_g14_capability.py                       |  165 +
+   tests/test_g15_capability.py                       |  328 ++
+   tests/test_g16_capability.py                       | 1182 ++++++
+   tests/test_g17_capability.py                       |  191 +
+   tests/test_g20_capability.py                       |  322 ++
+   tests/test_g21_capability.py                       |  349 ++
+   tests/test_g22_capability.py                       |  404 ++
+   tests/test_g23_capability.py                       |  441 +++
+   tests/test_g25_capability.py                       |  444 +++
+   tests/test_g31_capability.py                       |  399 ++
+   tests/test_g32_capability.py                       |  318 ++
+   tests/test_g33_capability.py                       |  303 ++
+   tests/test_g34_capability.py                       |  208 +
+   tests/test_g35_capability.py                       |  260 ++
+   tests/test_g42_capability.py                       |   50 +-
+   496 files changed, 61360 insertions(+), 204 deletions(-)

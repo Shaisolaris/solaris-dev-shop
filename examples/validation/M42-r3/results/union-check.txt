@@ -1,0 +1,79 @@
+merge 6778162 parents 956792e 90a5ec9 base 8fdae9c: 0 files changed on both sides
+merge f3be668 parents 6778162 e9fa278 base 155fc33: 0 files changed on both sides
+merge eec79f0 parents f3be668 04b3cf2 base 3056378: 0 files changed on both sides
+merge 050f026 parents eec79f0 aa0b083 base 02ba9c5: 3 files changed on both sides
+  OK   docs/install.md: added 14, kept-by-both 57, lost 0
+  OK   employees/quality-security/assurance/ASSURANCE.md: added 105, kept-by-both 145, lost 0
+  OK   employees/quality-security/assurance/quality_os.py: added 463, kept-by-both 1285, lost 0
+merge ecd7dad parents 050f026 0d6a78d base 314b4db: 2 files changed on both sides
+  LOST employees/infrastructure/fleet-dispatcher/handoff-work-orders.md: added 13, kept-by-both 59, lost 3
+     -   revision that was already delivered, a journal belonging to another order, or a journal that does not verify. Nothing runs and nothing is written.
+     - - `2` invalid order, a refused fleet claim (G07), intake hash mismatch, a revision older than one already worked, a journal belonging to
+     - - `2` invalid order, intake hash mismatch, a revision older than one already worked, an owner change on a
+  OK   employees/infrastructure/fleet-dispatcher/handoff.py: added 58, kept-by-both 361, lost 0
+merge 4be1fb2 parents ecd7dad ddebe98 base d4d98f2: 0 files changed on both sides
+merge 1cfc902 parents 4be1fb2 edfa64d base ddebe98: 0 files changed on both sides
+merge e2d74a9 parents 1cfc902 f79be61 base 02ba9c5: 1 files changed on both sides
+  OK   employees/infrastructure/cloud-architect/SKILL.md: added 2, kept-by-both 149, lost 0
+merge f97a0bf parents e2d74a9 13ba705 base f79be61: 17 files changed on both sides
+  OK   employees/infrastructure/database-administrator/SKILL.md: added 4, kept-by-both 214, lost 0
+  OK   employees/infrastructure/database-administrator/capability.contract.json: added 12, kept-by-both 535, lost 0
+  OK   employees/infrastructure/database-administrator/learnings.md: added 8, kept-by-both 23, lost 0
+  OK   employees/infrastructure/database-administrator/plugin.json: added 2, kept-by-both 36, lost 0
+  OK   employees/infrastructure/database-administrator/sqlite-recovery.md: added 130, kept-by-both 0, lost 0
+  OK   employees/infrastructure/database-administrator/sqlite_recovery.py: added 1828, kept-by-both 0, lost 0
+  OK   employees/infrastructure/site-reliability-engineer/SKILL.md: added 10, kept-by-both 147, lost 0
+  OK   employees/infrastructure/site-reliability-engineer/capability.contract.json: added 5, kept-by-both 535, lost 0
+  OK   employees/infrastructure/site-reliability-engineer/learnings.md: added 5, kept-by-both 20, lost 0
+  OK   employees/leadership/coo/SKILL.md: added 6, kept-by-both 193, lost 0
+  OK   employees/product-project/delivery-lead/SKILL.md: added 9, kept-by-both 180, lost 0
+  OK   employees/product-project/delivery-lead/capability.contract.json: added 5, kept-by-both 493, lost 0
+  OK   examples/capabilities/G03/README.md: added 72, kept-by-both 0, lost 0
+  OK   examples/capabilities/G03/naive_stub.py: added 70, kept-by-both 0, lost 0
+  OK   examples/capabilities/G03/noop_stub.py: added 20, kept-by-both 0, lost 0
+  OK   examples/capabilities/G03/recovery_oracle.py: added 986, kept-by-both 0, lost 0
+  OK   tests/test_g03_capability.py: added 1328, kept-by-both 0, lost 0
+merge 3d286ed parents f97a0bf 6f7b23a base 5666e7b: 0 files changed on both sides
+merge 205b261 parents 3d286ed 7e7f361 base 5666e7b: 0 files changed on both sides
+merge 64e9120 parents 205b261 49aba3f base 02ba9c5: 1 files changed on both sides
+  OK   employees/engineering/llm-agent-designer/learnings.md: added 12, kept-by-both 44, lost 0
+merge 13cf2bb parents 64e9120 550f184 base 6f7b23a: 2 files changed on both sides
+  OK   employees/leadership/coo/SKILL.md: added 12, kept-by-both 193, lost 0
+  OK   employees/leadership/coo/capability.contract.json: added 5, kept-by-both 495, lost 0
+merge 821a970 parents 13cf2bb 0d4db69 base 02ba9c5: 0 files changed on both sides
+merge c4ceb05 parents 821a970 822a9c1 base 5606672: 0 files changed on both sides
+merge 3b5435c parents c4ceb05 29cd7fc base 6f7b23a: 18 files changed on both sides
+  OK   employees/engineering/backend-developer/SKILL.md: added 16, kept-by-both 148, lost 0
+  OK   employees/engineering/backend-developer/capability.contract.json: added 12, kept-by-both 493, lost 0
+  OK   employees/engineering/backend-developer/duplicate-safe-api.md: added 194, kept-by-both 0, lost 0
+  OK   employees/engineering/backend-developer/learnings.md: added 10, kept-by-both 8, lost 0
+  OK   employees/engineering/backend-developer/ledger_api.py: added 1190, kept-by-both 0, lost 0
+  OK   employees/engineering/backend-developer/plugin.json: added 2, kept-by-both 44, lost 0
+  OK   employees/engineering/full-stack-developer/SKILL.md: added 5, kept-by-both 283, lost 0
+  OK   employees/engineering/full-stack-developer/learnings.md: added 4, kept-by-both 41, lost 0
+  OK   employees/quality-security/security-auditor/SKILL.md: added 22, kept-by-both 231, lost 0
+  OK   employees/quality-security/security-auditor/boundary_probe.py: added 538, kept-by-both 0, lost 0
+  OK   employees/quality-security/security-auditor/capability.contract.json: added 8, kept-by-both 525, lost 0
+  OK   employees/quality-security/security-auditor/learnings.md: added 9, kept-by-both 24, lost 0
+  OK   examples/capabilities/G19/README.md: added 60, kept-by-both 0, lost 0
+  LOST examples/capabilities/G19/boundary_oracle.py: added 1056, kept-by-both 0, lost 2
+     -                 except ProcessLookupError:
+     -             except (subprocess.TimeoutExpired, ProcessLookupError):
+  OK   examples/capabilities/G19/fixtures/principals.json: added 20, kept-by-both 0, lost 0
+  OK   examples/capabilities/G19/noop_stub.py: added 108, kept-by-both 0, lost 0
+  OK   examples/capabilities/G19/vulnerable_stub.py: added 278, kept-by-both 0, lost 0
+  OK   tests/test_g19_capability.py: added 779, kept-by-both 0, lost 0
+merge 039254e parents 3b5435c 0ff2641 base 02ba9c5: 0 files changed on both sides
+merge ec8d561 parents 039254e eb9c7c4 base 02ba9c5: 0 files changed on both sides
+merge d7d04b4 parents ec8d561 fcf492a base 550f184: 0 files changed on both sides
+merge ee3e580 parents d7d04b4 b69f328 base 314b4db: 0 files changed on both sides
+merge 0fe182d parents ee3e580 a4ae555 base 5666e7b: 2 files changed on both sides
+  OK   employees/product-project/product-manager/SKILL.md: added 9, kept-by-both 174, lost 0
+  OK   employees/product-project/product-manager/capability.contract.json: added 6, kept-by-both 476, lost 0
+merge 25bce33 parents 0fe182d de76fae base 02ba9c5: 0 files changed on both sides
+merge 494266d parents 25bce33 34bb98f base 6f7b23a: 3 files changed on both sides
+  OK   employees/leadership/cmo/SKILL.md: added 6, kept-by-both 340, lost 0
+  OK   employees/leadership/cmo/capability.contract.json: added 2, kept-by-both 453, lost 0
+  OK   employees/leadership/cmo/learnings.md: added 2, kept-by-both 13, lost 0
+merge 9b50675 parents 4ef54ff 1b840cd base 04b3cf2: 0 files changed on both sides
+UNION FAIL (2 files with lost lines)

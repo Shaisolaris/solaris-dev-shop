@@ -1,0 +1,7 @@
+test_a_misspelled_revision_field_is_still_refused (tests.test_g42_capability.Interfaces) ... ok
+test_closure_fixture_takes_the_g05_revision_fields (tests.test_g42_capability.Interfaces) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.118s
+
+OK

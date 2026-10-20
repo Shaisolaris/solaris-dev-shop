@@ -1,0 +1,33 @@
+test_a_misspelled_revision_field_is_still_refused (tests.test_g42_capability.Interfaces) ... ok
+test_closure_fixture_takes_the_g05_revision_fields (tests.test_g42_capability.Interfaces) ... FAIL
+
+======================================================================
+FAIL: test_closure_fixture_takes_the_g05_revision_fields (tests.test_g42_capability.Interfaces)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "WT line 208, in test_closure_fixture_takes_the_g05_revision_fields
+    self.assertEqual(stale.returncode, 0, stale.stdout.decode()[-400:])
+AssertionError: 1 != 0 : {
+  "schema_version": "1.0.0",
+  "assurance_version": "1.0.2",
+  "ok": false,
+  "status": "blocked",
+  "gate_codes": [
+    "INVALID_PACKET"
+  ],
+  "messages": [
+    "fixture has unknown keys: subject_revision, verified_revision"
+  ],
+  "findings": [],
+  "orders": [],
+  "required_gates": [],
+  "risk_level": "standard",
+  "evidence": {},
+  "notes": []
+}
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.085s
+
+FAILED (failures=1)
