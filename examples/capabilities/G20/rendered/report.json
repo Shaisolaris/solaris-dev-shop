@@ -1,0 +1,360 @@
+{
+ "chrome": "Chrome/155.0.8059.80",
+ "launches": 1,
+ "rows": [
+  {
+   "id": "K01-320",
+   "pass": true,
+   "desc": "Tab reaches the input and shows a 3px focus outline",
+   "detail": "solid 3px"
+  },
+  {
+   "id": "L01-320",
+   "pass": true,
+   "desc": "no horizontal overflow with a 167-character unbroken label: page scrollWidth <= clientWidth, every option inside the list and the viewport",
+   "detail": {
+    "docSW": 320,
+    "docCW": 320,
+    "listRight": 304,
+    "inner": 320,
+    "overflowing": []
+   }
+  },
+  {
+   "id": "L02-320",
+   "pass": true,
+   "desc": "1 column(s) and targets at least 44 px",
+   "detail": {
+    "columns": 1,
+    "min_height": 44
+   }
+  },
+  {
+   "id": "K02-320",
+   "pass": true,
+   "desc": "ArrowDown through all options: aria-activedescendant is a whitespace-free id that resolves (also as a CSS selector), unique per row; focus stays on the input",
+   "detail": [
+    "opt-Heron_20_Flats_20_41",
+    "opt-kestrel_9_yard_20_7",
+    "opt-a_5f_b",
+    "opt-a_20_b",
+    "opt-_d8_resund_20_2",
+    "opt-avocet"
+   ]
+  },
+  {
+   "id": "K03-320",
+   "pass": true,
+   "desc": "the active long label is inside the viewport",
+   "detail": {
+    "right": 299,
+    "inner": 320
+   }
+  },
+  {
+   "id": "K04-320",
+   "pass": true,
+   "desc": "ArrowDown wraps to the first option; End and Home",
+   "detail": [
+    [
+     "Heron Flats 41"
+    ],
+    [
+     "Avocet-Long-Name-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    ],
+    [
+     "Heron Flats 41"
+    ]
+   ]
+  },
+  {
+   "id": "K05-320",
+   "pass": true,
+   "desc": "Enter chooses the long label, closes the list, keeps focus; the chosen line wraps without overflow",
+   "detail": {
+    "focus": "q",
+    "docSW": 320,
+    "docCW": 320
+   }
+  },
+  {
+   "id": "K06-320",
+   "pass": true,
+   "desc": "Escape closes, a second Escape clears; focus stays",
+   "detail": [
+    "true",
+    true,
+    ""
+   ]
+  },
+  {
+   "id": "S01-320",
+   "pass": true,
+   "desc": "an older response arriving after the newer one changes nothing: same rows, active option, status",
+   "detail": {
+    "labels": 6,
+    "status": "6 results. Use up and down arrows to review."
+   }
+  },
+  {
+   "id": "K07-320",
+   "pass": true,
+   "desc": "error shown; Tab reaches Retry, Enter re-runs the failed query, focus returns to the input",
+   "detail": {
+    "tab_to": "retry",
+    "rerun": true
+   }
+  },
+  {
+   "id": "X01-320",
+   "pass": true,
+   "desc": "no JavaScript exceptions and no network requests",
+   "detail": {
+    "exceptions": 0,
+    "external": []
+   }
+  },
+  {
+   "id": "K01-360",
+   "pass": true,
+   "desc": "Tab reaches the input and shows a 3px focus outline",
+   "detail": "solid 3px"
+  },
+  {
+   "id": "L01-360",
+   "pass": true,
+   "desc": "no horizontal overflow with a 167-character unbroken label: page scrollWidth <= clientWidth, every option inside the list and the viewport",
+   "detail": {
+    "docSW": 360,
+    "docCW": 360,
+    "listRight": 344,
+    "inner": 360,
+    "overflowing": []
+   }
+  },
+  {
+   "id": "L02-360",
+   "pass": true,
+   "desc": "1 column(s) and targets at least 44 px",
+   "detail": {
+    "columns": 1,
+    "min_height": 44
+   }
+  },
+  {
+   "id": "K02-360",
+   "pass": true,
+   "desc": "ArrowDown through all options: aria-activedescendant is a whitespace-free id that resolves (also as a CSS selector), unique per row; focus stays on the input",
+   "detail": [
+    "opt-Heron_20_Flats_20_41",
+    "opt-kestrel_9_yard_20_7",
+    "opt-a_5f_b",
+    "opt-a_20_b",
+    "opt-_d8_resund_20_2",
+    "opt-avocet"
+   ]
+  },
+  {
+   "id": "K03-360",
+   "pass": true,
+   "desc": "the active long label is inside the viewport",
+   "detail": {
+    "right": 339,
+    "inner": 360
+   }
+  },
+  {
+   "id": "K04-360",
+   "pass": true,
+   "desc": "ArrowDown wraps to the first option; End and Home",
+   "detail": [
+    [
+     "Heron Flats 41"
+    ],
+    [
+     "Avocet-Long-Name-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    ],
+    [
+     "Heron Flats 41"
+    ]
+   ]
+  },
+  {
+   "id": "K05-360",
+   "pass": true,
+   "desc": "Enter chooses the long label, closes the list, keeps focus; the chosen line wraps without overflow",
+   "detail": {
+    "focus": "q",
+    "docSW": 360,
+    "docCW": 360
+   }
+  },
+  {
+   "id": "K06-360",
+   "pass": true,
+   "desc": "Escape closes, a second Escape clears; focus stays",
+   "detail": [
+    "true",
+    true,
+    ""
+   ]
+  },
+  {
+   "id": "S01-360",
+   "pass": true,
+   "desc": "an older response arriving after the newer one changes nothing: same rows, active option, status",
+   "detail": {
+    "labels": 6,
+    "status": "6 results. Use up and down arrows to review."
+   }
+  },
+  {
+   "id": "K07-360",
+   "pass": true,
+   "desc": "error shown; Tab reaches Retry, Enter re-runs the failed query, focus returns to the input",
+   "detail": {
+    "tab_to": "retry",
+    "rerun": true
+   }
+  },
+  {
+   "id": "X01-360",
+   "pass": true,
+   "desc": "no JavaScript exceptions and no network requests",
+   "detail": {
+    "exceptions": 0,
+    "external": []
+   }
+  },
+  {
+   "id": "K01-1280",
+   "pass": true,
+   "desc": "Tab reaches the input and shows a 3px focus outline",
+   "detail": "solid 3px"
+  },
+  {
+   "id": "L01-1280",
+   "pass": true,
+   "desc": "no horizontal overflow with a 167-character unbroken label: page scrollWidth <= clientWidth, every option inside the list and the viewport",
+   "detail": {
+    "docSW": 1280,
+    "docCW": 1280,
+    "listRight": 1072,
+    "inner": 1280,
+    "overflowing": []
+   }
+  },
+  {
+   "id": "L02-1280",
+   "pass": true,
+   "desc": "2 column(s) and targets at least 32 px",
+   "detail": {
+    "columns": 2,
+    "min_height": 40
+   }
+  },
+  {
+   "id": "K02-1280",
+   "pass": true,
+   "desc": "ArrowDown through all options: aria-activedescendant is a whitespace-free id that resolves (also as a CSS selector), unique per row; focus stays on the input",
+   "detail": [
+    "opt-Heron_20_Flats_20_41",
+    "opt-kestrel_9_yard_20_7",
+    "opt-a_5f_b",
+    "opt-a_20_b",
+    "opt-_d8_resund_20_2",
+    "opt-avocet"
+   ]
+  },
+  {
+   "id": "K03-1280",
+   "pass": true,
+   "desc": "the active long label is inside the viewport",
+   "detail": {
+    "right": 1067,
+    "inner": 1280
+   }
+  },
+  {
+   "id": "K04-1280",
+   "pass": true,
+   "desc": "ArrowDown wraps to the first option; End and Home",
+   "detail": [
+    [
+     "Heron Flats 41"
+    ],
+    [
+     "Avocet-Long-Name-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    ],
+    [
+     "Heron Flats 41"
+    ]
+   ]
+  },
+  {
+   "id": "K05-1280",
+   "pass": true,
+   "desc": "Enter chooses the long label, closes the list, keeps focus; the chosen line wraps without overflow",
+   "detail": {
+    "focus": "q",
+    "docSW": 1280,
+    "docCW": 1280
+   }
+  },
+  {
+   "id": "K06-1280",
+   "pass": true,
+   "desc": "Escape closes, a second Escape clears; focus stays",
+   "detail": [
+    "true",
+    true,
+    ""
+   ]
+  },
+  {
+   "id": "S01-1280",
+   "pass": true,
+   "desc": "an older response arriving after the newer one changes nothing: same rows, active option, status",
+   "detail": {
+    "labels": 6,
+    "status": "6 results. Use up and down arrows to review."
+   }
+  },
+  {
+   "id": "K07-1280",
+   "pass": true,
+   "desc": "error shown; Tab reaches Retry, Enter re-runs the failed query, focus returns to the input",
+   "detail": {
+    "tab_to": "retry",
+    "rerun": true
+   }
+  },
+  {
+   "id": "X01-1280",
+   "pass": true,
+   "desc": "no JavaScript exceptions and no network requests",
+   "detail": {
+    "exceptions": 0,
+    "external": []
+   }
+  }
+ ],
+ "screenshots": {
+  "320": "screenshot-320.png",
+  "360": "screenshot-360.png",
+  "1280": "screenshot-1280.png"
+ },
+ "controls": {
+  "naive_core.js": {
+   "passed": 3,
+   "total": 9,
+   "rejected": true
+  },
+  "noop_core.js": {
+   "passed": 3,
+   "total": 9,
+   "rejected": true
+  }
+ },
+ "not_run": "screen readers, other browsers, touch, zoom, forced colours"
+}

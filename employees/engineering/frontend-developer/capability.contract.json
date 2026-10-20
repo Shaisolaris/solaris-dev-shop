@@ -211,9 +211,12 @@
       "design-to-code.md",
       "motion-system.md",
       "toolchain-and-stack-patterns.md",
-      "verification-and-tokens.md"
+      "verification-and-tokens.md",
+      "async-search-ui.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "async_search_core.js"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -287,6 +290,12 @@
           "id": "ref-verification-and-tokens-md",
           "kind": "file_exists",
           "target": "verification-and-tokens.md",
+          "required": false
+        },
+        {
+          "id": "ref-async-search-ui-md",
+          "kind": "file_exists",
+          "target": "async-search-ui.md",
           "required": false
         }
       ],
@@ -487,7 +496,8 @@
       "design-to-code.md",
       "motion-system.md",
       "toolchain-and-stack-patterns.md",
-      "verification-and-tokens.md"
+      "verification-and-tokens.md",
+      "async-search-ui.md"
     ]
   }
 }
