@@ -238,7 +238,7 @@ def d08():
     for n, extra in (("credential_in_command", ["ghp_" + "a" * 36]), ):
         k = b.rec(SCR, ["reports/note.txt"], ["bin/make_note.py", "reports/note.txt"] + extra); led = b.led()
         res[n + "_refused_never_written"] = (k[0] == 2 and b"ghp_" not in led and not any(b"ghp_" in open(os.path.join(b.p(".delivery", "logs"), x), "rb").read() for x in os.listdir(b.p(".delivery", "logs"))), k[0])
-    for n, outs in (("output_in_ledger_dir", [".delivery/x"]), ("output_outside_root", ["../x"]), ("absolute_output", ["$TMP"])):
+    for n, outs in (("output_in_ledger_dir", [".delivery/x"]), ("output_outside_root", ["../x"]), ("absolute_output", ["/tmp/x"])):
         k = b.rec(SCR, outs, ["bin/make_note.py", "reports/note.txt"]); res[n + "_refused"] = (k[0] == 2 and "Traceback" not in k[2], k[0])
     for n, role in (("dotdot", "data/../data/data-engineer"), ("upper", "DATA/data-engineer"), ("double_slash", "data//data-engineer")):
         k = b.rec(role, ["reports/note.txt"], ["bin/make_note.py", "reports/note.txt"]); res["record_role_" + n + "_refused"] = (k[0] == 2 and "Traceback" not in k[2], k[0])
