@@ -1,0 +1,163 @@
+{
+ "python": "3.9.6",
+ "rows": [
+  {
+   "id": "R01",
+   "group": "core",
+   "desc": "restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings, strictly non-commercial",
+   "pass": true,
+   "detail": {
+    "license": "unrecognized",
+    "rc": 1
+   }
+  },
+  {
+   "id": "R02",
+   "group": "core",
+   "desc": "restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings, resale is not permitted",
+   "pass": true,
+   "detail": {
+    "license": "unrecognized",
+    "rc": 1
+   }
+  },
+  {
+   "id": "R03",
+   "group": "core",
+   "desc": "restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings (noncommercial)",
+   "pass": false,
+   "detail": {
+    "license": "MIT",
+    "rc": 0
+   }
+  },
+  {
+   "id": "R04",
+   "group": "core",
+   "desc": "restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings, internal evaluation",
+   "pass": false,
+   "detail": {
+    "license": "MIT",
+    "rc": 0
+   }
+  },
+  {
+   "id": "R05",
+   "group": "core",
+   "desc": "restricted line is not MIT: Copyright 2026 Acme; academic use",
+   "pass": true,
+   "detail": {
+    "license": "unrecognized",
+    "rc": 1
+   }
+  },
+  {
+   "id": "R06",
+   "group": "core",
+   "desc": "restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings, students only",
+   "pass": true,
+   "detail": {
+    "license": "unrecognized",
+    "rc": 1
+   }
+  },
+  {
+   "id": "R07",
+   "group": "core",
+   "desc": "restricted line is not MIT: Copyright 2026 Acme selling prohibited",
+   "pass": true,
+   "detail": {
+    "license": "unrecognized",
+    "rc": 1
+   }
+  },
+  {
+   "id": "R08",
+   "group": "core",
+   "desc": "restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings, which may not be sold",
+   "pass": true,
+   "detail": {
+    "license": "unrecognized",
+    "rc": 1
+   }
+  },
+  {
+   "id": "C01",
+   "group": "core",
+   "desc": "ordinary holder stays MIT and is listed: Copyright (c) 2026 Acme, Inc. All rights reserved.",
+   "pass": false,
+   "detail": {
+    "license": "MIT",
+    "rc": 0,
+    "listed": null
+   }
+  },
+  {
+   "id": "C02",
+   "group": "core",
+   "desc": "ordinary holder stays MIT and is listed: Copyright 2019-2026 Jane Doe and other contributors",
+   "pass": false,
+   "detail": {
+    "license": "MIT",
+    "rc": 0,
+    "listed": null
+   }
+  },
+  {
+   "id": "C03",
+   "group": "core",
+   "desc": "ordinary holder stays MIT and is listed: \u00a9 2026 Acme BV",
+   "pass": false,
+   "detail": {
+    "license": "MIT",
+    "rc": 0,
+    "listed": null
+   }
+  },
+  {
+   "id": "C04",
+   "group": "core",
+   "desc": "ordinary holder stays MIT and is listed: Copyright 2026 Acme Inc, et al",
+   "pass": false,
+   "detail": {
+    "license": "MIT",
+    "rc": 0,
+    "listed": null
+   }
+  },
+  {
+   "id": "C05",
+   "group": "core",
+   "desc": "two copyright lines: both listed",
+   "pass": false,
+   "detail": {
+    "listed": null
+   }
+  },
+  {
+   "id": "X01",
+   "group": "gap",
+   "desc": "disclosed residual: no comma, no listed word -> MIT but the line is listed for a person",
+   "pass": false,
+   "detail": {
+    "license": "MIT",
+    "listed": null
+   }
+  },
+  {
+   "id": "X02",
+   "group": "obs",
+   "desc": "company names that contain a guard word (unrecognised = false alarm, safe direction)",
+   "pass": true,
+   "detail": {
+    "Copyright 2026 Sellers Inc": "MIT",
+    "Copyright 2026 Purpose Labs": "MIT",
+    "Copyright 2026 Distributed Systems Inc": "MIT",
+    "Copyright 2026 Never Settle GmbH": "MIT",
+    "Copyright 2026 Copy Corp": "MIT",
+    "Copyright 2026 Acme Co., Ltd.": "unrecognized",
+    "Copyright 2026 Acme, Inc., et al": "unrecognized"
+   }
+  }
+ ]
+}

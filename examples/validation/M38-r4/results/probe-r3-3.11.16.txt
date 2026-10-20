@@ -1,0 +1,16 @@
+R01 core PASS restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings, strictly non-commercial {"license": "unrecognized", "rc": 1}
+R02 core PASS restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings, resale is not permitted {"license": "unrecognized", "rc": 1}
+R03 core FAIL restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings (noncommercial) {"license": "MIT", "rc": 0}
+R04 core FAIL restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings, internal evaluation {"license": "MIT", "rc": 0}
+R05 core PASS restricted line is not MIT: Copyright 2026 Acme; academic use {"license": "unrecognized", "rc": 1}
+R06 core PASS restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings, students only {"license": "unrecognized", "rc": 1}
+R07 core PASS restricted line is not MIT: Copyright 2026 Acme selling prohibited {"license": "unrecognized", "rc": 1}
+R08 core PASS restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings, which may not be sold {"license": "unrecognized", "rc": 1}
+C01 core FAIL ordinary holder stays MIT and is listed: Copyright (c) 2026 Acme, Inc. All rights reserved. {"license": "MIT", "rc": 0, "listed": null}
+C02 core FAIL ordinary holder stays MIT and is listed: Copyright 2019-2026 Jane Doe and other contributors {"license": "MIT", "rc": 0, "listed": null}
+C03 core FAIL ordinary holder stays MIT and is listed: © 2026 Acme BV {"license": "MIT", "rc": 0, "listed": null}
+C04 core FAIL ordinary holder stays MIT and is listed: Copyright 2026 Acme Inc, et al {"license": "MIT", "rc": 0, "listed": null}
+C05 core FAIL two copyright lines: both listed {"listed": null}
+X01 gap  GAP disclosed residual: no comma, no listed word -> MIT but the line is listed for a person {"license": "MIT", "listed": null}
+X02 obs  PASS company names that contain a guard word (unrecognised = false alarm, safe direction) {"Copyright 2026 Sellers Inc": "MIT", "Copyright 2026 Purpose Labs": "MIT", "Copyright 2026 Distributed Systems Inc": "MIT", "Copyright 2026 Never Settle GmbH": "MIT", "Copyright 2026 Copy Corp": "MIT
+M38R4 PROBE core 6/13; X01 residual NOT listed; false alarms 2/7

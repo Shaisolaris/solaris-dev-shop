@@ -1,0 +1,94 @@
+{
+ "rows": [
+  {
+   "row": "C1 plain holder stays MIT",
+   "pass": true,
+   "detail": {
+    "rc": 0,
+    "license": "MIT",
+    "result": "consistent",
+    "codes": [],
+    "line": "Copyright (c) 2026 Oracle Test Holdings"
+   }
+  },
+  {
+   "row": "C2 holder with all rights reserved stays MIT",
+   "pass": true,
+   "detail": {
+    "rc": 0,
+    "license": "MIT",
+    "result": "consistent",
+    "codes": [],
+    "line": "Copyright (c) 2025-2026 Oracle Test Holdings. All rights reserved."
+   }
+  },
+  {
+   "row": "R1 'noncommercial' (one word) in the holder",
+   "pass": false,
+   "detail": {
+    "rc": 0,
+    "license": "MIT",
+    "result": "consistent",
+    "codes": [],
+    "line": "Copyright (c) 2026 Oracle Test Holdings, noncommercial purposes"
+   }
+  },
+  {
+   "row": "R2 'cannot be resold'",
+   "pass": false,
+   "detail": {
+    "rc": 0,
+    "license": "MIT",
+    "result": "consistent",
+    "codes": [],
+    "line": "Copyright (c) 2026 Oracle Test Holdings, which cannot be resold"
+   }
+  },
+  {
+   "row": "R3 'for academic research purposes exclusively'",
+   "pass": false,
+   "detail": {
+    "rc": 0,
+    "license": "MIT",
+    "result": "consistent",
+    "codes": [],
+    "line": "Copyright (c) 2026 Oracle Test Holdings, for academic research purposes exclusively"
+   }
+  },
+  {
+   "row": "R4 'personal usage'",
+   "pass": false,
+   "detail": {
+    "rc": 0,
+    "license": "MIT",
+    "result": "consistent",
+    "codes": [],
+    "line": "Copyright (c) 2026 Oracle Test Holdings, personal usage"
+   }
+  },
+  {
+   "row": "R5 'redistribution never allowed'",
+   "pass": false,
+   "detail": {
+    "rc": 0,
+    "license": "MIT",
+    "result": "consistent",
+    "codes": [],
+    "line": "Copyright (c) 2026 Oracle Test Holdings, redistribution never allowed"
+   }
+  },
+  {
+   "row": "R6 guarded word still caught: 'commercial use prohibited'",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "license": "unrecognized",
+    "result": "findings",
+    "codes": [
+     "license_unrecognized"
+    ],
+    "line": "Copyright (c) 2026 Oracle Test Holdings, commercial use prohibited"
+   }
+  }
+ ]
+}

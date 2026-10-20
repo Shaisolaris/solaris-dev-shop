@@ -1,0 +1,16 @@
+PASS P01 clean controls: my synthetic MIT repo is consistent with 4 declarations and a subject  
+PASS P02 single-cause license drifts on my own repo: each gives exactly its documented code at  
+PASS P03 unseen license cases: MIT text with an added commercial-use restriction and MIT-0 text 
+PASS P04 manifest integrity on my repo: a symlink entry, a path through a symlinked folder lead 
+PASS R09 (v2) documented forms: two license texts together are unrecognised; rewrapped MIT with 
+OBS  O05 (OBS) license and manifest edge forms recorded, not scored: concatenated texts, lowerc 
+PASS E01 clean controls: the fixture's hashes and links recompute with my canonical JSON; ancho 
+PASS E02 tamper evidence on my seeded chains: an edit, an edit with that event's hash recompute 
+OBS  O06 (OBS) event edge forms recorded, not scored: seq as bool, string or float with hashes  
+PASS E03 append: from no file it writes seq 0 on 64 zeros and hashes I recompute; a broken log, 
+PASS E04 recovery: the verified prefix is written byte-equal to a new file, verifies and accept 
+PASS C07 claims: across every output of this oracle run no positive legal-validity, compliance, 
+FAIL R10 r2 repairs probed beyond M38: CRLF license texts are recognised; small word edits to M ['readme_bold_gpl_mismatch_found']
+OBS  O11 (OBS) recorded, not scored: SPDX header line, BOM, copyright before title, wrapped cop 
+PASS S08 nothing contacted or changed: the audit hook saw no process, network or mail event in  
+M38 R2 ORACLE 11/12 core FAIL

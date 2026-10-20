@@ -1,0 +1,9 @@
+PASS C1 plain holder stays MIT {"rc": 0, "license": "MIT", "result": "consistent"}
+PASS C2 holder with all rights reserved stays MIT {"rc": 0, "license": "MIT", "result": "consistent"}
+PASS R1 'noncommercial' (one word) in the holder {"rc": 1, "license": "unrecognized", "result": "findings"}
+PASS R2 'cannot be resold' {"rc": 1, "license": "unrecognized", "result": "findings"}
+PASS R3 'for academic research purposes exclusively' {"rc": 1, "license": "unrecognized", "result": "findings"}
+PASS R4 'personal usage' {"rc": 1, "license": "unrecognized", "result": "findings"}
+PASS R5 'redistribution never allowed' {"rc": 1, "license": "unrecognized", "result": "findings"}
+PASS R6 guarded word still caught: 'commercial use prohibited' {"rc": 1, "license": "unrecognized", "result": "findings"}
+M38R3 PROBES 8/8

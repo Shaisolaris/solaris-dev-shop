@@ -1,0 +1,2 @@
+$CANDIDATE/m38r4/oracle/m38r3_probe.py:5:controls that must stay MIT. Usage: PY m38r3_probe.py TREE OUT.json"""
+$CANDIDATE/m38r4/oracle/m38r2_oracle.py:8:allowed at all. Usage: PY m38_oracle.py TREE OUT.json [--tools DIR]   (DIR holds provenance_check.py and event_chain.py)"""

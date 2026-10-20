@@ -1,0 +1,5 @@
+provenance check: consistent; LICENSE MIT; 65 declaration(s) MIT
+  LICENSE copyright line set aside before comparing (read it): Copyright (c) 2026 Solaris Dev Shop
+excluded examples/capabilities/G38/fixtures (license files there: examples/capabilities/G38/fixtures/repo-clean/LICENSE, examples/capabilities/G38/fixtures/repo-clean/vendor/parser/LICENSE-upstream)
+consistency of declarations and file digests only; not a legal opinion; no identity is authenticated
+rc=0

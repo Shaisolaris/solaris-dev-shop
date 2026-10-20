@@ -1,0 +1,16 @@
+R01 core PASS restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings, strictly non-commercial {"license": "unrecognized", "rc": 1}
+R02 core PASS restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings, resale is not permitted {"license": "unrecognized", "rc": 1}
+R03 core PASS restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings (noncommercial) {"license": "unrecognized", "rc": 1}
+R04 core PASS restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings, internal evaluation {"license": "unrecognized", "rc": 1}
+R05 core PASS restricted line is not MIT: Copyright 2026 Acme; academic use {"license": "unrecognized", "rc": 1}
+R06 core PASS restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings, students only {"license": "unrecognized", "rc": 1}
+R07 core PASS restricted line is not MIT: Copyright 2026 Acme selling prohibited {"license": "unrecognized", "rc": 1}
+R08 core PASS restricted line is not MIT: Copyright (c) 2026 Oracle Test Holdings, which may not be sold {"license": "unrecognized", "rc": 1}
+C01 core PASS ordinary holder stays MIT and is listed: Copyright (c) 2026 Acme, Inc. All rights reserved. {"license": "MIT", "rc": 0, "listed": ["Copyright (c) 2026 Acme, Inc. All rights reserved."]}
+C02 core PASS ordinary holder stays MIT and is listed: Copyright 2019-2026 Jane Doe and other contributors {"license": "MIT", "rc": 0, "listed": ["Copyright 2019-2026 Jane Doe and other contributors"]}
+C03 core PASS ordinary holder stays MIT and is listed: © 2026 Acme BV {"license": "MIT", "rc": 0, "listed": ["\u00a9 2026 Acme BV"]}
+C04 core PASS ordinary holder stays MIT and is listed: Copyright 2026 Acme Inc, et al {"license": "MIT", "rc": 0, "listed": ["Copyright 2026 Acme Inc, et al"]}
+C05 core PASS two copyright lines: both listed {"listed": ["Copyright 2026 First Holder", "Copyright 2026 Second Holder"]}
+X01 gap  PASS disclosed residual: no comma, no listed word -> MIT but the line is listed for a person {"license": "MIT", "listed": ["Copyright 2026 Acme for students and teachers"]}
+X02 obs  PASS company names that contain a guard word (unrecognised = false alarm, safe direction) {"Copyright 2026 Sellers Inc": "unrecognized", "Copyright 2026 Purpose Labs": "unrecognized", "Copyright 2026 Distributed Systems Inc": "unrecognized", "Copyright 2026 Never Settle GmbH": "unrecognize
+M38R4 PROBE core 13/13; X01 residual listed; false alarms 7/7

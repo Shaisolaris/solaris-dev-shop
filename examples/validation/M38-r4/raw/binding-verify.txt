@@ -1,0 +1,15 @@
+# binding check G38-r4, 2026-10-19 19:34:22 PDT
+remote head of review/grok-g38-authority-consistency: ba70b6934a13f931b8533df9fa947802d610d15b (expected ba70b6934a13f931b8533df9fa947802d610d15b)
+worktree HEAD: ba70b6934a13f931b8533df9fa947802d610d15b
+base is ancestor: yes; commits since: 1
+handback patch G38-r4.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/quality-security/security-auditor/provenance-integrity.md: OK
+  employees/quality-security/security-auditor/provenance_check.py: OK
+  tests/test_g38_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../security-auditor/provenance-integrity.md       | 10 +++++++
+   .../security-auditor/provenance_check.py           | 35 ++++++++++++++++------
+   tests/test_g38_capability.py                       | 32 ++++++++++++++++++++
+   3 files changed, 68 insertions(+), 9 deletions(-)
