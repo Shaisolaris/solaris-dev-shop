@@ -176,3 +176,42 @@ class CrossChecks(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Interfaces(unittest.TestCase):
+    """r3 interface reconciliation: G05 r3 closure fixtures carry subject_revision and verified_revision, and the
+    G01 fixture runner accepts only each fixture kind's own top-level keys. On the r3 stack the G05 oracle (o13)
+    failed until the closure kind listed both fields."""
+
+    def closure(self, tmp, **extra):
+        sys.path.insert(0, A)
+        try:
+            import quality_os as q
+        finally:
+            sys.path.pop(0)
+        f = q.create_finding(defect_kind="security", severity="S1", title="Password compare is not constant time",
+                             evidence=["review of src/auth.py"], reporter_role="qa-engineer", finding_id="fnd-g42-1")
+        fd = dict(f.to_dict())
+        del fd["created_at"]
+        fx = dict({"fixture_kind": "closure", "finding": fd, "closer_role": "code-reviewer",
+                   "independent_evidence": ["verified fix"]}, **extra)
+        p = os.path.join(tmp, "closure.json")
+        with open(p, "w") as fh:
+            json.dump(fx, fh)
+        return run([os.path.join(A, "quality_os.py"), "run", p])
+
+    def test_closure_fixture_takes_the_g05_revision_fields(self):
+        r1, r2 = "a" * 40, "b" * 40
+        with tempfile.TemporaryDirectory() as tmp:
+            stale = self.closure(tmp, subject_revision=r2, verified_revision=r1, expect_blocked=False,
+                                 expectations={"outcome": "fail_gate", "gate_codes": ["STALE_CLOSURE_EVIDENCE"]})
+            self.assertEqual(stale.returncode, 0, stale.stdout.decode()[-400:])
+            self.assertIn("STALE_CLOSURE_EVIDENCE", stale.stdout.decode())
+            current = self.closure(tmp, subject_revision=r2, verified_revision=r2, expect_blocked=False)
+            self.assertEqual(current.returncode, 0, current.stdout.decode()[-400:])
+
+    def test_a_misspelled_revision_field_is_still_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            r = self.closure(tmp, subject_revision="b" * 40, verified_revison="b" * 40, expect_blocked=False)
+            self.assertEqual(r.returncode, 1, r.stdout.decode()[-400:])
+            self.assertIn("INVALID_PACKET", r.stdout.decode())

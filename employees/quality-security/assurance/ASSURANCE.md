@@ -93,7 +93,9 @@ The fixture runner fails closed on its own contract (added after engine
   `self_approval`. A bare planted defect must use `fixture_kind:
   "planted_defect"` with `defect_kind`, not `kind: "security"`. When both
   are present, `fixture_kind` wins and `kind` is ignored.
-- Each fixture kind accepts only its own top-level keys. A near miss of a
+- Each fixture kind accepts only its own top-level keys (a closure fixture's
+  own keys include `subject_revision` and `verified_revision`, the
+  revision-bound closure fields described under Revision binding). A near miss of a
   contract key (`fixture-kind`, `Fixture_Kind`, `pakcet`, `expectation`,
   `txt`, `closer_rol` and similar), a packet that carries closure fields
   without `fixture_kind`, and a duplicate JSON key all return

@@ -1459,7 +1459,9 @@ EXPECTATION_OUTCOMES = ("pass", "fail_gate")
 FIXTURE_CONTRACT_KEYS = ("fixture_kind", "kind", "expectations", "packet")
 FIXTURE_NOTE_KEYS = ("description", "name", "notes")
 FIXTURE_KIND_KEYS = {
-    "closure": ("finding", "waiver", "closer_role", "independent_evidence", "expect_blocked"),
+    # subject_revision and verified_revision: G05 revision-bound closure (reconciled in G42 r3).
+    "closure": ("finding", "waiver", "closer_role", "independent_evidence", "expect_blocked",
+                "subject_revision", "verified_revision"),
     "legal": ("text", "legal_text", "requested_actions", "sources", "freshness_days"),
     "planted_defect": ("defect",),
 }

@@ -1,7 +1,7 @@
 # G42 day 7 daily integration
 
 Revision r3 (final integration refresh) stacks every build goal at its newest remote head on v0.61 `02ba9c5`:
-G01 h1 `aa0b083`, G02 r4 `90a5ec9`, G03 `d4d98f2`, G04 r3 `e9fa278`, G05 r3 `04b3cf2`, G07 `0d6a78d`, G08 `ddebe98`,
+G01 h1 `aa0b083`, G02 r4 `90a5ec9`, G03 `d4d98f2`, G04 r3 `e9fa278`, G05 r4 `1b840cd`, G07 `0d6a78d`, G08 `ddebe98`,
 G09 `edfa64d`, G10 `f79be61`, G11 `13ba705`, G13 `5666e7b`, G14 `6f7b23a`, G15 r4 `7e7f361`, G16 r8 `49aba3f`,
 G17 `550f184`, G19 h1 `350d175`, G20 r3 `0d4db69`, G21 `822a9c1`, G22 h2 `29cd7fc`, G23 `0ff2641`, G25 `eb9c7c4`,
 G31 r3 `fcf492a`, G32 r3 `b69f328`, G33 r4 `a4ae555`, G34 `de76fae`, G35 `34bb98f`, G37 h1 `e9b7a77`, G38 r4
@@ -26,6 +26,16 @@ No cross-goal defect was found on this stack. The checks are not blind: the test
 conflicting license declaration, a removed listed script, a skill copy missing a script and a G37 report with
 no legal boundary, and each one is reported.
 
+Interface defect found and reconciled in r3. The first r3 tree (4ef54ff) failed `--run all`: G05's oracle o13,
+`tests.test_g05_capability` and the full suite failed on all four Pythons. G01's fixture-runner contract accepts
+only each fixture kind's own top-level keys, and `expectations.gate_codes` only with `outcome: fail_gate`; G05 r3's
+o13 closure fixture used the new `subject_revision` / `verified_revision` fields and `gate_codes` with
+`expect_blocked: true`. Two fixes: G05 r4 `1b840cd` writes the fixture in the fail_gate form (G05's own file), and
+this revision adds the two revision fields to the closure kind's keys in `quality_os.py` (the key table exists only
+where G01 and G05 meet; assurance is G42's writable scope), with a note in ASSURANCE.md and two tests in
+`tests/test_g42_capability.py` (`Interfaces`) that failed before the fix. A misspelled revision field is still
+`INVALID_PACKET`.
+
 Conflicts. r1 (G38 merge): the legal-advisor contract and learnings keep the G37 and the G38 entry, and the
 security-auditor contract has one scripts list with `provenance_check.py` (G38) and `boundary_probe.py` (G19). r3,
 each resolved as a union in its merge commit (nothing from either side dropped): ASSURANCE.md (G01 h1 fixture-runner
@@ -33,7 +43,7 @@ text, then the G05 r3 Revision binding section), handoff-work-orders.md (the exi
 G04 r3 and G07), and the site-reliability-engineer contract (G09 and G11 forward tests) and COO contract (G11 and
 G17 forward tests), each appending one list entry.
 
-Forty-four overlaps are named in `resolved_overlaps`, each with its reason. Most are files where one candidate
+Forty-five overlaps are named in `resolved_overlaps`, each with its reason. Most are files where one candidate
 carries an older copy and another builds on it (HEAD is the newest blob); the rest are files two or more goals
 edit, checked line by line (HEAD keeps every line any side added; a line missing from an older copy is one a newer
 candidate replaced).

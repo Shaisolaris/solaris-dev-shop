@@ -66,8 +66,8 @@
   },
   {
    "id": "G05",
-   "commit": "04b3cf2127c2e6abda01c7a0d4c8a0bfadabeaa0",
-   "note": "G05 r3, newest remote head; also stacked by G12",
+   "commit": "1b840cdee716ceaee3d84e19c23f46e558135b71",
+   "note": "G05 r4, newest remote head (oracle o13 fixture made compatible with the G01 fixture-runner contract, found by this integration); also stacked by G12",
    "tests": [
     "tests.test_g05_capability",
     "tests.test_closure_hardening"
@@ -570,11 +570,11 @@
   },
   {
    "path": "employees/quality-security/assurance/ASSURANCE.md",
-   "reason": "G38 and G41 carry older G05 copies (6b57a82, 612ee22); G05 r3 (36386c6) and G01 h1 (774f8fa) add different sections. HEAD 915e945 keeps both sections (G01 text first); each missing older line is one G05 r3 replaced."
+   "reason": "G38 and G41 carry older G05 copies; G05 r3 and G01 h1 add different sections. HEAD e23b0da keeps both (G01 text first) plus one G42 r3 note on the closure keys; each missing older line is one G05 r3 replaced."
   },
   {
    "path": "employees/quality-security/assurance/quality_os.py",
-   "reason": "G38 and G41 carry older G05 copies (6bbd6b3, d3d32f5); G05 r3 (281b16c) and G01 h1 (c2825eb) change different parts. HEAD 203a0ca is the clean merge; each missing older line is one G05 r3 replaced."
+   "reason": "G38 and G41 carry older G05 copies; G05 r3 and G01 h1 change different parts (clean merge). G42 r3 adds subject_revision and verified_revision to the closure fixture keys (interface fix). Each missing older line is one G05 r3 replaced."
   },
   {
    "path": "employees/quality-security/qa-engineer/SKILL.md",
@@ -599,6 +599,10 @@
   {
    "path": "examples/capabilities/G02/activation_oracle.py",
    "reason": "G04, G05, G07, G32, G38 and G41 carry the older copy 228c3ec (from 4113204); G02 r4 builds on it (24cc8ef). HEAD is the G02 r4 blob, a strict superset."
+  },
+  {
+   "path": "examples/capabilities/G05/binding_oracle.py",
+   "reason": "G38 and G41 carry the G05 r2/r3 blob a6e7309; G05 r4 1b840cd builds on it and changes only the o13 fixture form (6b393db), found by this integration. HEAD is the G05 r4 blob, so nothing is lost."
   },
   {
    "path": "examples/capabilities/G19/README.md",
