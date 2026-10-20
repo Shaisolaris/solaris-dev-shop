@@ -467,13 +467,32 @@ def _decide(b: Dict[str, Any], minutes: List[dt.datetime], impact: Dict[str, Any
                   "result": "above" if p["_burn"] >= b["burn"] else "below"})
     if p["_burn"] < b["burn"]:
         return done("do_not_rollback", f"burn rate from {c['revision']} to the end of the impact is {p['burn_rate']}, below the rollback threshold {dec(b['burn'])}")
+    unusable = []
     for dg in diags:
-        if dg["status"] != "ok" or dg["at"] is None or not (start <= dg["at"] <= end):
+        # every supplied G10 trace is accounted for in the decision trace; one that cannot be read or
+        # placed in time is never dropped silently in front of a rollback
+        if dg["status"] != "ok":
+            trace.append({"check": "G10 network diagnosis during the impact", "observed": f"{dg['trace']}: refused by G10 ({dg['error']})", "result": "unusable"})
+            unusable.append(f"{dg['trace']} was refused by G10")
             continue
-        if dg["verdict"] in ("localized", "probable") and dg["layer"] in NON_APP_LAYERS and "application" not in dg["candidates"]:
+        excludes = dg["verdict"] in ("localized", "probable") and dg["layer"] in NON_APP_LAYERS and "application" not in dg["candidates"]
+        seen = f"{dg['trace']}: {dg['verdict']}" + (f" at {dg['layer']}" if dg["layer"] else "")
+        if dg["at"] is None:
+            if excludes:
+                trace.append({"check": "G10 network diagnosis during the impact", "observed": f"{seen}, no capture time", "result": "unusable"})
+                unusable.append(f"{dg['trace']} places the fault at the {dg['layer']} layer but has no capture time")
+            else:
+                trace.append({"check": "G10 network diagnosis during the impact", "observed": f"{seen}, no capture time", "result": "does not exclude the application"})
+            continue
+        if not (start <= dg["at"] <= end):
+            trace.append({"check": "G10 network diagnosis during the impact", "observed": f"{seen} at {iso(dg['at'])}", "result": "outside the impact, not used"})
+            continue
+        if excludes:
             trace.append({"check": "G10 network diagnosis during the impact", "observed": f"{dg['trace']}: {dg['verdict']} at {dg['layer']} ({dg['confidence']}) at {iso(dg['at'])}", "result": "fault outside the application"})
             return done("do_not_rollback", f"G10 places the fault at the {dg['layer']} layer ({dg['verdict']}, {dg['confidence']}) at {iso(dg['at'])}; rolling back {c['revision']} does not change that layer")
-        trace.append({"check": "G10 network diagnosis during the impact", "observed": f"{dg['trace']}: {dg['verdict']}" + (f" at {dg['layer']}" if dg["layer"] else ""), "result": "does not exclude the application"})
+        trace.append({"check": "G10 network diagnosis during the impact", "observed": seen, "result": "does not exclude the application"})
+    if unusable:
+        return done("insufficient_evidence", f"supplied network evidence cannot be used: {'; '.join(unusable)}; it may place the fault outside {c['revision']}, so no rollback decision until the trace is fixed or removed from the bundle")
     if not c["migrates_data"]:
         trace.append({"check": "data restore needed", "observed": "change does not migrate data", "result": "code-only rollback"})
         return done("rollback", f"roll back {c['revision']} to {c['previous']} (code only): impact began after the change and burns {p['burn_rate']}x the budget")
