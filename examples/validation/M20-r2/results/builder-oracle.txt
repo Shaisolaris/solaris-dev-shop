@@ -1,0 +1,12 @@
+== Python 3.9.6
+17/17 checks passed
+== Python 3.11.16
+17/17 checks passed
+== Python 3.12.14
+17/17 checks passed
+== Python 3.13.15
+17/17 checks passed
+== naive control (3.9.6)
+0/11 checks passed
+== browser_checks without a browser named
+exit 3

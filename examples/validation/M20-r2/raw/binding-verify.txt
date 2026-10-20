@@ -1,0 +1,39 @@
+# binding check G20-r3, 2026-10-19 21:06:01 PDT
+remote head of review/grok-g20-async-search: 0d4db6949ee225e26f6df6cba3fc8047a2742d8a (expected 0d4db69)
+worktree HEAD: 0d4db6949ee225e26f6df6cba3fc8047a2742d8a
+base is ancestor: yes; commits since: 1
+handback patch G20-r3.patch equals regenerated (diff): NO
+MANIFEST.sha256 check against worktree:
+  employees/engineering/frontend-developer/async-search-ui.md: OK
+  employees/engineering/frontend-developer/async_search_core.js: OK
+  employees/engineering/frontend-developer/learnings.md: OK
+  examples/capabilities/G20/README.md: OK
+  examples/capabilities/G20/browser_checks.py: OK
+  examples/capabilities/G20/demo/index.html: OK
+  examples/capabilities/G20/rendered/README.md: OK
+  examples/capabilities/G20/rendered/report.json: OK
+  examples/capabilities/G20/rendered/screenshot-1280.png: OK
+  examples/capabilities/G20/rendered/screenshot-320.png: OK
+  examples/capabilities/G20/rendered/screenshot-360.png: OK
+  examples/capabilities/G20/ui_oracle.py: OK
+  tests/test_g20_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../frontend-developer/async-search-ui.md          |  12 +-
+   .../frontend-developer/async_search_core.js        |   3 +-
+   .../engineering/frontend-developer/learnings.md    |   1 +
+   examples/capabilities/G20/README.md                |  25 +-
+   examples/capabilities/G20/browser_checks.py        | 271 ++++++++++------
+   examples/capabilities/G20/demo/index.html          |   4 +-
+   examples/capabilities/G20/rendered/README.md       |  16 +
+   examples/capabilities/G20/rendered/report.json     | 360 +++++++++++++++++++++
+   .../capabilities/G20/rendered/screenshot-1280.png  | Bin 0 -> 58070 bytes
+   .../capabilities/G20/rendered/screenshot-320.png   | Bin 0 -> 46817 bytes
+   .../capabilities/G20/rendered/screenshot-360.png   | Bin 0 -> 51963 bytes
+   examples/capabilities/G20/ui_oracle.py             |   2 +-
+   tests/test_g20_capability.py                       | 116 +++++--
+   13 files changed, 674 insertions(+), 136 deletions(-)
+G20-r3.patch is a format-patch of 0d4db69 on 174ef33; applied with git apply to 174ef33 it gives tree 0ce50fef12e3530e73e6bb8774e41576c2340ec9 = tree of 0d4db69 (byte comparison with regenerated format-patch differs only in git version/trailer lines)
+commits 8d45038..0d4db69: 2
+0d4db69 G20 r3: one Chrome launch covers 320, 360 and 1280 px; rendered result recorded (root QA, review only)
+174ef33 G20 r2: narrow layout and option ids hold at 320 px (root QA, review only)

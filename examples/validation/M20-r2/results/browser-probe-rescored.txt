@@ -1,0 +1,16 @@
+M-L1-320 PASS CJK, emoji and URL-like unbroken labels: no page overflow, every option inside the list and viewport
+M-K1-320c PASS 11 kept rows (2 blank ids dropped as documented): ids valid and unique
+M-K2-320c PASS ArrowUp from the first option wraps to the last (label cut to 200 as documented)
+M-S1-320 PASS newer query answered with no rows, then the older query answers: the empty result stays
+M-S2-320 PASS an older query failing after the newer one succeeded shows no error and keeps the rows
+M-L1-360 PASS CJK, emoji and URL-like unbroken labels: no page overflow, every option inside the list and viewport
+M-K1-360c PASS 11 kept rows (2 blank ids dropped as documented): ids valid and unique
+M-K2-360c PASS ArrowUp from the first option wraps to the last (label cut to 200 as documented)
+M-S1-360 PASS newer query answered with no rows, then the older query answers: the empty result stays
+M-S2-360 PASS an older query failing after the newer one succeeded shows no error and keeps the rows
+M-L1-1280 PASS CJK, emoji and URL-like unbroken labels: no page overflow, every option inside the list and viewport
+M-K1-1280c PASS 11 kept rows (2 blank ids dropped as documented): ids valid and unique
+M-K2-1280c PASS ArrowUp from the first option wraps to the last (label cut to 200 as documented)
+M-S1-1280 PASS newer query answered with no rows, then the older query answers: the empty result stays
+M-S2-1280 PASS an older query failing after the newer one succeeded shows no error and keeps the rows
+M20R2 BROWSER PROBE (rescored) 15/15

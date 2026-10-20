@@ -1,0 +1,18 @@
+M-L1-320 PASS CJK, emoji and URL-like unbroken labels: no page overflow, every option inside the list and viewport {"n": 11, "docSW": 320, "docCW": 320, "over": []}
+M-K1-320 FAIL 13 rows with blank, empty, digit-first, punctuated and colliding ids: each active id valid, resolving, unique; focus stays on input ["opt-1abc", "opt-a_3a_b", "opt-a_2e_b", "opt-a_23_b", "opt-a_20_b", "opt-a_5f_b", "opt-a-b", "opt-a_20__20_b", "opt-cjk", "opt-emoji", "opt-url"]
+M-K2-320 FAIL ArrowUp from the first option wraps to the last ["https://example.invalid/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/"]
+M-S1-320 PASS newer query answered with no rows, then the older query answers: the empty result stays {"before": "No results for pq.", "after": "No results for pq.", "labels": []}
+M-S2-320 PASS an older query failing after the newer one succeeded shows no error and keeps the rows {"err": false, "labels": 1}
+M-L1-360 PASS CJK, emoji and URL-like unbroken labels: no page overflow, every option inside the list and viewport {"n": 11, "docSW": 360, "docCW": 360, "over": []}
+M-K1-360 FAIL 13 rows with blank, empty, digit-first, punctuated and colliding ids: each active id valid, resolving, unique; focus stays on input ["opt-1abc", "opt-a_3a_b", "opt-a_2e_b", "opt-a_23_b", "opt-a_20_b", "opt-a_5f_b", "opt-a-b", "opt-a_20__20_b", "opt-cjk", "opt-emoji", "opt-url"]
+M-K2-360 FAIL ArrowUp from the first option wraps to the last ["https://example.invalid/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/"]
+M-S1-360 PASS newer query answered with no rows, then the older query answers: the empty result stays {"before": "No results for pq.", "after": "No results for pq.", "labels": []}
+M-S2-360 PASS an older query failing after the newer one succeeded shows no error and keeps the rows {"err": false, "labels": 1}
+M-L1-1280 PASS CJK, emoji and URL-like unbroken labels: no page overflow, every option inside the list and viewport {"n": 11, "docSW": 1280, "docCW": 1280, "over": []}
+M-K1-1280 FAIL 13 rows with blank, empty, digit-first, punctuated and colliding ids: each active id valid, resolving, unique; focus stays on input ["opt-1abc", "opt-a_3a_b", "opt-a_2e_b", "opt-a_23_b", "opt-a_20_b", "opt-a_5f_b", "opt-a-b", "opt-a_20__20_b", "opt-cjk", "opt-emoji", "opt-url"]
+M-K2-1280 FAIL ArrowUp from the first option wraps to the last ["https://example.invalid/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/segment/"]
+M-S1-1280 PASS newer query answered with no rows, then the older query answers: the empty result stays {"before": "No results for pq.", "after": "No results for pq.", "labels": []}
+M-S2-1280 PASS an older query failing after the newer one succeeded shows no error and keeps the rows {"err": false, "labels": 1}
+builder rows reproduced in the same session: 33/33; failing []
+launches [78436]; chrome pid alive after close: False; version Chrome/155.0.8059.85
+M20R2 BROWSER PROBE 9/15
