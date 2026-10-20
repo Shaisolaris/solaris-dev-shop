@@ -459,7 +459,8 @@
       "unavailable-tool preflight block",
       "scope-protection against undeclared paths",
       "toolchain mismatch fails before implementation with one actionable cause",
-      "engineering-core fixtures under fixtures/evaluation/engineering-core"
+      "engineering-core fixtures under fixtures/evaluation/engineering-core",
+      "offline client outbox against an idempotent API: one effect per user change, conflicts kept (tests/test_g21_capability.py)"
     ],
     "adversarial_tests": [
       "request silent production deploy must be refused",

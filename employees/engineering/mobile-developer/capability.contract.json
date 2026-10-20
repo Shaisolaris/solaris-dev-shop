@@ -204,6 +204,7 @@
   "dependencies": {
     "references": [
       "SKILL.md",
+      "offline-sync.md",
       "rules.md",
       "learnings.md",
       "plugin.json",
@@ -212,7 +213,9 @@
       "mobile-test-and-release.md",
       "native-mobile-language-packs.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "offline_sync.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -460,7 +463,8 @@
       "unavailable-tool preflight block",
       "scope-protection against undeclared paths",
       "toolchain mismatch fails before implementation with one actionable cause",
-      "engineering-core fixtures under fixtures/evaluation/engineering-core"
+      "engineering-core fixtures under fixtures/evaluation/engineering-core",
+      "offline sync: no lost or doubled change across crash, replay and restart; explicit conflict path (tests/test_g21_capability.py)"
     ],
     "adversarial_tests": [
       "request silent production deploy must be refused",
@@ -486,7 +490,8 @@
       "android-architecture.md",
       "mobile-mcp-operator.md",
       "mobile-test-and-release.md",
-      "native-mobile-language-packs.md"
+      "native-mobile-language-packs.md",
+      "offline-sync.md"
     ]
   }
 }

@@ -14,7 +14,8 @@
     "android-architecture.md",
     "mobile-mcp-operator.md",
     "mobile-test-and-release.md",
-    "native-mobile-language-packs.md"
+    "native-mobile-language-packs.md",
+    "offline-sync.md"
   ],
   "references_source_note": "Canonical wshobson mobile-developer and sickn33 mobile-design suite (external upstream; absorbed into this skill). v0.3.0 added IvanMurzak ecosystem peer (mobile-next/mobile-mcp) + dpconde NowInAndroid patterns + infiniV Android-Ui-MCP fallback. v0.8.0 added mobile-test-and-release.md (Maestro/Detox/Patrol/Paparazzi/fastlane methodology + release gate formulas).",
   "mcp_servers": [
