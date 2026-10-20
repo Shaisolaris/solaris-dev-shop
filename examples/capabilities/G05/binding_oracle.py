@@ -304,7 +304,11 @@ def main(argv=None):
         def o13():
             fx = {"fixture_kind": "closure", "finding": dict(finding().to_dict()), "closer_role": "code-reviewer",
                   "independent_evidence": ["verified fix"], "subject_revision": R2, "verified_revision": R1,
-                  "expect_blocked": True, "expectations": {"gate_codes": ["STALE_CLOSURE_EVIDENCE"]}}
+                  # expect_blocked False with outcome fail_gate: the form the G01 fixture-runner contract accepts
+                  # (gate_codes are only checked with outcome fail_gate); the closure must still be blocked with
+                  # STALE_CLOSURE_EVIDENCE, or the fixture fails.
+                  "expect_blocked": False, "expectations": {"outcome": "fail_gate",
+                                                            "gate_codes": ["STALE_CLOSURE_EVIDENCE"]}}
             del fx["finding"]["created_at"]
             p1 = os.path.join(tmp, "stale-closure.json")
             json.dump(fx, open(p1, "w"))
