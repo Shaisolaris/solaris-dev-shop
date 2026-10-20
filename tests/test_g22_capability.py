@@ -260,7 +260,7 @@ class G22Capability(unittest.TestCase):
         self.assertEqual(run(TOOL, "init", "--db", self.db, "--catalog", FIX / "catalog.json").returncode, 2)
 
     # G22 h2: open events are resolved on the record (M22 h1 P3: an exception could never be cleared)
-    def resolve(self, eid, action, *extra, by="Shai A", note="checked with the provider"):
+    def resolve(self, eid, action, *extra, by="Ana Ops", note="checked with the provider"):
         r = run(TOOL, "resolve", "--db", self.db, "--event", eid, "--action", action, "--by", by, "--note", note, "--now", NOW + 900, *extra)
         return r.returncode, (json.loads(r.stdout) if r.stdout.strip().startswith("{") else None), r.stderr
 
@@ -287,7 +287,7 @@ class G22Capability(unittest.TestCase):
         self.assertEqual((rep["net_cash"], rep["money"]["unapplied_refunds"], rep["money"]["closed_unapplied_refunds"]), ("32.69", "0.00", "40.00"))
         self.assertEqual(rep["open"], [])
         self.assertEqual([(x["event_id"], x["action"], x["prior_state"], x["resolved_by"], x["reference"], x["amount"]) for x in rep["resolutions"]],
-                         [("evt_008", "close", "exception", "Shai A", None, None), ("evt_007", "close", "exception", "Shai A", "provider case PC-1001", "40.00")])
+                         [("evt_008", "close", "exception", "Ana Ops", None, None), ("evt_007", "close", "exception", "Ana Ops", "provider case PC-1001", "40.00")])
         self.assertTrue(rep["resolutions"][1]["prior_reason"].startswith("refund_exceeds_captured"))
         self.assertEqual(self.check().returncode, 0)
         r, out = self.export("books")
