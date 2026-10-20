@@ -1,0 +1,17 @@
+# binding check G33-r4, 2026-10-19 21:24:24 PDT
+remote head of review/grok-g33-evidence-decision: a4ae555bdabffdc932b279d97ed2928bdef73df5 (expected a4ae555bdabffdc932b279d97ed2928bdef73df5)
+worktree HEAD: a4ae555bdabffdc932b279d97ed2928bdef73df5
+base is ancestor: yes; commits since: 1
+handback patch G33-r4.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/product-project/product-manager/evidence-product-decision.md: OK
+  employees/product-project/product-manager/evidence_decision.py: OK
+  employees/product-project/product-manager/learnings.md: OK
+  tests/test_g33_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../product-manager/evidence-product-decision.md   |  2 +-
+   .../product-manager/evidence_decision.py           | 11 +++++++++--
+   .../product-project/product-manager/learnings.md   |  1 +
+   tests/test_g33_capability.py                       | 23 ++++++++++++++++++++++
+   4 files changed, 34 insertions(+), 3 deletions(-)

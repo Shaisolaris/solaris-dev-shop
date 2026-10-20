@@ -1,0 +1,16 @@
+FAIL E01 18 vs 18,000 -> False True
+FAIL E02 18000 vs 18,000 -> True False
+FAIL E04 1,5 vs 11,500 -> False True
+FAIL E05 +18 vs +180 -> False True
+FAIL E06 -5 vs -50 -> False True
+FAIL E08 0.5 vs 10.5 -> False True
+PASS E12 fullwidth 18 vs 18,000 -> False False
+OBS  OBS E03 18% vs '18 %' False
+OBS  OBS E07 18.0 vs 18 False
+OBS  OBS E11 18 vs European 18.000 True
+FAIL D09 value 1,5 from 11,500 (would score 3) -> value_not_in_quote (0, [], None)
+FAIL D10 value +18 from +180 (score 3) -> value_not_in_quote (0, [], None)
+FAIL D11 value -5 from -50 (score 0) -> value_not_in_quote (0, [], None)
+PASS D12 value 11,500 score 5 -> no finding (0, [], None)
+FAIL D13 quantity dimension, value 1,5 from 11,500 -> value_not_in_quote (0, [])
+PROBE 2/12
