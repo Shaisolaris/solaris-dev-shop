@@ -1,0 +1,27 @@
+# binding check G18, 2026-10-19 21:55:26 PDT
+remote head of review/grok-g18-daily-integration: fd94c645d88385d8c788f59c6a3c7e5ed3929542 (expected fd94c645d88385d8c788f59c6a3c7e5ed3929542)
+worktree HEAD: fd94c645d88385d8c788f59c6a3c7e5ed3929542
+base is ancestor: yes; commits since: 1
+handback patch G18.patch equals regenerated (format): yes
+MANIFEST.sha256 check against worktree:
+  employees/quality-security/assurance/daily-integration.md: OK
+  employees/quality-security/assurance/daily_integration.py: OK
+  employees/quality-security/assurance/daily_integration_controls/naive.py: OK
+  employees/quality-security/assurance/daily_integration_controls/noop.py: OK
+  employees/quality-security/assurance/daily_integration_oracle.py: OK
+  examples/capabilities/G18/README.md: OK
+  examples/capabilities/G18/cross_checks.py: OK
+  examples/capabilities/G18/plan.json: OK
+  tests/test_g18_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../assurance/daily-integration.md                 |  37 ++
+   .../assurance/daily_integration.py                 | 596 +++++++++++++++++++++
+   .../assurance/daily_integration_controls/naive.py  |  23 +
+   .../assurance/daily_integration_controls/noop.py   |   3 +
+   .../assurance/daily_integration_oracle.py          | 363 +++++++++++++
+   examples/capabilities/G18/README.md                |  29 +
+   examples/capabilities/G18/cross_checks.py          | 184 +++++++
+   examples/capabilities/G18/plan.json                | 104 ++++
+   tests/test_g18_capability.py                       | 154 ++++++
+   9 files changed, 1493 insertions(+)
