@@ -105,9 +105,10 @@ class CrossChecks(unittest.TestCase):
         self.assertEqual(r.returncode, 1 if findings else 0, out)
         self.assertIn("x1 G22 books -> G14 net cash 32.69 -> G17 inflow 33.144028/month (agrees)", out)
         self.assertIn("x3 G23 evidence_scope and G25 claim_scope both state synthetic, offline evidence", out)
-        # demonstrated defect (owned by G22, reported, not edited here): books with open exceptions reach a G17 decision
-        self.assertEqual(len(findings), 1, out)
-        self.assertIn("FINDING x2 G22 has open exceptions evt_007,evt_008 (unapplied refunds 40.00) but export-g14 exit 0", out)
+        # G22 h1 8bc3553 refuses to export books with open exceptions, so x2 holds on this stack
+        self.assertEqual(findings, [], out)
+        self.assertIn("x2 G22 open exceptions evt_007,evt_008 kept out of a G17 decision", out)
+        self.assertIn("CROSS-CHECKS CLEAN (0 findings)", out)
         self.assertTrue(out.rstrip().splitlines()[-1].startswith("CROSS-CHECKS "), out)
 
     def _load(self):
@@ -145,6 +146,22 @@ class CrossChecks(unittest.TestCase):
             mod.x2(f, lines)
             self.assertEqual(f, [])
             self.assertTrue(any("kept out of a G17 decision" in x for x in lines), lines)
+
+    def test_x2_catches_books_exported_with_open_exceptions(self):
+        # the first-stack behaviour (G22 1faee8d): export only the applied rows and exit 0 while exceptions are open
+        mod = self._load()
+        real = mod.G22
+        with tempfile.TemporaryDirectory() as d:
+            mod.G22 = self._stub(d, "g22.py", "import shutil, sqlite3, subprocess\nargs = sys.argv[1:]\nif args[0] == 'export-g14':\n"
+                                 "    i = args.index('--db') + 1\n    cp = args[i] + '.hide'\n    shutil.copy(args[i], cp)\n"
+                                 "    c = sqlite3.connect(cp)\n    c.execute(\"DELETE FROM money WHERE applied = 0\")\n"
+                                 "    c.execute(\"UPDATE events SET state = 'applied' WHERE state IN ('held', 'exception')\")\n"
+                                 "    c.commit(); c.close()\n    args[i] = cp\n"
+                                 "sys.exit(subprocess.run([sys.executable, %r] + args).returncode)\n" % real)
+            f, lines = [], []
+            mod.x2(f, lines)
+            self.assertEqual(len(f), 1, (f, lines))
+            self.assertIn("x2 G22 has open exceptions evt_007,evt_008 (unapplied refunds 40.00) but export-g14 exit 0", f[0])
 
     def test_x3_catches_a_live_claim(self):
         mod = self._load()

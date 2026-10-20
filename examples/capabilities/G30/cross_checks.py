@@ -2,8 +2,8 @@
 """G30 cross-goal checks for the day 5 candidates (G20, G21, G22, G23, G24, G25).
 
 Nothing in the checkout is written; inputs are copies of the candidates' own fixtures in a temporary
-folder. No network, no socket, no browser (owner rule: G20 is checked by its own JavaScriptCore oracle
-only, never in a browser).
+folder. No network, no socket, no browser (G20 is checked by its own JavaScriptCore oracle and tests;
+nothing here starts a browser).
 
   x1  G22 -> G14 -> G17 figure agreement: the books G22 exports for September, reconciled by G14 and fed
       to G17 as "from_g14", must give the monthly inflow G14's own net cash implies (x 365/12 / days).

@@ -40,8 +40,8 @@
   },
   {
    "id": "G20",
-   "commit": "174ef33854d51b9345fd606d369a5fc2b8b0a039",
-   "note": "newest repair head (G20 r2, root QA, published 2026-10-19 16:11 PDT); JavaScriptCore shell and source checks only, no browser (rendered checks are opt-in and not run)",
+   "commit": "0d4db6949ee225e26f6df6cba3fc8047a2742d8a",
+   "note": "newest repair head (G20 r3, root QA, published 2026-10-19 17:31 PDT); here JavaScriptCore shell, source checks and the recorded rendered report only, no browser is started",
    "tests": [
     "tests.test_g20_capability"
    ],
@@ -67,8 +67,8 @@
   },
   {
    "id": "G22",
-   "commit": "1faee8d4e529fbbeac7c64292bed324bdced9796",
-   "note": "carries G19 5606672 (accepted), G13 5666e7b, G14 6f7b23a",
+   "commit": "8bc3553713c31548dda240da81a816802de1d375",
+   "note": "G22 h1 on accepted 1faee8d (export-g14 refuses open exceptions; needs affected recheck); carries G19 5606672 (accepted), G13 5666e7b, G14 6f7b23a",
    "tests": [
     "tests.test_g22_capability"
    ],
@@ -116,11 +116,11 @@
  "resolved_overlaps": [
   {
    "path": "employees/engineering/full-stack-developer/SKILL.md",
-   "reason": "G22 1faee8d carries the G19 5606672 blob a02222b unchanged; G21 822a9c1 builds on G19 and adds one offline-client line (blob 01a06eb). HEAD is the G21 blob, a strict superset, so nothing from G19 or G22 is lost."
+   "reason": "G22 8bc3553 carries the G19 5606672 blob a02222b unchanged; G21 822a9c1 builds on G19 and adds one offline-client line (blob 01a06eb). HEAD is the G21 blob, a strict superset, so nothing from G19 or G22 is lost."
   },
   {
    "path": "employees/engineering/full-stack-developer/learnings.md",
-   "reason": "G22 1faee8d carries the G19 5606672 blob c17671a unchanged; G21 822a9c1 builds on G19 and adds one pending observation (blob 1ad3fa5). HEAD is the G21 blob, a strict superset."
+   "reason": "G22 8bc3553 carries the G19 5606672 blob c17671a unchanged; G21 822a9c1 builds on G19 and adds one pending observation (blob 1ad3fa5). HEAD is the G21 blob, a strict superset."
   }
  ]
 }
