@@ -1,0 +1,4 @@
+py39: Ran 170 tests in 111.008s OK  rc=0 Python 3.9.6 at 29cd7fc6a07384db28fca3824b7fc4efe1d13fe3
+py311: Ran 170 tests in 104.181s OK  rc=0 Python 3.11.16 at 29cd7fc6a07384db28fca3824b7fc4efe1d13fe3
+py312: Ran 170 tests in 104.854s OK  rc=0 Python 3.12.14 at 29cd7fc6a07384db28fca3824b7fc4efe1d13fe3
+py313: Ran 170 tests in 104.923s OK  rc=0 Python 3.13.15 at 29cd7fc6a07384db28fca3824b7fc4efe1d13fe3

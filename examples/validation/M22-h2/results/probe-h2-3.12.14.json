@@ -1,0 +1,230 @@
+{
+ "python": "3.12.14",
+ "rows": [
+  {
+   "id": "R1",
+   "desc": "close evt_008 (note) and evt_007 (reference): November and September export exit 0, G14 32.69, closed 40.00 refund reported and listed at export, 2 audit rows with who/why",
+   "pass": true,
+   "detail": {
+    "close": [
+     0,
+     0
+    ],
+    "rc_nov": 0,
+    "rc_sep": 0,
+    "g14": 0,
+    "net_cash": "32.69",
+    "closed": "40.00",
+    "report_net_cash": "32.69",
+    "res": [
+     {
+      "action": "close",
+      "amount": null,
+      "at": "2026-09-21T14:30:00Z",
+      "event_id": "evt_008",
+      "money_kind": null,
+      "note": "customer told, order dropped",
+      "prior_reason": "out_of_stock tee-m (want 5, available 3)",
+      "prior_state": "exception",
+      "reference": null,
+      "resolved_by": "Probe Operator",
+      "superseded_by": null
+     },
+     {
+      "action": "close",
+      "amount": "40.00",
+      "at": "2026-09-21T14:30:00Z",
+      "event_id": "evt_007",
+      "money_kind": "refund",
+      "note": "refund paid by the provider outside the store",
+      "prior_reason": "refund_exceeds_captured (captured 44.99, refunded 12.50, this 40.00)",
+      "prior_state": "exception",
+      "reference": "provider case 77",
+      "resolved_by": "Probe Operator",
+      "superseded_by": null
+     }
+    ],
+    "export_stdout": {
+     "out": "$TMPDIR/m22h2-dbj4767z/sep",
+     "files": [
+      "invoices.csv",
+      "payments.csv",
+      "credits.csv",
+      "package.json"
+     ],
+     "closed_money_not_in_books": [
+      {
+       "event_id": "evt_007",
+       "money_kind": "refund",
+       "amount": "40.00",
+       "reference": "provider case 77",
+       "superseded_by": null
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "R2",
+   "desc": "double resolve (close again, then retry) of a resolved event: exit 2 both, still 2 audit rows, state resolved",
+   "pass": true,
+   "detail": {
+    "rc": [
+     2,
+     2
+    ],
+    "n": 2,
+    "state": "resolved"
+   }
+  },
+  {
+   "id": "R8",
+   "desc": "re-delivering closed evt_007: ingest exit 0 (duplicate), state stays resolved, export still exit 0",
+   "pass": true,
+   "detail": {
+    "ingest": 0,
+    "state": "resolved",
+    "export": 0
+   }
+  },
+  {
+   "id": "R6",
+   "desc": "tampering after resolve is reported by check (record deleted, amount changed, reference dropped, applied event marked resolved, state reopened)",
+   "pass": true,
+   "detail": {
+    "record_deleted": [
+     1,
+     "VIOLATIONS\nresolved event evt_007 has no close record\n"
+    ],
+    "amount_changed": [
+     1,
+     "VIOLATIONS\nclosed money of evt_007 differs from its money row\n"
+    ],
+    "reference_dropped": [
+     1,
+     "VIOLATIONS\nclosed money of evt_007 has no reference or superseding event\n"
+    ],
+    "applied_marked_resolved": [
+     1,
+     "VIOLATIONS\nstock move from event evt_002 that is not applied\nmoney row of event evt_002 does not match the event state\nresolved event evt_00"
+    ],
+    "record_state_mismatch": [
+     1,
+     "VIOLATIONS\nresolution of evt_008 (close) does not match the event state\n"
+    ]
+   }
+  },
+  {
+   "id": "R3",
+   "desc": "refusals: money close without reference, blank reference, applied event, unknown id, blank --by or --note, both reference and superseded-by: exit 2, nothing recorded, export still refused",
+   "pass": true,
+   "detail": {
+    "rc": [
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "n": 0,
+    "export": 1,
+    "err_example": "error: event evt_007 carries unapplied refund 40.00; close it with --reference (where that money was settled) or --superseded-by (the applied event that re-deli"
+   }
+  },
+  {
+   "id": "R4",
+   "desc": "superseded-by: another order's applied event, a held event, an unknown id and itself are refused (exit 2); an applied re-delivered refund of the same order is accepted and recorded",
+   "pass": true,
+   "detail": {
+    "states": {
+     "evt_201": "applied",
+     "evt_202": "applied",
+     "evt_203": "held"
+    },
+    "rc": [
+     2,
+     2,
+     2,
+     2,
+     0
+    ],
+    "res": [
+     {
+      "action": "close",
+      "amount": "40.00",
+      "at": "2026-09-21T14:30:00Z",
+      "event_id": "evt_007",
+      "money_kind": "refund",
+      "note": "probe note",
+      "prior_reason": "refund_exceeds_captured (captured 44.99, refunded 12.50, this 40.00)",
+      "prior_state": "exception",
+      "reference": null,
+      "resolved_by": "Probe Operator",
+      "superseded_by": "evt_202"
+     }
+    ]
+   }
+  },
+  {
+   "id": "R5",
+   "desc": "retry: out-of-stock order still blocked gives exit 1 with nothing changed; after a restocking return the retry applies it and its held capture follows; export exit 0 and G14 reconciles; audit row action retry",
+   "pass": true,
+   "detail": {
+    "before": {
+     "evt_303": "exception",
+     "evt_304": "held"
+    },
+    "retry_fail": [
+     1,
+     {
+      "action": "retry",
+      "event": "evt_303",
+      "reason": "out_of_stock tee-m (want 4, available 3)",
+      "resolved": false,
+      "state": "exception"
+     }
+    ],
+    "after_fail": {
+     "evt_303": "exception",
+     "evt_304": "held"
+    },
+    "retry_ok": 0,
+    "after": {
+     "evt_303": "applied",
+     "evt_304": "applied"
+    },
+    "export": 0,
+    "g14": 0,
+    "net_cash": "79.96"
+   }
+  },
+  {
+   "id": "R7",
+   "desc": "held refund: retry before its order arrives exits 1 and stays held; after the order arrives it is applied by ingest, and resolving it then is refused (exit 2)",
+   "pass": true,
+   "detail": {
+    "rc": [
+     1,
+     2
+    ],
+    "state": "applied"
+   }
+  },
+  {
+   "id": "R9",
+   "desc": "ledger made by the h1 tool (no resolutions table): resolve works, table created, export exit 0, check 0",
+   "pass": true,
+   "detail": {
+    "pre_table": null,
+    "rc": [
+     0,
+     0
+    ],
+    "export": 0,
+    "check": 0
+   }
+  }
+ ]
+}

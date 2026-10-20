@@ -1,0 +1,7 @@
+Q1 PASS september stream: exit 1, --out not created, open evt_007 and evt_008 listed with the 40.00 refund {"rc": 1, "out_exists": false, "open": ["evt_007", "evt_008"], "money": [{"amount": "40.00", "event_id": "evt_007", "kind": "refund"}]}
+Q2 PASS check on the same ledger still exit 0 (consistent): refusal is about open items, not corruption {"rc": 0}
+Q3 PASS september without evt_007/evt_008: exit 0 and G14 reconciles to net cash 32.69 {"rc": 0, "g14_rc": 0, "net_cash": "32.69"}
+Q4 PASS refund before its order is held: export refused naming evt_004; after the order and capture arrive export exits 0 {"rc_held": 1, "open": ["evt_004"], "rc_after": 0}
+Q5 PASS OBSERVATION: an over-refund exception stays open after re-delivery and also blocks a later empty period (no resolve command) {"rc_sep": 1, "redeliver_rc": 1, "rc_november": 1, "open_november": ["evt_007"], "commands": ["init", "sign", "ingest", "report", "check", "export-g14", "resolve"]}
+Q6 PASS --out that is not empty: exit 2, file kept {"rc": 2}
+M22H1 PROBE 6/6 (Q5 observation: export blocked forever after an exception = True)

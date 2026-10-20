@@ -1,0 +1,86 @@
+{
+ "python": "3.13.15",
+ "rows": [
+  {
+   "id": "Q1",
+   "desc": "september stream: exit 1, --out not created, open evt_007 and evt_008 listed with the 40.00 refund",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "out_exists": false,
+    "open": [
+     "evt_007",
+     "evt_008"
+    ],
+    "money": [
+     {
+      "amount": "40.00",
+      "event_id": "evt_007",
+      "kind": "refund"
+     }
+    ]
+   }
+  },
+  {
+   "id": "Q2",
+   "desc": "check on the same ledger still exit 0 (consistent): refusal is about open items, not corruption",
+   "pass": true,
+   "detail": {
+    "rc": 0
+   }
+  },
+  {
+   "id": "Q3",
+   "desc": "september without evt_007/evt_008: exit 0 and G14 reconciles to net cash 32.69",
+   "pass": true,
+   "detail": {
+    "rc": 0,
+    "g14_rc": 0,
+    "net_cash": "32.69"
+   }
+  },
+  {
+   "id": "Q4",
+   "desc": "refund before its order is held: export refused naming evt_004; after the order and capture arrive export exits 0",
+   "pass": true,
+   "detail": {
+    "rc_held": 1,
+    "open": [
+     "evt_004"
+    ],
+    "rc_after": 0
+   }
+  },
+  {
+   "id": "Q5",
+   "desc": "OBSERVATION: an over-refund exception stays open after re-delivery and also blocks a later empty period (no resolve command)",
+   "pass": true,
+   "detail": {
+    "rc_sep": 1,
+    "redeliver_rc": 1,
+    "rc_november": 1,
+    "open_november": [
+     "evt_007"
+    ],
+    "commands": [
+     "init",
+     "sign",
+     "ingest",
+     "report",
+     "check",
+     "export-g14",
+     "resolve"
+    ]
+   }
+  },
+  {
+   "id": "Q6",
+   "desc": "--out that is not empty: exit 2, file kept",
+   "pass": true,
+   "detail": {
+    "rc": 2
+   }
+  }
+ ],
+ "q5_blocked_forever": true
+}

@@ -1,0 +1,20 @@
+== Python 3.9.6
+PASSED 10/10
+REJECTED 5/10
+REJECTED 0/10
+tests: Ran 20 tests in 8.875s  OK 
+== Python 3.11.16
+PASSED 10/10
+REJECTED 5/10
+REJECTED 0/10
+tests: Ran 20 tests in 6.539s  OK 
+== Python 3.12.14
+PASSED 10/10
+REJECTED 5/10
+REJECTED 0/10
+tests: Ran 20 tests in 6.869s  OK 
+== Python 3.13.15
+PASSED 10/10
+REJECTED 5/10
+REJECTED 0/10
+tests: Ran 20 tests in 7.721s  OK 

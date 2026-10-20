@@ -1,0 +1,162 @@
+{
+ "python": "3.9.6",
+ "rows": [
+  {
+   "id": "R1",
+   "desc": "close evt_008 (note) and evt_007 (reference): November and September export exit 0, G14 32.69, closed 40.00 refund reported and listed at export, 2 audit rows with who/why",
+   "pass": false,
+   "detail": {
+    "close": [
+     2,
+     2
+    ],
+    "rc_nov": 1,
+    "rc_sep": 1,
+    "g14": null,
+    "net_cash": null,
+    "closed": null,
+    "report_net_cash": "32.69",
+    "res": [],
+    "export_stdout": {
+     "open": [
+      {
+       "id": "evt_007",
+       "reason": "refund_exceeds_captured (captured 44.99, refunded 12.50, this 40.00)",
+       "state": "exception",
+       "type": "refund.succeeded"
+      },
+      {
+       "id": "evt_008",
+       "reason": "out_of_stock tee-m (want 5, available 3)",
+       "state": "exception",
+       "type": "order.placed"
+      }
+     ],
+     "refused": "open held or exception events or unapplied money; resolve them before export",
+     "unapplied_money": [
+      {
+       "amount": "40.00",
+       "event_id": "evt_007",
+       "kind": "refund"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "R2",
+   "desc": "double resolve (close again, then retry) of a resolved event: exit 2 both, still 2 audit rows, state resolved",
+   "pass": false,
+   "detail": {
+    "rc": [
+     2,
+     2
+    ],
+    "n": null,
+    "state": "exception"
+   }
+  },
+  {
+   "id": "R8",
+   "desc": "re-delivering closed evt_007: ingest exit 0 (duplicate), state stays resolved, export still exit 0",
+   "pass": false,
+   "detail": {
+    "ingest": 1,
+    "state": "exception",
+    "export": 1
+   }
+  },
+  {
+   "id": "R1",
+   "desc": "close path, export, audit",
+   "pass": false,
+   "detail": {
+    "error": "OperationalError: no such table: resolutions"
+   }
+  },
+  {
+   "id": "R3",
+   "desc": "refusals: money close without reference, blank reference, applied event, unknown id, blank --by or --note, both reference and superseded-by: exit 2, nothing recorded, export still refused",
+   "pass": true,
+   "detail": {
+    "rc": [
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "n": null,
+    "export": 1,
+    "err_example": "usage: payment_ledger.py [-h] {init,sign,ingest,report,check,export-g14} ...\npayment_ledger.py: error: argument cmd: invalid choice: 'resolve' (choose from 'ini"
+   }
+  },
+  {
+   "id": "R4",
+   "desc": "superseded-by: another order's applied event, a held event, an unknown id and itself are refused (exit 2); an applied re-delivered refund of the same order is accepted and recorded",
+   "pass": false,
+   "detail": {
+    "states": {
+     "evt_201": "applied",
+     "evt_202": "applied",
+     "evt_203": "held"
+    },
+    "rc": [
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "res": []
+   }
+  },
+  {
+   "id": "R5",
+   "desc": "retry: out-of-stock order still blocked gives exit 1 with nothing changed; after a restocking return the retry applies it and its held capture follows; export exit 0 and G14 reconciles; audit row action retry",
+   "pass": false,
+   "detail": {
+    "before": {
+     "evt_303": "exception",
+     "evt_304": "held"
+    },
+    "retry_fail": [
+     2,
+     null
+    ],
+    "after_fail": {
+     "evt_303": "exception",
+     "evt_304": "held"
+    },
+    "retry_ok": 2,
+    "after": {
+     "evt_303": "exception",
+     "evt_304": "held"
+    },
+    "export": 1,
+    "g14": null,
+    "net_cash": null
+   }
+  },
+  {
+   "id": "R7",
+   "desc": "held refund: retry before its order arrives exits 1 and stays held; after the order arrives it is applied by ingest, and resolving it then is refused (exit 2)",
+   "pass": false,
+   "detail": {
+    "rc": [
+     2,
+     2
+    ],
+    "state": "applied"
+   }
+  },
+  {
+   "id": "R9",
+   "desc": "ledger made by the h1 tool can be resolved by h2 (skipped: no --old-tool)",
+   "pass": false,
+   "detail": {}
+  }
+ ]
+}
