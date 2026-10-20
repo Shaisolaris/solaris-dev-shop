@@ -1,0 +1,23 @@
+# binding check G30-r3, 2026-10-19 22:43:08 PDT
+remote head of review/grok-g30-daily-integration: 3285d35f4f3bc07473b98b2c593740e5a96a44ec (expected 3285d35f4f3bc07473b98b2c593740e5a96a44ec)
+worktree HEAD: 3285d35f4f3bc07473b98b2c593740e5a96a44ec
+base is ancestor: yes; commits since: 4
+handback patch G30-r3.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/specialized/payments-specialist/SKILL.md: OK
+  employees/specialized/payments-specialist/payment_ledger.py: OK
+  employees/specialized/payments-specialist/webhook-ledger.md: OK
+  examples/capabilities/G22/README.md: OK
+  examples/capabilities/G30/README.md: OK
+  examples/capabilities/G30/plan.json: OK
+  tests/test_g22_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   employees/specialized/payments-specialist/SKILL.md |   4 +-
+   .../payments-specialist/payment_ledger.py          | 148 +++++++++++++++++++--
+   .../payments-specialist/webhook-ledger.md          |  38 +++++-
+   examples/capabilities/G22/README.md                |  11 ++
+   examples/capabilities/G30/README.md                |   7 +-
+   examples/capabilities/G30/plan.json                |   8 +-
+   tests/test_g22_capability.py                       | 128 +++++++++++++++++-
+   7 files changed, 319 insertions(+), 25 deletions(-)
