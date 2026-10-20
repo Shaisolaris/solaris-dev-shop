@@ -185,6 +185,38 @@ class G38Provenance(unittest.TestCase):
             (self.r / 'LICENSE').write_text(txt)
             self.assertEqual(self.check(1)['license'], 'unrecognized', i)
 
+    def test_restrictions_worded_without_guard_words_are_not_mit(self):
+        # M38 r3 P2-1: ordinary restrictive wording in the copyright line still read as MIT, consistent
+        mit = (EX / 'fixtures' / 'repo-clean' / 'LICENSE').read_text()
+        cl = [l for l in mit.splitlines() if l.lower().startswith('copyright')][0]
+        h = 'Copyright (c) 2026 Oracle Test Holdings'
+        for bad in (h + ', noncommercial purposes', h + ', which cannot be resold', h + ', for academic research purposes exclusively',
+                    h + ', personal usage', h + ', redistribution never allowed', 'Copyright 2026 Acme noncommercial',
+                    'Copyright 2026 Acme for personal use', 'Copyright 2026 Acme, resale forbidden'):
+            (self.r / 'LICENSE').write_text(mit.replace(cl, bad))
+            self.assertEqual(self.codes(self.check(1)), [('license_unrecognized', 'LICENSE')], bad)
+        for ok in ('Copyright (c) 2026 Acme, Inc.', 'Copyright 2026 Acme Corp, LLC', 'Copyright 2026 Jane Doe and contributors',
+                   'Copyright 2026 Acme GmbH', 'Copyright 2026 The Solaris Authors', 'Copyright 2026 Acme Research Labs, Ltd.'):
+            (self.r / 'LICENSE').write_text(mit.replace(cl, ok))
+            r = self.check(0)
+            self.assertEqual(r['license'], 'MIT', ok)
+            self.assertEqual(r['license_copyright_lines'], [ok], ok)  # listed so a person can read what was set aside
+        ap = (EX / 'fixtures' / 'apache-2.0.txt').read_text()
+        ph = 'Copyright {yyyy} {name of copyright owner}'
+        (self.r / 'LICENSE').write_text(ap.replace(ph, 'Copyright 2026 Acme, which cannot be resold'))
+        self.assertEqual(self.check(1)['license'], 'unrecognized')
+
+    def test_each_copyright_guard_catches_on_its_own(self):
+        # each case trips exactly one guard, so weakening any one of them is seen
+        mit = (EX / 'fixtures' / 'repo-clean' / 'LICENSE').read_text()
+        cl = [l for l in mit.splitlines() if l.lower().startswith('copyright')][0]
+        for bad in ('Copyright 2026 Acme, for students',          # comma clause that is not a company suffix
+                    'Copyright 2026 Acme never transferable',      # cannot / never
+                    'Copyright 2026 Acme personal usage',          # usage
+                    'Copyright 2026 Acme. Attribution required'):  # a sentence inside the holder
+            (self.r / 'LICENSE').write_text(mit.replace(cl, bad))
+            self.assertEqual(self.check(1)['license'], 'unrecognized', bad)
+
     def test_out_existing_folder_is_invalid(self):
         # M38 r2 P4-1: --out naming an existing folder -> exit 2, nothing written, no traceback
         (self.tmp / 'outdir').mkdir()

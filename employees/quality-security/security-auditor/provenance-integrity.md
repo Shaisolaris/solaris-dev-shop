@@ -51,3 +51,13 @@ is a guard, not a parser: a restriction written without those words in a holder 
 unusual copyright line yourself. r3 also gives exit 2 for an --out that is a folder and reads the pyproject
 `file =`, single-quoted and `[project.license]` forms (M38 r2 P4-1 and P4-2). The README bold-section form
 (M38 r2 P4-3) and the OBS items are not changed. pyproject is read by pattern, not by a full TOML parser.
+
+Revision r4 closes M38 r3 P2-1 (https://github.com/Shaisolaris/solaris-dev-shop/commit/11310a82709d6aa002f95e37a0ac7920f1bd125e):
+plain restrictive wording that avoided the r3 words ("noncommercial purposes", "which cannot be resold", "personal
+usage") still read as MIT, consistent. Now a holder is a name: after its first comma only a company suffix (Inc, LLC,
+Ltd, GmbH, Corp, Co, PLC, AG, SA, BV), "and contributors" or "et al" may follow, and the word list also catches
+words inside longer words and common restriction words (cannot, never, usage, purposes, resale, sold, exclusively,
+redistribution and similar). It is still a guard, not a parser: a restriction with no comma and none of those words
+can pass. So the report now lists every LICENSE copyright line it set aside before comparing
+(`license_copyright_lines` in JSON, one "copyright line set aside" row in text); read those lines yourself before you
+rely on a consistent result. The comma rule comes from the M38 r3 proposed patch (Grok self-validation).
