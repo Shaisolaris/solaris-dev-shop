@@ -1,0 +1,15 @@
+PASS o1 clean control: clean control: exact SLO, met, no impact, no rollback
+PASS o2 regression after a change: deploy regression: exact SLO, impact 2026-12-01T23:57:00Z..2026-12-02T00:24:00Z, response {'time_to_detect_s': 180, 'time_to_mitigate_s': 1096, 'time_to_resolve_s': 1626}, rollback naming service/window/revision
+PASS o3 repeated import stable: re-import doubled and shuffled: same SLO, timeline and decision; duplicates counted; rerun byte-identical
+PASS o4 missing telemetry labelled: gaps labelled with exact ranges and left out of the SLO; post-change gap gives no decision; low coverage is insufficient
+PASS o5 conflicting evidence: conflicting minutes labelled and left out; an event id with two contents is refused (exit 2), previous report kept
+PASS o6 G10 diagnosis in the decision: G10 dns fault during the impact blocks a code rollback; G10 application fault and a dns trace from before the impact do not
+PASS o7 impact before the change: impact before the change: no rollback; impact start hidden by a gap spanning the change: no decision; slow burn after the change below the threshold: no rollback
+PASS o8 data rollback needs a verified G03 snapshot: migrating change: no snapshot and a damaged snapshot block the rollback; a G03-verified snapshot is named in the rollback
+PASS o9 late and out-of-order records: late events labelled, late telemetry counted and still scored, timeline in time order
+PASS o10 invalid input and recovery: seven invalid bundles exit 2 with the previous report kept; the next valid run writes it
+PASS o11 operational scale: 30-day window (43200 minutes, 85800 records, doubled and shuffled): exact SLO in 0.3s; 4 parallel runs identical
+PASS o12 offline and read-only: runs under a socket-denying guard and leaves the bundle folder byte-identical
+PASS o13 per-source telemetry summed: split load balancers summed (the only error minute breaches); equal counts from two sources both count; one source with two counts is a conflict
+PASS o14 expected sources and per-source coverage: a silent load balancer, a declared source that never reports, name spelling and a silent source after a change are labelled, block met or the rollback call, and are refused when ambiguous
+ACCEPTED: 14/14 checks passed (seed 1811)

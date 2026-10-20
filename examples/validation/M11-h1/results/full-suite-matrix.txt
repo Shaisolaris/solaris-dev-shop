@@ -1,0 +1,16 @@
+== py39
+$ Python 3.9.6 -m unittest discover -s tests (HEAD 94a0de4, tree 0 changed files)
+Ran 193 tests in 19.838s
+OK
+== py311
+$ Python 3.11.16 -m unittest discover -s tests (HEAD 94a0de4, tree 0 changed files)
+Ran 193 tests in 16.100s
+OK
+== py312
+$ Python 3.12.14 -m unittest discover -s tests (HEAD 94a0de4, tree 0 changed files)
+Ran 193 tests in 16.486s
+OK
+== py313
+$ Python 3.13.15 -m unittest discover -s tests (HEAD 94a0de4, tree 0 changed files)
+Ran 193 tests in 16.378s
+OK

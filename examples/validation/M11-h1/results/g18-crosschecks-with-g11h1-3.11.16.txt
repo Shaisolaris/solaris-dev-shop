@@ -1,0 +1,11 @@
+x1 G10 -> G11 layer agreement: 12 fixtures compared
+x2 refused capture time: decision insufficient_evidence, trace mentions the evidence: True
+x2 no capture time: decision insufficient_evidence, trace mentions the evidence: True
+x2 G10 -> G11 unusable supplied evidence: 2 cases
+x3 loaded exactly at as_of ('30.00'): G13 included, G14 included
+x3 thousands separator ('1,250.50'): G13 included, G14 included
+x3 leading plus ('+10'): G13 included, G14 included
+x3 exponent ('1e1'): G13 left out, G14 left out
+x3 comma decimal ('1,0'): G13 left out, G14 left out
+x3 sub-cent ('10.005'): G13 included, G14 left out (documented difference)
+CROSS-CHECKS CLEAN (0 findings)

@@ -1,0 +1,14 @@
+# M11 h1 binding verify 2026-10-20 10:24:40 PDT
+remote head review/grok-g11-incident-slo: 94a0de462a82e0d55e1bf58ee468bf7953d1c59a
+candidate tree HEAD: 94a0de462a82e0d55e1bf58ee468bf7953d1c59a
+parent: 13ba7055537e305732856aea3c74ff28f0848be8 (accepted G11 13ba705 expected)
+commits accepted..candidate: 1
+handback patch equals git diff --binary 13ba705 HEAD: yes
+manifest non-OK lines: 0 of 13
+files changed:
+ .../site-reliability-engineer/incident-slo.md      |  5 ++++
+ .../site-reliability-engineer/incident_slo.py      | 25 ++++++++++++++--
+ tests/test_g11_capability.py                       | 35 ++++++++++++++++++++++
+ 3 files changed, 62 insertions(+), 3 deletions(-)
+netdiag.py unchanged vs accepted: yes
+G11 oracle/fixtures unchanged: yes
