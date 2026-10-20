@@ -1,0 +1,24 @@
+== G02
+'UNRESOLVED'                             partial None
+'UNRESOLVED ask the owner'               partial None
+'Unresolved until the owner decides'     partial None
+'unresolved pending call'                partial None
+'UNRESOLVED: main=live'                  partial None
+'Unresolved, ask owner'                  partial None
+'ÚNRESOLVED'                            partial None
+== G02r3
+'UNRESOLVED'                             partial None
+'UNRESOLVED ask the owner'               complete 'UNRESOLVED ask the owner'
+'Unresolved until the owner decides'     complete 'Unresolved until the owner decides'
+'unresolved pending call'                complete 'unresolved pending call'
+'UNRESOLVED: main=live'                  partial None
+'Unresolved, ask owner'                  partial None
+'ÚNRESOLVED'                            complete 'ÚNRESOLVED'
+== G02r2
+'UNRESOLVED'                             partial None
+'UNRESOLVED ask the owner'               partial None
+'Unresolved until the owner decides'     partial None
+'unresolved pending call'                partial None
+'UNRESOLVED: main=live'                  partial None
+'Unresolved, ask owner'                  partial None
+'ÚNRESOLVED'                            complete 'ÚNRESOLVED'

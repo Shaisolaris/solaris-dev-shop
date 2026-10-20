@@ -1,0 +1,80 @@
+{
+ "tool": "$CANDIDATE/G02/employees/product-project/project-onboarding/activate.py",
+ "python": "3.12.14",
+ "rows": [
+  {
+   "row": "P01",
+   "name": "blank-looking deploy answers (10 not in the r3 tests) stay UNRESOLVED and not complete",
+   "pass": true,
+   "scored": true,
+   "detail": "all unresolved"
+  },
+  {
+   "row": "P02",
+   "name": "disguised UNRESOLVED (8 spellings) stays unresolved",
+   "pass": true,
+   "scored": true,
+   "detail": "all unresolved"
+  },
+  {
+   "row": "P03",
+   "name": "controls: 5 real deploy answers (accents, CJK, arrow, mid-text 'unresolved', decomposed accent) are complete and recorded",
+   "pass": true,
+   "scored": true,
+   "detail": "all complete"
+  },
+  {
+   "row": "P04",
+   "name": "deep, unclosed, huge-int and non-UTF-8 journal or lock (7 shapes, activate and resume): bounded blocked/invalid, owner file kept",
+   "pass": true,
+   "scored": true,
+   "detail": "all bounded"
+  },
+  {
+   "row": "P05",
+   "name": "lone surrogate in name/brief/deploy (API) and a Latin-1 byte in --name (CLI): invalid, exit 2, no traceback, nothing created",
+   "pass": true,
+   "scored": true,
+   "detail": "all invalid"
+  },
+  {
+   "row": "P06",
+   "name": "regression vs r2: 7 answers starting with UNRESOLVED followed by words stay unresolved (partial at r2 bbe682b)",
+   "pass": true,
+   "scored": true,
+   "detail": "all unresolved"
+  },
+  {
+   "row": "X01",
+   "name": "observation: homoglyph and placeholder deploy answers",
+   "pass": true,
+   "scored": false,
+   "detail": {
+    "cyrillic E homoglyph": [
+     "complete",
+     "UNR\u0415SOLVED"
+    ],
+    "TBD": [
+     "complete",
+     "TBD"
+    ],
+    "question mark": [
+     "complete",
+     "?"
+    ],
+    "dash": [
+     "complete",
+     "-"
+    ],
+    "n/a": [
+     "complete",
+     "n/a"
+    ],
+    "unresolved items line": [
+     "partial",
+     null
+    ]
+   }
+  }
+ ]
+}

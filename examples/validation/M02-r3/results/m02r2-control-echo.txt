@@ -1,0 +1,17 @@
+# m02r2_oracle candidate: python3 $CANDIDATE/m02r3/oracle/r2/stubs/echo.py
+FAIL C01_clean_twice (0.0s): ENTRY_ABSENT: generated files missing after activation
+FAIL C02_owner_docs (0.0s): run 0: status complete despite owner conflicts
+FAIL C03_git_unchanged (0.2s): ENTRY_ABSENT: generated files missing after activation
+FAIL C04_journal_binding_F1 (0.0s): ENTRY_ABSENT: generated files missing after activation
+FAIL C05_blank_deploy_F2_F3 (0.0s): ENTRY_ABSENT: generated files missing after activation
+FAIL C06_bounded_errors_F4 (0.0s): ENTRY_ABSENT: generated files missing after activation
+FAIL C07_sigkill_temps_F5 (0.0s): ENTRY_ABSENT: generated files missing after activation
+FAIL C08_locks_F6 (0.0s): ENTRY_ABSENT: generated files missing after activation
+FAIL C09_marker_F7 (0.0s): marker in --name 'Acme DEPLOY-MODEL: main=live': rc=0 complete
+FAIL C10_commit_ids_F8 (0.0s): commit id brief 'fork of 4113204aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa': rc=0 complete
+FAIL C11_escape (0.0s): delivery-dirlink: complete
+FAIL C12_failure_resume (0.0s): EACCES run rc=0 complete
+FAIL C13_concurrency (0.0s): round 0: docs name set()
+FAIL C14_scale (0.6s): ENTRY_ABSENT: generated files missing after activation
+FAIL C15_secrets (0.0s): secret case 0: rc=0
+SUMMARY 0/15 pass; oracle REJECTS candidate

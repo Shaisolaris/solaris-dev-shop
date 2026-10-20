@@ -1,0 +1,20 @@
+# binding check G02-r4, 2026-10-19 20:42:37 PDT
+remote head of review/grok-g02-activation: 90a5ec9c316e4d3fde84591faac1f8a00de73805 (expected 90a5ec9c316e4d3fde84591faac1f8a00de73805)
+worktree HEAD: 90a5ec9c316e4d3fde84591faac1f8a00de73805
+base is ancestor: yes; commits since: 1
+handback patch G02-r4.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/product-project/project-onboarding/SKILL.md: OK
+  employees/product-project/project-onboarding/activate.py: OK
+  employees/product-project/project-onboarding/learnings.md: OK
+  tests/test_g02_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../product-project/project-onboarding/SKILL.md     |  2 +-
+   .../product-project/project-onboarding/activate.py  | 21 +++++++++++++--------
+   .../product-project/project-onboarding/learnings.md |  1 +
+   tests/test_g02_capability.py                        | 17 +++++++++++++++++
+   4 files changed, 32 insertions(+), 9 deletions(-)
+commits bbe682b..90a5ec9: 2
+90a5ec9 G02 r4: UNRESOLVED followed by words stays unresolved; accents no longer hide it (review only, Grok build)
+8fdae9c G02 r3: blank-looking and disguised UNRESOLVED stay unresolved; nested journal/lock bounded (root QA)
