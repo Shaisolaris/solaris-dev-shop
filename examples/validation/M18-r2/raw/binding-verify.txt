@@ -1,0 +1,21 @@
+# binding check G18-r2, 2026-10-20 11:42:08 PDT
+remote head of review/grok-g18-daily-integration: 171811c541cdbfc43674bc0622baf5dcb85e2b4d (expected 171811c541cdbfc43674bc0622baf5dcb85e2b4d)
+worktree HEAD: 171811c541cdbfc43674bc0622baf5dcb85e2b4d
+base is ancestor: yes; commits since: 3
+handback patch G18-r2.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/infrastructure/site-reliability-engineer/incident-slo.md: OK
+  employees/infrastructure/site-reliability-engineer/incident_slo.py: OK
+  examples/capabilities/G18/README.md: OK
+  examples/capabilities/G18/plan.json: OK
+  tests/test_g11_capability.py: OK
+  tests/test_g18_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../site-reliability-engineer/incident-slo.md      |  5 ++++
+   .../site-reliability-engineer/incident_slo.py      | 25 ++++++++++++++--
+   examples/capabilities/G18/README.md                | 17 ++++++-----
+   examples/capabilities/G18/plan.json                |  2 +-
+   tests/test_g11_capability.py                       | 35 ++++++++++++++++++++++
+   tests/test_g18_capability.py                       |  2 ++
+   6 files changed, 74 insertions(+), 12 deletions(-)

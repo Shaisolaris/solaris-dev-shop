@@ -1,0 +1,3 @@
+# teeth: G18 r2 tree with G11 incident_slo.py reverted to accepted 13ba705
+cross_checks: CROSS-CHECKS FINDINGS (2 findings)
+tests.test_g18_capability: FAILED (failures=1)

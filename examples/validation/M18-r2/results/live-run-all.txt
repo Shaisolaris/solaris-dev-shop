@@ -1,0 +1,33 @@
+daily integration G18 at 171811c541cd (tree 1132937aa0cc)
+  G03 d4d98f2180ed ACCEPTED
+  G10 f79be61580de ACCEPTED
+  G11 94a0de462a82 ACCEPTED_OTHER_REVISION
+  G13 5666e7beb161 ACCEPTED
+  G14 6f7b23aa1841 ACCEPTED
+  P03 external bee80893c03b ACCEPTED
+  run test G03 python3 -m unittest tests.test_g03_capability rc=0 4.9s
+  run command G03 python3 examples/capabilities/G03/recovery_oracle.py -- {python} emplo rc=0 11.9s
+  run test G10 python3 -m unittest tests.test_g10_capability rc=0 2.7s
+  run command G10 python3 examples/capabilities/G10/diagnosis_oracle.py -- {python} empl rc=0 4.1s
+  run test G11 python3 -m unittest tests.test_g11_capability rc=0 7.5s
+  run command G11 python3 examples/capabilities/G11/incident_oracle.py -- {python} emplo rc=0 2.9s
+  run test G13 python3 -m unittest tests.test_g13_capability rc=0 9.9s
+  run command G13 python3 examples/capabilities/G13/reconcile_oracle.py --tool {python}  rc=0 10.9s
+  run test G14 python3 -m unittest tests.test_g14_capability rc=0 5.2s
+  run command G14 python3 examples/capabilities/G14/cash_oracle.py -- {python} employees rc=0 3.6s
+  run cross_check G18 python3 examples/capabilities/G18/cross_checks.py rc=0 2.2s
+  run gate suite python3 -m unittest discover -s tests rc=0 68.0s
+  run gate control_plane python3 control-plane/meta_control_plane.py self-test rc=0 0.2s
+  run gate quality_audit quality_os.py audit rc=0 0.1s
+  run gate manifests python3 -c 
+import glob, json
+bad = []
+for f in sorted(glob.glob('empl rc=0 0.0s
+  run gate catalog python3 tools/build_skill_catalog.py --check rc=0 0.0s
+  run gate symlinks git ls-files -s rc=0 0.0s
+  run gate metadata python3 tools/validate_skill_metadata.py rc=0 0.1s
+  not run: external=P03; reason=reply body not supplied; only its recorded hash is compared
+  not run: external=P03; reason=validation manifest not supplied; only its recorded hash is compared
+VERDICT INTEGRATED
+rc=0
+fresh clone dirty after: 0
