@@ -1,0 +1,163 @@
+{
+ "python": "3.9.6",
+ "seeds": 20,
+ "rows": [
+  {
+   "id": "B1",
+   "desc": "root: 40-unit all-treatment burst (90% converting) interleaved into one day, with contract: no causal claim in 20 seeds (invalid_experiment)",
+   "pass": true,
+   "scored": true,
+   "detail": {
+    "invalid_experiment": 20
+   }
+  },
+  {
+   "id": "B2",
+   "desc": "same burst without a contract: never a causal claim",
+   "pass": true,
+   "scored": true,
+   "detail": {
+    "no_detectable_difference": 12,
+    "association_only": 7,
+    "invalid_experiment": 1
+   }
+  },
+  {
+   "id": "B2b",
+   "desc": "50-unit burst without contract: outcomes recorded (association_only shows the guards missed it)",
+   "pass": true,
+   "scored": false,
+   "detail": {
+    "tally": {
+     "invalid_experiment": 11,
+     "no_detectable_difference": 4,
+     "association_only": 5
+    },
+    "association_only": 5
+   }
+  },
+  {
+   "id": "B3",
+   "desc": "6-unit burst with contract (expected escape rate 1/64): outcomes recorded",
+   "pass": true,
+   "scored": false,
+   "detail": {
+    "invalid_experiment": 19,
+    "no_detectable_difference": 1
+   }
+  },
+  {
+   "id": "B4",
+   "desc": "A/A with contract: assignment verified in every seed and causal false positives at most 3 of 20",
+   "pass": true,
+   "scored": true,
+   "detail": {
+    "tally": {
+     "no_detectable_difference": 19,
+     "difference_detected": 1
+    },
+    "verified": 20,
+    "causal": 1
+   }
+  },
+  {
+   "id": "B5",
+   "desc": "true effect 20% -> 30% with contract: difference_detected and causal in at least 18 of 20",
+   "pass": true,
+   "scored": true,
+   "detail": {
+    "tally": {
+     "difference_detected": 20
+    }
+   }
+  },
+  {
+   "id": "B6",
+   "desc": "30/70 split, true effect, contract: verified and difference_detected",
+   "pass": true,
+   "scored": true,
+   "detail": {
+    "tally": {
+     "difference_detected": 20
+    }
+   }
+  },
+  {
+   "id": "B7",
+   "desc": "package declares a salt that did not assign the arms: invalid_experiment, never causal",
+   "pass": true,
+   "scored": true,
+   "detail": {
+    "outcomes": [
+     "invalid_experiment",
+     "invalid_experiment",
+     "invalid_experiment"
+    ],
+    "mismatched": [
+     969,
+     934,
+     901
+    ]
+   }
+  },
+  {
+   "id": "B8",
+   "desc": "malformed contract or a contract on an observational package: refused, exit 2",
+   "pass": true,
+   "scored": true,
+   "detail": {
+    "observational": 2,
+    "method md5": 2,
+    "blank salt": 2,
+    "extra key": 2,
+    "salt not string": 2
+   }
+  },
+  {
+   "id": "B9",
+   "desc": "non-ASCII unit ids: the documented UTF-8 rule verifies them",
+   "pass": true,
+   "scored": true,
+   "detail": {
+    "checks": [
+     {
+      "contract": "sha256_bucket",
+      "examples": [],
+      "mismatched": 0,
+      "units_checked": 1860,
+      "verified": true
+     },
+     {
+      "contract": "sha256_bucket",
+      "examples": [],
+      "mismatched": 0,
+      "units_checked": 1860,
+      "verified": true
+     },
+     {
+      "contract": "sha256_bucket",
+      "examples": [],
+      "mismatched": 0,
+      "units_checked": 1860,
+      "verified": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "B10",
+   "desc": "OBS: with no true effect, 25%% of converting control units missing from the assignment log, contract present: outcomes (the contract checks arms of present units, not missing ones)",
+   "pass": true,
+   "scored": false,
+   "detail": {
+    "tally": {
+     "no_detectable_difference": 10,
+     "difference_detected": 9,
+     "invalid_experiment": 1
+    },
+    "causal": 9,
+    "verified": 20
+   }
+  }
+ ]
+}

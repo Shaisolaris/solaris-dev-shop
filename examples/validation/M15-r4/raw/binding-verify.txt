@@ -1,0 +1,53 @@
+# binding check G15-r4, 2026-10-19 21:05:58 PDT
+remote head of review/grok-g15-experiment-readout: 7e7f361208a40ac55a18a6089c820f92a74147c2 (expected 7e7f361208a40ac55a18a6089c820f92a74147c2)
+worktree HEAD: 7e7f361208a40ac55a18a6089c820f92a74147c2
+base is ancestor: yes; commits since: 1
+handback patch G15-r4.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  shasum: ./G15-r4.patch: No such file or directory
+  ./G15-r4.patch: FAILED open or read
+  shasum: ./HANDBACK.md: No such file or directory
+  ./HANDBACK.md: FAILED open or read
+  shasum: ./publish-verify.txt: No such file or directory
+  ./publish-verify.txt: FAILED open or read
+  shasum: ./raw/defects-after-fix.txt: No such file or directory
+  ./raw/defects-after-fix.txt: FAILED open or read
+  shasum: ./raw/defects-on-base.txt: No such file or directory
+  ./raw/defects-on-base.txt: FAILED open or read
+  shasum: ./raw/fresh-env.txt: No such file or directory
+  ./raw/fresh-env.txt: FAILED open or read
+  shasum: ./raw/mutants.txt: No such file or directory
+  ./raw/mutants.txt: FAILED open or read
+  shasum: ./raw/oracle-g15.txt: No such file or directory
+  ./raw/oracle-g15.txt: FAILED open or read
+  shasum: ./raw/oracle-m15r3-classified.txt: No such file or directory
+  ./raw/oracle-m15r3-classified.txt: FAILED open or read
+  shasum: ./raw/oracle-m15r3.txt: No such file or directory
+  ./raw/oracle-m15r3.txt: FAILED open or read
+  shasum: ./raw/push.txt: No such file or directory
+  ./raw/push.txt: FAILED open or read
+  shasum: ./raw/suite-311.txt: No such file or directory
+  ./raw/suite-311.txt: FAILED open or read
+  shasum: ./raw/suite-312.txt: No such file or directory
+  ./raw/suite-312.txt: FAILED open or read
+  shasum: ./raw/suite-313.txt: No such file or directory
+  ./raw/suite-313.txt: FAILED open or read
+  shasum: ./raw/suite-39.txt: No such file or directory
+  ./raw/suite-39.txt: FAILED open or read
+  shasum: WARNING: 15 listed files could not be read
+manifest set equals diff set: NO
+files changed since base:
+   employees/data/data-scientist/SKILL.md             |    5 +-
+   .../data/data-scientist/experiment-readout.md      |   21 +-
+   .../data/data-scientist/experiment_readout.py      |   42 +-
+   employees/data/data-scientist/learnings.md         |    1 +
+   examples/capabilities/G15/README.md                |   10 +-
+   .../G15/fixtures/retention-lift/assignments.csv    | 2400 +++---
+   .../G15/fixtures/retention-lift/events.csv         | 7908 ++++++++++----------
+   .../G15/fixtures/retention-lift/package.json       |    4 +
+   examples/capabilities/G15/readout_oracle.py        |   91 +-
+   tests/test_g15_capability.py                       |   74 +-
+   10 files changed, 5378 insertions(+), 5178 deletions(-)
+handback MANIFEST.sha256 covers the handback folder itself (root QA convention), checked in that folder: 15 OK, 0 not OK
+commits 64c3cc7..7e7f361: 1
+7e7f361 G15 r4: causal claims need a verified randomization contract
