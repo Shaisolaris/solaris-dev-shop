@@ -409,10 +409,12 @@ class WaiverGovernedClosure(unittest.TestCase):
         self.assertEqual(closed.status, 'closed')
         self.assertEqual(closed.waiver_id, w.waiver_id)
         self.assertEqual(closed.closed_at_revision, '')
-        self.assertEqual(q.closure_is_current(closed, 'a' * 40), (True, []))
-        self.assertEqual(q.closure_is_current(closed, 'b' * 40), (True, []))
+        # G05 r3: the waiver record is passed so its expiry can be checked
+        self.assertEqual(q.closure_is_current(closed, 'a' * 40, waiver=w, as_of=AS_OF), (True, []))
+        self.assertEqual(q.closure_is_current(closed, 'b' * 40, waiver=w, as_of=AS_OF), (True, []))
         reopened, rcodes = q.reopen_finding(closed, reason='should not reopen waiver',
-                                            current_revision='a' * 40, reopened_by_role='release-manager')
+                                            current_revision='a' * 40, reopened_by_role='release-manager',
+                                            waiver=w, as_of=AS_OF)
         self.assertEqual(rcodes, ['WAIVER_GOVERNS'])
         self.assertEqual(reopened.status, 'closed')
         # Non-waiver unbound closure still reports UNBOUND_CLOSURE
@@ -425,6 +427,39 @@ class WaiverGovernedClosure(unittest.TestCase):
         unbound.closed_at_revision = ''
         unbound.waiver_id = ''
         self.assertEqual(q.closure_is_current(unbound, 'a' * 40), (False, ['UNBOUND_CLOSURE']))
+
+    def test_expired_or_revoked_waiver_no_longer_governs_the_closure(self):
+        """G05 r3 (M05 r2 P2): after the waiver expires the closure is not current and can be reopened."""
+        w = waiver()
+        closed, _ = q.close_finding(finding(status='waived'), closer_role='release-manager', independent_evidence=[],
+                                    waiver=w, as_of=AS_OF)
+        later = datetime(2027, 1, 1, tzinfo=timezone.utc)
+        self.assertEqual(q.closure_is_current(closed, 'b' * 40, waiver=w, as_of=later), (False, ['WAIVER_EXPIRED']))
+        reopened, codes = q.reopen_finding(closed, reason='waiver lapsed before the patch shipped',
+                                           current_revision='b' * 40, reopened_by_role='release-manager',
+                                           waiver=w, as_of=later)
+        self.assertEqual(codes, [])
+        self.assertEqual((reopened.status, reopened.waiver_id), ('open', ''))
+        self.assertIn('waiver wvr-hard-1 no longer governs (WAIVER_EXPIRED)', reopened.evidence[-1])
+        revoked = waiver(status='rejected')
+        self.assertEqual(q.closure_is_current(closed, 'b' * 40, waiver=revoked, as_of=AS_OF),
+                         (False, ['WAIVER_NOT_ACTIVE']))
+        self.assertEqual(q.reopen_finding(closed, reason='waiver was revoked by the owner', current_revision='b' * 40,
+                                          reopened_by_role='release-manager', waiver=revoked, as_of=AS_OF)[0].status,
+                         'open')
+
+    def test_waiver_closure_needs_its_own_waiver_record(self):
+        w = waiver()
+        closed, _ = q.close_finding(finding(status='waived'), closer_role='release-manager', independent_evidence=[],
+                                    waiver=w, as_of=AS_OF)
+        self.assertEqual(q.closure_is_current(closed, 'a' * 40), (False, ['WAIVER_RECORD_REQUIRED']))
+        other = waiver(waiver_id='wvr-other')
+        self.assertEqual(q.closure_is_current(closed, 'a' * 40, waiver=other, as_of=AS_OF), (False, ['WAIVER_MISMATCH']))
+        for kw, code in (({}, 'WAIVER_RECORD_REQUIRED'), ({'waiver': other, 'as_of': AS_OF}, 'WAIVER_MISMATCH')):
+            reopened, codes = q.reopen_finding(closed, reason='trying to reopen a waived closure',
+                                               current_revision='a' * 40, reopened_by_role='release-manager', **kw)
+            self.assertEqual((codes, reopened.status), ([code], 'closed'))
+
 
 if __name__ == '__main__':
     unittest.main()
