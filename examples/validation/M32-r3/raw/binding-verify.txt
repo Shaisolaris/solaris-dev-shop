@@ -1,0 +1,15 @@
+# binding check G32-r3, 2026-10-19 21:20:11 PDT
+remote head of review/grok-g32-consent-followthrough: b69f3289f360ed0dc5d722f025940815787ff1af (expected b69f3289f360ed0dc5d722f025940815787ff1af)
+worktree HEAD: b69f3289f360ed0dc5d722f025940815787ff1af
+base is ancestor: yes; commits since: 1
+handback patch G32-r3.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/sales-outreach/customer-success/consent-follow-through.md: OK
+  employees/sales-outreach/customer-success/followthrough.py: OK
+  tests/test_g32_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../customer-success/consent-follow-through.md     |  12 ++-
+   .../customer-success/followthrough.py              | 104 +++++++++++++++++++--
+   tests/test_g32_capability.py                       |  29 +++++-
+   3 files changed, 131 insertions(+), 14 deletions(-)
