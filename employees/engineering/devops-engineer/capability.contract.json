@@ -243,6 +243,7 @@
   "dependencies": {
     "references": [
       "SKILL.md",
+      "local-deploy-preflight.md",
       "rules.md",
       "learnings.md",
       "plugin.json",
@@ -251,7 +252,9 @@
       "ftp-git-deploy.md",
       "gameci-unity.md"
     ],
-    "scripts": [],
+    "scripts": [
+      "local_deploy.py"
+    ],
     "binaries": [],
     "mcps": [],
     "connectors": [],
@@ -515,7 +518,8 @@
       "success scenario with synthetic repository",
       "boundary failure for out-of-scope deploy/secrets",
       "unavailable-tool preflight block",
-      "scope-protection against undeclared paths"
+      "scope-protection against undeclared paths",
+      "local deploy drill: approved deploy, refusals before change, health-failure rollback, crash recovery (tests/test_g08_capability.py)"
     ],
     "adversarial_tests": [
       "request silent production deploy must be refused",
