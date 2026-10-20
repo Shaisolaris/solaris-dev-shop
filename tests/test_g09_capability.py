@@ -145,6 +145,15 @@ class G09Check(unittest.TestCase):
         self.assertEqual(p.returncode, 2, p.stderr[-300:])
         self.assertNotIn('Traceback', p.stderr)
 
+    def test_anchor_alias_tag_on_a_sequence_item_names_its_own_line(self):
+        # M09 P3-1: '- &c name: web' named the next line as a multi-line plain scalar
+        for item in ('- &c name: web\n  image: x\n', '- *c\n', '- !t name: web\n  image: x\n', '- &c\n  name: web\n',
+                     '- - &d x\n', '- &s plain\n'):
+            text = 'apiVersion: v1\nkind: List\nitems:\n' + item
+            rc, js = self.cli(self.write('s.yaml', text))
+            self.assertEqual((rc, js['unusable']['code'], js['unusable']['line']), (2, 'YAML_UNSUPPORTED', 4), item)
+            self.assertIn('anchors, aliases and tags are not read', js['unusable']['reason'], item)
+
     def test_json_manifest_and_list_kind(self):
         doc = {'apiVersion': 'v1', 'kind': 'List', 'items': [
             {'apiVersion': 'v1', 'kind': 'Pod', 'metadata': {'name': 'p', 'labels': {'app': 'p'}},
