@@ -7,7 +7,7 @@ against those records, the files on disk and the G04 work-order status:
 
   record ROOT --role DEPT/ROLE --outputs PATH... [--inputs PATH...] [--ok-exit 0|0,1] [--worker NAME] [--timeout S]
          -- CMD ARGS...
-  verify ROOT --claims CLAIMS.json [--json] [--out FILE]
+  verify ROOT --claims CLAIMS.json [--json] [--out FILE] [--strict]
 
 Records live in ROOT/.delivery/contributions.jsonl, one JSON object per line, each carrying the sha256 of
 the previous line, and .delivery/head.json holds the sha256 of the last one, so an edited, removed or replaced
@@ -24,10 +24,14 @@ with --ok-exit 0,1 only; it gives the separate state evidenced_with_gaps, which 
 that role says "accept_gaps": true, and then the verdict is GO_WITH_GAPS, never a plain GO. The last record is
 unconfirmed while head.json lags one behind it (a cut-short append or a record added by hand): it vouches for
 nothing until the next append confirms it. A claim without a work order is EVIDENCED_NO_ORDER, never GO.
+An input the run itself rewrote or removed (r5) is bound only to its after-run bytes, so what the tool read is not shown: the
+contribution is evidenced_with_gaps (gap input_rewritten_by_run, naming the files) under the same accept_gaps rule
+as exit 1, so it is NO_GO unless the claim accepts gaps and then GO_WITH_GAPS, never a plain GO.
 
 Exit codes: record 0 ok, 1 recorded but not ok, 2 invalid input (nothing appended), 3 ledger does not
 verify (nothing appended), 4 ledger lock held. verify 0 GO, GO_WITH_GAPS or EVIDENCED_NO_ORDER (read the
-verdict word), 1 NO_GO, 2 invalid input.
+verdict word), 1 NO_GO, 2 invalid input. verify --strict (r5, for callers that gate on the exit code): 0 only for
+a clean GO, 1 NO_GO, 2 invalid input, 3 GO_WITH_GAPS, 4 EVIDENCED_NO_ORDER. The report says clean_go either way.
 
 Records are evidence that a command ran here with that exit code and produced these bytes. They do not
 show that the output is correct beyond each tool's own checks, and --worker is a plain-text claim.
@@ -240,6 +244,14 @@ def _named_inputs(root, argv, outputs, explicit):
     return sorted(set(named)), sorted(set(unbound))[:50]
 
 
+def _rewritten(before, after, touched):
+    """The inputs the run read and then changed or removed (r5): files that existed before the run. A file that
+    appeared during the run was not there to be read and is bound as it is after the run. A SQLite -shm file next
+    to a bound database is a shared-memory index that every reader updates and that holds no data, so it does
+    not count (a -wal or -journal file holds data and does count)."""
+    return [k for k in touched if k in before and not (k.endswith("-shm") and k[:-4] in after)]
+
+
 def _role_ok(role):
     if not isinstance(role, str) or not ROLE_RE.match(role):
         raise Invalid("--role must look like department/role, for example data/data-engineer")
@@ -329,11 +341,13 @@ def cmd_record(ns):
     except ValueError as e:
         why = why or ("inputs after the run: %s" % str(e)[:200])
     touched = sorted(k for k in set(inputs) | set(inputs_before) if inputs.get(k) != inputs_before.get(k))
+    rewritten = _rewritten(inputs_before, inputs, touched)
     ok = why is None and rc in ok_exit
     rec = {"role": ns.role, "worker": ns.worker, "argv": argv, "ok_exit": ok_exit, "exit": rc, "ok": ok,
            "reason": why if why else (None if ok else "exit %s not in %s" % (rc, ok_exit)),
            "claimed_outputs": list(ns.outputs), "outputs": outputs, "tools": _tool_digests(argv, root),
            "claimed_inputs": named_inputs, "inputs": inputs, "inputs_changed_during_run": touched[:50],
+           "inputs_rewritten_during_run": rewritten[:50],
            "unbound_inputs": unbound_inputs,
            "log": log.relative_to(root).as_posix(), "log_sha256": _sha_file(log),
            "started": started, "ended": _now(), "worker_identity": "claimed in plain text, not authenticated"}
@@ -473,14 +487,34 @@ def _contribution(qos, root, claim, recs, unconfirmed_seq=None):
             out.update(state="stale", inputs_changed=moved[:20],
                        action="an input changed, appeared or disappeared after the run; re-run: %s" % " ".join(r["argv"]))
             return out
+    gap_kinds = []
     if r.get("exit") == 1:
-        out.update(state="evidenced_with_gaps", gaps_accepted_by_claim=bool(claim.get("accept_gaps")))
+        gap_kinds.append("exit_1")
+    rewritten = r.get("inputs_rewritten_during_run", r.get("inputs_changed_during_run"))  # older record: every change
+    rewritten = rewritten if isinstance(rewritten, list) else []
+    if rewritten:  # r5: the record binds the after-run bytes only, so what the tool read is not shown
+        gap_kinds.append("input_rewritten_by_run")
+        out["inputs_rewritten_by_run"] = rewritten[:20]
+    if gap_kinds:
+        out.update(state="evidenced_with_gaps", gap_kinds=gap_kinds, gaps_accepted_by_claim=bool(claim.get("accept_gaps")))
         if not claim.get("accept_gaps"):
-            out["action"] = ("the run exited 1 (disclosed gaps) and the claim does not accept gaps for this role; "
-                             "fix the data and re-run, or set \"accept_gaps\": true in the claim")
+            out["action"] = ("%s and the claim does not accept gaps for this role; fix the cause and re-run, or set "
+                             "\"accept_gaps\": true in the claim" % _gap_text(out))
         return out
     out["state"] = "evidenced"
     return out
+
+
+def _gap_text(c):
+    """Plain words for a contribution's gaps, e.g. 'exit 1 (disclosed gaps); input rewritten by the run: a.csv'."""
+    words = []
+    for k in c.get("gap_kinds") or []:
+        if k == "exit_1":
+            words.append("exit 1 (disclosed gaps)")
+        elif k == "input_rewritten_by_run":
+            words.append("the run rewrote its input %s, so only the after-run bytes are bound"
+                         % ", ".join(c.get("inputs_rewritten_by_run") or []))
+    return "; ".join(words)
 
 
 def _handoff(root, order):
@@ -555,6 +589,10 @@ def cmd_verify(ns):
         rep["verdict"] = "GO_WITH_GAPS" if gaps else "GO"
     rep["blockers"] = blockers
     rep["gaps"] = gaps
+    rep["gap_details"] = {c["role"]: c.get("gap_kinds", []) for c in rep["contributions"]
+                          if c["state"] == "evidenced_with_gaps"}
+    rep["clean_go"] = rep["verdict"] == "GO"
+    rep["exit_policy"] = "strict" if ns.strict else "default"
     rep["work_order"] = "named" if claims.get("order") else "not named: this is not a delivery GO"
     data = json.dumps(rep, indent=2, sort_keys=True) + "\n"
     if ns.out:
@@ -563,19 +601,22 @@ def cmd_verify(ns):
         sys.stdout.write(data)
     else:
         print("delivery verdict: %s%s" % (rep["verdict"], {
-            "GO_WITH_GAPS": " (accepted exit 1, disclosed gaps: %s)" % ", ".join(gaps),
+            "GO_WITH_GAPS": " (accepted gaps, not a clean GO: %s)" % "; ".join(
+                "%s: %s" % (c["role"], _gap_text(c)) for c in rep["contributions"] if c["state"] == "evidenced_with_gaps"),
             "EVIDENCED_NO_ORDER": " (contributions evidenced; no work order named, so this is not a delivery GO)"}.get(
                 rep["verdict"], "")))
         print("ledger: %s" % (rep["ledger"].get("reason") or "%d records, chain intact" % rep["ledger"]["records"]))
         for c in rep["contributions"]:
-            extra = "  (exit 1 accepted: %s)" % ("claim accepts gaps" if c.get("gaps_accepted_by_claim") else
-                                                "claim does not accept gaps") if c["state"] == "evidenced_with_gaps" else ""
+            extra = "  (%s: %s)" % (_gap_text(c), "claim accepts gaps" if c.get("gaps_accepted_by_claim") else
+                                    "claim does not accept gaps") if c["state"] == "evidenced_with_gaps" else ""
             print("  %-40s %s%s%s" % (c["role"], c["state"], extra, "  -> " + c["action"] if c.get("action") and
                                       c["state"] != "evidenced" else ""))
         if "handoff" in rep:
             h = rep["handoff"]
             print("  %-40s %s %s" % ("handoff (G04 work order)", h["state"], h.get("workers", h.get("reason", ""))))
         print("limits: " + LIMITS)
+    if ns.strict:
+        return {"GO": 0, "NO_GO": 1, "GO_WITH_GAPS": 3, "EVIDENCED_NO_ORDER": 4}[rep["verdict"]]
     return 1 if rep["verdict"] == "NO_GO" else 0
 
 
@@ -605,6 +646,8 @@ def main(argv=None):
     v.add_argument("--claims", required=True)
     v.add_argument("--json", action="store_true")
     v.add_argument("--out")
+    v.add_argument("--strict", action="store_true", help="exit 0 only for a clean GO: 3 GO_WITH_GAPS, "
+                   "4 EVIDENCED_NO_ORDER, 1 NO_GO (default: 0 for all but NO_GO)")
     ns = ap.parse_args(argv)
     ns.cmd = cmd
     try:
