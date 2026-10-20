@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import html
 import copy
+import difflib
 import hashlib
 import json
 import os
@@ -1395,6 +1396,20 @@ def load_json(path: Path) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _no_duplicate_keys(pairs: List[Tuple[str, Any]]) -> Dict[str, Any]:
+    seen: Dict[str, Any] = {}
+    for key, value in pairs:
+        if key in seen:
+            raise ValueError(f"duplicate key {key!r}")
+        seen[key] = value
+    return seen
+
+
+def load_fixture_json(path: Path) -> Any:
+    """Fixture files: a duplicate key would silently keep the last value, so it is refused."""
+    return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_no_duplicate_keys)
+
+
 def _apply_expectations(result: AssuranceResult, expected: Dict[str, Any]) -> AssuranceResult:
     """Interpret fixture expectations. fail_gate means the *suite* passes when gates fire."""
     if not expected:
@@ -1408,16 +1423,22 @@ def _apply_expectations(result: AssuranceResult, expected: Dict[str, Any]) -> As
         result.gate_codes = result.gate_codes + ["EXPECTED_GATE_NOT_FIRED"]
         result.notes.append("expected fail_gate but passed")
     elif exp_outcome == "fail_gate" and not result.ok:
-        want = set(expected.get("gate_codes") or [])
-        if want and not want.intersection(result.gate_codes):
+        want = list(expected.get("gate_codes") or [])
+        missing = [g for g in want if g not in result.gate_codes]
+        if missing:
+            # every listed gate must fire (validated non-empty in evaluate_path)
             result.ok = False
-            result.notes.append(f"expected gates {want}, got {result.gate_codes}")
+            result.notes.append(f"expected gates {want}, missing {missing}, got {result.gate_codes}")
         else:
             result.ok = True
             result.status = "pass"
             result.notes.append("fail_gate expectation met")
     exp_role = expected.get("accountable_role")
-    if exp_role and result.findings:
+    if exp_role and not result.findings:
+        result.ok = False
+        result.gate_codes = result.gate_codes + ["GATE_MISROUTE"]
+        result.notes.append(f"expected role {exp_role}, but the result names no accountable role to check")
+    elif exp_role:
         got = result.findings[0].get("accountable_role")
         if got != exp_role:
             result.ok = False
@@ -1426,35 +1447,160 @@ def _apply_expectations(result: AssuranceResult, expected: Dict[str, Any]) -> As
     return result
 
 
+# Fixture contract for `run` and `suite`. A misspelled kind or expectation must
+# not be silently ignored, because the suite would then report a false pass.
+FIXTURE_KINDS = ("packet", "planted_defect", "defect", "legal", "legal_boundary",
+                 "closure", "self_approval")
+EXPECTATION_KEYS = ("outcome", "gate_codes", "accountable_role")
+EXPECTATION_OUTCOMES = ("pass", "fail_gate")
+# The fixture's own top-level keys are part of the contract too: a misspelled
+# fixture_kind, packet or expectations key, or a misspelled field of a closure or
+# legal fixture, must not turn the fixture into a different, passing fixture.
+FIXTURE_CONTRACT_KEYS = ("fixture_kind", "kind", "expectations", "packet")
+FIXTURE_NOTE_KEYS = ("description", "name", "notes")
+FIXTURE_KIND_KEYS = {
+    "closure": ("finding", "waiver", "closer_role", "independent_evidence", "expect_blocked"),
+    "legal": ("text", "legal_text", "requested_actions", "sources", "freshness_days"),
+    "planted_defect": ("defect",),
+}
+# Fields of a closure, planted-defect or legal fixture. An unwrapped packet carrying one has
+# lost its fixture_kind (missing, or written as a synonym such as fixture_type), so it is
+# refused instead of evaluated as a packet that ignores the field (M01 r2 S1). legal_text is
+# not listed: it is a real packet field and triggers the legal gate on a packet.
+NON_PACKET_FIXTURE_KEYS = ("finding", "waiver", "closer_role", "independent_evidence",
+                           "expect_blocked", "defect",
+                           "text", "requested_actions", "sources", "freshness_days")
+
+
+# requested_actions and sources are also G05 packet fields (evaluate_packet validates them and passes them
+# to the legal check), so they only count as stray legal fields on an object that has no packet key.
+PACKET_LEGAL_KEYS = ("requested_actions", "sources")
+PACKET_MARKER_KEYS = ("legal_text", "risk_level", "dimensions", "completed_gates", "evidence", "planted_defects")
+
+
+def _norm_key(key: str) -> str:
+    return key.lower().replace("_", "").replace("-", "").replace(" ", "")
+
+
+# Non-packet fixture kinds, normalised: a top-level value that reads as one of these ("Planted_Defect",
+# "planted-defect", "LEGAL") under any key other than fixture_kind means the kind key was lost (M01 r3 z13, z14).
+_NON_PACKET_KIND_NORMS = frozenset(_norm_key(k) for k in FIXTURE_KINDS[1:])
+
+
+def _fixture_key_problem(data: Dict[str, Any], kind: str) -> Optional[str]:
+    """Why the fixture's top-level keys break the fixture contract, or None."""
+    for key in data:
+        if key in FIXTURE_CONTRACT_KEYS:
+            continue
+        near = [c for c in FIXTURE_CONTRACT_KEYS if _norm_key(key) == _norm_key(c)
+                or difflib.SequenceMatcher(None, key.lower(), c).ratio() >= 0.8]
+        if near:
+            return f"fixture key {key!r} looks like a misspelled {near[0]!r}"
+    group = {"self_approval": "closure", "legal_boundary": "legal",
+             "defect": "planted_defect"}.get(kind, kind)
+    if group == "packet" and "packet" not in data:
+        # Unwrapped packet: packet fields are G05's allowlist; only refuse fields that
+        # belong to another fixture kind, which means its fixture_kind key was lost.
+        stray = [k for k in NON_PACKET_FIXTURE_KEYS if k in data
+                 and not (k in PACKET_LEGAL_KEYS and any(m in data for m in PACKET_MARKER_KEYS))]
+        if stray:
+            return "packet fixture has non-packet fields " + ", ".join(stray) + "; set fixture_kind"
+        # a kind written under another name or in another case ("fixture_type": "legal", "type": "closure",
+        # "category": "planted_defect", "fixture_type": "Planted_Defect"); note keys (name, description) are prose
+        alias = [k for k in data if isinstance(k, str) and k not in FIXTURE_CONTRACT_KEYS and k not in FIXTURE_NOTE_KEYS
+                 and isinstance(data[k], str) and _norm_key(data[k]) in _NON_PACKET_KIND_NORMS]
+        return (f"fixture key {alias[0]!r} names a fixture kind ({data[alias[0]]!r}) but is not fixture_kind; "
+                "rename it to fixture_kind") if alias else None
+    if group == "planted_defect" and "defect" not in data:
+        return None  # the fixture object itself is the defect
+    allowed = set(FIXTURE_CONTRACT_KEYS) | set(FIXTURE_NOTE_KEYS) | set(FIXTURE_KIND_KEYS.get(group, ()))
+    extra = sorted(k for k in data if k not in allowed)
+    return ("fixture has unknown keys: " + ", ".join(extra)) if extra else None
+
+
 def evaluate_path(path: Path) -> AssuranceResult:
+    """Evaluate one fixture. Malformed input is INVALID_PACKET; an unexpected error in the
+    engine is reported the same way (fail closed) instead of a traceback, so one bad fixture
+    cannot take down a suite report."""
     try:
-        data = load_json(path)
+        return _evaluate_fixture(path)
+    except RecursionError:
+        return _invalid_packet("fixture is nested too deeply")
+    except Exception as exc:  # noqa: BLE001 - reported as a failing fixture, never a pass
+        return _invalid_packet(f"fixture could not be evaluated: {type(exc).__name__}: {exc}")
+
+
+def _evaluate_fixture(path: Path) -> AssuranceResult:
+    try:
+        data = load_fixture_json(path)
+    except RecursionError:
+        return _invalid_packet("Cannot read JSON packet: nested too deeply")
     except (OSError, ValueError) as exc:
         return _invalid_packet(f"Cannot read JSON packet: {exc}")
     if not isinstance(data, dict):
         return _invalid_packet("Fixture must be an object")
-    kind = data.get("fixture_kind") or data.get("kind") or "packet"
+    # fixture_kind takes precedence over the legacy kind (G01 contract); kind is then ignored
+    kind_key = "fixture_kind" if "fixture_kind" in data else "kind" if "kind" in data else None
+    kind = data[kind_key] if kind_key else "packet"
+    if kind not in FIXTURE_KINDS:
+        return _invalid_packet(
+            f"{kind_key} must be one of {', '.join(FIXTURE_KINDS)}; a planted defect "
+            "fixture uses fixture_kind \"planted_defect\" with defect_kind"
+        )
+    key_problem = _fixture_key_problem(data, kind)
+    if key_problem:
+        return _invalid_packet(key_problem)
     expected = data.get("expectations", {})
     if not isinstance(expected, dict):
         return _invalid_packet("expectations must be an object")
+    unknown = sorted(str(k) for k in expected if k not in EXPECTATION_KEYS)
+    if unknown:
+        return _invalid_packet(
+            "expectations has unknown keys: " + ", ".join(unknown)
+            + "; supported keys are " + ", ".join(EXPECTATION_KEYS)
+        )
+    if "outcome" in expected and expected["outcome"] not in EXPECTATION_OUTCOMES:
+        return _invalid_packet("expectations.outcome must be one of " + ", ".join(EXPECTATION_OUTCOMES))
     if "gate_codes" in expected and not _string_list(expected["gate_codes"]):
         return _invalid_packet("expectations.gate_codes must be an array of strings")
+    if "gate_codes" in expected and expected.get("outcome") != "fail_gate":
+        return _invalid_packet("expectations.gate_codes is only checked with outcome fail_gate")
+    if "gate_codes" in expected and not expected["gate_codes"]:
+        return _invalid_packet("expectations.gate_codes must list at least one gate (omit it to accept any gate)")
+    if "accountable_role" in expected and (
+        not isinstance(expected["accountable_role"], str) or not expected["accountable_role"].strip()
+    ):
+        return _invalid_packet("expectations.accountable_role must be a nonblank string")
 
     if kind in ("planted_defect", "defect"):
+        if "defect" in data and not isinstance(data["defect"], dict):
+            return _invalid_packet("defect must be an object")
         result = evaluate_planted_defect(data.get("defect") or data)
         return _apply_expectations(result, expected)
 
     if kind in ("legal", "legal_boundary"):
+        for key in ("text", "legal_text"):
+            if key in data and not isinstance(data[key], str):
+                return _invalid_packet(f"{key} must be a string")
+        if "requested_actions" in data and not _string_list(data["requested_actions"]):
+            return _invalid_packet("requested_actions must be an array of strings")
+        if "sources" in data and (not isinstance(data["sources"], list)
+                                  or not all(isinstance(x, dict) for x in data["sources"])):
+            return _invalid_packet("sources must be an array of objects")
+        fresh = data.get("freshness_days", DEFAULT_SOURCE_FRESHNESS_DAYS)
+        if isinstance(fresh, bool) or not isinstance(fresh, int) or fresh < 0:
+            return _invalid_packet("freshness_days must be a whole number of days, 0 or more")
         result = check_legal_boundaries(
             data.get("text") or data.get("legal_text") or "",
             requested_actions=data.get("requested_actions"),
             sources=data.get("sources"),
-            freshness_days=int(data.get("freshness_days", DEFAULT_SOURCE_FRESHNESS_DAYS)),
+            freshness_days=fresh,
         )
-        # Default negative legal fixtures without expectations: suite requires explicit outcome
-        if not expected and not result.ok:
-            # treat as fail_gate success so planted bad legal cases are valid suite fixtures
-            expected = {"outcome": "fail_gate", "gate_codes": list(result.gate_codes)}
+        # A legal fixture without expectations is a negative fixture: its text must be blocked.
+        # Clean text with no expectations fails (EXPECTED_GATE_NOT_FIRED); to assert that text is
+        # allowed, give expectations.outcome "pass".
+        if not expected:
+            expected = {"outcome": "fail_gate"}
         return _apply_expectations(result, expected)
 
     if kind in ("closure", "self_approval"):
@@ -1518,11 +1664,48 @@ def evaluate_path(path: Path) -> AssuranceResult:
     return _apply_expectations(result, expected)
 
 
+def _suite_report(results: List[Dict[str, Any]], passed: int, failed: int,
+                  error: Optional[str] = None) -> Dict[str, Any]:
+    report = {
+        "schema_version": SCHEMA_VERSION,
+        "assurance_version": ASSURANCE_VERSION,
+        "total": len(results),
+        "passed": passed,
+        "failed": failed,
+        "ok": failed == 0 and error is None,
+        "results": results,
+    }
+    if error is not None:
+        report["error"] = error
+    return report
+
+
 def run_suite(root: Path) -> Dict[str, Any]:
-    paths = sorted(root.rglob("*.json"))
+    """Run every fixture under root. A missing directory or zero fixtures is not a pass."""
+    if not root.is_dir():
+        return _suite_report([], 0, 0, error=f"fixture directory not found: {root}")
+    paths, linked_dirs, unreadable = [], [], []
+    # never follows directory symlinks; a folder it cannot list is reported, not skipped (M01 r2 S2)
+    for dirpath, dirnames, filenames in os.walk(root, onerror=unreadable.append):
+        for d in dirnames:
+            if os.path.islink(os.path.join(dirpath, d)):
+                linked_dirs.append(Path(dirpath, d))
+        # the suffix is matched in any case: B.JSON and C.Json are fixtures too
+        paths.extend(Path(dirpath, f) for f in filenames if f.lower().endswith(".json"))
     results = []
     passed = failed = 0
-    for path in paths:
+    for err in sorted(unreadable, key=lambda e: str(getattr(e, "filename", "") or "")):
+        results.append({"path": str(getattr(err, "filename", None) or root), "ok": False, "status": "blocked",
+                        "gate_codes": ["INVALID_PACKET"], "risk_level": "standard",
+                        "notes": [f"directory could not be read ({getattr(err, 'strerror', None) or err}); "
+                                  "its fixtures were not evaluated"]})
+        failed += 1
+    for link in sorted(linked_dirs):
+        # a symlinked directory is not followed; report it so its fixtures are not silently skipped
+        results.append({"path": str(link), "ok": False, "status": "blocked", "gate_codes": ["INVALID_PACKET"],
+                        "risk_level": "standard", "notes": ["symlinked directory not followed; move its fixtures in"]})
+        failed += 1
+    for path in sorted(paths):
         if path.name.startswith("_"):
             continue
         r = evaluate_path(path)
@@ -1539,15 +1722,10 @@ def run_suite(root: Path) -> Dict[str, Any]:
             passed += 1
         else:
             failed += 1
-    return {
-        "schema_version": SCHEMA_VERSION,
-        "assurance_version": ASSURANCE_VERSION,
-        "total": len(results),
-        "passed": passed,
-        "failed": failed,
-        "ok": failed == 0,
-        "results": results,
-    }
+    if not results:
+        return _suite_report(results, passed, failed,
+                             error=f"no fixtures found under {root}; nothing was evaluated")
+    return _suite_report(results, passed, failed)
 
 
 # ---------------------------------------------------------------------------

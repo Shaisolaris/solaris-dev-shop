@@ -41,9 +41,8 @@ It verifies the tree, runs the control-plane self-test and the routing suite, an
 Employee skills can be opened from the checkout or copied into your agent only as a complete
 bundle (companions and shared standards); the optional Python package is the intake router only. It has not been published to PyPI. You can build a local
 wheel with `python -m pip wheel . --no-deps`. The wheel ships the canonical
-`control-plane/` files even when Git cannot materialize the checkout's convenience
-symlink on Windows. It does not install the 61 employee skill directories into
-an agent or execute them.
+`control-plane/` files as `solaris_intake/control_plane/`. It does not install
+the 61 employee skill directories into an agent or execute them.
 
 ## Windows (PowerShell, manual install)
 
