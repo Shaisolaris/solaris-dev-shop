@@ -11,17 +11,18 @@
  "prerequisites": [
   {
    "id": "G01",
-   "commit": "a069a79ca6f57672fa92b0a86bfbcb46eff99ddb",
+   "commit": "aa0b083f1eb105349bc29d4d6d45cb2d1877d6b8",
    "tests": [
     "tests.test_fixture_runner",
     "tests.test_assurance_packets",
     "tests.test_closure_hardening"
-   ]
+   ],
+   "note": "newest head (G01 h1, docs-only hardening after acceptance at a069a79)"
   },
   {
    "id": "G02",
-   "commit": "8fdae9cead8d136211f596bf1e501a41c5a78078",
-   "note": "newest repair head (G02 r3, root QA)",
+   "commit": "90a5ec9c316e4d3fde84591faac1f8a00de73805",
+   "note": "newest repair head (G02 r4, M02 r3 P2 repair)",
    "tests": [
     "tests.test_g02_capability"
    ],

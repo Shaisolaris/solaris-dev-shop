@@ -1,8 +1,9 @@
 # G06 day 1 daily integration
 
-Stack on v0.61 `02ba9c5`: G03 r3 `d4d98f2` (accepted), G01 r3 `a069a79` (accepted) and G02 r3
-`8fdae9c` (the newest repair head, root QA batch; not accepted at this revision: root accepted
-neither an earlier nor this G02). P01 (Tinche/aiofiles#245, code head `2577f3e`) and P02
+Stack on v0.61 `02ba9c5`: G03 r3 `d4d98f2` (accepted), G01 h1 `aa0b083` (G01 was accepted at `a069a79`;
+h1 is a docs-only hardening on top, not accepted at this revision) and G02 r4 `90a5ec9` (the newest
+repair head, M02 r3 P2 repair; root accepted no G02 revision). r2 of this integration merges those two
+newer heads onto the r1 stack `c5baac7` without rewriting it. P01 (Tinche/aiofiles#245, code head `2577f3e`) and P02
 (lucc/khard#360, a design and LLM-use response with no code commit) are outside contributions:
 nothing of theirs is in this repository, so they are bound by their acceptance records, the reply
 body hashes and the validation manifest hashes, never by a missing code branch.
