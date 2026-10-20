@@ -31,11 +31,14 @@ python3 $S ingest --db $T/ledger.db --secret-file $F/test-secret.txt --events $F
 python3 $S ingest --db $T/ledger.db --secret-file $F/test-secret.txt --events $F/september.jsonl --now 1790000200 > $T/replay.json || echo "replay exit $?"
 python3 $S report --db $T/ledger.db
 python3 $S check --db $T/ledger.db
-python3 $S export-g14 --db $T/ledger.db --out $T/books --period-start 2026-09-01T00:00:00Z --period-end 2026-10-01T00:00:00Z
-python3 employees/leadership/cfo/cash_revenue_reconcile.py reconcile $T/books/package.json | head -3
+python3 $S export-g14 --db $T/ledger.db --out $T/books --period-start 2026-09-01T00:00:00Z --period-end 2026-10-01T00:00:00Z || echo "export exit $? (1: evt_007 and evt_008 are open)"
 rm -rf $T
 ```
 
 Expected: both ingests exit 3 (the forged and stale envelopes); the replay changes nothing; the
 report shows `USD net cash 32.69 (captured 45.29, refunded 12.60); 2 held or exception events`;
-check prints `consistent`; G14 reconciles.
+check prints `consistent`; export-g14 exits 1 and writes nothing, because evt_007 (a 40.00 refund
+above what was captured, unapplied) and evt_008 (an out-of-stock order) are open. Without those two
+events the same stream exports and G14 reconciles to net cash 32.69 (`test_export_reconciles_in_g14`).
+Before the hardening commit export-g14 exited 0 here and G14 reconciled the books as clean (found by
+the G30 integration check x2).

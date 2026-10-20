@@ -32,7 +32,9 @@ Commands:
     payment_ledger.py export-g14 --db FILE --out DIR --period-start ISO --period-end ISO
 
 Exit codes: ingest 0 all applied or duplicate; 1 some held or exceptions; 3 any envelope refused
-(signature, timestamp or conflicting replay); check 0 consistent, 1 violations; 2 invalid input; 70 drill.
+(signature, timestamp or conflicting replay); check 0 consistent, 1 violations; export-g14 0 written,
+1 refused because held or exception events or unapplied money are open (nothing written);
+2 invalid input; 70 drill.
 Python 3.9+, no third-party packages, no network.
 """
 from __future__ import annotations
@@ -473,11 +475,29 @@ def iso(t):
     return datetime.fromtimestamp(t, timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+def open_items(con):
+    """What keeps the books from being final: held or exception events and unapplied money rows."""
+    events = [dict(zip(("id", "type", "state", "reason"), r)) for r in
+              con.execute("SELECT id, type, state, reason FROM events WHERE state IN ('held', 'exception') ORDER BY received_seq")]
+    money = [{"event_id": e, "kind": k, "amount": money_str(c)} for e, k, c in
+             con.execute("SELECT event_id, kind, cents FROM money WHERE applied = 0 ORDER BY event_id")]
+    return events, money
+
+
 def cmd_export_g14(a):
     con = connect(a.db)
     out = Path(a.out)
     if out.exists() and any(out.iterdir()):
         raise Invalid("--out %s is not empty" % out)
+    # Books with open exceptions are not final: an unapplied refund or a refused order would vanish from
+    # the export and G14 would reconcile the rest as clean. Refuse before writing anything.
+    events, money = open_items(con)
+    if events or money:
+        print(json.dumps({"refused": "open held or exception events or unapplied money; resolve them before export",
+                          "open": events, "unapplied_money": money}, sort_keys=True))
+        print("error: export-g14 refused: %d open event(s) %s, %d unapplied money row(s); nothing written"
+              % (len(events), ",".join(e["id"] for e in events), len(money)), file=sys.stderr)
+        return 1
     out.mkdir(parents=True, exist_ok=True)
     cur = con.execute("SELECT v FROM meta WHERE k='currency'").fetchone()[0]
 
