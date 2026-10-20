@@ -1,0 +1,31 @@
+# binding check G12-r2, 2026-10-19 21:54:48 PDT
+remote head of review/grok-g12-daily-integration: e187297432e1bfb1dc53c8f52568a7969b9e5147 (expected e187297432e1bfb1dc53c8f52568a7969b9e5147)
+worktree HEAD: e187297432e1bfb1dc53c8f52568a7969b9e5147
+base is ancestor: yes; commits since: 6
+handback patch G12-r2.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/infrastructure/fleet-dispatcher/handoff-work-orders.md: OK
+  employees/infrastructure/fleet-dispatcher/handoff.py: OK
+  employees/infrastructure/fleet-dispatcher/learnings.md: OK
+  employees/quality-security/assurance/ASSURANCE.md: OK
+  employees/quality-security/assurance/quality_os.py: OK
+  examples/capabilities/G12/README.md: OK
+  examples/capabilities/G12/cross_checks.py: OK
+  examples/capabilities/G12/plan.json: OK
+  tests/test_closure_hardening.py: OK
+  tests/test_g04_capability.py: OK
+  tests/test_g12_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../fleet-dispatcher/handoff-work-orders.md        |  7 +--
+   .../infrastructure/fleet-dispatcher/handoff.py     | 22 +++++++++-
+   .../infrastructure/fleet-dispatcher/learnings.md   |  1 +
+   employees/quality-security/assurance/ASSURANCE.md  |  9 +++-
+   employees/quality-security/assurance/quality_os.py | 47 +++++++++++++++-----
+   examples/capabilities/G12/README.md                | 23 +++++-----
+   examples/capabilities/G12/cross_checks.py          | 50 +++++++++++++---------
+   examples/capabilities/G12/plan.json                | 22 ++++++----
+   tests/test_closure_hardening.py                    | 41 ++++++++++++++++--
+   tests/test_g04_capability.py                       | 41 ++++++++++++++++--
+   tests/test_g12_capability.py                       | 14 +++++-
+   11 files changed, 213 insertions(+), 64 deletions(-)

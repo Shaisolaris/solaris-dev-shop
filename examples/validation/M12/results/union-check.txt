@@ -1,0 +1,16 @@
+merge 99b6654 parents 2718b1f 04b3cf2 base 3056378: 0 files changed on both sides
+merge 4582f4e parents 99b6654 e9fa278 base 155fc33: 2 files changed on both sides
+  LOST employees/infrastructure/fleet-dispatcher/handoff-work-orders.md: added 11, kept-by-both 61, lost 3
+     -   revision that was already delivered, a journal belonging to another order, or a journal that does not verify. Nothing runs and nothing is written.
+     - - `2` invalid order, a refused fleet claim (G07), intake hash mismatch, a revision older than one already worked, a journal belonging to
+     - - `2` invalid order, intake hash mismatch, a revision older than one already worked, an owner change on a
+  OK   employees/infrastructure/fleet-dispatcher/handoff.py: added 53, kept-by-both 366, lost 0
+UNION FAIL (1 files with lost lines)
+phrase check (whitespace-normalised) invalid order                                                present
+phrase check (whitespace-normalised) a refused fleet claim (G07)                                  present
+phrase check (whitespace-normalised) intake hash mismatch                                         present
+phrase check (whitespace-normalised) a revision older than one already worked                     present
+phrase check (whitespace-normalised) owner change on a revision that was already delivered        present
+phrase check (whitespace-normalised) a journal belonging to another order                         present
+phrase check (whitespace-normalised) a journal that does not verify                               present
+phrase check (whitespace-normalised) Nothing runs and nothing is written.                         present

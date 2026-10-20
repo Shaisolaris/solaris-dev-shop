@@ -1,0 +1,3 @@
+FINDING x1 new owner ben (epoch 2), same revision: G04 exit 2: error: revision 1 was already delivered with owner ana; a delivery cannot be recalled, so issue revision 2 to change the owner
+FINDING x2 brief re-rendered for ben (G04 exit 2) but G05 receipt is carried_forward, want stale
+CROSS-CHECKS FINDINGS (2 findings)
