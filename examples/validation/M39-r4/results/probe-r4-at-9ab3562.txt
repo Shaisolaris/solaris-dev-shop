@@ -1,0 +1,7 @@
+FAIL S01 '..' through a symlinked folder that points outside ROOT: not bound to a ROOT file, listed unbound in reco {"rec": 0, "claimed": [], "unbound": null, "verify_unbound": null}
+FAIL S02 '..' through a symlinked folder inside ROOT (lnk -> deep/x; lnk/../../inp/a.csv): bound to the file the OS {"rec": 0, "claimed": [], "go": [[0, "GO", "evidenced"], [0, "GO", "evidenced"]]}
+FAIL S03 --src=../../outside/o.csv (exists, outside ROOT): listed unbound with the verify note {"rec": 0, "unbound": null, "note": null}
+FAIL S04 a '..' path that does not exist is not listed; the record carries an empty unbound_inputs {"rec": 0, "unbound": null, "verify_keys": ["argv", "exit", "outputs", "record", "role", "state", "worker"]}
+PASS S05 '..' into .delivery is not bound as an input (the ledger is never an input) {"rec": 0, "claimed": ["inp/a.csv"]}
+FAIL S06 control: a fresh record verifies GO (r4 records carry unbound_inputs; verify reads it with .get, so r3 rec {"rec": 0, "go": [0, "GO", "evidenced"], "key_present": false}
+M39R4 PROBES 1/6

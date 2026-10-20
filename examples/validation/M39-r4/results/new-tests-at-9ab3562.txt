@@ -1,0 +1,6 @@
+ERROR: test_input_outside_root_is_listed_unbound (tests.test_g39_capability.Direct)
+KeyError: 'unbound_inputs'
+FAIL: test_dotdot_spellings_inside_root_are_bound (tests.test_g39_capability.Direct)
+AssertionError: Tuples differ: (0, 'evidenced') != (1, 'stale')
+Ran 2 tests in 0.234s
+FAILED (failures=1, errors=1)

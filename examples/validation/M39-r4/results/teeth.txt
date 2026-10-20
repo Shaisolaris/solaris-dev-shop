@@ -1,0 +1,4 @@
+lexical_normpath_not_realpath | G39 tests: CAUGHT | M39R3 PROBES 4/6 ['R01', 'R06'] | M39R4 PROBES 5/6 ['S02']
+dotdot_branch_removed | G39 tests: CAUGHT | M39R3 PROBES 4/6 ['R01', 'R06'] | M39R4 PROBES 3/6 ['S01', 'S02', 'S03']
+unbound_not_recorded | G39 tests: CAUGHT | M39R3 PROBES 6/6 [] | M39R4 PROBES 4/6 ['S01', 'S03']
+verify_does_not_surface | G39 tests: CAUGHT | M39R3 PROBES 6/6 [] | M39R4 PROBES 4/6 ['S01', 'S03']

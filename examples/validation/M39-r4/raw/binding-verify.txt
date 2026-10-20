@@ -1,0 +1,15 @@
+# binding check G39-r4, 2026-10-20 12:44:51 PDT
+remote head of review/grok-g39-delivery-drill: 97d3d05d92daa452c3eab668aa821fafd0d25bfa (expected 97d3d05d92daa452c3eab668aa821fafd0d25bfa)
+worktree HEAD: 97d3d05d92daa452c3eab668aa821fafd0d25bfa
+base is ancestor: yes; commits since: 1
+handback patch G39-r4.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/product-project/delivery-lead/delivery-evidence.md: OK
+  employees/product-project/delivery-lead/delivery_evidence.py: OK
+  tests/test_g39_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../delivery-lead/delivery-evidence.md             |  7 +++--
+   .../delivery-lead/delivery_evidence.py             | 30 +++++++++++++++++-----
+   tests/test_g39_capability.py                       | 26 +++++++++++++++++++
+   3 files changed, 55 insertions(+), 8 deletions(-)

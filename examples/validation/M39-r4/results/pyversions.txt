@@ -1,0 +1,4 @@
+== 3.9.6 | M39 r4 probes: M39R4 PROBES 6/6 | M39 r3 probes: M39R3 PROBES 6/6 | M39 r2 contract: M39R2 CONTRACT 4/4 core PASS | M39 oracle: M39 ORACLE 8/9 core FAIL | dirty: 0
+== 3.11.16 | M39 r4 probes: M39R4 PROBES 6/6 | M39 r3 probes: M39R3 PROBES 6/6 | M39 r2 contract: M39R2 CONTRACT 4/4 core PASS | M39 oracle: M39 ORACLE 8/9 core FAIL | dirty: 0
+== 3.12.14 | M39 r4 probes: M39R4 PROBES 6/6 | M39 r3 probes: M39R3 PROBES 6/6 | M39 r2 contract: M39R2 CONTRACT 4/4 core PASS | M39 oracle: M39 ORACLE 8/9 core FAIL | dirty: 0
+== 3.13.15 | M39 r4 probes: M39R4 PROBES 6/6 | M39 r3 probes: M39R3 PROBES 6/6 | M39 r2 contract: M39R2 CONTRACT 4/4 core PASS | M39 oracle: M39 ORACLE 8/9 core FAIL | dirty: 0
