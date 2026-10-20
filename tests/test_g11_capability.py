@@ -209,6 +209,24 @@ class G11Capability(unittest.TestCase):
         (self.tmp / 'b.json').write_text(json.dumps(b))
         self.assertEqual(cli('report', self.tmp / 'b.json').returncode, 2)
 
+    def test_unusable_g10_trace_is_named_in_the_decision_trace(self):
+        # Proposed for root (G18 x2 on accepted G11): a supplied trace that netdiag refuses, that has no capture
+        # time, or that falls outside the impact must appear in the decision trace instead of being dropped.
+        b = json.loads((FIX / '02-deploy-regression.json').read_text())
+        src = json.loads((ROOT / 'examples' / 'capabilities' / 'G10' / 'fixtures' / '02-dns-nxdomain.json').read_text())
+        (self.tmp / 'traces').mkdir()
+        b['diagnoses'] = ['traces/t.json']
+        (self.tmp / 'b.json').write_text(json.dumps(b))
+        for value, result in (('18/10/2026 09:30', 'not used: unreadable trace'), (None, 'not used: cannot be placed in the impact'),
+                              ('2026-10-18T08:00:00Z', 'not used: outside the impact')):
+            (self.tmp / 'traces' / 't.json').write_text(json.dumps(dict(src, captured_at=value)))
+            r = report(self.tmp / 'b.json')
+            g10 = [t for t in r['decision']['trace'] if t['check'] == 'G10 network diagnosis during the impact']
+            self.assertEqual([(t['observed'].split(':')[0], t['result']) for t in g10], [('traces/t.json', result)], value)
+            self.assertEqual(r['decision']['decision'], 'rollback', value)  # unusable evidence cannot exclude the application
+        # a usable trace inside the impact still decides as before (fixture 03: do_not_rollback at the dns layer)
+        self.assertEqual(report(FIX / '03-dns-fault-during-impact.json')['decision']['decision'], 'do_not_rollback')
+
     def test_loading_g03_and_g10_leaves_no_bytecode_behind(self):
         """A caller without PYTHONDONTWRITEBYTECODE must not leave __pycache__ in sibling roles."""
         copy_root = self.tmp / 'repo'

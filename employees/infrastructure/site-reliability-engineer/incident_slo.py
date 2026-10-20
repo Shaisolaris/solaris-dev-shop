@@ -468,7 +468,19 @@ def _decide(b: Dict[str, Any], minutes: List[dt.datetime], impact: Dict[str, Any
     if p["_burn"] < b["burn"]:
         return done("do_not_rollback", f"burn rate from {c['revision']} to the end of the impact is {p['burn_rate']}, below the rollback threshold {dec(b['burn'])}")
     for dg in diags:
-        if dg["status"] != "ok" or dg["at"] is None or not (start <= dg["at"] <= end):
+        # Proposed for root (G18 x2): supplied G10 evidence that cannot be used is named in the trace, never dropped
+        # silently. It cannot place a fault outside the application, so it does not change the decision.
+        if dg["status"] != "ok":
+            trace.append({"check": "G10 network diagnosis during the impact", "observed": f"{dg['trace']}: netdiag refused the trace ({dg['error']})",
+                          "result": "not used: unreadable trace"})
+            continue
+        if dg["at"] is None:
+            trace.append({"check": "G10 network diagnosis during the impact", "observed": f"{dg['trace']}: {dg['verdict']}, no capture time",
+                          "result": "not used: cannot be placed in the impact"})
+            continue
+        if not (start <= dg["at"] <= end):
+            trace.append({"check": "G10 network diagnosis during the impact", "observed": f"{dg['trace']}: captured at {iso(dg['at'])}, outside the impact {iso(start)}/{iso(end)}",
+                          "result": "not used: outside the impact"})
             continue
         if dg["verdict"] in ("localized", "probable") and dg["layer"] in NON_APP_LAYERS and "application" not in dg["candidates"]:
             trace.append({"check": "G10 network diagnosis during the impact", "observed": f"{dg['trace']}: {dg['verdict']} at {dg['layer']} ({dg['confidence']}) at {iso(dg['at'])}", "result": "fault outside the application"})

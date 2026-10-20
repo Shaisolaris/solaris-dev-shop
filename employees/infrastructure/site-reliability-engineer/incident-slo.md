@@ -81,6 +81,9 @@ Exit codes: 0 analysed; 2 invalid input, nothing written (a previous `--out` sta
 4. Burn rate from the change to the end of the impact below `rollback_burn_rate`: `do_not_rollback`.
 5. A G10 trace captured during the impact that places the fault at the dns, route or tls layer
    without the application as a candidate: `do_not_rollback` (rolling back code does not fix it).
+   A supplied trace that netdiag refuses, that has no capture time, or that was captured outside
+   the impact is named in the decision trace as `not used` with the reason; it cannot place the
+   fault outside the application, so it does not change the decision (proposed for root, G18 x2).
 6. Change migrated data: `rollback` only when G03 `verify` passes on the named snapshot, and the
    snapshot id is named; otherwise `rollback_blocked`. Otherwise `rollback` (code only).
 
