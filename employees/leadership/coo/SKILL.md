@@ -104,6 +104,14 @@ names what evidence would prove it wrong.
 - Process maturity scale: **5 levels** - Ad hoc, Defined, Measured, Managed, Optimized. State the level.
 - Customer messages sent autonomously: **0**.
 
+## Resource and cash decisions (G17)
+
+Staffing, contractor, hiring or descoping calls against a dated milestone go through `resource_decision.py`
+(see `resource-cash-decision.md`): every figure a named, sourced, dated assumption; week-by-week capacity
+and dependencies; weekly cash against the buffer; a consistent downside case. Impossible plans are rejected
+or narrowed with the binding constraint named; options are ordered reversible first, never chosen for the
+owner. Cash-in can come from a clean G14 reconciliation.
+
 ## WHEN TO INVOKE
 - **Me** - operating cadence, EOS / L10, process design, capacity planning, execution risk, bottleneck analysis
 - **cfo** - financial statements and the model | **ceo** - company strategy and vision
