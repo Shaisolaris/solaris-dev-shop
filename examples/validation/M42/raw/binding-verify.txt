@@ -1,0 +1,32 @@
+candidate 48bfa8614d31332ca483d94ba413ef5ba6bce3a0 parent a1881799c112edd390993143f165ff1c4b7ae339
+patch file 45452f17e4d8015045d84bdc47400818de68b741d1edc8522738e9c89f5a5b7b
+recomputed format-patch a188179..HEAD 45452f17e4d8015045d84bdc47400818de68b741d1edc8522738e9c89f5a5b7b
+manifest OK 9 of 9
+manifest-set-equals-diff
+G42 commit touches only its writable set:
+employees/quality-security/assurance/daily-integration.md
+employees/quality-security/assurance/daily_integration.py
+employees/quality-security/assurance/daily_integration_controls/naive.py
+employees/quality-security/assurance/daily_integration_controls/noop.py
+employees/quality-security/assurance/daily_integration_oracle.py
+examples/capabilities/G42/README.md
+examples/capabilities/G42/cross_checks.py
+examples/capabilities/G42/plan.json
+tests/test_g42_capability.py
+plan prerequisites vs remote heads now:
+  G02 8fdae9c is a remote branch head: ['review/grok-g02-activation']
+  G03 d4d98f2 is a remote branch head: ['review/grok-g03-recovery']
+  G04 155fc33 is a remote branch head: ['review/grok-g04-handoff']
+  G05 3056378 is a remote branch head: ['review/grok-g05-revision-bound-evidence']
+  G13 5666e7b is a remote branch head: ['review/grok-g13-csv-reconciliation']
+  G19 350d175 is a remote branch head: ['review/grok-g19-duplicate-safe-api']
+  G37 e9b7a77 is a remote branch head: ['review/grok-g37-privacy-inventory']
+  G38 b542851 is a remote branch head: ['review/grok-g38-authority-consistency']
+  G39 9ab3562 is a remote branch head: ['review/grok-g39-delivery-drill']
+  G40 bb44478 is a remote branch head: ['review/grok-g40-fresh-install']
+  G41 9b98d9b is a remote branch head: ['review/grok-g41-release-inventory']
+same as G30 r2: employees/quality-security/assurance/daily-integration.md
+same as G30 r2: employees/quality-security/assurance/daily_integration.py
+same as G30 r2: employees/quality-security/assurance/daily_integration_controls/naive.py
+same as G30 r2: employees/quality-security/assurance/daily_integration_controls/noop.py
+same as G30 r2: employees/quality-security/assurance/daily_integration_oracle.py

@@ -1,0 +1,48 @@
+daily integration G42 at 48bfa8614d31 (tree 0153b75c4a3c)
+  G02 8fdae9cead8d UNKNOWN
+  G03 d4d98f2180ed UNKNOWN
+  G04 155fc33ad284 UNKNOWN
+  G05 30563781f175 UNKNOWN
+  G13 5666e7beb161 UNKNOWN
+  G19 350d175e5cf4 UNKNOWN
+  G37 e9b7a7772636 UNKNOWN
+  G38 b5428517178c UNKNOWN
+  G39 9ab356256d51 UNKNOWN
+  G40 bb444782e65f UNKNOWN
+  G41 9b98d9b749a3 UNKNOWN
+  run test G02 python3 -m unittest tests.test_g02_capability rc=0 2.0s
+  run command G02 python3 examples/capabilities/G02/activation_oracle.py -- {python} emp rc=0 2.0s
+  run test G03 python3 -m unittest tests.test_g03_capability rc=0 4.6s
+  run command G03 python3 examples/capabilities/G03/recovery_oracle.py -- {python} emplo rc=0 11.3s
+  run test G04 python3 -m unittest tests.test_g04_capability rc=0 8.3s
+  run command G04 python3 examples/capabilities/G04/handoff_oracle.py rc=0 14.9s
+  run test G05 python3 -m unittest tests.test_g05_capability rc=0 1.0s
+  run command G05 python3 examples/capabilities/G05/binding_oracle.py rc=0 0.4s
+  run test G13 python3 -m unittest tests.test_g13_capability rc=0 8.7s
+  run command G13 python3 examples/capabilities/G13/reconcile_oracle.py --tool {python}  rc=0 9.9s
+  run test G19 python3 -m unittest tests.test_g19_capability rc=0 84.7s
+  run command G19 python3 examples/capabilities/G19/boundary_oracle.py --server {python} rc=0 4.0s
+  run test G37 python3 -m unittest tests.test_g37_capability rc=0 5.2s
+  run command G37 python3 examples/capabilities/G37/privacy_oracle.py rc=0 3.0s
+  run test G38 python3 -m unittest tests.test_g38_capability rc=0 13.6s
+  run command G38 python3 examples/capabilities/G38/authority_oracle.py rc=0 2.9s
+  run test G39 python3 -m unittest tests.test_g39_capability rc=0 15.3s
+  run command G39 python3 examples/capabilities/G39/drill_oracle.py rc=0 8.2s
+  run test G40 python3 -m unittest tests.test_g40_capability rc=0 1.1s
+  run command G40 python3 examples/capabilities/G40/portability_oracle.py rc=0 0.3s
+  run test G41 python3 -m unittest tests.test_g41_capability rc=0 1.9s
+  run command G41 python3 examples/capabilities/G41/inventory_oracle.py rc=0 0.6s
+  run cross_check G42 python3 examples/capabilities/G42/cross_checks.py rc=0 1.6s
+  run gate suite python3 -m unittest discover -s tests rc=0 194.7s
+  run gate control_plane python3 control-plane/meta_control_plane.py self-test rc=0 0.2s
+  run gate quality_audit quality_os.py audit rc=0 0.1s
+  run gate manifests python3 -c 
+import glob, json
+bad = []
+for f in sorted(glob.glob('empl rc=0 0.0s
+  run gate catalog python3 tools/build_skill_catalog.py --check rc=0 0.0s
+  run gate symlinks git ls-files -s rc=0 0.0s
+  run gate metadata python3 tools/validate_skill_metadata.py rc=0 0.1s
+VERDICT INTEGRATED
+rc=0
+fresh clone dirty after: 0

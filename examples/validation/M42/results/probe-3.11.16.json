@@ -1,0 +1,125 @@
+{
+ "rows": [
+  {
+   "row": "P0 clean copy: no finding",
+   "pass": true,
+   "detail": {
+    "rc": 0,
+    "fired": [],
+    "want": [],
+    "may_also_fire": [],
+    "findings": []
+   }
+  },
+  {
+   "row": "P1 x1 fires when the G04 handoff tool is broken (drill cannot pass)",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "fired": [
+     "x1"
+    ],
+    "want": [
+     "x1"
+    ],
+    "may_also_fire": [],
+    "findings": [
+     "FINDING x1 G39 drill does not pass on G02 r3 / G04 r2 / G05 r2 / G19 h1: exit 1, FAIL ana: G04 work order, crash after delivery before receipt               exit 9 (want 75); FAIL ben: resume the work order (duplicate de"
+    ]
+   }
+  },
+  {
+   "row": "P2 x2 fires when pyproject declares a different license from LICENSE and the plugins",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "fired": [
+     "x2"
+    ],
+    "want": [
+     "x2"
+    ],
+    "may_also_fire": [],
+    "findings": [
+     "FINDING x2 G38 provenance on the integrated tree: exit 1, result findings, findings ['license_mismatch']"
+    ]
+   }
+  },
+  {
+   "row": "P3 x3 fires when a security-auditor script listed in its contract is missing",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "fired": [
+     "x1",
+     "x3"
+    ],
+    "want": [
+     "x3"
+    ],
+    "may_also_fire": [
+     "x1"
+    ],
+    "findings": [
+     "FINDING x1 G39 drill does not pass on G02 r3 / G04 r2 / G05 r2 / G19 h1: exit 1, FAIL ben: G19 API probed for duplicates and tenant leaks (security-auditor) exit 1 (want 0); FAIL ben: verify: GO                          ",
+     "FINDING x3 security-auditor scripts ['provenance_check.py', 'boundary_probe.py']: missing ['boundary_probe.py'], not compiling []"
+    ]
+   }
+  },
+  {
+   "row": "P4 x3 fires when a listed script does not compile",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "fired": [
+     "x1",
+     "x3"
+    ],
+    "want": [
+     "x3"
+    ],
+    "may_also_fire": [
+     "x1"
+    ],
+    "findings": [
+     "FINDING x1 G39 drill does not pass on G02 r3 / G04 r2 / G05 r2 / G19 h1: exit 1, FAIL ben: G19 API probed for duplicates and tenant leaks (security-auditor) exit 1 (want 0); FAIL ben: verify: GO                          ",
+     "FINDING x3 security-auditor scripts ['provenance_check.py', 'boundary_probe.py']: missing [], not compiling ['boundary_probe.py']"
+    ]
+   }
+  },
+  {
+   "row": "P5 x4 fires when the legal-advisor contract stops naming the G38 test",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "fired": [
+     "x4"
+    ],
+    "want": [
+     "x4"
+    ],
+    "may_also_fire": [],
+    "findings": [
+     "FINDING x4 legal-advisor contract names ['tests/test_g37_capability.py'] of the G37 and G38 tests (present: ['tests/test_g37_capability.py'])"
+    ]
+   }
+  },
+  {
+   "row": "P6 x4 fires when the G37 report drops its not-legal-advice statement",
+   "pass": true,
+   "detail": {
+    "rc": 1,
+    "fired": [
+     "x4"
+    ],
+    "want": [
+     "x4"
+    ],
+    "may_also_fire": [],
+    "findings": [
+     "FINDING x4 G37 report has no not_legal_advice statement (exit 1)"
+    ]
+   }
+  }
+ ]
+}

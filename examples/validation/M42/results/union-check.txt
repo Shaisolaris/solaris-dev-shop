@@ -1,0 +1,11 @@
+merge a188179 parents 7ed6f54 155fc33 base 314b4db: 0 files changed on both sides
+merge 7ed6f54 parents 3ed5aec 8fdae9c base bbe682b: 0 files changed on both sides
+merge 3ed5aec parents 58c6fc0 b542851 base 8b38a72: 6 files changed on both sides
+  OK   employees/legal-compliance/legal-advisor/SKILL.md: added 9, kept-by-both 210, lost 0
+  OK   employees/legal-compliance/legal-advisor/capability.contract.json: added 2, kept-by-both 478, lost 0
+  OK   employees/legal-compliance/legal-advisor/learnings.md: added 2, kept-by-both 14, lost 0
+  OK   employees/quality-security/security-auditor/SKILL.md: added 15, kept-by-both 231, lost 0
+  OK   employees/quality-security/security-auditor/capability.contract.json: added 7, kept-by-both 525, lost 0
+  OK   employees/quality-security/security-auditor/learnings.md: added 5, kept-by-both 24, lost 0
+merge 58c6fc0 parents 9b98d9b e9b7a77 base 5666e7b: 0 files changed on both sides
+UNION OK (0 files with lost lines)
