@@ -11,7 +11,8 @@
  * - Live-region announcements on state changes only, never repeated for the same state.
  * - A narrow/wide layout decision that the demo's CSS media query mirrors (40rem = 640px).
  * examples/capabilities/G20/browser_checks.py can render the demo page in headless Chrome (320, 360 and 1280 px) when a
- * browser is named explicitly; it was not run for this revision. Screen-reader output and other browsers are not covered.
+ * browser is named explicitly, with one Chrome launch per run (recorded in examples/capabilities/G20/rendered/).
+ * Screen-reader output and other browsers are not covered.
  */
 (function (root) {
   "use strict";

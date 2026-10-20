@@ -3,9 +3,10 @@
 `async_search_core.js` is a dependency-free, DOM-free core for a search-as-you-type combobox. It was built against
 the synthetic fixture in `examples/capabilities/G20/` and is checked there. `browser_checks.py` can render the demo in
 headless Chrome at 320, 360 and 1280 px and drive it with real keys (layout overflow, focus ring, option ids,
-keyboard model, long labels, a stale-response regression). It starts a browser only when one is named with
-`--chrome PATH` or `G20_CHROME`, and it was NOT run for this revision. The 320 px overflow contract is checked from
-the demo source without a browser (`NarrowLayoutContract` in the tests). Screen-reader output and other browsers have
+keyboard model, long labels, a stale-response regression) with one Chrome launch for all widths. It starts a browser
+only when one is named with `--chrome PATH` or `G20_CHROME`. It was run once for this revision: 33/33, both controls
+rejected (`examples/capabilities/G20/rendered/`). The 320 px overflow contract is also checked from the demo source
+without a browser (`NarrowLayoutContract` in the tests). Screen-reader output and other browsers have
 not been run.
 `ui_oracle.py` runs the core in JavaScriptCore (`jsc`) with a virtual clock and reads the demo page as text.
 
@@ -47,7 +48,7 @@ also has a "fail the next request" switch.
 ## Checks
 ```bash
 python3 examples/capabilities/G20/ui_oracle.py            # 11 behaviour checks in jsc + 6 static demo checks
-python3 examples/capabilities/G20/browser_checks.py --chrome PATH   # opt-in: 33 rendered checks in headless Chrome (exit 3 if no browser is named)
+python3 examples/capabilities/G20/browser_checks.py --chrome PATH --controls   # one Chrome launch: 33 rendered checks + controls (exit 3 if no browser is named)
 python3 -m unittest tests.test_g20_capability
 ```
 Option element ids come from `optionDomId(id)`: letters, digits and hyphens pass through and every other character
@@ -59,8 +60,7 @@ widening the page; in an earlier headless Chrome run of the unrepaired page, one
 `ui_oracle.py` exits 2 when no JavaScript shell is found, and its report always lists what was not run.
 
 ## Limits
-- No browser was run for this revision; the narrow layout is checked statically and the rendered checks are opt-in.
-  Screen-reader output, Safari, Firefox, touch and zoom are unverified until someone runs them with assistive technology. `--sol-ink-2` is not a brand colour, and its contrast was
+- Rendered in headless Chrome 155 on macOS only (one recorded run). Screen-reader output, Safari, Firefox, touch and zoom are unverified until someone runs them with assistive technology. `--sol-ink-2` is not a brand colour, and its contrast was
   not measured.
 - JavaScriptCore has no `AbortController`, so aborting a superseded request is skipped in the checks (reported as SKIP).
   Without one, a superseded response is still dropped, but the network request is not cancelled.

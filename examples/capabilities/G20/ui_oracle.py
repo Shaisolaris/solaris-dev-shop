@@ -24,7 +24,7 @@ DEMO = HERE / "demo" / "index.html"
 JSC_DEFAULT = "/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Helpers/jsc"
 UNRUN = ("not run: browser rendering, real keyboard focus, the CSS media query at 40rem, colour contrast as rendered, "
          "and screen-reader output. Only the DOM-free core (in JavaScriptCore) and the demo source text were checked here; "
-         "browser_checks.py can render the page in headless Chrome when a browser is named (opt-in). Screen readers and other browsers are not run by either.")
+         "browser_checks.py renders the page in headless Chrome (one launch per run) when a browser is named. Screen readers and other browsers are not run by either.")
 
 
 def find_jsc(explicit):
