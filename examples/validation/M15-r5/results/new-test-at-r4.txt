@@ -1,0 +1,4 @@
+ERROR: test_expected_units_catches_units_missing_from_the_log (tests.test_g15_capability.G15Capability)
+KeyError: 'missing_units_checked'
+Ran 1 test in 0.070s
+FAILED (errors=1)

@@ -1,0 +1,4 @@
+== 3.9.6 | G15 tests: OK | readout_oracle: ACCEPTED: 18/18 checks passed (seed 1515) | naive: REJECTED: 2/18 checks passed (seed 1515) | no-op: REJECTED: 1/18 checks passed (seed 1515) | dirty: 0
+== 3.11.16 | G15 tests: OK | readout_oracle: ACCEPTED: 18/18 checks passed (seed 1515) | naive: REJECTED: 2/18 checks passed (seed 1515) | no-op: REJECTED: 1/18 checks passed (seed 1515) | dirty: 0
+== 3.12.14 | G15 tests: OK | readout_oracle: ACCEPTED: 18/18 checks passed (seed 1515) | naive: REJECTED: 2/18 checks passed (seed 1515) | no-op: REJECTED: 1/18 checks passed (seed 1515) | dirty: 0
+== 3.13.15 | G15 tests: OK | readout_oracle: ACCEPTED: 18/18 checks passed (seed 1515) | naive: REJECTED: 2/18 checks passed (seed 1515) | no-op: REJECTED: 1/18 checks passed (seed 1515) | dirty: 0

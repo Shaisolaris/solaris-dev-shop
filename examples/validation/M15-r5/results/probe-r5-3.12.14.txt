@@ -1,0 +1,8 @@
+C1 PASS M15 r4 B10 with expected_units = the true count: 25%% of converting control units missing, no true effect: invalid_experiment and no causal claim in every seed {"tally": {"invalid_experiment": 20}, "units_in_log": [1798, 1802, 1804, 1806, 1808]}
+C2 PASS same data without expected_units: every difference_detected trace states that missing units were not checked {"tally": {"no_detectable_difference": 10, "difference_detected": 9, "invalid_experiment": 1}, "causal": 9}
+C3 PASS A/A with expected_units: verified and missing_units_checked in every seed, causal false positives at most 3 {"tally": {"no_detectable_difference": 19, "difference_detected": 1}, "causal": 1}
+C4 PASS true effect 20% -> 30% with expected_units: difference_detected in at least 18 of 20 and the trace says the log holds all 1860 {"tally": {"difference_detected": 20}}
+C5 PASS expected_units off by one either way, or far off: invalid_experiment, never causal {"outcomes": ["invalid_experiment", "invalid_experiment", "invalid_experiment"]}
+C6 PASS malformed expected_units refused with exit 2 {"zero": 2, "negative": 2, "bool": 2, "string": 2, "float": 2, "null": 2}
+C7 PASS r4 B1 burst with expected_units counting the burst: still invalid (arms off the rule), never causal {"invalid_experiment": 20}
+M15R5 PROBE 7/7

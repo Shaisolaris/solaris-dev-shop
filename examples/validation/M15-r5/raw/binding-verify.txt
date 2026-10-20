@@ -1,0 +1,17 @@
+# binding check G15-r5, 2026-10-20 12:13:20 PDT
+remote head of review/grok-g15-experiment-readout: 2a3310b711c0035e34bdcac047b30ae4aedd04b7 (expected 2a3310b711c0035e34bdcac047b30ae4aedd04b7)
+worktree HEAD: 2a3310b711c0035e34bdcac047b30ae4aedd04b7
+base is ancestor: yes; commits since: 1
+handback patch G15-r5.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/data/data-scientist/SKILL.md: OK
+  employees/data/data-scientist/experiment-readout.md: OK
+  employees/data/data-scientist/experiment_readout.py: OK
+  tests/test_g15_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   employees/data/data-scientist/SKILL.md             |  3 +-
+   .../data/data-scientist/experiment-readout.md      | 10 ++++-
+   .../data/data-scientist/experiment_readout.py      | 28 ++++++++++----
+   tests/test_g15_capability.py                       | 43 +++++++++++++++++++++-
+   4 files changed, 74 insertions(+), 10 deletions(-)

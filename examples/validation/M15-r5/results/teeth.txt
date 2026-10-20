@@ -1,0 +1,5 @@
+count_not_compared | G15 tests: CAUGHT (FAILED (failures=1)) | M15 r5 probe: M15R5 PROBE 5/7 ['C1', 'C5']
+only_short_logs_fail | G15 tests: CAUGHT (FAILED (failures=1)) | M15 r5 probe: M15R5 PROBE 6/7 ['C5']
+gap_not_stated | G15 tests: CAUGHT (FAILED (failures=1)) | M15 r5 probe: M15R5 PROBE 6/7 ['C2']
+multi_arm_units_not_counted | G15 tests: survived (OK) | M15 r5 probe: M15R5 PROBE 7/7 []
+bool_accepted | G15 tests: CAUGHT (FAILED (failures=1)) | M15 r5 probe: M15R5 PROBE 6/7 ['C6']
