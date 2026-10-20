@@ -1,0 +1,121 @@
+{
+ "probe": "m39r5",
+ "tool": "/tmp/g39r5-base/employees/product-project/delivery-lead/delivery_evidence.py",
+ "python": "3.12.14",
+ "rows": [
+  {
+   "row": "T01 --src=inp.csv rewritten by the run, delivered order: NO_GO without accept_gaps, GO_WITH_GAPS with it, text names the file, never GO",
+   "pass": false,
+   "detail": {
+    "deliver": 0,
+    "rec": 0,
+    "no_accept": [
+     0,
+     "GO",
+     "evidenced"
+    ],
+    "accept": [
+     0,
+     "GO"
+    ],
+    "text_names_file": false
+   }
+  },
+  {
+   "row": "T02 a file in an --inputs folder removed by the run is a named gap (GO_WITH_GAPS with accept_gaps)",
+   "pass": false,
+   "detail": {
+    "rec": 0,
+    "changed": [
+     "feed/old.csv"
+    ],
+    "verdict": [
+     0,
+     "GO"
+    ]
+   }
+  },
+  {
+   "row": "T03 a SQLite -journal sidecar rewritten by the run holds data, so it is a gap (NO_GO without accept_gaps)",
+   "pass": false,
+   "detail": {
+    "rec": 0,
+    "verdict": [
+     0,
+     "GO",
+     "evidenced"
+    ]
+   }
+  },
+  {
+   "row": "T04 false-positive guard: a -shm index next to a bound db and a file that appeared during the run are listed but are not gaps (GO)",
+   "pass": true,
+   "detail": {
+    "rec": 0,
+    "changed": [
+     "feed/fresh.csv",
+     "feed/t.db-shm"
+    ],
+    "verdict": [
+     0,
+     "GO",
+     "evidenced"
+    ]
+   }
+  },
+  {
+   "row": "T05 verify --strict: 0 only for GO; 3 GO_WITH_GAPS, 4 EVIDENCED_NO_ORDER, 1 NO_GO, 2 invalid",
+   "pass": false,
+   "detail": {
+    "GO": [
+     2,
+     null
+    ],
+    "EVIDENCED_NO_ORDER": [
+     2,
+     null
+    ],
+    "GO_WITH_GAPS": [
+     2,
+     null
+    ],
+    "NO_GO": [
+     2,
+     null
+    ],
+    "invalid": 2
+   }
+  },
+  {
+   "row": "T06 compatibility control: without --strict the exit mapping is unchanged (0 for GO, EVIDENCED_NO_ORDER, GO_WITH_GAPS)",
+   "pass": true,
+   "detail": [
+    [
+     0,
+     "GO"
+    ],
+    [
+     0,
+     "EVIDENCED_NO_ORDER"
+    ],
+    [
+     0,
+     "GO_WITH_GAPS"
+    ]
+   ]
+  },
+  {
+   "row": "T07 control: a run that reads its inputs without changing them is a clean GO",
+   "pass": true,
+   "detail": {
+    "rec": 0,
+    "verdict": [
+     0,
+     "GO",
+     "evidenced"
+    ]
+   }
+  }
+ ],
+ "score": "3/7"
+}

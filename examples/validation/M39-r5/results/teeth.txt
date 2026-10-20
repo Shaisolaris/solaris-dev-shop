@@ -1,0 +1,8 @@
+rewrite_never_recorded | G39 tests: CAUGHT | M39R5 PROBES 3/7 ['T01', 'T02', 'T03', 'T05']
+verify_ignores_rewrite | G39 tests: CAUGHT | M39R5 PROBES 3/7 ['T01', 'T02', 'T03', 'T05']
+every_change_is_a_rewrite | G39 tests: CAUGHT | M39R5 PROBES 6/7 ['T04']
+all_sidecars_exempt | G39 tests: CAUGHT | M39R5 PROBES 6/7 ['T03']
+rewrite_gap_dropped_unless_exit_1 | G39 tests: CAUGHT | M39R5 PROBES 3/7 ['T01', 'T02', 'T03', 'T05']
+strict_is_default_mapping | G39 tests: CAUGHT | M39R5 PROBES 6/7 ['T05']
+strict_gaps_exit_0 | G39 tests: CAUGHT | M39R5 PROBES 6/7 ['T05']
+default_mapping_changed | G39 tests: CAUGHT | M39R5 PROBES 5/7 ['T01', 'T06']

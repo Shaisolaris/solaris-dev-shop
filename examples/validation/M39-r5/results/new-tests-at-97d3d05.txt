@@ -1,0 +1,10 @@
+ERROR: test_input_rewritten_by_the_run_is_noted_and_bound_after (tests.test_g39_capability.Direct)
+KeyError: 'gap_kinds'
+ERROR: test_rewritten_input_with_order_is_go_with_gaps_never_go (tests.test_g39_capability.Direct)
+KeyError: 'clean_go'
+ERROR: test_which_run_changes_are_rewrites (tests.test_g39_capability.Direct)
+KeyError: 'inputs_rewritten_during_run'
+ERROR: test_strict_exit_codes_tell_go_from_non_clean_verdicts (tests.test_g39_capability.Direct)
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+Ran 4 tests in 0.625s
+FAILED (errors=4)

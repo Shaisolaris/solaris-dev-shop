@@ -1,0 +1,583 @@
+{
+ "tool": "/tmp/m39r5/cand/employees/product-project/delivery-lead/delivery_evidence.py",
+ "python": "3.9.6",
+ "rows": [
+  {
+   "row": "C01 explicit inputs named in the command are bound in every common spelling (positional, --flag VALUE, --flag=VALUE, a folder, an absolute path inside ROOT, a symlink)",
+   "pass": true,
+   "sub": {
+    "positional_file_change_not_go": true,
+    "flag_then_value_change_not_go": true,
+    "flag_equals_value_change_not_go": true,
+    "positional_folder_file_added_not_go": true,
+    "absolute_path_inside_root_change_not_go": true,
+    "symlink_named_refused_or_target_change_not_go": true
+   },
+   "detail": {
+    "positional_file_change_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "flag_then_value_change_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "flag_equals_value_change_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "positional_folder_file_added_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "absolute_path_inside_root_change_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "symlink_named_refused_or_target_change_not_go": [
+     true,
+     [
+      2,
+      [
+       1,
+       "NO_GO",
+       "unevidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "unevidenced"
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "row": "C02 indirect inputs declared with --inputs: change, add, remove, rename, symlink swap and a helper module all leave GO; a restore returns GO; bad --inputs are refused before running",
+   "pass": true,
+   "sub": {
+    "declared_folder_file_changed_not_go": true,
+    "declared_folder_file_added_not_go": true,
+    "declared_folder_file_removed_not_go": true,
+    "declared_folder_file_renamed_not_go": true,
+    "declared_file_replaced_by_identical_symlink_not_go": true,
+    "declared_helper_module_changed_not_go": true,
+    "restored_input_go_again": true,
+    "symlink_inside_declared_folder_refused_or_bound": true,
+    "bad_inputs_missing_exit_2_nothing_run_or_appended": true,
+    "bad_inputs_symlink_exit_2_nothing_run_or_appended": true,
+    "bad_inputs_absolute_exit_2_nothing_run_or_appended": true,
+    "bad_inputs_dotdot_exit_2_nothing_run_or_appended": true,
+    "bad_inputs_ledger_dir_exit_2_nothing_run_or_appended": true
+   },
+   "detail": {
+    "declared_folder_file_changed_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "declared_folder_file_added_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "declared_folder_file_removed_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "declared_folder_file_renamed_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "declared_file_replaced_by_identical_symlink_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "declared_helper_module_changed_not_go": [
+     true,
+     [
+      0,
+      [
+       0,
+       "GO",
+       "evidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ]
+     ]
+    ],
+    "restored_input_go_again": [
+     true,
+     [
+      [
+       1,
+       "NO_GO",
+       "stale"
+      ],
+      [
+       0,
+       "GO",
+       "evidenced"
+      ]
+     ]
+    ],
+    "symlink_inside_declared_folder_refused_or_bound": [
+     true,
+     [
+      2,
+      0,
+      [
+       1,
+       "NO_GO",
+       "unevidenced"
+      ],
+      [
+       1,
+       "NO_GO",
+       "unevidenced"
+      ]
+     ]
+    ],
+    "bad_inputs_missing_exit_2_nothing_run_or_appended": [
+     true,
+     [
+      2,
+      false,
+      0,
+      "invalid: input 'inp/nope.csv' does not exist in ROOT (or is a symlink)"
+     ]
+    ],
+    "bad_inputs_symlink_exit_2_nothing_run_or_appended": [
+     true,
+     [
+      2,
+      false,
+      0,
+      "invalid: input 'inp/sl' does not exist in ROOT (or is a symlink)"
+     ]
+    ],
+    "bad_inputs_absolute_exit_2_nothing_run_or_appended": [
+     true,
+     [
+      2,
+      false,
+      0,
+      "lders/vd/dn87bf4x3fl7nylswx7lm1l80000gn/T/m39o-09bzcgcu/d/inp' must be a relative path inside ROOT and outside .delivery"
+     ]
+    ],
+    "bad_inputs_dotdot_exit_2_nothing_run_or_appended": [
+     true,
+     [
+      2,
+      false,
+      0,
+      "invalid: input '../x' must be a relative path inside ROOT and outside .delivery"
+     ]
+    ],
+    "bad_inputs_ledger_dir_exit_2_nothing_run_or_appended": [
+     true,
+     [
+      2,
+      false,
+      0,
+      "invalid: input '.delivery' must be a relative path inside ROOT and outside .delivery"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "C03 output-folder membership is complete: a member removed, renamed, added (also nested), swapped or replaced by a symlink, and the folder deleted or emptied, are all not GO; a restore returns GO",
+   "pass": true,
+   "sub": {
+    "member_removed_not_go": true,
+    "member_renamed_not_go": true,
+    "member_added_not_go": true,
+    "member_added_in_new_nested_folder_not_go": true,
+    "output_folder_deleted_not_go": true,
+    "output_folder_emptied_not_go": true,
+    "member_replaced_by_identical_symlink_not_go": true,
+    "two_members_swapped_not_go": true,
+    "removed_then_restored_go_again": true
+   },
+   "detail": {
+    "member_removed_not_go": [
+     true,
+     [
+      "GO",
+      "NO_GO",
+      "stale",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "member_renamed_not_go": [
+     true,
+     [
+      "GO",
+      "NO_GO",
+      "stale",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "member_added_not_go": [
+     true,
+     [
+      "GO",
+      "NO_GO",
+      "not_covered",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "member_added_in_new_nested_folder_not_go": [
+     true,
+     [
+      "GO",
+      "NO_GO",
+      "not_covered",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "output_folder_deleted_not_go": [
+     true,
+     [
+      "GO",
+      "NO_GO",
+      "stale",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "output_folder_emptied_not_go": [
+     true,
+     [
+      "GO",
+      "NO_GO",
+      "stale",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "member_replaced_by_identical_symlink_not_go": [
+     true,
+     [
+      "GO",
+      "NO_GO",
+      "stale",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "two_members_swapped_not_go": [
+     true,
+     [
+      "GO",
+      "NO_GO",
+      "stale",
+      [
+       "app.db",
+       "manifest.json"
+      ]
+     ]
+    ],
+    "removed_then_restored_go_again": [
+     true,
+     [
+      "NO_GO",
+      "GO"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "C04 exit honesty: --ok-exit outside 0 or 0,1 is refused before running; a tool exit 2 never counts, even with accept_gaps; exit 1 is never a plain GO",
+   "pass": true,
+   "sub": {
+    "ok_exit_0_2_refused_exit_2_not_run": true,
+    "ok_exit_0_1_2_refused_exit_2_not_run": true,
+    "ok_exit_2_refused_exit_2_not_run": true,
+    "ok_exit_1_refused_exit_2_not_run": true,
+    "ok_exit_0_3_refused_exit_2_not_run": true,
+    "ok_exit_0_255_refused_exit_2_not_run": true,
+    "ok_exit_0_m2_refused_exit_2_not_run": true,
+    "ok_exit_1_2_refused_exit_2_not_run": true,
+    "tool_exit_2_under_0_1_never_go_even_with_accept_gaps": true,
+    "exit_1_default_ok_exit_not_go": true,
+    "exit_1_accepted_without_accept_gaps_not_go": true,
+    "exit_1_with_accept_gaps_is_go_with_gaps_not_go": true
+   },
+   "detail": {
+    "ok_exit_0_2_refused_exit_2_not_run": [
+     true,
+     [
+      2,
+      false
+     ]
+    ],
+    "ok_exit_0_1_2_refused_exit_2_not_run": [
+     true,
+     [
+      2,
+      false
+     ]
+    ],
+    "ok_exit_2_refused_exit_2_not_run": [
+     true,
+     [
+      2,
+      false
+     ]
+    ],
+    "ok_exit_1_refused_exit_2_not_run": [
+     true,
+     [
+      2,
+      false
+     ]
+    ],
+    "ok_exit_0_3_refused_exit_2_not_run": [
+     true,
+     [
+      2,
+      false
+     ]
+    ],
+    "ok_exit_0_255_refused_exit_2_not_run": [
+     true,
+     [
+      2,
+      false
+     ]
+    ],
+    "ok_exit_0_m2_refused_exit_2_not_run": [
+     true,
+     [
+      2,
+      false
+     ]
+    ],
+    "ok_exit_1_2_refused_exit_2_not_run": [
+     true,
+     [
+      2,
+      false
+     ]
+    ],
+    "tool_exit_2_under_0_1_never_go_even_with_accept_gaps": [
+     true,
+     [
+      1,
+      [
+       1,
+       "NO_GO",
+       "failed"
+      ],
+      [
+       1,
+       "NO_GO",
+       "failed"
+      ]
+     ]
+    ],
+    "exit_1_default_ok_exit_not_go": [
+     true,
+     [
+      1,
+      [
+       1,
+       "NO_GO",
+       "failed"
+      ]
+     ]
+    ],
+    "exit_1_accepted_without_accept_gaps_not_go": [
+     true,
+     [
+      0,
+      [
+       1,
+       "NO_GO",
+       "evidenced_with_gaps"
+      ]
+     ]
+    ],
+    "exit_1_with_accept_gaps_is_go_with_gaps_not_go": [
+     true,
+     [
+      0,
+      "GO_WITH_GAPS",
+      "evidenced_with_gaps"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "Q05 OBS: undeclared indirect inputs, empty subfolders, an input rewritten during the run, verify exit codes per verdict, a rewritten exit-2 record (recorded, not scored)",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "undeclared_indirect_file_changed_verdict": "GO",
+    "undeclared_imported_helper_changed_verdict": "GO",
+    "declared_folder_empty_subfolder_added_verdict": "GO",
+    "output_folder_empty_subfolder_added_verdict": "GO",
+    "input_rewritten_during_run": [
+     0,
+     "NO_GO",
+     [
+      "inp/a.csv"
+     ]
+    ],
+    "verify_exit_GO_WITH_GAPS": [
+     0,
+     "GO_WITH_GAPS"
+    ],
+    "verify_exit_EVIDENCED_NO_ORDER": [
+     0,
+     "EVIDENCED_NO_ORDER"
+    ],
+    "rewritten_record_exit_2_ok_true_verdict": [
+     1,
+     "NO_GO",
+     "failed"
+    ]
+   }
+  }
+ ]
+}

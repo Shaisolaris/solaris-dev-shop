@@ -1,0 +1,97 @@
+{
+ "rows": [
+  {
+   "row": "S01 '..' through a symlinked folder that points outside ROOT: not bound to a ROOT file, listed unbound in record and verify",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "rec": 0,
+    "claimed": [],
+    "unbound": [
+     "out/../e.csv"
+    ],
+    "verify_unbound": [
+     "out/../e.csv"
+    ]
+   }
+  },
+  {
+   "row": "S02 '..' through a symlinked folder inside ROOT (lnk -> deep/x; lnk/../../inp/a.csv): bound to the file the OS reads; change caught",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "rec": 0,
+    "claimed": [
+     "inp/a.csv"
+    ],
+    "go": [
+     [
+      0,
+      "GO",
+      "evidenced"
+     ],
+     [
+      1,
+      "NO_GO",
+      "stale"
+     ]
+    ]
+   }
+  },
+  {
+   "row": "S03 --src=../../outside/o.csv (exists, outside ROOT): listed unbound with the verify note",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "rec": 0,
+    "unbound": [
+     "../../m39r4-ext-tezkacq_/o.csv"
+    ],
+    "note": "named in the command but outside ROOT: read by the run, never re-checked by verify"
+   }
+  },
+  {
+   "row": "S04 a '..' path that does not exist is not listed; the record carries an empty unbound_inputs",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "rec": 0,
+    "unbound": [],
+    "verify_keys": [
+     "argv",
+     "exit",
+     "outputs",
+     "record",
+     "role",
+     "state",
+     "worker"
+    ]
+   }
+  },
+  {
+   "row": "S05 '..' into .delivery is not bound as an input (the ledger is never an input)",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "rec": 0,
+    "claimed": [
+     "inp/a.csv"
+    ]
+   }
+  },
+  {
+   "row": "S06 control: a fresh record verifies GO (r4 records carry unbound_inputs; verify reads it with .get, so r3 records without it still verify)",
+   "pass": true,
+   "sub": {},
+   "detail": {
+    "rec": 0,
+    "go": [
+     0,
+     "GO",
+     "evidenced"
+    ],
+    "key_present": true
+   }
+  }
+ ]
+}

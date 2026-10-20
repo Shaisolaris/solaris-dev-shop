@@ -1,0 +1,8 @@
+FAIL T01 --src=inp.csv rewritten by the run, delivered order: NO_GO without accept_gaps, GO_WITH_GAPS with it, text names the file, never GO {"deliver": 0, "rec": 0, "no_accept": [0, "GO", "evidenced"], "accept": [0, "GO"], "text_names_file": false}
+FAIL T02 a file in an --inputs folder removed by the run is a named gap (GO_WITH_GAPS with accept_gaps) {"rec": 0, "changed": ["feed/old.csv"], "verdict": [0, "GO"]}
+FAIL T03 a SQLite -journal sidecar rewritten by the run holds data, so it is a gap (NO_GO without accept_gaps) {"rec": 0, "verdict": [0, "GO", "evidenced"]}
+PASS T04 false-positive guard: a -shm index next to a bound db and a file that appeared during the run are listed but are not gaps (GO) {"rec": 0, "changed": ["feed/fresh.csv", "feed/t.db-shm"], "verdict": [0, "GO", "evidenced"]}
+FAIL T05 verify --strict: 0 only for GO; 3 GO_WITH_GAPS, 4 EVIDENCED_NO_ORDER, 1 NO_GO, 2 invalid {"GO": [2, null], "EVIDENCED_NO_ORDER": [2, null], "GO_WITH_GAPS": [2, null], "NO_GO": [2, null], "invalid": 2}
+PASS T06 compatibility control: without --strict the exit mapping is unchanged (0 for GO, EVIDENCED_NO_ORDER, GO_WITH_GAPS) [[0, "GO"], [0, "EVIDENCED_NO_ORDER"], [0, "GO_WITH_GAPS"]]
+PASS T07 control: a run that reads its inputs without changing them is a clean GO {"rec": 0, "verdict": [0, "GO", "evidenced"]}
+M39R5 PROBES 3/7
