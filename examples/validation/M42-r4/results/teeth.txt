@@ -1,0 +1,5 @@
+# M42 r4 teeth on a fresh clone of 1611581 (plan edits are uncommitted, so DIRTY_TREE is expected alongside)
+control: rc=0 codes=[]
+the 3 new resolved overlaps removed: rc=1 codes=['DIRTY_TREE', 'OVERLAP'] ['employees/product-project/delivery-lead/SKILL.md', 'employees/product-project/delivery-lead/capability.contract.json', 'employees/product-project/delivery-lead/delivery-evidence.md', 'employees/product-project/delivery-lead/delivery_evidence.py', 'tests/test_g39_capability.py']
+G39 pinned back to r3 9ab3562: rc=1 codes=['DIRTY_TREE', 'DRIFT']
+clone status after restore: 0

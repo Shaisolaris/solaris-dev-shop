@@ -1,0 +1,53 @@
+# binding check G42-r4, 2026-10-20 13:53:03 PDT
+remote head of review/grok-g42-daily-integration: 1611581a288e54fe8515886c31482bd579151922 (expected 1611581a288e54fe8515886c31482bd579151922)
+worktree HEAD: 1611581a288e54fe8515886c31482bd579151922
+base is ancestor: yes; commits since: 15
+handback patch G42-r4.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/data/data-scientist/SKILL.md: OK
+  employees/data/data-scientist/experiment-readout.md: OK
+  employees/data/data-scientist/experiment_readout.py: OK
+  employees/infrastructure/kubernetes-specialist/k8s_manifest_check.py: OK
+  employees/infrastructure/site-reliability-engineer/incident-slo.md: OK
+  employees/infrastructure/site-reliability-engineer/incident_slo.py: OK
+  employees/product-project/delivery-lead/delivery-evidence.md: OK
+  employees/product-project/delivery-lead/delivery_evidence.py: OK
+  employees/quality-security/assurance/release-candidate.md: OK
+  employees/quality-security/assurance/release_candidate.py: OK
+  employees/sales-outreach/customer-success/consent-follow-through.md: OK
+  employees/sales-outreach/customer-success/followthrough.py: OK
+  examples/capabilities/G34/naive_diagnostics.py: OK
+  examples/capabilities/G42/README.md: OK
+  examples/capabilities/G42/plan.json: OK
+  tests/test_g09_capability.py: OK
+  tests/test_g11_capability.py: OK
+  tests/test_g15_capability.py: OK
+  tests/test_g32_capability.py: OK
+  tests/test_g39_capability.py: OK
+  tests/test_g41_capability.py: OK
+  tests/test_g42_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   employees/data/data-scientist/SKILL.md             |   3 +-
+   .../data/data-scientist/experiment-readout.md      |  10 +-
+   .../data/data-scientist/experiment_readout.py      |  28 ++++--
+   .../kubernetes-specialist/k8s_manifest_check.py    |   3 +
+   .../site-reliability-engineer/incident-slo.md      |   5 +
+   .../site-reliability-engineer/incident_slo.py      |  25 ++++-
+   .../delivery-lead/delivery-evidence.md             |   7 +-
+   .../delivery-lead/delivery_evidence.py             |  30 ++++--
+   .../assurance/release-candidate.md                 |  15 ++-
+   .../assurance/release_candidate.py                 | 103 +++++++++++++++++++--
+   .../customer-success/consent-follow-through.md     |   8 +-
+   .../customer-success/followthrough.py              |  51 ++++++----
+   examples/capabilities/G34/naive_diagnostics.py     |  17 +++-
+   examples/capabilities/G42/README.md                |   8 ++
+   examples/capabilities/G42/plan.json                |  40 +++++---
+   tests/test_g09_capability.py                       |   9 ++
+   tests/test_g11_capability.py                       |  35 +++++++
+   tests/test_g15_capability.py                       |  43 ++++++++-
+   tests/test_g32_capability.py                       |  29 ++++++
+   tests/test_g39_capability.py                       |  26 ++++++
+   tests/test_g41_capability.py                       |  89 ++++++++++++++++++
+   tests/test_g42_capability.py                       |   3 +-
+   22 files changed, 524 insertions(+), 63 deletions(-)
