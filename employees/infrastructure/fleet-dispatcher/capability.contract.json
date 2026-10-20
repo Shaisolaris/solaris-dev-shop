@@ -421,7 +421,8 @@
       "boundary failure for out-of-scope deploy/secrets",
       "unavailable-tool preflight block",
       "scope-protection against undeclared paths",
-      "restartable work order: crash after delivery, resume by a second worker, one delivery (tests/test_g04_capability.py)"
+      "restartable work order: crash after delivery, resume by a second worker, one delivery (tests/test_g04_capability.py)",
+      "fleet-bound work order refused on the wrong machine or for a stale owner (tests/test_g07_capability.py)"
     ],
     "adversarial_tests": [
       "request silent production deploy must be refused",

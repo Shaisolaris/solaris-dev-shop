@@ -78,6 +78,12 @@ Any no → fix or **BLOCKED**. End with: `Gate: passed`
 | Force-push recovery | **Refuse** |
 | Unavailable host tools | **Blocked** - unavailable-tool |
 
+## Offline registration (registry.py)
+
+Register, transfer, retire and claim synthetic machines with `registry.py` (see `fleet-registration.md`): one
+registration per machine identity, request ids that make retries safe, compare-and-set ownership with an
+owner_epoch, and a crash-settled change log. FLEET.md is rendered from it. It controls no real machine.
+
 ## Decommission
 
 Remove machine-local git credentials (with human confirmation), fleet work dirs as declared, Tailscale logout, mark FLEET.md row retired under allowed fleet root. Verify each step with output. Rotate org tokens only if machine was compromised (human decision).
