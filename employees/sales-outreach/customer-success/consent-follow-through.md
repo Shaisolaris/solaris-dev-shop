@@ -17,7 +17,9 @@ the state lock (nothing written); 75 crash drill (`--fail-at drafted|ledgered`).
 - Account (schema `solaris.cs-account/1`): `account_id`, `owner`, `contacts` [{id, name, handle, consent
   granted|unknown}]. Handles are opaque ids; the sending system maps them to addresses. Every contact
   needs a handle, and the handle names the person: two contacts whose handles match once case, spacing,
-  character width and Unicode format characters (zero-width space, soft hyphen, ...) are ignored are one
+  character width and invisible characters (Unicode format characters such as zero-width space and soft
+  hyphen, every Default_Ignorable_Code_Point such as the combining grapheme joiner, variation selectors and
+  Hangul fillers, and the braille blank U+2800) are ignored are one
   person imported twice, and the account is refused (exit 2, nothing written) until the duplicate import
   is merged. Plus-addressing, dots inside the local part, Cyrillic/Greek look-alikes and domain aliases
   are NOT matched; resolve those in the CRM before import.
@@ -41,7 +43,9 @@ the state lock (nothing written); 75 crash drill (`--fail-at drafted|ledgered`).
   ticket. Contacts with consent `unknown` get no onboarding or feedback. Suppression is permanent: a later
   `opt_in` is reported as `consent_review_required` and changes nothing. Suppressions are also written to
   `person_suppressions.jsonl` in the state folder, so a CRM identity or history merge that drops the old
-  opt-out event still keeps the person suppressed on the next run.
+  opt-out event still keeps the person suppressed on the next run. The file is held to the journal's bar: if it cannot be
+  read, its last line is torn, or any line is not a valid suppression row, the run is refused (exit 2,
+  nothing written) until a person repairs it. A damaged file is never skipped.
 - **Reply state**: a reply on the thread after our response cancels that response's nudge; a closed ticket
   cancels it too; a reply on the onboarding thread cancels the check-in (not the training invite).
 - **Withdrawal**: a draft already written for an action that is now suppressed or cancelled is rewritten with
