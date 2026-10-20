@@ -106,8 +106,8 @@
   },
   {
    "id": "G09",
-   "commit": "edfa64d4d86532d18164e37175c7b0e4d734d0e0",
-   "note": "G09, newest remote head; also stacked by G12",
+   "commit": "1cab0f8b68077b4dbd006ad37c1d20f3b538d7c7",
+   "note": "G09 h1, newest remote head (hardening on accepted edfa64d); G12 stacks edfa64d",
    "tests": [
     "tests.test_g09_capability"
    ],
@@ -135,8 +135,8 @@
   },
   {
    "id": "G11",
-   "commit": "13ba7055537e305732856aea3c74ff28f0848be8",
-   "note": "G11, newest remote head; also stacked by G18",
+   "commit": "94a0de462a82e0d55e1bf58ee468bf7953d1c59a",
+   "note": "G11 h1, newest remote head (hardening on accepted 13ba705); also stacked by G18 r2",
    "tests": [
     "tests.test_g11_capability"
    ],
@@ -182,8 +182,8 @@
   },
   {
    "id": "G15",
-   "commit": "7e7f361208a40ac55a18a6089c820f92a74147c2",
-   "note": "G15 r4, newest remote head; also stacked by G24",
+   "commit": "2a3310b711c0035e34bdcac047b30ae4aedd04b7",
+   "note": "G15 r5, newest remote head; G24 stacks r4 7e7f361",
    "tests": [
     "tests.test_g15_capability"
    ],
@@ -325,8 +325,8 @@
   },
   {
    "id": "G32",
-   "commit": "b69f3289f360ed0dc5d722f025940815787ff1af",
-   "note": "G32 r3, newest remote head; also stacked by G36",
+   "commit": "3346efac313f8508bb04c575277dca99dc6d2634",
+   "note": "G32 r4, newest remote head; G36 stacks r3 b69f328",
    "tests": [
     "tests.test_g32_capability"
    ],
@@ -351,8 +351,8 @@
   },
   {
    "id": "G34",
-   "commit": "de76fae516c3aab8adc5df7bfcaac2d751dc92d9",
-   "note": "G34, newest remote head; also stacked by G36",
+   "commit": "6ad99da2532a5bad8ce47e7779908ad067c29953",
+   "note": "G34 h1, newest remote head (hardening on accepted de76fae); G36 stacks de76fae",
    "tests": [
     "tests.test_g34_capability"
    ],
@@ -403,8 +403,8 @@
   },
   {
    "id": "G39",
-   "commit": "9ab356256d5147c89c0f780d4ab639c584971326",
-   "note": "G39 r3, newest remote head",
+   "commit": "97d3d05d92daa452c3eab668aa821fafd0d25bfa",
+   "note": "G39 r4, newest remote head",
    "tests": [
     "tests.test_g39_capability"
    ],
@@ -429,8 +429,8 @@
   },
   {
    "id": "G41",
-   "commit": "a1bd6c41641c9849912c93e9dbe8db7a13229b55",
-   "note": "G41 r3, newest remote head; its commit subject says r2 in error (9b98d9b was r2)",
+   "commit": "b8813367c2a80cb3f0b8aa23b823407d30d6b90a",
+   "note": "G41 r4, newest remote head",
    "tests": [
     "tests.test_g41_capability"
    ],
@@ -627,6 +627,18 @@
   {
    "path": "tests/test_g19_capability.py",
    "reason": "G21 and G22 carry the accepted G19 5606672 blob 130a096; G41 carries the G19 h1 350d175 blob 8919362, which builds on it. HEAD is the G19 h1 blob."
+  },
+  {
+   "path": "employees/product-project/delivery-lead/delivery-evidence.md",
+   "reason": "G40 r4 and G41 r4 carry the G39 r3 blob ff80c1f; G39 r4 carries b88c297, which is r3 plus the M39 r3 P3-1/P3-2 change (r4 fast-forwards r3). HEAD is the G39 r4 blob b88c297: the newer revision of the same file, not a line union (r4 rewrites some r3 lines)."
+  },
+  {
+   "path": "employees/product-project/delivery-lead/delivery_evidence.py",
+   "reason": "G40 r4 and G41 r4 carry the G39 r3 blob 02b9a3e; G39 r4 carries 6cd0523, which is r3 plus the M39 r3 P3-1/P3-2 change (r4 fast-forwards r3). HEAD is the G39 r4 blob 6cd0523: the newer revision of the same file, not a line union (r4 rewrites some r3 lines)."
+  },
+  {
+   "path": "tests/test_g39_capability.py",
+   "reason": "G40 r4 and G41 r4 carry the G39 r3 blob 02b0ed6; G39 r4 carries 92a41b3, which is r3 plus the M39 r3 P3-1/P3-2 change (r4 fast-forwards r3). HEAD is the G39 r4 blob 92a41b3: the newer revision of the same file, not a line union (r4 rewrites some r3 lines)."
   }
  ]
 }

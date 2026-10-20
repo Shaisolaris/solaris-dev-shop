@@ -8,6 +8,14 @@ G31 r3 `fcf492a`, G32 r3 `b69f328`, G33 r4 `a4ae555`, G34 `de76fae`, G35 `34bb98
 `ba70b69`, G39 r3 `9ab3562`, G40 r4 `eabf69a` and G41 r3 `a1bd6c4` (its commit subject says r2 in error). The
 goal heads are merged one by one on top of r2 `956792e` without rewriting it; plan.json names all 31.
 
+Revision r4 (2026-10-20) merges seven newer heads on top of r3 `9d844d2`, one merge each, without rewriting it:
+G09 h1 `1cab0f8`, G11 h1 `94a0de4`, G15 r5 `2a3310b`, G32 r4 `3346efa`, G34 h1 `6ad99da`, G39 r4 `97d3d05` and
+G41 r4 `b881336`. None of the seven git merges touches a file changed on both sides; plan.json carries the new commits. G40 r4
+and G41 r4 still carry G39 r3's three delivery-evidence files, so plan.json resolves those three overlaps in
+favour of G39 r4.
+G09 h1, G11 h1 and G34 h1 are hardening commits on top of accepted revisions and are not accepted themselves.
+The union statement below holds for the r3 tree; r4 adds only the seven goals' own diffs to it.
+
 The six daily integrations (G06 r2, G12 r2, G18, G24 r2, G30 r3, G36 r2) are not stacked as prerequisites: each
 one's own plan test (`test_stack_binds_this_tree`) binds its exact tree, so their evidence folders fail on any
 other tree. Every build they integrate is here at the same head, and this tree equals the union of all six
