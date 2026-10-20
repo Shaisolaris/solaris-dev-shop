@@ -1,0 +1,6 @@
+ERROR: test_unselected_goal_does_not_block_but_a_required_one_does (tests.test_g41_capability.Selection)
+KeyError: 'not_selected'
+ERROR: test_newer_remote_head_makes_acceptance_stale (tests.test_g41_capability.RemoteHeads)
+KeyError: 'goals'
+Ran 2 tests in 0.220s
+FAILED (errors=2)

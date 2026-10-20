@@ -1,0 +1,15 @@
+# binding check G41-r4, 2026-10-20 11:56:30 PDT
+remote head of review/grok-g41-release-inventory: b8813367c2a80cb3f0b8aa23b823407d30d6b90a (expected b8813367c2a80cb3f0b8aa23b823407d30d6b90a)
+worktree HEAD: b8813367c2a80cb3f0b8aa23b823407d30d6b90a
+base is ancestor: yes; commits since: 1
+handback patch G41-r4.patch equals regenerated (diff): yes
+MANIFEST.sha256 check against worktree:
+  employees/quality-security/assurance/release-candidate.md: OK
+  employees/quality-security/assurance/release_candidate.py: OK
+  tests/test_g41_capability.py: OK
+manifest set equals diff set: yes
+files changed since base:
+   .../assurance/release-candidate.md                 |  15 ++-
+   .../assurance/release_candidate.py                 | 103 +++++++++++++++++++--
+   tests/test_g41_capability.py                       |  89 ++++++++++++++++++
+   3 files changed, 199 insertions(+), 8 deletions(-)

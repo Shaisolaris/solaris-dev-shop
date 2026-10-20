@@ -1,0 +1,3 @@
+index only (no --remote-heads) rc=1
+with --remote-heads rc=1
+clone status after: 0

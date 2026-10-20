@@ -1,0 +1,27 @@
+selected goals 84, not selected 8
+mine counts {'accepted': 38, 'candidate_only': 13, 'missing': 33} | tool counts {'accepted': 38, 'candidate_only': 13, 'missing': 33, 'not_selected': 8}
+classification differences: ['G26', 'G27', 'G28', 'G29', 'M26', 'M27', 'M28', 'M29'] [('G26', None, 'not_selected'), ('G27', None, 'not_selected'), ('G28', None, 'not_selected'), ('G29', None, 'not_selected'), ('M26', None, 'not_selected'), ('M27', None, 'not_selected'), ('M28', None, 'not_selected'), ('M29', None, 'not_selected')]
+queue status accepted but no acceptance-file entry: ['R01', 'R02', 'R03', 'R04']
+acceptance-file entry but queue status not accepted: [] []
+queue acceptance_record.exact_revision differs from acceptance file commit: []
+index candidate differs from the remote review branch head (index stale or post-acceptance commits):
+   ('G01', 'accepted', 'a069a79', 'review/grok-g01-fixture-runner', 'aa0b083')
+   ('G02', 'candidate_only', 'bbe682b', 'review/grok-g02-activation', '90a5ec9')
+   ('G19', 'accepted', '5606672', 'review/grok-g19-duplicate-safe-api', '350d175')
+   ('G20', 'candidate_only', '8d45038', 'review/grok-g20-async-search', '0d4db69')
+   ('G34', 'accepted', 'de76fae', 'review/grok-g34-content-diagnostics', '6ad99da')
+   ('G04', 'candidate_only', '314b4db', 'review/grok-g04-handoff', 'e9fa278')
+   ('G05', 'candidate_only', '8b38a72', 'review/grok-g05-revision-bound-evidence', '1b840cd')
+   ('G11', 'accepted', '13ba705', 'review/grok-g11-incident-slo', '94a0de4')
+   ('G11', 'accepted', '13ba705', 'review/grok-g11-x2-proposed-fix-for-root', '9aea147')
+   ('G15', 'candidate_only', '64c3cc7', 'review/grok-g15-experiment-readout', '7e7f361')
+   ('G22', 'accepted', '1faee8d', 'review/grok-g22-payment-ledger', '29cd7fc')
+   ('G31', 'candidate_only', '37f42b0', 'review/grok-g31-scope-acceptance', 'fcf492a')
+   ('G32', 'candidate_only', '2d85d94', 'review/grok-g32-consent-followthrough', '3346efa')
+   ('G33', 'candidate_only', '861167d', 'review/grok-g33-evidence-decision', 'a4ae555')
+   ('G37', 'accepted', '9b0f58e', 'review/grok-g37-privacy-inventory', 'e9b7a77')
+   ('G38', 'candidate_only', '01c9afb', 'review/grok-g38-authority-consistency', 'ba70b69')
+   ('G39', 'candidate_only', 'f04d34d', 'review/grok-g39-delivery-drill', '9ab3562')
+   ('G40', 'candidate_only', '8428c90', 'review/grok-g40-fresh-install', 'eabf69a')
+queue excluded/rejected: [] | statuses present: ['accepted', 'candidate_has_validation_residuals_repair_or_contract_bound_required', 'integration_or_final_validation_queued', 'rebuild_and_validation_required_after_G39_repair', 'release_cohort_preparation_not_ready', 'repair_candidate_delivered_fresh_validation_required', 'repair_delivered_awaiting_affected_validation', 'rework_required_root_contract_review', 'validation_ready_dependency_repair_required']
+required final goals and dispositions: [('G39', 'candidate_only'), ('M39', 'missing'), ('G40', 'candidate_only'), ('M40', 'missing'), ('G41', 'missing'), ('M41', 'missing'), ('G42', 'missing'), ('M42', 'missing')]

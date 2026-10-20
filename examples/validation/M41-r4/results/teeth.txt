@@ -1,0 +1,5 @@
+keep_unselected_blocking | G41 tests: CAUGHT (FAILED (failures=1)) | M41 oracle: M41 ORACLE 4/5 scored FAIL
+ignore_newer_heads | G41 tests: CAUGHT (FAILED (failures=1)) | M41 oracle: M41 ORACLE 5/5 scored PASS
+any_differing_head_is_newer | G41 tests: CAUGHT (FAILED (failures=1)) | M41 oracle: M41 ORACLE 5/5 scored PASS
+ignore_unknown_heads | G41 tests: CAUGHT (FAILED (failures=1)) | M41 oracle: M41 ORACLE 5/5 scored PASS
+word_match_substring | G41 tests: SURVIVED (OK) | M41 oracle: M41 ORACLE 5/5 scored PASS

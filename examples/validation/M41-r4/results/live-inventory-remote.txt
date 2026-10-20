@@ -1,0 +1,45 @@
+release gate (computed): NOT_READY   queue state: NOT_READY   applied: no
+dispositions: acceptance_stale 6, accepted 32, candidate_only 13, missing 33, not_selected 8
+  - G01 candidate index is stale: review/grok-g01-fixture-runner is at aa0b083f1eb1
+  - G02 candidate index is stale: review/grok-g02-activation is at 90a5ec9c316e
+  - G04 candidate index is stale: review/grok-g04-handoff is at e9fa278f6fc9
+  - G05 candidate index is stale: review/grok-g05-revision-bound-evidence is at 1b840cdee716
+  - G11 candidate index is stale: review/grok-g11-incident-slo is at 94a0de462a82, review/grok-g11-x2-proposed-fix-for-root is at 9aea14785713
+  - G15 candidate index is stale: review/grok-g15-experiment-readout is at 7e7f361208a4
+  - G19 candidate index is stale: review/grok-g19-duplicate-safe-api is at 350d175e5cf4
+  - G20 candidate index is stale: review/grok-g20-async-search is at 0d4db6949ee2
+  - G22 candidate index is stale: review/grok-g22-payment-ledger is at 29cd7fc6a073
+  - G31 candidate index is stale: review/grok-g31-scope-acceptance is at fcf492af1ba1
+  - G32 candidate index is stale: review/grok-g32-consent-followthrough is at 3346efac313f
+  - G33 candidate index is stale: review/grok-g33-evidence-decision is at a4ae555bdabf
+  - G34 candidate index is stale: review/grok-g34-content-diagnostics is at 6ad99da2532a
+  - G37 candidate index is stale: review/grok-g37-privacy-inventory is at e9b7a7772636
+  - G38 candidate index is stale: review/grok-g38-authority-consistency is at ba70b6934a13
+  - G39 candidate index is stale: review/grok-g39-delivery-drill is at 9ab356256d51
+  - G40 candidate index is stale: review/grok-g40-fresh-install is at eabf69ac9cf4
+  - G01 acceptance_stale
+  - G02 candidate_only
+  - G04 candidate_only
+  - G05 candidate_only
+  - G06 missing
+  - G07 candidate_only
+  - G11 acceptance_stale
+  - G12 missing
+  - G15 candidate_only
+  - G16 candidate_only
+  - G18 missing
+  - G19 acceptance_stale
+  - G20 candidate_only
+  - G22 acceptance_stale
+  - G24 missing
+  - G30 missing
+  - G31 candidate_only
+  - G32 candidate_only
+  - G33 candidate_only
+  - G34 acceptance_stale
+  - G36 missing
+  - G37 acceptance_stale
+  - G38 candidate_only
+  - ... 40 more
+proposed version: 0.62 (from 0.61), not applied
+blocked on root or owner: apply the proposed version to pyproject.toml and CHANGELOG.md; regenerate or edit control-plane/skills.json, roster.json or counts; supported CI on Linux/macOS/Windows Python 3.12 and Linux 3.10/3.13 at the final revision; protected branding SHA256 check at the final revision; existing PR replies or updates; tag, GitHub release and main push

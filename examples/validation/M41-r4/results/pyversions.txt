@@ -1,0 +1,4 @@
+== 3.9.6 | G41 tests: OK | inventory_oracle: ACCEPTED 10/10 | naive: REJECTED 5/10 | no-op: REJECTED 0/10 | M41 oracle: M41 ORACLE 5/5 scored PASS | dirty: 0
+== 3.11.16 | G41 tests: OK | inventory_oracle: ACCEPTED 10/10 | naive: REJECTED 5/10 | no-op: REJECTED 0/10 | M41 oracle: M41 ORACLE 5/5 scored PASS | dirty: 0
+== 3.12.14 | G41 tests: OK | inventory_oracle: ACCEPTED 10/10 | naive: REJECTED 5/10 | no-op: REJECTED 0/10 | M41 oracle: M41 ORACLE 5/5 scored PASS | dirty: 0
+== 3.13.15 | G41 tests: OK | inventory_oracle: ACCEPTED 10/10 | naive: REJECTED 5/10 | no-op: REJECTED 0/10 | M41 oracle: M41 ORACLE 5/5 scored PASS | dirty: 0
