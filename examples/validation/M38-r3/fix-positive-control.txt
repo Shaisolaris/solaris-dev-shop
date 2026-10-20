@@ -1,0 +1,6 @@
+# positive control on a copy with proposed-fix.patch (3.9.6)
+M38R3 PROBES 8/8
+m38r2 oracle: M38 R2 ORACLE 11/12 core FAIL
+g38 tests: OK
+authority_oracle: ACCEPTED 8/8
+repo provenance (fix copy): consistent 65

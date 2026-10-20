@@ -1,0 +1,3 @@
+authority_oracle : ACCEPTED 8/8
+authority_oracle --tools examples/capabilities/G38/naive: REJECTED 1/8
+authority_oracle --tools examples/capabilities/G38/noop: REJECTED 1/8

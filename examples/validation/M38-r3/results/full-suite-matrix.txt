@@ -1,0 +1,5 @@
+m38r3 py39: Ran 174 tests in 32.405s OK  rc=0 Python 3.9.6 at b5428517178c032cea8af6bd7ef626e8db4a07b4
+m38r3 py311: Ran 174 tests in 26.614s OK  rc=0 Python 3.11.16 at b5428517178c032cea8af6bd7ef626e8db4a07b4
+m38r3 py312: Ran 174 tests in 27.452s OK  rc=0 Python 3.12.14 at b5428517178c032cea8af6bd7ef626e8db4a07b4
+m38r3 py313: Ran 174 tests in 27.774s OK  rc=0 Python 3.13.15 at b5428517178c032cea8af6bd7ef626e8db4a07b4
+m38r3 browser processes seen during the run: 0
