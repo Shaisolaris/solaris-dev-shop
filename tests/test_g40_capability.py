@@ -96,6 +96,57 @@ class G40Direct(unittest.TestCase):
         import zipfile
         self.assertNotIn("solaris_intake/stale_removed_module.py", zipfile.ZipFile(wheels[0]).namelist())
 
+    @unittest.skipIf(sys.version_info < (3, 10), "wheel-smoke needs 3.10+")
+    def test_outside_that_exists_and_is_not_empty_is_refused_and_kept(self):
+        # M40 r3 P2-1: an existing --outside lost its src/ folder and the tool said "Nothing was written"
+        d = Path(tempfile.mkdtemp(prefix="g40k-")); self.addCleanup(shutil.rmtree, d, True)
+        work = d / "work"
+        (work / "src").mkdir(parents=True)
+        (work / "src" / "keep.txt").write_text("user data\n")
+        (work / "notes.txt").write_text("notes\n")
+        before = sorted(str(x.relative_to(work)) for x in work.rglob("*"))
+        for cmd in ("wheel-smoke", "report"):
+            r = run(cmd, ROOT, "--outside", work, "--json", timeout=600)
+            self.assertEqual(r.returncode, 2, cmd + r.stdout + r.stderr)
+            self.assertIn("not empty", r.stderr)
+            self.assertNotIn("Traceback", r.stderr)
+            self.assertEqual(sorted(str(x.relative_to(work)) for x in work.rglob("*")), before)
+        self.assertEqual((work / "src" / "keep.txt").read_text(), "user data\n")
+
+    @unittest.skipIf(sys.version_info < (3, 10), "wheel-smoke needs 3.10+")
+    def test_outside_that_is_a_file_is_refused_and_kept(self):
+        d = Path(tempfile.mkdtemp(prefix="g40f-")); self.addCleanup(shutil.rmtree, d, True)
+        f = d / "afile"
+        f.write_text("keep\n")
+        r = run("wheel-smoke", ROOT, "--outside", f, "--json")
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+        self.assertNotIn("Traceback", r.stderr)
+        self.assertEqual(f.read_text(), "keep\n")
+
+    @unittest.skipIf(sys.version_info < (3, 10), "wheel-smoke needs 3.10+")
+    def test_failed_build_names_the_work_folder_instead_of_nothing_written(self):
+        # M40 r3 P4-1: after a failed build the work folder holds the source copy, so "Nothing was written" was false
+        d = Path(tempfile.mkdtemp(prefix="g40b-")); self.addCleanup(shutil.rmtree, d, True)
+        repo = d / "repo"
+        shutil.copytree(ROOT, repo, ignore=shutil.ignore_patterns(".git", "__pycache__", "build", "dist", "*.egg-info"))
+        pp = repo / "pyproject.toml"
+        text = pp.read_text()
+        self.assertIn("build-backend", text)
+        # valid TOML with requires-python, but a build backend that cannot be imported: the copy is made, then pip fails
+        pp.write_text("\n".join('build-backend = "g40_no_such_backend"' if l.startswith("build-backend") else l
+                                for l in text.splitlines()) + "\n")
+        work = d / "work"
+        r = run("wheel-smoke", repo, "--outside", work, "--json", timeout=600)
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+        self.assertNotIn("Nothing was written", r.stderr)
+        self.assertIn(str(work), r.stderr)
+        self.assertTrue((work / "src").is_dir())
+
+    def test_docs_state_outside_rule(self):
+        doc = (ROOT / "employees/quality-security/qa-engineer/host-portability.md").read_text()
+        self.assertIn("new or empty", doc)
+        self.assertIn("setuptools", doc)
+
     def test_docs_state_bounds(self):
         install = (ROOT / "docs/install.md").read_text()
         self.assertIn("3.10+", install); self.assertIn("3.9+", install)
