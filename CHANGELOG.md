@@ -14,6 +14,8 @@
 
 ### Quality and installation
 
+- Start the loopback API and its negative controls without a reverse DNS lookup, avoiding offline macOS startup hangs.
+
 - Bind delivery evidence to the command, tool and artifact bytes; expose rewritten inputs as gaps and reject stale outputs. Release inventory requires candidate, test and review assertions to name the same complete revision. Repeated input/output flags retain every path. Integration checks reuse ancestry answers within one invocation and refresh them on the next.
 - Keep the original 61 specialist roles and branding. The wheel still packages the deterministic router; specialist workflows and companion resources are distributed in the source tree.
 - Test full capability regressions on supported Linux/macOS runtimes and the router, assurance, platform boundaries and clean wheel on Windows. Portable skill text does not imply every helper supports every operating system.
