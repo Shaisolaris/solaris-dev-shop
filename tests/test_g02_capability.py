@@ -581,6 +581,25 @@ class M02Rework(Base):
                 r = self.activate(deploy_model=deploy)
                 self.assertEqual(r['intake']['deploy_model'], deploy)
 
+    def test_placeholder_and_lookalike_unresolved_answers_stay_unresolved(self):
+        """G02 r5 (M02 r3 P4-1, OBS-1): TBD, ?, -, n/a and similar placeholders were recorded as the deploy model, and
+        UNRESOLVED spelled with a Cyrillic or Greek look-alike letter was read as an answer."""
+        for deploy in ('TBD', 'tbd.', '?', '??', '-', '--', '...', 'n/a', 'N/A', 'NA', 'To be decided', 'unknown',
+                       'Pending', 'none', 'ask the owner', ' \u200b TBD ', 'UNR\u0415SOLVED', 'unr\u0435s\u043elved',
+                       'UNRES\u039fLVED: ask', 't.b.d.', 'T. B. D', 'n . a', 'UNRESO\u13deVED', '\u13a1'.join(('UN', 'ESOLVED')),
+                       'unreso\u04cfved'):
+            with self.subTest(deploy=deploy):
+                r = self.activate(deploy_model=deploy)
+                self.assertEqual(r['status'], 'partial')
+                self.assertIsNone(r['intake']['deploy_model'])
+                self.assertIn('DEPLOY-MODEL: UNRESOLVED (no answer recorded',
+                              (self.project / 'STATUS.md').read_text())
+        for deploy in ('Netlify (TBD region)', 'None of the above: Fly.io', 'Vercel', 'manual uploads, unresolved staging',
+                       'App Store via TestFlight', 'a.w.s. amplify', 'G. C. P.'):
+            with self.subTest(deploy=deploy):
+                r = self.activate(deploy_model=deploy)
+                self.assertEqual(r['intake']['deploy_model'], deploy)
+
     def test_deeply_nested_journal_and_lock_give_bounded_results(self):
         """Corrupted / deeply nested JSON must not escape as a traceback (root G02 contract)."""
         deep = '[' * 50000
