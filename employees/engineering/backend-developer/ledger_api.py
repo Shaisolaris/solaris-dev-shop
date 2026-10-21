@@ -411,9 +411,12 @@ class Ledger:
         if bad:
             raise ApiError(422, "unknown_parameter", f"unknown query parameters: {', '.join(bad)}")
         lim = query.get("limit", ["20"])
-        if len(lim) != 1 or not lim[0].isdigit() or not (1 <= int(lim[0]) <= 100):
+        if len(lim) != 1 or not lim[0].isascii() or not lim[0].isdigit():
             raise ApiError(422, "invalid_limit", "limit must be an integer from 1 to 100")
-        limit = int(lim[0])
+        digits = lim[0].lstrip("0") or "0"
+        if len(digits) > 3 or not (1 <= int(digits) <= 100):
+            raise ApiError(422, "invalid_limit", "limit must be an integer from 1 to 100")
+        limit = int(digits)
         con = connect(self.db)
         try:
             after_seq = 0
@@ -491,11 +494,13 @@ class Handler(BaseHTTPRequestHandler):
             if url.query:
                 raise ApiError(422, "unknown_parameter", "write endpoints take no query parameters")
             length = self.headers.get("Content-Length")
-            if length is None or not length.isdigit():
+            if length is None or not length.isascii() or not length.isdigit():
                 raise ApiError(411, "length_required", "send Content-Length")
-            if int(length) > MAX_BODY:
+            length = length.lstrip("0") or "0"
+            if len(length) > len(str(MAX_BODY)) or int(length) > MAX_BODY:
                 raise ApiError(413, "body_too_large", f"body is over {MAX_BODY} bytes")
-            raw = self.rfile.read(int(length)) if int(length) else b"{}"
+            length = int(length)
+            raw = self.rfile.read(length) if length else b"{}"
             try:
                 body = json.loads(raw.decode("utf-8"), object_pairs_hook=_no_dup_keys)
             except (ValueError, UnicodeDecodeError):
