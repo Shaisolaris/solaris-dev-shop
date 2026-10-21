@@ -101,7 +101,7 @@ description: Evaluates WordPress sites against WCAG compliance and data privacy 
 - Custom plugin data registered with `wp_register_privacy_exporter()`
 - Export includes all personal data held about the user
 - Export provided in machine-readable format (JSON/XML)
-- Export delivered within 30 days (GDPR requirement)
+- Handle access requests promptly, normally within one calendar month of receipt. Any permitted extension and first-month notice must follow [GDPR Article 12(3)](https://eur-lex.europa.eu/eli/reg/2016/679); confirm jurisdiction-specific obligations with a qualified reviewer.
 - Identity verification before providing export
 
 #### Data Erasure (Right to Be Forgotten)
