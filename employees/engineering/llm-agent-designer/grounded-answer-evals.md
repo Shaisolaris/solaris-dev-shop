@@ -130,3 +130,19 @@ Journal and resume require a working POSIX `fcntl` lock backend. If it is unavai
 the command refuses before creating or changing the journal or answer file. It never
 silently downgrades to unlocked concurrent execution. Non-journal lexical answer/evaluate
 behaviour has separate tests; a portable skill description is not universal runtime proof.
+
+## Bounded reader-policy review
+The heading reader list is bounded to32 phrases, and a source line containing more
+than32 reader-like phrases is excluded as ambiguous input. This is a disclosed conservative
+limit, not evidence that such text is malicious. Comma-separated suffix scans remain
+bounded even when called directly. Classification checks both removal and spacing
+interpretations of format characters. Explicit role declarations and the named reader
+labels ChatGPT, Copilot, Gemini, Muse, Codex and GPT-version labels are recognised.
+Reported commands with a reader heading and explicit modal disclosure/report requests
+are excluded. Unrecognised natural-language instructions can still evade this lexical
+policy; the host must treat all retrieved material as data regardless of the filter.
+
+A reported address such as `Sam told AI tools: ...` is also excluded as an ambiguous
+automated-reader context, even if the quoted payload is an ordinary fact. This is an
+intentional false-positive cost of the context policy; the tool does not try to prove
+that selected words after a recognised address make the remainder trustworthy.
