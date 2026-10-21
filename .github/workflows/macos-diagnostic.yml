@@ -1,0 +1,41 @@
+name: macOS API diagnostic
+on:
+  push:
+    branches: [review/codex-macos-api-diagnostic-20261021]
+permissions:
+  contents: read
+jobs:
+  mac-api:
+    runs-on: macos-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Bounded startup traceback
+        run: |
+          python - <<'PY'
+          import pathlib, subprocess, sys, tempfile, time
+          root = pathlib.Path.cwd()
+          with tempfile.TemporaryDirectory() as tmp:
+              ready = pathlib.Path(tmp) / 'ready.json'
+              code = "import faulthandler,runpy; faulthandler.dump_traceback_later(8); runpy.run_path('employees/engineering/backend-developer/ledger_api.py',run_name='__main__')"
+              args = [sys.executable, '-c', code, 'serve', '--db', str(pathlib.Path(tmp)/'db.sqlite'), '--principals', str(root/'examples/capabilities/G19/fixtures/principals.json'), '--ready-file', str(ready)]
+              p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+              start = time.monotonic()
+              while p.poll() is None and not ready.exists() and time.monotonic()-start < 25:
+                  time.sleep(.1)
+              print('ready:', ready.exists(), 'elapsed:', round(time.monotonic()-start,2), flush=True)
+              p.terminate()
+              try:
+                  out, err = p.communicate(timeout=5)
+              except subprocess.TimeoutExpired:
+                  p.kill()
+                  out, err = p.communicate()
+              print(out, err, flush=True)
+          PY
+      - name: First real API contract, fail fast
+        run: python -m unittest discover -s tests -p test_g19_capability.py -v -f
