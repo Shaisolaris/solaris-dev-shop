@@ -27,8 +27,8 @@
   },
   {
    "id": "G15",
-   "commit": "c105cc1ddb4a8a430f3a290124f5b226bd710a53",
-   "note": "Root causal authority repair requires independent population count.",
+   "commit": "071e1a6f3709f38ad397de011d5757d785fc7e83",
+   "note": "Root causal claim guard requires independent population completeness and no known cross-arm exclusions; observed difference remains separate.",
    "tests": [
     "tests.test_g15_capability",
     "tests.test_g15_takeover"
@@ -45,7 +45,7 @@
   },
   {
    "id": "G16",
-   "commit": "4a8f1d1a7960c6b719a6330dd6aeffb8dcc5969e",
+   "commit": "76b11eb553a4feb39e470ffca12262ce721e8e03",
    "tests": [
     "tests.test_g16_capability",
     "tests.test_g16_takeover"
@@ -57,7 +57,7 @@
      "{python} employees/engineering/llm-agent-designer/grounded_eval.py"
     ]
    ],
-   "note": "Root repaired grounding context and bounded heading runtime; acceptance remains separate."
+   "note": "Root bounded source-context policy, engine-bound schema3 journals and protected engine output; independent acceptance separate."
   },
   {
    "id": "G17",
