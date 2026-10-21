@@ -922,6 +922,8 @@ def read_journal(path: Path, header: Dict[str, Any], ids: Optional[set] = None,
 # -- answer command ---------------------------------------------------------------------
 
 def run_answer(a) -> int:
+    _need(not a.journal or fcntl is not None,
+          "journal locking is unavailable on this platform; use a supported POSIX host for journal/resume")
     corpus = load_corpus(a.corpus)
     qs, qsha = load_questions(a.questions)
     _need(0 < a.min_coverage <= 1, "--min-coverage must be in (0, 1]")
@@ -1340,8 +1342,8 @@ def _check_target(out: Path, protect: List[Path], corpus_dir: Optional[Path] = N
 
 def _lock(fh, path: Path) -> None:
     """One run per journal: an exclusive non-blocking flock, released by the kernel if the process dies (N8)."""
-    if fcntl is None:  # pragma: no cover - not POSIX
-        return
+    if fcntl is None:  # callers must never silently proceed without the promised lock
+        raise Invalid("journal locking is unavailable on this platform")
     try:
         fcntl.flock(fh.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
     except OSError:

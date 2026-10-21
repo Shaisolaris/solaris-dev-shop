@@ -124,3 +124,9 @@ on the new snapshot.
   negative controls establish only the tested bounded behaviour, not model competence.
 - All input paths are bounded local files. No remote retrieval, cloud deployment, provider call
   or model execution is implied by a passing result. Fixtures and scale inputs are synthetic.
+
+## Platform requirement
+Journal and resume require a working POSIX `fcntl` lock backend. If it is unavailable,
+the command refuses before creating or changing the journal or answer file. It never
+silently downgrades to unlocked concurrent execution. Non-journal lexical answer/evaluate
+behaviour has separate tests; a portable skill description is not universal runtime proof.
