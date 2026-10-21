@@ -43,7 +43,10 @@ the state lock (nothing written); 75 crash drill (`--fail-at drafted|ledgered`).
   ticket. Contacts with consent `unknown` get no onboarding or feedback. Suppression is permanent: a later
   `opt_in` is reported as `consent_review_required` and changes nothing. Suppressions are also written to
   `person_suppressions.jsonl` in the state folder, so a CRM identity or history merge that drops the old
-  opt-out event still keeps the person suppressed on the next run. The file is held to the journal's bar: if it cannot be
+  opt-out event still keeps the person suppressed on the next run. The stored suppression is keyed by the
+  normalized handle: it follows the handle, not the record id. A merge that both gives the person a new handle
+  and drops the opt-out history leaves nothing to link the new record to the old opt-out, so the new handle is
+  treated as a new person; put the opt-out back on the merged record (or keep the old handle) when merging. The file is held to the journal's bar: if it cannot be
   read, its last line is torn, or any line is not a valid suppression row, the run is refused (exit 2,
   nothing written) until a person repairs it. A damaged file is never skipped.
 - **Reply state**: a reply on the thread after our response cancels that response's nudge; a closed ticket

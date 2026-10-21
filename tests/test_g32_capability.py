@@ -343,5 +343,26 @@ class G32Capability(unittest.TestCase):
         sup.write_bytes(good)
         self.assertEqual(self.run_("2026-06-02T00:00:00+00:00")["drafted"], [])
 
+    def test_stored_suppression_follows_the_handle_as_documented(self):
+        """M32 r3 P4 (G32 r5): the stored suppression is keyed by handle. A merge that keeps the handle stays suppressed;
+        a merge that changes the handle and drops the opt-out history is a new person, and the doc says so."""
+        doc = (TOOL.parent / 'consent-follow-through.md').read_text()
+        self.assertIn('it follows the handle, not the record id', doc)
+        self.acc = {"schema": "solaris.cs-account/1", "account_id": "ac1", "owner": "ops",
+                    "contacts": [{"id": "c-bo", "name": "Bo", "handle": "crm:bo-clinic", "consent": "granted"}]}
+        self.ev = [{"id": "e1", "type": "signup", "contact": "c-bo", "at": "2026-05-01T00:00:00+00:00"},
+                   {"id": "e2", "type": "opt_out", "contact": "c-bo", "scope": "all", "at": "2026-05-02T00:00:00+00:00"}]
+        self.assertEqual(self.run_("2026-06-01T00:00:00+00:00")["drafted"], [])
+        self.acc["contacts"] = [{"id": "c-bo-merged", "name": "Bo", "handle": "CRM:BO-Clinic", "consent": "granted"}]
+        self.ev = [{"id": "e3", "type": "signup", "contact": "c-bo-merged", "at": "2026-05-01T00:00:00+00:00"}]
+        r = self.run_("2026-06-01T00:00:00+00:00", "w2")
+        self.assertEqual(r["drafted"], [])
+        self.assertEqual(r["suppressed_contacts"], ["c-bo-merged"])
+        self.acc["contacts"] = [{"id": "c-bo-new", "name": "Bo", "handle": "crm:bo-new-clinic", "consent": "granted"}]
+        self.ev = [{"id": "e4", "type": "signup", "contact": "c-bo-new", "at": "2026-05-01T00:00:00+00:00"}]
+        r = self.run_("2026-06-01T00:00:00+00:00", "w3")
+        self.assertEqual(r["suppressed_contacts"], [])
+        self.assertIn(("c-bo-new", "welcome"), self.acts(r, "drafted"))
+
 if __name__ == '__main__':
     unittest.main()
