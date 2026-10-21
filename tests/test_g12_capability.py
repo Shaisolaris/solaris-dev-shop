@@ -60,7 +60,7 @@ class Plan(unittest.TestCase):
         self.assertEqual(self.plan["goal"], "G12")
         self.assertEqual(self.plan["base"], "02ba9c571b10ad1dba792d2ac5534bcad3171e67")
         ids = [p["id"] for p in self.plan["prerequisites"]]
-        self.assertEqual(ids, ["G04", "G05", "G07", "G08", "G09"])
+        self.assertEqual(ids, ["G02", "G04", "G05", "G07", "G08", "G09"])
         self.assertEqual([e["id"] for e in self.plan["external"]], [])
         self.assertEqual(self.plan["writable"], ["employees/quality-security/assurance/**", "employees/quality-security/qa-engineer/**",
                                                  "examples/capabilities/G12/**", "tests/test_g12_capability.py"])

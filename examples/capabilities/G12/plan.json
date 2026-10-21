@@ -10,6 +10,14 @@
  ],
  "prerequisites": [
   {
+   "id": "G02",
+   "commit": "038f93470323c28f587748bcb9d69d7f637b34d3",
+   "note": "Explicit transitive dependency of G04: accepted r6 activation, rather than older inherited bbe682b.",
+   "tests": [
+    "tests.test_g02_capability"
+   ]
+  },
+  {
    "id": "G04",
    "commit": "7ed5f70af2cfaf8fbbceaecd105feaf9385b1a73",
    "note": "newest head (G04 r4, M04 r3 PASS); carries G04 r3 e9fa278, r2 155fc33, 314b4db and G02 bbe682b",
@@ -106,6 +114,30 @@
   {
    "path": "employees/infrastructure/fleet-dispatcher/learnings.md",
    "reason": "G05 r4 1b840cd and G07 r2 f4776bd carry G04 314b4db unchanged (blob 14a4b7b); only G04 r3 and r4 changed it. HEAD is the G04 r4 7ed5f70 blob 7bca206."
+  },
+  {
+   "path": "employees/product-project/project-onboarding/SKILL.md",
+   "reason": "G04/G05/G07 inherited older G02. Root merged accepted G02 r6 038f934; current bytes equal r6 SHA256 2d9add0377639ffc5b6e7a1f5b144299d72643661a181055db13b8442e27cc93. No later independent implementation is discarded."
+  },
+  {
+   "path": "employees/product-project/project-onboarding/activate.py",
+   "reason": "G04/G05/G07 inherited older G02. Root merged accepted G02 r6 038f934; current bytes equal r6 SHA256 7c9d954f6802bc47d82f7e1d7303bab8ba7c576f56fdc242ab7c3bed5259912b. No later independent implementation is discarded."
+  },
+  {
+   "path": "employees/product-project/project-onboarding/learnings.md",
+   "reason": "G04/G05/G07 inherited older G02. Root merged accepted G02 r6 038f934; current bytes equal r6 SHA256 97d0b53379a912dd0e3bd2a6c14bf8105c82353bd7b15411eb4b9cd62b8768fd. No later independent implementation is discarded."
+  },
+  {
+   "path": "examples/capabilities/G02/README.md",
+   "reason": "G04/G05/G07 inherited older G02. Root merged accepted G02 r6 038f934; current bytes equal r6 SHA256 359463bbca936293c20659e8cd7d5527402e0ca6f2fd4713e1291e84d5f8545f. No later independent implementation is discarded."
+  },
+  {
+   "path": "examples/capabilities/G02/activation_oracle.py",
+   "reason": "G04/G05/G07 inherited older G02. Root merged accepted G02 r6 038f934; current bytes equal r6 SHA256 8004a5b06334bf38f8e32ce735015abd3c04942eadc3250290e3bd44492fca03. No later independent implementation is discarded."
+  },
+  {
+   "path": "tests/test_g02_capability.py",
+   "reason": "G04/G05/G07 inherited older G02. Root merged accepted G02 r6 038f934; current bytes equal r6 SHA256 e0740d6f8838d8b73fb4356dcf98d659ef341674ed91d7b9052096b53eb4aab4. No later independent implementation is discarded."
   }
  ]
 }
