@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.62 (2026-10-21)
+
+### Executable specialist workflows
+
+- Resume interrupted work orders without sending the same delivery twice. Local activation preserves owner material, and fleet registration tracks claims and recovery state.
+- Rehearse SQLite backup/restore and approved local deployment rollback. Diagnose saved Kubernetes, network, incident, WordPress and page evidence with explicit uncertainty and refusal states.
+- Reconcile dirty CSV exports, invoices, payments and cash by currency before using their figures. Experiment readouts distinguish an observed difference from permission to make a causal claim; missing population evidence and cross-arm exclusions block that claim.
+- Evaluate grounded answers against local source snapshots, preserve citation offsets and abstain on recognized instruction-like source context. The filter has documented lexical limits and conservative exclusions; it is not a general prompt-injection defense.
+- Exercise duplicate-safe API requests, offline synchronization, signed webhook ledgers, inventory conservation and recorded exception resolution using local synthetic fixtures.
+- Compare product options against pinned quotes, preserve percentage units and reject numeric fragments. Check scope acceptance, consent-aware follow-up drafts, privacy inventories and license/provenance consistency without treating them as permission to send or a legal determination.
+- Add a stale-response UI demonstration, replayable device and event-chain simulations, and inspectable campaign accounting. Run a complete cross-employee delivery drill with forced interruption, another-worker resume and invalidated stale evidence.
+
+### Quality and installation
+
+- Bind delivery evidence to the command, tool and artifact bytes; expose rewritten inputs as gaps and reject stale outputs. Release inventory requires candidate, test and review assertions to name the same complete revision.
+- Keep the original 61 specialist roles and branding. The wheel still packages the deterministic router; specialist workflows and companion resources are distributed in the source tree.
+- Test full capability regressions on supported Linux/macOS runtimes and the router, assurance, platform boundaries and clean wheel on Windows. Portable skill text does not imply every helper supports every operating system.
+
+### Compatibility
+
+- Grounded-evaluation journals now bind the evaluator source hash under journal schema 3. Keep an old journal for audit and start a new one after an engine change; older journals are refused rather than silently resumed.
+- All delivery, provider, infrastructure, financial and communication examples remain bounded by their documented environments and host permissions. No new account access, live deployment, real payment, message sending or provider integration is granted.
+
 ## 0.61 (2026-10-18)
 
 - Harden assurance finding closure and human waivers: reject expired or malformed waivers, malformed severity/status, blank closers and invalid evidence containers before mutation.

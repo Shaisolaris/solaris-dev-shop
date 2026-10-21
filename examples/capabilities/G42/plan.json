@@ -7,7 +7,11 @@
   "employees/quality-security/qa-engineer/**",
   "examples/capabilities/G42/**",
   "tests/test_g42_capability.py",
-  ".github/workflows/ci.yml"
+  ".github/workflows/ci.yml",
+  "pyproject.toml",
+  "CHANGELOG.md",
+  "README.md",
+  "docs/capabilities.md"
  ],
  "prerequisites": [
   {

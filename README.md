@@ -90,6 +90,10 @@ five supporting roles. All roles share the original authority bounds, and
 
 Use a skill directly when you already know the specialist you need. Use intake when the task spans departments or you want a reviewable handoff. [Architecture and privacy](docs/architecture.md) explain the boundaries and opt-in local follow-up context.
 
+### Executable workflows
+
+Selected specialists now include local tools for recoverable delivery, data reconciliation, experiment readouts, grounded-answer checks, duplicate-safe APIs, offline synchronization and evidence-bound review. Start with the [capability guide and runnable examples](docs/capabilities.md). These helpers extend the existing roles; the router still assigns work rather than executing it.
+
 ## Install and portability
 
 The source quickstart above is the smallest trial. `./install.sh` adds a managed `solaris-intake` command after checking the checkout. [Install instructions](docs/install.md) cover Windows, a local wheel, uninstall and copying skills into a host agent.
@@ -104,7 +108,7 @@ Provider-neutral means the skill text and routing packet do not require a partic
 - [Known limits and FAQ](docs/faq.md)
 - Structural audit: `python3 employees/quality-security/assurance/quality_os.py audit --html report.html`
 
-CI checks routing, CLI behavior, safety gates, packaging and the 61-skill catalog on Linux, macOS and Windows. A separate YAML gate validates discovery metadata for all 61 specialists plus the coordinator. The structural audit checks documented output contracts and QA gates; it does not certify real-world skill outputs. The routing benchmark measures local Python routing, not model quality or autonomous task completion.
+CI runs the full capability suite on supported Linux/macOS runtimes. Windows checks the router, assurance behavior, explicit platform boundaries and an installed wheel outside the checkout; POSIX-dependent helpers do not claim Windows execution support. Catalog and YAML checks cover all 61 specialists plus coordinator discovery metadata. The structural audit checks documented output contracts and QA gates; it does not certify real-world skill outputs. The routing benchmark measures local Python routing, not model quality or autonomous task completion.
 
 ## Around the community
 
