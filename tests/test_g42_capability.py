@@ -31,6 +31,35 @@ def git_ok(*commits):
     return True
 
 
+class AncestryWork(unittest.TestCase):
+    def test_ancestry_queries_are_deduplicated_per_check_and_refreshed_next_check(self):
+        import collections
+        import importlib.util
+        import types
+        from unittest import mock
+        with open(PLAN) as fh:
+            plan = json.load(fh)
+        if not git_ok(plan["base"], *[p["commit"] for p in plan["prerequisites"]]):
+            self.skipTest("not a checkout holding the exact candidate commits")
+        spec = importlib.util.spec_from_file_location("integration_cache_test", TOOL)
+        module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+        original = module.is_anc
+        calls = collections.Counter()
+        def observed(repo, old, new):
+            calls[(repo, old, new)] += 1
+            return original(repo, old, new)
+        args = types.SimpleNamespace(repo=ROOT, plan=PLAN, skip_gate=[], reply=[], manifest=[],
+                                     acceptance=None, python=None, run="none", timeout=120)
+        with mock.patch.object(module, "is_anc", side_effect=observed):
+            first = module.check(args)
+            self.assertTrue(calls)
+            self.assertTrue(all(n == 1 for n in calls.values()), calls.most_common(3))
+            second = module.check(args)
+        self.assertTrue(all(n == 2 for n in calls.values()), calls.most_common(3))
+        self.assertEqual(first["prerequisites"], second["prerequisites"])
+        self.assertTrue(all(p["ancestor_of_head"] for p in second["prerequisites"]))
+
+
 class Oracle(unittest.TestCase):
     def test_tool_accepted(self):
         r = run([ORACLE, "--", sys.executable, TOOL])

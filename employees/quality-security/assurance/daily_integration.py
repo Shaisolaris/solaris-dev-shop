@@ -357,6 +357,14 @@ def gate_runs(py, repo, timeout, skip, findings, not_run):
 
 def check(a):
     repo = os.path.abspath(a.repo)
+    # Commit ancestry is immutable for this read-only check. Cache only within
+    # this invocation, so a later check always observes its own repository state.
+    ancestry = {}
+    def ancestor(old, new):
+        pair = (old, new)
+        if pair not in ancestry:
+            ancestry[pair] = is_anc(repo, old, new)
+        return ancestry[pair]
     doc, raw = load_json(a.plan, "plan")
     plan = parse_plan(doc)
     for s in a.skip_gate or []:
@@ -382,14 +390,14 @@ def check(a):
     base = plan["base"]
     if not exists(repo, base):
         fail({"code": "UNKNOWN_COMMIT", "id": "base", "detail": base})
-    elif not is_anc(repo, base, head):
+    elif not ancestor(base, head):
         fail({"code": "BASE_NOT_ANCESTOR", "id": "base", "detail": "%s is not an ancestor of HEAD" % base[:12]})
     pre_rows, ch, trees, live = [], {}, {}, []
     for p in plan["prerequisites"]:
         row = {"id": p["id"], "commit": p["commit"], "ancestor_of_head": False, "changed_files": 0}
         if not exists(repo, p["commit"]):
             fail({"code": "UNKNOWN_COMMIT", "id": p["id"], "detail": p["commit"]})
-        elif not is_anc(repo, p["commit"], head):
+        elif not ancestor(p["commit"], head):
             fail({"code": "PREREQUISITE_NOT_INTEGRATED", "id": p["id"], "detail": "%s is not an ancestor of HEAD" % p["commit"][:12]})
         else:
             row["ancestor_of_head"] = True
@@ -410,19 +418,19 @@ def check(a):
                 row["acceptance"] = "ACCEPTED_OTHER_REVISION"
                 other = recs[0].get("commit")
                 row["accepted_commit"] = other
-                if isinstance(other, str) and SHA_RE.match(other) and exists(repo, other) and is_anc(repo, other, p["commit"]):
+                if isinstance(other, str) and SHA_RE.match(other) and exists(repo, other) and ancestor(other, p["commit"]):
                     row["note"] = "descends from the accepted commit; acceptance does not carry to a changed candidate"
             else:
                 row["acceptance"] = "CANDIDATE"
         pre_rows.append(row)
     drift, overlaps = [], []
-    if live and exists(repo, base) and is_anc(repo, base, head):
+    if live and exists(repo, base) and ancestor(base, head):
         head_files = tree(repo, "HEAD")
         union = set().union(*(ch[p["id"]] for p in live))
         for f in sorted(union):
             owners = [p for p in live if f in ch[p["id"]]]
             latest = [p for p in owners if not any(q is not p and f in ch[q["id"]] and p["commit"] != q["commit"]
-                                                   and is_anc(repo, p["commit"], q["commit"]) for q in owners)]
+                                                   and ancestor(p["commit"], q["commit"]) for q in owners)]
             want = {}
             for p in latest:
                 want.setdefault(trees[p["id"]].get(f), []).append(p["id"])
