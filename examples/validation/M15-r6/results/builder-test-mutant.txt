@@ -1,0 +1,4 @@
+mutant: units in both arms not counted toward units_in_log (M15 r5 survived mutant)
+FAIL: test_units_in_both_arms_count_toward_expected_units (tests.test_g15_capability.G15Capability)
+Ran 20 tests in 37.845s
+FAILED (failures=1)

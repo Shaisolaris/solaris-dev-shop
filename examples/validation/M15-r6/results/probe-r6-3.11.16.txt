@@ -1,0 +1,6 @@
+PASS R01 fixture: 1200 one-arm + 6 two-arm units; expected_units 1206 is verified (two-arm units counted) [0, {"contract": "sha256_bucket", "examples": [], "expected_units": 1206, "mismatched": 0, "missing_units_checked": true, "units_checked": 1200, "units_in_log": 1206, "verified": true}]
+PASS R02 expected_units 1200 (two-arm units left out of the count) is invalid: units added to the log [0, "invalid_experiment"]
+PASS R03 more rows for a two-arm unit do not add to the count (still 1206, verified) [0, {"contract": "sha256_bucket", "examples": [], "expected_units": 1206, "mismatched": 0, "missing_units_checked": true, "units_checked": 1200, "units_in_log": 1206, "verified": true}]
+PASS R04 two-arm units are excluded from the effect (600 + 600 units in the arms) [600, 600]
+M15R6 PROBE 4/4
+rc=0 at 142cc2eaa3ab695cee8b3d51e25118d59f0e8fc7

@@ -1,0 +1,59 @@
+{
+ "python": "3.9.6",
+ "rows": [
+  {
+   "row": "R01",
+   "name": "fixture: 1200 one-arm + 6 two-arm units; expected_units 1206 is verified (two-arm units counted)",
+   "pass": false,
+   "detail": [
+    0,
+    {
+     "contract": "sha256_bucket",
+     "examples": [],
+     "expected_units": 1206,
+     "mismatched": 0,
+     "missing_units_checked": true,
+     "units_checked": 1200,
+     "units_in_log": 1200,
+     "verified": false
+    }
+   ]
+  },
+  {
+   "row": "R02",
+   "name": "expected_units 1200 (two-arm units left out of the count) is invalid: units added to the log",
+   "pass": false,
+   "detail": [
+    0,
+    "difference_detected"
+   ]
+  },
+  {
+   "row": "R03",
+   "name": "more rows for a two-arm unit do not add to the count (still 1206, verified)",
+   "pass": false,
+   "detail": [
+    0,
+    {
+     "contract": "sha256_bucket",
+     "examples": [],
+     "expected_units": 1206,
+     "mismatched": 0,
+     "missing_units_checked": true,
+     "units_checked": 1200,
+     "units_in_log": 1200,
+     "verified": false
+    }
+   ]
+  },
+  {
+   "row": "R04",
+   "name": "two-arm units are excluded from the effect (600 + 600 units in the arms)",
+   "pass": true,
+   "detail": [
+    600,
+    600
+   ]
+  }
+ ]
+}

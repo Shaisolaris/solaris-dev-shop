@@ -1,0 +1,6 @@
+remote review/grok-g15-experiment-readout: 142cc2eaa3ab695cee8b3d51e25118d59f0e8fc7
+evaluated HEAD: 142cc2eaa3ab695cee8b3d51e25118d59f0e8fc7
+parent: 2a3310b711c0035e34bdcac047b30ae4aedd04b7
+ tests/test_g15_capability.py | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+git status after runs:
