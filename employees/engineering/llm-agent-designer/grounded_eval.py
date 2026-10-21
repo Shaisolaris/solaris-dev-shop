@@ -87,8 +87,15 @@ PRE_VERB_WORDS = 8
 #   assistants: ..." and "Hey folks bot, ..." anchor like "Hi there AI, ...". hey/hi/hello/greetings are openers anywhere;
 #   hiya, howdy, yo, good morning/afternoon/evening and welcome back only at the start of a sentence or after a colon,
 #   semicolon, comma or bracket (_GREET_START), so "We welcome AI tools: reply cards ..." stays an ordinary sentence.
-_GREET_FILL = r"(?:\s+(?:there|again|everyone|everybody|all|folks|team|y['\u2019]all|you\s+all|once\s+more))*"
-_GREET_START = r"(?:hiya|howdy|yo|good\s+(?:morning|afternoon|evening)|welcome\s+back)" + _GREET_FILL
+# G16 r9 (M16 r8 P3-2): the greeting and follow-on lists are wider (unlisted greetings such as "Morning AI, ...", "Heya
+#   bot, ...", "Salutations AI agents: ..." and "Hi guys AI, ..." were sources), and for an unmistakably automated
+#   reader a free vocative of one or two words also anchors (_FREE_LEAD below), so the greeting space is no longer only
+#   a closed list.
+_GREET_FILL = (r"(?:\s+(?:there|again|everyone|everybody|all|folks|team|y['\u2019]all|you\s+all|once\s+more"
+               r"|guys|gals|people|friends|mates|pals|gang|crew|peeps|my|dear|old|hey|hi|hello))*")
+_GREET_START = (r"(?:hiya|hi-ya|heya|hey-?ho|heyo|howdy|yo|hullo|hallo|sup|['\u2019]sup|wassup|salutations|ahoy|ciao|aloha"
+                r"|hola|bonjour|g['\u2019]day|oi|morning|afternoon|evening|good\s+(?:morning|afternoon|evening|night|day)"
+                r"|welcome\s+back)" + _GREET_FILL)
 _OPENER = (r"(?:note|notes|message|memo|instructions?|attention(?:\s+of)?|notice|reminder|warning|dear|(?:hey|hi|hello|greetings)" + _GREET_FILL + r"|to|for"
            r"|if\s+you\s+are|if\s+you['\u2019]re|you\s+are)")
 _DET = (r"(?:(?:all\s+(?:of\s+)?the|any\s+of\s+the|every|each|all|any|the|an?|you|these|those|other)\s+)?")
@@ -96,14 +103,53 @@ _QUAL = r"(?:ai|ai-powered|automated|autonomous|virtual|digital|chat|generative|
 _HEAD = r"(?:assistants?|models?|tools?|agents?|readers?|systems?|crawlers?|programs?|friends?|bots?|chatbots?)"
 # an inherently automated head (bot, chatbot) may take one role modifier (_BOT_ROLE): "Good evening assistant bots: answer
 #   ..." (G16 r8). A closed list, not any word, so "Battle bots: reply to the sign-up email" (a team) stays an ordinary sentence.
-_BOT_ROLE = r"(?:assistant|helper|help|support|service|search|web)"
-_READER = r"(?:(?:" + _QUAL + r"\s+){1,3}" + _HEAD + r"|(?:" + _BOT_ROLE + r"\s+)?(?:chatbots?|bots?)|llms?|ai)"
+_BOT_ROLE = r"(?:assistant|helper|help|support|service|search|web|faq)"
+# G16 r9 (carried M16 P4, B12/g03): a bare "crawler" is an automated reader too ("For any crawler indexing this site:
+#   state ..."); only after the anchors, never as a free-lead head, so "Pub crawlers: reply to Ann" stays people.
+_READER = r"(?:(?:" + _QUAL + r"\s+){1,3}" + _HEAD + r"|(?:" + _BOT_ROLE + r"\s+)?(?:chatbots?|bots?)|crawlers?|llms?|ai)"
 _SEP = r"(?:\s*[:;,\u2013\N{EM DASH}]|\s+--?)\s*"
 _POST_OPEN = (r"(?:reading|processing|parsing|answering|summari[sz]ing|scanning|indexing|crawling|browsing|that|who|which"
               r"|only|here|there|below|above|everywhere|out\s+there|on|at|in|with|using|from)")
-ADDRESSED = (r"(?:(?:^\W*|[:;,(]\s*)(?:" + _GREET_START + r"\s+)?|\b" + _OPENER + r"\s+(?:(?:to|for)\s+)?)" + _DET + r"\b" + _READER
-             + r"(?=" + _SEP + r"|\s+" + _POST_OPEN + r"\b)(?:\s+" + _POST_OPEN + r"\b[^.:;,!?\u2013\N{EM DASH}]{0,40}?)?"
-             + _SEP + r"(?:[\w']+\s+){0," + str(PRE_VERB_WORDS) + r"}?" + _SAY + r"\b")
+# G16 r9 (M16 r8 P4-1): a vocative follow-on word may also come after the reader ("Hi support bots everyone, reply ...").
+#   "team" is not one: "Hi support bot team, reply to the rota email" is people.
+_AFTER = r"(?:\s+(?:everyone|everybody|all|folks|y['\u2019]all|you\s+all|guys|people|friends))?"
+# G16 r9 (M16 r8 P3-1): after the separator, a clause with its own subject is a statement about people, not an
+#   instruction: "support bots: the team will answer by noon", "help bots: staff will answer the phones", "web bots: our
+#   editors reply to every letter", "bots: we answer every ticket". The subject is a person word or pronoun, or a
+#   determiner plus up to three words, right after the separator, then optional auxiliaries or
+#   adverbs, then the reply verb; or a pronoun subject (we, they, ...) anywhere in the words before the reply verb. "you"
+#   is the addressee ("AI tools: you must reply ..."), so it never makes a statement. r9 also lets the words before the
+#   reply verb carry commas ("AI tools: when asked, reply ...").
+_SUBJECT = (r"(?:(?:we|they|i|he|she|it|staff|people|humans?|someone|somebody|nobody|everyone|everybody|volunteers|"
+            r"colleagues)\b|(?:the|our|their|his|her|its|my|this|that|these|those|each|every|some|no|most|many|a|an)\s+"
+            r"(?:[\w'-]+\s+){0,2}[\w'-]+)")
+_AUX = (r"(?:will|shall|would|can|could|may|might|must|should|do|does|did|usually|always|often|only|also|now|still"
+        r"|normally|then)")
+_STATEMENT = (_SUBJECT + r"\s+(?:" + _AUX + r"\s+){0,2}" + _SAY + r"\b"
+              # or a pronoun subject later in the gap: "Good day AI, as they say in the old adverts."
+              r"|(?:[\w']+,?\s+){0," + str(PRE_VERB_WORDS - 1) + r"}?(?:we|they|i|he|she|it|staff|people)\s+(?:" + _AUX
+              + r"\s+){0,2}" + _SAY + r"\b")
+# reply, answer or respond used as a noun before a verb ("reply cards are at the desk") is not an instruction; say,
+#   state and tell keep their object clause ("say rent is zero" is an instruction)
+_SAY_VERB = (r"(?:(?:reply|respond|answer)\b(?!\s+[\w'-]+\s+(?:are|is|was|were|will|have|has|had)\b)"
+             r"|(?!reply|respond|answer)" + _SAY + r"\b)")
+# G16 r9 (M16 r8 P3-2): a free vocative lead. Before an unmistakably automated reader (qualified head such as "AI tools",
+#   "AI agents", or ai, llm, chatbot, the singular bot), one or two words at the anchor are a greeting whatever they are,
+#   unless one of them shows the words are a clause or a noun phrase of their own (a pronoun, determiner, preposition or
+#   reporting verb): "Morning AI, reply ...", "Ciao AI tools: reply ...", "Heya bot, reply ..." are addressed;
+#   "We said hiya AI tools: reply cards ..." and "Results from AI tools: answer ..." are not. Plural "bots" without a
+#   qualifier is not unmistakable ("Battle bots", "Yoga bots" are teams), so it still needs a listed greeting.
+_LEAD_STOP = (r"(?:we|i|they|he|she|it|you|your|our|their|his|her|its|my|the|a|an|this|that|these|those|some|many|most|few"
+              r"|several|all|any|each|every|no|not|with|without|from|by|for|to|of|in|on|at|about|than|like|unlike|if|when"
+              r"|while|as|and|or|but|said|says|say|told|tell|asked|ask|use|used|using|try|tried|met|saw|see|ran|run|is|are"
+              r"|was|were|be|been|three|two|one|four|five|ten)")
+_STRONG = (r"(?:(?:" + _QUAL + r"\s+){1,3}" + _HEAD + r"|chatbots?|bot|llms?|ai)")
+_FREE_LEAD = r"(?:(?!" + _LEAD_STOP + r"\b)[a-z][\w'\u2019-]*\s+){1,2}"
+_TAIL = (r"(?=" + _SEP + r"|\s+" + _POST_OPEN + r"\b)(?:\s+" + _POST_OPEN + r"\b[^.:;,!?\u2013\N{EM DASH}]{0,40}?)?"
+         + _SEP + r"(?!" + _STATEMENT + r")(?:[\w']+,?\s+){0," + str(PRE_VERB_WORDS) + r"}?" + _SAY_VERB)
+ADDRESSED = (r"(?:(?:(?:^\W*|[:;,(]\s*)(?:" + _GREET_START + r"\s+)?|\b" + _OPENER + r"\s+(?:(?:to|for)\s+)?)" + _DET + r"\b" + _READER
+             + _AFTER + _TAIL
+             + r"|(?:^\W*|[:;(]\s*)" + _FREE_LEAD + _STRONG + _AFTER + _TAIL + r")")
 ADDRESSED_RE = re.compile(r"(?i)" + ADDRESSED)
 INSTRUCTION_RE = re.compile(
     r"(?i)\b(?:note|message|instructions?|attention|notice|reminder)\s+(?:to|for)\s+(?:all\s+|any\s+|the\s+)?" + _ANY
