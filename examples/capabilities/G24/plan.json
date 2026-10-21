@@ -27,10 +27,11 @@
   },
   {
    "id": "G15",
-   "commit": "2a3310b711c0035e34bdcac047b30ae4aedd04b7",
-   "note": "Exact delivered expected-unit experiment repair.",
+   "commit": "c105cc1ddb4a8a430f3a290124f5b226bd710a53",
+   "note": "Root causal authority repair requires independent population count.",
    "tests": [
-    "tests.test_g15_capability"
+    "tests.test_g15_capability",
+    "tests.test_g15_takeover"
    ],
    "commands": [
     [
