@@ -1,0 +1,31 @@
+{
+  "python": "3.9.6",
+  "checkout_head": "32d217660d0dd255baf392c08b663331c294cde4",
+  "cases": [
+    {
+      "case": "C3 setuptools<61 wheelhouse refused, nothing written",
+      "ok": true,
+      "note": "rc=2 exists=False"
+    },
+    {
+      "case": "C4 non-wheel file named setuptools refused",
+      "ok": true,
+      "note": "rc=2"
+    },
+    {
+      "case": "C5 wheelhouse that is a file refused and kept",
+      "ok": true,
+      "note": "rc=2"
+    },
+    {
+      "case": "C6 report refuses bad wheelhouse before skill-copy runs",
+      "ok": true,
+      "note": "rc=2 new_skill_dirs=0"
+    },
+    {
+      "case": "C8 checkout unchanged",
+      "ok": true,
+      "note": "dirty=0"
+    }
+  ]
+}

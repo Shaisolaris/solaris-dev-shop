@@ -1,0 +1,3 @@
+3.11.16 | wheelhouse (setuptools 79.0.1): ACCEPTED 8/8 | index (no wheelhouse): ACCEPTED 8/8 | naive: REJECTED 4/8 | noop: REJECTED 2/8
+3.12.14 | wheelhouse (setuptools 79.0.1): ACCEPTED 8/8 | index (no wheelhouse): ACCEPTED 8/8 | naive: REJECTED 4/8 | noop: REJECTED 2/8
+3.13.15 | wheelhouse (setuptools 79.0.1): ACCEPTED 8/8 | index (no wheelhouse): ACCEPTED 8/8 | naive: REJECTED 4/8 | noop: REJECTED 2/8

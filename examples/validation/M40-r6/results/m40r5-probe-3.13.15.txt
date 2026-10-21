@@ -1,0 +1,10 @@
+PASS C1 offline wheelhouse build passes rc=0 result=pass from=wheelhouse WHEELHOUSE (--no-index)
+PASS C2 offline no wheelhouse names backend and remedy rc=2 msg=invalid: build_backend_unavailable: pip could not install the build backend setuptools>=61 named in pyproject.toml (the package index was not reachable or is di
+PASS C7 corrupt setuptools wheel fails with exit 2, no traceback from the tool rc=2 backend_named=True
+PASS C3 setuptools<61 wheelhouse refused, nothing written rc=2 exists=False
+PASS C4 non-wheel file named setuptools refused rc=2
+PASS C5 wheelhouse that is a file refused and kept rc=2
+PASS C6 report refuses bad wheelhouse before skill-copy runs rc=2 new_skill_dirs=0
+PASS C8 checkout unchanged dirty=0
+M40R5 PROBE 8/8
+rc=0

@@ -1,0 +1,11 @@
+PASS R01 skill-copy without --dest: rc 1, status broken, TMPDIR empty afterwards
+PASS R02 the JSON says the copy is gone: dest is null and temp_copy names the removal and --dest
+PASS R03 five back-to-back runs without --dest leave nothing in TMPDIR
+PASS R04 --dest DIR still keeps the copy and reports its path; no temp_copy key
+PASS R05 the findings are the same with and without --dest (missing, resolved, copied_files)
+PASS R06 a bad ROLE exits 2 and creates nothing in TMPDIR
+PASS R07 an error during the copy still removes the temp folder and the error is raised, not swallowed
+PASS R08 host-portability.md states the temp copy is removed and --dest keeps it
+OBS  R09 OBS: the report command still has no --dest of its own, so its skill-copy part can only be inspected by rerunning skill-copy --dest
+SCORE 8/8
+rc=0

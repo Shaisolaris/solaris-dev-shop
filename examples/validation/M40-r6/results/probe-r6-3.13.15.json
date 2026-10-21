@@ -1,0 +1,107 @@
+{
+ "probe": "m40r6",
+ "python": "3.13.15",
+ "rows": [
+  {
+   "row": "R01",
+   "name": "skill-copy without --dest: rc 1, status broken, TMPDIR empty afterwards",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "rc": 1,
+    "status": "broken",
+    "left_in_tmpdir": []
+   }
+  },
+  {
+   "row": "R02",
+   "name": "the JSON says the copy is gone: dest is null and temp_copy names the removal and --dest",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "dest": null,
+    "temp_copy": "removed after the check; pass --dest DIR to keep the copy"
+   }
+  },
+  {
+   "row": "R03",
+   "name": "five back-to-back runs without --dest leave nothing in TMPDIR",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "left": []
+   }
+  },
+  {
+   "row": "R04",
+   "name": "--dest DIR still keeps the copy and reports its path; no temp_copy key",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "rc": 1,
+    "dest": "TMP",
+    "keys": [
+     "command",
+     "copied_files",
+     "dest",
+     "missing",
+     "resolved",
+     "result",
+     "role",
+     "schema",
+     "statement",
+     "status"
+    ]
+   }
+  },
+  {
+   "row": "R05",
+   "name": "the findings are the same with and without --dest (missing, resolved, copied_files)",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "missing_no_dest": 4,
+    "missing_dest": 4,
+    "copied": [
+     9,
+     9
+    ]
+   }
+  },
+  {
+   "row": "R06",
+   "name": "a bad ROLE exits 2 and creates nothing in TMPDIR",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "rc": 2,
+    "left": []
+   }
+  },
+  {
+   "row": "R07",
+   "name": "an error during the copy still removes the temp folder and the error is raised, not swallowed",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "raised": "injected after copy",
+    "left": []
+   }
+  },
+  {
+   "row": "R08",
+   "name": "host-portability.md states the temp copy is removed and --dest keeps it",
+   "pass": true,
+   "obs": false,
+   "detail": null
+  },
+  {
+   "row": "R09",
+   "name": "OBS: the report command still has no --dest of its own, so its skill-copy part can only be inspected by rerunning skill-copy --dest",
+   "pass": true,
+   "obs": true,
+   "detail": null
+  }
+ ],
+ "score": "8/8"
+}

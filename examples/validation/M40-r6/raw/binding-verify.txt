@@ -1,0 +1,3 @@
+branch review/grok-g40-fresh-install remote head: 32d217660d0dd255baf392c08b663331c294cde4
+32d2176 G40 r6: skill-copy without --dest removes its temp copy before returning (M40 P4-2; review only, Grok build)
+main: 02ba9c571b10ad1dba792d2ac5534bcad3171e67

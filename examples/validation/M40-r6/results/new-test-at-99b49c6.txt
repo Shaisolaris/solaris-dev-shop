@@ -1,0 +1,16 @@
+test_skill_copy_without_dest_leaves_no_temp_folder (tests.test_g40_capability.SkillCopyTemp)
+M40 P4-2: skill-copy without --dest left a g40-skill-* folder in TMPDIR on every run. ... FAIL
+
+======================================================================
+FAIL: test_skill_copy_without_dest_leaves_no_temp_folder (tests.test_g40_capability.SkillCopyTemp)
+M40 P4-2: skill-copy without --dest left a g40-skill-* folder in TMPDIR on every run.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "WT/g40/tests/test_g40_capability.py", line 264, in test_skill_copy_without_dest_leaves_no_temp_folder
+    self.assertIsNone(j["dest"])
+AssertionError: 'TMP' is not None
+
+----------------------------------------------------------------------
+Ran 1 test in 0.041s
+
+FAILED (failures=1)
