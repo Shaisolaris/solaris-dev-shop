@@ -1,0 +1,19 @@
+=== cand 3.11.16 2026-10-20 21:24:38 PDT
+suite test_g16_capability.py: rc=0 Ran 50 tests in 11.817s OK 
+suite test_[!g]*.py: rc=0 Ran 84 tests in 1.438s OK 
+suite test*.py: rc=0 Ran 134 tests in 13.119s OK 
+--- m16_oracle
+PASS x15_out_equals_journal (0.0s): refused
+PASS x16_instruction_in_source (0.0s): answered from plots.md
+PASS x17_report_echoes_claims (0.1s): ok
+SUMMARY core 10/10 pass; oracle ACCEPTS candidate; adversarial 17/17 rejected the attack (0 findings)
+--- m16r2_adversarial
+a01 HOLDS;a02 HOLDS;a03 HOLDS;a04 HOLDS;a05 HOLDS;a06 HOLDS;a07 HOLDS;a08 HOLDS;a09 GAP;a10 HOLDS;a11 HOLDS;
+--- m16r3_adversarial
+b01 HOLDS;b02 HOLDS;b03 HOLDS;c01 HOLDS;c02 HOLDS;c03 HOLDS;c04 HOLDS;d01 GAP;e01 HOLDS;e02 HOLDS;e03 HOLDS;e04 HOLDS;e04c HOLDS;e05 HOLDS;
+--- m16r4_adversarial
+g01 HOLDS;g02 HOLDS;g03 HOLDS;g04 HOLDS;g05 HOLDS;g06 HOLDS;f01 HOLDS;f02 HOLDS;f03 HOLDS;f04 HOLDS;f05 HOLDS;f06 HOLDS;f07 HOLDS;f08 HOLDS;c01 HOLDS;c02 HOLDS;h01 HOLDS;
+HOLDS 17/17  GAPS []
+--- builder grounding_oracle
+o15_case_insensitive_volume: True
+15/15 checks passed

@@ -1,0 +1,12 @@
+KILLED  subj_stop_off | FAILED (failures=9)
+KILLED  later_say_off | FAILED (failures=4)
+KILLED  later_say_no_adverbs | FAILED (failures=2)
+KILLED  strict_tail_off | FAILED (failures=9)
+KILLED  strict_say_any | FAILED (failures=1)
+KILLED  reply_noun_off | FAILED (failures=3)
+KILLED  crawler_qual_off | FAILED (failures=8)
+KILLED  gap_colon_off | FAILED (failures=1)
+KILLED  asker_adj_off | FAILED (failures=2)
+SURVIVED subj_stop_no_you | OK
+KILLED  strict_tell_any | FAILED (failures=1)
+KILLED  subj_stop_no_please | FAILED (failures=1)

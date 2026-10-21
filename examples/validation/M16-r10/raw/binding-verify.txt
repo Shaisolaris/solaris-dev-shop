@@ -1,0 +1,15 @@
+# 2026-10-20 21:22:34 PDT M16 r10 binding
+gh api branch head: f75792c847693d25a382b4f91273dbec83e8d46d
+gh api parents: 809fdad92e782a426bb4eb2d3cb729595c025bb5
+local HEAD: f75792c847693d25a382b4f91273dbec83e8d46d parent: 809fdad92e782a426bb4eb2d3cb729595c025bb5
+diff sha256: 3182bea102982e709c40b571a4049f95ca0b5148ccca0ebebcdd81bf0b3de3ca
+G16-r10.patch sha256: 3182bea102982e709c40b571a4049f95ca0b5148ccca0ebebcdd81bf0b3de3ca
+ 5 files changed, 221 insertions(+), 15 deletions(-)
+manifest: 28 OK
+no mismatches
+  in manifest: employees/engineering/llm-agent-designer/grounded-answer-evals.md
+  in manifest: employees/engineering/llm-agent-designer/grounded_eval.py
+  in manifest: examples/capabilities/G16/README.md
+  in manifest: examples/capabilities/G16/grounding_oracle.py
+  in manifest: tests/test_g16_capability.py
+main: 02ba9c571b10ad1dba792d2ac5534bcad3171e67
