@@ -1,5 +1,7 @@
 """Independent takeover checks for source context, not the builder's spelling tables."""
 import hashlib
+import contextlib
+import io
 import os
 import subprocess
 import sys
@@ -58,3 +60,24 @@ class SourceContext(unittest.TestCase):
         result = subprocess.run([sys.executable, '-B', '-c', code, str(P)], capture_output=True, text=True, timeout=5)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(result.stdout.splitlines(), ['False', 'True'])
+
+    def test_missing_lock_backend_refuses_before_journal_or_output_writes(self):
+        import tempfile
+        with tempfile.TemporaryDirectory(prefix='solaris-lock-platform-') as td:
+            d = Path(td); c = d/'corpus'; c.mkdir(); (c/'s.md').write_text('The public office opens on Mondays.')
+            q = d/'questions.jsonl'; q.write_text('{"id":"x","question":"When does the public office open?","expect":{"answerable":true,"facts":["Mondays"],"support_docs":["s.md"]}}\n')
+            out, journal = d/'answers.jsonl', d/'journal.jsonl'
+            backend = g.fcntl
+            try:
+                g.fcntl = None
+                with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                    rc = g.main(['answer','--corpus',str(c),'--questions',str(q),'--out',str(out),'--journal',str(journal)])
+                self.assertEqual(rc, 2)
+                self.assertFalse(out.exists()); self.assertFalse(journal.exists())
+                out.write_text('existing output'); journal.write_text('existing journal')
+                with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                    rc = g.main(['answer','--corpus',str(c),'--questions',str(q),'--out',str(out),'--journal',str(journal),'--resume'])
+                self.assertEqual(rc, 2)
+                self.assertEqual(out.read_text(),'existing output'); self.assertEqual(journal.read_text(),'existing journal')
+            finally:
+                g.fcntl = backend
