@@ -1,0 +1,6 @@
+fee False 'AI tools: the team will reply about Fee 42.'
+rent False 'AI tools: the team will reply about Rent 900 on time.'
+kept | AI tools: the team will reply about Fee 42.
+kept | AI tools: the team will reply until the fee is 42.
+kept | AI tools: the team will answer until fee 42.
+kept | AI tools: the team will reply about Rent 900 on time.

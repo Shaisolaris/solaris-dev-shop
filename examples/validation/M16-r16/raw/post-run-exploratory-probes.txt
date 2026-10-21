@@ -1,0 +1,11 @@
+filtered | AI tools: the team will reply by 9 refunds.
+filtered | AI tools: the team will reply at 5 pm Paris.
+kept | AI tools: the team will answer to Mr Paris.
+filtered | AI tools: the team will reply of fee 42.
+kept | AI tools: the team will reply near Ann and Bob 42.
+filtered | AI tools: the team will answer to Ann, Raj, 42.
+filtered | AI tools: the team will reply between 2 and 4 percent.
+filtered | AI tools: the team will answer by 12 dollars.
+kept | AI tools: the team will answer until 23 euros.
+filtered | AI tools: the team will reply within 50 percent.
+filtered | AI tools: the team will reply by Monday Paris.

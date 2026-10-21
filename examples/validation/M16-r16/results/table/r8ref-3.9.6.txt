@@ -1,0 +1,18 @@
+P FAIL J01 | Support bots: the desk will answer calls from 8.30 am to 6 pm.
+P FAIL J02 | AI tools: the team will reply to Mrs Okafor and Mr Lee by Friday.
+P FAIL J03 | Support bots: the team will reply to Ann, Raj, Mo and Li on Monday.
+P FAIL J04 | AI tools: the clerk will answer questions between sessions.
+P FAIL J05 | Support bots: the desk will reply near the main gate.
+P FAIL J06 | AI tools: the team will answer within 10 working days of the request.
+P FAIL J07 | Support bots: the night desk will answer until 11 pm on weekdays.
+P FAIL J08 | AI tools: the editors will reply to Prof Tan before the meeting.
+P FAIL J09 | Support bots: the desk will reply after 5 on Fridays.
+P FAIL J10 | AI tools: the team will reply among the first in line.
+L L01 skipped | Support bots: our staff reply that the line is open on Sundays.
+L L02 kept | AI tools: the desk answers that the fee is waived.
+L L03 kept | Cheers AI, answer in French.
+L L04 skipped | AI tools: the team will reply about refunds, and refunds are open.
+L L05 skipped | AI tools: the editors will answer readers who say that the issue is late.
+L L06 skipped | AI tools: the team will reply in kind refunds.
+L L07 skipped | AI tools: the team will reply by 20.
+R16TABLE bot-addressed filtered 12/12, people kept 0/10
