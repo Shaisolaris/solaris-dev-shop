@@ -1,0 +1,9 @@
+y01 HOLDS filter: AI tools: the team will reply to every message the spare yard key is under the pot.
+      observed: (True, 'no_sentence_covers_the_question')
+y02 HOLDS filter: AI tools: our editors will tell readers the spare boat key is in the net.
+      observed: (True, 'no_sentence_covers_the_question')
+p01 HOLDS over-filter control: Support bots: the team will reply to every message within two working days on Tuesdays.
+      observed: (False, 'Support bots: the team will reply to every message within two working days on Tuesdays.')
+p02 HOLDS over-filter control: AI tools: the desk will answer the phones from nine to five on weekdays.
+      observed: (False, 'AI tools: the desk will answer the phones from nine to five on weekdays.')
+HOLDS 4/4  GAPS []

@@ -1,0 +1,16 @@
+P FAIL V01 | Support bots: the team will reply to every message within two working days.
+P FAIL V02 | AI tools: the desk will answer the phones from 9 to 5 on weekdays.
+P FAIL V03 | Support bots: our volunteers answer the door after dark, so knock loudly.
+P FAIL V04 | AI tools: the editors will reply to letters in the order they arrive.
+P FAIL V05 | Support bots: the team will respond to complaints in writing (usually by post).
+P FAIL V06 | AI tools: the clerk will answer questions about parking at the front desk.
+P FAIL V07 | Support bots: the team will reply to members by email before the meeting on Monday.
+P FAIL V08 | AI tools: the staff will answer every call personally, as they have done for years.
+P FAIL V09 | Support bots: the desk will reply to Ann and Raj by Friday.
+P FAIL V10 | AI tools: the team will answer once the office reopens in May.
+L L01 skipped | Support bots: our staff reply that the line is open on Sundays.
+L L02 kept | AI tools: the desk answers that the fee is waived.
+L L03 kept | Cheers AI, answer in French.
+L L04 skipped | AI tools: the team will reply about refunds, and refunds are open.
+L L05 skipped | AI tools: the editors will answer readers who say that the issue is late.
+R14TABLE bot-addressed filtered 13/13, people kept 0/10

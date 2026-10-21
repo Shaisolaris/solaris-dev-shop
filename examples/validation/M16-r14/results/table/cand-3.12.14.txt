@@ -1,0 +1,9 @@
+B FAIL W01 | AI tools: the team will answer in one word refunds.
+B FAIL W12 | AI tools: the team will reply in kind refunds open.
+P FAIL V09 | Support bots: the desk will reply to Ann and Raj by Friday.
+L L01 skipped | Support bots: our staff reply that the line is open on Sundays.
+L L02 kept | AI tools: the desk answers that the fee is waived.
+L L03 kept | Cheers AI, answer in French.
+L L04 kept | AI tools: the team will reply about refunds, and refunds are open.
+L L05 skipped | AI tools: the editors will answer readers who say that the issue is late.
+R14TABLE bot-addressed filtered 11/13, people kept 9/10

@@ -1,0 +1,53 @@
+KILLED  subj_stop_off | FAILED (failures=1)
+KILLED  later_say_off | FAILED (failures=1)
+SURVIVED later_say_no_adverbs | OK
+KILLED  strict_tail_off | FAILED (failures=17)
+KILLED  strict_say_any | FAILED (failures=3)
+KILLED  reply_noun_off | FAILED (failures=3)
+KILLED  crawler_qual_off | FAILED (failures=10)
+KILLED  gap_colon_off | FAILED (failures=3)
+KILLED  asker_adj_off | FAILED (failures=2)
+KILLED  subj_stop_no_you | FAILED (failures=1)
+KILLED  strict_tell_any | FAILED (failures=5)
+KILLED  subj_aux_off | FAILED (failures=3)
+KILLED  subj_head_off | FAILED (failures=3)
+KILLED  it_subject_back | FAILED (failures=1)
+KILLED  tell_them_back | FAILED (failures=2)
+KILLED  gerund_off | FAILED (failures=5)
+KILLED  gerund_noun_guard_off | FAILED (failures=1)
+KILLED  subj_head_no_model | FAILED (failures=1)
+MUTANT-NOT-APPLIED content_off 0
+MUTANT-NOT-APPLIED content_that_off 0
+MUTANT-NOT-APPLIED content_aux_noun_off 0
+MUTANT-NOT-APPLIED content_clause_off 0
+MUTANT-NOT-APPLIED content_wh_guard_off 0
+KILLED  content_msg_noun_off | FAILED (failures=6)
+KILLED  content_msg_only_question | FAILED (failures=16)
+MUTANT-NOT-APPLIED anywhere_that_off 0
+MUTANT-NOT-APPLIED anywhere_quote_off 0
+MUTANT-NOT-APPLIED anywhere_yesno_off 0
+MUTANT-NOT-APPLIED anywhere_clause_off 0
+MUTANT-NOT-APPLIED clause_wh_guard_off 0
+MUTANT-NOT-APPLIED clause_relative_guard_off 0
+MUTANT-NOT-APPLIED no_later_guard_off 0
+KILLED  subj_stop_no_please | FAILED (failures=1)
+KILLED  free_rest_off | FAILED (failures=96)
+KILLED  chunk_word_boundary_off | FAILED (failures=2)
+KILLED  adv_case_off | FAILED (failures=1)
+KILLED  lw_case_off | FAILED (failures=8)
+KILLED  name_after_any_prep | FAILED (failures=1)
+KILLED  name_cw_guard_off | FAILED (failures=1)
+KILLED  name_long_tag | FAILED (failures=1)
+KILLED  quote_noun_guard_off | FAILED (failures=1)
+KILLED  cw_no_that | FAILED (failures=1)
+KILLED  cw_no_yes_no | FAILED (failures=3)
+KILLED  pronoun_obj_any | FAILED (failures=1)
+KILLED  second_verb_any | FAILED (failures=4)
+KILLED  conj_tail_that_ok | FAILED (failures=1)
+KILLED  see_any_quote | FAILED (failures=3)
+KILLED  colon_see_any | FAILED (failures=1)
+KILLED  whose_any | FAILED (failures=9)
+KILLED  conj_reply_word_off | FAILED (failures=4)
+KILLED  paren_cw_off | FAILED (failures=2)
+KILLED  elliptic_guard_off | FAILED (failures=2)
+KILLED  wh_short_off | FAILED (failures=2)
