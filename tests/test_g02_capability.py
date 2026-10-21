@@ -545,8 +545,11 @@ class M02Rework(Base):
 
     # F2, F3 --------------------------------------------------------------------------------------
     def test_invisible_or_literal_unresolved_answers_stay_unresolved(self):
-        for deploy in ('\u200b', '\ufeff', ' \u200b\u200d\u2060 ', '\u00a0\u200b', 'UNRESOLVED', 'unresolved',
-                       'Unresolved (ask the owner)'):
+        for deploy in ('\u200b', '\ufeff', ' \u200b\u200d\u2060 ', '\u00a0\u200b',
+                       '\u3164', '\u2800', '\u0301',  # Hangul filler, braille blank, combining mark alone
+                       'UNRESOLVED', 'unresolved', 'Unresolved (ask the owner)',
+                       '\u200bUNRESOLVED',  # zero-width then UNRESOLVED
+                       '\uff35\uff2e\uff32\uff25\uff33\uff2f\uff2c\uff36\uff25\uff24'):  # fullwidth UNRESOLVED
             with self.subTest(deploy=deploy):
                 r = self.activate(deploy_model=deploy)
                 self.assertEqual(r['status'], 'partial')
@@ -557,6 +560,83 @@ class M02Rework(Base):
         self.assertEqual(r['intake']['deploy_model'], 'manual uploads, unresolved staging')
         intake, problems = act.normalize_intake({'name': '\u200b\ufeff'})
         self.assertEqual(problems, [{'field': 'name', 'problem': 'must not be blank'}])
+        intake, problems = act.normalize_intake({'name': 'Ok', 'deploy_model': '\u3164\u2800'})
+        self.assertIsNone(intake['deploy_model'])
+        self.assertEqual(problems, [])
+
+    def test_unresolved_followed_by_words_or_with_accents_stays_unresolved(self):
+        """G02 r4 (M02 r3 P2): G02 r3 deleted spaces before matching, so "UNRESOLVED ask the owner" lost its word
+        boundary and was recorded as a real answer; an accent on a letter also hid the word."""
+        for deploy in ('UNRESOLVED ask the owner', 'Unresolved until the owner decides', 'unresolved pending call',
+                       'UNRESOLVED\u00a0ask', 'UNRESOLVED\u3164ask', 'U\u0301NRESOLVED', 'UNRE\u0301SOLVED',
+                       'UNR\u00c9SOLVED', 'UN\u200bRESOLVED: ask', ' \u200b unresolved - pending'):
+            with self.subTest(deploy=deploy):
+                r = self.activate(deploy_model=deploy)
+                self.assertEqual(r['status'], 'partial')
+                self.assertIsNone(r['intake']['deploy_model'])
+                self.assertIn('DEPLOY-MODEL: UNRESOLVED (no answer recorded',
+                              (self.project / 'STATUS.md').read_text())
+        for deploy in ('manual uploads, unresolved staging', 'unresolvedness is not a model', 'Vercel'):
+            with self.subTest(deploy=deploy):
+                r = self.activate(deploy_model=deploy)
+                self.assertEqual(r['intake']['deploy_model'], deploy)
+
+    def test_placeholder_and_lookalike_unresolved_answers_stay_unresolved(self):
+        """G02 r5 (M02 r3 P4-1, OBS-1): TBD, ?, -, n/a and similar placeholders were recorded as the deploy model, and
+        UNRESOLVED spelled with a Cyrillic or Greek look-alike letter was read as an answer."""
+        for deploy in ('TBD', 'tbd.', '?', '??', '-', '--', '...', 'n/a', 'N/A', 'NA', 'To be decided', 'unknown',
+                       'Pending', 'none', 'ask the owner', ' \u200b TBD ', 'UNR\u0415SOLVED', 'unr\u0435s\u043elved',
+                       'UNRES\u039fLVED: ask', 't.b.d.', 'T. B. D', 'n . a', 'UNRESO\u13deVED', '\u13a1'.join(('UN', 'ESOLVED')),
+                       'unreso\u04cfved'):
+            with self.subTest(deploy=deploy):
+                r = self.activate(deploy_model=deploy)
+                self.assertEqual(r['status'], 'partial')
+                self.assertIsNone(r['intake']['deploy_model'])
+                self.assertIn('DEPLOY-MODEL: UNRESOLVED (no answer recorded',
+                              (self.project / 'STATUS.md').read_text())
+        for deploy in ('Netlify (TBD region)', 'None of the above: Fly.io', 'Vercel', 'manual uploads, unresolved staging',
+                       'App Store via TestFlight', 'a.w.s. amplify', 'G. C. P.'):
+            with self.subTest(deploy=deploy):
+                r = self.activate(deploy_model=deploy)
+                self.assertEqual(r['intake']['deploy_model'], deploy)
+
+    def test_deeply_nested_journal_and_lock_give_bounded_results(self):
+        """Corrupted / deeply nested JSON must not escape as a traceback (root G02 contract)."""
+        deep = '[' * 50000
+        for label, name, payload in (
+            ('journal', act.JOURNAL, deep),
+            ('lock', act.LOCK, deep),
+        ):
+            with self.subTest(label=label):
+                shutil.rmtree(self.project, True)
+                self.project.mkdir()
+                (self.project / name).write_text(payload, encoding='utf-8')
+                before = {p.name: p.read_bytes() for p in self.project.iterdir() if p.is_file()}
+                if label == 'journal':
+                    code, r = self.cli_json('activate', self.project, '--name', 'Deep', '--type', 'web app')
+                    self.assertEqual((code, r['status']), (1, 'blocked'))
+                    self.assertTrue(any('deeply nested' in e or 'corrupted' in e for e in r['errors']))
+                else:
+                    code, r = self.cli_json('activate', self.project, '--name', 'Deep', '--type', 'web app',
+                                            '--deploy-model', 'main')
+                    self.assertEqual((code, r['status']), (1, 'blocked'))
+                    self.assertTrue(any('deeply nested' in e or 'corrupted' in e or 'holds' in e
+                                        for e in r['errors']))
+                after = {p.name: p.read_bytes() for p in self.project.iterdir() if p.is_file()}
+                self.assertEqual(after, before)  # owner / planted files preserved; nothing new written
+
+    def test_surrogate_in_name_is_invalid_not_traceback(self):
+        intake, problems = act.normalize_intake({'name': 'Caf\udce9', 'project_type': 'web app'})
+        self.assertIsNone(intake['name'])
+        self.assertEqual(problems[0]['problem'], 'must not contain unpaired surrogate characters')
+        # API path can receive lone surrogates from JSON; must return invalid, never raise, never write.
+        target = self.tmp / 'surrogate-proj'
+        before = list(self.tmp.iterdir())
+        r2 = act.activate(str(target), {'name': 'Caf\udce9', 'project_type': 'web app'})
+        self.assertEqual(r2['status'], 'invalid')
+        self.assertEqual(r2['problems'][0]['problem'], 'must not contain unpaired surrogate characters')
+        self.assertFalse(target.exists())
+        self.assertEqual(list(self.tmp.iterdir()), before)
 
     # F4 ------------------------------------------------------------------------------------------
     def test_malformed_journal_entries_give_a_bounded_result(self):

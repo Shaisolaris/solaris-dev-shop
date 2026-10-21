@@ -13,7 +13,7 @@ $PY examples/capabilities/G02/activation_oracle.py -- $PY examples/capabilities/
 
 Checks: O1 clean activation twice plus resume (byte-identical); O2 owner files kept; O3 real
 permission failure between writes, then resume; O4 changed intake during an interruption; O5
-blank or omitted deploy model stays UNRESOLVED; O6 symlinked folder and planted temp links
+blank or omitted deploy model stays UNRESOLVED; O11 blank-looking and disguised UNRESOLVED stay unresolved, deep journal blocked; O6 symlinked folder and planted temp links
 leave outside sentinels unchanged; O7 Git history, staged index and unborn repos unchanged, no
 nested init; O8 token-shaped credential refused without echo or writes; O9 six concurrent runs
 converge; O10 3000 owner files untouched. Synthetic data only; POSIX (uses chmod and symlinks).
