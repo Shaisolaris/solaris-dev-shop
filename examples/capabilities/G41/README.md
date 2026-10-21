@@ -1,4 +1,4 @@
-# G41 release candidate and metadata reconciliation (partial)
+# G41 release candidate and metadata reconciliation
 
 Tool: `employees/quality-security/assurance/release_candidate.py` (rules: `release-candidate.md` beside it).
 It inventories every selected goal against root's acceptance records and the candidate index, reconciles
@@ -18,8 +18,13 @@ o7 nothing written and the proposal not applied, o8 gate revisions unset, o9 con
 input (exit 2), o10 `--git` ancestry on a real local repository. `naive_inventory.py` trusts the queue status
 and skips metadata; `noop_inventory.py` answers READY.
 
-## Partial by design
+## Read-only release gate
 
-This build is honest about the present: the cohort is not accepted, so a live run reports NOT_READY. It
-proposes 0.62 from 0.61 and applies nothing. Version apply, catalog or roster changes, multi-OS CI, branding
-check, PR replies, tag and release are root's (or the owner's) and are listed as blocked. POSIX, Python 3.9+.
+An unaccepted or stale cohort reports NOT_READY. READY means the supplied acceptance, candidate index and
+metadata agree; the tool does not authenticate the supplied approvals or run hosted CI. Candidate, checks
+and review assertions must name the same full 40-hex revision. Root still verifies the actual files, test
+results and permissions before publication.
+
+Version proposals are advisory: for example, 0.61 proposes 0.62. Nothing is applied. Version changes,
+catalog/roster reconciliation, supported CI, branding checks, tags and publication remain the release
+owner's actions. Tested on POSIX, Python 3.9+.
