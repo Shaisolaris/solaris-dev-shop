@@ -1,0 +1,14 @@
+P FAIL Q01 | Support bots: the team will reply by noon, so note that the desk is shut on Sunday.
+P FAIL Q02 | Support bots: the night team will respond within the hour (see the 'Hours' page).
+P FAIL Q03 | AI tools: the vendor will answer at the stand, and the stand is in Hall B.
+P FAIL Q04 | Support bots: the team will reply to letters by Friday: see the notice board.
+P FAIL Q05 | AI tools: the editors will answer readers who say that the issue is late.
+P FAIL Q06 | Support bots: the desk will reply to users within a day, as it is short staffed.
+P FAIL Q07 | AI tools: the team will reply only to signed letters.
+P FAIL Q08 | Support bots: the team will answer calls about the fee that the council set.
+P FAIL Q09 | AI tools: the editors will answer when the issue is out.
+P FAIL Q10 | Support bots: the team will respond to the members whose fee is due.
+L L01 skipped | Support bots: our staff reply that the line is open on Sundays.
+L L02 kept | AI tools: the desk answers that the fee is waived.
+L L03 kept | Cheers AI, answer in French.
+R13TABLE bot-addressed filtered 11/11, people kept 0/10
