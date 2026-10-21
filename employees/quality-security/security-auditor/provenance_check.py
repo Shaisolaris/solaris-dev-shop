@@ -103,6 +103,15 @@ OPERATIVE = re.compile(r"\b(?:may|must|shall|not|no|only|unless|except\w*|prohib
                        r"|distribut\w*|copy|copies|modif\w*)\b")
 HOLDER_TAIL = re.compile(r"(?:inc|llc|ltd|gmbh|corp|co|plc|ag|sa|bv|and (?:its |other )?contributors|et al)")
 COPYRIGHT_RE = re.compile(r"^(?:copyright(?: \(c\)| \u00a9)?|\(c\)|\u00a9) (?P<rest>" + YEARS + r" .+)$")
+# M38 r4 P4-1: a company name that happens to hold a guard word ("Sellers Inc", "Copy Corp", "Never Settle GmbH") was
+# unrecognised. Such a holder is set aside only when, in the line as written, it is one to four capitalised words
+# followed by a company suffix and none of the strong restriction words below appear. A capitalised restriction that
+# ends in a suffix and avoids them can still pass, so the line stays listed in license_copyright_lines for a person.
+STRONG = re.compile(r"\b(?:may|must|shall|not|no|only|unless|except\w*|prohibit\w*|forbid\w*|permi\w*|\w*commercial\w*"
+                    r"|restrict\w*|licen[cs]\w*|terms?|conditions?|use[ds]?|usage|without|cannot|can't|solely|exclusive\w*)\b")
+COMPANY_RE = re.compile(r"[A-Z0-9][A-Za-z0-9&'-]*(?: [A-Z0-9][A-Za-z0-9&'-]*){0,3},? (?:Inc|LLC|Ltd|GmbH|Corp|Co|PLC|AG|SA|BV)")
+COPYRIGHT_ORIG_RE = re.compile(r"^(?:copyright(?: \(c\)| \u00a9)?|\(c\)|\u00a9) " + YEARS
+                               + r" (?P<h>[^.;:!?]{1,200}?)\.?(?: all rights reserved\.?)?$", re.I)
 
 
 def _years_holder_ok(s):
@@ -115,9 +124,17 @@ def _years_holder_ok(s):
     return all(HOLDER_TAIL.fullmatch(x.strip()) for x in h.group("h").split(",")[1:])
 
 
-def _copyright_line(s):
+def _company_holder(line):
+    """The line as written: a capitalised company name with a suffix and no strong restriction word (M38 r4 P4-1)."""
+    m = COPYRIGHT_ORIG_RE.match(" ".join(line.split()))
+    return bool(m) and bool(COMPANY_RE.fullmatch(m.group("h"))) and not STRONG.search(m.group("h").casefold())
+
+
+def _copyright_line(s, line=None):
     m = COPYRIGHT_RE.match(s)
-    return bool(m) and _years_holder_ok(m.group("rest"))
+    if not m:
+        return False
+    return _years_holder_ok(m.group("rest")) or (line is not None and _company_holder(line))
 
 
 def _appendix_ok(tail):
@@ -143,7 +160,7 @@ def identify_detail(text):
     if lines and _norm(lines[0]) in MIT_TITLES:
         lines.pop(0)
     dropped = []
-    while lines and _copyright_line(_norm(lines[0])):
+    while lines and _copyright_line(_norm(lines[0]), lines[0]):
         dropped.append(lines.pop(0))
     if _norm(" ".join(lines)) == MIT_BODY:
         return "MIT", dropped
@@ -274,9 +291,11 @@ def check(root, manifest=None, exclude=()):
     if rd is not None:
         for m in re.finditer(r"img\.shields\.io/badge/license-([A-Za-z0-9.]+)-", rd):
             declared("README.md", m.group(1).replace("--", "-"), "README badge")
-        m = re.search(r"(?m)^## License\s*\n+\s*([A-Za-z0-9]+(?:[.\-][A-Za-z0-9]+)*(?:\s+[A-Za-z0-9]+(?:[.\-][A-Za-z0-9]+)*)*)(?=\s*[,.]|\s*$)", rd)
+        # the name may be wrapped in one Markdown emphasis or code mark: **X**, __X__, *X*, _X_ or `X` (M38 r2 P4-3)
+        m = re.search(r"(?m)^## License\s*\n+\s*(\*\*|__|\*|_|`)?([A-Za-z0-9]+(?:[.\-][A-Za-z0-9]+)*(?:\s+[A-Za-z0-9]+(?:[.\-][A-Za-z0-9]+)*)*)"
+                      r"(?(1)(?:\*\*|__|\*|_|`))(?=\s*[,.]|\s*$)", rd)
         if m:
-            declared("README.md", m.group(1), "README License section")
+            declared("README.md", m.group(2), "README License section")
     # NOTICE: other license files must be listed, listed ones must exist
     others = sorted(p.relative_to(root).as_posix() for p in _walk(root, root, ex) if _is_license(p) and p.parent != root)
     skipped = {e: sorted(p.relative_to(root).as_posix() for p in _walk(root / e, root) if _is_license(p)) for e in ex}

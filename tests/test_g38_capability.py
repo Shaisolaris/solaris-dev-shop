@@ -217,6 +217,33 @@ class G38Provenance(unittest.TestCase):
             (self.r / 'LICENSE').write_text(mit.replace(cl, bad))
             self.assertEqual(self.check(1)['license'], 'unrecognized', bad)
 
+    def test_company_names_with_a_guard_word_stay_mit(self):
+        # M38 r4 P4-1: a capitalised company name with a suffix is a holder even when it holds a guard word
+        mit = (EX / 'fixtures' / 'repo-clean' / 'LICENSE').read_text()
+        cl = [l for l in mit.splitlines() if l.lower().startswith('copyright')][0]
+        for ok in ('Copyright 2026 Sellers Inc', 'Copyright 2026 Distributed Systems Inc', 'Copyright 2026 Never Settle GmbH',
+                   'Copyright (c) 2026 Copy Corp. All rights reserved.', 'Copyright 2026 Sellers, Inc.'):
+            (self.r / 'LICENSE').write_text(mit.replace(cl, ok))
+            r = self.check(0)
+            self.assertEqual((r['license'], r['license_copyright_lines']), ('MIT', [ok]), ok)
+        # lower case, no suffix, a strong restriction word or a clause after the suffix stay unrecognised
+        for bad in ('Copyright 2026 sellers inc', 'Copyright 2026 Purpose Labs', 'Copyright 2026 Acme Not For Resale Inc',
+                    'Copyright 2026 Acme Use Only Inc', 'Copyright 2026 Acme Noncommercial Inc', 'Copyright 2026 Acme Inc, not for resale'):
+            (self.r / 'LICENSE').write_text(mit.replace(cl, bad))
+            self.assertEqual(self.check(1)['license'], 'unrecognized', bad)
+
+    def test_readme_license_section_in_markdown_emphasis(self):
+        # M38 r2 P4-3: **GPL-3.0** and the other single emphasis or code marks are read, not skipped
+        for sec in ('**GPL-3.0**', '__GPL-3.0__', '*GPL-3.0*', '_GPL-3.0_', '`GPL-3.0`', '**GPL-3.0**, see LICENSE.'):
+            (self.r / 'README.md').write_text('# X\n\n## License\n\n%s\n' % sec)
+            self.assertIn(('license_mismatch', 'README.md'), self.codes(self.check(1)), sec)
+        for sec in ('**MIT**', '`MIT`. See LICENSE.'):
+            (self.r / 'README.md').write_text('# X\n\n## License\n\n%s\n' % sec)
+            self.assertEqual(self.check(0)['declarations'], 3, sec)  # pyproject, plugin.json and this section
+        # unbalanced marks are not read as a name (the section is skipped, as before)
+        (self.r / 'README.md').write_text('# X\n\n## License\n\n**GPL-3.0\n')
+        self.assertEqual(self.check(0)['declarations'], 2)
+
     def test_out_existing_folder_is_invalid(self):
         # M38 r2 P4-1: --out naming an existing folder -> exit 2, nothing written, no traceback
         (self.tmp / 'outdir').mkdir()
