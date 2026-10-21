@@ -633,8 +633,8 @@ def main(argv=None):
     r = sub.add_parser("record", help="run one specialist command in ROOT and record its evidence")
     r.add_argument("root")
     r.add_argument("--role", required=True)
-    r.add_argument("--outputs", nargs="+", required=True)
-    r.add_argument("--inputs", nargs="+", help="files or folders the command reads (beyond those named in it); "
+    r.add_argument("--outputs", nargs="+", action="extend", required=True, help="repeatable; every output path is retained")
+    r.add_argument("--inputs", nargs="+", action="extend", help="repeatable; files or folders the command reads (beyond those named in it); "
                    "a later change makes the record stale")
     r.add_argument("--ok-exit", default="0", help="0 (default) or 0,1 to accept disclosed gaps")
     r.add_argument("--worker", default="unnamed")
