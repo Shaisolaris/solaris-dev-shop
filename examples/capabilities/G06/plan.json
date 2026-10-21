@@ -21,8 +21,8 @@
   },
   {
    "id": "G02",
-   "commit": "90a5ec9c316e4d3fde84591faac1f8a00de73805",
-   "note": "newest repair head (G02 r4, M02 r3 P2 repair)",
+   "commit": "038f93470323c28f587748bcb9d69d7f637b34d3",
+   "note": "Root accepted G02 r6 component bytes; refusal preserves state and owner evidence.",
    "tests": [
     "tests.test_g02_capability"
    ],
