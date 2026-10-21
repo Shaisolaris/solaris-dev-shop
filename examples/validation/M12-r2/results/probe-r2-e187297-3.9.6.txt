@@ -1,0 +1,5 @@
+R01 FAIL 4 over-long texts in three fields: exit 2 and the message names the length and the limit | {"reason 301": [2, ["invalid input: resolved_overlaps[0].reason: expected a non-empty string"]], "reason 5000": [2, ["invalid input: resolved_overlaps[0].reason: expected a non-empty string"]], "path 400": [2, ["invalid input: resolved_overlaps[0].path: expected a non-empty string"]], "cross_check a
+R02 PASS empty, number, null and list reasons still say expected a non-empty string | "all"
+R03 PASS an over-long refusal keeps a previous --out report | [2, "PREVIOUS"]
+R04 PASS boundary: a 300-character reason is not refused as invalid input (exit 0 or 1, not 2) | [1, []]
+M12R2 PROBE 3/4

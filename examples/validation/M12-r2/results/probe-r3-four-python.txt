@@ -1,0 +1,28 @@
+== Python 3.9.6 at a245f1f61739526f049bb86452d41069aa4a799a
+R01 PASS 4 over-long texts in three fields: exit 2 and the message names the length and the limit | "all named"
+R02 PASS empty, number, null and list reasons still say expected a non-empty string | "all"
+R03 PASS an over-long refusal keeps a previous --out report | [2, "PREVIOUS"]
+R04 PASS boundary: a 300-character reason is not refused as invalid input (exit 0 or 1, not 2) | [1, []]
+M12R2 PROBE 4/4
+rc=0
+== Python 3.11.16 at a245f1f61739526f049bb86452d41069aa4a799a
+R01 PASS 4 over-long texts in three fields: exit 2 and the message names the length and the limit | "all named"
+R02 PASS empty, number, null and list reasons still say expected a non-empty string | "all"
+R03 PASS an over-long refusal keeps a previous --out report | [2, "PREVIOUS"]
+R04 PASS boundary: a 300-character reason is not refused as invalid input (exit 0 or 1, not 2) | [1, []]
+M12R2 PROBE 4/4
+rc=0
+== Python 3.12.14 at a245f1f61739526f049bb86452d41069aa4a799a
+R01 PASS 4 over-long texts in three fields: exit 2 and the message names the length and the limit | "all named"
+R02 PASS empty, number, null and list reasons still say expected a non-empty string | "all"
+R03 PASS an over-long refusal keeps a previous --out report | [2, "PREVIOUS"]
+R04 PASS boundary: a 300-character reason is not refused as invalid input (exit 0 or 1, not 2) | [1, []]
+M12R2 PROBE 4/4
+rc=0
+== Python 3.13.15 at a245f1f61739526f049bb86452d41069aa4a799a
+R01 PASS 4 over-long texts in three fields: exit 2 and the message names the length and the limit | "all named"
+R02 PASS empty, number, null and list reasons still say expected a non-empty string | "all"
+R03 PASS an over-long refusal keeps a previous --out report | [2, "PREVIOUS"]
+R04 PASS boundary: a 300-character reason is not refused as invalid input (exit 0 or 1, not 2) | [1, []]
+M12R2 PROBE 4/4
+rc=0

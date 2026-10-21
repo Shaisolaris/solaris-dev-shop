@@ -1,0 +1,29 @@
+
+======================================================================
+FAIL: test_too_long_text_is_named_as_too_long (tests.test_g12_capability.Plan) [resolved_overlaps[0].reason: 301 characters is too long; at most 300]
+M12 P4-1: a resolved_overlaps reason over 300 characters was refused as "expected a non-empty string".
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_g12_capability.py", line 115, in test_too_long_text_is_named_as_too_long
+    self.assertIn(msg.encode(), r.stderr)
+AssertionError: b'resolved_overlaps[0].reason: 301 characters is too long; at most 300' not found in b'invalid input: resolved_overlaps[0].reason: expected a non-empty string\nVERDICT INVALID_INPUT\n'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.102s
+
+FAILED (failures=1)
+
+======================================================================
+FAIL: test_too_long_text_is_named_as_too_long (tests.test_g12_capability.Plan) [resolved_overlaps[0].reason: 301 characters is too long; at most 300]
+M12 P4-1: a resolved_overlaps reason over 300 characters was refused as "expected a non-empty string".
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_g12_capability.py", line 115, in test_too_long_text_is_named_as_too_long
+    self.assertIn(msg.encode(), r.stderr)
+AssertionError: b'resolved_overlaps[0].reason: 301 characters is too long; at most 300' not found in b'invalid input: resolved_overlaps[0].reason: expected a non-empty string\nVERDICT INVALID_INPUT\n'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.100s
+
+FAILED (failures=1)
+rc=1

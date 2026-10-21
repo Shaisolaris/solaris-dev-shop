@@ -1,0 +1,3 @@
+branch review/grok-g12-daily-integration remote head: a245f1f61739526f049bb86452d41069aa4a799a
+a245f1f61739526f049bb86452d41069aa4a799a G12 r3: a plan text over 300 characters is named as too long (review only, Grok build)
+main: 02ba9c571b10ad1dba792d2ac5534bcad3171e67

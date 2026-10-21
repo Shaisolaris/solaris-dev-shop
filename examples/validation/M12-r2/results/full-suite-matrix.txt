@@ -1,0 +1,5 @@
+py39: Ran 262 tests in 113.489s OK  rc=0 Python 3.9.6 at a245f1f61739526f049bb86452d41069aa4a799a
+py311: Ran 262 tests in 96.052s OK (skipped=1)  rc=0 Python 3.11.16 at a245f1f61739526f049bb86452d41069aa4a799a
+py312: Ran 262 tests in 98.446s OK (skipped=1)  rc=0 Python 3.12.14 at a245f1f61739526f049bb86452d41069aa4a799a
+py313: Ran 262 tests in 98.954s OK (skipped=1)  rc=0 Python 3.13.15 at a245f1f61739526f049bb86452d41069aa4a799a
+browser processes seen during the run: 0
