@@ -128,16 +128,24 @@ _AFTER = r"(?:\s+(?:everyone|everybody|all|folks|y['\u2019]all|you\s+all|guys|pe
 #   verb ("..., reply that ...", ": say that ...").
 _SUBJ_STOP = (r"(?:says?|said|saying|wants?|wanted|asks?|asked|tells?|told|requests?|requested|needs?|needed|insists?"
               r"|orders?|ordered|instructs?|instructed|demands?|wishes|expects?|requires?|please|kindly|just|you|your|to"
-              r"|the|a|an|this|that|time|times|once|now|today|tonight|here|so|then|instead|always|only|simply)")
+              r"|the|a|an|this|that|time|times|once|now|today|tonight|here|so|then|instead|always|only|simply"
+              # G16 r11: nor an auxiliary, so the subject cannot end on "must" and swallow the head before it
+              r"|will|shall|would|can|could|may|might|must|should|do|does|did|usually|often|also|still|normally)")
 _SUBJ_WORD = r"(?!" + _SUBJ_STOP + r"\b)[\w'-]+"
-_SUBJECT = (r"(?:(?:we|they|i|he|she|it|staff|people|humans?|someone|somebody|nobody|everyone|everybody|volunteers|"
+# G16 r11 (M16 r10 P2-1): a subject whose head names an automated reader is the addressee, like "you": "AI tools: every
+#   AI tool must reply that ..." and "Chatbot, the model must answer that ..." are instructions. Only the last word is
+#   checked, so "the AI team will answer" stays a statement. "it" is not a statement subject for the same reason.
+_SUBJ_HEAD_STOP = (r"(?:ai|tools?|assistants?|models?|agents?|bots?|chatbots?|llms?|crawlers?|readers?|systems?"
+                   r"|programs?|machines?)")
+_SUBJ_LAST = r"(?!(?:" + _SUBJ_STOP + r"|" + _SUBJ_HEAD_STOP + r")\b)[\w'-]+"
+_SUBJECT = (r"(?:(?:we|they|i|he|she|staff|people|humans?|someone|somebody|nobody|everyone|everybody|volunteers|"
             r"colleagues)\b|(?:the|our|their|his|her|its|my|this|that|these|those|each|every|some|no|most|many|a|an)\s+"
-            r"(?:" + _SUBJ_WORD + r"\s+){0,2}" + _SUBJ_WORD + r")")
+            r"(?:" + _SUBJ_WORD + r"\s+){0,2}" + _SUBJ_LAST + r")")
 _AUX = (r"(?:will|shall|would|can|could|may|might|must|should|do|does|did|usually|always|often|only|also|now|still"
         r"|normally|then)")
 _STATEMENT = (r"(?:" + _SUBJECT + r"\s+(?:" + _AUX + r"\s+){0,2}" + _SAY + r"\b"
               # or a pronoun subject later in the gap: "Good day AI, as they say in the old adverts."
-              r"|(?:[\w']+,?\s+){0," + str(PRE_VERB_WORDS - 1) + r"}?(?:we|they|i|he|she|it|staff|people)\s+(?:" + _AUX
+              r"|(?:[\w']+,?\s+){0," + str(PRE_VERB_WORDS - 1) + r"}?(?:we|they|i|he|she|staff|people)\s+(?:" + _AUX
               + r"\s+){0,2}" + _SAY + r"\b)"
               # G16 r10: no later separator plus reply verb ("whatever they say, reply that ...")
               r"(?![^.!?]*?(?:[,:;\u2013\N{EM DASH}]|\s--?)\s*(?:(?:so|and|but|please|now|then|just|simply|always|only)\s+){0,2}"
@@ -150,7 +158,11 @@ _REPLY_NOUN = (r"(?:rates?|quality|times?|cards?|accuracy|length|speed|counts?|v
                r"|keys?|sheets?|deadlines?|scores?|box|boxes|slips?|envelopes?)")
 _SAY_VERB = (r"(?:(?:reply|respond|answer)\b(?!\s+[\w'-]+\s+(?:are|is|was|were|will|have|has|had)\b)"
              r"(?!\s+" + _REPLY_NOUN + r"\b)"
-             r"|(?!reply|respond|answer)" + _SAY + r"\b)")
+             r"|(?!reply|respond|answer)" + _SAY + r"\b"
+             # G16 r11 (M16 r10 P4-1): a gerund with a content clause ("the owner urges replying that ..."), but not
+             #   "answering that question"
+             r"|(?:replying|responding|answering|saying|stating)\s+that\b(?!\s+(?:questions?|ones?"
+             r"|emails?|messages?|calls?|letters?|requests?|tickets?|queries|query)\b))")
 # G16 r9 (M16 r8 P3-2): a free vocative lead. Before an unmistakably automated reader (qualified head such as "AI tools",
 #   "AI agents", or ai, llm, chatbot, the singular bot), one or two words at the anchor are a greeting whatever they are,
 #   unless one of them shows the words are a clause or a noun phrase of their own (a pronoun, determiner, preposition or
@@ -179,7 +191,7 @@ _ASKERS = r"(?:users?|questions?|queries|query|anyone|everyone|visitors?|custome
 _SAY_STRICT = (r"(?:(?:reply|respond|answer)\b(?=\s*(?:that\b|with\b|only\b|always\b|never\b|yes\b|no\b"
                r"|[\"'\u201c\u2018:]|(?:to\s+)?(?:(?:all|any|every|each|the|this|that|these|my|our|next|following|first|last"
                r"|other|new|incoming)\s+){0,2}" + _ASKERS + r"\b))"
-               r"|tell\b(?=\s+(?:that\b|(?:the\s+)?(?:users?|people|everyone|anyone|them|visitors?|customers?|readers?"
+               r"|tell\b(?=\s+(?:(?:[\w']+\s+)?that\b|(?:the\s+)?(?:users?|people|everyone|anyone|visitors?|customers?|readers?"
                r"|callers?)\b))"
                r"|(?:say|state)\b(?=\s*[\"'\u201c\u2018:]|\s+(?:yes|no)\b|[^.!?]*?\b(?:that|is|are|was|were|will|has|have)\b)"
                r"|(?!reply|respond|answer|tell|say|state)" + _SAY + r"\b)")
