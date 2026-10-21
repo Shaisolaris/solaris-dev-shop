@@ -42,3 +42,10 @@ checks 18 properties (17 with `--quick`):
 
 Controls (both must be REJECTED): `naive_stub.py` (dashboard read: event rows as units, no cohort,
 no leakage or SRM checks, any positive gap called a causal win) and `noop_stub.py`.
+
+## Current claim boundary
+The shipped retention-lift fixture demonstrates an observed significant difference. Its package
+does not declare an independent assignment-population count, so it cannot authorize a causal
+claim. The oracle's synthetic generator supplies its own known assignment-system truth for
+positive causal controls. For real inputs, `expected_units` must come from the independent
+assignment system; copying the number of observed rows is not verification.

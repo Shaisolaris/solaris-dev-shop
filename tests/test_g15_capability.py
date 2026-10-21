@@ -70,7 +70,7 @@ class G15Capability(unittest.TestCase):
         self.assertEqual((ex['outside_cohort'], len(ex['multiple_arms']), ex['events_unassigned_units'], ex['immature']), (20, 6, 6, 0))
         self.assertGreater(ex['events_before_assignment'], 0)
         self.assertEqual(r['outcome'], 'difference_detected')
-        self.assertTrue(r['claims_allowed']['causal'])
+        self.assertFalse(r['claims_allowed']['causal'])  # fixture has no independent population count
         self.assertLess(float(r['effect']['ci_low']), 0.18)
         self.assertGreater(float(r['effect']['ci_high']), 0.18)
 
@@ -199,7 +199,7 @@ class G15Capability(unittest.TestCase):
         self.assertGreaterEqual(r['assignment_check']['mismatched'], 1)
         self.assertEqual(r['claims_allowed'], {'causal': False, 'significance': False})
         self.assertIn('does not follow the declared randomization', ' '.join(r['trace']))
-        # the fixture: every cohort unit verified, causal claim allowed
+        # the fixture: logged cohort assignments are verified; population completeness is separate
         r = rep(FIX / 'retention-lift' / 'package.json')
         self.assertEqual(r['assignment_check']['units_checked'], 1200)
         self.assertTrue(r['assignment_check']['verified'])

@@ -97,3 +97,13 @@ Exit 0 means analysed (any outcome), 2 means the package was refused.
 
 Evidence: `examples/capabilities/G15/` (fixtures, `readout_oracle.py`, naive and no-op controls) and
 `tests/test_g15_capability.py`.
+
+## Population-completeness gate
+A `difference_detected` outcome describes a statistical difference in the observed log, not
+by itself permission to claim causality. `claims_allowed.causal` is false unless the declared
+randomization rule is verified and an independently supplied `randomization.expected_units`
+count agrees with the cohort population, with the other design and quality guards passing.
+Do not derive that external count from the same incomplete log to manufacture verification.
+A matching count is an input assumption, not authentication of an experiment or proof against
+fabricated/replaced records. Missing counts keep the statistical result but explicitly forbid
+a causal claim. Follow the claim flags and trace, not the outcome label alone.
