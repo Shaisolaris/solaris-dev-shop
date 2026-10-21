@@ -11,8 +11,8 @@
  "prerequisites": [
   {
    "id": "G04",
-   "commit": "e9fa278f6fc967720118937c746287adf7cd6dad",
-   "note": "newest repair head (G04 r3, M04 r2 P2 repair); carries G04 r2 155fc33, G04 314b4db and G02 bbe682b",
+   "commit": "7ed5f70af2cfaf8fbbceaecd105feaf9385b1a73",
+   "note": "newest head (G04 r4, M04 r3 PASS); carries G04 r3 e9fa278, r2 155fc33, 314b4db and G02 bbe682b",
    "tests": [
     "tests.test_g04_capability"
    ],
@@ -24,8 +24,8 @@
   },
   {
    "id": "G05",
-   "commit": "04b3cf2127c2e6abda01c7a0d4c8a0bfadabeaa0",
-   "note": "newest repair head (G05 r3, M05 r2 P2 repair); carries G05 r2 3056378",
+   "commit": "1b840cdee716ceaee3d84e19c23f46e558135b71",
+   "note": "newest head (G05 r4, M05 r3 PASS); carries G05 r3 04b3cf2 and r2 3056378",
    "tests": [
     "tests.test_g05_capability",
     "tests.test_closure_hardening"
@@ -38,8 +38,8 @@
   },
   {
    "id": "G07",
-   "commit": "0d6a78d56cdb4c3b8d87ed25bb41704e99bc5382",
-   "note": "carries G04 314b4db",
+   "commit": "f4776bdd1849a4303bdb323165bd18dc341037d4",
+   "note": "G07 r2 (M07 r2 PASS); carries G07 0d6a78d and G04 314b4db",
    "tests": [
     "tests.test_g07_capability"
    ],
@@ -64,8 +64,8 @@
   },
   {
    "id": "G09",
-   "commit": "edfa64d4d86532d18164e37175c7b0e4d734d0e0",
-   "note": "base of the merge chain",
+   "commit": "1cab0f8b68077b4dbd006ad37c1d20f3b538d7c7",
+   "note": "G09 h1 (M09 h1 PASS, post-acceptance hardening on accepted edfa64d); base of the merge chain",
    "tests": [
     "tests.test_g09_capability"
    ],
@@ -85,27 +85,27 @@
  "resolved_overlaps": [
   {
    "path": "employees/infrastructure/fleet-dispatcher/SKILL.md",
-   "reason": "G05 04b3cf2 carries G04 314b4db unchanged (same blob); G04 r3 leaves it as 314b4db; only G07 0d6a78d changed it. HEAD is the G07 blob a4655043."
+   "reason": "G04 r4 7ed5f70 and G05 r4 1b840cd carry G04 314b4db unchanged (blob d8ab8eb); only G07 changed it (0d6a78d, unchanged in G07 r2 f4776bd). HEAD is the G07 blob a465504."
   },
   {
    "path": "employees/infrastructure/fleet-dispatcher/capability.contract.json",
-   "reason": "G05 04b3cf2 carries G04 314b4db unchanged (same blob); G04 r3 leaves it as 314b4db; only G07 0d6a78d changed it. HEAD is the G07 blob b00741e0."
+   "reason": "G04 r4 7ed5f70 and G05 r4 1b840cd carry G04 314b4db unchanged (blob f4a9db0); only G07 changed it (0d6a78d, unchanged in G07 r2 f4776bd). HEAD is the G07 blob b00741e."
   },
   {
    "path": "tests/test_g04_capability.py",
-   "reason": "G05 04b3cf2 carries G04 314b4db unchanged (same blob); G07 leaves it as 314b4db; only G04 r2/r3 changed it. HEAD is the G04 r3 blob."
+   "reason": "G05 r4 1b840cd and G07 r2 f4776bd carry G04 314b4db unchanged (blob 6a63af7); only G04 r2 to r4 changed it. HEAD is the G04 r4 7ed5f70 blob 3afb756."
   },
   {
    "path": "employees/infrastructure/fleet-dispatcher/handoff.py",
-   "reason": "G05 04b3cf2 carries G04 314b4db unchanged; G04 r3 (owner in receipts, owner change on a delivered revision refused) and G07 (fleet claim check) change disjoint hunks; git merged them without conflict. Both test modules, both oracles and x1 pass on HEAD."
+   "reason": "G05 r4 carries G04 314b4db unchanged (eb27607). G04 r4 7ed5f70 (0a0c5a3) and G07 r2 f4776bd (431ee71) change disjoint hunks; git merged them cleanly. HEAD 8edfd2f has every line each added and none each removed."
   },
   {
    "path": "employees/infrastructure/fleet-dispatcher/handoff-work-orders.md",
-   "reason": "G05 04b3cf2 carries G04 314b4db unchanged; G04 r3 and G07 each add a reason to the same exit 2 line; G12 r2 resolved that one conflict by keeping both reasons. All other lines merged without conflict."
+   "reason": "G05 r4 carries G04 314b4db unchanged (2d607b2). G04 r3 and G07 each add a reason to one exit 2 line; G12 r2 kept both. G04 r4 changes one more line, merged cleanly; G07 r2 leaves the file. HEAD is 954a2b3."
   },
   {
    "path": "employees/infrastructure/fleet-dispatcher/learnings.md",
-   "reason": "G05 04b3cf2 and G07 0d6a78d carry G04 314b4db unchanged (same blob); only G04 r3 e9fa278 changed it. HEAD is the G04 r3 blob."
+   "reason": "G05 r4 1b840cd and G07 r2 f4776bd carry G04 314b4db unchanged (blob 14a4b7b); only G04 r3 and r4 changed it. HEAD is the G04 r4 7ed5f70 blob 7bca206."
   }
  ]
 }

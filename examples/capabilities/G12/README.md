@@ -1,9 +1,10 @@
 # G12 day 2 daily integration
 
-Stack on v0.61 `02ba9c5`: G09 `edfa64d` (accepted; carries G08 r2 `ddebe98`, accepted, and G03 r3 `d4d98f2`),
-merged with G07 `0d6a78d` (candidate), G04 r3 `e9fa278` and G05 r3 `04b3cf2` (newest repair heads, the M04 r2
-and M05 r2 P2 repairs; candidates). G12 r2 merges G05 r3 and G04 r3 onto the r1 stack `2718b1f` without
-rewriting it. G04, G05 and G07 all carry G04 `314b4db` and G02 `bbe682b`; G02 itself is not a G12 prerequisite.
+Stack on v0.61 `02ba9c5`: G09 h1 `1cab0f8` (hardening on accepted `edfa64d`, not itself accepted; carries G08 r2
+`ddebe98`, accepted, and G03 r3 `d4d98f2`), merged with G07 r2 `f4776bd`, G04 r4 `7ed5f70` and G05 r4 `1b840cd`
+(newest heads, validated by M07 r2, M04 r3, M05 r3 and M09 h1; candidates). G12 r2 merged G05 r3 and G04 r3 onto
+the r1 stack `2718b1f`; G12 r4 merges G04 r4, G05 r4, G07 r2 and G09 h1 on top, without rewriting either.
+G04, G05 and G07 all carry G04 `314b4db` and G02 `bbe682b`; G02 itself is not a G12 prerequisite.
 
 | Check | What it composes | Result on this stack |
 |---|---|---|
