@@ -345,5 +345,131 @@ class G21Capability(unittest.TestCase):
             self.assertEqual(r.stdout.strip().splitlines()[-1], want)
 
 
+    def test_redirects_never_contact_target_or_ack_pending_change(self):
+        from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+        import threading
+        hits = []
+        class Sink(BaseHTTPRequestHandler):
+            def do_GET(self):
+                hits.append(self.headers.get('Authorization'))
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b'{"data": [], "next_after": null}')
+            do_POST = do_GET
+            def log_message(self, *args):
+                pass
+        sink = ThreadingHTTPServer(('127.0.0.1', 0), Sink)
+        target = 'http://127.0.0.1:%d/capture' % sink.server_port
+        class Redirect(Sink):
+            code = 302
+            def do_GET(self):
+                self.send_response(self.code)
+                self.send_header('Location', target)
+                self.end_headers()
+            do_POST = do_GET
+        source = ThreadingHTTPServer(('127.0.0.1', 0), Redirect)
+        threads = [threading.Thread(target=s.serve_forever, daemon=True) for s in (sink, source)]
+        for t in threads:
+            t.start()
+        try:
+            url = 'http://127.0.0.1:%d' % source.server_port
+            for code in (301, 302, 303, 307, 308):
+                Redirect.code = code
+                for method in ('GET', 'POST'):
+                    with self.subTest(code=code, method=method):
+                        db = self.device('redir%d%s' % (code, method))
+                        if method == 'POST':
+                            self.enq(db, 'create', '--ref', 'r', '--customer', 'Synthetic', '--amount', '100', '--currency', 'USD')
+                        rc, out = self.sync(db, url)
+                        self.assertEqual(rc, 4, out)
+                        self.assertIn('redirect refused', out['detail'])
+                        self.assertEqual(out['counts']['acked'], 0)
+                        self.assertEqual(out['pending'], int(method == 'POST'))
+                        self.assertEqual(hits, [])
+        finally:
+            for s in (sink, source):
+                s.shutdown()
+                s.server_close()
+            for t in threads:
+                t.join(5)
+
+    def test_concurrent_creates_and_resolutions_have_single_winner(self):
+        db = self.device('race')
+        con = sqlite3.connect(str(db), isolation_level=None)
+        def race(args):
+            con.execute('BEGIN IMMEDIATE')
+            ps = [subprocess.Popen([sys.executable, str(TOOL)] + [str(x) for x in args],
+                                   env=ENV, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) for _ in range(4)]
+            try:
+                time.sleep(0.4)
+                self.assertTrue(all(p.poll() is None for p in ps))
+            finally:
+                con.execute('COMMIT')
+            output = [p.communicate(timeout=30) for p in ps]
+            self.assertEqual(sorted(p.returncode for p in ps), [0, 2, 2, 2], output)
+        try:
+            race(['enqueue', '--db', db, 'create', '--ref', 'same', '--customer', 'Synthetic', '--amount', '100', '--currency', 'USD'])
+            self.assertEqual(con.execute('SELECT COUNT(*) FROM ops').fetchone()[0], 1)
+            con.execute("UPDATE ops SET state='rejected', http_status=422, response='{}'")
+            race(['resolve', '--db', db, '--op', '1', '--action', 'retry'])
+            self.assertEqual(con.execute('SELECT COUNT(*) FROM ops').fetchone()[0], 2)
+            self.assertEqual(self.tool('check', '--db', db).returncode, 0)
+        finally:
+            con.close()
+        url, ledger, _ = self.serve()
+        self.assertEqual(self.sync(db, url)[0], 0)
+        self.assertEqual(len(self.server_rows(ledger)), 1)
+
+    def test_retry_transaction_rolls_back_if_supersession_fails(self):
+        db = self.device('atomic')
+        self.enq(db, 'create', '--ref', 'r', '--customer', 'Synthetic', '--amount', '100', '--currency', 'USD')
+        with sqlite3.connect(str(db)) as con:
+            con.execute("UPDATE ops SET state='rejected', http_status=422, response='{}'")
+            con.execute("CREATE TRIGGER fail_sup BEFORE UPDATE OF state ON ops WHEN NEW.state='superseded' BEGIN SELECT RAISE(ABORT, 'simulated failure'); END")
+        result = self.tool('resolve', '--db', db, '--op', '1', '--action', 'retry')
+        self.assertNotEqual(result.returncode, 0)
+        with sqlite3.connect(str(db)) as con:
+            self.assertEqual(con.execute('SELECT seq,state FROM ops').fetchall(), [(1, 'rejected')])
+        self.assertEqual(self.tool('check', '--db', db).returncode, 0)
+
+    def test_loopback_sync_ignores_environment_proxy(self):
+        url, ledger, _ = self.serve()
+        db = self.device('proxy')
+        self.enq(db, 'create', '--ref', 'r', '--customer', 'Synthetic', '--amount', '100', '--currency', 'USD')
+        env = dict(ENV, http_proxy='http://127.0.0.1:1', HTTP_PROXY='http://127.0.0.1:1',
+                   all_proxy='http://127.0.0.1:1', ALL_PROXY='http://127.0.0.1:1', no_proxy='', NO_PROXY='')
+        result = subprocess.run([sys.executable, str(TOOL), 'sync', '--db', str(db), '--base-url', url,
+                                 '--key-file', str(self.keys['ed'])], env=env, capture_output=True, text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(len(self.server_rows(ledger)), 1)
+
+    def test_orphan_retry_cannot_bypass_duplicate_intent_check(self):
+        db = self.device('orphan')
+        self.enq(db, 'create', '--ref', 'same', '--customer', 'Synthetic', '--amount', '100', '--currency', 'USD')
+        with sqlite3.connect(str(db)) as con:
+            con.execute("INSERT INTO ops(seq,idem,kind,ref,body,created_at,state,retry_of) SELECT 2, substr(idem,1,length(idem)-6)||'000002',kind,ref,body,created_at,state,1 FROM ops WHERE seq=1")
+        result = self.tool('check', '--db', db, '--json')
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('matching superseded predecessor', result.stdout)
+        url, ledger, _ = self.serve()
+        self.assertEqual(self.sync(db, url)[0], 2)
+        self.assertEqual(self.server_rows(ledger), [])
+
+    def test_legacy_duplicate_outbox_is_rejected_before_network_effect(self):
+        db = self.device('legacy')
+        self.enq(db, 'create', '--ref', 'same', '--customer', 'Synthetic', '--amount', '100', '--currency', 'USD')
+        with sqlite3.connect(str(db)) as con:
+            con.execute("INSERT INTO ops(seq,idem,kind,ref,body,created_at,state) SELECT 2, substr(idem,1,length(idem)-6)||'000002',kind,ref,body,created_at,state FROM ops WHERE seq=1")
+        result = self.tool('check', '--db', db, '--json')
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('duplicate create roots', result.stdout)
+        url, ledger, _ = self.serve()
+        rc, out = self.sync(db, url)
+        self.assertEqual(rc, 2, out)
+        self.assertEqual(out['sent'], 0)
+        self.assertEqual(self.server_rows(ledger), [])
+        self.assertEqual(out['pending'], 2)
+
+
 if __name__ == "__main__":
     unittest.main()
