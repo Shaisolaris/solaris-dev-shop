@@ -177,6 +177,7 @@ _CW = (r"(?:that|which|who|whom|whose|with|yes|no|saying|stating|telling|replyin
 _FW = r"(?!" + _CW + r"\b)[\w\u2019-]+(?:'(?![\w]))?"
 _NP = r"(?:" + _FW + r"\s+){0,3}" + _FW
 _PREP = (r"(?:to|by|within|on|at|in|into|before|after|from|during|about|over|via|through|for|under|around|across|inside"
+         r"|of|among|between|near"
          r"|outside|per|next|every|each|this|first|later|soon)")
 # G16 r14: case matters inside the content-free grammar (the rest of the pattern is case-insensitive), so a payload
 #   word cannot pose as an adverb ("reply Italy") or ride a preposition phrase ("reply to users Paris").
@@ -194,7 +195,11 @@ _PERSON = (r"(?:(?:the|all|any|every|each|our|your|their|new|other)\s+){0,2}(?:u
            r"|customers?|readers?|callers?|members?|staff|them|him|her|us|guests?|parents?|tenants?|clients?)\b"
            r"(?:\s+whose\s+" + _CLAUSE_W + r"(?:\s+" + _CLAUSE_W + r"){0,5})?")
 # lower-case words only, no content word: "noon", "the hour", "2 days", "the fee"
-_LW = r"(?!" + _CW + r"\b)(?-i:[a-z0-9][a-z0-9\u2019'-]*)"
+# G16 r16 (M16 r15 P2-1): a lower-case word is letters only, so the one-word residual cannot carry a number ("reply about
+#   fee 42"); numbers come only as a number plus a time unit or as a clock time after a time preposition (_CLOCK)
+_LW = r"(?!" + _CW + r"\b)(?-i:[a-z][a-z\u2019'-]*)"
+_CLOCK = (r"(?:by|at|from|to|until|till|before|after)\s+(?:[01]?\d|2[0-3])(?:[:.][0-5]\d)?(?:\s*(?-i:am|pm|a\.m\.|p\.m\.))?"
+          r"(?![\w.,:]?\d)")
 _DETW = r"(?:the|all|any|every|each|this|these|those|my|our|your|their|its|his|her|some|most|other)"
 # G16 r15 (M16 r14 P2-1): a lower-case phrase is at most one modifier plus its head, so a preposition phrase cannot
 #   carry a telegraphic payload ("answer in one word refunds", "reply in kind refunds open"); only a number plus a time
@@ -206,14 +211,20 @@ _UNIT = r"(?:(?:working|business|calendar|school)\s+)?(?:minutes?|hours?|days?|w
 _LNP = (r"(?:(?:" + _DETW + r"\s+)?" + _NUMW + r"\s+" + _UNIT + r"\b"
         r"|(?:" + _DETW + r"\s+)?(?:" + _LW + r"\s+)?" + _LW + r")")
 # a name after a preposition: one capitalised word, optionally a short tag ("by Friday", "in Hall B", "Room 12")
-_NAME1 = r"(?!" + _CW + r"\b)(?-i:[A-Z][\w\u2019-]*(?:\s+(?:[A-Z0-9]{1,3}|[0-9]+)\b)?)"
+# G16 r16 (M16 r15 P3-1): a title may come before a name ("Mr Lee", "Dr. Okafor")
+_TITLE = r"(?:(?-i:Mr|Mrs|Ms|Mx|Dr|Prof)\.?\s+)"
+_NAME1 = r"(?!" + _CW + r"\b)" + _TITLE + r"?(?-i:[A-Z][\w\u2019-]*(?:\s+(?:[A-Z0-9]{1,3}|[0-9]+)\b)?)"
 # G16 r15 (M16 r14 P3-1): two names joined by and or or ("reply to Ann and Raj")
-_NAME = _NAME1 + r"(?:\s+(?:and|or)\s+" + _NAME1 + r")?"
+# G16 r16 (M16 r15 P3-1): a comma list of names ending in and or or ("Ann, Raj and Mo")
+_NAME = _NAME1 + r"(?:\s*,\s*" + _NAME1 + r"){0,4}(?:\s*,?\s+(?:and|or)\s+" + _NAME1 + r")?"
+_REPLY_WORD = (r"\b(?:repl(?:y|ies|ied|ying)|respond\w*|responses?|answer\w*|say|says|saying|said|state|states|stated"
+               r"|stating|statement|tell\w*|told|output\w*|write|writes|wrote|written)\b")
 _CHUNK = (r"(?:no\s+later\s+than\s+(?:" + _LNP + r"|" + _NAME + r")"
           r"|" + _PREP + r"\s+(?:" + _MSG_NP + r"|" + _PERSON + r"|" + _LNP + r")"
           # a name only after a true preposition, not after first, next, every, this ... ("reply first Paris")
           r"|(?:to|by|within|on|at|in|into|before|after|from|during|about|over|via|through|for|under|around|across"
-          r"|inside|outside|until|till)\s+" + _NAME + r""
+          r"|inside|outside|until|till|of|among|between|near)\s+" + _NAME + r""
+          r"|" + _CLOCK + r""
           r"|" + _ADV + r"\b"
           r"|" + _MSG_NP + r"|" + _PERSON + r""
           # a determiner object in lower case ("answer the phones", "answer all the post")
@@ -223,7 +234,9 @@ _CHUNK = (r"(?:no\s+later\s+than\s+(?:" + _LNP + r"|" + _NAME + r")"
           r"|(?:more|nothing|little|less|much)\b"
           # G16 r15: a short contact clause with a pronoun subject that closes the clause ("in the order they arrive");
           #   its words are lower case and never a content word, so "it is open" cannot pass
-          r"|(?:they|we|it|he|she)\s+" + _LW + r"(?:\s+" + _LW + r")?(?=\s*(?:[.!?;,)]|$))"
+          # G16 r16 (M16 r15 P2-1): no reply verb inside it ("by noon they say refunds")
+          r"|(?:they|we|it|he|she)\s+(?!" + _REPLY_WORD + r")" + _LW + r"(?:\s+(?!" + _REPLY_WORD + r")" + _LW + r")?"
+          r"(?=\s*(?:[.!?;,)]|$))"
           # a second reply verb for the same subject ("answer calls and reply to email by noon")
           r"|(?:and|or)\s+(?:" + _AUX + r"\s+)?" + _SAY + r"\b"
           # a time or condition clause with its own subject; an elliptic "when asked" or "if needed" only closes the clause
@@ -242,8 +255,6 @@ _CHUNK = (r"(?:no\s+later\s+than\s+(?:" + _LNP + r"|" + _NAME + r")"
           r"|:\s*see\s+" + _LNP + r"(?=\s*(?:[.!?]|$)))")
 # the final conjunction clause may not speak of the reply itself ("..., and the answer is that ...", "..., so the reply
 #   is ..."); a parenthesis may not carry a clause with be, have or a modal ("reply (refunds are open)")
-_REPLY_WORD = (r"\b(?:repl(?:y|ies|ied|ying)|respond\w*|responses?|answer\w*|say|says|saying|said|state|states|stated"
-               r"|stating|statement|tell\w*|told|output\w*|write|writes|wrote|written)\b")
 # every chunk starts and ends on a word boundary, so a chunk cannot end inside a word ("every questi" + "on Paris")
 _FREE_REST = (r"(?:\s*,?\s*(?:(?<![\w\u2019-])|(?=[(:]))" + _CHUNK + r"(?![\w\u2019-])){0,6}"
               r"(?:\s*,\s*(?:so|and|but|as|while|because|since)\s+(?!that\b)(?![^.!?;:\"\u201c\u2018]*?" + _REPLY_WORD + r")"

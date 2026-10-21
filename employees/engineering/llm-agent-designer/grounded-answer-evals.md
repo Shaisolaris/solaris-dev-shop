@@ -197,7 +197,13 @@ on the new snapshot.
     head ("in one word refunds" is content); only a number plus a time unit may be longer ("within two working
     days"). Two names may be joined by and or or ("to Ann and Raj"), and a short pronoun clause may close the
     sentence ("in the order they arrive"). Residual: one bare lower-case word after a two-word phrase ("reply in
-    kind refunds") still parses as content-free; it cannot carry a clause, a quote, a number or a name.
+    kind refunds") still parses as content-free; it cannot carry a clause, a quote or a name.
+    Correction (r16, M16 r15 P2-1): in r15 the lower-case word pattern also took digits, so the residual could
+    carry a number ("reply about fee 42"). From r16 a lower-case word is letters only, and a number is allowed
+    only as a number plus a time unit ("within 2 days") or as a clock time after by, at, from, to, until, till,
+    before or after ("from 9 to 5", "by 5.30 pm"). The closing pronoun clause may not hold a reply verb ("by
+    noon they say refunds" is content). Of, among, between and near are prepositions; a name may follow Mr,
+    Mrs, Ms, Mx, Dr or Prof, and names may form a comma list ending in and or or ("to Ann, Raj and Mo").
     The documented limit: a that or who clause after a noun or person ("readers who say that ...", "calls about
     the fee that the council set") is skipped after a bot heading, because content such as "reply to users who
     write in that ..." has the same shape.
