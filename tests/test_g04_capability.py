@@ -242,5 +242,29 @@ class G04Handoff(unittest.TestCase):
         self.assertEqual(len((self.w / 'outbox' / 'ledger.jsonl').read_text().strip().splitlines()), 2)
 
 
+    def test_refusal_in_a_new_state_folder_leaves_no_lock(self):
+        """G04 r4 (M04 P4-1): an exit-2 refusal in a state folder the run created left an empty .worker.lock behind."""
+        self.assertEqual(self.cli('run', '--worker', 'ana')[0], 0)
+        order_path = self.w / 'order.json'
+        order = json.loads(order_path.read_text())
+        order['owner'] = 'support: Someone Else'
+        order_path.write_text(json.dumps(order, indent=2) + '\n')
+        fresh = Path(self.tmp) / 'fresh-state'
+        c, _, err = self.cli('run', '--worker', 'ben', '--state', str(fresh))
+        self.assertEqual(c, 2, err)
+        self.assertIn('already delivered', err)
+        self.assertFalse(fresh.exists(), sorted(str(p) for p in fresh.rglob('*')) if fresh.exists() else '')
+        nested = Path(self.tmp) / 'parent-exists'
+        nested.mkdir()
+        c, _, err = self.cli('run', '--worker', 'ben', '--state', str(nested))
+        self.assertEqual(c, 2, err)
+        self.assertEqual(list(nested.iterdir()), [])
+        # the original state folder keeps its lock, journal and receipts
+        sdir = self.w / '.handoff' / 'WO-HARBOR-1'
+        c, _, err = self.cli('run', '--worker', 'ben')
+        self.assertEqual(c, 2, err)
+        self.assertTrue((sdir / '.worker.lock').exists())
+        self.assertTrue((sdir / 'journal.jsonl').exists())
+
 if __name__ == '__main__':
     unittest.main()
