@@ -385,8 +385,8 @@
   },
   {
    "id": "G37",
-   "commit": "e9b7a7772636f927bf21128dc2802ffcac742b44",
-   "note": "G37 h1, newest remote head",
+   "commit": "66d3857a898ed5a9acdf6d74ba4bfb20d59db36b",
+   "note": "Root final documentation reconciliation: existing privacy helper unchanged, inherited WordPress request-clock wording aligned to cited GDPR Article12.3.",
    "tests": [
     "tests.test_g37_capability"
    ],
