@@ -341,8 +341,8 @@
   },
   {
    "id": "G33",
-   "commit": "d24779882bbf9c969f38259d8b19c632e9baf842",
-   "note": "Exact delivered repair revision in root product candidate; inclusion does not imply independent acceptance.",
+   "commit": "d7362c10641c918cb61816fbc10e1bc702b99421",
+   "note": "Root Unicode sign correction after independent Muse review;25 targeted tests pass.",
    "tests": [
     "tests.test_g33_capability",
     "tests.test_g33_takeover"
@@ -394,8 +394,8 @@
   },
   {
    "id": "G38",
-   "commit": "acc8c218d0ec7800bae972562eeeca256ccfe717",
-   "note": "Root authority-consistency repair; exact candidate pending final review.",
+   "commit": "cf0362847613f03aa273d2825f6e9845fda5a885",
+   "note": "Root heading case and additional conditional-attribution correction;26 targeted tests pass; bounded lexical/legal consistency only.",
    "tests": [
     "tests.test_g38_capability",
     "tests.test_g38_takeover"
