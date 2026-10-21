@@ -61,3 +61,10 @@ robust win. Any finding that blocks a claim withholds the preference: the result
 `--out` writes through a temporary file and an atomic rename, refuses to overwrite the package, and a failed
 or invalid run leaves an earlier result untouched. `verify` reruns the package and names any field that
 differs.
+
+## Numeric source boundaries
+A percent sign remains attached to its number across Unicode whitespace, multiple
+spaces and line wrapping. A plain value cannot borrow a percent value merely because
+of its formatting. Numeric fragments inside identifiers, unit-suffixed words or signed
+values are not treated as an unsigned plain-number match. This is bounded lexical
+verification, not semantic validation of an entire claim.

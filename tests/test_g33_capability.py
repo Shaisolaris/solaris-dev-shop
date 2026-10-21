@@ -209,7 +209,7 @@ class G33Capability(unittest.TestCase):
                 self.assertFalse(m._value_in_quote('18', q))
         self.assertTrue(m._value_in_quote('12.5%', 'up 12.5 % year on year'))
         self.assertFalse(m._value_in_quote('18%', 'up 118 % year on year'))
-        self.assertFalse(m._value_in_quote('18%', 'grew 18  % (two spaces)'))  # one space only
+        self.assertTrue(m._value_in_quote('18%', 'grew 18  % (two spaces)'))  # whitespace never changes percent identity
         self.assertTrue(m._value_in_quote('18', 'grew 18 points'))
         self.assertTrue(m._value_in_quote('18', 'Umsatz 18.000 Euro'))  # "." is a decimal point (documented)
         doc = (TOOL.parent / 'evidence-product-decision.md').read_text()
