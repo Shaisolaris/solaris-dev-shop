@@ -111,7 +111,7 @@ def _years_holder_ok(s):
     h = HOLDER_RE.match(m.group(1)) if m else None
     # A holder notice is attribution, not a conditional/prepositional clause.
     # Ambiguous legal entity names fail closed; this is not a legal interpretation.
-    conditional = re.compile(r"\b(?:for|under|subject to|provided|providing|if|unless|until|during|before|after|while|where|when)\b")
+    conditional = re.compile(r"\b(?:for|under|subject to|provided|providing|if|unless|until|during|before|after|while|where|when|as long as|contingent on)\b")
     if not h or OPERATIVE.search(h.group("h")) or conditional.search(h.group("h")):
         return False
     # a holder is a name: after its first comma only company suffixes or "and contributors" may follow
@@ -277,10 +277,10 @@ def check(root, manifest=None, exclude=()):
     if rd is not None:
         for m in re.finditer(r"img\.shields\.io/badge/license-([A-Za-z0-9.]+)-", rd):
             declared("README.md", m.group(1).replace("--", "-"), "README badge")
-        m = re.search(r"(?m)^## License[ \t]*\n+(?:[ \t]*\n)*[ \t]*(?P<mark>\*\*|__|`)?(?P<decl>[A-Za-z0-9]+(?:[.\-][A-Za-z0-9]+)*(?:[ \t]+[A-Za-z0-9]+(?:[.\-][A-Za-z0-9]+)*)*)(?(mark)(?P=mark))(?=\s*[,.]|\s*$)", rd)
+        m = re.search(r"(?im)^## License[ \t]*\n+(?:[ \t]*\n)*[ \t]*(?P<mark>\*\*|__|`)?(?P<decl>[A-Za-z0-9]+(?:[.\-][A-Za-z0-9]+)*(?:[ \t]+[A-Za-z0-9]+(?:[.\-][A-Za-z0-9]+)*)*)(?(mark)(?P=mark))(?=\s*[,.]|\s*$)", rd)
         if m:
             declared("README.md", m.group("decl"), "README License section")
-        elif re.search(r"(?m)^## License[ \t]*$", rd):
+        elif re.search(r"(?im)^## License[ \t]*$", rd):
             F.append({"code": "license_undeclared", "path": "README.md",
                       "detail": "License section has no supported identifier"})
     # NOTICE: other license files must be listed, listed ones must exist

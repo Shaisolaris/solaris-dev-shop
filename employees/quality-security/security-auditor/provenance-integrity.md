@@ -70,3 +70,5 @@ are not exhaustive legal analysis; a clean result never grants permission or cer
 ownership. Read every reported copyright line when authority matters.
 README license identifiers may be plain, bold or inline code. An explicit License
 section without a supported identifier is reported instead of silently ignored.
+
+Muse follow-up correction: lowercase or mixed-case README License headings are compared too. Attribution clauses containing “as long as” or “contingent on” fail closed. Other unrecognized natural-language conditions can still evade this bounded lexical check; inspect the listed copyright lines. No legal permission is inferred.
