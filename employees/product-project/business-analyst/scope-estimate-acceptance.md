@@ -65,7 +65,7 @@ A contradiction never becomes a plain commitment. It needs an ambiguity entry wh
 requirement involved, escalated to the person who decides. With no entry it is `unresolved_conflict`
 on each requirement, and commitments resting on them are blocked. With an open entry it is `open_ambiguity`
 and listed under `escalations` with its owner. With a resolved entry the proposal may be ready, but
-each commitment resting on those requirements lists the ambiguity under `qualified_by`, so the proposal
+each commitment resting on those requirements, or on an input one of them traces, lists the ambiguity under `qualified_by`, so the proposal
 states the owner's resolution. `conflicts` in the JSON lists every contradiction found, its evidence,
 status, ambiguity ids and owner.
 

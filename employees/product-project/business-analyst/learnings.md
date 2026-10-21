@@ -16,3 +16,4 @@
 - What was used: methodology only: jtlicardo/bpmn-assistant; connected as external reference: jtlicardo/bpmn-assistant; methodology absorbed: hustcc/mcp-mermaid, alirezarezvani/the coding agent-skills; rejected (not used): sartography/SpiffWorkflow, awesome-bpmn / awesome-bpm lists; imixs/open-bpmn modeler
 - License notes: sartography/SpiffWorkflow: LGPL-3.0 (FLAG)
 - 2026-10-19 r3: two commitment texts on opposite sides of a family contradict each other even when no requirement takes a side; the commitment check now compares commitments with each other too (M31 r2 P2-1).
+- The M31 r2 self-validation (P4-1) found that a commitment resting only on an input that a conflicting requirement traces had an empty `qualified_by`, so the proposal did not state the owner's resolution for it. A resolved conflict now qualifies commitments on its requirements and on the inputs they trace.
