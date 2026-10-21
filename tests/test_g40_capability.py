@@ -249,6 +249,31 @@ class G40Direct(unittest.TestCase):
         self.assertEqual(r.returncode, 2, r.stderr)
         self.assertIn("Nothing was written", r.stderr)
 
+class SkillCopyTemp(unittest.TestCase):
+    def test_skill_copy_without_dest_leaves_no_temp_folder(self):
+        """M40 P4-2: skill-copy without --dest left a g40-skill-* folder in TMPDIR on every run."""
+        import tempfile as _tf, shutil as _sh, os as _os
+        tmpdir = Path(_tf.mkdtemp(prefix="g40tmpdir-"))
+        try:
+            env = dict(_os.environ, TMPDIR=str(tmpdir), PYTHONDONTWRITEBYTECODE="1")
+            p = subprocess.run([sys.executable, str(TOOL), "skill-copy", str(ROOT), "quality-security/qa-engineer", "--json"],
+                               capture_output=True, text=True, env=env, timeout=120)
+            self.assertEqual(p.returncode, 1, p.stderr)
+            j = json.loads(p.stdout)
+            self.assertEqual(j["status"], "broken")
+            self.assertIsNone(j["dest"])
+            self.assertIn("removed", j["temp_copy"])
+            self.assertEqual(sorted(x.name for x in tmpdir.iterdir()), [])
+            keep = tmpdir / "keep"
+            p = subprocess.run([sys.executable, str(TOOL), "skill-copy", str(ROOT), "quality-security/qa-engineer", "--dest", str(keep), "--json"],
+                               capture_output=True, text=True, env=env, timeout=120)
+            self.assertEqual(p.returncode, 1, p.stderr)
+            self.assertTrue((keep / "qa-engineer" / "capability.contract.json").is_file())
+            self.assertNotIn("temp_copy", json.loads(p.stdout))
+        finally:
+            _sh.rmtree(str(tmpdir), ignore_errors=True)
+
+
 class NoBytecode(unittest.TestCase):
     def test_python_bounds_writes_no_bytecode_into_the_checkout(self):
         import shutil as _sh, tempfile as _tf
