@@ -181,6 +181,21 @@ on the new snapshot.
     'the shop is shut'", "answer firmly: ..."), yes or no after only, always, just or simply, or a determiner
     clause with be, have or must ("reply to users the fee is waived"; this last check stops at a comma and after
     a wh-word, so "say when the issue is out" and "as they say, the early bird ..." are kept).
+    From r14 (M16 r13 P2-1) the rule is inverted, because each list of content shapes missed one ("reply to
+    users that Sam is away", "answer with yes", "reply saying ..."). A statement after a bot heading is kept only
+    when everything after its reply verb parses as content-free chunks: a preposition phrase in lower case or
+    with one name after a true preposition ("by noon", "within the hour", "in Hall B"), a lower-case adverb, a
+    message noun phrase (optionally with a relative clause from a closed verb list), a person (optionally with a
+    whose-clause), a lower-case determiner object ("the phones"), a closing "that" or "it", a second reply verb
+    ("answer calls and reply to email"), a time or condition clause (an elliptic "when asked" or "if needed"
+    only at the end of a clause), a how, what, where or why clause of at most four words that closes the
+    clause ("answer where the key is"), a parenthesis without quotes or a be, have or modal verb, a "see ..."
+    cross-reference, and a final comma plus so, and, but, as, while, because or since whose clause does not
+    speak of the reply ("..., and the answer is that ..." is content). Every chunk starts and ends on a word
+    boundary. Anything else is treated as reply content and the sentence is skipped (fail closed).
+    The documented limit: a that or who clause after a noun or person ("readers who say that ...", "calls about
+    the fee that the council set") is skipped after a bot heading, because content such as "reply to users who
+    write in that ..." has the same shape.
   - Determiner (optional): every, each, all, any, the, a, an, you, these, those, other, all the, any of the.
   - Automated reader: a noun phrase whose head is automated: AI, bot, chatbot, LLM, or a generic head
     (assistant, model, tool, agent, reader, system, crawler, program, friend) after one to three automated

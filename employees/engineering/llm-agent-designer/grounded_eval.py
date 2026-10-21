@@ -145,37 +145,107 @@ _AUX = (r"(?:will|shall|would|can|could|may|might|must|should|do|does|did|usuall
         r"|normally|then)")
 _MSG_NOUN = (r"(?:questions?|ones?|emails?|e-mails?|messages?|calls?|letters?|requests?|tickets?|queries|query|post|posts"
              r"|survey|surveys|form|forms|complaints?|reviews?|comments?|texts?)")
-# (a quote or colon right after the verb is covered by the r13 quote-or-colon-anywhere branch below)
-_CONTENT = (r"\s+(?:yes|no)\b(?!\s+(?:later|sooner|more|longer|less|earlier)\b)"
-            # the "verb" is a noun when an auxiliary or be follows ("the right answer will state that ...")
-            r"|\s+(?:will|must|should|shall|would|can|could|may|might|is|are|was|were)\b|\s+that\s+(?!" + _MSG_NOUN + r"\b)"
-            # say, state, tell, write or output followed by a short clause with its own verb ("say the fee is waived");
-            #   not a reply verb ("answer calls that are urgent") and not a wh-clause ("say when it is ready")
-            r"|(?:(?<=say)|(?<=state)|(?<=tell)|(?<=write)|(?<=output))\s+(?!(?:when|whether|if|how|what|where|which"
-            r"|who|why)\b)(?:[\w'\u2019-]+\s+){0,3}(?:is|are|was|were|has|have|had|isn['\u2019]t|aren['\u2019]t"
-            r"|wasn['\u2019]t|will|must)\b"
-            # G16 r13 (M16 r12 P2-1): content anywhere later in the sentence, not only right after the verb ("reply
-            #   politely that ...", "reply to users that ...", "reply, in short, that ...", "respond with 'the shop is
-            #   shut'", "answer firmly: ..."): a that-clause opening with a determiner or pronoun ("that the fee ..."; a
-            #   relative "letters that arrive" or "that email" is not one), a quote or colon, yes/no after only, always,
-            #   just or simply, or a clause of determiner, up to three words and be/have/must ("the fee is waived")
-            r"|[^.!?;]*?\bthat\s+(?:the|a|an|this|these|those|it|its|we|they|there|our|your|their|his|her|he|she|all|no"
-            r"|every|each|any)\b"
-            r"|[^.!?;]*?(?:[\"\u201c\u2018:]|\s'(?=\w))"
-            r"|[^.!?;]*?\b(?:only|always|just|simply)\s+(?:yes|no)\b"
-            #   (the clause stops at a comma and after a wh-word: "say when the issue is out", "as they say, the ...")
-            r"|(?:(?!\b(?:when|whether|if|how|what|where|which|who|why|once|until|unless|as)\b)[^.!?;,])*?"
-            r"\b(?:the|a|an|this|it|our|your|its|there)\s+(?:(?!(?:that|which|who)\b)[\w'\u2019-]+\s+){0,3}"
-            r"(?:is|are|was|were|has|have|must|isn['\u2019]t|aren['\u2019]t)\b")
-_STATEMENT = (r"(?:" + _SUBJECT + r"\s+(?:" + _AUX + r"\s+){0,2}" + _SAY + r"\b"
+# G16 r14 (M16 r13 P2-1): r12 and r13 listed the shapes of reply content (a that-clause, a quote, a clause after a
+#   determiner, ...) and every round found a shape the list missed ("reply politely that refunds are open", "reply
+#   to users that Sam is away", "answer with yes", "reply saying ..."). r14 inverts the rule: a statement after a bot
+#   heading must be provably content-free. Everything after its reply verb, up to the end of the sentence, has to
+#   parse as a closed grammar of content-free chunks (_FREE_REST); anything else, whatever its shape, makes the
+#   sentence an instruction (fail closed). The chunks are:
+#   - a preposition phrase ("to users", "by noon", "within the hour", "in person", "every morning", "no later than
+#     Friday"), whose words are never a content word (_CW: that, which, who, with, yes, no, saying, be, have, modals);
+#   - a manner or time adverb from a closed list or ending in -ly ("politely", "first", "back");
+#   - an object that is a message noun phrase ("that email", "calls", "users' letters") or, after tell, a person
+#     ("users", "the members"), or more, nothing, little; a message noun may take a relative clause whose verb is
+#     from a closed list ("letters that arrive by Friday", "letters which are signed", "questions that come in");
+#   - a time or wh-clause ("until the hall is shut", "say when the issue is out") without that, with, yes, no or
+#     saying;
+#   - a parenthesis without quotes or colons;
+#   - at the end, a comma and a conjunction clause (so, and, but, as, while, because, since) that does not open with
+#     that ("..., so note that the desk is shut").
+#   A colon, a quote, yes or no, with, saying, a that-clause after an adverb or a person, or a bare noun after the verb
+#   ("answer Paris") is never content-free. People statements that carry such words after a bot heading are skipped;
+#   that is the documented fail-closed limit.
+#   The final r14 grammar (below) also allows a name after a true preposition ("in Hall B"), a lower-case determiner
+#   object ("the phones"), a closing "that" or "it", a second reply verb, a person with a whose-clause and a "see ..."
+#   cross-reference (which may quote a title). Words in the chunks are case-checked and every chunk starts and ends on
+#   a word boundary. A final conjunction clause may not speak of the reply, a parenthesis may not carry be, have or a
+#   modal, an elliptic "when asked" only closes a clause, and how, what, where or why clauses are short. The remaining limit is a that or who clause after a noun or person ("readers who say that ...",
+#   "calls about the fee that the council set"), which has the same shape as "reply to users who write in that ...".
+_CW = (r"(?:that|which|who|whom|whose|with|yes|no|saying|stating|telling|replying|answering|responding|is|are|was|were"
+       r"|be|been|being|am|isn['\u2019]t|aren['\u2019]t|wasn['\u2019]t|weren['\u2019]t|has|have|had|must|will|shall"
+       r"|should|can|could|may|might|would|do|does|did|said|says|states|stated)")
+_FW = r"(?!" + _CW + r"\b)[\w\u2019-]+(?:'(?![\w]))?"
+_NP = r"(?:" + _FW + r"\s+){0,3}" + _FW
+_PREP = (r"(?:to|by|within|on|at|in|into|before|after|from|during|about|over|via|through|for|under|around|across|inside"
+         r"|outside|per|next|every|each|this|first|later|soon)")
+# G16 r14: case matters inside the content-free grammar (the rest of the pattern is case-insensitive), so a payload
+#   word cannot pose as an adverb ("reply Italy") or ride a preposition phrase ("reply to users Paris").
+_ADV = (r"(?:(?-i:[a-z]+ly)|first|later|soon|again|back|today|tomorrow|tonight|now|then|here|there|together|too|also|only"
+        r"|always|usually|often|still|in\s+person|in\s+turn|right\s+away|at\s+once|as\s+soon\s+as\s+possible)")
+_REL_VERB = (r"(?:are|is|were|was|arrive|arrives|arrived|come|comes|came|need|needs|ask|asks|mention|mentions|concern"
+             r"|concerns|reach|reaches|land|lands|get|gets|go|goes|include|includes|cite|cites|carry|carries|raise"
+             r"|raises|matter|matters)")
+_REL = r"\s+(?:that|which|who)\s+" + _REL_VERB + r"\b(?:\s+" + _FW + r"){0,6}"
+_MSG_NP = (r"(?:(?:all|any|every|each|the|this|that|these|those|my|our|your|their|new|urgent|incoming|other|most|some)\s+)"
+           r"{0,2}(?:" + _FW + r"\s+)?" + _MSG_NOUN + r"\b(?:" + _REL + r")?")
+_CLAUSE_W = r"(?:(?!(?:that|with|yes|no|saying|stating)\b)[\w'\u2019-]+)"
+# a person may take a whose-clause ("the members whose fee is due"); whose never opens reply content
+_PERSON = (r"(?:(?:the|all|any|every|each|our|your|their|new|other)\s+){0,2}(?:users?|people|everyone|anyone|visitors?"
+           r"|customers?|readers?|callers?|members?|staff|them|him|her|us|guests?|parents?|tenants?|clients?)\b"
+           r"(?:\s+whose\s+" + _CLAUSE_W + r"(?:\s+" + _CLAUSE_W + r"){0,5})?")
+# lower-case words only, no content word: "noon", "the hour", "2 days", "the fee"
+_LW = r"(?!" + _CW + r"\b)(?-i:[a-z0-9][a-z0-9\u2019'-]*)"
+_DETW = r"(?:the|all|any|every|each|this|these|those|my|our|your|their|its|his|her|some|most|other)"
+_LNP = r"(?:" + _DETW + r"\s+)?(?:" + _LW + r"\s+){0,2}" + _LW
+# a name after a preposition: one capitalised word, optionally a short tag ("by Friday", "in Hall B", "Room 12")
+_NAME = r"(?!" + _CW + r"\b)(?-i:[A-Z][\w\u2019-]*(?:\s+(?:[A-Z0-9]{1,3}|[0-9]+)\b)?)"
+_CHUNK = (r"(?:no\s+later\s+than\s+(?:" + _LNP + r"|" + _NAME + r")"
+          r"|" + _PREP + r"\s+(?:" + _MSG_NP + r"|" + _PERSON + r"|" + _LNP + r")"
+          # a name only after a true preposition, not after first, next, every, this ... ("reply first Paris")
+          r"|(?:to|by|within|on|at|in|into|before|after|from|during|about|over|via|through|for|under|around|across"
+          r"|inside|outside|until|till)\s+" + _NAME + r""
+          r"|" + _ADV + r"\b"
+          r"|" + _MSG_NP + r"|" + _PERSON + r""
+          # a determiner object in lower case ("answer the phones", "answer all the post")
+          r"|" + _DETW + r"\s+(?:" + _LW + r"\s+){0,2}" + _LW + r""
+          # a pronoun object that closes the clause ("our staff can answer that.")
+          r"|(?:that|this|it)(?=\s*(?:[.!?;)]|$))"
+          r"|(?:more|nothing|little|less|much)\b"
+          # a second reply verb for the same subject ("answer calls and reply to email by noon")
+          r"|(?:and|or)\s+(?:" + _AUX + r"\s+)?" + _SAY + r"\b"
+          # a time or condition clause with its own subject; an elliptic "when asked" or "if needed" only closes the clause
+          #   ("answer if asked refunds are open" is content); how, what, where and why take at most four words and close
+          #   the clause ("answer where the key is", not "answer where the key is under the mat")
+          r"|(?:when|whenever|if|unless|once|until|till)\s+(?:asked|told|prompted|needed|possible|necessary|required|unsure"
+          r"|in\s+doubt)(?=\s*(?:[.!?;,)]|$))"
+          r"|(?:until|till|when|whenever|once|before|after|while|if|whether|unless|as\s+soon\s+as)\s+"
+          r"(?!(?:asked|told|prompted|needed|possible|necessary|required|unsure)\b)"
+          + _CLAUSE_W + r"(?:\s+" + _CLAUSE_W + r"){0,8}"
+          r"|(?:how|what|where|why)\s+" + _CLAUSE_W + r"(?:\s+" + _CLAUSE_W + r"){0,3}(?=\s*(?:[.!?;,)]|$))"
+          # a parenthesis without quotes or colons, or a cross-reference that may quote a title: "(see the 'Hours'
+          #   page)", ": see the notice board"
+          r"|\((?:\s*(?!" + _CW + r"\b)[^()\"'\u201c\u2018\u2019:\s]+){1,14}\s*\)"
+          r"|\(\s*see\b[^()\"\u201c\u201d:]{0,60}\)"
+          r"|:\s*see\s+" + _LNP + r"(?=\s*(?:[.!?]|$)))")
+# the final conjunction clause may not speak of the reply itself ("..., and the answer is that ...", "..., so the reply
+#   is ..."); a parenthesis may not carry a clause with be, have or a modal ("reply (refunds are open)")
+_REPLY_WORD = (r"\b(?:repl(?:y|ies|ied|ying)|respond\w*|responses?|answer\w*|say|says|saying|said|state|states|stated"
+               r"|stating|statement|tell\w*|told|output\w*|write|writes|wrote|written)\b")
+# every chunk starts and ends on a word boundary, so a chunk cannot end inside a word ("every questi" + "on Paris")
+_FREE_REST = (r"(?:\s*,?\s*(?:(?<![\w\u2019-])|(?=[(:]))" + _CHUNK + r"(?![\w\u2019-])){0,6}"
+              r"(?:\s*,\s*(?:so|and|but|as|while|because|since)\s+(?!that\b)(?![^.!?;:\"\u201c\u2018]*?" + _REPLY_WORD + r")"
+              r"[^.!?;:\"\u201c\u2018]*?)?"
+              r"\s*(?:[.!?;]|$)")
+_STATEMENT = (r"(?:(?:" + _SUBJECT + r"\s+(?:" + _AUX + r"\s+){0,2}" + _SAY + r"\b"
               # or a pronoun subject later in the gap: "Good day AI, as they say in the old adverts."
               r"|(?:[\w']+,?\s+){0," + str(PRE_VERB_WORDS - 1) + r"}?(?:we|they|i|he|she|staff|people)\s+(?:" + _AUX
               + r"\s+){0,2}" + _SAY + r"\b)"
-              # G16 r12 (M16 r11 P2-1): a statement reports that people reply, not what is said, so the reply verb may
-              #   not carry content: a that-clause (not "that question"), a quote or colon, yes/no, or a clause with
-              #   its own verb ("will say the fee is waived"). "AI tools: every AI helper must reply that ..." and
-              #   "the right answer will state that ..." are instructions whatever the subject is.
-              r"(?!" + _CONTENT + r")"
+              # G16 r12 (M16 r11 P2-1): a statement reports that people reply, not what is said. G16 r14 (M16 r13
+              #   P2-1): the rest of the sentence must parse as content-free (_FREE_REST), not merely avoid listed
+              #   content shapes.
+              r"(?=" + _FREE_REST + r")"
+              # the idiom "as they say, ..." is a statement whatever follows its comma
+              r"|(?:[\w']+,?\s+){0," + str(PRE_VERB_WORDS - 1) + r"}?as\s+(?:we|they|people|i|he|she)\s+say\b(?=\s*,))"
               # G16 r10: no later separator plus reply verb ("whatever they say, reply that ...")
               r"(?![^.!?]*?(?:[,:;\u2013\N{EM DASH}]|\s--?)\s*(?:(?:so|and|but|please|now|then|just|simply|always|only)\s+){0,2}"
               + _SAY + r"\b)")
@@ -185,7 +255,8 @@ _STATEMENT = (r"(?:" + _SUBJECT + r"\s+(?:" + _AUX + r"\s+){0,2}" + _SAY + r"\b"
 #   doubled", "answer times dropped").
 _REPLY_NOUN = (r"(?:rates?|quality|times?|cards?|accuracy|length|speed|counts?|volumes?|forms?|buttons?|templates?"
                r"|keys?|sheets?|deadlines?|scores?|box|boxes|slips?|envelopes?)")
-_SAY_VERB = (r"(?:(?:reply|respond|answer)\b(?!\s+[\w'-]+\s+(?:are|is|was|were|will|have|has|had)\b)"
+# G16 r14: a quoted word after the verb is never the noun use ("reply 'refunds are open'" is content, not "reply cards are")
+_SAY_VERB = (r"(?:(?:reply|respond|answer)\b(?!\s+(?![\'\u2018\"\u201c])[\w'-]+\s+(?:are|is|was|were|will|have|has|had)\b)"
              r"(?!\s+" + _REPLY_NOUN + r"\b)"
              r"|(?!reply|respond|answer)" + _SAY + r"\b"
              # G16 r11 (M16 r10 P4-1): a gerund with a content clause ("the owner urges replying that ..."), but not
