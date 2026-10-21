@@ -1,0 +1,57 @@
+== Python 3.9.6 at 60932f5341df96991bc505bdaa64153367c4004c
+ACCEPTED 13/13
+REJECTED 0/13
+CROSS-CHECKS CLEAN (0 findings)
+VERDICT INTEGRATED
+== Python 3.11.16 at 60932f5341df96991bc505bdaa64153367c4004c
+ACCEPTED 13/13
+REJECTED 0/13
+CROSS-CHECKS CLEAN (0 findings)
+VERDICT INTEGRATED
+== Python 3.12.14 at 60932f5341df96991bc505bdaa64153367c4004c
+ACCEPTED 13/13
+REJECTED 0/13
+CROSS-CHECKS CLEAN (0 findings)
+VERDICT INTEGRATED
+== Python 3.13.15 at 60932f5341df96991bc505bdaa64153367c4004c
+ACCEPTED 13/13
+REJECTED 0/13
+CROSS-CHECKS CLEAN (0 findings)
+VERDICT INTEGRATED
+== --run all on 3.9.6
+  run test G04 python3 -m unittest tests.test_g04_capability rc=0 10.0s
+  run command G04 python3 examples/capabilities/G04/handoff_oracle.py rc=0 15.9s
+  run test G05 python3 -m unittest tests.test_g05_capability rc=0 1.1s
+  run test G05 python3 -m unittest tests.test_closure_hardening rc=0 0.8s
+  run command G05 python3 examples/capabilities/G05/binding_oracle.py rc=0 0.4s
+  run test G07 python3 -m unittest tests.test_g07_capability rc=0 10.7s
+  run command G07 python3 examples/capabilities/G07/registry_oracle.py rc=0 7.0s
+  run test G08 python3 -m unittest tests.test_g08_capability rc=0 23.8s
+  run command G08 python3 examples/capabilities/G08/deploy_oracle.py rc=0 19.5s
+  run test G09 python3 -m unittest tests.test_g09_capability rc=0 5.0s
+  run command G09 python3 examples/capabilities/G09/k8s_oracle.py rc=0 1.6s
+  run cross_check G12 python3 examples/capabilities/G12/cross_checks.py rc=0 0.7s
+  run gate suite python3 -m unittest discover -s tests rc=0 97.6s
+  run gate control_plane python3 control-plane/meta_control_plane.py self-test rc=0 0.2s
+  run gate quality_audit quality_os.py audit rc=0 0.1s
+for f in sorted(glob.glob('empl rc=0 0.0s
+  run gate catalog python3 tools/build_skill_catalog.py --check rc=0 0.0s
+  run gate symlinks git ls-files -s rc=0 0.0s
+  run gate metadata python3 tools/validate_skill_metadata.py rc=0 0.1s
+VERDICT INTEGRATED
+== targeted tests Python 3.9.6
+Ran 128 tests in 92.535s
+
+OK
+== targeted tests Python 3.11.16
+Ran 128 tests in 74.467s
+
+OK (skipped=1)
+== targeted tests Python 3.12.14
+Ran 128 tests in 79.808s
+
+OK (skipped=1)
+== targeted tests Python 3.13.15
+Ran 128 tests in 81.595s
+
+OK (skipped=1)

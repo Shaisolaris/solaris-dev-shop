@@ -1,0 +1,7 @@
+branch review/grok-g12-daily-integration remote head: 60932f5341df96991bc505bdaa64153367c4004c
+60932f5 G12 r4: plan.json and README name the newest heads G04 r4, G05 r4, G07 r2 and G09 h1 (review only, Grok build)
+8d5bdb3 G12 r4: merge G09 h1 1cab0f8 (newest G09 head) into the day 2 integration
+ed99e29 G12 r4: merge G07 r2 f4776bd (newest G07 head) into the day 2 integration
+e11a50e G12 r4: merge G05 r4 1b840cd (newest G05 head) into the day 2 integration
+97dcf02 G12 r4: merge G04 r4 7ed5f70 (newest G04 head) into the day 2 integration
+main: 02ba9c571b10ad1dba792d2ac5534bcad3171e67

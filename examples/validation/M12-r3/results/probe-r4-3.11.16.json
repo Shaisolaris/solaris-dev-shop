@@ -1,0 +1,106 @@
+{
+ "probe": "m12r3",
+ "python": "3.11.16",
+ "rows": [
+  {
+   "row": "R01",
+   "name": "every plan pin is the current remote head of that goal's review branch",
+   "pass": true,
+   "obs": false,
+   "detail": "all 5"
+  },
+  {
+   "row": "R02",
+   "name": "every pin is an ancestor of HEAD",
+   "pass": true,
+   "obs": false,
+   "detail": "all"
+  },
+  {
+   "row": "R03",
+   "name": "each r3 pin is an ancestor of its r4 pin (candidates moved forward, nothing rewritten)",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "bad": {},
+    "moved": [
+     "G04",
+     "G05",
+     "G07",
+     "G09"
+    ]
+   }
+  },
+  {
+   "row": "R04",
+   "name": "the r3 head is an ancestor of HEAD (the r1 to r3 history is kept)",
+   "pass": true,
+   "obs": false,
+   "detail": "a245f1f"
+  },
+  {
+   "row": "R05",
+   "name": "every blob a resolved_overlaps reason names is a real blob of that path at a pin, HEAD or base, and HEAD is accounted for",
+   "pass": true,
+   "obs": false,
+   "detail": "6 of 6"
+  },
+  {
+   "row": "R06",
+   "name": "outside the plan's writable paths and the resolved overlaps, HEAD keeps each candidate's file (or a descendant candidate's)",
+   "pass": true,
+   "obs": false,
+   "detail": "none lost"
+  },
+  {
+   "row": "R07",
+   "name": "every file two unrelated candidates change differently is listed in resolved_overlaps",
+   "pass": true,
+   "obs": false,
+   "detail": "none missing"
+  },
+  {
+   "row": "R08",
+   "name": "the carried tool fix: a 333-character reason exits 2 named as 333 characters, at most 300",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "rc": 2
+   }
+  },
+  {
+   "row": "R09",
+   "name": "the tool blob is unchanged from G12 r3 a245f1f",
+   "pass": true,
+   "obs": false,
+   "detail": null
+  },
+  {
+   "row": "R10",
+   "name": "check --plan on the shipped plan is VERDICT INTEGRATED",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "rc": 0
+   }
+  },
+  {
+   "row": "R11",
+   "name": "each of the r4 merges is a clean merge (tree equals git merge-tree of its parents)",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "merges": 4,
+    "not_clean": []
+   }
+  },
+  {
+   "row": "R12",
+   "name": "OBS: 4582f4e (G12 r2 merge of G04 r3) stays a non-clean merge, reviewed in M12; changing it would need a history rewrite",
+   "pass": true,
+   "obs": true,
+   "detail": null
+  }
+ ],
+ "score": "11/11"
+}

@@ -1,0 +1,14 @@
+PASS R01 every plan pin is the current remote head of that goal's review branch
+PASS R02 every pin is an ancestor of HEAD
+PASS R03 each r3 pin is an ancestor of its r4 pin (candidates moved forward, nothing rewritten)
+PASS R04 the r3 head is an ancestor of HEAD (the r1 to r3 history is kept)
+PASS R05 every blob a resolved_overlaps reason names is a real blob of that path at a pin, HEAD or base, and HEAD is accounted for
+PASS R06 outside the plan's writable paths and the resolved overlaps, HEAD keeps each candidate's file (or a descendant candidate's)
+PASS R07 every file two unrelated candidates change differently is listed in resolved_overlaps
+PASS R08 the carried tool fix: a 333-character reason exits 2 named as 333 characters, at most 300
+PASS R09 the tool blob is unchanged from G12 r3 a245f1f
+PASS R10 check --plan on the shipped plan is VERDICT INTEGRATED
+PASS R11 each of the r4 merges is a clean merge (tree equals git merge-tree of its parents)
+OBS  R12 OBS: 4582f4e (G12 r2 merge of G04 r3) stays a non-clean merge, reviewed in M12; changing it would need a history rewrite
+SCORE 11/11
+rc=0

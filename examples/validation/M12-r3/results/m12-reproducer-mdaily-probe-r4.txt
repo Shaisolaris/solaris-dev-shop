@@ -1,0 +1,48 @@
+== 3.9.6
+PASS H1 every plan commit is its goal's current remote head all current
+PASS H2 every plan commit is in HEAD all in HEAD
+FAIL H3 every merge in base..HEAD is a clean merge (9 merges) ['4582f4e']
+PASS T0 clean clone -> INTEGRATED (0, 'INTEGRATED', [])
+PASS T1 plan names a commit that is not the candidate -> NOT_INTEGRATED (1, 'NOT_INTEGRATED', ['DRIFT'])
+PASS T2 G09 file employees/engineering/devops-engineer/local_deploy.py reverted -> NOT_INTEGRATED with DRIFT (1, 'NOT_INTEGRATED', ['DRIFT'])
+PASS T3 commit outside writable globs -> NOT_INTEGRATED (1, 'NOT_INTEGRATED', ['OUT_OF_SCOPE'])
+PASS T4 uncommitted change -> NOT_INTEGRATED (1, 'NOT_INTEGRATED', ['DIRTY_TREE'])
+PASS X1 cross_checks ran (0, 'CROSS-CHECKS CLEAN (0 findings)')
+OBS  X1 cross_checks on a clean clone (OBS: compared with the handback by hand) (0, [], 'CROSS-CHECKS CLEAN (0 findings)')
+PROBE G12 8/9
+== 3.11.16
+PASS H1 every plan commit is its goal's current remote head all current
+PASS H2 every plan commit is in HEAD all in HEAD
+FAIL H3 every merge in base..HEAD is a clean merge (9 merges) ['4582f4e']
+PASS T0 clean clone -> INTEGRATED (0, 'INTEGRATED', [])
+PASS T1 plan names a commit that is not the candidate -> NOT_INTEGRATED (1, 'NOT_INTEGRATED', ['DRIFT'])
+PASS T2 G09 file employees/engineering/devops-engineer/local_deploy.py reverted -> NOT_INTEGRATED with DRIFT (1, 'NOT_INTEGRATED', ['DRIFT'])
+PASS T3 commit outside writable globs -> NOT_INTEGRATED (1, 'NOT_INTEGRATED', ['OUT_OF_SCOPE'])
+PASS T4 uncommitted change -> NOT_INTEGRATED (1, 'NOT_INTEGRATED', ['DIRTY_TREE'])
+PASS X1 cross_checks ran (0, 'CROSS-CHECKS CLEAN (0 findings)')
+OBS  X1 cross_checks on a clean clone (OBS: compared with the handback by hand) (0, [], 'CROSS-CHECKS CLEAN (0 findings)')
+PROBE G12 8/9
+== 3.12.14
+PASS H1 every plan commit is its goal's current remote head all current
+PASS H2 every plan commit is in HEAD all in HEAD
+FAIL H3 every merge in base..HEAD is a clean merge (9 merges) ['4582f4e']
+PASS T0 clean clone -> INTEGRATED (0, 'INTEGRATED', [])
+PASS T1 plan names a commit that is not the candidate -> NOT_INTEGRATED (1, 'NOT_INTEGRATED', ['DRIFT'])
+PASS T2 G09 file employees/engineering/devops-engineer/local_deploy.py reverted -> NOT_INTEGRATED with DRIFT (1, 'NOT_INTEGRATED', ['DRIFT'])
+PASS T3 commit outside writable globs -> NOT_INTEGRATED (1, 'NOT_INTEGRATED', ['OUT_OF_SCOPE'])
+PASS T4 uncommitted change -> NOT_INTEGRATED (1, 'NOT_INTEGRATED', ['DIRTY_TREE'])
+PASS X1 cross_checks ran (0, 'CROSS-CHECKS CLEAN (0 findings)')
+OBS  X1 cross_checks on a clean clone (OBS: compared with the handback by hand) (0, [], 'CROSS-CHECKS CLEAN (0 findings)')
+PROBE G12 8/9
+== 3.13.15
+PASS H1 every plan commit is its goal's current remote head all current
+PASS H2 every plan commit is in HEAD all in HEAD
+FAIL H3 every merge in base..HEAD is a clean merge (9 merges) ['4582f4e']
+PASS T0 clean clone -> INTEGRATED (0, 'INTEGRATED', [])
+PASS T1 plan names a commit that is not the candidate -> NOT_INTEGRATED (1, 'NOT_INTEGRATED', ['DRIFT'])
+PASS T2 G09 file employees/engineering/devops-engineer/local_deploy.py reverted -> NOT_INTEGRATED with DRIFT (1, 'NOT_INTEGRATED', ['DRIFT'])
+PASS T3 commit outside writable globs -> NOT_INTEGRATED (1, 'NOT_INTEGRATED', ['OUT_OF_SCOPE'])
+PASS T4 uncommitted change -> NOT_INTEGRATED (1, 'NOT_INTEGRATED', ['DIRTY_TREE'])
+PASS X1 cross_checks ran (0, 'CROSS-CHECKS CLEAN (0 findings)')
+OBS  X1 cross_checks on a clean clone (OBS: compared with the handback by hand) (0, [], 'CROSS-CHECKS CLEAN (0 findings)')
+PROBE G12 8/9
