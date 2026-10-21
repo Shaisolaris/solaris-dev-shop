@@ -407,8 +407,8 @@
   },
   {
    "id": "G39",
-   "commit": "3f0906314894de4a91c1a16802762549fd4303e1",
-   "note": "G39 r5, newest remote head",
+   "commit": "86f35dd99b3ab07fbaf703ec2dbde2c46e47d6ac",
+   "note": "Root narrows SQLite shm rewrite exception;53 G39 tests pass on standalone source, final product acceptance pending.",
    "tests": [
     "tests.test_g39_capability"
    ],
