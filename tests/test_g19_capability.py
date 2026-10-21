@@ -351,6 +351,27 @@ class RetryRestartRecovery(Base):
         self.assertIn("another tenant", text)
         self.assertIn("payments add to 150", text)
 
+    def test_numeric_transport_fields_reject_unicode_and_oversized_digits(self):
+        from urllib.parse import quote
+        s = self.start()
+        for value in ("²", "١", "９", "9" * 5000):
+            with self.subTest(limit=value[:10]):
+                status, body, _ = s.call("GET", "/api/v1/invoices?limit=" + quote(value), ADA)
+                self.assertEqual(status, 422, body)
+                self.assertEqual(code(body), "invalid_limit")
+        for value, expected in (("²", 411), ("9" * 5000, 413)):
+            with self.subTest(length=value[:10]):
+                status, body, _ = s.call("POST", "/api/v1/invoices", ADA, raw=b"{}",
+                                         headers={"Content-Length": value}, idem="synthetic-numeric")
+                self.assertEqual(status, expected, body)
+        # Ordinary requests still work after all malformed inputs; long leading zeroes
+        # preserve the decimal value without asking int() to parse thousands of digits.
+        self.assertEqual(s.call("GET", "/api/v1/invoices?limit=" + "0" * 5000 + "1", ADA)[0], 200)
+        self.assertEqual(s.call("POST", "/api/v1/invoices", ADA, raw=b"{}",
+                               headers={"Content-Length": "0" * 5000 + "2"}, idem="synthetic-zeroes")[0], 422)
+        self.assertEqual(s.create(ADA, "Synthetic", 100, "numeric-clean")[0], 201)
+        self.assertEqual(len(s.listing(ADA)), 1)
+
     def test_serve_and_check_refuse_bad_input_with_exit_2(self):
         bad = self.tmp / "bad.json"
         bad.write_text(json.dumps({"schema": "solaris.ledger-principals/1", "principals": [{"key": "short", "tenant": "a", "user": "b", "role": "editor"}]}))
