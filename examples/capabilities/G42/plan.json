@@ -200,7 +200,7 @@
   },
   {
    "id": "G16",
-   "commit": "4a8f1d1a7960c6b719a6330dd6aeffb8dcc5969e",
+   "commit": "756720d5ea59d53d6e807a76db44e42b243ad2c3",
    "note": "Exact delivered repair revision in root product candidate; inclusion does not imply independent acceptance.",
    "tests": [
     "tests.test_g16_capability",

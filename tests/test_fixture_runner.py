@@ -334,6 +334,7 @@ class M01R2Rework(unittest.TestCase):
                 self.assertEqual((code, out['ok']), (0, True), out)
 
     @unittest.skipIf(hasattr(os, 'geteuid') and os.geteuid() == 0, 'root can read a mode-000 folder')
+    @unittest.skipIf(os.name != 'posix' or (hasattr(os, 'geteuid') and os.geteuid() == 0), 'requires POSIX permission denial for a non-root process')
     def test_s2_suite_reports_an_unreadable_subfolder(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp) / 'fx'

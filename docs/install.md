@@ -98,3 +98,13 @@ Locations above were checked against the linked official documentation on
 2026-10-15. A discovery path is not a cross-provider output-quality guarantee.
 
 In every case, keep companion files together and preserve the shared standards referenced by the skill. Opening a skill in the full checkout avoids breaking those relative paths. A copied folder alone is not a complete bundle when it references a department standard.
+
+## Executable capability platform scope
+The router, catalog and core assurance/discovery distribution are checked on Linux,
+macOS and Windows. The full local executable-capability suite currently runs on Linux
+and macOS: several recovery, concurrency and journal examples require POSIX locking.
+Do not infer universal Windows execution from portable skill text. A host must inspect
+each workflow's runtime/tool requirements before running it. Unsupported lock-dependent
+execution must refuse safely; the grounded-answer journal/resume path has an explicit
+no-lock-backend refusal test in the Windows lane. Non-journal grounded-source context
+checks also run there. Unverified workflows are not certified for Windows by this CI lane.

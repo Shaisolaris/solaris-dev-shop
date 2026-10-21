@@ -8,6 +8,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   router:
     strategy:
@@ -30,8 +34,18 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Control-plane self-test
         run: python control-plane/meta_control_plane.py self-test
-      - name: Routing, CLI, privacy and fixture regression suite
+      - name: Full capability regression suite (supported POSIX runtimes)
+        if: runner.os != 'Windows'
         run: python -m unittest discover -s tests -v
+      - name: Router, assurance and explicit platform boundaries (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $env:PYTHONUTF8 = '1'
+          foreach ($pattern in @('test_router.py', 'test_intake_features.py', 'test_assurance_packets.py', 'test_closure_hardening.py', 'test_fixture_runner.py', 'test_g16_takeover.py')) {
+            python -m unittest discover -s tests -p $pattern -v
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
       - name: Build and smoke-test the installed wheel outside the checkout
         shell: bash
         run: |
