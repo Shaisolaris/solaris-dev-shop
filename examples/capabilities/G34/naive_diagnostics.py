@@ -32,9 +32,24 @@ _within = pd.within
 
 
 def scan(root, cfg, max_bytes):
+    # "No size cap": a cap no file can reach. It is the total size of everything reachable (symlinks
+    # followed), not a fixed huge number: f.read(n) allocates n bytes up front on Linux, so 1 << 40 raised
+    # MemoryError there and the control failed for the wrong reason (found by the CI replay on Linux).
+    total, seen = 0, set()
+    for d, dirs, files in os.walk(root, followlinks=True):
+        real = os.path.realpath(d)
+        if real in seen:  # a symlink loop: do not walk the same folder twice
+            dirs[:] = []
+            continue
+        seen.add(real)
+        for name in files:
+            try:
+                total += os.path.getsize(os.path.join(d, name))
+            except OSError:
+                pass
     pd.within = lambda path, root: True
     try:
-        return _scan(root, cfg, 1 << 40)
+        return _scan(root, cfg, total + 1)
     finally:
         pd.within = _within
 
