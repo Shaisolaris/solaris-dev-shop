@@ -1,0 +1,110 @@
+daily integration G42 at 2f3eabc995f8 (tree b3a86c3cf7cf)
+  G01 aa0b083f1eb1 ACCEPTED_OTHER_REVISION
+  G02 90a5ec9c316e CANDIDATE
+  G03 d4d98f2180ed ACCEPTED
+  G04 e9fa278f6fc9 CANDIDATE
+  G05 1b840cdee716 CANDIDATE
+  G07 0d6a78d56cdb CANDIDATE
+  G08 ddebe9870721 ACCEPTED
+  G09 1cab0f8b6807 ACCEPTED_OTHER_REVISION
+  G10 f79be61580de ACCEPTED
+  G11 94a0de462a82 ACCEPTED_OTHER_REVISION
+  G13 5666e7beb161 ACCEPTED
+  G14 6f7b23aa1841 ACCEPTED
+  G15 2a3310b711c0 CANDIDATE
+  G16 49aba3fd978a CANDIDATE
+  G17 550f1848a76a ACCEPTED
+  G19 350d175e5cf4 ACCEPTED_OTHER_REVISION
+  G20 0d4db6949ee2 CANDIDATE
+  G21 822a9c1aaf2d ACCEPTED
+  G22 29cd7fc6a073 ACCEPTED_OTHER_REVISION
+  G23 0ff2641c56c8 ACCEPTED
+  G25 eb9c7c47384e ACCEPTED
+  G31 fcf492af1ba1 CANDIDATE
+  G32 3346efac313f CANDIDATE
+  G33 a4ae555bdabf CANDIDATE
+  G34 6ad99da2532a ACCEPTED_OTHER_REVISION
+  G35 34bb98f46590 ACCEPTED
+  G37 e9b7a7772636 ACCEPTED_OTHER_REVISION
+  G38 ba70b6934a13 CANDIDATE
+  G39 3f0906314894 CANDIDATE
+  G40 99b49c63b56e CANDIDATE
+  G41 b8813367c2a8 CANDIDATE
+  run test G01 python3 -m unittest tests.test_fixture_runner rc=0 5.0s
+  run test G01 python3 -m unittest tests.test_assurance_packets rc=0 0.4s
+  run test G01 python3 -m unittest tests.test_closure_hardening rc=0 0.8s
+  run test G02 python3 -m unittest tests.test_g02_capability rc=0 2.0s
+  run command G02 python3 examples/capabilities/G02/activation_oracle.py -- {python} emp rc=0 2.0s
+  run test G03 python3 -m unittest tests.test_g03_capability rc=0 4.6s
+  run command G03 python3 examples/capabilities/G03/recovery_oracle.py -- {python} emplo rc=0 11.2s
+  run test G04 python3 -m unittest tests.test_g04_capability rc=0 8.4s
+  run command G04 python3 examples/capabilities/G04/handoff_oracle.py rc=0 14.9s
+  run test G05 python3 -m unittest tests.test_g05_capability rc=0 1.0s
+  run test G05 python3 -m unittest tests.test_closure_hardening rc=0 0.8s
+  run command G05 python3 examples/capabilities/G05/binding_oracle.py rc=0 0.4s
+  run test G07 python3 -m unittest tests.test_g07_capability rc=0 8.9s
+  run command G07 python3 examples/capabilities/G07/registry_oracle.py rc=0 6.0s
+  run test G08 python3 -m unittest tests.test_g08_capability rc=0 22.3s
+  run command G08 python3 examples/capabilities/G08/deploy_oracle.py rc=0 18.4s
+  run test G09 python3 -m unittest tests.test_g09_capability rc=0 4.3s
+  run command G09 python3 examples/capabilities/G09/k8s_oracle.py rc=0 1.4s
+  run test G10 python3 -m unittest tests.test_g10_capability rc=0 2.3s
+  run command G10 python3 examples/capabilities/G10/diagnosis_oracle.py -- {python} empl rc=0 3.7s
+  run test G11 python3 -m unittest tests.test_g11_capability rc=0 6.4s
+  run command G11 python3 examples/capabilities/G11/incident_oracle.py -- {python} emplo rc=0 2.6s
+  run test G13 python3 -m unittest tests.test_g13_capability rc=0 8.7s
+  run command G13 python3 examples/capabilities/G13/reconcile_oracle.py --tool {python}  rc=0 9.9s
+  run test G14 python3 -m unittest tests.test_g14_capability rc=0 4.7s
+  run command G14 python3 examples/capabilities/G14/cash_oracle.py -- {python} employees rc=0 3.2s
+  run test G15 python3 -m unittest tests.test_g15_capability rc=0 32.1s
+  run command G15 python3 examples/capabilities/G15/readout_oracle.py --quick -- {python rc=0 7.7s
+  run test G16 python3 -m unittest tests.test_g16_capability rc=0 13.7s
+  run command G16 python3 examples/capabilities/G16/grounding_oracle.py --tool {python}  rc=0 20.9s
+  run test G17 python3 -m unittest tests.test_g17_capability rc=0 9.2s
+  run command G17 python3 examples/capabilities/G17/decision_oracle.py rc=0 2.1s
+  run test G19 python3 -m unittest tests.test_g19_capability rc=0 85.8s
+  run command G19 python3 examples/capabilities/G19/boundary_oracle.py --server {python} rc=0 4.2s
+  run test G20 python3 -m unittest tests.test_g20_capability rc=0 0.5s
+  run command G20 python3 examples/capabilities/G20/ui_oracle.py rc=0 0.0s
+  run test G21 python3 -m unittest tests.test_g21_capability rc=0 61.6s
+  run command G21 python3 examples/capabilities/G21/sync_oracle.py --quick rc=0 23.3s
+  run test G22 python3 -m unittest tests.test_g22_capability rc=0 9.7s
+  run command G22 python3 examples/capabilities/G22/ledger_oracle.py rc=0 2.8s
+  run test G23 python3 -m unittest tests.test_g23_capability rc=0 7.0s
+  run command G23 python3 examples/capabilities/G23/wp_oracle.py --tool {python} employe rc=0 2.4s
+  run test G25 python3 -m unittest tests.test_g25_capability rc=0 6.7s
+  run command G25 python3 examples/capabilities/G25/protocol_oracle.py --tool {python} e rc=0 2.2s
+  run test G31 python3 -m unittest tests.test_g31_capability rc=0 13.5s
+  run command G31 python3 examples/capabilities/G31/scope_oracle.py rc=0 4.7s
+  run test G32 python3 -m unittest tests.test_g32_capability rc=0 10.3s
+  run command G32 python3 examples/capabilities/G32/followthrough_oracle.py rc=0 4.2s
+  run test G33 python3 -m unittest tests.test_g33_capability rc=0 8.1s
+  run command G33 python3 examples/capabilities/G33/evidence_oracle.py rc=0 2.9s
+  run test G34 python3 -m unittest tests.test_g34_capability rc=0 2.4s
+  run command G34 python3 examples/capabilities/G34/diag_oracle.py rc=0 1.3s
+  run test G35 python3 -m unittest tests.test_g35_capability rc=0 9.5s
+  run command G35 python3 examples/capabilities/G35/campaign_oracle.py rc=0 4.2s
+  run test G37 python3 -m unittest tests.test_g37_capability rc=0 5.3s
+  run command G37 python3 examples/capabilities/G37/privacy_oracle.py rc=0 3.0s
+  run test G38 python3 -m unittest tests.test_g38_capability rc=0 14.5s
+  run command G38 python3 examples/capabilities/G38/authority_oracle.py rc=0 2.9s
+  run test G39 python3 -m unittest tests.test_g39_capability rc=0 17.9s
+  run command G39 python3 examples/capabilities/G39/drill_oracle.py rc=0 8.5s
+  run test G40 python3 -m unittest tests.test_g40_capability rc=0 1.5s
+  run command G40 python3 examples/capabilities/G40/portability_oracle.py rc=0 0.5s
+  run test G41 python3 -m unittest tests.test_g41_capability rc=0 2.4s
+  run command G41 python3 examples/capabilities/G41/inventory_oracle.py rc=0 0.7s
+  run cross_check G42 python3 examples/capabilities/G42/cross_checks.py rc=0 1.8s
+  run gate suite python3 -m unittest discover -s tests rc=0 477.1s
+  run gate control_plane python3 control-plane/meta_control_plane.py self-test rc=0 0.2s
+  run gate quality_audit quality_os.py audit rc=0 0.1s
+  run gate manifests python3 -c 
+import glob, json
+bad = []
+for f in sorted(glob.glob('empl rc=0 0.0s
+  run gate catalog python3 tools/build_skill_catalog.py --check rc=0 0.0s
+  run gate symlinks git ls-files -s rc=0 0.0s
+  run gate metadata python3 tools/validate_skill_metadata.py rc=0 0.1s
+VERDICT INTEGRATED
+rc=0
+fresh clone dirty after: 0

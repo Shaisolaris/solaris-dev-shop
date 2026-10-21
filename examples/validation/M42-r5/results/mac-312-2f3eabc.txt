@@ -1,0 +1,14 @@
+# local CI replay of .github/workflows/ci.yml at 2f3eabc995f83711e24e4b092ed53d5ae1f5f499, 2026-10-20 20:05:41 PDT, Darwin arm64
+python: 3.12.14
+STEP rc=0 0s self-test
+STEP rc=0 433s unittest
+Ran 827 tests in 432.224s
+OK (skipped=3)
+STEP rc=0 1s wheel-smoke
+STEP rc=0 0s json-validity
+STEP rc=0 0s quality-audit
+STEP rc=0 0s manifests-parse
+STEP rc=0 1s catalog-check
+STEP rc=0 0s no-symlinks
+STEP rc=0 0s validate-metadata
+dirty after: 0

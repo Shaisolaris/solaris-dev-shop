@@ -1,0 +1,4 @@
+merge fa83205 parents 1611581 3f09063 base 97d3d05: 0 files changed on both sides
+merge a768362 parents fa83205 99b49c6 base eabf69a: 1 files changed on both sides
+  OK   docs/install.md: added 4, kept-by-both 69, lost 0
+UNION OK (0 files with lost lines)

@@ -1,0 +1,5 @@
+py39: Ran 827 tests in 493.769s OK (skipped=8)  rc=0 Python 3.9.6 at 2f3eabc995f83711e24e4b092ed53d5ae1f5f499, 494s, started 18:55:11 PDT
+py311: Ran 827 tests in 443.699s OK (skipped=2)  rc=0 Python 3.11.16 at 2f3eabc995f83711e24e4b092ed53d5ae1f5f499, 444s, started 19:03:26 PDT
+py312: Ran 827 tests in 442.263s OK (skipped=3)  rc=0 Python 3.12.14 at 2f3eabc995f83711e24e4b092ed53d5ae1f5f499, 442s, started 19:10:50 PDT
+py313: Ran 827 tests in 437.344s OK (skipped=3)  rc=0 Python 3.13.15 at 2f3eabc995f83711e24e4b092ed53d5ae1f5f499, 437s, started 19:18:13 PDT
+suite runner: WT one Python at a time (not parallel); browser processes seen during the run: 0

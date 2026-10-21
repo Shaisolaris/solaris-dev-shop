@@ -1,0 +1,11 @@
+PASS H1 every plan commit is its goal's current remote head all current
+PASS H2 every plan commit is in HEAD all in HEAD
+FAIL H3 every merge in base..HEAD is a clean merge (50 merges) ['13cf2bb', 'f97a0bf', 'ecd7dad', '050f026', '3ed5aec']
+PASS T0 clean clone -> INTEGRATED (0, 'INTEGRATED', [])
+PASS T1 plan names a commit that is not the candidate -> NOT_INTEGRATED (1, 'NOT_INTEGRATED', ['DRIFT', 'OUT_OF_SCOPE'])
+PASS T2 G41 file employees/data/data-engineer/csv_reconcile.py reverted -> NOT_INTEGRATED with DRIFT (1, 'NOT_INTEGRATED', ['DRIFT'])
+PASS T3 commit outside writable globs -> NOT_INTEGRATED (1, 'NOT_INTEGRATED', ['OUT_OF_SCOPE'])
+PASS T4 uncommitted change -> NOT_INTEGRATED (1, 'NOT_INTEGRATED', ['DIRTY_TREE'])
+PASS X1 cross_checks ran (0, 'CROSS-CHECKS CLEAN (0 findings)')
+OBS  X1 cross_checks on a clean clone (OBS: compared with the handback by hand) (0, [], 'CROSS-CHECKS CLEAN (0 findings)')
+PROBE G42 8/9
