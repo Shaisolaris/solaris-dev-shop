@@ -109,7 +109,10 @@ def _years_holder_ok(s):
     """'YEAR[S] HOLDER[.] [all rights reserved.]' with a plain holder name."""
     m = re.match("^" + YEARS + r" (.+)$", s)
     h = HOLDER_RE.match(m.group(1)) if m else None
-    if not h or OPERATIVE.search(h.group("h")):
+    # A holder notice is attribution, not a conditional/prepositional clause.
+    # Ambiguous legal entity names fail closed; this is not a legal interpretation.
+    conditional = re.compile(r"\b(?:for|under|subject to|provided|providing|if|unless|until|during|before|after|while|where|when)\b")
+    if not h or OPERATIVE.search(h.group("h")) or conditional.search(h.group("h")):
         return False
     # a holder is a name: after its first comma only company suffixes or "and contributors" may follow
     return all(HOLDER_TAIL.fullmatch(x.strip()) for x in h.group("h").split(",")[1:])
@@ -274,9 +277,12 @@ def check(root, manifest=None, exclude=()):
     if rd is not None:
         for m in re.finditer(r"img\.shields\.io/badge/license-([A-Za-z0-9.]+)-", rd):
             declared("README.md", m.group(1).replace("--", "-"), "README badge")
-        m = re.search(r"(?m)^## License\s*\n+\s*([A-Za-z0-9]+(?:[.\-][A-Za-z0-9]+)*(?:\s+[A-Za-z0-9]+(?:[.\-][A-Za-z0-9]+)*)*)(?=\s*[,.]|\s*$)", rd)
+        m = re.search(r"(?m)^## License[ \t]*\n+(?:[ \t]*\n)*[ \t]*(?P<mark>\*\*|__|`)?(?P<decl>[A-Za-z0-9]+(?:[.\-][A-Za-z0-9]+)*(?:[ \t]+[A-Za-z0-9]+(?:[.\-][A-Za-z0-9]+)*)*)(?(mark)(?P=mark))(?=\s*[,.]|\s*$)", rd)
         if m:
-            declared("README.md", m.group(1), "README License section")
+            declared("README.md", m.group("decl"), "README License section")
+        elif re.search(r"(?m)^## License[ \t]*$", rd):
+            F.append({"code": "license_undeclared", "path": "README.md",
+                      "detail": "License section has no supported identifier"})
     # NOTICE: other license files must be listed, listed ones must exist
     others = sorted(p.relative_to(root).as_posix() for p in _walk(root, root, ex) if _is_license(p) and p.parent != root)
     skipped = {e: sorted(p.relative_to(root).as_posix() for p in _walk(root / e, root) if _is_license(p)) for e in ex}

@@ -199,7 +199,7 @@
   },
   {
    "id": "G16",
-   "commit": "03a0bb091a118a2234cb6ce93907567ffbe238e5",
+   "commit": "4a8f1d1a7960c6b719a6330dd6aeffb8dcc5969e",
    "note": "Exact delivered repair revision in root product candidate; inclusion does not imply independent acceptance.",
    "tests": [
     "tests.test_g16_capability",
@@ -391,10 +391,11 @@
   },
   {
    "id": "G38",
-   "commit": "ba70b6934a13f931b8533df9fa947802d610d15b",
-   "note": "G38 r4, newest remote head",
+   "commit": "acc8c218d0ec7800bae972562eeeca256ccfe717",
+   "note": "Root authority-consistency repair; exact candidate pending final review.",
    "tests": [
-    "tests.test_g38_capability"
+    "tests.test_g38_capability",
+    "tests.test_g38_takeover"
    ],
    "commands": [
     [

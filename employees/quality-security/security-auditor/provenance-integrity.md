@@ -61,3 +61,12 @@ redistribution and similar). It is still a guard, not a parser: a restriction wi
 can pass. So the report now lists every LICENSE copyright line it set aside before comparing
 (`license_copyright_lines` in JSON, one "copyright line set aside" row in text); read those lines yourself before you
 rely on a consistent result. The comma rule comes from the M38 r3 proposed patch (Grok self-validation).
+
+## Attribution and README boundaries
+Copyright holder lines containing conditional or prepositional markers (such as `for`,
+`under`, `provided` or `subject to`) are not silently discarded as attribution. Ambiguous
+company names may therefore be unrecognised. The fingerprint and these lexical guards
+are not exhaustive legal analysis; a clean result never grants permission or certifies
+ownership. Read every reported copyright line when authority matters.
+README license identifiers may be plain, bold or inline code. An explicit License
+section without a supported identifier is reported instead of silently ignored.
