@@ -107,3 +107,8 @@ Do not derive that external count from the same incomplete log to manufacture ve
 A matching count is an input assumption, not authentication of an experiment or proof against
 fabricated/replaced records. Missing counts keep the statistical result but explicitly forbid
 a causal claim. Follow the claim flags and trace, not the outcome label alone.
+
+Known exclusions after assignment are also a causal-claim gate: a comparison that
+drops multiple-arm units cannot authorize causality even below the5percent invalid-
+experiment threshold. Its observed estimate remains useful, but `claims_allowed.causal`
+is false. A complete clean randomized synthetic population is the positive control.

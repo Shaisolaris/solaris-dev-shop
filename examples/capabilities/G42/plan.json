@@ -182,7 +182,7 @@
   },
   {
    "id": "G15",
-   "commit": "c105cc1ddb4a8a430f3a290124f5b226bd710a53",
+   "commit": "071e1a6f3709f38ad397de011d5757d785fc7e83",
    "note": "Root repaired causal-claim population gate; exact candidate pending final review.",
    "tests": [
     "tests.test_g15_capability",
@@ -200,7 +200,7 @@
   },
   {
    "id": "G16",
-   "commit": "664406d55743387762f8e5d53ec5c3b6346ad1d2",
+   "commit": "76b11eb553a4feb39e470ffca12262ce721e8e03",
    "note": "Exact delivered repair revision in root product candidate; inclusion does not imply independent acceptance.",
    "tests": [
     "tests.test_g16_capability",
