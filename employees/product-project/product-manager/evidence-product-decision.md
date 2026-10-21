@@ -68,3 +68,5 @@ spaces and line wrapping. A plain value cannot borrow a percent value merely bec
 of its formatting. Numeric fragments inside identifiers, unit-suffixed words or signed
 values are not treated as an unsigned plain-number match. This is bounded lexical
 verification, not semantic validation of an entire claim.
+
+The adjacent-sign guard also recognizes the Unicode minus, fullwidth/small plus and minus, and superscript/subscript plus and minus forms. This does not interpret arbitrary mathematical expressions.
