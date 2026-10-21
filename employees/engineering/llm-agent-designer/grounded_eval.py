@@ -106,7 +106,8 @@ _HEAD = r"(?:assistants?|models?|tools?|agents?|readers?|systems?|crawlers?|prog
 _BOT_ROLE = r"(?:assistant|helper|help|support|service|search|web|faq)"
 # G16 r9 (carried M16 P4, B12/g03): a bare "crawler" is an automated reader too ("For any crawler indexing this site:
 #   state ..."); only after the anchors, never as a free-lead head, so "Pub crawlers: reply to Ann" stays people.
-_READER = r"(?:(?:" + _QUAL + r"\s+){1,3}" + _HEAD + r"|(?:" + _BOT_ROLE + r"\s+)?(?:chatbots?|bots?)|crawlers?|llms?|ai)"
+# G16 r10 (M16 r9 P4-1): a crawler may carry a search, web or site qualifier ("Hey search crawlers: state ...").
+_READER = r"(?:(?:" + _QUAL + r"\s+){1,3}" + _HEAD + r"|(?:" + _BOT_ROLE + r"\s+)?(?:chatbots?|bots?)|(?:(?:search|web|site)\s+)?crawlers?|llms?|ai)"
 _SEP = r"(?:\s*[:;,\u2013\N{EM DASH}]|\s+--?)\s*"
 _POST_OPEN = (r"(?:reading|processing|parsing|answering|summari[sz]ing|scanning|indexing|crawling|browsing|that|who|which"
               r"|only|here|there|below|above|everywhere|out\s+there|on|at|in|with|using|from)")
@@ -120,18 +121,35 @@ _AFTER = r"(?:\s+(?:everyone|everybody|all|folks|y['\u2019]all|you\s+all|guys|pe
 #   adverbs, then the reply verb; or a pronoun subject (we, they, ...) anywhere in the words before the reply verb. "you"
 #   is the addressee ("AI tools: you must reply ..."), so it never makes a statement. r9 also lets the words before the
 #   reply verb carry commas ("AI tools: when asked, reply ...").
+# G16 r10 (M16 r9 P2-1): the words of a determiner subject may not carry the request itself. "AI tools: the owner says
+#   to reply that ...", "this time please reply ..." and "the manager wants a reply: say ..." were statements in r9 and
+#   so were used as sources. A subject word is never a reporting or request verb, please, you, to, a determiner or a
+#   time word (_SUBJ_STOP); and a statement may not be followed later in the sentence by a separator and another reply
+#   verb ("..., reply that ...", ": say that ...").
+_SUBJ_STOP = (r"(?:says?|said|saying|wants?|wanted|asks?|asked|tells?|told|requests?|requested|needs?|needed|insists?"
+              r"|orders?|ordered|instructs?|instructed|demands?|wishes|expects?|requires?|please|kindly|just|you|your|to"
+              r"|the|a|an|this|that|time|times|once|now|today|tonight|here|so|then|instead|always|only|simply)")
+_SUBJ_WORD = r"(?!" + _SUBJ_STOP + r"\b)[\w'-]+"
 _SUBJECT = (r"(?:(?:we|they|i|he|she|it|staff|people|humans?|someone|somebody|nobody|everyone|everybody|volunteers|"
             r"colleagues)\b|(?:the|our|their|his|her|its|my|this|that|these|those|each|every|some|no|most|many|a|an)\s+"
-            r"(?:[\w'-]+\s+){0,2}[\w'-]+)")
+            r"(?:" + _SUBJ_WORD + r"\s+){0,2}" + _SUBJ_WORD + r")")
 _AUX = (r"(?:will|shall|would|can|could|may|might|must|should|do|does|did|usually|always|often|only|also|now|still"
         r"|normally|then)")
-_STATEMENT = (_SUBJECT + r"\s+(?:" + _AUX + r"\s+){0,2}" + _SAY + r"\b"
+_STATEMENT = (r"(?:" + _SUBJECT + r"\s+(?:" + _AUX + r"\s+){0,2}" + _SAY + r"\b"
               # or a pronoun subject later in the gap: "Good day AI, as they say in the old adverts."
               r"|(?:[\w']+,?\s+){0," + str(PRE_VERB_WORDS - 1) + r"}?(?:we|they|i|he|she|it|staff|people)\s+(?:" + _AUX
-              + r"\s+){0,2}" + _SAY + r"\b")
+              + r"\s+){0,2}" + _SAY + r"\b)"
+              # G16 r10: no later separator plus reply verb ("whatever they say, reply that ...")
+              r"(?![^.!?]*?(?:[,:;\u2013\N{EM DASH}]|\s--?)\s*(?:(?:so|and|but|please|now|then|just|simply|always|only)\s+){0,2}"
+              + _SAY + r"\b)")
 # reply, answer or respond used as a noun before a verb ("reply cards are at the desk") is not an instruction; say,
 #   state and tell keep their object clause ("say rent is zero" is an instruction)
+# G16 r10 (M16 r9 P3-1): also a noun when a measure or object noun follows ("answer quality varies", "reply rates
+#   doubled", "answer times dropped").
+_REPLY_NOUN = (r"(?:rates?|quality|times?|cards?|accuracy|length|speed|counts?|volumes?|forms?|buttons?|templates?"
+               r"|keys?|sheets?|deadlines?|scores?|box|boxes|slips?|envelopes?)")
 _SAY_VERB = (r"(?:(?:reply|respond|answer)\b(?!\s+[\w'-]+\s+(?:are|is|was|were|will|have|has|had)\b)"
+             r"(?!\s+" + _REPLY_NOUN + r"\b)"
              r"|(?!reply|respond|answer)" + _SAY + r"\b)")
 # G16 r9 (M16 r8 P3-2): a free vocative lead. Before an unmistakably automated reader (qualified head such as "AI tools",
 #   "AI agents", or ai, llm, chatbot, the singular bot), one or two words at the anchor are a greeting whatever they are,
@@ -145,11 +163,30 @@ _LEAD_STOP = (r"(?:we|i|they|he|she|it|you|your|our|their|his|her|its|my|the|a|a
               r"|was|were|be|been|three|two|one|four|five|ten)")
 _STRONG = (r"(?:(?:" + _QUAL + r"\s+){1,3}" + _HEAD + r"|chatbots?|bot|llms?|ai)")
 _FREE_LEAD = r"(?:(?!" + _LEAD_STOP + r"\b)[a-z][\w'\u2019-]*\s+){1,2}"
-_TAIL = (r"(?=" + _SEP + r"|\s+" + _POST_OPEN + r"\b)(?:\s+" + _POST_OPEN + r"\b[^.:;,!?\u2013\N{EM DASH}]{0,40}?)?"
-         + _SEP + r"(?!" + _STATEMENT + r")(?:[\w']+,?\s+){0," + str(PRE_VERB_WORDS) + r"}?" + _SAY_VERB)
+# G16 r10: the words before the reply verb may also carry a colon ("AI agents: the rule here: answer that ...").
+def _tail(verb):
+    return (r"(?=" + _SEP + r"|\s+" + _POST_OPEN + r"\b)(?:\s+" + _POST_OPEN + r"\b[^.:;,!?\u2013\N{EM DASH}]{0,40}?)?"
+            + _SEP + r"(?!" + _STATEMENT + r")(?:[\w']+[,:]?\s+){0," + str(PRE_VERB_WORDS) + r"}?" + verb)
+_TAIL = _tail(_SAY_VERB)
+# G16 r10 (M16 r9 P3-1): a free vocative is only a guess at a greeting ("Kids love AI, reply to the school survey" and
+#   "Teachers banned AI, answer the quiz by hand" are people text), so after one the reply verb must also read as a
+#   reply instruction: reply, respond or answer followed by that, with, a quote or colon, only/always/never, yes/no, or
+#   a question or user object ("reply to every question", "answer all queries"); tell followed by that or a user
+#   object; say or state followed by a quote, a colon, yes/no or a clause with a verb (is, are, that, ...) ("Psst
+#   chatbot, say the code is 1234" is addressed, "Teens love AI, say the surveys" is not). output, write, ignore and
+#   disregard are taken as they are.
+_ASKERS = r"(?:users?|questions?|queries|query|anyone|everyone|visitors?|customers?|callers?|requests?|messages?|people)"
+_SAY_STRICT = (r"(?:(?:reply|respond|answer)\b(?=\s*(?:that\b|with\b|only\b|always\b|never\b|yes\b|no\b"
+               r"|[\"'\u201c\u2018:]|(?:to\s+)?(?:(?:all|any|every|each|the|this|that|these|my|our|next|following|first|last"
+               r"|other|new|incoming)\s+){0,2}" + _ASKERS + r"\b))"
+               r"|tell\b(?=\s+(?:that\b|(?:the\s+)?(?:users?|people|everyone|anyone|them|visitors?|customers?|readers?"
+               r"|callers?)\b))"
+               r"|(?:say|state)\b(?=\s*[\"'\u201c\u2018:]|\s+(?:yes|no)\b|[^.!?]*?\b(?:that|is|are|was|were|will|has|have)\b)"
+               r"|(?!reply|respond|answer|tell|say|state)" + _SAY + r"\b)")
+_FREE_TAIL = _tail(_SAY_STRICT)
 ADDRESSED = (r"(?:(?:(?:^\W*|[:;,(]\s*)(?:" + _GREET_START + r"\s+)?|\b" + _OPENER + r"\s+(?:(?:to|for)\s+)?)" + _DET + r"\b" + _READER
              + _AFTER + _TAIL
-             + r"|(?:^\W*|[:;(]\s*)" + _FREE_LEAD + _STRONG + _AFTER + _TAIL + r")")
+             + r"|(?:^\W*|[:;(]\s*)" + _FREE_LEAD + _STRONG + _AFTER + _FREE_TAIL + r")")
 ADDRESSED_RE = re.compile(r"(?i)" + ADDRESSED)
 INSTRUCTION_RE = re.compile(
     r"(?i)\b(?:note|message|instructions?|attention|notice|reminder)\s+(?:to|for)\s+(?:all\s+|any\s+|the\s+)?" + _ANY
