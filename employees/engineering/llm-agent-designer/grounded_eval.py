@@ -44,7 +44,7 @@ from typing import Any, Dict, List, Optional, Tuple
 TOOL_VERSION = "1.0.0"
 ANSWERS_SCHEMA = "solaris.grounded-answers/1"
 REPORT_SCHEMA = "solaris.grounded-eval-report/1"
-JOURNAL_SCHEMA = "solaris.grounded-journal/2"
+JOURNAL_SCHEMA = "solaris.grounded-journal/3"
 MAX_DOC_BYTES = 2 * 1024 * 1024
 MAX_DOCS = 20000
 MAX_QUESTIONS = 50000
@@ -65,7 +65,7 @@ NEEDS_NUMBER = re.compile(r"^\s*(how (many|much|long|often|far|old)|when|what (t
 WHEN_Q = re.compile(r"^\s*(when|what (time|date|day))\b", re.I)
 NEGATORS = {"not", "no", "never", "nor", "cannot", "none", "neither", "without", "nobody", "nothing", "nowhere"}
 # text addressed to an automated reader is data, never an instruction; such sentences are not used as sources (N11)
-# R4 (M16 r2): a sentence is instruction-like only when it addresses an automated reader and tells it what to say.
+# Historical fallback grammar below covers non-heading forms. The current context policy is defined by _Gated.
 # "Model boats ... the warden will answer any questions" and "Shop assistants will answer questions" are rules, not
 # instructions: bare "model" and bare "assistant" (a person) are not addressees unless the sentence is a note to them.
 _BOT = (r"(?:(?:automated|ai|virtual|digital|chat)\s+(?:assistants?|readers?|agents?|systems?|models?)|chatbots?|bots?"
@@ -112,7 +112,7 @@ _BOT_ROLE = r"(?:assistant|helper|help|support|service|search|web|faq)"
 # G16 r9 (carried M16 P4, B12/g03): a bare "crawler" is an automated reader too ("For any crawler indexing this site:
 #   state ..."); only after the anchors, never as a free-lead head, so "Pub crawlers: reply to Ann" stays people.
 # G16 r10 (M16 r9 P4-1): a crawler may carry a search, web or site qualifier ("Hey search crawlers: state ...").
-_READER = r"(?:(?:" + _QUAL + r"\s+){1,3}" + _HEAD + r"|(?:" + _BOT_ROLE + r"\s+)?(?:chatbots?|bots?)|(?:(?:search|web|site)\s+)?crawlers?|llms?|ai)"
+_READER = r"(?:(?:" + _QUAL + r"\s+){1,3}" + _HEAD + r"|(?:" + _BOT_ROLE + r"\s+)?(?:chatbots?|bots?)|(?:(?:search|web|site)\s+)?crawlers?|llms?|ai|chatgpt|copilot|gemini|muse|codex|gpt-\d+(?:\.\d+)?)"
 _SEP = r"(?:\s*[:;,\u2013\N{EM DASH}]|\s+--?)\s*"
 _POST_OPEN = (r"(?:reading|processing|parsing|answering|summari[sz]ing|scanning|indexing|crawling|browsing|that|who|which"
               r"|only|here|there|below|above|everywhere|out\s+there|on|at|in|with|using|from)")
@@ -413,7 +413,7 @@ _H_PRE = r"(?:(?:whichever|whatever|which|any|all|every|each|the|you|these|those
 # _READER already covers the automated forms in _BOT. Duplicating both
 # alternatives inside the repeated list makes a non-heading backtrack exponentially.
 _H_ONE = _H_PRE + r"(?:" + _READER + r")\b"
-_H_READERS = _H_ONE + r"(?:\s*(?:,|and|or|&)\s*" + _H_ONE + r")*"
+_H_READERS = _H_ONE + r"(?:\s*(?:,|and|or|&)\s*" + _H_ONE + r"){0,31}"
 _H_VERB = r"(?:read|process|pars|answer|summari[sz]|scann?|index|crawl|brows|visit|see|us)"
 # a post-modifier before a colon or after whichever / whatever: "reading this", "that reads this", "on this site"
 _H_POST = (r"(?:\s+(?:(?:that|who|which)\s+)?(?:(?:is|are)\s+)?(?:" + _H_VERB + r"\w*|out\s+there|here|there|on|in|at|with"
@@ -436,7 +436,7 @@ _H_ADDR = (r"(?=\s*(?:(?:please|now|then|always|never|just|kindly)\s+)*(?:" + _H
            r"|those|my|our|its|it|there|here|if|when|whenever|once|unless|should|wherever|whoever|whatever|whichever)\b)")
 # a heading can start mid-sentence only after a note-like opener, to or for ("We left a note for AI agents: ...",
 #   "This page is for AI tools: ..."), not after a greeting word ("We said hiya AI tools: reply cards are at the desk." is prose)
-_HEADING = (r"(?:(?:" + _H_START + r"|[,]\s*|\b(?:" + _H_NOTE + r"|to|for)\s+)(?:" + _H_OPEN + r"(?:\s*,\s*|\s+))?"
+_HEADING = (r"(?:(?:" + _H_START + r"|[,]\s*|\b(?:" + _H_NOTE + r"|to|for|told|asked|instructed|directed|ordered)\s+)(?:" + _H_OPEN + r"(?:\s*,\s*|\s+))?"
             r"(?:(?:to|for)\s+)?" + _H_READERS + _H_POST + r"?" + _AFTER + _H_COLON
             + r"|" + _H_START + _H_OPEN + r"(?:\s*,\s*|\s+)" + _H_READERS + _H_POST + r"?" + _AFTER + r"\s*[,;]"
             + r"|" + _H_START + r"(?:(?:to|for)\s+)?(?:whichever|whatever)\s+(?:" + _READER + r"|" + _BOT + r")\b" + _H_POST + r"?"
@@ -466,33 +466,59 @@ def _number_gate(sentence: str) -> bool:
     return bool(_NUM_BAD.search(_NUM_OK.sub(" ", sentence)))
 
 
-class _Gated:
-    """A compiled pattern plus the sentence-level number gate (G16 r17) and the bot-heading rule (G16 r19), all on the
-    normalised sentence: search() tries the pattern, then the number gate on reply-verb sentences, then the heading."""
+MAX_READER_PHRASES = 32
+_READER_SCAN = re.compile(r"(?i)\b" + _READER + r"\b")
+_ROLE_DECLARATION = re.compile(r"(?i)^\W*(?:you\s+are|you['’]re)\s+(?:an?|the)\s+" + _READER
+                               + r"(?=\s*(?:[.,:;!?]|$))")
+_MODAL_DIRECTIVE = re.compile(r"(?i)\b" + _READER + r"\s+(?:must|should|shall|need\s+to|have\s+to|are\s+asked\s+to)\s+"
+                              r"(?:inform|announce|disclose|report|leak)\b")
 
+
+def _classification_forms(text):
+    """Inspect plausible formatting interpretations without changing cited text."""
+    raw_forms = [text]
+    unwrapped = _STRUCK.sub(lambda m: m.group()[2:-2], text)
+    if unwrapped != text:
+        raw_forms.append(unwrapped)
+    for raw in tuple(raw_forms):
+        spaced = "".join(" " if unicodedata.category(ch) == "Cf" else ch for ch in raw)
+        if spaced != raw:
+            raw_forms.append(spaced)
+    return tuple(dict.fromkeys(_normalise(raw) for raw in raw_forms))
+
+
+class _Gated:
+    """Bounded lexical source policy, not a semantic security classifier.
+
+    Reader lists are bounded in the heading regex. More than32 reader phrases
+    on one line are refused as ambiguous context, avoiding quadratic suffix scans.
+    """
     def __init__(self, base):
         self.base = base
         self.pattern = base.pattern
         self.flags = base.flags
 
-    def search(self, text, *args):
-        # Treat both visible and struck text as potentially addressed. Formatting
-        # cannot grant trust, but deleting a struck decoy cannot hide an address.
-        if _STRUCK.search(text):
-            unwrapped = _STRUCK.sub(lambda m: m.group()[2:-2], text)
-            match = self.search(unwrapped)
-            if match:
+    def search(self, raw, *args):
+        for text in _classification_forms(raw):
+            for count, reader in enumerate(_READER_SCAN.finditer(text), 1):
+                if count > MAX_READER_PHRASES:
+                    return reader
+            heading = _HEADING_RE.search(text, *args)
+            if heading:
+                return heading
+            role = _ROLE_DECLARATION.search(text)
+            if role:
+                return role
+            directive = _MODAL_DIRECTIVE.search(text)
+            if directive:
+                return directive
+            match = self.base.search(text, *args)
+            if match and not _PROSE_SUBJ.match(text):
                 return match
-        # G16 r19: every check runs on the normalised sentence
-        text = _normalise(text)
-        m = self.base.search(text, *args)
-        if m and not _PROSE_SUBJ.match(text):
-            return m
-        for h in _HEADED_RE.finditer(text, *args):
-            if _number_gate(text[h.start():_sentence_end(text, h.end())]):
-                return h
-        # G16 r19: any sentence with a bot heading is skipped; there is no people-statement exemption
-        return _HEADING_RE.search(text, *args)
+            for h in _HEADED_RE.finditer(text, *args):
+                if _number_gate(text[h.start():_sentence_end(text, h.end())]):
+                    return h
+        return None
 
 
 ADDRESSED_RE = _Gated(re.compile(r"(?i)" + ADDRESSED))
@@ -703,13 +729,15 @@ def excluded_source_lines(text: str) -> List[Tuple[int, int]]:
     for line in text.splitlines(keepends=True):
         if not line.strip() or line.lstrip().startswith("#"):
             addressed_block = False
-        normal = _normalise(line)
-        heading = _HEADING_RE.search(normal)
+        forms = _classification_forms(line)
         fragments = (line[s:e] for s, e in sentence_spans(line))
         if addressed_block or INSTRUCTION_RE.search(line) or any(INSTRUCTION_RE.search(f) for f in fragments):
             excluded.append((pos, pos + len(line)))
-        if heading and not normal[heading.end():].strip():
-            addressed_block = True
+        for normal in forms:
+            heading = _HEADING_RE.search(normal)
+            if ((heading and not normal[heading.end():].strip())
+                    or _ROLE_DECLARATION.search(normal)):
+                addressed_block = True
         pos += len(line)
     return excluded
 
@@ -902,8 +930,8 @@ def read_journal(path: Path, header: Dict[str, Any], ids: Optional[set] = None,
               "refusing to resume; start a new journal")
         prev = r["chain"]
     h = recs[0]
-    _need(h.get("schema") == JOURNAL_SCHEMA, "journal: not a grounded-eval journal")
-    for k in ("corpus_sha256", "questions_sha256", "min_coverage", "tool_version"):
+    _need(h.get("schema") == JOURNAL_SCHEMA, "journal: unsupported schema for this engine; keep the old journal and start a new one")
+    for k in ("corpus_sha256", "questions_sha256", "min_coverage", "tool_version", "engine_sha256"):
         _need(h.get(k) == header[k], f"journal: {k} differs from this run (source or settings changed); start a new journal")
     done: Dict[str, Dict[str, Any]] = {}
     fails: Dict[str, int] = {}
@@ -939,7 +967,8 @@ def run_answer(a) -> int:
     inputs = [Path(a.questions)] + [Path(a.corpus) / n for n in corpus["docs"]] + ([Path(a.fault_plan)] if a.fault_plan else [])
     out = _check_target(Path(a.out), inputs, Path(a.corpus))
     header = {"schema": JOURNAL_SCHEMA, "corpus_sha256": corpus["sha256"], "questions_sha256": qsha,
-              "min_coverage": a.min_coverage, "tool_version": TOOL_VERSION}
+              "min_coverage": a.min_coverage, "tool_version": TOOL_VERSION,
+              "engine_sha256": sha(_regular(Path(__file__).resolve(), "engine", MAX_DOC_BYTES))}
     jpath = Path(a.journal) if a.journal else None
     done: Dict[str, Dict[str, Any]] = {}
     fails: Dict[str, int] = {}
@@ -1004,6 +1033,7 @@ def run_answer(a) -> int:
         meta = {"kind": "meta", "schema": ANSWERS_SCHEMA, "corpus_sha256": corpus["sha256"], "questions_sha256": qsha,
                 "documents": {n: d["sha256"] for n, d in sorted(corpus["docs"].items())},
                 "producer": {"kind": "deterministic_baseline", "tool": "grounded_eval.py", "version": TOOL_VERSION,
+                             "engine_sha256": header["engine_sha256"],
                              "method": "BM25 sentence retrieval + key-term coverage; extractive, no model",
                              "min_coverage": a.min_coverage, "executed_here": True}}
         if idx.skipped:

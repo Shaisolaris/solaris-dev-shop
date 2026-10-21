@@ -1395,8 +1395,11 @@ class M16R8Rework(Base):
         for word in ('battle', 'lego', 'robot', 'yoga'):
             self.assertFalse(self.skipped(g, f'{word.title()} bots: reply to the club by Friday.'))
         # a stop word in the lead (pronoun, determiner, preposition, reporting verb) keeps the sentence ordinary
-        for lead in ('We said', 'Our', 'From the', 'Sam told', 'With'):
+        for lead in ('We said', 'Our', 'From the', 'With'):
             self.assertFalse(self.skipped(g, f'{lead} AI tools: reply cards are at the desk.'))
+        # An explicit reported automated-reader address is now an excluded context,
+        # even if its payload happens to describe ordinary facts. No people-statement exemption.
+        self.assertTrue(self.skipped(g, 'Sam told AI tools: reply cards are at the desk.'))
 
     def test_m16_r8_probes_end_to_end(self):
         qs = [self.q(r, f'Where is the spare {r} key?') for r in ('shed', 'yard', 'boat', 'van')]
