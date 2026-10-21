@@ -489,7 +489,12 @@ def check(path):
             F.append({"code": "conflicting_commitment", "ref": k, "detail": "; ".join(clash)})
         roots = sorted({t for x in refs if x in reqs for t in reqs[x]["_traces"] if t in known_src} | {x for x in refs if x in known_src})
         conds = sorted(t for t in roots if t in unconfirmed)
-        qual = sorted({a for cr in conflict_rep if cr["status"] == "resolved" and set(cr["between"]) & set(refs) for a in cr["ambiguities"]})
+        # qualified by a resolved conflict when the commitment names one of its requirements, or rests on an input one of
+        # them traces (M31 r2 P4-1: a commitment on the input alone was not qualified)
+        qual = sorted({a for cr in conflict_rep if cr["status"] == "resolved"
+                       and (set(cr["between"]) & set(refs)
+                            or set(roots) & {t for x in cr["between"] if x in reqs for t in reqs[x]["_traces"]})
+                       for a in cr["ambiguities"]})
         matrix.append({"commitment": k, "kind": c["kind"], "refs": refs, "sources": roots, "conditional_on": conds, "qualified_by": qual})
     F = _sorted(F)
     status = "ready" if not F else "blocked"

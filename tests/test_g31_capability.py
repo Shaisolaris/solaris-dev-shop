@@ -176,6 +176,22 @@ class G31Capability(unittest.TestCase):
         self.assertIn('CONFLICT R1 vs R6 resolved', out)
         self.assertIn('NOT CHECKED: general consistency of free text', out)
 
+    def test_commitment_on_a_traced_input_of_a_resolved_conflict_is_qualified(self):
+        """G31 r4 (M31 r2 P4-1): a commitment that rests only on an input a conflicting requirement traces had an empty
+        qualified_by, so the proposal did not state the owner's resolution for it."""
+        self.add_r6('Front desk takes calls during office hours only', 'Front desk works office hours only')
+        self.req('R6')['conflicts_with'] = ['R1']
+        self.p['ambiguities'].append({'id': 'AMB7', 'about': ['R1', 'R6'], 'question': 'online any time or office hours?',
+                                      'escalated_to': 'Clinic owner', 'status': 'resolved',
+                                      'resolution': {'text': 'booking online any time', 'source': 'owner call 2026-10-03', 'date': '2026-10-03'}})
+        self.p['proposal']['commitments'].append({'id': 'C8', 'kind': 'other', 'text': 'Booking flow as in the brief', 'refs': ['IN1']})
+        self.p['proposal']['commitments'].append({'id': 'C9', 'kind': 'other', 'text': 'Reminders as in the brief', 'refs': ['IN3']})
+        r = self.check(0)
+        m = {x['commitment']: x['qualified_by'] for x in r['trace_matrix']}
+        self.assertEqual(m['C8'], ['AMB7'])
+        self.assertEqual(m['C9'], [])
+        self.assertEqual(m['C4'], [])
+
     def test_every_opposite_family_and_its_input(self):
         sys.path.insert(0, str(TOOL.parent)); old = sys.dont_write_bytecode; sys.dont_write_bytecode = True
         try:
