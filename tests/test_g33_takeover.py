@@ -14,7 +14,7 @@ class NumericBoundaries(unittest.TestCase):
                 self.assertFalse(e._value_in_quote('7', 'Rate: 7'+gap+'%.'))
 
     def test_identifiers_units_signs_and_larger_values_are_not_plain_numbers(self):
-        for quote in ['K18', 'metric18', '18kg', '-18', '+18', '118', '18,000', '18%extra']:
+        for quote in ['K18', 'metric18', '18kg', '-18', '+18', '118', '18,000', '18%extra', '\u221218', '\uff0b18', '\uff0d18', '\ufe6218', '\ufe6318', '\u207a18', '\u207b18', '\u208a18', '\u208b18']:
             with self.subTest(quote=quote):
                 self.assertFalse(e._value_in_quote('18',quote))
 
