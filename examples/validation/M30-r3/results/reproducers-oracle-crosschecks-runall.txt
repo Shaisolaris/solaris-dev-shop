@@ -1,0 +1,41 @@
+== Python 3.9.6 at f9794c28a560f95f39fa2f987a713d44d7d456dd
+ACCEPTED 13/13
+REJECTED 0/13
+CROSS-CHECKS CLEAN (0 findings)
+VERDICT INTEGRATED
+== Python 3.11.16 at f9794c28a560f95f39fa2f987a713d44d7d456dd
+ACCEPTED 13/13
+REJECTED 0/13
+CROSS-CHECKS CLEAN (0 findings)
+VERDICT INTEGRATED
+== Python 3.12.14 at f9794c28a560f95f39fa2f987a713d44d7d456dd
+ACCEPTED 13/13
+REJECTED 0/13
+CROSS-CHECKS CLEAN (0 findings)
+VERDICT INTEGRATED
+== Python 3.13.15 at f9794c28a560f95f39fa2f987a713d44d7d456dd
+ACCEPTED 13/13
+REJECTED 0/13
+CROSS-CHECKS CLEAN (0 findings)
+VERDICT INTEGRATED
+== --run all on 3.9.6
+  run test G13 python3 -m unittest tests.test_g13_capability rc=0 9.7s
+  run test G14 python3 -m unittest tests.test_g14_capability rc=0 5.5s
+  run test G17 python3 -m unittest tests.test_g17_capability rc=0 11.5s
+  run command G17 python3 examples/capabilities/G17/decision_oracle.py rc=0 2.6s
+  run test G20 python3 -m unittest tests.test_g20_capability rc=0 0.5s
+  run command G20 python3 examples/capabilities/G20/ui_oracle.py rc=0 0.0s
+  run test G21 python3 -m unittest tests.test_g21_capability rc=0 80.4s
+  run command G21 python3 examples/capabilities/G21/sync_oracle.py --quick rc=0 30.0s
+  run test G22 python3 -m unittest tests.test_g22_capability rc=0 12.9s
+  run command G22 python3 examples/capabilities/G22/ledger_oracle.py rc=0 3.6s
+  run test G23 python3 -m unittest tests.test_g23_capability rc=0 9.0s
+  run command G23 python3 examples/capabilities/G23/wp_oracle.py --tool {python} employe rc=0 2.9s
+  run test G25 python3 -m unittest tests.test_g25_capability rc=0 8.9s
+  run command G25 python3 examples/capabilities/G25/protocol_oracle.py --tool {python} e rc=0 2.7s
+  run cross_check G30 python3 examples/capabilities/G30/cross_checks.py rc=0 0.9s
+  run gate suite python3 -m unittest discover -s tests rc=0 284.8s
+  run gate control_plane python3 control-plane/meta_control_plane.py self-test rc=0 0.2s
+  run gate quality_audit quality_os.py audit rc=0 0.1s
+for f in sorted(glob.glob('empl rc=0 0.0s
+  run gate catalog python3 tools/build_skill_catalog.py --check rc=0 0.0s

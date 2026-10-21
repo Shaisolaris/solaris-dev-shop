@@ -1,0 +1,24 @@
+test_too_long_text_is_named_as_too_long (tests.test_g30_capability.Plan)
+M12 P4-1 (same tool blob as G12 e187297): plan text over 300 characters was refused as "expected a non-empty string". ... 
+======================================================================
+FAIL: test_too_long_text_is_named_as_too_long (tests.test_g30_capability.Plan) [resolved_overlaps[0].reason: 301 characters is too long; at most 300]
+M12 P4-1 (same tool blob as G12 e187297): plan text over 300 characters was refused as "expected a non-empty string".
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "WT/g30/tests/test_g30_capability.py", line 116, in test_too_long_text_is_named_as_too_long
+    self.assertIn(msg.encode(), r.stderr)
+AssertionError: b'resolved_overlaps[0].reason: 301 characters is too long; at most 300' not found in b'invalid input: resolved_overlaps[0].reason: expected a non-empty string\nVERDICT INVALID_INPUT\n'
+
+======================================================================
+FAIL: test_too_long_text_is_named_as_too_long (tests.test_g30_capability.Plan) [resolved_overlaps[0].reason: 1000 characters is too long; at most 300]
+M12 P4-1 (same tool blob as G12 e187297): plan text over 300 characters was refused as "expected a non-empty string".
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "WT/g30/tests/test_g30_capability.py", line 116, in test_too_long_text_is_named_as_too_long
+    self.assertIn(msg.encode(), r.stderr)
+AssertionError: b'resolved_overlaps[0].reason: 1000 characters is too long; at most 300' not found in b'invalid input: resolved_overlaps[0].reason: expected a non-empty string\nVERDICT INVALID_INPUT\n'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.135s
+
+FAILED (failures=2)

@@ -1,0 +1,9 @@
+FAIL R01 a 301-character overlap reason exits 2 and is named with its length and the limit
+FAIL R02 the limit counts characters, not bytes (301 x U+00E9 named as 301), and a previous --out is kept
+PASS R03 exactly 300 characters is not refused for length
+PASS R04 blank and non-string reasons keep the old message (exit 2)
+FAIL R05 another text field (external reply_url, an https URL of 400 characters) also gets the length message
+PASS R06 the shipped plan is unchanged by the fix: not exit 2 (binds the stack)
+OBS  R07 OBS: the 300 limit is a fixed constant per field; the message names it but the plan schema has no field to raise it
+SCORE 3/6
+rc=1

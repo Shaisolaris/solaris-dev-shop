@@ -1,0 +1,4 @@
+branch review/grok-g30-daily-integration remote head: f9794c28a560f95f39fa2f987a713d44d7d456dd
+f9794c2 G30 r4: a plan text over 300 characters is named as too long (M12 P4-1 carried; review only, Grok build)
+daily_integration.py blob at f9794c2 equals G12 r3 a245f1f blob: aa21975
+main: 02ba9c571b10ad1dba792d2ac5534bcad3171e67

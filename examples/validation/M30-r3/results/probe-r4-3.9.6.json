@@ -1,0 +1,88 @@
+{
+ "probe": "m30r3",
+ "python": "3.9.6",
+ "rows": [
+  {
+   "row": "R01",
+   "name": "a 301-character overlap reason exits 2 and is named with its length and the limit",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "rc": 2,
+    "err": "invalid input: resolved_overlaps[0].reason: 301 characters is too long; at most 300\nVERDICT INVALID_INPUT"
+   }
+  },
+  {
+   "row": "R02",
+   "name": "the limit counts characters, not bytes (301 x U+00E9 named as 301), and a previous --out is kept",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "rc": 2,
+    "err": "invalid input: resolved_overlaps[0].reason: 301 characters is too long; at most 300\nVERDICT INVALID_INPUT",
+    "old_out": "OLD"
+   }
+  },
+  {
+   "row": "R03",
+   "name": "exactly 300 characters is not refused for length",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "rc": 0,
+    "err": ""
+   }
+  },
+  {
+   "row": "R04",
+   "name": "blank and non-string reasons keep the old message (exit 2)",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "empty": [
+     2,
+     true
+    ],
+    "int": [
+     2,
+     true
+    ],
+    "null": [
+     2,
+     true
+    ],
+    "list": [
+     2,
+     true
+    ]
+   }
+  },
+  {
+   "row": "R05",
+   "name": "another text field (external reply_url, an https URL of 400 characters) also gets the length message",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "rc": 2,
+    "err": "invalid input: external[0].reply_url: 400 characters is too long; at most 300\nVERDICT INVALID_INPUT"
+   }
+  },
+  {
+   "row": "R06",
+   "name": "the shipped plan is unchanged by the fix: not exit 2 (binds the stack)",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "rc": 0
+   }
+  },
+  {
+   "row": "R07",
+   "name": "OBS: the 300 limit is a fixed constant per field; the message names it but the plan schema has no field to raise it",
+   "pass": true,
+   "obs": true,
+   "detail": null
+  }
+ ],
+ "score": "6/6"
+}
