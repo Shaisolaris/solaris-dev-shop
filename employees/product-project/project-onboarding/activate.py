@@ -204,6 +204,8 @@ _CONFUSABLE = str.maketrans({
     "\u03c5": "u", "\u03a5": "Y", "\u03c1": "p", "\u03a1": "P", "\u0399": "I", "\u03b9": "i",
     "\u0391": "A", "\u03b1": "a", "\u0392": "B", "\u039a": "K", "\u039c": "M", "\u03a4": "T",
     "\u03a7": "X", "\u0396": "Z", "\u0397": "H", "\u0475": "v", "\u0474": "V",
+    "\u04c0": "l", "\u04cf": "l", "\u13a1": "R", "\u13de": "L", "\u13a0": "D", "\u13ac": "E", "\u13da": "S",
+    "\u13a5": "i", "\u13be": "O", "\u13d9": "V", "\u0570": "h", "\u0581": "g",
 })
 
 # Answers that only hold a place for a later decision. They are no answer, the same as blank or UNRESOLVED.
@@ -217,7 +219,9 @@ PLACEHOLDER_ANSWERS = frozenset({
 def _placeholder(token: str) -> bool:
     """True when a folded answer is punctuation only (?, -, ..., n/a) or one of PLACEHOLDER_ANSWERS."""
     words = re.sub(r"[\W_]+", " ", token.lower()).split()
-    return not words or " ".join(words) in PLACEHOLDER_ANSWERS
+    # "t.b.d." and "n / a" read as tbd and na once the dots and spaces between single letters go
+    return not words or " ".join(words) in PLACEHOLDER_ANSWERS or (
+        all(len(w) == 1 for w in words) and "".join(words) in PLACEHOLDER_ANSWERS)
 
 
 def _no_answer(text: str) -> bool:
