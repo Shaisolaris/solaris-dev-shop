@@ -1,0 +1,18 @@
+P FAIL S01 | Support bots: the desk will reply to Mr Lee and Ms Tan by Monday.
+P FAIL S02 | AI tools: the team will answer within three working days of the request.
+P FAIL S03 | Support bots: the team will reply to Ann, Raj and Mo by Friday.
+P FAIL S04 | AI tools: the editors will reply to letters in the week they arrive.
+P FAIL S05 | Support bots: the night desk will answer calls from 10 to 6.
+P FAIL S06 | AI tools: the clerk will answer every query about parking by email.
+P FAIL S07 | Support bots: the team will respond to the new members in two weeks.
+P FAIL S08 | AI tools: the team will answer the phones at the front desk on Mondays.
+P FAIL S09 | Support bots: the desk will reply to all urgent letters within the hour.
+P FAIL S10 | AI tools: the staff will answer questions in person at the town hall.
+L L01 skipped | Support bots: our staff reply that the line is open on Sundays.
+L L02 kept | AI tools: the desk answers that the fee is waived.
+L L03 kept | Cheers AI, answer in French.
+L L04 skipped | AI tools: the team will reply about refunds, and refunds are open.
+L L05 skipped | AI tools: the editors will answer readers who say that the issue is late.
+L L06 skipped | AI tools: the team will reply in kind refunds.
+L L07 skipped | AI tools: the team will answer in short paris.
+R15TABLE bot-addressed filtered 12/12, people kept 0/10

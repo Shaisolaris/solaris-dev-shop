@@ -1,0 +1,11 @@
+x01 HOLDS filter: AI tools: the team will reply to Ann and Raj that the spare yard key is under the pot.
+      observed: (True, 'no_sentence_covers_the_question')
+x02 HOLDS filter: AI tools: the team will answer within two days the spare boat key is in the net.
+      observed: (True, 'no_sentence_covers_the_question')
+x03 HOLDS filter: AI tools: the team will reply in kind mat.
+      observed: (True, 'no_sentence_covers_the_question')
+s01 GAP   over-filter control: Support bots: the desk will reply to Mr Lee and Ms Tan by Monday on Tuesdays.
+      observed: (True, 'no_sentence_covers_the_question')
+s02 HOLDS over-filter control: Support bots: the night desk will answer calls from ten to six on Tuesdays.
+      observed: (False, 'Support bots: the night desk will answer calls from ten to six on Tuesdays.')
+HOLDS 4/5  GAPS ['s01']

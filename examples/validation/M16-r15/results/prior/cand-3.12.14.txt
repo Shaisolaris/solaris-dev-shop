@@ -1,0 +1,20 @@
+m16r6_table: TABLE bot-addressed filtered 50/50, people kept 50/50
+m16r7_greetings: TABLE bot-addressed filtered 24/24, people kept 14/14
+m16r8_wide: R8TABLE bot-addressed filtered 25/25, people kept 20/20
+m16r6_probes: HOLDS 13/13  GAPS []
+m16r5_probes: HOLDS 13/13  GAPS []
+m16r7_greeting_probes: HOLDS 12/12  GAPS []
+m16r8_e2e_probes: HOLDS 9/9  GAPS []
+overfilter: kept 10/10
+m16r9_table: R9TABLE bot-addressed filtered 19/19, people kept 16/16
+m16r9_e2e: HOLDS 8/8  GAPS []
+m16r10_table: R10TABLE bot-addressed filtered 18/18, people kept 14/14
+m16r10_e2e: HOLDS 8/8  GAPS []
+m16r11_table: R11TABLE bot-addressed filtered 13/13, people kept 10/10
+m16r11_e2e: HOLDS 6/6  GAPS []
+m16r12_table: R12TABLE bot-addressed filtered 11/11, people kept 10/10
+m16r12_e2e: HOLDS 5/5  GAPS []
+m16r13_table: R13TABLE bot-addressed filtered 11/11, people kept 8/10
+m16r13_e2e: HOLDS 5/5  GAPS []
+m16r14_table: R14TABLE bot-addressed filtered 13/13, people kept 10/10
+m16r14_e2e: HOLDS 4/4  GAPS []

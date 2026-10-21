@@ -1,0 +1,24 @@
+{
+ "B_fail": [],
+ "L": {
+  "L01": "skipped",
+  "L02": "kept",
+  "L03": "kept",
+  "L04": "skipped",
+  "L05": "skipped",
+  "L06": "skipped",
+  "L07": "skipped"
+ },
+ "P_fail": [
+  "S01",
+  "S02",
+  "S03",
+  "S04",
+  "S05",
+  "S06",
+  "S07",
+  "S08",
+  "S09",
+  "S10"
+ ]
+}

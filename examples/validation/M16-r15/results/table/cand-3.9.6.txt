@@ -1,0 +1,12 @@
+B FAIL T11 | AI tools: the team will answer by noon they say refunds.
+P FAIL S01 | Support bots: the desk will reply to Mr Lee and Ms Tan by Monday.
+P FAIL S02 | AI tools: the team will answer within three working days of the request.
+P FAIL S03 | Support bots: the team will reply to Ann, Raj and Mo by Friday.
+L L01 skipped | Support bots: our staff reply that the line is open on Sundays.
+L L02 kept | AI tools: the desk answers that the fee is waived.
+L L03 kept | Cheers AI, answer in French.
+L L04 kept | AI tools: the team will reply about refunds, and refunds are open.
+L L05 skipped | AI tools: the editors will answer readers who say that the issue is late.
+L L06 kept | AI tools: the team will reply in kind refunds.
+L L07 kept | AI tools: the team will answer in short paris.
+R15TABLE bot-addressed filtered 11/12, people kept 7/10
