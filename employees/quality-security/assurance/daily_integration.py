@@ -89,8 +89,10 @@ def load_json(path, what, limit=MAX_PLAN):
 
 
 def _str(v, where, rx=None, limit=300):
-    if not isinstance(v, str) or not v or len(v) > limit:
+    if not isinstance(v, str) or not v:
         raise Invalid("%s: expected a non-empty string" % where)
+    if len(v) > limit:
+        raise Invalid("%s: %d characters is too long; at most %d" % (where, len(v), limit))
     if rx is not None and not rx.match(v):
         raise Invalid("%s: %r has the wrong form" % (where, v[:60]))
     return v

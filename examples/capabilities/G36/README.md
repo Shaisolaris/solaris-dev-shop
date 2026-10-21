@@ -1,9 +1,11 @@
 # G36 day 6 daily integration
 
-Stack on v0.61 `02ba9c5`: G31 r3 `fcf492a` (via r2 `e998d2b`; carries G17 `550f184`, G14 r2 `6f7b23a` and G13 r3 `5666e7b`),
-G33 r4 `a4ae555`, G35 `34bb98f`, G34 `de76fae`, G04 r3 `e9fa278` and G32 r3 `b69f328`. There are no
-outside contributions on this day. G36 r2 merges G04 r3, G31 r3 and G33 r4 (the M04 r2, M31 r2 and M33 r3 P2
-repairs) onto the r1 stack `7a407bb` without rewriting it.
+Stack on v0.61 `02ba9c5`: G31 r4 `e809a4f` (via r2 `e998d2b`; carries G17 `550f184`, G14 r2 `6f7b23a` and G13 r3 `5666e7b`),
+G33 r5 `25c0075`, G35 `34bb98f`, G34 h1 `6ad99da`, G04 r4 `7ed5f70` and G32 r5 `807f1eb`. There are no
+outside contributions on this day. G36 r2 merged G04 r3, G31 r3 and G33 r4 onto the r1 stack `7a407bb`;
+G36 r3 merges G04 r4, G31 r4, G32 r5, G33 r5 and G34 h1 (the newest heads, validated by M04 r3, M31 r3,
+M32 r5 and M33 r4; G34 h1 is a post-acceptance test-control change) without rewriting either, and carries
+the M12 P4-1 tool fix from G12 r3 `a245f1f` (a plan text over 300 characters is named as too long).
 
 | Check | What it compares | Result on this stack |
 |---|---|---|
