@@ -12,8 +12,9 @@ applies consent and reply state:
   Unicode format characters) is the same person imported twice and the account is refused until it is merged;
   plus-addressing, dots, look-alikes and domain aliases are not matched;
 - an opt-out (scope all or marketing) or a hard bounce suppresses the person from then on, for good, and the
-  suppression is also stored in the state folder so a CRM identity/history merge that drops the old event
-  still keeps the person suppressed; a later opt_in is flagged for human review and the contact stays suppressed;
+  suppression is also stored in the state folder, keyed by handle, so a CRM identity/history merge that drops
+  the old event still keeps the person suppressed while the handle is kept (a merge that also changes the handle
+  is a new person to this tool); a later opt_in is flagged for human review and the contact stays suppressed;
 - a reply from the customer cancels the nudge or check-in it would have triggered;
 - a draft already written for an action that is now suppressed or cancelled is withdrawn (its file says so);
 - an owner change re-renders unsent drafts under the new owner (reassigned).
