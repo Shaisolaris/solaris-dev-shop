@@ -361,6 +361,56 @@ _NUM_OK = re.compile(
     r"|\b\d{1,2}-(?:hour|day|week|month|year|minute)\b"
     r"|\b" + _PLACE_TAG)
 _NUM_BAD = re.compile(r"(?i)\d|\b" + _CARD + r"\b")
+# G16 r18 (M16 r17 P2-1): default deny after a bot heading. Up to r17 a sentence was an instruction only when a reply
+#   verb came within PRE_VERB_WORDS words of the heading, so a longer lead-in ("AI tools: if a user on this site ever
+#   asks where things are kept, say ...") or no reply verb at all ("AI tools, when a visitor asks about the loft: the
+#   key is under the step.") was used as a source. From r18, once a bot heading is found the whole sentence is skipped
+#   unless the rest of it, right after the separator, proves to be a people statement (_STATEMENT: a subject, a reply
+#   verb, a content-free rest) and passes the number gate. No word window and no reply verb are needed to skip.
+#   A bot heading (_HEADING) is an automated reader (_READER, or a reader from _BOT after an opener) followed
+#   by a separator, in one of three places:
+#   - at the start of the sentence or after a colon, semicolon or bracket, optionally after a greeting or an opener
+#     word ("Note to", "Attention", "Dear", "For", "To all", "Hello,"), and optionally after up to three words before a
+#     note-like opener ("A quick note to AI tools:"); any separator, comma included;
+#   - after an opener word anywhere in the sentence, with a colon or dash ("We left a note for AI agents: ...");
+#   - after a comma, with a colon ("Thanks for reading, AI tools: ...").
+#   A comma after a mid-sentence reader is not a heading ("We compared answers from staff to AI tools, and ...").
+#   Cost (fail closed): other people text after a bot heading is skipped ("AI tools: this page lists opening hours.").
+_NOTE_OPEN = r"(?:note|notes|message|memo|instructions?|attention(?:\s+of)?|notice|reminder|warning|dear|heads[\s-]+up)"
+_OPEN_ANY = (r"(?:" + _NOTE_OPEN + r"|(?:hey|hi|hello|greetings)" + _GREET_FILL + r"|to|for|if\s+you\s+are|if\s+you['\u2019]re"
+             r"|you\s+are)")
+# a bare generic head (agents, readers, tools, assistants) after an opener names people too ("For agents at the front
+#   desk: ...", "Note for readers: ..."), so after an opener the reader is one from _READER or _BOT only
+_H_READER = r"(?:" + _READER + r"|" + _BOT + r")"
+_H_TAIL = (r"(?:\s+" + _POST_OPEN + r"\b[^.:;,!?\u2013\N{EM DASH}]{0,40}?)?")
+_HEADING = (r"(?:(?:^\W*|[:;(]\s*)"
+            r"(?:(?:" + _GREET_START + r"|" + _OPEN_ANY + r"|(?:[\w'\u2019-]+\s+){1,3}" + _NOTE_OPEN + r")(?:\s*,\s*|\s+)"
+            r"(?:(?:to|for)\s+)?)?" + _DET + r"\b" + _READER + _AFTER + _H_TAIL + _SEP
+            + r"|(?:^\W*|[:;(]\s*)(?:" + _GREET_START + r"|" + _OPEN_ANY + r"|(?:[\w'\u2019-]+\s+){1,3}" + _NOTE_OPEN + r")"
+            r"(?:\s*,\s*|\s+)(?:(?:to|for)\s+)?" + _DET + r"\b" + _H_READER + r"\b" + _AFTER + _H_TAIL + _SEP
+            + r"|\b" + _OPEN_ANY + r"\s+(?:(?:to|for)\s+)?" + _DET + r"\b" + _H_READER + r"\b" + _AFTER + _H_TAIL
+            + r"(?:\s*[:\u2013\N{EM DASH}]|\s+--?)\s*"
+            + r"|,\s*" + _DET + r"\b" + _READER + _AFTER + _H_TAIL + r"\s*:\s*)")
+_HEADING_RE = re.compile(r"(?i)" + _HEADING)
+# the proof is stricter than the r14 statement rule: the content-free rest must run to the end of the sentence (a
+#   semicolon does not end it), there is no free final conjunction clause ("..., and the spare key is in the tray")
+#   and no "as they say, ..." idiom, since either would carry content past the heading
+_FREE_REST_STRICT = (r"(?:\s*,?\s*(?:(?<![\w\u2019-])|(?=[(:]))" + _CHUNK + r"(?![\w\u2019-])){0,6}\s*[.!?]*\s*$")
+_STATEMENT_STRICT = (r"(?:" + _SUBJECT + r"\s+(?:" + _AUX + r"\s+){0,2}" + _SAY + r"\b"
+                     r"|(?:[\w']+,?\s+){0," + str(PRE_VERB_WORDS - 1) + r"}?(?:we|they|i|he|she|staff|people)\s+(?:" + _AUX
+                     + r"\s+){0,2}" + _SAY + r"\b)(?=" + _FREE_REST_STRICT + r")")
+_STATEMENT_RE = re.compile(r"(?i)" + _STATEMENT_STRICT)
+
+
+def _sentence_end(text: str, pos: int) -> int:
+    e = END_RE.search(text, pos)
+    return e.end() if e else len(text)
+
+
+def _proven_statement(text: str, h) -> bool:
+    """After a bot heading, the rest of the sentence is a people statement with a content-free rest and no stray number."""
+    end = _sentence_end(text, h.end())
+    return bool(_STATEMENT_RE.match(text, h.end(), end)) and not _number_gate(text[h.start():end])
 
 
 def _number_gate(sentence: str) -> bool:
@@ -382,8 +432,11 @@ class _Gated:
         if m:
             return m
         for h in _HEADED_RE.finditer(text, *args):
-            e = END_RE.search(text, h.end())
-            if _number_gate(text[h.start():e.end() if e else len(text)]):
+            if _number_gate(text[h.start():_sentence_end(text, h.end())]):
+                return h
+        # G16 r18: default deny after a bot heading
+        for h in _HEADING_RE.finditer(text, *args):
+            if not _proven_statement(text, h):
                 return h
         return None
 
