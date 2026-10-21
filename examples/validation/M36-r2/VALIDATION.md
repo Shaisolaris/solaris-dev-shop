@@ -1,6 +1,6 @@
 # M36 r2 validation of G36 r3 5296440
 
-- Verdict: PASS. The day 6 stack now pins the newest heads of G04, G31, G32, G33 and G34, the overlap reasons match the new blobs, and the M12 P4-1 tool fix is carried. No P1 to P4. One OBS.
+- Verdict: PASS. The day 6 stack now pins the newest heads of G04, G31, G32, G33 and G34, the overlap reasons match the new blobs, and the M12 P4-1 tool fix is carried. No P1 to P4. No open OBS (OBS-1 corrected below).
 - This is Grok checking a Grok build, built in the same run by the same agent. Grok self-validation, not independent review. It accepts nothing.
 
 ## What is being checked
@@ -31,7 +31,7 @@ Harness repair during this pass, disclosed: v1 read `git diff --name-only` with 
 - Full suite on fresh clones: 326 OK on all four Pythons. Browser processes 0 (results/full-suite-matrix.txt).
 
 ## Residuals
-- **OBS-1 (new):** G34 h1 6ad99da is a post-acceptance, test-control-only commit with no M pass of its own. This pass only checks that it is the branch head, is carried, and its tests and oracle pass in the stack.
+- **OBS-1 (corrected in a follow-up commit):** the first version of this line said G34 h1 6ad99da had no M pass of its own. That was wrong: M34 h1 5d4d01f on review/grok-m34-h1-validation validates exactly 6ad99da (PASS, Linux and macOS recheck). This pass adds only that 6ad99da is the branch head, is carried, and its tests and oracle pass in the stack.
 - **Not in this pass:** the G12 day 2 stack still pins G04 e9fa278, G05 04b3cf2, G07 0d6a78d and G09 edfa64d (superseded by 7ed5f70, 1b840cd, f4776bd and 1cab0f8). G06, G18, G24 and G42 still carry the old tool blob; G06, G18, G24 and G42 are in the stronger lane or off limits.
 
 Browser launches for this pass: 0.
