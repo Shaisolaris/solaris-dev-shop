@@ -284,6 +284,9 @@ class _Doc(object):
                 else:
                     v, i = None, i + 1
             else:
+                if _fc(rest, '&*!'):
+                    # checked here, before the item is read as a mapping or a scalar, so the anchor's own line is named
+                    raise Unusable("YAML_UNSUPPORTED", self.where(i), "anchors, aliases and tags are not read; expand them first")
                 newind = ind + (len(tx) - len(rest))
                 if rest == '-' or rest.startswith('- ') or (_KEY.match(rest) and not _fc(rest, '[{')):
                     self.toks[i] = [ln, newind, rest, self.toks[i][3]]
