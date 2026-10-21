@@ -66,3 +66,11 @@ python3 -m unittest tests.test_g16_capability
 - Lexical grading only. A correct paraphrase without a quote fails on purpose.
 - The baseline cannot do multi-hop questions.
 - Timings come from generated corpora on one Mac. They are not a performance claim for real documents.
+
+## Current source-context policy
+Automated-reader headings no longer have a people-statement exemption. Normalisation is
+classification-only. The entire instruction-like line, and a bare heading's nonblank continuation,
+are excluded before sentence splitting. Imported citations are checked against the same context.
+This prevents tested fragment-laundering cases but is not a general prompt-injection security
+boundary. See the current employee reference for limits. Historical revision scores above are
+records of earlier runs, not proof that those old source policies remain current.

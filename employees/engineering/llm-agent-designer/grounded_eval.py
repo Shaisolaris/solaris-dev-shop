@@ -25,6 +25,7 @@ from __future__ import annotations
 import argparse
 import concurrent.futures as cf
 import hashlib
+import html
 import json
 import math
 import os
@@ -54,7 +55,11 @@ whose why will with would you your about after any all also may must should shal
 many much long often""".split())
 NUM_RE = re.compile(r"\d+(?:[.,]\d+)*")
 TOK_RE = re.compile(r"[a-z0-9]+(?:[.,'][a-z0-9]+)*")
-END_RE = re.compile(r"[.!?]+(?=\s|$)")  # a period inside 2.75 or v1.2 is not a sentence end
+# a period inside 2.75 or v1.2 is not a sentence end; G16 r19: nor the period of a dotted abbreviation such as "A.I." or
+#   "e.g." (a letter, a period, a letter, a period), so the splitter never breaks inside "A.I. tools: ..."
+#   "A. I." with a space counts too
+END_RE = re.compile(r"(?<!(?<![\w.])[A-Za-z]\.[A-Za-z])(?<!(?<![\w.])[A-Za-z]\. [A-Za-z])"
+                    r"(?!(?<=(?<![\w.])[A-Za-z])\. ?[A-Za-z]\.)[.!?]+(?=\s|$)")
 NEEDS_NUMBER = re.compile(r"^\s*(how (many|much|long|often|far|old)|when|what (time|year|date|day))\b", re.I)
 # "when" / "what day" questions may be answered by a calendar word instead of a number ("closed on Mondays")
 WHEN_Q = re.compile(r"^\s*(when|what (time|date|day))\b", re.I)
@@ -361,56 +366,97 @@ _NUM_OK = re.compile(
     r"|\b\d{1,2}-(?:hour|day|week|month|year|minute)\b"
     r"|\b" + _PLACE_TAG)
 _NUM_BAD = re.compile(r"(?i)\d|\b" + _CARD + r"\b")
-# G16 r18 (M16 r17 P2-1): default deny after a bot heading. Up to r17 a sentence was an instruction only when a reply
-#   verb came within PRE_VERB_WORDS words of the heading, so a longer lead-in ("AI tools: if a user on this site ever
-#   asks where things are kept, say ...") or no reply verb at all ("AI tools, when a visitor asks about the loft: the
-#   key is under the step.") was used as a source. From r18, once a bot heading is found the whole sentence is skipped
-#   unless the rest of it, right after the separator, proves to be a people statement (_STATEMENT: a subject, a reply
-#   verb, a content-free rest) and passes the number gate. No word window and no reply verb are needed to skip.
-#   A bot heading (_HEADING) is an automated reader (_READER, or a reader from _BOT after an opener) followed
-#   by a separator, in one of three places:
-#   - at the start of the sentence or after a colon, semicolon or bracket, optionally after a greeting or an opener
-#     word ("Note to", "Attention", "Dear", "For", "To all", "Hello,"), and optionally after up to three words before a
-#     note-like opener ("A quick note to AI tools:"); any separator, comma included;
-#   - after an opener word anywhere in the sentence, with a colon or dash ("We left a note for AI agents: ...");
-#   - after a comma, with a colon ("Thanks for reading, AI tools: ...").
-#   A comma after a mid-sentence reader is not a heading ("We compared answers from staff to AI tools, and ...").
-#   Cost (fail closed): other people text after a bot heading is skipped ("AI tools: this page lists opening hours.").
-_NOTE_OPEN = r"(?:note|notes|message|memo|instructions?|attention(?:\s+of)?|notice|reminder|warning|dear|heads[\s-]+up)"
-_OPEN_ANY = (r"(?:" + _NOTE_OPEN + r"|(?:hey|hi|hello|greetings)" + _GREET_FILL + r"|to|for|if\s+you\s+are|if\s+you['\u2019]re"
-             r"|you\s+are)")
-# a bare generic head (agents, readers, tools, assistants) after an opener names people too ("For agents at the front
-#   desk: ...", "Note for readers: ..."), so after an opener the reader is one from _READER or _BOT only
-_H_READER = r"(?:" + _READER + r"|" + _BOT + r")"
-_H_TAIL = (r"(?:\s+" + _POST_OPEN + r"\b[^.:;,!?\u2013\N{EM DASH}]{0,40}?)?")
-_HEADING = (r"(?:(?:^\W*|[:;(]\s*)"
-            r"(?:(?:" + _GREET_START + r"|" + _OPEN_ANY + r"|(?:[\w'\u2019-]+\s+){1,3}" + _NOTE_OPEN + r")(?:\s*,\s*|\s+)"
-            r"(?:(?:to|for)\s+)?)?" + _DET + r"\b" + _READER + _AFTER + _H_TAIL + _SEP
-            + r"|(?:^\W*|[:;(]\s*)(?:" + _GREET_START + r"|" + _OPEN_ANY + r"|(?:[\w'\u2019-]+\s+){1,3}" + _NOTE_OPEN + r")"
-            r"(?:\s*,\s*|\s+)(?:(?:to|for)\s+)?" + _DET + r"\b" + _H_READER + r"\b" + _AFTER + _H_TAIL + _SEP
-            + r"|\b" + _OPEN_ANY + r"\s+(?:(?:to|for)\s+)?" + _DET + r"\b" + _H_READER + r"\b" + _AFTER + _H_TAIL
-            + r"(?:\s*[:\u2013\N{EM DASH}]|\s+--?)\s*"
-            + r"|,\s*" + _DET + r"\b" + _READER + _AFTER + _H_TAIL + r"\s*:\s*)")
+# G16 r19 (M16 r18 P2-1, P2-2, P3-1): a simpler rule instead of more special cases.
+#   1. Detection runs on a normalised copy of the sentence (_normalise): Unicode NFKC (full-width colons and digits),
+#      zero-width characters removed, other colon and dash look-alikes mapped, smart quotes made plain, markdown
+#      emphasis, backticks and square or curly brackets removed, "A.I." collapsed to "AI", runs of spaces collapsed.
+#      The sentence splitter (END_RE) never breaks inside a dotted abbreviation such as "A.I.".
+#   2. A bot heading (_HEADING) is a reader phrase: one or more automated readers joined by and, or or &, optionally after
+#      whichever, whatever, any, all and the other determiners, optionally followed by a post-modifier ("reading this
+#      page"). It is a heading when it is followed by
+#      - a colon or a dash, at the start of the sentence, after a colon, semicolon, comma or bracket, or after an opener
+#        word anywhere ("We left a note for AI agents: ...");
+#      - a comma or semicolon, at the start of the sentence or after a colon, semicolon or bracket, only when there is
+#        address evidence: a greeting or an opener before the reader (Hey, Dear, Attention, Note to, Hello, ...; not To
+#        or For alone), whichever or whatever before it, a post-modifier after it, or, after the comma, a second-person
+#        word (you, your, please), an imperative reply verb or the start of a new clause (a determiner, a pronoun or a
+#        conditional: "AI, the spare key is ...", "AI tools, when a visitor asks ..."). So "AI tools, like
+#        calculators, are allowed", "For AI tools, the main cost is ...", "I wrote a note to AI tools, which ..." and
+#        "LLMs; however, ..." are not headings.
+#   3. There is no people-statement exemption any more: any sentence with a bot heading is skipped. This removes the
+#      M16 r18 P2-2 class (a payload inside a phrase the statement rule accepted). People text under a bot heading is
+#      skipped too: the documented, owner-accepted trade-off (a safe failure, no answer, on rare text; P4).
+_ZW = re.compile("[\u200b\u200c\u200d\u2060\ufeff\u00ad]")
+_COLONS = str.maketrans({"\u2236": ":", "\u02f8": ":", "\ua789": ":", "\u0589": ":", "\u05c3": ":", "\u1361": ":",
+                         "\u2010": "-", "\u2011": "-", "\u2012": "-", "\u2015": "\u2014", "\u2212": "-",
+                         "\u2018": "'", "\u2019": "'", "\u201a": "'", "\u201b": "'", "\u201c": '"', "\u201d": '"',
+                         "\u201e": '"', "\u00ab": '"', "\u00bb": '"'})
+_STRUCK = re.compile(r"~~[^~]*~~")  # inspect both rendered and unwrapped interpretations
+_MARKUP = re.compile(r"[*`~\[\]{}\"]+|(?<![\w])['_]+|['_]+(?![\w])")
+_DOTTED_AI = re.compile(r"(?i)\ba\s?\.\s?i\s?\.(?=[\s:,;!?\-]|$)|\ba\s?\.\s?i\b")
+
+
+def _normalise(text: str) -> str:
+    t = unicodedata.normalize("NFKC", html.unescape(text))
+    t = "".join(ch for ch in t if unicodedata.category(ch) != "Cf")
+    # Formatting never makes addressed text trusted. Keep link labels and struck text,
+    # but drop their presentation wrappers before classification.
+    t = re.sub(r"</?[A-Za-z][^>\n]{0,200}>", "", t)
+    t = re.sub(r"\]\([^\n)]{0,2048}\)", "]", t)
+    t = _ZW.sub("", t).translate(_COLONS)
+    t = _MARKUP.sub("", _STRUCK.sub(" ", t))
+    t = _DOTTED_AI.sub("AI", t)
+    return re.sub(r"[ \t\u00a0]+", " ", t)
+
+
+_H_PRE = r"(?:(?:whichever|whatever|which|any|all|every|each|the|you|these|those|other|dear|all\s+the|any\s+of\s+the|all\s+of\s+the)\s+)?"
+_H_ONE = _H_PRE + r"(?:" + _READER + r"|" + _BOT + r")\b"
+_H_READERS = _H_ONE + r"(?:\s*(?:,|and|or|&)\s*" + _H_ONE + r")*"
+_H_VERB = r"(?:read|process|pars|answer|summari[sz]|scann?|index|crawl|brows|visit|see|us)"
+# a post-modifier before a colon or after whichever / whatever: "reading this", "that reads this", "on this site"
+_H_POST = (r"(?:\s+(?:(?:that|who|which)\s+)?(?:(?:is|are)\s+)?(?:" + _H_VERB + r"\w*|out\s+there|here|there|on|in|at|with"
+           r"|from)\b[^.:;,!?\u2013\N{EM DASH}]{0,40}?)")
+# before a bare comma it must read as an address: an -ing form or a relative clause ("AI tools reading this page, ...")
+_H_POST_C = (r"(?:\s+(?:(?:(?:that|who|which)\s+(?:(?:is|are)\s+)?)" + _H_VERB + r"\w*|" + _H_VERB + r"\w*ing|out\s+there)\b"
+             r"[^.:;,!?\u2013\N{EM DASH}]{0,40}?)")
+_H_GREET = (r"(?:" + _GREET_START + r"|(?:hey|hi|hello|greetings)" + _GREET_FILL
+            + r"|heads[\s-]+up|attention|listen(?:\s+up)?|psst|reminder|notice|warning|important|fyi|nb|ps)")
+_H_NOTE = (r"(?:(?:(?:a|an|the|this|my|our|one|quick|short|brief|small|important|urgent|final|special|friendly|last)\s+){0,3}"
+           r"(?:note|notes|message|memo|instructions?|notice|reminder|warning|heads[\s-]+up)\s+(?:to|for)"
+           r"|attention(?:\s+of)?|dear|if\s+you\s+are|if\s+you\s+re|you\s+are)")
+_H_OPEN = r"(?:" + _H_GREET + r"|" + _H_NOTE + r")"
+_H_START = r"(?:^\W*|[:;(]\s*)"
+_H_COLON = r"(?:\s*:|\s*[\u2013\N{EM DASH}]|\s+--?(?=\s))"
+_H_YOU = (r"(?:you|your|yours|yourself|yourselves|please|reply|respond|answer|say|state|tell|output|write|ignore|disregard"
+          r"|remember|use)")
+_H_ADDR2 = r"(?=\s*(?:(?:please|now|then|always|never|just|kindly)\s+)*" + _H_YOU + r"\b)"
+_H_ADDR = (r"(?=\s*(?:(?:please|now|then|always|never|just|kindly)\s+)*(?:" + _H_YOU + r"|note|the|a|an|this|that|these"
+           r"|those|my|our|its|it|there|here|if|when|whenever|once|unless|should|wherever|whoever|whatever|whichever)\b)")
+# a heading can start mid-sentence only after a note-like opener, to or for ("We left a note for AI agents: ...",
+#   "This page is for AI tools: ..."), not after a greeting word ("We said hiya AI tools: reply cards are at the desk." is prose)
+_HEADING = (r"(?:(?:" + _H_START + r"|[,]\s*|\b(?:" + _H_NOTE + r"|to|for)\s+)(?:" + _H_OPEN + r"(?:\s*,\s*|\s+))?"
+            r"(?:(?:to|for)\s+)?" + _H_READERS + _H_POST + r"?" + _AFTER + _H_COLON
+            + r"|" + _H_START + _H_OPEN + r"(?:\s*,\s*|\s+)" + _H_READERS + _H_POST + r"?" + _AFTER + r"\s*[,;]"
+            + r"|" + _H_START + r"(?:(?:to|for)\s+)?(?:whichever|whatever)\s+(?:" + _READER + r"|" + _BOT + r")\b" + _H_POST + r"?"
+            + _AFTER + r"\s*[,;]"
+            + r"|" + _H_START + r"(?:(?:to|for)\s+)?" + _H_READERS + _H_POST_C + _AFTER + r"\s*,"
+            # "To all AI tools, ..." addresses; a bare "For AI tools, ..." or "To AI tools, ..." needs a second-person
+            #   word or an imperative reply verb after the comma
+            + r"|" + _H_START + r"(?:to\s+(?=(?:all|any|every|each)\s))?" + _H_READERS + _AFTER + r"\s*[,;]" + _H_ADDR
+            + r"|" + _H_START + r"(?:to|for)\s+" + _H_READERS + _AFTER + r"\s*[,;]" + _H_ADDR2 + r")")
 _HEADING_RE = re.compile(r"(?i)" + _HEADING)
-# the proof is stricter than the r14 statement rule: the content-free rest must run to the end of the sentence (a
-#   semicolon does not end it), there is no free final conjunction clause ("..., and the spare key is in the tray")
-#   and no "as they say, ..." idiom, since either would carry content past the heading
-_FREE_REST_STRICT = (r"(?:\s*,?\s*(?:(?<![\w\u2019-])|(?=[(:]))" + _CHUNK + r"(?![\w\u2019-])){0,6}\s*[.!?]*\s*$")
-_STATEMENT_STRICT = (r"(?:" + _SUBJECT + r"\s+(?:" + _AUX + r"\s+){0,2}" + _SAY + r"\b"
-                     r"|(?:[\w']+,?\s+){0," + str(PRE_VERB_WORDS - 1) + r"}?(?:we|they|i|he|she|staff|people)\s+(?:" + _AUX
-                     + r"\s+){0,2}" + _SAY + r"\b)(?=" + _FREE_REST_STRICT + r")")
-_STATEMENT_RE = re.compile(r"(?i)" + _STATEMENT_STRICT)
+# a sentence that starts with readers, a comma-delimited aside and then a modal or adverb before the verb is prose with
+#   the readers as its subject ("Chatbots, for example, can answer simple questions."); the old reply-verb pattern
+#   would read the comma as a heading separator, so its match is not used for this shape (the heading rule still runs)
+_PROSE_SUBJ = re.compile(r"(?i)^\W*(?:the\s+)?" + _H_READERS + r"\s*,\s*[^,.:;!?]{1,40},\s*(?:can|could|may|might|will|would"
+                         r"|often|usually|also|sometimes|generally|typically|rarely|still)\s"
+                         # "For AI tools, ..." / "To AI tools, ...": the heading rule alone decides (G16 r19)
+                         r"|^\W*(?:for|to)\s+(?!(?:all|any|every|each|whichever|whatever|dear)\s)" + _H_READERS + _AFTER + r"\s*[,;]")
 
 
 def _sentence_end(text: str, pos: int) -> int:
     e = END_RE.search(text, pos)
     return e.end() if e else len(text)
-
-
-def _proven_statement(text: str, h) -> bool:
-    """After a bot heading, the rest of the sentence is a people statement with a content-free rest and no stray number."""
-    end = _sentence_end(text, h.end())
-    return bool(_STATEMENT_RE.match(text, h.end(), end)) and not _number_gate(text[h.start():end])
 
 
 def _number_gate(sentence: str) -> bool:
@@ -419,8 +465,8 @@ def _number_gate(sentence: str) -> bool:
 
 
 class _Gated:
-    """A compiled pattern plus the sentence-level number gate (G16 r17): search() first tries the pattern; if it does not
-    match, a bot-headed sentence whose remaining text carries a disallowed number token is still an instruction."""
+    """A compiled pattern plus the sentence-level number gate (G16 r17) and the bot-heading rule (G16 r19), all on the
+    normalised sentence: search() tries the pattern, then the number gate on reply-verb sentences, then the heading."""
 
     def __init__(self, base):
         self.base = base
@@ -428,17 +474,23 @@ class _Gated:
         self.flags = base.flags
 
     def search(self, text, *args):
+        # Treat both visible and struck text as potentially addressed. Formatting
+        # cannot grant trust, but deleting a struck decoy cannot hide an address.
+        if _STRUCK.search(text):
+            unwrapped = _STRUCK.sub(lambda m: m.group()[2:-2], text)
+            match = self.search(unwrapped)
+            if match:
+                return match
+        # G16 r19: every check runs on the normalised sentence
+        text = _normalise(text)
         m = self.base.search(text, *args)
-        if m:
+        if m and not _PROSE_SUBJ.match(text):
             return m
         for h in _HEADED_RE.finditer(text, *args):
             if _number_gate(text[h.start():_sentence_end(text, h.end())]):
                 return h
-        # G16 r18: default deny after a bot heading
-        for h in _HEADING_RE.finditer(text, *args):
-            if not _proven_statement(text, h):
-                return h
-        return None
+        # G16 r19: any sentence with a bot heading is skipped; there is no people-statement exemption
+        return _HEADING_RE.search(text, *args)
 
 
 ADDRESSED_RE = _Gated(re.compile(r"(?i)" + ADDRESSED))
@@ -636,6 +688,30 @@ def load_questions(path: str) -> Tuple[List[Dict[str, Any]], str]:
 
 # -- index + baseline answerer --------------------------------------------------------
 
+def excluded_source_lines(text: str) -> List[Tuple[int, int]]:
+    """Keep instruction context across sentence boundaries and a bare heading's continuation.
+
+    This is a conservative lexical source policy, not prompt-injection detection or
+    a claim that natural-language instructions can be recognised exhaustively.
+    A blank line or Markdown section heading ends a bare addressed block.
+    """
+    excluded = []
+    pos = 0
+    addressed_block = False
+    for line in text.splitlines(keepends=True):
+        if not line.strip() or line.lstrip().startswith("#"):
+            addressed_block = False
+        normal = _normalise(line)
+        heading = _HEADING_RE.search(normal)
+        fragments = (line[s:e] for s, e in sentence_spans(line))
+        if addressed_block or INSTRUCTION_RE.search(line) or any(INSTRUCTION_RE.search(f) for f in fragments):
+            excluded.append((pos, pos + len(line)))
+        if heading and not normal[heading.end():].strip():
+            addressed_block = True
+        pos += len(line)
+    return excluded
+
+
 def sentence_spans(text: str) -> List[Tuple[int, int]]:
     spans = []
     pos = 0
@@ -662,6 +738,7 @@ class Index:
         lengths = []
         for name, doc in sorted(corpus["docs"].items()):
             text = doc["text"]
+            excluded = excluded_source_lines(text)
             for s, e in sentence_spans(text):
                 while s < e and text[s].isspace():
                     s += 1
@@ -673,7 +750,7 @@ class Index:
                 ts = terms(frag)
                 if not ts:
                     continue
-                if INSTRUCTION_RE.search(frag):
+                if any(s < stop and e > start for start, stop in excluded):
                     self.skipped.append((name, s, e))
                     continue
                 sid = len(self.sents)
@@ -988,6 +1065,8 @@ def _support(answer: str, ok: List[Dict[str, Any]], sts: List[str], corpus: Dict
         text = corpus["docs"][c["doc"]]["text"]
         s0 = _locate(c, st, text)
         e0 = s0 + len(c["quote"])
+        if any(s0 < stop and e0 > start for start, stop in excluded_source_lines(text)):
+            return f"a quote from {c['doc']} is in an excluded automated-reader instruction context"
         span = next(((s, e) for s, e in sentence_spans(text) if s <= s0 and e0 <= e), None)
         if span is None:
             return f"a quote from {c['doc']} spans more than one sentence; quote one sentence (or part of one) per citation"

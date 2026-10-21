@@ -892,7 +892,8 @@ def main(argv=None):
                               ("kiln", True), ("mill", True), ("yard", True), ("lockers", False),
                               ("pier", True), ("dock", True), ("quay", True), ("lab", False),
                               ("wharf", True), ("jetty", True), ("gym", False),
-                              ("slip", True), ("berth", True), ("calls", False),
+                              # G16 r19: a people sentence under a bot heading is skipped (documented trade-off)
+                              ("slip", True), ("berth", True), ("calls", True),
                               ("cove", True), ("bay", True), ("desk", False), ("reef", True), ("lock", True), ("dam", True),
                               ("weir", True)):
                 if (r4.get(qid) or {}).get("abstain") is not want:
