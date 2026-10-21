@@ -1,0 +1,27 @@
+C01_clean_register_claim PASS {"rc": 0, "machines": [{"alias": "mini1", "machine_id": "mini-7f3a-0001", "owner": "ana", "owner_epoch": 1, "registered_by": "reg-1", "status": "active"}], "fleet_md_has_alias": true}
+C02_race_same_machine_8_aliases PASS {"rcs": [0, 2, 2, 2, 2, 2, 2, 2], "machines": 1}
+C03_race_8_machines_one_alias PASS {"rcs": [0, 2, 2, 2, 2, 2, 2, 2], "machines": 1}
+C04_retry_storm_same_request PASS {"rcs": [0, 0, 0, 0, 0, 0], "machines": 1, "commits": 1}
+C05_race_8_transfers_one_view PASS {"rcs": [0, 2, 2, 2, 2, 2, 2, 2], "machine": [{"alias": "mini1", "machine_id": "mini-7f3a-0001", "owner": "o0", "owner_epoch": 2, "registered_by": "reg-1", "status": "active"}]}
+C06_wrong_machine_cannot_claim PASS {"rcs": [2, 2, 2, 2], "unchanged": true}
+C06b_case_variant_identity_claim OBS {"claim_rc_with_MINI-7F3A-0001": 0, "register_second_alias_rc": 2}
+C07_stale_owner_and_epoch PASS {"old_owner_old_epoch_claim": 2, "new_owner_old_epoch_claim": 2, "old_owner_new_epoch_claim": 2, "future_epoch_claim": 2, "stale_transfer_old_owner": 2, "stale_transfer_right_owner_old_epoch": 2, "transfer_wrong_owner_right_epoch": 2, "self_transfer": 2, "reregister_by_old_owner": 2, "transfer": 0, 
+C08_abab_old_epoch_stays_stale PASS {"transfer_back": 0, "machine": [{"alias": "mini1", "machine_id": "mini-7f3a-0001", "owner": "ana", "owner_epoch": 3, "registered_by": "reg-1", "status": "active"}]}
+C09_crash_before_replace_prior_owner_kept PASS {"drill": 75, "after_drill": [{"alias": "mini1", "machine_id": "mini-7f3a-0001", "owner": "ana", "owner_epoch": 1, "registered_by": "reg-1", "status": "active"}], "prior_claim": 0, "retry": 0, "after_retry": [{"alias": "mini1", "machine_id": "mini-7f3a-0001", "owner": "ben", "owner_epoch": 2, "regis
+C10_crash_after_replace_settles_once PASS {"drill": 75, "after_drill": [{"alias": "mini1", "machine_id": "mini-7f3a-0001", "owner": "cy", "owner_epoch": 3, "registered_by": "reg-1", "status": "active"}], "retry": 0, "after_retry": [{"alias": "mini1", "machine_id": "mini-7f3a-0001", "owner": "cy", "owner_epoch": 3, "registered_by": "reg-1", 
+C11_sigkill_mid_change_30x PASS {"bad": [], "final": ["w29", 31]}
+C11b_temp_files_left_after_sigkill OBS {"leftover_tmp": []}
+C12_hand_edit_refused_everywhere_restore_works PASS {"claim_edited_owner": 2, "claim_orig_owner": 2, "status": 2, "transfer": 2, "register": 2, "restored_claim": 0, "whitespace_only_edit_claim": 2}
+C12b_fleet_md_hand_edit OBS {"claim_rc_after_fleet_md_edit": 0, "fleet_md_rerendered_on_next_change": true}
+C13_ops_log_deleted_refused PASS {}
+C14_ops_corrupt_stops_torn_tail_cut PASS {"mid_garbage_claim": 2, "torn_tail_claim": 0, "torn_cut": true}
+C15_request_id_reuse_refused_repeat_noop PASS {"reuse_for_other_machine": 2, "reuse_for_transfer": 2}
+C16_retire_blocks_work_and_alias PASS {"retire": 0, "claim_retired": 2, "reuse_alias_other_machine": 2, "transfer_retired": 2, "stale_retire": 2}
+C16b_retired_machine_new_alias OBS {"register_same_machine_new_alias_rc": 0}
+C17_invalid_inputs_create_nothing PASS {"rcs": [2, 2, 2, 2, 2, 2, 2], "unchanged": true, "nope_created": false, "positive_control": 0}
+C18_scale_40_machines_4_registrars PASS {"machines": 40, "distinct": 40}
+C19_handoff_gate_refuses_with_nothing_created PASS {"impostor": [2, 0, []], "no_identity": [2, 0, []], "wrong_epoch": [2, 0, []], "good": [0, 1, [".handoff", ".handoff/WO-HARBOR-1", ".handoff/WO-HARBOR-1/.worker.lock", ".handoff/WO-HARBOR-1/holder.json", ".handoff/WO-HARBOR-1/journal.jsonl", ".handoff/WO-HARBOR-1/rev1", ".handoff/WO-HARBOR-1/rev1/HA
+C20_registry_path_confined PASS {"dotdot": [2, 0, []], "absolute": [2, 0, []], "empty": [2, 0, []], "nul": [2, 0, []], "symlink_out": [2, 0], "inside_ok": [0, 1]}
+C21_no_pycache_left_in_repo_after_fleet_order PASS {"run_rc": 0, "pycache_dirs": []}
+C22_static_no_subprocess_network PASS {"found": []}
+M07 ORACLE 22/22 core PASS

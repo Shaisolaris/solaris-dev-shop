@@ -1,0 +1,40 @@
+== Python 3.9.6 at f4776bdd1849a4303bdb323165bd18dc341037d4
+R01 PASS 4 case variants of a registered id under new aliases are refused (exit 2); one machine stays | {"rc": {"BOX-0042-ALPHA": 2, "box-0042-alpha": 2, "bOx-0042-AlPhA": 2, "Box-0042-Alpha": 2}, "machines": 1}
+R02 PASS claim with a case variant of the id is admitted; a one-letter different id is refused as wrong machine | [true, true]
+R03 PASS control: two different ids register as two machines | [0, 0]
+R04 PASS status removes 3 .reg-*.tmp leftovers and keeps 3 unrelated files | {"rc": 0, "left": [".reg-keep.tmp.bak", "notes.tmp", "reg-keep.tmp"]}
+R05 PASS a refused transfer still clears the leftover; status after is clean (exit 0) | [2, 0]
+R06 PASS fleet-bound order from a copied tree with bytecode writing on: exit 0 and no __pycache__ anywhere in it (interpreter pycache_prefix set: yes) | {"rc": 0, "pycache": [], "err": ""}
+R07 PASS the module loader restores sys.dont_write_bytecode (False stays False) | {"has_loader": true, "after": false}
+M07R2 PROBE 7/7
+rc=0
+== Python 3.11.16 at f4776bdd1849a4303bdb323165bd18dc341037d4
+R01 PASS 4 case variants of a registered id under new aliases are refused (exit 2); one machine stays | {"rc": {"BOX-0042-ALPHA": 2, "box-0042-alpha": 2, "bOx-0042-AlPhA": 2, "Box-0042-Alpha": 2}, "machines": 1}
+R02 PASS claim with a case variant of the id is admitted; a one-letter different id is refused as wrong machine | [true, true]
+R03 PASS control: two different ids register as two machines | [0, 0]
+R04 PASS status removes 3 .reg-*.tmp leftovers and keeps 3 unrelated files | {"rc": 0, "left": [".reg-keep.tmp.bak", "notes.tmp", "reg-keep.tmp"]}
+R05 PASS a refused transfer still clears the leftover; status after is clean (exit 0) | [2, 0]
+R06 PASS fleet-bound order from a copied tree with bytecode writing on: exit 0 and no __pycache__ anywhere in it (interpreter pycache_prefix set: no) | {"rc": 0, "pycache": [], "err": ""}
+R07 PASS the module loader restores sys.dont_write_bytecode (False stays False) | {"has_loader": true, "after": false}
+M07R2 PROBE 7/7
+rc=0
+== Python 3.12.14 at f4776bdd1849a4303bdb323165bd18dc341037d4
+R01 PASS 4 case variants of a registered id under new aliases are refused (exit 2); one machine stays | {"rc": {"BOX-0042-ALPHA": 2, "box-0042-alpha": 2, "bOx-0042-AlPhA": 2, "Box-0042-Alpha": 2}, "machines": 1}
+R02 PASS claim with a case variant of the id is admitted; a one-letter different id is refused as wrong machine | [true, true]
+R03 PASS control: two different ids register as two machines | [0, 0]
+R04 PASS status removes 3 .reg-*.tmp leftovers and keeps 3 unrelated files | {"rc": 0, "left": [".reg-keep.tmp.bak", "notes.tmp", "reg-keep.tmp"]}
+R05 PASS a refused transfer still clears the leftover; status after is clean (exit 0) | [2, 0]
+R06 PASS fleet-bound order from a copied tree with bytecode writing on: exit 0 and no __pycache__ anywhere in it (interpreter pycache_prefix set: no) | {"rc": 0, "pycache": [], "err": ""}
+R07 PASS the module loader restores sys.dont_write_bytecode (False stays False) | {"has_loader": true, "after": false}
+M07R2 PROBE 7/7
+rc=0
+== Python 3.13.15 at f4776bdd1849a4303bdb323165bd18dc341037d4
+R01 PASS 4 case variants of a registered id under new aliases are refused (exit 2); one machine stays | {"rc": {"BOX-0042-ALPHA": 2, "box-0042-alpha": 2, "bOx-0042-AlPhA": 2, "Box-0042-Alpha": 2}, "machines": 1}
+R02 PASS claim with a case variant of the id is admitted; a one-letter different id is refused as wrong machine | [true, true]
+R03 PASS control: two different ids register as two machines | [0, 0]
+R04 PASS status removes 3 .reg-*.tmp leftovers and keeps 3 unrelated files | {"rc": 0, "left": [".reg-keep.tmp.bak", "notes.tmp", "reg-keep.tmp"]}
+R05 PASS a refused transfer still clears the leftover; status after is clean (exit 0) | [2, 0]
+R06 PASS fleet-bound order from a copied tree with bytecode writing on: exit 0 and no __pycache__ anywhere in it (interpreter pycache_prefix set: no) | {"rc": 0, "pycache": [], "err": ""}
+R07 PASS the module loader restores sys.dont_write_bytecode (False stays False) | {"has_loader": true, "after": false}
+M07R2 PROBE 7/7
+rc=0

@@ -1,0 +1,44 @@
+FFF
+======================================================================
+FAIL: test_case_variant_machine_id_is_the_same_machine (tests.test_g07_capability.G07Registry.test_case_variant_machine_id_is_the_same_machine)
+G07 r2 (M07 P4-2): MINI-7F3A-0001 registered as a second machine next to mini-7f3a-0001.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_g07_capability.py", line 179, in test_case_variant_machine_id_is_the_same_machine
+    self.assertEqual(c, 2, err)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^
+AssertionError: 0 != 2 : 
+
+======================================================================
+FAIL: test_temp_file_left_by_a_killed_change_is_removed (tests.test_g07_capability.G07Registry.test_temp_file_left_by_a_killed_change_is_removed)
+G07 r2 (M07 P4-3): a .reg-*.tmp left by a SIGKILL during a change stayed in the fleet root.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_g07_capability.py", line 191, in test_temp_file_left_by_a_killed_change_is_removed
+    self.assertFalse(left.exists())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_fleet_bound_order_writes_no_bytecode_into_the_tree (tests.test_g07_capability.G07Registry.test_fleet_bound_order_writes_no_bytecode_into_the_tree)
+G07 r2 (M07 P4-1): loading registry.py and activate.py from handoff.py wrote __pycache__ into the repo.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_g07_capability.py", line 212, in test_fleet_bound_order_writes_no_bytecode_into_the_tree
+    self.assertEqual(sorted(str(x.relative_to(src)) for x in src.rglob('__pycache__')), [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['employees/infrastructure/fleet-provision[71 chars]e__'] != []
+
+First list contains 2 additional elements.
+First extra element 0:
+'employees/infrastructure/fleet-provisioner/__pycache__'
+
++ []
+- ['employees/infrastructure/fleet-provisioner/__pycache__',
+-  'employees/product-project/project-onboarding/__pycache__']
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.179s
+
+FAILED (failures=3)
+rc=1

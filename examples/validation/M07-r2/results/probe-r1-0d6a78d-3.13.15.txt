@@ -1,0 +1,8 @@
+R01 FAIL 4 case variants of a registered id under new aliases are refused (exit 2); one machine stays | {"rc": {"BOX-0042-ALPHA": 0, "box-0042-alpha": 0, "bOx-0042-AlPhA": 0, "Box-0042-Alpha": 0}, "machines": 5}
+R02 FAIL claim with a case variant of the id is admitted; a one-letter different id is refused as wrong machine | [false, true]
+R03 PASS control: two different ids register as two machines | [0, 0]
+R04 FAIL status removes 3 .reg-*.tmp leftovers and keeps 3 unrelated files | {"rc": 0, "left": [".reg-.tmp", ".reg-aaaa.tmp", ".reg-bbbb.tmp", ".reg-keep.tmp.bak", "notes.tmp", "reg-keep.tmp"]}
+R05 FAIL a refused transfer still clears the leftover; status after is clean (exit 0) | [2, 0]
+R06 FAIL fleet-bound order from a copied tree with bytecode writing on: exit 0 and no __pycache__ anywhere in it (interpreter pycache_prefix set: no) | {"rc": 0, "pycache": ["employees/infrastructure/fleet-provisioner/__pycache__", "employees/product-project/project-onboarding/__pycache__"], "err": ""}
+R07 FAIL the module loader restores sys.dont_write_bytecode (False stays False) | {"has_loader": false, "after": null}
+M07R2 PROBE 1/7
