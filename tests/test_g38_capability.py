@@ -241,8 +241,9 @@ class G38Provenance(unittest.TestCase):
             (self.r / 'README.md').write_text('# X\n\n## License\n\n%s\n' % sec)
             self.assertEqual(self.check(0)['declarations'], 3, sec)  # pyproject, plugin.json and this section
         # unbalanced marks are not read as a name (the section is skipped, as before)
-        (self.r / 'README.md').write_text('# X\n\n## License\n\n**GPL-3.0\n')
-        self.assertEqual(self.check(0)['declarations'], 2)
+        for sec in ('**GPL-3.0', '**GPL-3.0*', '`GPL-3.0*', '_GPL-3.0__'):  # M38 r5: the closing mark must be the opening one
+            (self.r / 'README.md').write_text('# X\n\n## License\n\n%s\n' % sec)
+            self.assertEqual(self.check(0)['declarations'], 2, sec)
 
     def test_out_existing_folder_is_invalid(self):
         # M38 r2 P4-1: --out naming an existing folder -> exit 2, nothing written, no traceback

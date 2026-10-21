@@ -13,7 +13,7 @@ python3 provenance_check.py check ROOT [--manifest FILE] [--exclude DIR ...] [--
 |---|---|
 | license_missing | no readable root LICENSE |
 | license_unrecognized | the LICENSE text is not the whole MIT or Apache-2.0 text (whitespace, case and quote style aside; MIT may carry its title and copyright lines, Apache its standard appendix word for word in either published bracket spelling, `{}` or `[]`); a copyright line, in MIT or in the appendix, must read `copyright [(c)] YEAR[S] HOLDER[.] [all rights reserved.]`, with no sentence inside the holder and none of the words that grant, limit or condition use (may, must, shall, not, no, only, unless, except, prohibit, forbid, permit, commercial, restrict, license, terms, conditions, software, use, without); a header, a fragment or added terms are unrecognised, nothing is guessed and no declaration is compared |
-| license_mismatch | pyproject `license` (`license = "X"` or `'X'`, `license = { text = .. }`, `license = { file = .. }` or a `[project.license]` table; a file form is the license of the file it names), any `plugin.json` `license` under ROOT (chief-of-staff and employees/), the README badge or the README `## License` line (name may end at a comma or period, and may be wrapped in one `**`, `__`, `*`, `_` or backtick mark) names another license than the LICENSE text |
+| license_mismatch | pyproject `license` (`license = "X"` or `'X'`, `license = { text = .. }`, `license = { file = .. }` or a `[project.license]` table; a file form is the license of the file it names), any `plugin.json` `license` under ROOT (chief-of-staff and employees/), the README badge or the README `## License` line (name may end at a comma or period, and may be wrapped in one `**`, `__`, `*`, `_` or backtick mark, the same on both sides) names another license than the LICENSE text |
 | license_undeclared | a pyproject or `plugin.json` has no license value, or a pyproject license `file` is not a file inside ROOT |
 | upstream_license_unlisted | a LICENSE*, LICENCE* or COPYING file below the root is not named in NOTICE.md |
 | notice_path_missing | NOTICE.md names a license file that does not exist |
@@ -69,4 +69,4 @@ shall, not, no, only, unless, except, prohibit, forbid, permit, commercial, rest
 usage, without, cannot, solely, exclusive) appear. A name without a suffix ("Purpose Labs") is still unrecognised,
 and a capitalised restriction ending in a suffix that avoids those words can still pass, so every such line stays
 listed in `license_copyright_lines` for a person to read. The README `## License` name is now read when it is
-wrapped in Markdown emphasis or code marks (`**GPL-3.0**`). This changes parsing only; no legal conclusion changes.
+wrapped in Markdown emphasis or code marks (`**GPL-3.0**`), the same mark on both sides (r6: a mismatched pair such as `**GPL-3.0*` is not read, found by the M38 r5 probe). This changes parsing only; no legal conclusion changes.

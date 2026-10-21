@@ -291,9 +291,10 @@ def check(root, manifest=None, exclude=()):
     if rd is not None:
         for m in re.finditer(r"img\.shields\.io/badge/license-([A-Za-z0-9.]+)-", rd):
             declared("README.md", m.group(1).replace("--", "-"), "README badge")
-        # the name may be wrapped in one Markdown emphasis or code mark: **X**, __X__, *X*, _X_ or `X` (M38 r2 P4-3)
+        # the name may be wrapped in one Markdown emphasis or code mark, the same mark on both sides: **X**, __X__, *X*,
+        # _X_ or `X` (M38 r2 P4-3; M38 r5: mismatched marks such as **X* are not read)
         m = re.search(r"(?m)^## License\s*\n+\s*(\*\*|__|\*|_|`)?([A-Za-z0-9]+(?:[.\-][A-Za-z0-9]+)*(?:\s+[A-Za-z0-9]+(?:[.\-][A-Za-z0-9]+)*)*)"
-                      r"(?(1)(?:\*\*|__|\*|_|`))(?=\s*[,.]|\s*$)", rd)
+                      r"(?(1)\1)(?=\s*[,.]|\s*$)", rd)
         if m:
             declared("README.md", m.group(2), "README License section")
     # NOTICE: other license files must be listed, listed ones must exist
