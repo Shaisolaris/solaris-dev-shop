@@ -5,7 +5,7 @@ Nothing in the checkout is written; every tool runs on this tree or on temporary
 no socket, no browser.
 
   x1  G39 drill on this stack: the delivery drill composes G04 handoff, G02 activation, G13, G19, G03 and
-      G05 tools; this stack carries G02 r4, G04 r3, G05 r3 and G19 h1, so the drill must still pass with
+      G05 tools; this stack carries the repaired revisions pinned in plan.json, so the drill must still pass with
       the repaired tools (not only with the copies G39 was built on).
   x2  G38 provenance on the integrated tree: with G38's own fixtures excluded, every license declaration
       the stack brings agrees and the result is consistent.

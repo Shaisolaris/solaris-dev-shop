@@ -200,7 +200,7 @@
   },
   {
    "id": "G16",
-   "commit": "756720d5ea59d53d6e807a76db44e42b243ad2c3",
+   "commit": "664406d55743387762f8e5d53ec5c3b6346ad1d2",
    "note": "Exact delivered repair revision in root product candidate; inclusion does not imply independent acceptance.",
    "tests": [
     "tests.test_g16_capability",
@@ -340,10 +340,11 @@
   },
   {
    "id": "G33",
-   "commit": "25c00757771df806b8e1c0054900eefd004a67d1",
+   "commit": "d24779882bbf9c969f38259d8b19c632e9baf842",
    "note": "Exact delivered repair revision in root product candidate; inclusion does not imply independent acceptance.",
    "tests": [
-    "tests.test_g33_capability"
+    "tests.test_g33_capability",
+    "tests.test_g33_takeover"
    ],
    "commands": [
     [
