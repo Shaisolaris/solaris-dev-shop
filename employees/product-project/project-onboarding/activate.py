@@ -119,7 +119,11 @@ def _check_text(field: str, value: Any, problems: List[Dict[str, str]], required
         problems.append({"field": field, "problem": "must be text"})
         return None
     text = value.strip()
-    if not _visible(text):  # also blank: only zero-width, BOM or other invisible format characters
+    if any(0xD800 <= ord(ch) <= 0xDFFF for ch in text):
+        # Lone surrogates cannot be encoded to UTF-8; refuse before any write or render.
+        problems.append({"field": field, "problem": "must not contain unpaired surrogate characters"})
+        return None
+    if not _visible(text):  # blank, zero-width, Hangul/braille fillers, combining marks alone
         if required:
             problems.append({"field": field, "problem": "must not be blank"})
         return None
@@ -147,9 +151,83 @@ UNRESOLVED_ANSWER = re.compile(r"(?i)^unresolved\b")
 COMMIT_ID = re.compile(r"(?i)\b(?:commit|fork|sha|revision|rev)\b[\s:#@-]*(?:of\s+)?([0-9a-f]{40}|[0-9a-f]{64})\b")
 
 
+# Characters that leave no ink on the page but are not Cf/Cc/Z* (Hangul fillers, braille blank).
+_BLANK_LOOKING = frozenset("ᅟᅠㅤﾠ⠀")
+
+
 def _visible(text: str) -> bool:
-    """True when text has at least one character that is not whitespace or an invisible format/control mark."""
-    return any(not ch.isspace() and unicodedata.category(ch) not in ("Cf", "Cc", "Zs", "Zl", "Zp") for ch in text)
+    """True when text has at least one character that a reader can see.
+
+    Whitespace, format/control marks (Cf/Cc/Z*), combining marks alone (Mn/Me),
+    and known blank-looking fillers (Hangul fillers, braille blank) do not count.
+    Ambiguous deploy answers therefore stay unresolved instead of finishing complete.
+    """
+    for ch in text:
+        if ch.isspace() or ch in _BLANK_LOOKING:
+            continue
+        cat = unicodedata.category(ch)
+        if cat in ("Cf", "Cc", "Zs", "Zl", "Zp", "Mn", "Me"):
+            continue
+        name = unicodedata.name(ch, "")
+        if "FILLER" in name or name == "BRAILLE PATTERN BLANK":
+            continue
+        return True
+    return False
+
+
+def _answer_token(text: str) -> str:
+    """Fold an answer so a disguised UNRESOLVED can be matched at its start.
+
+    NFKD, then drop format, control and combining marks (zero-width joiners, accents put on letters), and turn every
+    kind of space or blank-looking filler into one plain space. Spaces are kept, not deleted, so "UNRESOLVED ask the
+    owner" still starts with the word UNRESOLVED and the word boundary in UNRESOLVED_ANSWER still holds.
+    """
+    out = []
+    for ch in unicodedata.normalize("NFKD", text):
+        cat = unicodedata.category(ch)
+        if cat in ("Cf", "Cc", "Mn", "Me"):
+            continue
+        out.append(" " if ch.isspace() or ch in _BLANK_LOOKING or cat in ("Zs", "Zl", "Zp") else ch)
+    return " ".join("".join(out).split())
+
+
+# Cyrillic and Greek letters that look like the Latin letters of UNRESOLVED (and a few neighbours). Folding them only
+# matters for the UNRESOLVED and placeholder checks, so a wrong fold can only ask the owner again (fail closed).
+_CONFUSABLE = str.maketrans({
+    "\u0430": "a", "\u0410": "A", "\u0435": "e", "\u0415": "E", "\u0451": "e", "\u0401": "E",
+    "\u043e": "o", "\u041e": "O", "\u0440": "p", "\u0420": "P", "\u0441": "c", "\u0421": "C",
+    "\u0443": "y", "\u0423": "Y", "\u0445": "x", "\u0425": "X", "\u0455": "s", "\u0405": "S",
+    "\u0456": "i", "\u0406": "I", "\u0458": "j", "\u0408": "J", "\u0501": "d", "\u051b": "q",
+    "\u041d": "H", "\u041c": "M", "\u0422": "T", "\u041a": "K", "\u0412": "B", "\u0432": "b",
+    "\u0578": "n", "\u057d": "u", "\u0585": "o", "\u0274": "N", "\u0280": "R", "\u1d20": "V", "\u1d0f": "O",
+    "\u03bf": "o", "\u039f": "O", "\u03b5": "e", "\u0395": "E", "\u03bd": "v", "\u039d": "N",
+    "\u03c5": "u", "\u03a5": "Y", "\u03c1": "p", "\u03a1": "P", "\u0399": "I", "\u03b9": "i",
+    "\u0391": "A", "\u03b1": "a", "\u0392": "B", "\u039a": "K", "\u039c": "M", "\u03a4": "T",
+    "\u03a7": "X", "\u0396": "Z", "\u0397": "H", "\u0475": "v", "\u0474": "V",
+    "\u04c0": "l", "\u04cf": "l", "\u13a1": "R", "\u13de": "L", "\u13a0": "D", "\u13ac": "E", "\u13da": "S",
+    "\u13a5": "i", "\u13be": "O", "\u13d9": "V", "\u0570": "h", "\u0581": "g",
+})
+
+# Answers that only hold a place for a later decision. They are no answer, the same as blank or UNRESOLVED.
+PLACEHOLDER_ANSWERS = frozenset({
+    "tbd", "tba", "tbc", "todo", "to do", "to be decided", "to be determined", "to be confirmed", "n a", "na",
+    "none", "nothing", "unknown", "not sure", "unsure", "pending", "undecided", "later", "decide later",
+    "ask owner", "ask the owner", "placeholder", "fill in", "fill me in", "xxx", "x", "null", "nil", "undefined",
+})
+
+
+def _placeholder(token: str) -> bool:
+    """True when a folded answer is punctuation only (?, -, ..., n/a) or one of PLACEHOLDER_ANSWERS."""
+    words = re.sub(r"[\W_]+", " ", token.lower()).split()
+    # "t.b.d." and "n / a" read as tbd and na once the dots and spaces between single letters go
+    return not words or " ".join(words) in PLACEHOLDER_ANSWERS or (
+        all(len(w) == 1 for w in words) and "".join(words) in PLACEHOLDER_ANSWERS)
+
+
+def _no_answer(text: str) -> bool:
+    """An answer that starts with UNRESOLVED (also spelled with look-alike letters) or is only a placeholder."""
+    token = _answer_token(text).translate(_CONFUSABLE)
+    return bool(UNRESOLVED_ANSWER.match(token)) or _placeholder(token)
 
 
 def _without_commit_ids(text: str) -> str:
@@ -169,8 +247,10 @@ def normalize_intake(raw: Dict[str, Any]) -> Tuple[Dict[str, Any], List[Dict[str
         problems.append({"field": "project_type", "problem": "must be one of " + ", ".join(PROJECT_TYPES)})
         ptype = None
     deploy = _check_text("deploy_model", raw.get("deploy_model"), problems, required=False)
-    if deploy is not None and UNRESOLVED_ANSWER.match(deploy):
-        deploy = None  # an answer of "UNRESOLVED" is no answer; it must not finish as complete
+    if deploy is not None and _no_answer(deploy):
+        # Literal UNRESOLVED (also after NFKD, mark stripping or look-alike letters) or a placeholder such as
+        # TBD, ?, - or n/a is no answer; it must not finish as complete.
+        deploy = None
     brief = _check_text("brief", raw.get("brief"), problems, required=False)
     creds_raw = raw.get("credentials") or []
     creds: List[Dict[str, str]] = []
@@ -335,6 +415,10 @@ def _read_journal(root: Path) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
         return None, f"{JOURNAL} is a {kind}, not a regular file; left unchanged"
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
+    except RecursionError:
+        # Deeply nested JSON escapes the default decoder as an unbounded traceback; refuse bounded.
+        return None, (f"{JOURNAL} is too deeply nested or corrupted; left unchanged. "
+                      "Move it aside to start a new activation")
     except (OSError, ValueError, UnicodeDecodeError):
         return None, f"{JOURNAL} is unreadable; left unchanged. Move it aside to start a new activation"
     if not isinstance(data, dict) or data.get("schema") != SCHEMA or not isinstance(data.get("files"), dict) \
@@ -469,7 +553,10 @@ def _acquire_lock(root: Path) -> Optional[str]:
         else:
             try:
                 info = json.loads((root / LOCK).read_text(encoding="utf-8"))
-            except (OSError, ValueError):
+            except RecursionError:
+                return (f"{LOCK} is too deeply nested or corrupted; left unchanged and nothing was written. "
+                        f"If no activation is running, delete {LOCK} and rerun.")
+            except (OSError, ValueError, UnicodeDecodeError):
                 info = None
             if isinstance(info, dict):
                 holder = f"pid {info.get('pid')} on {info.get('host')} since {info.get('started')}"
