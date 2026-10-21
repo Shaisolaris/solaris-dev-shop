@@ -412,8 +412,8 @@
   },
   {
    "id": "G39",
-   "commit": "86f35dd99b3ab07fbaf703ec2dbde2c46e47d6ac",
-   "note": "Root narrows SQLite shm rewrite exception;53 G39 tests pass on standalone source, final product acceptance pending.",
+   "commit": "a91f77a2b70a05de0b24cdf12e013ac1e7a83c12",
+   "note": "Root final CLI repair retains every repeated input/output path;54 delivery tests and Python3.9 targeted case pass.",
    "tests": [
     "tests.test_g39_capability"
    ],
@@ -438,8 +438,8 @@
   },
   {
    "id": "G41",
-   "commit": "54ffa5cfe3a33f2616a2de743d5c03920ec3de76",
-   "note": "Root release guard refuses malformed or unequal candidate/check/review revisions.21 targeted tests pass; actual hosted CI remains external verification.",
+   "commit": "e71c5de880aac16ba37a866ad34aedb280f3a87b",
+   "note": "Root matching-revision guard plus timeless read-only release documentation; guard code unchanged from independently reviewed54ffa5c.",
    "tests": [
     "tests.test_g41_capability"
    ],
