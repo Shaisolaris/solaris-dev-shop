@@ -13,7 +13,7 @@ controls a real machine, and it stores no secret; provisioning steps in SKILL.md
 ## Rules it enforces
 
 - **Identity, not names.** A machine is its identity file's `machine_id` (synthetic here). One active
-  registration per machine_id; an alias belongs to one machine. A second alias for the same machine is refused.
+  registration per machine_id; an alias belongs to one machine. A second alias for the same machine is refused. Machine ids are compared without regard to case (`MINI-7F3A-0001` is `mini-7f3a-0001`).
 - **Retries are safe.** Every change carries `--request-id`. Repeating it returns the recorded result; reusing
   it for a different change is refused. Re-registering the same machine, alias and owner changes nothing.
 - **Ownership is compare-and-set.** `transfer` and `retire` name the owner and owner_epoch the caller believes
@@ -52,3 +52,5 @@ under the worker lock; a refusal exits 2.
 Real machines, SSH, Tailscale, Hermes, credentials. Registries on a network folder (locks are local fcntl
 locks). Identity attestation: an identity file is a declaration, so a copied file would pass; it stops
 mistakes and stale views, not a determined impostor with the file.
+
+A `.reg-*.tmp` temp file is written only under the registry lock, so one found when the lock is taken was left by a killed change; the next command removes it and says so in its notes.

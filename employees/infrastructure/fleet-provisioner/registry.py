@@ -67,6 +67,11 @@ def atomic_write(path, data):
         raise
 
 
+def same_machine_id(a, b):
+    """Machine ids are compared without regard to case: MINI-7F3A-0001 and mini-7f3a-0001 are one machine (M07 P4-2)."""
+    return isinstance(a, str) and isinstance(b, str) and a.lower() == b.lower()
+
+
 def read_identity(path):
     try:
         ident = json.loads(Path(path).read_text(encoding="utf-8"))
@@ -95,6 +100,13 @@ class Registry:
         self.lock_fd = os.open(str(self.root / ".registry.lock"), os.O_RDWR | os.O_CREAT, 0o644)
         fcntl.flock(self.lock_fd, fcntl.LOCK_EX)
         self.notes = []
+        # Temp files are written only under this lock, so any left now are from a writer that was killed (M07 P4-3).
+        for left in sorted(self.root.glob(".reg-*.tmp")):
+            try:
+                left.unlink()
+                self.notes.append("removed temp file %s left by an interrupted change" % left.name)
+            except OSError:
+                pass
         self._load_ops()
         self._load_state()
         self._settle()
@@ -168,7 +180,7 @@ class Registry:
 
     def find(self, alias=None, machine_id=None):
         for m in self.state["machines"]:
-            if (alias is not None and m["alias"] == alias) or (machine_id is not None and m["machine_id"] == machine_id
+            if (alias is not None and m["alias"] == alias) or (machine_id is not None and same_machine_id(m["machine_id"], machine_id)
                                                                and m["status"] == "active"):
                 return m
         return None
@@ -227,7 +239,7 @@ def change(reg, kind, a, fail_at=None):
         if same and same["alias"] != a["alias"]:
             raise Refused("machine %s is already registered as %s; one registration per machine"
                           % (a["machine_id"], same["alias"]))
-        if m and m["machine_id"] != a["machine_id"]:
+        if m and not same_machine_id(m["machine_id"], a["machine_id"]):
             raise Refused("alias %s belongs to another machine" % a["alias"])
         if m and m["status"] != "active":
             raise Refused("alias %s is retired; register the machine under a new alias" % a["alias"])
@@ -265,7 +277,7 @@ def check_claim(root, alias, identity_path, owner, epoch):
         m = reg.find(alias=alias)
         if not m:
             raise Refused("no machine registered as %s" % alias)
-        if m["machine_id"] != mid:
+        if not same_machine_id(m["machine_id"], mid):
             raise Refused("wrong machine: this identity is not the machine registered as %s" % alias)
         if m["status"] != "active":
             raise Refused("%s is retired and cannot take work" % alias)
