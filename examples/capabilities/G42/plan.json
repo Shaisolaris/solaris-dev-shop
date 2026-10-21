@@ -263,8 +263,8 @@
   },
   {
    "id": "G21",
-   "commit": "822a9c1aaf2da3a0dace1bd0a0640d992406efa0",
-   "note": "G21, newest remote head; also stacked by G30",
+   "commit": "758e5bc5f3af81ae4752ac149f0ae07cc274e8af",
+   "note": "Exact G21 repair candidate: atomic enqueue and retry, strict loopback requests, and preflight duplicate-intent checks. Inclusion is not independent acceptance.",
    "tests": [
     "tests.test_g21_capability"
    ],
