@@ -22,7 +22,7 @@ local `fcntl` locks, so all workers must share one machine (POSIX); a network fo
 }
 ```
 
-- `owner` is required: the person or role accountable for the order (who is working it is recorded separately).
+- `owner` is required: the person or role accountable for the order (who is working it is recorded separately). The owner is bound into the activate and brief receipt inputs, so changing the owner at the same revision before delivery makes those receipts stale and rewrites the brief; it does not reuse a brief that still names the old owner. Once a revision has been delivered (even by a worker that crashed before its receipt), changing its owner is refused with exit 2 and nothing is written: a delivery cannot be recalled, so issue a new revision to change the owner. A refusal in a state folder the run created leaves no folder and no `.worker.lock` behind.
 - `revision` is an integer from 1. Change the intake, then issue a new revision with the new hash.
 - Every path is relative and stays inside the order's folder. `steps` may be omitted; if given it must be
   exactly `["activate", "brief", "deliver"]`.
@@ -31,8 +31,8 @@ local `fcntl` locks, so all workers must share one machine (POSIX); a network fo
 
 | Step | Effect | Receipt inputs | Receipt outputs |
 |------|--------|----------------|-----------------|
-| activate | runs project activation (`project-onboarding/activate.py`, G02) on `project_root` | intake hash, revision | `STATUS.md`, `ROUND-PLAN.md` hashes |
-| brief | writes `.handoff/<order>/rev<N>/HANDOFF-BRIEF.md` | intake and `STATUS.md` hashes | brief hash |
+| activate | runs project activation (`project-onboarding/activate.py`, G02) on `project_root` | intake hash, owner | `STATUS.md`, `ROUND-PLAN.md` hashes |
+| brief | writes `.handoff/<order>/rev<N>/HANDOFF-BRIEF.md` | intake, `STATUS.md` hashes, owner | brief hash |
 | deliver | appends one record to `<outbox>/ledger.jsonl` | brief hash | delivery key |
 
 A receipt is reused only when its inputs and its outputs still hash the same. If an output was edited, or an
@@ -61,8 +61,8 @@ stopped without releasing the order. `run` notes earlier revisions' deliveries a
 
 - `0` every step is done (finished now or reused).
 - `1` a step failed; the journal records why. Fix the cause and run again.
-- `2` invalid order, intake hash mismatch, a revision older than one already worked, a journal belonging to
-  another order, or a journal that does not verify. Nothing runs and nothing is written.
+- `2` invalid order, intake hash mismatch, a revision older than one already worked, an owner change on a
+  revision that was already delivered, a journal belonging to another order, or a journal that does not verify. Nothing runs and nothing is written.
 - `3` stopped on request after `--stop-after`; another worker can resume.
 - `4` another worker holds the order; nothing is written.
 - `75` a `--fail-at` crash drill: the process ends abruptly after the step's effect and before its receipt.

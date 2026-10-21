@@ -8,7 +8,7 @@ A work order names its owner, a revision number, a hashed intake file and a fixe
   deliver   append one delivery record to the outbox ledger (the effect that must never be duplicated)
 
 Every finished step appends a receipt to a hash-chained journal: the step, the revision, the hashes of the
-inputs it used and of the outputs it produced. A later worker (any process that runs `run` on the same order)
+inputs it used (including the order owner for activate and brief) and of the outputs it produced. A later worker (any process that runs `run` on the same order)
 re-checks each receipt against the current inputs and outputs and reuses it only if both still match;
 otherwise the step is stale and is redone. Delivery is keyed by order, revision and brief hash, and the
 ledger is checked under a lock before appending, so a worker that crashed after delivering but before writing
@@ -197,6 +197,12 @@ def ledger_records(outbox):
     return out
 
 
+def other_owner_deliveries(o, records):
+    """Owners other than the order's current owner that this order revision was already delivered under."""
+    return sorted({str(r.get("owner")) for r in records if r.get("order_id") == o["order_id"]
+                   and r.get("revision") == o["revision"] and r.get("owner") != o["owner"]})
+
+
 def render_brief(o, intake, status_sha):
     lines = ["# Handoff brief: %s revision %d" % (o["order_id"], o["revision"]), "",
              "- Owner: %s" % o["owner"],
@@ -217,13 +223,25 @@ def check_intake(o):
 def run(o, state, worker, stop_after=None, fail_at=None):
     check_intake(o)  # before anything is created; checked again under the lock
     sdir = state / o["order_id"]
+    new_dirs = [d for d in (sdir, state) if not d.exists()]  # innermost first; removed again if a refusal leaves them empty
     sdir.mkdir(parents=True, exist_ok=True)
-    fd = try_lock(sdir / ".worker.lock")
+    lock = sdir / ".worker.lock"
+    fd = try_lock(lock)
     if fd is None:
         holder = (sdir / "holder.json").read_text(encoding="utf-8") if (sdir / "holder.json").exists() else "{}"
         return 4, {"status": "held", "holder": json.loads(holder or "{}"), "steps": {}}
     try:
         return _run(o, sdir, worker, stop_after, fail_at)
+    except OrderError:
+        # A refusal in a folder this run created writes nothing: the empty lock and the new folders go again (M04 P4-1).
+        if sdir in new_dirs and [p.name for p in sdir.iterdir()] == [lock.name] and lock.stat().st_size == 0:
+            lock.unlink()
+            for d in new_dirs:
+                try:
+                    d.rmdir()
+                except OSError:
+                    break
+        raise
     finally:
         os.close(fd)
 
@@ -237,6 +255,11 @@ def _run(o, sdir, worker, stop_after, fail_at):
         raise OrderError("revision %d is older than revision %d already worked; refusing a stale order"
                          % (o["revision"], max(worked)))
     check_intake(o)
+    others = other_owner_deliveries(o, ledger_records(o["outbox"]))
+    if others:
+        # a delivery cannot be recalled: re-delivering this revision under a new owner would deliver it twice
+        raise OrderError("revision %d was already delivered with owner %s; a delivery cannot be recalled, so issue "
+                         "revision %d to change the owner" % (o["revision"], ", ".join(others), o["revision"] + 1))
     try:
         intake = json.loads(o["intake"].read_text(encoding="utf-8"))
         if not isinstance(intake, dict):
@@ -269,10 +292,12 @@ def _run(o, sdir, worker, stop_after, fail_at):
         return None
 
     def current_inputs(step):
+        # Owner is part of the order identity for brief (and activate): a same-revision owner
+        # change must not reuse a brief that still names the previous owner.
         if step == "activate":
-            return {"intake": o["intake_sha"]}
+            return {"intake": o["intake_sha"], "owner": o["owner"]}
         if step == "brief":
-            return {"intake": o["intake_sha"], "STATUS.md": sha_file(status_p)}
+            return {"intake": o["intake_sha"], "STATUS.md": sha_file(status_p), "owner": o["owner"]}
         return {"brief": sha_file(brief_p)}
 
     def outputs_hold(step, rec):
@@ -318,8 +343,17 @@ def _run(o, sdir, worker, stop_after, fail_at):
             lfd = os.open(str(o["outbox"] / ".ledger.lock"), os.O_RDWR | os.O_CREAT, 0o644)
             try:
                 fcntl.flock(lfd, fcntl.LOCK_EX)
-                if any(r.get("key") == key for r in ledger_records(o["outbox"])):
+                recs = ledger_records(o["outbox"])
+                others = other_owner_deliveries(o, recs)
+                if any(r.get("key") == key for r in recs):
                     outcome = "done (already delivered; duplicate suppressed)"
+                elif others:  # delivered meanwhile under another owner (checked again under the ledger lock)
+                    j.append({"type": "step_failed", "step": step, "revision": o["revision"], "worker": worker,
+                              "status": "owner_conflict", "errors": ["already delivered with owner %s" % ", ".join(others)]})
+                    j.append({"type": "release", "worker": worker})
+                    report["steps"][step] = "failed: revision %d already delivered with owner %s; issue a new revision" % (
+                        o["revision"], ", ".join(others))
+                    return 1, report
                 else:
                     line = canon({"key": key, "order_id": o["order_id"], "revision": o["revision"],
                                   "owner": o["owner"], "brief_sha256": ins["brief"], "delivered_by": worker})

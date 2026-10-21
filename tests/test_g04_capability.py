@@ -180,5 +180,91 @@ class G04Handoff(unittest.TestCase):
             self.assertIn(name, json.loads((TOOL.parent / 'plugin.json').read_text())['references'])
 
 
+    def test_owner_change_does_not_reuse_old_brief(self):
+        """Same revision, different owner must not keep a brief naming the previous owner (root G04)."""
+        order_path = self.w / 'order.json'
+        order = json.loads(order_path.read_text())
+        old_owner = order['owner']
+        env = dict(ENV)
+        p1 = subprocess.run([sys.executable, str(TOOL), 'run', str(order_path), '--worker', 'ana',
+                             '--stop-after', 'brief'],
+                            cwd=str(self.w), capture_output=True, text=True, env=env, timeout=120)
+        self.assertEqual(p1.returncode, 3, p1.stderr + p1.stdout)  # G04 r3: owner changes only before delivery
+        briefs = list((self.w / '.handoff').rglob('HANDOFF-BRIEF.md'))
+        self.assertEqual(len(briefs), 1)
+        self.assertIn(old_owner, briefs[0].read_text())
+        order['owner'] = 'support: Someone Else'
+        order_path.write_text(json.dumps(order, indent=2) + '\n')
+        p2 = subprocess.run([sys.executable, str(TOOL), 'run', str(order_path), '--worker', 'ben'],
+                            cwd=str(self.w), capture_output=True, text=True, env=env, timeout=120)
+        self.assertEqual(p2.returncode, 0, p2.stderr + p2.stdout)
+        text = briefs[0].read_text()
+        self.assertIn('support: Someone Else', text)
+        self.assertNotIn(old_owner, text)
+        # brief step must have been redone, not silently reused
+        self.assertIn('brief', p2.stdout.lower())
+        self.assertTrue('stale' in p2.stdout.lower() or 'done' in p2.stdout.lower())
+        ledger = (self.w / 'outbox' / 'ledger.jsonl').read_text().strip().splitlines()
+        self.assertEqual(len(ledger), 1)
+        self.assertIn('Someone Else', ledger[0])
+
+    def test_owner_change_after_delivery_is_refused_not_delivered_twice(self):
+        """G04 r3 (M04 r2 P2): a delivered revision must not be delivered again under a new owner, also when the
+        first worker crashed after the delivery and before its receipt."""
+        def run(order_path, *extra):
+            return subprocess.run([sys.executable, str(TOOL), 'run', str(order_path)] + list(extra),
+                                  cwd=str(self.w), capture_output=True, text=True, env=dict(ENV), timeout=120)
+        for first in (['--worker', 'ana'], ['--worker', 'ana', '--fail-at', 'deliver']):
+            with self.subTest(first=first):
+                shutil.rmtree(str(self.w / '.handoff'), True)
+                shutil.rmtree(str(self.w / 'outbox'), True)
+                order_path = self.w / 'order.json'
+                order = json.loads(order_path.read_text())
+                order['owner'] = 'delivery-lead: A. Example'
+                order_path.write_text(json.dumps(order, indent=2) + '\n')
+                self.assertIn(run(order_path, *first).returncode, (0, 75))
+                journal = next((self.w / '.handoff').rglob('journal.jsonl'))
+                before = journal.read_bytes()
+                order['owner'] = 'support: Someone Else'
+                order_path.write_text(json.dumps(order, indent=2) + '\n')
+                p = run(order_path, '--worker', 'ben')
+                self.assertEqual(p.returncode, 2, p.stdout + p.stderr)
+                self.assertIn('already delivered with owner delivery-lead: A. Example', p.stderr)
+                self.assertEqual(journal.read_bytes(), before)
+                ledger = (self.w / 'outbox' / 'ledger.jsonl').read_text().strip().splitlines()
+                self.assertEqual(len(ledger), 1)
+                self.assertIn('A. Example', ledger[0])
+        rev2 = json.loads((self.w / 'order-rev2.json').read_text())
+        rev2['owner'] = 'support: Someone Else'
+        (self.w / 'order-rev2.json').write_text(json.dumps(rev2, indent=2) + '\n')
+        p = run(self.w / 'order-rev2.json', '--worker', 'cy')
+        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
+        self.assertEqual(len((self.w / 'outbox' / 'ledger.jsonl').read_text().strip().splitlines()), 2)
+
+
+    def test_refusal_in_a_new_state_folder_leaves_no_lock(self):
+        """G04 r4 (M04 P4-1): an exit-2 refusal in a state folder the run created left an empty .worker.lock behind."""
+        self.assertEqual(self.cli('run', '--worker', 'ana')[0], 0)
+        order_path = self.w / 'order.json'
+        order = json.loads(order_path.read_text())
+        order['owner'] = 'support: Someone Else'
+        order_path.write_text(json.dumps(order, indent=2) + '\n')
+        fresh = Path(self.tmp) / 'fresh-state'
+        c, _, err = self.cli('run', '--worker', 'ben', '--state', str(fresh))
+        self.assertEqual(c, 2, err)
+        self.assertIn('already delivered', err)
+        self.assertFalse(fresh.exists(), sorted(str(p) for p in fresh.rglob('*')) if fresh.exists() else '')
+        nested = Path(self.tmp) / 'parent-exists'
+        nested.mkdir()
+        c, _, err = self.cli('run', '--worker', 'ben', '--state', str(nested))
+        self.assertEqual(c, 2, err)
+        self.assertEqual(list(nested.iterdir()), [])
+        # the original state folder keeps its lock, journal and receipts
+        sdir = self.w / '.handoff' / 'WO-HARBOR-1'
+        c, _, err = self.cli('run', '--worker', 'ben')
+        self.assertEqual(c, 2, err)
+        self.assertTrue((sdir / '.worker.lock').exists())
+        self.assertTrue((sdir / 'journal.jsonl').exists())
+
 if __name__ == '__main__':
     unittest.main()
