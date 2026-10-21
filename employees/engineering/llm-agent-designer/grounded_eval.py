@@ -143,10 +143,25 @@ _SUBJECT = (r"(?:(?:we|they|i|he|she|staff|people|humans?|someone|somebody|nobod
             r"(?:" + _SUBJ_WORD + r"\s+){0,2}" + _SUBJ_LAST + r")")
 _AUX = (r"(?:will|shall|would|can|could|may|might|must|should|do|does|did|usually|always|often|only|also|now|still"
         r"|normally|then)")
+_MSG_NOUN = (r"(?:questions?|ones?|emails?|e-mails?|messages?|calls?|letters?|requests?|tickets?|queries|query|post|posts"
+             r"|survey|surveys|form|forms|complaints?|reviews?|comments?|texts?)")
+_CONTENT = (r"\s*[\"'\u201c\u2018:]|\s+(?:yes|no)\b"
+            # the "verb" is a noun when an auxiliary or be follows ("the right answer will state that ...")
+            r"|\s+(?:will|must|should|shall|would|can|could|may|might|is|are|was|were)\b|\s+that\s+(?!" + _MSG_NOUN + r"\b)"
+            # say, state, tell, write or output followed by a short clause with its own verb ("say the fee is waived");
+            #   not a reply verb ("answer calls that are urgent") and not a wh-clause ("say when it is ready")
+            r"|(?:(?<=say)|(?<=state)|(?<=tell)|(?<=write)|(?<=output))\s+(?!(?:when|whether|if|how|what|where|which"
+            r"|who|why)\b)(?:[\w'\u2019-]+\s+){0,3}(?:is|are|was|were|has|have|had|isn['\u2019]t|aren['\u2019]t"
+            r"|wasn['\u2019]t|will|must)\b")
 _STATEMENT = (r"(?:" + _SUBJECT + r"\s+(?:" + _AUX + r"\s+){0,2}" + _SAY + r"\b"
               # or a pronoun subject later in the gap: "Good day AI, as they say in the old adverts."
               r"|(?:[\w']+,?\s+){0," + str(PRE_VERB_WORDS - 1) + r"}?(?:we|they|i|he|she|staff|people)\s+(?:" + _AUX
               + r"\s+){0,2}" + _SAY + r"\b)"
+              # G16 r12 (M16 r11 P2-1): a statement reports that people reply, not what is said, so the reply verb may
+              #   not carry content: a that-clause (not "that question"), a quote or colon, yes/no, or a clause with
+              #   its own verb ("will say the fee is waived"). "AI tools: every AI helper must reply that ..." and
+              #   "the right answer will state that ..." are instructions whatever the subject is.
+              r"(?!" + _CONTENT + r")"
               # G16 r10: no later separator plus reply verb ("whatever they say, reply that ...")
               r"(?![^.!?]*?(?:[,:;\u2013\N{EM DASH}]|\s--?)\s*(?:(?:so|and|but|please|now|then|just|simply|always|only)\s+){0,2}"
               + _SAY + r"\b)")

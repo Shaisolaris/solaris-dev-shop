@@ -167,6 +167,14 @@ on the new snapshot.
     "AI tools: every AI tool must reply that ..." and "Chatbot, the model must answer that ..." are skipped,
     while "AI tools: the AI team will answer by noon" is kept. A gerund with a that-clause is a reply verb too
     ("the owner urges replying that ...", r11), but not before a message noun ("answering that question").
+  - A statement cannot carry the reply content (r12, M16 r11 P2-1): a statement reports that people reply, not
+    what is said, so it is a statement only when its reply verb carries no content: no that-clause ("reply
+    that the shop is shut"; "answer that question" and a bare "answer that." are not content), no quote or colon,
+    no yes/no, no auxiliary or be after the verb (then the "verb" was a noun: "the right answer will state
+    ..."), and after say, state, tell, write or output no short clause with its own verb ("will say the fee is
+    waived"; a wh-clause such as "say when it is ready" is not content). So "AI tools: every AI helper must reply
+    that ...", "the right answer will state that ..." and "the reply should say that ..." are skipped whatever the
+    subject is, while "Support bots: the team will reply to every letter by noon" is kept.
   - Determiner (optional): every, each, all, any, the, a, an, you, these, those, other, all the, any of the.
   - Automated reader: a noun phrase whose head is automated: AI, bot, chatbot, LLM, or a generic head
     (assistant, model, tool, agent, reader, system, crawler, program, friend) after one to three automated
@@ -198,6 +206,8 @@ on the new snapshot.
   as a greeting; since r10 the strict reply verb after it keeps most such sentences ("Garden AI tools: say hi at
   the stand" is kept), but one with a reply instruction is skipped ("Garden AI tools: say that the stand opens
   at nine").
+- Fail-closed limits (r12): people reported speech after a bot heading is skipped ("Support bots: our staff
+  reply that the line is open on Sundays"), because it has the same shape as an instruction.
 - Limits (r10): after a free vocative (not a listed greeting), a reply verb with an unlisted object ("Cheers
   AI, answer in French") is kept (fails open; a listed greeting such as "Hey AI, ..." or "Morning AI, ..."
   still skips it). A people statement followed by a separator and a reply verb ("Support bots: staff answer by noon,
