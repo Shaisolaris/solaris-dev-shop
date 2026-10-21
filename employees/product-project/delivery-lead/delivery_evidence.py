@@ -244,12 +244,19 @@ def _named_inputs(root, argv, outputs, explicit):
     return sorted(set(named)), sorted(set(unbound))[:50]
 
 
-def _rewritten(before, after, touched):
-    """The inputs the run read and then changed or removed (r5): files that existed before the run. A file that
-    appeared during the run was not there to be read and is bound as it is after the run. A SQLite -shm file next
-    to a bound database is a shared-memory index that every reader updates and that holds no data, so it does
-    not count (a -wal or -journal file holds data and does count)."""
-    return [k for k in touched if k in before and not (k.endswith("-shm") and k[:-4] in after)]
+def _rewritten(before, after, touched, root):
+    """Existing inputs changed/removed by the run; only stable SQLite databases allow
+    their conventional -shm index exception. A suffix by itself is never evidence."""
+    def sqlite_index(k):
+        db = k[:-4]
+        if not k.endswith("-shm") or db not in before or before[db] != after.get(db):
+            return False
+        try:
+            with open(root / db, "rb") as fh:
+                return fh.read(16) == b"SQLite format 3\x00"
+        except OSError:
+            return False
+    return [k for k in touched if k in before and not sqlite_index(k)]
 
 
 def _role_ok(role):
@@ -341,7 +348,7 @@ def cmd_record(ns):
     except ValueError as e:
         why = why or ("inputs after the run: %s" % str(e)[:200])
     touched = sorted(k for k in set(inputs) | set(inputs_before) if inputs.get(k) != inputs_before.get(k))
-    rewritten = _rewritten(inputs_before, inputs, touched)
+    rewritten = _rewritten(inputs_before, inputs, touched, root)
     ok = why is None and rc in ok_exit
     rec = {"role": ns.role, "worker": ns.worker, "argv": argv, "ok_exit": ok_exit, "exit": rc, "ok": ok,
            "reason": why if why else (None if ok else "exit %s not in %s" % (rc, ok_exit)),

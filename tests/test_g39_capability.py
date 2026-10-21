@@ -444,10 +444,20 @@ class Direct(unittest.TestCase):
         rep = json.loads(out)
         self.assertEqual((rc, rep["verdict"], rep["clean_go"], rep["gaps"]), (0, "GO", True, []), out)
 
+    def test_arbitrary_shm_suffix_does_not_hide_rewritten_input(self):
+        (self.root / "notes").write_text("ordinary source")
+        (self.root / "notes-shm").write_text("old source")
+        cmd = [sys.executable, "-c", "open('notes-shm','w').write('changed');open('a.txt','w').write('x')", "notes", "notes-shm"]
+        self.assertEqual(self.rec(cmd=cmd)[0], 0)
+        rec = json.loads((self.root / ".delivery/contributions.jsonl").read_text().splitlines()[-1])
+        self.assertEqual(rec["inputs_rewritten_during_run"], ["notes-shm"])
+        rc, out = self.claims(self._body())
+        self.assertEqual((rc, json.loads(out)["contributions"][0]["state"]), (1, "evidenced_with_gaps"))
+
     def test_which_run_changes_are_rewrites(self):
         # a file read then changed or removed is a rewrite; a new file or a SQLite -shm index is not; -wal is
         (self.root / "db").mkdir()
-        for f, t in (("t.db", "d"), ("t.db-shm", "i"), ("t.db-wal", "w"), ("gone.csv", "g")):
+        for f, t in (("t.db", "SQLite format 3\x00"), ("t.db-shm", "i"), ("t.db-wal", "w"), ("gone.csv", "g")):
             (self.root / "db" / f).write_text(t)
         cases = (("open('db/t.db-shm','w').write('i2');open('db/new.csv','w').write('n')", []),
                  ("open('db/t.db-wal','w').write('w2')", ["db/t.db-wal"]),
