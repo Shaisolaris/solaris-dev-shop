@@ -22,7 +22,7 @@ local `fcntl` locks, so all workers must share one machine (POSIX); a network fo
 }
 ```
 
-- `owner` is required: the person or role accountable for the order (who is working it is recorded separately). The owner is bound into the activate and brief receipt inputs, so changing the owner at the same revision before delivery makes those receipts stale and rewrites the brief; it does not reuse a brief that still names the old owner. Once a revision has been delivered (even by a worker that crashed before its receipt), changing its owner is refused with exit 2 and nothing is written: a delivery cannot be recalled, so issue a new revision to change the owner.
+- `owner` is required: the person or role accountable for the order (who is working it is recorded separately). The owner is bound into the activate and brief receipt inputs, so changing the owner at the same revision before delivery makes those receipts stale and rewrites the brief; it does not reuse a brief that still names the old owner. Once a revision has been delivered (even by a worker that crashed before its receipt), changing its owner is refused with exit 2 and nothing is written: a delivery cannot be recalled, so issue a new revision to change the owner. A refusal in a state folder the run created leaves no folder and no `.worker.lock` behind.
 - `revision` is an integer from 1. Change the intake, then issue a new revision with the new hash.
 - Every path is relative and stays inside the order's folder. `steps` may be omitted; if given it must be
   exactly `["activate", "brief", "deliver"]`.
