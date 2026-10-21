@@ -97,6 +97,24 @@ class Plan(unittest.TestCase):
             self.assertFalse(os.path.exists(out))
 
 
+    def test_too_long_text_is_named_as_too_long(self):
+        """M12 P4-1: a resolved_overlaps reason over 300 characters was refused as "expected a non-empty string"."""
+        cases = [("resolved_overlaps", [{"path": "a.txt", "reason": "r" * 301}], "resolved_overlaps[0].reason: 301 characters is too long; at most 300"),
+                 ("resolved_overlaps", [{"path": "a.txt", "reason": ""}], "resolved_overlaps[0].reason: expected a non-empty string"),
+                 ("resolved_overlaps", [{"path": "a.txt", "reason": 7}], "resolved_overlaps[0].reason: expected a non-empty string")]
+        for key, value, msg in cases:
+            with self.subTest(msg=msg):
+                bad = dict(self.plan)
+                bad[key] = value
+                with tempfile.TemporaryDirectory() as d:
+                    p, out = os.path.join(d, "p.json"), os.path.join(d, "r.json")
+                    with open(p, "w") as fh:
+                        json.dump(bad, fh)
+                    r = run([TOOL, "check", "--plan", p, "--repo", ROOT, "--out", out])
+                    self.assertEqual(r.returncode, 2)
+                    self.assertIn(msg.encode(), r.stderr)
+                    self.assertFalse(os.path.exists(out))
+
 class CrossChecks(unittest.TestCase):
     def test_cross_checks_compare_real_tools(self):
         r = run([os.path.join(CAP, "cross_checks.py")])
