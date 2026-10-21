@@ -1,0 +1,36 @@
+== Python 3.9.6 at 807f1eb48725ee55a55ea54df54fdce71ac6f0c2
+R01 PASS followthrough.py equals G32 r4 once docstrings are removed (no behaviour change) | true
+R02 PASS doc and module docstring both say the stored suppression is keyed by handle | [true, true]
+R03 PASS setup: opt-out all suppresses k1 | [0, ["k1"]]
+R04 PASS merged record keeping the handle (case, spaces, zero-width, fullwidth): stays suppressed, nothing drafted | {"'CRM:Kim-7'": [0, ["k-m0"], 0], "' crm:kim-7 '": [0, ["k-m1"], 0], "'crm:k\\u200bim-7'": [0, ["k-m2"], 0], "'\uff43rm:kim-7'": [0, ["k-m3"], 0]}
+R05 PASS as documented: a new handle with the history dropped is a new person (welcome drafted) | [0, [], ["welcome", "checkin", "training"]]
+R06 PASS as the doc advises: the opt-out put back on the merged record suppresses it | [0, ["k-new2"]]
+M32R5 PROBE 6/6
+rc=0
+== Python 3.11.16 at 807f1eb48725ee55a55ea54df54fdce71ac6f0c2
+R01 PASS followthrough.py equals G32 r4 once docstrings are removed (no behaviour change) | true
+R02 PASS doc and module docstring both say the stored suppression is keyed by handle | [true, true]
+R03 PASS setup: opt-out all suppresses k1 | [0, ["k1"]]
+R04 PASS merged record keeping the handle (case, spaces, zero-width, fullwidth): stays suppressed, nothing drafted | {"'CRM:Kim-7'": [0, ["k-m0"], 0], "' crm:kim-7 '": [0, ["k-m1"], 0], "'crm:k\\u200bim-7'": [0, ["k-m2"], 0], "'\uff43rm:kim-7'": [0, ["k-m3"], 0]}
+R05 PASS as documented: a new handle with the history dropped is a new person (welcome drafted) | [0, [], ["welcome", "checkin", "training"]]
+R06 PASS as the doc advises: the opt-out put back on the merged record suppresses it | [0, ["k-new2"]]
+M32R5 PROBE 6/6
+rc=0
+== Python 3.12.14 at 807f1eb48725ee55a55ea54df54fdce71ac6f0c2
+R01 PASS followthrough.py equals G32 r4 once docstrings are removed (no behaviour change) | true
+R02 PASS doc and module docstring both say the stored suppression is keyed by handle | [true, true]
+R03 PASS setup: opt-out all suppresses k1 | [0, ["k1"]]
+R04 PASS merged record keeping the handle (case, spaces, zero-width, fullwidth): stays suppressed, nothing drafted | {"'CRM:Kim-7'": [0, ["k-m0"], 0], "' crm:kim-7 '": [0, ["k-m1"], 0], "'crm:k\\u200bim-7'": [0, ["k-m2"], 0], "'\uff43rm:kim-7'": [0, ["k-m3"], 0]}
+R05 PASS as documented: a new handle with the history dropped is a new person (welcome drafted) | [0, [], ["welcome", "checkin", "training"]]
+R06 PASS as the doc advises: the opt-out put back on the merged record suppresses it | [0, ["k-new2"]]
+M32R5 PROBE 6/6
+rc=0
+== Python 3.13.15 at 807f1eb48725ee55a55ea54df54fdce71ac6f0c2
+R01 PASS followthrough.py equals G32 r4 once docstrings are removed (no behaviour change) | true
+R02 PASS doc and module docstring both say the stored suppression is keyed by handle | [true, true]
+R03 PASS setup: opt-out all suppresses k1 | [0, ["k1"]]
+R04 PASS merged record keeping the handle (case, spaces, zero-width, fullwidth): stays suppressed, nothing drafted | {"'CRM:Kim-7'": [0, ["k-m0"], 0], "' crm:kim-7 '": [0, ["k-m1"], 0], "'crm:k\\u200bim-7'": [0, ["k-m2"], 0], "'\uff43rm:kim-7'": [0, ["k-m3"], 0]}
+R05 PASS as documented: a new handle with the history dropped is a new person (welcome drafted) | [0, [], ["welcome", "checkin", "training"]]
+R06 PASS as the doc advises: the opt-out put back on the merged record suppresses it | [0, ["k-new2"]]
+M32R5 PROBE 6/6
+rc=0

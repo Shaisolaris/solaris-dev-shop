@@ -1,0 +1,7 @@
+branch review/grok-g32-consent-followthrough remote head: 807f1eb48725ee55a55ea54df54fdce71ac6f0c2
+807f1eb48725ee55a55ea54df54fdce71ac6f0c2 G32 r5: the doc says the stored suppression follows the handle, not the record id (review only, Grok build)
+ .../customer-success/consent-follow-through.md      |  5 ++++-
+ .../customer-success/followthrough.py               |  5 +++--
+ tests/test_g32_capability.py                        | 21 +++++++++++++++++++++
+ 3 files changed, 28 insertions(+), 3 deletions(-)
+main: 02ba9c571b10ad1dba792d2ac5534bcad3171e67

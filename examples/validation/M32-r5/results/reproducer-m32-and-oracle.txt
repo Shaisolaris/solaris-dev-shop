@@ -1,0 +1,20 @@
+== Python 3.9.6
+OBS  Q14 merge that changes handle and drops history (drafts) (0, ['welcome'])
+PROBE 15/15
+PROBE 15/15
+ACCEPTED 11/11
+== Python 3.11.16
+OBS  Q14 merge that changes handle and drops history (drafts) (0, ['welcome'])
+PROBE 15/15
+PROBE 15/15
+ACCEPTED 11/11
+== Python 3.12.14
+OBS  Q14 merge that changes handle and drops history (drafts) (0, ['welcome'])
+PROBE 15/15
+PROBE 15/15
+ACCEPTED 11/11
+== Python 3.13.15
+OBS  Q14 merge that changes handle and drops history (drafts) (0, ['welcome'])
+PROBE 15/15
+PROBE 15/15
+ACCEPTED 11/11
