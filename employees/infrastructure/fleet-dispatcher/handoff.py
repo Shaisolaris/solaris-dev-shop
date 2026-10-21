@@ -223,13 +223,25 @@ def check_intake(o):
 def run(o, state, worker, stop_after=None, fail_at=None):
     check_intake(o)  # before anything is created; checked again under the lock
     sdir = state / o["order_id"]
+    new_dirs = [d for d in (sdir, state) if not d.exists()]  # innermost first; removed again if a refusal leaves them empty
     sdir.mkdir(parents=True, exist_ok=True)
-    fd = try_lock(sdir / ".worker.lock")
+    lock = sdir / ".worker.lock"
+    fd = try_lock(lock)
     if fd is None:
         holder = (sdir / "holder.json").read_text(encoding="utf-8") if (sdir / "holder.json").exists() else "{}"
         return 4, {"status": "held", "holder": json.loads(holder or "{}"), "steps": {}}
     try:
         return _run(o, sdir, worker, stop_after, fail_at)
+    except OrderError:
+        # A refusal in a folder this run created writes nothing: the empty lock and the new folders go again (M04 P4-1).
+        if sdir in new_dirs and [p.name for p in sdir.iterdir()] == [lock.name] and lock.stat().st_size == 0:
+            lock.unlink()
+            for d in new_dirs:
+                try:
+                    d.rmdir()
+                except OSError:
+                    break
+        raise
     finally:
         os.close(fd)
 
