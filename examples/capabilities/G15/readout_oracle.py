@@ -97,7 +97,8 @@ def experiment(rng, n=(800, 800), p=(0.2, 0.2), exact=False, outside=0, contamin
            "outcome": {"event": "retained", "horizon_days": H}, "min_sample_per_arm": min_sample, "alpha": 0.05,
            "assignments": {"file": "assignments.csv"}, "events": {"file": "events.csv"}}
     if contract:
-        pkg["randomization"] = {"method": "sha256_bucket", "salt": SALT}
+        pkg["randomization"] = {"method": "sha256_bucket", "salt": SALT,
+                                "expected_units": sum(n) + contaminated}  # generator-owned assignment truth
     return pkg, A, E, truth, sorted(cont)
 
 
