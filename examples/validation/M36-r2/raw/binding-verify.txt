@@ -1,0 +1,8 @@
+branch review/grok-g36-daily-integration remote head: 529644052e7d46044aba090323dcdb31ebe91694
+5296440 G36 r3: plan.json and README name the newest heads; plan text over 300 characters named (review only, Grok build)
+112c6b8 G36 r3: merge G34 h1 6ad99da (newest G34 head) into the day 6 integration
+5b2a053 G36 r3: merge G33 r5 25c0075 (newest G33 head) into the day 6 integration
+83cca5e G36 r3: merge G32 r5 807f1eb (newest G32 head) into the day 6 integration
+64a7420 G36 r3: merge G31 r4 e809a4f (newest G31 head) into the day 6 integration
+a94bfa3 G36 r3: merge G04 r4 7ed5f70 (newest G04 head) into the day 6 integration
+main: 02ba9c571b10ad1dba792d2ac5534bcad3171e67

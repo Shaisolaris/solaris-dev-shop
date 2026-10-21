@@ -1,0 +1,13 @@
+PASS R01 every plan pin is the current remote head of that goal's review branch
+PASS R02 every pin is an ancestor of HEAD
+PASS R03 each r2 pin is an ancestor of its r3 pin (candidates moved forward, nothing rewritten)
+PASS R04 the r2 head is an ancestor of HEAD (the r1 and r2 history is kept)
+PASS R05 every blob a resolved_overlaps reason names is a real blob of that path at a pin, HEAD or base, and HEAD is accounted for
+PASS R06 outside the plan's writable paths and the resolved overlaps, HEAD keeps each candidate's file (or a descendant candidate's)
+PASS R07 every file two unrelated candidates change differently is listed in resolved_overlaps
+PASS R08 the carried tool fix: a 333-character reason exits 2 named as 333 characters, at most 300
+PASS R09 the tool blob equals G12 r3 a245f1f's
+PASS R10 check --plan on the shipped plan is VERDICT INTEGRATED
+OBS  R11 OBS: G34 h1 6ad99da is a post-acceptance commit that M36 has not seen; this pass only checks it is the branch head and carried
+SCORE 10/10
+rc=0

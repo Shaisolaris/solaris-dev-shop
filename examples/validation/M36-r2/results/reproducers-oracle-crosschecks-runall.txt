@@ -1,0 +1,46 @@
+== Python 3.9.6 at 529644052e7d46044aba090323dcdb31ebe91694
+ACCEPTED 13/13
+REJECTED 0/13
+CROSS-CHECKS CLEAN (0 findings)
+VERDICT INTEGRATED
+== Python 3.11.16 at 529644052e7d46044aba090323dcdb31ebe91694
+ACCEPTED 13/13
+REJECTED 0/13
+CROSS-CHECKS CLEAN (0 findings)
+VERDICT INTEGRATED
+== Python 3.12.14 at 529644052e7d46044aba090323dcdb31ebe91694
+ACCEPTED 13/13
+REJECTED 0/13
+CROSS-CHECKS CLEAN (0 findings)
+VERDICT INTEGRATED
+== Python 3.13.15 at 529644052e7d46044aba090323dcdb31ebe91694
+ACCEPTED 13/13
+REJECTED 0/13
+CROSS-CHECKS CLEAN (0 findings)
+VERDICT INTEGRATED
+== --run all on 3.9.6
+  run test G04 python3 -m unittest tests.test_g04_capability rc=0 12.0s
+  run command G04 python3 examples/capabilities/G04/handoff_oracle.py rc=0 21.2s
+  run test G13 python3 -m unittest tests.test_g13_capability rc=0 11.6s
+  run test G14 python3 -m unittest tests.test_g14_capability rc=0 6.1s
+  run test G17 python3 -m unittest tests.test_g17_capability rc=0 12.7s
+  run command G17 python3 examples/capabilities/G17/decision_oracle.py rc=0 2.7s
+  run test G31 python3 -m unittest tests.test_g31_capability rc=0 18.3s
+  run command G31 python3 examples/capabilities/G31/scope_oracle.py rc=0 6.1s
+  run test G32 python3 -m unittest tests.test_g32_capability rc=0 13.7s
+  run command G32 python3 examples/capabilities/G32/followthrough_oracle.py rc=0 5.2s
+  run test G33 python3 -m unittest tests.test_g33_capability rc=0 12.4s
+  run command G33 python3 examples/capabilities/G33/evidence_oracle.py rc=0 4.5s
+  run test G34 python3 -m unittest tests.test_g34_capability rc=0 3.5s
+  run command G34 python3 examples/capabilities/G34/diag_oracle.py rc=0 2.0s
+  run test G35 python3 -m unittest tests.test_g35_capability rc=0 12.7s
+  run command G35 python3 examples/capabilities/G35/campaign_oracle.py rc=0 6.0s
+  run cross_check G36 python3 examples/capabilities/G36/cross_checks.py rc=0 1.3s
+  run gate suite python3 -m unittest discover -s tests rc=0 157.3s
+  run gate control_plane python3 control-plane/meta_control_plane.py self-test rc=0 0.2s
+  run gate quality_audit quality_os.py audit rc=0 0.1s
+for f in sorted(glob.glob('empl rc=0 0.0s
+  run gate catalog python3 tools/build_skill_catalog.py --check rc=0 0.0s
+  run gate symlinks git ls-files -s rc=0 0.0s
+  run gate metadata python3 tools/validate_skill_metadata.py rc=0 0.1s
+VERDICT INTEGRATED

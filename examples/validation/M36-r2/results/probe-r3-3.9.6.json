@@ -1,0 +1,97 @@
+{
+ "probe": "m36r2",
+ "python": "3.9.6",
+ "rows": [
+  {
+   "row": "R01",
+   "name": "every plan pin is the current remote head of that goal's review branch",
+   "pass": true,
+   "obs": false,
+   "detail": "all 9"
+  },
+  {
+   "row": "R02",
+   "name": "every pin is an ancestor of HEAD",
+   "pass": true,
+   "obs": false,
+   "detail": "all"
+  },
+  {
+   "row": "R03",
+   "name": "each r2 pin is an ancestor of its r3 pin (candidates moved forward, nothing rewritten)",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "bad": {},
+    "moved": [
+     "G04",
+     "G31",
+     "G32",
+     "G33",
+     "G34"
+    ]
+   }
+  },
+  {
+   "row": "R04",
+   "name": "the r2 head is an ancestor of HEAD (the r1 and r2 history is kept)",
+   "pass": true,
+   "obs": false,
+   "detail": "92ca6c3"
+  },
+  {
+   "row": "R05",
+   "name": "every blob a resolved_overlaps reason names is a real blob of that path at a pin, HEAD or base, and HEAD is accounted for",
+   "pass": true,
+   "obs": false,
+   "detail": "8 of 8"
+  },
+  {
+   "row": "R06",
+   "name": "outside the plan's writable paths and the resolved overlaps, HEAD keeps each candidate's file (or a descendant candidate's)",
+   "pass": true,
+   "obs": false,
+   "detail": "none lost"
+  },
+  {
+   "row": "R07",
+   "name": "every file two unrelated candidates change differently is listed in resolved_overlaps",
+   "pass": true,
+   "obs": false,
+   "detail": "none missing"
+  },
+  {
+   "row": "R08",
+   "name": "the carried tool fix: a 333-character reason exits 2 named as 333 characters, at most 300",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "rc": 2
+   }
+  },
+  {
+   "row": "R09",
+   "name": "the tool blob equals G12 r3 a245f1f's",
+   "pass": true,
+   "obs": false,
+   "detail": null
+  },
+  {
+   "row": "R10",
+   "name": "check --plan on the shipped plan is VERDICT INTEGRATED",
+   "pass": true,
+   "obs": false,
+   "detail": {
+    "rc": 0
+   }
+  },
+  {
+   "row": "R11",
+   "name": "OBS: G34 h1 6ad99da is a post-acceptance commit that M36 has not seen; this pass only checks it is the branch head and carried",
+   "pass": true,
+   "obs": true,
+   "detail": null
+  }
+ ],
+ "score": "10/10"
+}
