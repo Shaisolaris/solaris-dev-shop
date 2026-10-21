@@ -21,8 +21,8 @@
   },
   {
    "id": "G02",
-   "commit": "90a5ec9c316e4d3fde84591faac1f8a00de73805",
-   "note": "G02 r4, newest remote head; also stacked by G06",
+   "commit": "038f93470323c28f587748bcb9d69d7f637b34d3",
+   "note": "Exact delivered repair revision in root product candidate; inclusion does not imply independent acceptance.",
    "tests": [
     "tests.test_g02_capability"
    ],
@@ -53,8 +53,8 @@
   },
   {
    "id": "G04",
-   "commit": "e9fa278f6fc967720118937c746287adf7cd6dad",
-   "note": "G04 r3, newest remote head; also stacked by G12, G36",
+   "commit": "7ed5f70af2cfaf8fbbceaecd105feaf9385b1a73",
+   "note": "Exact delivered repair revision in root product candidate; inclusion does not imply independent acceptance.",
    "tests": [
     "tests.test_g04_capability"
    ],
@@ -80,8 +80,8 @@
   },
   {
    "id": "G07",
-   "commit": "0d6a78d56cdb4c3b8d87ed25bb41704e99bc5382",
-   "note": "G07, newest remote head; also stacked by G12",
+   "commit": "f4776bdd1849a4303bdb323165bd18dc341037d4",
+   "note": "Exact delivered repair revision in root product candidate; inclusion does not imply independent acceptance.",
    "tests": [
     "tests.test_g07_capability"
    ],
@@ -199,10 +199,11 @@
   },
   {
    "id": "G16",
-   "commit": "49aba3fd978a21545f525ad6e82156e39653b257",
-   "note": "G16 r8, newest remote head; also stacked by G24",
+   "commit": "03a0bb091a118a2234cb6ce93907567ffbe238e5",
+   "note": "Exact delivered repair revision in root product candidate; inclusion does not imply independent acceptance.",
    "tests": [
-    "tests.test_g16_capability"
+    "tests.test_g16_capability",
+    "tests.test_g16_takeover"
    ],
    "commands": [
     [
@@ -312,8 +313,8 @@
   },
   {
    "id": "G31",
-   "commit": "fcf492af1ba12599503fe2d25202d3d1a40f2059",
-   "note": "G31 r3, newest remote head; also stacked by G36",
+   "commit": "e809a4fa873e905258eff8220b38f68ab6e2270d",
+   "note": "Exact delivered repair revision in root product candidate; inclusion does not imply independent acceptance.",
    "tests": [
     "tests.test_g31_capability"
    ],
@@ -325,8 +326,8 @@
   },
   {
    "id": "G32",
-   "commit": "3346efac313f8508bb04c575277dca99dc6d2634",
-   "note": "G32 r4, newest remote head; G36 stacks r3 b69f328",
+   "commit": "807f1eb48725ee55a55ea54df54fdce71ac6f0c2",
+   "note": "Exact delivered repair revision in root product candidate; inclusion does not imply independent acceptance.",
    "tests": [
     "tests.test_g32_capability"
    ],
@@ -338,8 +339,8 @@
   },
   {
    "id": "G33",
-   "commit": "a4ae555bdabffdc932b279d97ed2928bdef73df5",
-   "note": "G33 r4, newest remote head; also stacked by G36",
+   "commit": "25c00757771df806b8e1c0054900eefd004a67d1",
+   "note": "Exact delivered repair revision in root product candidate; inclusion does not imply independent acceptance.",
    "tests": [
     "tests.test_g33_capability"
    ],
@@ -416,8 +417,8 @@
   },
   {
    "id": "G40",
-   "commit": "99b49c63b56eb17ac8223fd264ff87b2dd99a545",
-   "note": "G40 r5, newest remote head",
+   "commit": "32d217660d0dd255baf392c08b663331c294cde4",
+   "note": "Exact delivered repair revision in root product candidate; inclusion does not imply independent acceptance.",
    "tests": [
     "tests.test_g40_capability"
    ],
