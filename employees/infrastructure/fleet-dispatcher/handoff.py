@@ -189,14 +189,25 @@ def try_lock(path):
     return fd
 
 
+def _load_module(name, path):
+    """Import a sibling tool from its file without writing __pycache__ into the source tree (M07 P4-1)."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(name, str(path))
+    mod = importlib.util.module_from_spec(spec)
+    before = sys.dont_write_bytecode
+    sys.dont_write_bytecode = True
+    try:
+        spec.loader.exec_module(mod)
+    finally:
+        sys.dont_write_bytecode = before
+    return mod
+
+
 def load_activate():
     import importlib.util
     if not ACTIVATE.is_file():
         raise OrderError("project activation (G02) not found at %s" % ACTIVATE)
-    spec = importlib.util.spec_from_file_location("solaris_activate", str(ACTIVATE))
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
+    return _load_module("solaris_activate", ACTIVATE)
 
 
 def ledger_records(outbox):
@@ -244,9 +255,7 @@ def check_fleet(o, identity):
     import importlib.util
     if not REGISTRY.is_file():
         raise OrderError("fleet registry (G07) not found at %s" % REGISTRY)
-    spec = importlib.util.spec_from_file_location("solaris_fleet_registry", str(REGISTRY))
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
+    mod = _load_module("solaris_fleet_registry", REGISTRY)
     try:
         mod.check_claim(o["fleet"]["registry"], o["fleet"]["machine"], identity, o["owner"], o["fleet"]["owner_epoch"])
     except mod.Refused as e:
