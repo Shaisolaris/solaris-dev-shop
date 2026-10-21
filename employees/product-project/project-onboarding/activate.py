@@ -191,6 +191,41 @@ def _answer_token(text: str) -> str:
     return " ".join("".join(out).split())
 
 
+# Cyrillic and Greek letters that look like the Latin letters of UNRESOLVED (and a few neighbours). Folding them only
+# matters for the UNRESOLVED and placeholder checks, so a wrong fold can only ask the owner again (fail closed).
+_CONFUSABLE = str.maketrans({
+    "\u0430": "a", "\u0410": "A", "\u0435": "e", "\u0415": "E", "\u0451": "e", "\u0401": "E",
+    "\u043e": "o", "\u041e": "O", "\u0440": "p", "\u0420": "P", "\u0441": "c", "\u0421": "C",
+    "\u0443": "y", "\u0423": "Y", "\u0445": "x", "\u0425": "X", "\u0455": "s", "\u0405": "S",
+    "\u0456": "i", "\u0406": "I", "\u0458": "j", "\u0408": "J", "\u0501": "d", "\u051b": "q",
+    "\u041d": "H", "\u041c": "M", "\u0422": "T", "\u041a": "K", "\u0412": "B", "\u0432": "b",
+    "\u0578": "n", "\u057d": "u", "\u0585": "o", "\u0274": "N", "\u0280": "R", "\u1d20": "V", "\u1d0f": "O",
+    "\u03bf": "o", "\u039f": "O", "\u03b5": "e", "\u0395": "E", "\u03bd": "v", "\u039d": "N",
+    "\u03c5": "u", "\u03a5": "Y", "\u03c1": "p", "\u03a1": "P", "\u0399": "I", "\u03b9": "i",
+    "\u0391": "A", "\u03b1": "a", "\u0392": "B", "\u039a": "K", "\u039c": "M", "\u03a4": "T",
+    "\u03a7": "X", "\u0396": "Z", "\u0397": "H", "\u0475": "v", "\u0474": "V",
+})
+
+# Answers that only hold a place for a later decision. They are no answer, the same as blank or UNRESOLVED.
+PLACEHOLDER_ANSWERS = frozenset({
+    "tbd", "tba", "tbc", "todo", "to do", "to be decided", "to be determined", "to be confirmed", "n a", "na",
+    "none", "nothing", "unknown", "not sure", "unsure", "pending", "undecided", "later", "decide later",
+    "ask owner", "ask the owner", "placeholder", "fill in", "fill me in", "xxx", "x", "null", "nil", "undefined",
+})
+
+
+def _placeholder(token: str) -> bool:
+    """True when a folded answer is punctuation only (?, -, ..., n/a) or one of PLACEHOLDER_ANSWERS."""
+    words = re.sub(r"[\W_]+", " ", token.lower()).split()
+    return not words or " ".join(words) in PLACEHOLDER_ANSWERS
+
+
+def _no_answer(text: str) -> bool:
+    """An answer that starts with UNRESOLVED (also spelled with look-alike letters) or is only a placeholder."""
+    token = _answer_token(text).translate(_CONFUSABLE)
+    return bool(UNRESOLVED_ANSWER.match(token)) or _placeholder(token)
+
+
 def _without_commit_ids(text: str) -> str:
     """A brief may name a Git commit (40 or 64 lowercase hex after a word like commit/fork/sha); that id is not a secret."""
     return COMMIT_ID.sub(lambda m: m.group(0)[: m.start(1) - m.start(0)] + "<commit-id>", text)
@@ -208,9 +243,9 @@ def normalize_intake(raw: Dict[str, Any]) -> Tuple[Dict[str, Any], List[Dict[str
         problems.append({"field": "project_type", "problem": "must be one of " + ", ".join(PROJECT_TYPES)})
         ptype = None
     deploy = _check_text("deploy_model", raw.get("deploy_model"), problems, required=False)
-    if deploy is not None and UNRESOLVED_ANSWER.match(_answer_token(deploy)):
-        # Literal UNRESOLVED, including after NFKC / stripping zero-width or blank-looking marks,
-        # is no answer; it must not finish as complete.
+    if deploy is not None and _no_answer(deploy):
+        # Literal UNRESOLVED (also after NFKD, mark stripping or look-alike letters) or a placeholder such as
+        # TBD, ?, - or n/a is no answer; it must not finish as complete.
         deploy = None
     brief = _check_text("brief", raw.get("brief"), problems, required=False)
     creds_raw = raw.get("credentials") or []
