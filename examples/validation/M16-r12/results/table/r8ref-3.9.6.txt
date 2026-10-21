@@ -1,0 +1,14 @@
+P FAIL Y01 | Support bots: the team will reply to letters that arrive by Friday.
+P FAIL Y02 | AI tools: the editors will answer questions that come in by noon.
+P FAIL Y03 | Support bots: the night team will respond within the hour.
+P FAIL Y04 | AI tools: the vendor will say more next week.
+P FAIL Y05 | Chatbots: our staff answer that email every morning.
+P FAIL Y06 | Support bots: the desk will reply to users within a day.
+P FAIL Y07 | AI tools: the team will answer in person at the stand.
+P FAIL Y08 | Support bots: the team will tell users about the outage by email.
+P FAIL Y09 | AI tools: the editors say when the issue is out.
+P FAIL Y10 | Hey team, AI tools: we will reply to the vendor by Friday.
+L L01 skipped | Support bots: our staff reply that the line is open on Sundays.
+L L02 kept | AI tools: the desk answers that the fee is waived.
+L L03 kept | Cheers AI, answer in French.
+R12TABLE bot-addressed filtered 11/11, people kept 0/10
