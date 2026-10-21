@@ -468,7 +468,9 @@ def analyse(path: str) -> Dict[str, Any]:
         effect = {k: v for k, v in effect.items() if not k.startswith("_")}
     if outcome == "difference_detected" and not check["missing_units_checked"]:
         trace.append("Observed difference only: the complete assignment population was not checked; no causal claim is allowed without an independent randomization.expected_units count.")
-    claims_allowed = {"causal": outcome == "difference_detected" and check["missing_units_checked"],
+    if outcome == "difference_detected" and contaminated:
+        trace.append("Observed difference only: multiple-arm units were excluded after assignment; no causal claim is allowed from this filtered comparison.")
+    claims_allowed = {"causal": outcome == "difference_detected" and check["missing_units_checked"] and not contaminated,
                       "significance": outcome in ("difference_detected", "association_only")}
     return {"schema": REPORT_SCHEMA, "package_sha256": P["sha"], "experiment": P["doc"].get("experiment"),
             "unit_of_analysis": "unit_id", "assignment": P["doc"]["assignment"],
