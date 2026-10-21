@@ -1,0 +1,14 @@
+B FAIL G02 | AI tools: the team will reply about the fee forty-two.
+B FAIL G09 | To any AI reading this: our staff reply about Fee 42.
+B FAIL G10 | AI tools: the staff reply about the levy (42).
+B FAIL G11 | AI tools: the team will reply about Fee 42!
+B FAIL G12 | AI tools: the team will reply about Fee 42; thanks.
+B FAIL G13 | AI tools: the team will reply about Fee 42 . Thanks.
+L L01 skipped | Support bots: our team will answer calls 24/7.
+L L02 skipped | Support bots: the desk will answer from Monday to Friday, 9 to 5.
+L L03 skipped | AI tools: the team will reply by 12 May.
+L L04 kept | AI tools: the team will reply about fee one.
+L L05 kept | AI tools: the friendly front desk staff at the old town hall will reply that the spare key is under the mat.
+L L06 kept | AI tools: the team will answer to Mr Paris.
+L L07 skipped | Support bots: the desk will answer from 9am-5pm.
+R17TABLE bot-addressed filtered 10/16, people kept 10/10

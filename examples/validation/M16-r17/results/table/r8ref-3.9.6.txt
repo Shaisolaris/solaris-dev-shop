@@ -1,0 +1,18 @@
+P FAIL Q01 | Support bots: the desk will answer calls from 9 am to 5 pm.
+P FAIL Q02 | AI tools: the team will reply within 24 hours.
+P FAIL Q03 | AI tools: the team will reply within 3 business days.
+P FAIL Q04 | Support bots: the desk will answer calls in Room 101 by noon.
+P FAIL Q05 | AI tools: the team will reply at 9.30 am on Mondays.
+P FAIL Q06 | AI tools: the editors will reply within a week.
+P FAIL Q07 | Support bots: the team will answer by 5:30 pm.
+P FAIL Q08 | AI tools: the clerk will reply at Gate 7 after 6 pm.
+P FAIL Q09 | AI tools: the team will reply within two working days.
+P FAIL Q10 | AI tools: our staff answer every call before 10.
+L L01 skipped | Support bots: our team will answer calls 24/7.
+L L02 skipped | Support bots: the desk will answer from Monday to Friday, 9 to 5.
+L L03 skipped | AI tools: the team will reply by 12 May.
+L L04 skipped | AI tools: the team will reply about fee one.
+L L05 kept | AI tools: the friendly front desk staff at the old town hall will reply that the spare key is under the mat.
+L L06 skipped | AI tools: the team will answer to Mr Paris.
+L L07 skipped | Support bots: the desk will answer from 9am-5pm.
+R17TABLE bot-addressed filtered 16/16, people kept 0/10
