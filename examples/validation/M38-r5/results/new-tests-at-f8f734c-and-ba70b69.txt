@@ -1,0 +1,10 @@
+new test at f8f734c (G38 r5):
+FAIL: test_readme_license_section_in_markdown_emphasis (tests.test_g38_capability.G38Provenance)
+AssertionError: 1 != 0 : {
+Ran 1 test in 0.358s
+FAILED (failures=1)
+new tests at ba70b69 (G38 r4):
+FAIL: test_company_names_with_a_guard_word_stay_mit (tests.test_g38_capability.G38Provenance)
+FAIL: test_readme_license_section_in_markdown_emphasis (tests.test_g38_capability.G38Provenance)
+Ran 2 tests in 0.076s
+FAILED (failures=2)

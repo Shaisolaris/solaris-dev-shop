@@ -1,0 +1,211 @@
+{
+ "python": "3.9.6",
+ "rows": [
+  {
+   "row": "C01",
+   "group": "core",
+   "name": "company holder with a guard word stays MIT and listed: Copyright 2025-2026 Freedom Software Labs Ltd",
+   "pass": false,
+   "detail": [
+    1,
+    "unrecognized"
+   ]
+  },
+  {
+   "row": "C02",
+   "group": "core",
+   "name": "company holder with a guard word stays MIT and listed: Copyright 2026 Modify Media LLC",
+   "pass": false,
+   "detail": [
+    1,
+    "unrecognized"
+   ]
+  },
+  {
+   "row": "C03",
+   "group": "core",
+   "name": "company holder with a guard word stays MIT and listed: (c) 2026 Allow Partners AG",
+   "pass": false,
+   "detail": [
+    1,
+    "unrecognized"
+   ]
+  },
+  {
+   "row": "C04",
+   "group": "core",
+   "name": "company holder with a guard word stays MIT and listed: Copyright 2026 Resale Analytics PLC",
+   "pass": false,
+   "detail": [
+    1,
+    "unrecognized"
+   ]
+  },
+  {
+   "row": "C05",
+   "group": "core",
+   "name": "company holder with a guard word stays MIT and listed: Copyright 2026 Sold Out Records, LLC.",
+   "pass": false,
+   "detail": [
+    1,
+    "unrecognized"
+   ]
+  },
+  {
+   "row": "R01",
+   "group": "core",
+   "name": "restriction still unrecognised: Copyright 2026 Acme Personal Use Only LLC",
+   "pass": true,
+   "detail": [
+    1,
+    "unrecognized"
+   ]
+  },
+  {
+   "row": "R02",
+   "group": "core",
+   "name": "restriction still unrecognised: Copyright 2026 Acme Not Transferable Ltd",
+   "pass": true,
+   "detail": [
+    1,
+    "unrecognized"
+   ]
+  },
+  {
+   "row": "R03",
+   "group": "core",
+   "name": "restriction still unrecognised: Copyright 2026 Acme Non-Commercial Inc",
+   "pass": true,
+   "detail": [
+    1,
+    "unrecognized"
+   ]
+  },
+  {
+   "row": "R04",
+   "group": "core",
+   "name": "restriction still unrecognised: Copyright 2026 Acme Sellers Six Seven Eight Inc",
+   "pass": true,
+   "detail": [
+    1,
+    "unrecognized"
+   ]
+  },
+  {
+   "row": "R05",
+   "group": "core",
+   "name": "restriction still unrecognised: Copyright 2026 acme resale corp",
+   "pass": true,
+   "detail": [
+    1,
+    "unrecognized"
+   ]
+  },
+  {
+   "row": "R06",
+   "group": "core",
+   "name": "restriction still unrecognised: Copyright 2026 Acme Corp, internal evaluation",
+   "pass": true,
+   "detail": [
+    1,
+    "unrecognized"
+   ]
+  },
+  {
+   "row": "R07",
+   "group": "core",
+   "name": "restriction still unrecognised: Copyright 2026 Acme Exclusively Licensed Inc",
+   "pass": true,
+   "detail": [
+    1,
+    "unrecognized"
+   ]
+  },
+  {
+   "row": "M01",
+   "group": "core",
+   "name": "README section in emphasis read: __Apache-2.0__",
+   "pass": false,
+   "detail": [
+    0,
+    [],
+    2
+   ]
+  },
+  {
+   "row": "M02",
+   "group": "core",
+   "name": "README section in emphasis read: `GPL-3.0`, see LICENSE.",
+   "pass": false,
+   "detail": [
+    0,
+    [],
+    2
+   ]
+  },
+  {
+   "row": "M03",
+   "group": "core",
+   "name": "README section in emphasis read: *BSD-3-Clause*.",
+   "pass": false,
+   "detail": [
+    0,
+    [],
+    2
+   ]
+  },
+  {
+   "row": "M04",
+   "group": "core",
+   "name": "README section in emphasis read: **MIT**",
+   "pass": false,
+   "detail": [
+    0,
+    [],
+    2
+   ]
+  },
+  {
+   "row": "M05",
+   "group": "core",
+   "name": "README section in emphasis read: _MIT_",
+   "pass": false,
+   "detail": [
+    0,
+    [],
+    2
+   ]
+  },
+  {
+   "row": "U01",
+   "group": "core",
+   "name": "mismatched marks are not read as a name (section skipped)",
+   "pass": true,
+   "detail": [
+    0,
+    2
+   ]
+  },
+  {
+   "row": "X01",
+   "group": "obs",
+   "name": "a company name holding a strong word is still unrecognised (false alarm, safe direction)",
+   "pass": true,
+   "detail": [
+    1,
+    "unrecognized"
+   ]
+  },
+  {
+   "row": "X02",
+   "group": "obs",
+   "name": "capitalised restriction ending in a suffix without strong words reads MIT but is listed",
+   "pass": true,
+   "detail": [
+    1,
+    "unrecognized",
+    []
+   ]
+  }
+ ]
+}

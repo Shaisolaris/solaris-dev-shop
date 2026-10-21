@@ -1,0 +1,9 @@
+remote review/grok-g38-authority-consistency: e25d32c0fdc3b39edf7df6acd56fa83294178465
+evaluated HEAD: e25d32c0fdc3b39edf7df6acd56fa83294178465
+e25d32c G38 r6: README License emphasis must close with the mark it opened with (found by the M38 r5 probe; review only, Grok build)
+f8f734c G38 r5: company names holding a guard word stay MIT; README License name read inside Markdown emphasis (M38 r4 P4-1, M38 r2 P4-3; review only, Grok build)
+ .../security-auditor/provenance-integrity.md       | 11 +++++++-
+ .../security-auditor/provenance_check.py           | 30 ++++++++++++++++++----
+ tests/test_g38_capability.py                       | 28 ++++++++++++++++++++
+ 3 files changed, 63 insertions(+), 6 deletions(-)
+git status after runs:
