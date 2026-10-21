@@ -187,7 +187,8 @@ class G15Capability(unittest.TestCase):
             seen.add(r['outcome'])
             self.assertFalse(r['claims_allowed']['causal'], r['outcome'])
             self.assertNotEqual(r['outcome'], 'difference_detected')
-            self.assertEqual(r['assignment_check'], {'contract': None, 'units_checked': 0, 'mismatched': None, 'examples': [], 'verified': False})
+            self.assertEqual(r['assignment_check'], {'contract': None, 'units_checked': 0, 'mismatched': None, 'examples': [], 'expected_units': None,
+                                                     'units_in_log': None, 'missing_units_checked': False, 'verified': False})
         self.assertIn('association_only', seen)  # the significant runs are reported, as associations
 
     def test_randomization_contract_verified_per_unit(self):
@@ -231,6 +232,46 @@ class G15Capability(unittest.TestCase):
         r2 = cli('analyse', d2 / 'package.json', '--json')
         self.assertEqual(r2.returncode, 2)
         self.assertIn('only for assignment randomized', r2.stderr)
+
+    def test_expected_units_catches_units_missing_from_the_log(self):
+        # M15 r4 P3-1: the per-unit check cannot see missing units; expected_units can
+        r = rep(FIX / 'retention-lift' / 'package.json')
+        ac = r['assignment_check']
+        self.assertEqual((r['outcome'], ac['missing_units_checked'], ac['expected_units']), ('difference_detected', False, None))
+        self.assertIn('units missing from the log cannot be detected without randomization.expected_units', ' '.join(r['trace']))
+        n = ac['units_in_log']
+        self.assertGreaterEqual(n, ac['units_checked'])
+        d = self.tmp / 'eu'
+        shutil.copytree(FIX / 'retention-lift', d)
+        p = json.loads((d / 'package.json').read_text()); p['randomization']['expected_units'] = n
+        (d / 'package.json').write_text(json.dumps(p))
+        r = rep(d / 'package.json')
+        self.assertEqual((r['outcome'], r['assignment_check']['verified'], r['assignment_check']['missing_units_checked']), ('difference_detected', True, True))
+        self.assertIn('the log holds all %d the assignment system declared' % n, ' '.join(r['trace']))
+        self.assertTrue(r['claims_allowed']['causal'])
+        # five control units dropped from the log: every remaining unit is on the rule, but the count is short
+        rows = (d / 'assignments.csv').read_text().splitlines()
+        drop = [i for i, x in enumerate(rows[1:], 1) if x.split(',')[1] == 'control'][:5]
+        (d / 'assignments.csv').write_text('\n'.join(x for i, x in enumerate(rows) if i not in drop) + '\n')
+        r = rep(d / 'package.json')
+        self.assertEqual((r['outcome'], r['assignment_check']['mismatched'], r['assignment_check']['units_in_log']), ('invalid_experiment', 0, n - 5))
+        self.assertEqual(r['claims_allowed'], {'causal': False, 'significance': False})
+        self.assertIn('holds %d cohort units but the declared randomization assigned %d: units are missing from the log' % (n - 5, n), ' '.join(r['trace']))
+        # the same short log without expected_units is still read, and the trace says the gap is unchecked
+        del p['randomization']['expected_units']; (d / 'package.json').write_text(json.dumps(p))
+        r = rep(d / 'package.json')
+        self.assertFalse(r['assignment_check']['missing_units_checked'])
+        self.assertIn('cannot be detected without randomization.expected_units', ' '.join(r['trace']))
+        # more units than declared is invalid too
+        p['randomization']['expected_units'] = n - 6; (d / 'package.json').write_text(json.dumps(p))
+        r = rep(d / 'package.json')
+        self.assertEqual(r['outcome'], 'invalid_experiment')
+        self.assertIn('units are added to the log', ' '.join(r['trace']))
+        for bad in (0, -1, True, '5', 1.5, None):
+            p['randomization']['expected_units'] = bad; (d / 'package.json').write_text(json.dumps(p))
+            r2 = cli('analyse', d / 'package.json', '--json')
+            self.assertEqual(r2.returncode, 2, bad)
+            self.assertIn('expected_units', r2.stderr)
 
     def test_bucket_rule_matches_the_documented_formula(self):
         import hashlib

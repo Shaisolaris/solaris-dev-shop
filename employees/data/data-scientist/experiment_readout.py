@@ -274,9 +274,12 @@ def load(path: str) -> Dict[str, Any]:
     if rz is not None:
         if doc["assignment"] != "randomized":
             raise Invalid("randomization: only for assignment randomized")
-        if not (isinstance(rz, dict) and set(rz) == {"method", "salt"} and rz.get("method") == "sha256_bucket"
-                and isinstance(rz.get("salt"), str) and rz["salt"].strip()):
-            raise Invalid('randomization: {"method": "sha256_bucket", "salt": "<non-empty salt>"}')
+        if not (isinstance(rz, dict) and set(rz) - {"expected_units"} == {"method", "salt"}
+                and rz.get("method") == "sha256_bucket" and isinstance(rz.get("salt"), str) and rz["salt"].strip()):
+            raise Invalid('randomization: {"method": "sha256_bucket", "salt": "<non-empty salt>", "expected_units"?: N}')
+        eu = rz.get("expected_units")
+        if "expected_units" in rz and (isinstance(eu, bool) or not isinstance(eu, int) or eu < 1):
+            raise Invalid("randomization.expected_units: the assignment system's count of units first assigned in the cohort window, a whole number of at least 1")
     base = p.resolve().parent
     tables = {}
     for kind, cols in (("assignments", ASSIGN_COLS), ("events", EVENT_COLS)):
@@ -325,16 +328,24 @@ def analyse(path: str) -> Dict[str, Any]:
     if P["randomization"] is not None:
         mism = []
         checked = 0
+        in_window = 0
         for u, r in seen.items():
-            if len(arms_of[u]) > 1 or not (P["cs"] <= r["assigned_at"] < P["ce"]):
+            if not (P["cs"] <= r["assigned_at"] < P["ce"]):
+                continue
+            in_window += 1
+            if len(arms_of[u]) > 1:
                 continue
             checked += 1
             if bucket_arm(P["randomization"]["salt"], u, P["arms"], P["split"]) != r["arm"]:
                 mism.append(u)
+        eu = P["randomization"].get("expected_units")
         check = {"contract": "sha256_bucket", "units_checked": checked, "mismatched": len(mism),
-                 "examples": sorted(mism)[:5], "verified": checked > 0 and not mism}
+                 "examples": sorted(mism)[:5], "expected_units": eu, "units_in_log": in_window,
+                 "missing_units_checked": eu is not None,
+                 "verified": checked > 0 and not mism and (eu is None or eu == in_window)}
     else:
-        check = {"contract": None, "units_checked": 0, "mismatched": None, "examples": [], "verified": False}
+        check = {"contract": None, "units_checked": 0, "mismatched": None, "examples": [], "expected_units": None,
+                 "units_in_log": None, "missing_units_checked": False, "verified": False}
     for u, r in seen.items():
         if len(arms_of[u]) > 1:
             excl["multiple_arms"].append(u)
@@ -422,6 +433,9 @@ def analyse(path: str) -> Dict[str, Any]:
     if total == 0 or min(n.values()) < P["min"]:
         outcome = "insufficient_information"
         trace.append(f"mature cohort units per arm {n[c]}/{n[t]}, minimum {P['min']}: not enough to read")
+    elif P["randomized"] and check["contract"] and check["mismatched"] == 0 and check["units_checked"] > 0 and not check["verified"]:
+        outcome = "invalid_experiment"
+        trace.append(f"the assignment log holds {check['units_in_log']} cohort units but the declared randomization assigned {check['expected_units']}: units are {'missing from' if check['units_in_log'] < check['expected_units'] else 'added to'} the log, so the arms cannot be compared; no effect is read")
     elif P["randomized"] and check["contract"] and not check["verified"]:
         outcome = "invalid_experiment"
         trace.append(f"assignment does not follow the declared randomization: {check['mismatched']} of {check['units_checked']} cohort units are in an arm the sha256_bucket rule does not give them (e.g. {', '.join(check['examples'])}); no effect is read")
@@ -446,7 +460,7 @@ def analyse(path: str) -> Dict[str, Any]:
         trace.append(f"interval [{effect['ci_low']}, {effect['ci_high']}] excludes 0, but assignment is declared randomized without a randomization contract the tool can verify per unit; the allocation tests are guards with limited power (an all-variant burst interleaved with a day's traffic can pass), so this is an association, not a causal effect. Add randomization {{method: sha256_bucket, salt}} to verify every unit's arm")
     elif P["randomized"]:
         outcome = "difference_detected"
-        trace.append(f"randomized assignment verified for all {check['units_checked']} cohort units, interval [{effect['ci_low']}, {effect['ci_high']}] excludes 0: {t} differs from {c} on {P['event']} within {P['hz']} days in this experiment")
+        trace.append(f"randomized assignment verified for all {check['units_checked']} cohort units in the log" + (f" (the log holds all {check['expected_units']} the assignment system declared)" if check["missing_units_checked"] else " (units missing from the log cannot be detected without randomization.expected_units; differential loss is guarded only by SRM)") + f", interval [{effect['ci_low']}, {effect['ci_high']}] excludes 0: {t} differs from {c} on {P['event']} within {P['hz']} days in this experiment")
     else:
         outcome = "association_only"
         trace.append(f"interval [{effect['ci_low']}, {effect['ci_high']}] excludes 0 but assignment was observational: an association, not a causal effect")

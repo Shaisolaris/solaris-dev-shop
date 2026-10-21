@@ -18,7 +18,7 @@ an events export into a readout that states what the data supports and nothing m
 | `outcome` | `{event, horizon_days}`: converted means the event in `[assigned_at, assigned_at + horizon_days)`; an event exactly at the end does not count |
 | `min_sample_per_arm` | below this in either arm the readout is insufficient_information |
 | `alpha` | optional, default 0.05 |
-| `randomization` | optional, randomized only: `{"method": "sha256_bucket", "salt": "..."}`, the rule that assigned the arms (rule 7); without it no causal claim is made |
+| `randomization` | optional, randomized only: `{"method": "sha256_bucket", "salt": "...", "expected_units": N}`, the rule that assigned the arms (rule 7); without it no causal claim is made. `expected_units` is optional: the assignment system's count of units first assigned in the cohort window |
 | `assignments`, `events` | `{file, header_aliases?, delimiter?}` read by the G13 data-engineer reader |
 
 Assignments carry `unit_id, arm, assigned_at`; events carry `unit_id, event, occurred_at, session_id`.
@@ -73,6 +73,14 @@ previous report is left unchanged.
    the JSON shows the contract, the units checked, the mismatches (first five named) and `verified`. Units
    that happen to satisfy the rule are indistinguishable from randomized ones; the other rule 5 tests still
    apply to them.
+   The per-unit check sees only the units in the log. It cannot tell that units are missing: dropping a share
+   of converting control units leaves every remaining unit on the rule, and on such data the readout can
+   claim a difference with no true effect. Without more information, differential loss is guarded only by
+   SRM, whose power is limited. When the assignment system can supply its count of units first assigned in
+   the cohort window, give it as `expected_units`. A log holding a different number of cohort units (units in
+   both arms count, since they were assigned) is then `invalid_experiment`. `assignment_check` reports
+   `expected_units`, `units_in_log` and `missing_units_checked`. A `difference_detected` trace says whether
+   missing units were checked.
 
 ## Outcomes
 
