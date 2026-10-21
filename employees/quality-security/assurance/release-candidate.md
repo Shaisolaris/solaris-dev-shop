@@ -50,3 +50,5 @@ written anywhere. Steps the tool cannot do are listed under `blocked_on_root_or_
 
 It reads files and, with `--git`, local commit ancestry. It does not run CI, verify manifests byte for byte,
 check branding hashes or decide acceptance. A READY report is an input to root's final gate, not a release.
+
+Root gate correction: candidate_commit, checks_revision and reviewed_revision must each be a complete lowercase 40-hex commit and must agree. Mere presence of three unrelated values cannot make the inventory READY. These are root assertions; the tool does not authenticate hosted CI or independently perform review. Root still checks actual CI, manifests and working-tree state.
