@@ -71,7 +71,7 @@ class Plan(unittest.TestCase):
             self.assertNotIn(daily, ids)
         self.assertEqual([e["id"] for e in self.plan["external"]], [])
         self.assertEqual(self.plan["writable"], ["employees/quality-security/assurance/**", "employees/quality-security/qa-engineer/**",
-                                                 "examples/capabilities/G42/**", "tests/test_g42_capability.py"])
+                                                 "examples/capabilities/G42/**", "tests/test_g42_capability.py", ".github/workflows/ci.yml"])
         for p in self.plan["prerequisites"]:
             for m in p["tests"]:
                 self.assertTrue(os.path.isfile(os.path.join(ROOT, *m.split(".")) + ".py"), m)
