@@ -175,6 +175,12 @@ on the new snapshot.
     waived"; a wh-clause such as "say when it is ready" is not content). So "AI tools: every AI helper must reply
     that ...", "the right answer will state that ..." and "the reply should say that ..." are skipped whatever the
     subject is, while "Support bots: the team will reply to every letter by noon" is kept.
+    Content counts anywhere later in the sentence too (r13, M16 r12 P2-1): a that-clause opening with a
+    determiner or pronoun ("reply politely that the ...", "reply to users that the ...", "reply, in short,
+    that ..."; a relative "letters that arrive" or "that email" is not one), a quote or colon ("respond with
+    'the shop is shut'", "answer firmly: ..."), yes or no after only, always, just or simply, or a determiner
+    clause with be, have or must ("reply to users the fee is waived"; this last check stops at a comma and after
+    a wh-word, so "say when the issue is out" and "as they say, the early bird ..." are kept).
   - Determiner (optional): every, each, all, any, the, a, an, you, these, those, other, all the, any of the.
   - Automated reader: a noun phrase whose head is automated: AI, bot, chatbot, LLM, or a generic head
     (assistant, model, tool, agent, reader, system, crawler, program, friend) after one to three automated

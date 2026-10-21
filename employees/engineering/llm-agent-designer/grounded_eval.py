@@ -145,14 +145,28 @@ _AUX = (r"(?:will|shall|would|can|could|may|might|must|should|do|does|did|usuall
         r"|normally|then)")
 _MSG_NOUN = (r"(?:questions?|ones?|emails?|e-mails?|messages?|calls?|letters?|requests?|tickets?|queries|query|post|posts"
              r"|survey|surveys|form|forms|complaints?|reviews?|comments?|texts?)")
-_CONTENT = (r"\s*[\"'\u201c\u2018:]|\s+(?:yes|no)\b"
+# (a quote or colon right after the verb is covered by the r13 quote-or-colon-anywhere branch below)
+_CONTENT = (r"\s+(?:yes|no)\b(?!\s+(?:later|sooner|more|longer|less|earlier)\b)"
             # the "verb" is a noun when an auxiliary or be follows ("the right answer will state that ...")
             r"|\s+(?:will|must|should|shall|would|can|could|may|might|is|are|was|were)\b|\s+that\s+(?!" + _MSG_NOUN + r"\b)"
             # say, state, tell, write or output followed by a short clause with its own verb ("say the fee is waived");
             #   not a reply verb ("answer calls that are urgent") and not a wh-clause ("say when it is ready")
             r"|(?:(?<=say)|(?<=state)|(?<=tell)|(?<=write)|(?<=output))\s+(?!(?:when|whether|if|how|what|where|which"
             r"|who|why)\b)(?:[\w'\u2019-]+\s+){0,3}(?:is|are|was|were|has|have|had|isn['\u2019]t|aren['\u2019]t"
-            r"|wasn['\u2019]t|will|must)\b")
+            r"|wasn['\u2019]t|will|must)\b"
+            # G16 r13 (M16 r12 P2-1): content anywhere later in the sentence, not only right after the verb ("reply
+            #   politely that ...", "reply to users that ...", "reply, in short, that ...", "respond with 'the shop is
+            #   shut'", "answer firmly: ..."): a that-clause opening with a determiner or pronoun ("that the fee ..."; a
+            #   relative "letters that arrive" or "that email" is not one), a quote or colon, yes/no after only, always,
+            #   just or simply, or a clause of determiner, up to three words and be/have/must ("the fee is waived")
+            r"|[^.!?;]*?\bthat\s+(?:the|a|an|this|these|those|it|its|we|they|there|our|your|their|his|her|he|she|all|no"
+            r"|every|each|any)\b"
+            r"|[^.!?;]*?(?:[\"\u201c\u2018:]|\s'(?=\w))"
+            r"|[^.!?;]*?\b(?:only|always|just|simply)\s+(?:yes|no)\b"
+            #   (the clause stops at a comma and after a wh-word: "say when the issue is out", "as they say, the ...")
+            r"|(?:(?!\b(?:when|whether|if|how|what|where|which|who|why|once|until|unless|as)\b)[^.!?;,])*?"
+            r"\b(?:the|a|an|this|it|our|your|its|there)\s+(?:(?!(?:that|which|who)\b)[\w'\u2019-]+\s+){0,3}"
+            r"(?:is|are|was|were|has|have|must|isn['\u2019]t|aren['\u2019]t)\b")
 _STATEMENT = (r"(?:" + _SUBJECT + r"\s+(?:" + _AUX + r"\s+){0,2}" + _SAY + r"\b"
               # or a pronoun subject later in the gap: "Good day AI, as they say in the old adverts."
               r"|(?:[\w']+,?\s+){0," + str(PRE_VERB_WORDS - 1) + r"}?(?:we|they|i|he|she|staff|people)\s+(?:" + _AUX
