@@ -169,6 +169,48 @@ class G07Registry(unittest.TestCase):
         (w / 'order.json').write_text(json.dumps(order))
         self.assertEqual(go('mini1').returncode, 2)
 
+    def test_case_variant_machine_id_is_the_same_machine(self):
+        """G07 r2 (M07 P4-2): MINI-7F3A-0001 registered as a second machine next to mini-7f3a-0001."""
+        self.assertEqual(self.register(), 0)
+        upper = self.tmp / 'id' / 'identity-upper.json'
+        upper.write_text(json.dumps({'machine_id': 'MINI-7F3A-0001'}))
+        c, _, err = self.cli('register', '--alias', 'mini9', '--identity', str(upper), '--owner', 'ana',
+                             '--request-id', 'r9')
+        self.assertEqual(c, 2, err)
+        self.assertIn('already registered as mini1', err)
+        self.assertEqual(len(self.state()), 1)
+        self.assertEqual(r.check_claim(str(self.root), 'mini1', str(upper), 'ana', 1)['alias'], 'mini1')
+
+    def test_temp_file_left_by_a_killed_change_is_removed(self):
+        """G07 r2 (M07 P4-3): a .reg-*.tmp left by a SIGKILL during a change stayed in the fleet root."""
+        self.assertEqual(self.register(), 0)
+        left = self.root / '.reg-killed1234.tmp'
+        left.write_bytes(b'{"partial":')
+        c, out, err = self.cli('status')
+        self.assertEqual(c, 0, err)
+        self.assertFalse(left.exists())
+        self.assertEqual(sorted(p.name for p in self.root.glob('.reg-*')), [])
+
+    def test_fleet_bound_order_writes_no_bytecode_into_the_tree(self):
+        """G07 r2 (M07 P4-1): loading registry.py and activate.py from handoff.py wrote __pycache__ into the repo."""
+        src = self.tmp / 'src'
+        for rel in ('employees/infrastructure/fleet-provisioner', 'employees/infrastructure/fleet-dispatcher',
+                    'employees/product-project/project-onboarding'):
+            shutil.copytree(str(ROOT / rel), str(src / rel), ignore=shutil.ignore_patterns('__pycache__'))
+        w = self.tmp / 'wo'
+        shutil.copytree(str(ROOT / 'examples/capabilities/G04/fixtures'), str(w))
+        order = json.loads((w / 'order.json').read_text())
+        self.register(owner=order['owner'])
+        order['fleet'] = {'machine': 'mini1', 'owner_epoch': 1}
+        (w / 'order.json').write_text(json.dumps(order))
+        env = {k: v for k, v in ENV.items() if k not in ('PYTHONDONTWRITEBYTECODE', 'PYTHONPYCACHEPREFIX')}
+        env['SOLARIS_FLEET_ROOT'] = str(self.root)
+        p = subprocess.run([sys.executable, str(src / 'employees/infrastructure/fleet-dispatcher/handoff.py'), 'run',
+                            str(w / 'order.json'), '--worker', 'w', '--identity', self.ident('mini1')],
+                           capture_output=True, text=True, env=env, timeout=300)
+        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
+        self.assertEqual(sorted(str(x.relative_to(src)) for x in src.rglob('__pycache__')), [])
+
     def test_readme_demo(self):
         demo = (EX / 'README.md').read_text().split('```bash\n')[1].split('```')[0]
         lines = [c for c in demo.splitlines() if c.startswith('python3 $R ')]
