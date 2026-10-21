@@ -44,7 +44,7 @@ from typing import Any, Dict, List, Optional, Tuple
 TOOL_VERSION = "1.0.0"
 ANSWERS_SCHEMA = "solaris.grounded-answers/1"
 REPORT_SCHEMA = "solaris.grounded-eval-report/1"
-JOURNAL_SCHEMA = "solaris.grounded-journal/2"
+JOURNAL_SCHEMA = "solaris.grounded-journal/3"
 MAX_DOC_BYTES = 2 * 1024 * 1024
 MAX_DOCS = 20000
 MAX_QUESTIONS = 50000
@@ -930,8 +930,8 @@ def read_journal(path: Path, header: Dict[str, Any], ids: Optional[set] = None,
               "refusing to resume; start a new journal")
         prev = r["chain"]
     h = recs[0]
-    _need(h.get("schema") == JOURNAL_SCHEMA, "journal: not a grounded-eval journal")
-    for k in ("corpus_sha256", "questions_sha256", "min_coverage", "tool_version"):
+    _need(h.get("schema") == JOURNAL_SCHEMA, "journal: unsupported schema for this engine; keep the old journal and start a new one")
+    for k in ("corpus_sha256", "questions_sha256", "min_coverage", "tool_version", "engine_sha256"):
         _need(h.get(k) == header[k], f"journal: {k} differs from this run (source or settings changed); start a new journal")
     done: Dict[str, Dict[str, Any]] = {}
     fails: Dict[str, int] = {}
@@ -967,7 +967,8 @@ def run_answer(a) -> int:
     inputs = [Path(a.questions)] + [Path(a.corpus) / n for n in corpus["docs"]] + ([Path(a.fault_plan)] if a.fault_plan else [])
     out = _check_target(Path(a.out), inputs, Path(a.corpus))
     header = {"schema": JOURNAL_SCHEMA, "corpus_sha256": corpus["sha256"], "questions_sha256": qsha,
-              "min_coverage": a.min_coverage, "tool_version": TOOL_VERSION}
+              "min_coverage": a.min_coverage, "tool_version": TOOL_VERSION,
+              "engine_sha256": sha(_regular(Path(__file__).resolve(), "engine", MAX_DOC_BYTES))}
     jpath = Path(a.journal) if a.journal else None
     done: Dict[str, Dict[str, Any]] = {}
     fails: Dict[str, int] = {}
@@ -1032,6 +1033,7 @@ def run_answer(a) -> int:
         meta = {"kind": "meta", "schema": ANSWERS_SCHEMA, "corpus_sha256": corpus["sha256"], "questions_sha256": qsha,
                 "documents": {n: d["sha256"] for n, d in sorted(corpus["docs"].items())},
                 "producer": {"kind": "deterministic_baseline", "tool": "grounded_eval.py", "version": TOOL_VERSION,
+                             "engine_sha256": header["engine_sha256"],
                              "method": "BM25 sentence retrieval + key-term coverage; extractive, no model",
                              "min_coverage": a.min_coverage, "executed_here": True}}
         if idx.skipped:

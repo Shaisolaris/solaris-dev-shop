@@ -146,3 +146,11 @@ A reported address such as `Sam told AI tools: ...` is also excluded as an ambig
 automated-reader context, even if the quoted payload is an ordinary fact. This is an
 intentional false-positive cost of the context policy; the tool does not try to prove
 that selected words after a recognised address make the remainder trustworthy.
+
+## Resume after a software change
+Journal schema3 binds the engine source SHA256 as well as corpus, questions and settings.
+A changed source file, or a legacy journal without that binding, refuses resume before
+truncating or appending. Keep the old journal and begin a new run for a new engine.
+This detects revision drift; it does not authenticate a party who can rewrite the source
+and recompute journal integrity records. Product version bumps are not used as a
+substitute for this exact-code binding.

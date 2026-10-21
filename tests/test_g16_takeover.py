@@ -99,3 +99,27 @@ class SourceContext(unittest.TestCase):
         code = "import importlib.util,sys; s=importlib.util.spec_from_file_location('g',sys.argv[1]);g=importlib.util.module_from_spec(s);s.loader.exec_module(g);print(bool(g._HEADING_RE.search(g._normalise('AI, '*4000+'AI.'))))"
         result=subprocess.run([sys.executable,'-B','-c',code,str(P)],capture_output=True,text=True,timeout=5)
         self.assertEqual((result.returncode,result.stdout.strip()),(0,'False'),result.stderr)
+
+    @unittest.skipUnless(g.fcntl is not None, 'journal/resume requires the supported POSIX lock backend')
+    def test_resume_binds_actual_engine_source_without_a_version_bump(self):
+        import tempfile, json
+        with tempfile.TemporaryDirectory(prefix='solaris-engine-binding-') as td:
+            d=Path(td); engine=d/'engine.py'; original=P.read_bytes(); engine.write_bytes(original)
+            c=d/'corpus';c.mkdir();(c/'s.md').write_text('The public office opens on Mondays.')
+            q=d/'questions.jsonl';q.write_text('{"id":"x","question":"When does the public office open?","expect":{"answerable":true,"facts":["Mondays"],"support_docs":["s.md"]}}\n')
+            fault=d/'fault.json';fault.write_text('{"retrieve":{"x":1}}')
+            out,journal=d/'answers.jsonl',d/'journal.jsonl'
+            args=[sys.executable,'-B',str(engine),'answer','--corpus',str(c),'--questions',str(q),'--out',str(out),'--journal',str(journal),'--fault-plan',str(fault)]
+            first=subprocess.run(args,capture_output=True,text=True,timeout=30)
+            self.assertEqual(first.returncode,3,first.stderr)
+            saved=journal.read_bytes()
+            engine.write_bytes(original+b'\n# another source revision, same tool version\n')
+            changed=subprocess.run(args+['--resume'],capture_output=True,text=True,timeout=30)
+            self.assertEqual(changed.returncode,2,changed.stderr)
+            self.assertIn('engine_sha256 differs',changed.stdout+changed.stderr)
+            self.assertEqual(journal.read_bytes(),saved);self.assertFalse(out.exists())
+            engine.write_bytes(original)
+            resumed=subprocess.run(args+['--resume'],capture_output=True,text=True,timeout=30)
+            self.assertEqual(resumed.returncode,0,resumed.stderr)
+            meta=json.loads(out.read_text().splitlines()[0])
+            self.assertEqual(meta['producer']['engine_sha256'],hashlib.sha256(original).hexdigest())
