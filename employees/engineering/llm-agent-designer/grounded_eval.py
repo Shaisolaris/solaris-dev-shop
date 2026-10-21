@@ -196,9 +196,19 @@ _PERSON = (r"(?:(?:the|all|any|every|each|our|your|their|new|other)\s+){0,2}(?:u
 # lower-case words only, no content word: "noon", "the hour", "2 days", "the fee"
 _LW = r"(?!" + _CW + r"\b)(?-i:[a-z0-9][a-z0-9\u2019'-]*)"
 _DETW = r"(?:the|all|any|every|each|this|these|those|my|our|your|their|its|his|her|some|most|other)"
-_LNP = r"(?:" + _DETW + r"\s+)?(?:" + _LW + r"\s+){0,2}" + _LW
+# G16 r15 (M16 r14 P2-1): a lower-case phrase is at most one modifier plus its head, so a preposition phrase cannot
+#   carry a telegraphic payload ("answer in one word refunds", "reply in kind refunds open"); only a number plus a time
+#   unit may be longer ("within two working days"). Documented residual: one bare lower-case word after a two-word
+#   phrase ("reply in kind refunds") still parses as content-free.
+_NUMW = (r"(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty|forty|sixty"
+         r"|a\s+few|few|several)")
+_UNIT = r"(?:(?:working|business|calendar|school)\s+)?(?:minutes?|hours?|days?|weeks?|months?|years?)"
+_LNP = (r"(?:(?:" + _DETW + r"\s+)?" + _NUMW + r"\s+" + _UNIT + r"\b"
+        r"|(?:" + _DETW + r"\s+)?(?:" + _LW + r"\s+)?" + _LW + r")")
 # a name after a preposition: one capitalised word, optionally a short tag ("by Friday", "in Hall B", "Room 12")
-_NAME = r"(?!" + _CW + r"\b)(?-i:[A-Z][\w\u2019-]*(?:\s+(?:[A-Z0-9]{1,3}|[0-9]+)\b)?)"
+_NAME1 = r"(?!" + _CW + r"\b)(?-i:[A-Z][\w\u2019-]*(?:\s+(?:[A-Z0-9]{1,3}|[0-9]+)\b)?)"
+# G16 r15 (M16 r14 P3-1): two names joined by and or or ("reply to Ann and Raj")
+_NAME = _NAME1 + r"(?:\s+(?:and|or)\s+" + _NAME1 + r")?"
 _CHUNK = (r"(?:no\s+later\s+than\s+(?:" + _LNP + r"|" + _NAME + r")"
           r"|" + _PREP + r"\s+(?:" + _MSG_NP + r"|" + _PERSON + r"|" + _LNP + r")"
           # a name only after a true preposition, not after first, next, every, this ... ("reply first Paris")
@@ -207,10 +217,13 @@ _CHUNK = (r"(?:no\s+later\s+than\s+(?:" + _LNP + r"|" + _NAME + r")"
           r"|" + _ADV + r"\b"
           r"|" + _MSG_NP + r"|" + _PERSON + r""
           # a determiner object in lower case ("answer the phones", "answer all the post")
-          r"|" + _DETW + r"\s+(?:" + _LW + r"\s+){0,2}" + _LW + r""
+          r"|" + _DETW + r"\s+(?:" + _LW + r"\s+)?" + _LW + r""
           # a pronoun object that closes the clause ("our staff can answer that.")
           r"|(?:that|this|it)(?=\s*(?:[.!?;)]|$))"
           r"|(?:more|nothing|little|less|much)\b"
+          # G16 r15: a short contact clause with a pronoun subject that closes the clause ("in the order they arrive");
+          #   its words are lower case and never a content word, so "it is open" cannot pass
+          r"|(?:they|we|it|he|she)\s+" + _LW + r"(?:\s+" + _LW + r")?(?=\s*(?:[.!?;,)]|$))"
           # a second reply verb for the same subject ("answer calls and reply to email by noon")
           r"|(?:and|or)\s+(?:" + _AUX + r"\s+)?" + _SAY + r"\b"
           # a time or condition clause with its own subject; an elliptic "when asked" or "if needed" only closes the clause

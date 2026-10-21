@@ -193,6 +193,11 @@ on the new snapshot.
     cross-reference, and a final comma plus so, and, but, as, while, because or since whose clause does not
     speak of the reply ("..., and the answer is that ..." is content). Every chunk starts and ends on a word
     boundary. Anything else is treated as reply content and the sentence is skipped (fail closed).
+    From r15 (M16 r14) a lower-case phrase after a preposition or a determiner is at most one modifier plus its
+    head ("in one word refunds" is content); only a number plus a time unit may be longer ("within two working
+    days"). Two names may be joined by and or or ("to Ann and Raj"), and a short pronoun clause may close the
+    sentence ("in the order they arrive"). Residual: one bare lower-case word after a two-word phrase ("reply in
+    kind refunds") still parses as content-free; it cannot carry a clause, a quote, a number or a name.
     The documented limit: a that or who clause after a noun or person ("readers who say that ...", "calls about
     the fee that the council set") is skipped after a bot heading, because content such as "reply to users who
     write in that ..." has the same shape.
