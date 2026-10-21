@@ -198,6 +198,24 @@ class G33Capability(unittest.TestCase):
         c['value'], c['score'] = '11,500', '5'
         self.assertEqual(self.decide(0)['findings'], [])
 
+    def test_percent_after_a_space_and_the_decimal_point_convention(self):
+        """G33 r5 (M33 r3 OBS): "18%" did not match a quote that writes "18 %", and a plain 18 matched "18 %"."""
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('g33_ed', str(TOOL)); m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        for q in ('churn fell 18 % in Q3', 'churn fell 18\u00a0% in Q3', 'churn fell 18\u202f% in Q3', 'churn fell 18% in Q3'):
+            with self.subTest(q=q):
+                self.assertTrue(m._value_in_quote('18%', q))
+                self.assertFalse(m._value_in_quote('18', q))
+        self.assertTrue(m._value_in_quote('12.5%', 'up 12.5 % year on year'))
+        self.assertFalse(m._value_in_quote('18%', 'up 118 % year on year'))
+        self.assertFalse(m._value_in_quote('18%', 'grew 18  % (two spaces)'))  # one space only
+        self.assertTrue(m._value_in_quote('18', 'grew 18 points'))
+        self.assertTrue(m._value_in_quote('18', 'Umsatz 18.000 Euro'))  # "." is a decimal point (documented)
+        doc = (TOOL.parent / 'evidence-product-decision.md').read_text()
+        self.assertIn('`18%` matches `18 %`', doc)
+        self.assertIn('its value must be written as `18000`', doc)
+
     def test_staleness_boundary(self):
         self.src('S-mkt')['max_age_days'] = 127
         self.claim('C10')['score'] = '5'  # matches the metric scale for 18,000

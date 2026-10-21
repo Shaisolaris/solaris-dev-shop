@@ -47,6 +47,8 @@ KINDS = ("interview", "external", "g13")
 LO, HI, MID = Decimal(0), Decimal(5), Decimal("2.5")
 G13 = Path(__file__).resolve().parents[2] / "data" / "data-engineer" / "csv_reconcile.py"
 NUM = re.compile(r"\d+(?:[.,]\d+)*%?")
+# in a quote a percent sign may follow a space ("18 %", French and German style); it still makes the number a percent
+QNUM = re.compile(r"\d+(?:[.,]\d+)*(?:[ \u00a0\u202f]?%)?")
 
 
 def _num(tok):
@@ -77,7 +79,7 @@ def _value_in_quote(value, quote):
         # the scorer would read it as a number (1,5 / +18 / -5) but it is not a plain number: a substring match
         # could be a fragment of a larger number, so it never matches (fails closed)
         return False
-    return any(_num(m.group(0)) == want for m in NUM.finditer(quote))
+    return any(_num(re.sub(r"[ \u00a0\u202f]%$", "%", m.group(0))) == want for m in QNUM.finditer(quote))
 
 
 class Invalid(Exception):

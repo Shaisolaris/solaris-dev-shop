@@ -16,7 +16,7 @@ python3 evidence_decision.py verify RESULT PACKAGE                  # 0 identica
 - `options`: [{`id`, `label`}].
 - `dimensions`: [{`id`, `label`, `weight`}] with weights summing to exactly 1. Optional `metric_scale`
   {`thresholds`: five ascending numbers} maps a stated numeric value to scores 1..5. Optional `quantity`
-  (true or false) requires every claim on that dimension to carry a numeric `value` that equals a whole number stated in its quote (numbers are compared whole, so `18` does not match `18,000` and `4` does not match `40`; `18000` matches `18,000`; a `%` must match; a value read as a number but not written as a plain number, such as `1,5`, `+18` or `-5`, never matches);
+  (true or false) requires every claim on that dimension to carry a numeric `value` that equals a whole number stated in its quote (numbers are compared whole, so `18` does not match `18,000` and `4` does not match `40`; `18000` matches `18,000`; a `%` must match, and a percent sign after a space in the quote (`18 %`) still counts as a percent, so `18%` matches `18 %` and `18` does not; `.` is read as a decimal point and `,` as a thousands separator, so a source that writes `18.000` for eighteen thousand matches `18`, and its value must be written as `18000`; a value read as a number but not written as a plain number, such as `1,5`, `+18` or `-5`, never matches);
   a claim without a value, with a value that is not a number, or whose quote states no number is flagged
   `value_not_in_quote` and not used.
 - `sources`: [{`id`, `kind` interview|external|g13, `title`, `retrieved_at` ≤ `as_of`, ...}].
