@@ -1,0 +1,40 @@
+== Python 3.9.6 at 7ed5f70af2cfaf8fbbceaecd105feaf9385b1a73
+Q1 PASS owner change after delivery into a new --state folder: exit 2, folder not left behind, ledger 1 | {"rc": [0, 2], "left": null, "ledger": 1}
+Q2 PASS refusal into an existing --state folder with another order: exit 2, only WO-KEEP/note.txt remains | {"rc": 2, "tree": ["WO-KEEP", "WO-KEEP/note.txt"]}
+Q3 PASS refusal into a deep new --state path a/b/c: exit 2, no lock and no order folder (empty parents observed) | {"rc": 2, "a_tree": ["b"]}
+Q4 PASS refusal in the existing order folder: exit 2, files unchanged | {"rc": 2, "same": true}
+Q5 PASS held lock: second worker exits 4 and the lock stays; the holder can then run (exit 0) | {"rc": [4, 0], "lock_kept": true}
+Q6 PASS intake that is valid JSON but not an object, fresh order: exit 2, no .handoff and no outbox | {"rc": 2, "err": "error: intake is not a JSON object", "handoff": null}
+Q7 PASS control: run then rerun exit 0, ledger 1 | {"rc": [0, 0], "ledger": 1}
+M04R3 PROBE 7/7
+rc=0
+== Python 3.11.16 at 7ed5f70af2cfaf8fbbceaecd105feaf9385b1a73
+Q1 PASS owner change after delivery into a new --state folder: exit 2, folder not left behind, ledger 1 | {"rc": [0, 2], "left": null, "ledger": 1}
+Q2 PASS refusal into an existing --state folder with another order: exit 2, only WO-KEEP/note.txt remains | {"rc": 2, "tree": ["WO-KEEP", "WO-KEEP/note.txt"]}
+Q3 PASS refusal into a deep new --state path a/b/c: exit 2, no lock and no order folder (empty parents observed) | {"rc": 2, "a_tree": ["b"]}
+Q4 PASS refusal in the existing order folder: exit 2, files unchanged | {"rc": 2, "same": true}
+Q5 PASS held lock: second worker exits 4 and the lock stays; the holder can then run (exit 0) | {"rc": [4, 0], "lock_kept": true}
+Q6 PASS intake that is valid JSON but not an object, fresh order: exit 2, no .handoff and no outbox | {"rc": 2, "err": "error: intake is not a JSON object", "handoff": null}
+Q7 PASS control: run then rerun exit 0, ledger 1 | {"rc": [0, 0], "ledger": 1}
+M04R3 PROBE 7/7
+rc=0
+== Python 3.12.14 at 7ed5f70af2cfaf8fbbceaecd105feaf9385b1a73
+Q1 PASS owner change after delivery into a new --state folder: exit 2, folder not left behind, ledger 1 | {"rc": [0, 2], "left": null, "ledger": 1}
+Q2 PASS refusal into an existing --state folder with another order: exit 2, only WO-KEEP/note.txt remains | {"rc": 2, "tree": ["WO-KEEP", "WO-KEEP/note.txt"]}
+Q3 PASS refusal into a deep new --state path a/b/c: exit 2, no lock and no order folder (empty parents observed) | {"rc": 2, "a_tree": ["b"]}
+Q4 PASS refusal in the existing order folder: exit 2, files unchanged | {"rc": 2, "same": true}
+Q5 PASS held lock: second worker exits 4 and the lock stays; the holder can then run (exit 0) | {"rc": [4, 0], "lock_kept": true}
+Q6 PASS intake that is valid JSON but not an object, fresh order: exit 2, no .handoff and no outbox | {"rc": 2, "err": "error: intake is not a JSON object", "handoff": null}
+Q7 PASS control: run then rerun exit 0, ledger 1 | {"rc": [0, 0], "ledger": 1}
+M04R3 PROBE 7/7
+rc=0
+== Python 3.13.15 at 7ed5f70af2cfaf8fbbceaecd105feaf9385b1a73
+Q1 PASS owner change after delivery into a new --state folder: exit 2, folder not left behind, ledger 1 | {"rc": [0, 2], "left": null, "ledger": 1}
+Q2 PASS refusal into an existing --state folder with another order: exit 2, only WO-KEEP/note.txt remains | {"rc": 2, "tree": ["WO-KEEP", "WO-KEEP/note.txt"]}
+Q3 PASS refusal into a deep new --state path a/b/c: exit 2, no lock and no order folder (empty parents observed) | {"rc": 2, "a_tree": ["b"]}
+Q4 PASS refusal in the existing order folder: exit 2, files unchanged | {"rc": 2, "same": true}
+Q5 PASS held lock: second worker exits 4 and the lock stays; the holder can then run (exit 0) | {"rc": [4, 0], "lock_kept": true}
+Q6 PASS intake that is valid JSON but not an object, fresh order: exit 2, no .handoff and no outbox | {"rc": 2, "err": "error: intake is not a JSON object", "handoff": null}
+Q7 PASS control: run then rerun exit 0, ledger 1 | {"rc": [0, 0], "ledger": 1}
+M04R3 PROBE 7/7
+rc=0

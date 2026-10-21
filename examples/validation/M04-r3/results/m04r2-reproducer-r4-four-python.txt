@@ -1,0 +1,44 @@
+== Python 3.9.6 at 7ed5f70af2cfaf8fbbceaecd105feaf9385b1a73
+Q1 PASS owner changed after --stop-after brief: resume exits 0, brief names only the new owner, one delivery naming the new owner and that brief {"rc": [3, 0], "ledger_owners": ["support: Someone Else"], "old_in_brief": false}
+Q2 PASS owner changed after --stop-after activate: brief and the one delivery name the new owner {"rc": [3, 0], "ledger_owners": ["support: Someone Else"]}
+Q3 PASS owner changed after revision 1 was delivered: no second delivery of revision 1 (refused, exit 2, ledger stays 1) {"rc": [0, 2], "ledger": [[1, "delivery-lead: A. Example"]], "out": "error: revision 1 was already delivered with owner delivery-lead: A. Example; a delivery cannot be recalled, so issue revision 2 to change the owner\n"}
+Q4 PASS crash after delivery (75), owner changed, resume: revision 1 is not delivered a second time (exit 2, ledger stays 1) {"rc": [75, 2], "ledger": [[1, "delivery-lead: A. Example"]], "out": "error: revision 1 was already delivered with owner delivery-lead: A. Example; a delivery cannot be recalled, so issue revision 2 to change the owner\n"}
+Q5 PASS owner changed and changed back before delivery: brief names the original owner, one delivery {"rc": [3, 0], "ledger_owners": ["delivery-lead: A. Example"]}
+Q6 PASS control: rerun with the same owner after delivery exits 0, all reused, ledger 1 {"rc": 0, "ledger": 1}
+Q7 PASS control: revision 2 with a new owner delivers once (ledger 2, revision 1 noted superseded) {"rc": 0, "ledger": [[1, "delivery-lead: A. Example"], [2, "support: Someone Else"]]}
+Q8 PASS non-ASCII owner set before delivery is written exactly into the brief and the ledger {"rc": 0}
+M04R2 PROBE 8/8
+rc=0
+== Python 3.11.16 at 7ed5f70af2cfaf8fbbceaecd105feaf9385b1a73
+Q1 PASS owner changed after --stop-after brief: resume exits 0, brief names only the new owner, one delivery naming the new owner and that brief {"rc": [3, 0], "ledger_owners": ["support: Someone Else"], "old_in_brief": false}
+Q2 PASS owner changed after --stop-after activate: brief and the one delivery name the new owner {"rc": [3, 0], "ledger_owners": ["support: Someone Else"]}
+Q3 PASS owner changed after revision 1 was delivered: no second delivery of revision 1 (refused, exit 2, ledger stays 1) {"rc": [0, 2], "ledger": [[1, "delivery-lead: A. Example"]], "out": "error: revision 1 was already delivered with owner delivery-lead: A. Example; a delivery cannot be recalled, so issue revision 2 to change the owner\n"}
+Q4 PASS crash after delivery (75), owner changed, resume: revision 1 is not delivered a second time (exit 2, ledger stays 1) {"rc": [75, 2], "ledger": [[1, "delivery-lead: A. Example"]], "out": "error: revision 1 was already delivered with owner delivery-lead: A. Example; a delivery cannot be recalled, so issue revision 2 to change the owner\n"}
+Q5 PASS owner changed and changed back before delivery: brief names the original owner, one delivery {"rc": [3, 0], "ledger_owners": ["delivery-lead: A. Example"]}
+Q6 PASS control: rerun with the same owner after delivery exits 0, all reused, ledger 1 {"rc": 0, "ledger": 1}
+Q7 PASS control: revision 2 with a new owner delivers once (ledger 2, revision 1 noted superseded) {"rc": 0, "ledger": [[1, "delivery-lead: A. Example"], [2, "support: Someone Else"]]}
+Q8 PASS non-ASCII owner set before delivery is written exactly into the brief and the ledger {"rc": 0}
+M04R2 PROBE 8/8
+rc=0
+== Python 3.12.14 at 7ed5f70af2cfaf8fbbceaecd105feaf9385b1a73
+Q1 PASS owner changed after --stop-after brief: resume exits 0, brief names only the new owner, one delivery naming the new owner and that brief {"rc": [3, 0], "ledger_owners": ["support: Someone Else"], "old_in_brief": false}
+Q2 PASS owner changed after --stop-after activate: brief and the one delivery name the new owner {"rc": [3, 0], "ledger_owners": ["support: Someone Else"]}
+Q3 PASS owner changed after revision 1 was delivered: no second delivery of revision 1 (refused, exit 2, ledger stays 1) {"rc": [0, 2], "ledger": [[1, "delivery-lead: A. Example"]], "out": "error: revision 1 was already delivered with owner delivery-lead: A. Example; a delivery cannot be recalled, so issue revision 2 to change the owner\n"}
+Q4 PASS crash after delivery (75), owner changed, resume: revision 1 is not delivered a second time (exit 2, ledger stays 1) {"rc": [75, 2], "ledger": [[1, "delivery-lead: A. Example"]], "out": "error: revision 1 was already delivered with owner delivery-lead: A. Example; a delivery cannot be recalled, so issue revision 2 to change the owner\n"}
+Q5 PASS owner changed and changed back before delivery: brief names the original owner, one delivery {"rc": [3, 0], "ledger_owners": ["delivery-lead: A. Example"]}
+Q6 PASS control: rerun with the same owner after delivery exits 0, all reused, ledger 1 {"rc": 0, "ledger": 1}
+Q7 PASS control: revision 2 with a new owner delivers once (ledger 2, revision 1 noted superseded) {"rc": 0, "ledger": [[1, "delivery-lead: A. Example"], [2, "support: Someone Else"]]}
+Q8 PASS non-ASCII owner set before delivery is written exactly into the brief and the ledger {"rc": 0}
+M04R2 PROBE 8/8
+rc=0
+== Python 3.13.15 at 7ed5f70af2cfaf8fbbceaecd105feaf9385b1a73
+Q1 PASS owner changed after --stop-after brief: resume exits 0, brief names only the new owner, one delivery naming the new owner and that brief {"rc": [3, 0], "ledger_owners": ["support: Someone Else"], "old_in_brief": false}
+Q2 PASS owner changed after --stop-after activate: brief and the one delivery name the new owner {"rc": [3, 0], "ledger_owners": ["support: Someone Else"]}
+Q3 PASS owner changed after revision 1 was delivered: no second delivery of revision 1 (refused, exit 2, ledger stays 1) {"rc": [0, 2], "ledger": [[1, "delivery-lead: A. Example"]], "out": "error: revision 1 was already delivered with owner delivery-lead: A. Example; a delivery cannot be recalled, so issue revision 2 to change the owner\n"}
+Q4 PASS crash after delivery (75), owner changed, resume: revision 1 is not delivered a second time (exit 2, ledger stays 1) {"rc": [75, 2], "ledger": [[1, "delivery-lead: A. Example"]], "out": "error: revision 1 was already delivered with owner delivery-lead: A. Example; a delivery cannot be recalled, so issue revision 2 to change the owner\n"}
+Q5 PASS owner changed and changed back before delivery: brief names the original owner, one delivery {"rc": [3, 0], "ledger_owners": ["delivery-lead: A. Example"]}
+Q6 PASS control: rerun with the same owner after delivery exits 0, all reused, ledger 1 {"rc": 0, "ledger": 1}
+Q7 PASS control: revision 2 with a new owner delivers once (ledger 2, revision 1 noted superseded) {"rc": 0, "ledger": [[1, "delivery-lead: A. Example"], [2, "support: Someone Else"]]}
+Q8 PASS non-ASCII owner set before delivery is written exactly into the brief and the ledger {"rc": 0}
+M04R2 PROBE 8/8
+rc=0

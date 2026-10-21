@@ -1,0 +1,12 @@
+== Python 3.9.6
+16/16 checks passed
+not run: workers on other machines or a shared network folder (locks are local fcntl locks), a router or scheduler launching workers, Hermes jobs, and any live delivery; the outbox is a local file.
+== Python 3.11.16
+16/16 checks passed
+not run: workers on other machines or a shared network folder (locks are local fcntl locks), a router or scheduler launching workers, Hermes jobs, and any live delivery; the outbox is a local file.
+== Python 3.12.14
+16/16 checks passed
+not run: workers on other machines or a shared network folder (locks are local fcntl locks), a router or scheduler launching workers, Hermes jobs, and any live delivery; the outbox is a local file.
+== Python 3.13.15
+16/16 checks passed
+not run: workers on other machines or a shared network folder (locks are local fcntl locks), a router or scheduler launching workers, Hermes jobs, and any live delivery; the outbox is a local file.

@@ -1,0 +1,8 @@
+Q1 FAIL owner change after delivery into a new --state folder: exit 2, folder not left behind, ledger 1 | {"rc": [0, 2], "left": ["WO-HARBOR-1", "WO-HARBOR-1/.worker.lock"], "ledger": 1}
+Q2 FAIL refusal into an existing --state folder with another order: exit 2, only WO-KEEP/note.txt remains | {"rc": 2, "tree": ["WO-HARBOR-1", "WO-HARBOR-1/.worker.lock", "WO-KEEP", "WO-KEEP/note.txt"]}
+Q3 FAIL refusal into a deep new --state path a/b/c: exit 2, no lock and no order folder (empty parents observed) | {"rc": 2, "a_tree": ["b", "b/c", "b/c/WO-HARBOR-1", "b/c/WO-HARBOR-1/.worker.lock"]}
+Q4 PASS refusal in the existing order folder: exit 2, files unchanged | {"rc": 2, "same": true}
+Q5 PASS held lock: second worker exits 4 and the lock stays; the holder can then run (exit 0) | {"rc": [4, 0], "lock_kept": true}
+Q6 FAIL intake that is valid JSON but not an object, fresh order: exit 2, no .handoff and no outbox | {"rc": 2, "err": "error: intake is not a JSON object", "handoff": ["WO-HARBOR-1", "WO-HARBOR-1/.worker.lock"]}
+Q7 PASS control: run then rerun exit 0, ledger 1 | {"rc": [0, 0], "ledger": 1}
+M04R3 PROBE 3/7
