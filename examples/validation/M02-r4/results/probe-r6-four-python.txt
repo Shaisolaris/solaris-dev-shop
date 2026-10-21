@@ -1,0 +1,32 @@
+== Python 3.9.6 at 038f93470323c28f587748bcb9d69d7f637b34d3
+R01 PASS 21 placeholder spellings not in the G02 r5 test stay UNRESOLVED (partial, STATUS line) | "all unresolved"
+R02 PASS 9 look-alike spellings of UNRESOLVED (Cyrillic, Greek, small capitals) stay UNRESOLVED | "all unresolved"
+R03 PASS controls: 10 real deploy answers that mention a placeholder word are recorded unchanged | "all kept"
+R04 PASS control: no deploy answer stays UNRESOLVED | ["partial", null, true]
+R05 PASS control: plain answer is complete | ["complete", "Vercel"]
+M02R4 PROBE 5/5
+rc=0
+== Python 3.11.16 at 038f93470323c28f587748bcb9d69d7f637b34d3
+R01 PASS 21 placeholder spellings not in the G02 r5 test stay UNRESOLVED (partial, STATUS line) | "all unresolved"
+R02 PASS 9 look-alike spellings of UNRESOLVED (Cyrillic, Greek, small capitals) stay UNRESOLVED | "all unresolved"
+R03 PASS controls: 10 real deploy answers that mention a placeholder word are recorded unchanged | "all kept"
+R04 PASS control: no deploy answer stays UNRESOLVED | ["partial", null, true]
+R05 PASS control: plain answer is complete | ["complete", "Vercel"]
+M02R4 PROBE 5/5
+rc=0
+== Python 3.12.14 at 038f93470323c28f587748bcb9d69d7f637b34d3
+R01 PASS 21 placeholder spellings not in the G02 r5 test stay UNRESOLVED (partial, STATUS line) | "all unresolved"
+R02 PASS 9 look-alike spellings of UNRESOLVED (Cyrillic, Greek, small capitals) stay UNRESOLVED | "all unresolved"
+R03 PASS controls: 10 real deploy answers that mention a placeholder word are recorded unchanged | "all kept"
+R04 PASS control: no deploy answer stays UNRESOLVED | ["partial", null, true]
+R05 PASS control: plain answer is complete | ["complete", "Vercel"]
+M02R4 PROBE 5/5
+rc=0
+== Python 3.13.15 at 038f93470323c28f587748bcb9d69d7f637b34d3
+R01 PASS 21 placeholder spellings not in the G02 r5 test stay UNRESOLVED (partial, STATUS line) | "all unresolved"
+R02 PASS 9 look-alike spellings of UNRESOLVED (Cyrillic, Greek, small capitals) stay UNRESOLVED | "all unresolved"
+R03 PASS controls: 10 real deploy answers that mention a placeholder word are recorded unchanged | "all kept"
+R04 PASS control: no deploy answer stays UNRESOLVED | ["partial", null, true]
+R05 PASS control: plain answer is complete | ["complete", "Vercel"]
+M02R4 PROBE 5/5
+rc=0

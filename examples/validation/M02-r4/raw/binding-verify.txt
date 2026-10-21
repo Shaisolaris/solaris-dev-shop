@@ -1,0 +1,4 @@
+branch review/grok-g02-activation remote head: 038f93470323c28f587748bcb9d69d7f637b34d3
+038f93470323c28f587748bcb9d69d7f637b34d3 G02 r6: dotted placeholders (t.b.d.) and more look-alike letters stay unresolved (review only, Grok build)
+642362ad57cae642174c943a3b9a48d382e9bb94 G02 r5: placeholder and look-alike UNRESOLVED deploy answers stay unresolved (review only, Grok build)
+main: 02ba9c571b10ad1dba792d2ac5534bcad3171e67

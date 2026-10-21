@@ -1,0 +1,6 @@
+R01 FAIL 20 placeholder spellings not in the G02 r5 test stay UNRESOLVED (partial, STATUS line) | {"t.b.d.": ["complete", "t.b.d.", false]}
+R02 FAIL 8 look-alike spellings of UNRESOLVED (Cyrillic, Greek, small capitals) stay UNRESOLVED | {"U\u041dRESOLVED": ["complete", "U\u041dRESOLVED", false], "unres\u043flved": ["complete", "unres\u043flved", false], "\u0423NRESOLVED later": ["complete", "\u0423NRESOLVED later", false], "\u03bfnresolved": ["complete", "\u03bfnresolved", false]}
+R03 PASS controls: 10 real deploy answers that mention a placeholder word are recorded unchanged | "all kept"
+R04 PASS control: no deploy answer stays UNRESOLVED | ["partial", null, true]
+R05 PASS control: plain answer is complete | ["complete", "Vercel"]
+M02R4 PROBE 3/5
