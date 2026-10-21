@@ -123,3 +123,13 @@ class SourceContext(unittest.TestCase):
             self.assertEqual(resumed.returncode,0,resumed.stderr)
             meta=json.loads(out.read_text().splitlines()[0])
             self.assertEqual(meta['producer']['engine_sha256'],hashlib.sha256(original).hexdigest())
+
+    def test_output_cannot_overwrite_the_running_engine(self):
+        import tempfile
+        with tempfile.TemporaryDirectory(prefix='solaris-self-output-')as td:
+            d=Path(td);engine=d/'engine.py';original=P.read_bytes();engine.write_bytes(original)
+            c=d/'corpus';c.mkdir();(c/'s.md').write_text('The public office opens on Mondays.')
+            q=d/'q.jsonl';q.write_text('{"id":"x","question":"When does the public office open?","expect":{"answerable":true,"facts":["Mondays"],"support_docs":["s.md"]}}\n')
+            r=subprocess.run([sys.executable,'-B',str(engine),'answer','--corpus',str(c),'--questions',str(q),'--out',str(engine)],capture_output=True,text=True,timeout=30)
+            self.assertEqual(r.returncode,2,r.stdout+r.stderr)
+            self.assertEqual(engine.read_bytes(),original)

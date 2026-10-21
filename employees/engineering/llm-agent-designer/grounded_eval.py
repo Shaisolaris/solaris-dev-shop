@@ -1349,10 +1349,12 @@ def _same_file(a: Path, b: Path) -> bool:
 
 
 def _check_target(out: Path, protect: List[Path], corpus_dir: Optional[Path] = None) -> Path:
-    """An output never replaces an input, the journal, or anything in the snapshot folder (N5, N9). Paths are
-    compared by file identity and case-folded after resolving, so SNAP/plots.md cannot reach snap/plots.md on a
-    case-insensitive volume (M16 r2 R2). On a case-sensitive volume a folder that differs only in case from the
-    snapshot folder is refused too (fail closed)."""
+    """An output never replaces the engine, an input, a journal, or a snapshot file.
+
+    Compare file identity and case-folded resolved paths so an alias cannot reach
+    a protected file. Case-only variants are refused conservatively on every host.
+    """
+    protect = list(protect) + [Path(__file__).resolve()]
     out = Path(os.path.abspath(out))
     _need(not out.is_symlink() and (not out.exists() or out.is_file()), f"{out.name}: exists and is not a regular file")
     _need(out.parent.is_dir(), f"{out.name}: its folder does not exist")
