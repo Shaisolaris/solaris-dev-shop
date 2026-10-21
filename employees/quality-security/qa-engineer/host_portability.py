@@ -246,9 +246,23 @@ def _role_dir(root, role):
 
 
 def skill_copy(root, role, dest=None):
+    """Copy employees/ROLE and report missing references. Without --dest the copy goes to a temp folder that is
+    removed again before returning (M40 P4-2: it used to stay in TMPDIR on every run)."""
     root = _repo(root)
     role, src = _role_dir(root, role)
-    dest_root = Path(dest) if dest else Path(tempfile.mkdtemp(prefix="g40-skill-"))
+    if dest:
+        return _skill_copy(role, src, Path(dest))
+    tmp = Path(tempfile.mkdtemp(prefix="g40-skill-"))
+    try:
+        rep = _skill_copy(role, src, tmp)
+    finally:
+        shutil.rmtree(str(tmp), ignore_errors=True)
+    rep["dest"] = None
+    rep["temp_copy"] = "removed after the check; pass --dest DIR to keep the copy"
+    return rep
+
+
+def _skill_copy(role, src, dest_root):
     dest_root.mkdir(parents=True, exist_ok=True)
     target = dest_root / Path(role).name
     if target.exists():
