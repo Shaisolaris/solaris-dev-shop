@@ -6,6 +6,7 @@ import json
 import os
 import secrets
 import signal
+import socketserver
 import sys
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -42,6 +43,13 @@ class H(BaseHTTPRequestHandler):
 class Server(ThreadingHTTPServer):
     daemon_threads = True
     request_queue_size = 128
+
+    def server_bind(self):
+        # The address is already numeric loopback. HTTPServer's reverse DNS lookup
+        # can block offline/startup on macOS and is unnecessary for these routes.
+        socketserver.TCPServer.server_bind(self)
+        self.server_name, self.server_port = self.server_address[:2]
+
 
 
 def main():
