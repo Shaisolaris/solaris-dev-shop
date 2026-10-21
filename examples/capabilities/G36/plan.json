@@ -79,8 +79,8 @@
   },
   {
    "id": "G33",
-   "commit": "d24779882bbf9c969f38259d8b19c632e9baf842",
-   "note": "Root numeric support repair preserves percent identity across whitespace and refuses identifier/unit/signed-number false support.",
+   "commit": "d7362c10641c918cb61816fbc10e1bc702b99421",
+   "note": "Root numeric support with percent identity, token boundaries and Unicode sign guard; final affected independent Muse review pending.",
    "tests": [
     "tests.test_g33_capability",
     "tests.test_g33_takeover"
