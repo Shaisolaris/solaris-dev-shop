@@ -410,7 +410,9 @@ def _normalise(text: str) -> str:
 
 
 _H_PRE = r"(?:(?:whichever|whatever|which|any|all|every|each|the|you|these|those|other|dear|all\s+the|any\s+of\s+the|all\s+of\s+the)\s+)?"
-_H_ONE = _H_PRE + r"(?:" + _READER + r"|" + _BOT + r")\b"
+# _READER already covers the automated forms in _BOT. Duplicating both
+# alternatives inside the repeated list makes a non-heading backtrack exponentially.
+_H_ONE = _H_PRE + r"(?:" + _READER + r")\b"
 _H_READERS = _H_ONE + r"(?:\s*(?:,|and|or|&)\s*" + _H_ONE + r")*"
 _H_VERB = r"(?:read|process|pars|answer|summari[sz]|scann?|index|crawl|brows|visit|see|us)"
 # a post-modifier before a colon or after whichever / whatever: "reading this", "that reads this", "on this site"
