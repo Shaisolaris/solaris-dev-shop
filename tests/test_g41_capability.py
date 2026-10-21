@@ -73,6 +73,21 @@ class Direct(unittest.TestCase):
     def tearDown(self):
         O.cleanup()
 
+    def test_release_checks_and_review_bind_same_candidate(self):
+        for field in ("candidate_commit", "checks_revision", "reviewed_revision"):
+            for value in ("short", 7, "f" * 40):
+                t = O.prog({"G05": "accepted"}, {"G05": O.sha("G05")}, {"G05": O.sha("G05")}, gate_fields=True)
+                q = json.loads((t / "queue.json").read_text())
+                q["release_gate"][field] = value
+                (t / "queue.json").write_text(json.dumps(q))
+                rc, rep, _ = O.inv(t)
+                self.assertEqual((rc, O.state(rep)), (1, "NOT_READY"), (field, value, rep))
+                self.assertTrue(any("revision" in r for r in rep["release_gate"]["reasons"]))
+        # Same exact 40-hex root assertions remain a useful positive control.
+        t = O.prog({"G05": "accepted"}, {"G05": O.sha("G05")}, {"G05": O.sha("G05")}, gate_fields=True)
+        rc, rep, _ = O.inv(t)
+        self.assertEqual((rc, O.state(rep)), (0, "READY"))
+
     def test_external_pr_acceptance_counts_without_a_commit(self):
         t = O.prog({"P02": "accepted"}, {}, {}, gate_fields=True)
         (t / "acc.json").write_text(json.dumps({"entries": [{"id": "P02", "source_commit": None, "reply": "r"}]}))

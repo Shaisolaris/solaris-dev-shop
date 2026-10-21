@@ -37,8 +37,8 @@ def prog(goals, acc, cands, gate_fields=False, version="0.61", changelog="0.61",
         (d / "SKILL.md").write_text("x")
     (r / "control-plane/skills.json").write_text(json.dumps({"catalog_version": 1, "skills": [{"id": i} for i in range(catalog)]}))
     gate = {"state": "NOT_READY", "required_final_goals": [g for g in goals if g in ("G39", "G40", "G41", "G42")],
-            "candidate_commit": sha("c") if gate_fields else None, "checks_revision": sha("k") if gate_fields else None,
-            "reviewed_revision": sha("r") if gate_fields else None}
+            "candidate_commit": sha("c") if gate_fields else None, "checks_revision": sha("c") if gate_fields else None,
+            "reviewed_revision": sha("c") if gate_fields else None}
     (top / "queue.json").write_text(json.dumps({"goals": [{"id": g, "status": s} for g, s in goals.items()],
                                                 "release_gate": gate}))
     (top / "acc.json").write_text(json.dumps({"entries": [{"id": g, "commit": c, "manifest_sha256": "0" * 64}

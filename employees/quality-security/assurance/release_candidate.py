@@ -309,9 +309,18 @@ def inventory(ns):
             reasons.append("required final goal %s is not accepted" % g)
     reasons += ["conflicting acceptance for %s" % c["id"] for c in conflicts]
     reasons += ["metadata: " + p for p in meta["problems"]]
-    for k in ("candidate_commit", "checks_revision", "reviewed_revision"):
-        if not gate.get(k):
+    revision_fields = ("candidate_commit", "checks_revision", "reviewed_revision")
+    valid_revisions = []
+    for k in revision_fields:
+        value = gate.get(k)
+        if not value:
             reasons.append("release_gate.%s is not set by root" % k)
+        elif not isinstance(value, str) or not SHA_RE.fullmatch(value):
+            reasons.append("release_gate.%s must be a full 40-hex revision" % k)
+        else:
+            valid_revisions.append(value)
+    if len(valid_revisions) == len(revision_fields) and len(set(valid_revisions)) != 1:
+        reasons.append("release_gate candidate/checks/review revisions disagree")
     counts = {}
     for r in rows:
         counts[r["disposition"]] = counts.get(r["disposition"], 0) + 1
