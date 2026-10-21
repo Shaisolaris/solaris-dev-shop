@@ -673,6 +673,18 @@
   {
    "path": "employees/design/technical-writer/SKILL.md",
    "reason": "G40 r4 and G40 r5 carry blob 7d7b78b (r5 does not touch it); G41 r4 stacks G40 r4 and edits it to e4c15a3. HEAD is the G41 r4 blob e4c15a3, which builds on the G40 blob, so nothing from either side is lost."
+  },
+  {
+   "path": "employees/engineering/backend-developer/ledger_api.py",
+   "reason": "G19 root3ecac25 supersedes the inherited G19 copy in G21/G22/G39/G40/G41. HEAD retains that complete implementation plus only socketserver import and numeric-loopback server_bind override. Endpoints/transactions/auth/control behavior unchanged; G19 19tests and G21 12tests pass locally."
+  },
+  {
+   "path": "examples/capabilities/G19/noop_stub.py",
+   "reason": "G19 root3ecac25 supersedes the inherited G19 copy in G21/G22/G39/G40/G41. HEAD retains that complete implementation plus only socketserver import and numeric-loopback server_bind override. Endpoints/transactions/auth/control behavior unchanged; G19 19tests and G21 12tests pass locally."
+  },
+  {
+   "path": "examples/capabilities/G19/vulnerable_stub.py",
+   "reason": "G19 root3ecac25 supersedes the inherited G19 copy in G21/G22/G39/G40/G41. HEAD retains that complete implementation plus only socketserver import and numeric-loopback server_bind override. Endpoints/transactions/auth/control behavior unchanged; G19 19tests and G21 12tests pass locally."
   }
  ],
  "notes": []
