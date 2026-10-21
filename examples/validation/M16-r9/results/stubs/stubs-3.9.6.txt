@@ -1,0 +1,2 @@
+naive_stub: 1/15 checks passed
+noop_stub: 0/15 checks passed
