@@ -152,6 +152,7 @@ Verdict uses the shared decision table (same one Data Analyst holds): ship / hol
 A significant observed difference is not permission for a causal claim. Follow `claims_allowed`;
 without an independent assignment-system `randomization.expected_units` count, causality is
 not authorized, even when every logged assignment follows the randomization rule.
+Known multiple-arm exclusions also forbid a causal claim from the filtered comparison.
 
 For any A/B or retention readout from exported assignments and events, run `experiment_readout.py`
 (see `experiment-readout.md`) before writing a verdict. It counts one outcome per unit on a fixed,

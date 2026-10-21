@@ -248,7 +248,7 @@ class G15Capability(unittest.TestCase):
         r = rep(d / 'package.json')
         self.assertEqual((r['outcome'], r['assignment_check']['verified'], r['assignment_check']['missing_units_checked']), ('difference_detected', True, True))
         self.assertIn('the log holds all %d the assignment system declared' % n, ' '.join(r['trace']))
-        self.assertTrue(r['claims_allowed']['causal'])
+        self.assertFalse(r['claims_allowed']['causal'])  # six observed cross-arm units were excluded
         # five control units dropped from the log: every remaining unit is on the rule, but the count is short
         rows = (d / 'assignments.csv').read_text().splitlines()
         drop = [i for i, x in enumerate(rows[1:], 1) if x.split(',')[1] == 'control'][:5]
