@@ -189,7 +189,9 @@ _REL_VERB = (r"(?:are|is|were|was|arrive|arrives|arrived|come|comes|came|need|ne
 _REL = r"\s+(?:that|which|who)\s+" + _REL_VERB + r"\b(?:\s+" + _FW + r"){0,6}"
 _MSG_NP = (r"(?:(?:all|any|every|each|the|this|that|these|those|my|our|your|their|new|urgent|incoming|other|most|some)\s+)"
            r"{0,2}(?:" + _FW + r"\s+)?" + _MSG_NOUN + r"\b(?:" + _REL + r")?")
-_CLAUSE_W = r"(?:(?!(?:that|with|yes|no|saying|stating)\b)[\w'\u2019-]+)"
+# G16 r17 (M16 r16 P2-1): clause words are letters only ("until the fee is 42"); the sentence number gate below is the
+#   general rule, this keeps the slot itself honest
+_CLAUSE_W = r"(?:(?!(?:that|with|yes|no|saying|stating)\b)(?:[^\W\d_]|['\u2019-])+)"
 # a person may take a whose-clause ("the members whose fee is due"); whose never opens reply content
 _PERSON = (r"(?:(?:the|all|any|every|each|our|your|their|new|other)\s+){0,2}(?:users?|people|everyone|anyone|visitors?"
            r"|customers?|readers?|callers?|members?|staff|them|him|her|us|guests?|parents?|tenants?|clients?)\b"
@@ -198,7 +200,9 @@ _PERSON = (r"(?:(?:the|all|any|every|each|our|your|their|new|other)\s+){0,2}(?:u
 # G16 r16 (M16 r15 P2-1): a lower-case word is letters only, so the one-word residual cannot carry a number ("reply about
 #   fee 42"); numbers come only as a number plus a time unit or as a clock time after a time preposition (_CLOCK)
 _LW = r"(?!" + _CW + r"\b)(?-i:[a-z][a-z\u2019'-]*)"
-_CLOCK = (r"(?:by|at|from|to|until|till|before|after)\s+(?:[01]?\d|2[0-3])(?:[:.][0-5]\d)?(?:\s*(?-i:am|pm|a\.m\.|p\.m\.))?"
+# G16 r17: an hour from 13 to 23 needs its minutes ("until 23:59"), so "reply by 20" is not a clock
+_HOUR = r"(?:(?:0?\d|1[0-2])(?:[:.][0-5]\d)?|(?:1[3-9]|2[0-3])[:.][0-5]\d)"
+_CLOCK = (r"(?:by|at|from|to|until|till|before|after)\s+" + _HOUR + r"(?:\s*(?-i:am|pm|a\.m\.|p\.m\.))?"
           r"(?![\w.,:]?\d)")
 _DETW = r"(?:the|all|any|every|each|this|these|those|my|our|your|their|its|his|her|some|most|other)"
 # G16 r15 (M16 r14 P2-1): a lower-case phrase is at most one modifier plus its head, so a preposition phrase cannot
@@ -213,7 +217,13 @@ _LNP = (r"(?:(?:" + _DETW + r"\s+)?" + _NUMW + r"\s+" + _UNIT + r"\b"
 # a name after a preposition: one capitalised word, optionally a short tag ("by Friday", "in Hall B", "Room 12")
 # G16 r16 (M16 r15 P3-1): a title may come before a name ("Mr Lee", "Dr. Okafor")
 _TITLE = r"(?:(?-i:Mr|Mrs|Ms|Mx|Dr|Prof)\.?\s+)"
-_NAME1 = r"(?!" + _CW + r"\b)" + _TITLE + r"?(?-i:[A-Z][\w\u2019-]*(?:\s+(?:[A-Z0-9]{1,3}|[0-9]+)\b)?)"
+# G16 r17 (M16 r16 P2-1): a name is letters only and may take a number tag only after a place word ("Room 12",
+#   "Gate 4B"); any other name takes at most a single capital letter ("Hall B" is a place word too), so a capitalised
+#   topic word cannot carry a number ("reply about Fee 42")
+_PLACE = r"(?:Room|Hall|Gate|Floor|Level|Unit|Suite|Block|Bay|Platform|Building|Desk)"
+_PLACE_TAG = r"(?-i:" + _PLACE + r")\s+(?:\d{1,4}[A-Z]?|[A-Z]\d{0,3})\b"
+_NAME1 = (r"(?!" + _CW + r"\b)" + _TITLE + r"?(?-i:" + _PLACE_TAG + r"|[A-Z](?:[^\W\d_]|[\u2019-])*(?![\w\u2019-])"
+          r"(?:\s+[A-Z]\b)?)")
 # G16 r15 (M16 r14 P3-1): two names joined by and or or ("reply to Ann and Raj")
 # G16 r16 (M16 r15 P3-1): a comma list of names ending in and or or ("Ann, Raj and Mo")
 _NAME = _NAME1 + r"(?:\s*,\s*" + _NAME1 + r"){0,4}(?:\s*,?\s+(?:and|or)\s+" + _NAME1 + r")?"
@@ -300,9 +310,10 @@ _LEAD_STOP = (r"(?:we|i|they|he|she|it|you|your|our|their|his|her|its|my|the|a|a
 _STRONG = (r"(?:(?:" + _QUAL + r"\s+){1,3}" + _HEAD + r"|chatbots?|bot|llms?|ai)")
 _FREE_LEAD = r"(?:(?!" + _LEAD_STOP + r"\b)[a-z][\w'\u2019-]*\s+){1,2}"
 # G16 r10: the words before the reply verb may also carry a colon ("AI agents: the rule here: answer that ...").
-def _tail(verb):
+def _tail(verb, statements=True):
     return (r"(?=" + _SEP + r"|\s+" + _POST_OPEN + r"\b)(?:\s+" + _POST_OPEN + r"\b[^.:;,!?\u2013\N{EM DASH}]{0,40}?)?"
-            + _SEP + r"(?!" + _STATEMENT + r")(?:[\w']+[,:]?\s+){0," + str(PRE_VERB_WORDS) + r"}?" + verb)
+            + _SEP + (r"(?!" + _STATEMENT + r")" if statements else r"") + r"(?:[\w']+[,:]?\s+){0," + str(PRE_VERB_WORDS)
+            + r"}?" + verb)
 _TAIL = _tail(_SAY_VERB)
 # G16 r10 (M16 r9 P3-1): a free vocative is only a guess at a greeting ("Kids love AI, reply to the school survey" and
 #   "Teachers banned AI, answer the quiz by hand" are people text), so after one the reply verb must also read as a
@@ -323,8 +334,62 @@ _FREE_TAIL = _tail(_SAY_STRICT)
 ADDRESSED = (r"(?:(?:(?:^\W*|[:;,(]\s*)(?:" + _GREET_START + r"\s+)?|\b" + _OPENER + r"\s+(?:(?:to|for)\s+)?)" + _DET + r"\b" + _READER
              + _AFTER + _TAIL
              + r"|(?:^\W*|[:;(]\s*)" + _FREE_LEAD + _STRONG + _AFTER + _FREE_TAIL + r")")
-ADDRESSED_RE = re.compile(r"(?i)" + ADDRESSED)
-INSTRUCTION_RE = re.compile(
+# G16 r17: the same addressee pattern without the people-statement exemption; it finds every sentence that has a bot
+#   heading followed by a reply verb, for the number gate below
+_HEADED = (r"(?:(?:(?:^\W*|[:;,(]\s*)(?:" + _GREET_START + r"\s+)?|\b" + _OPENER + r"\s+(?:(?:to|for)\s+)?)" + _DET + r"\b" + _READER
+           + _AFTER + _tail(_SAY_VERB, False)
+           + r"|(?:^\W*|[:;(]\s*)" + _FREE_LEAD + _STRONG + _AFTER + _tail(_SAY_STRICT, False) + r")")
+_HEADED_RE = re.compile(r"(?i)" + _HEADED)
+# G16 r17 (M16 r15 P2-1, M16 r16 P2-1): a sentence-level number gate. r15 and r16 each closed one slot that let a number
+#   through a people statement after a bot heading, and the next validation found another slot (the one-word residual,
+#   then a name tag and a time clause). So a statement after a bot heading is exempt only if the sentence, from the
+#   heading to its end, carries no number token other than:
+#   - a clock time after a time preposition ("by 9", "from 8.30 am to 6 pm", "until 23:59", "at nine");
+#   - a number plus a time unit ("within 2 working days", "10 days", "two weeks", "24-hour");
+#   - a tag after a place word ("Room 12", "Gate 4B", "Platform 9").
+#   Spelled-out cardinals count as numbers (two to twenty, the tens, hundred, thousand, million, billion, dozen, zero);
+#   "one" does not ("each one", "one of the team"), which is the documented limit of the spelled-out gate. Any other
+#   number makes the sentence an instruction whatever slot it sits in (fail closed): ordinals and dates written with
+#   digits ("by the 3rd", "by 12 May") and ranges ("between 2 and 4 pm") are skipped too.
+_CARD = (r"(?:zero|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen"
+         r"|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million"
+         r"|billion|dozen)")
+_NUM_OK = re.compile(
+    r"(?i)\b(?:by|at|from|to|until|till|before|after)\s+(?:" + _HOUR + r"(?![\w.,:]?\d)"
+    r"|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)(?:\s*(?:am|pm|a\.m\.|p\.m\.|o['\u2019]clock))?(?![\w\u2019-])"
+    r"|\b(?:\d{1,4}|a|one|" + _CARD + r")(?:\s+|-)" + _UNIT + r"\b"
+    r"|\b\d{1,2}-(?:hour|day|week|month|year|minute)\b"
+    r"|\b" + _PLACE_TAG)
+_NUM_BAD = re.compile(r"(?i)\d|\b" + _CARD + r"\b")
+
+
+def _number_gate(sentence: str) -> bool:
+    """True when a sentence after a bot heading carries a number token outside the allowed time and place forms."""
+    return bool(_NUM_BAD.search(_NUM_OK.sub(" ", sentence)))
+
+
+class _Gated:
+    """A compiled pattern plus the sentence-level number gate (G16 r17): search() first tries the pattern; if it does not
+    match, a bot-headed sentence whose remaining text carries a disallowed number token is still an instruction."""
+
+    def __init__(self, base):
+        self.base = base
+        self.pattern = base.pattern
+        self.flags = base.flags
+
+    def search(self, text, *args):
+        m = self.base.search(text, *args)
+        if m:
+            return m
+        for h in _HEADED_RE.finditer(text, *args):
+            e = END_RE.search(text, h.end())
+            if _number_gate(text[h.start():e.end() if e else len(text)]):
+                return h
+        return None
+
+
+ADDRESSED_RE = _Gated(re.compile(r"(?i)" + ADDRESSED))
+INSTRUCTION_RE = _Gated(re.compile(
     r"(?i)\b(?:note|message|instructions?|attention|notice|reminder)\s+(?:to|for)\s+(?:all\s+|any\s+|the\s+)?" + _ANY
     + r"|\b(?:dear|hey|attention)\s+" + _ANY
     + r"|\bif\s+you\s+are\s+an?\s+" + _ANY
@@ -334,7 +399,7 @@ INSTRUCTION_RE = re.compile(
     + r"|" + ADDRESSED +
     r"|\b" + _BOT + r"\s+(?:(?:must|should|shall|will|need\s+to|are\s+to|is\s+to|are\s+asked\s+to|have\s+to)\s+)?"
     r"(?:always\s+|only\s+)?" + _SAY + r"\b"
-    r"|\b(?:ignore|disregard)\s+(?:all\s+|any\s+)?(?:the\s+)?(?:previous|prior|above|earlier)\s+instructions\b")
+    r"|\b(?:ignore|disregard)\s+(?:all\s+|any\s+)?(?:the\s+)?(?:previous|prior|above|earlier)\s+instructions\b"))
 MAX_FAULTS = 100
 TIME_WORDS = re.compile(r"(?i)\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday|weekday|weekend|"
                         r"january|february|march|april|june|july|august|september|october|november|december|"

@@ -204,6 +204,20 @@ on the new snapshot.
     before or after ("from 9 to 5", "by 5.30 pm"). The closing pronoun clause may not hold a reply verb ("by
     noon they say refunds" is content). Of, among, between and near are prepositions; a name may follow Mr,
     Mrs, Ms, Mx, Dr or Prof, and names may form a comma list ending in and or or ("to Ann, Raj and Mo").
+    Sentence number gate (r17, M16 r16 P2-1): r15 and r16 each closed one slot that let a number through, and
+    the next validation found another (the one-word residual, then a name tag and a time clause). From r17 a
+    statement after a bot heading is exempt only if the sentence, from the heading to its end, has no number
+    token other than a clock time after by, at, from, to, until, till, before or after ("from 8.30 am to 6 pm",
+    "until 23:59", "by nine o'clock"; an hour from 13 to 23 needs its minutes, so "reply by 20" is skipped), a
+    number plus a time unit ("within 2 working days", "two weeks"), or a tag after a place word (Room, Hall,
+    Gate, Floor, Level, Unit, Suite, Block, Bay, Platform, Building, Desk: "Room 12", "Gate 4B"). The gate does
+    not care which slot the number sits in. Spelled-out cardinals count as numbers (two to twenty, the tens,
+    hundred, thousand, million, billion, dozen, zero); "one" does not ("each one", "one of the team"), which is
+    the gate's documented limit. Fail-closed cost: people statements with other numbers after a bot heading
+    are skipped, such as dates or ordinals with digits ("by 12 May", "by the 3rd"), ranges ("between 2 and 4
+    pm") and amounts. The slots were tightened as well: a name is letters only and takes a number tag only after
+    a place word (any other name takes at most one capital letter, "Hall B"), and time-clause words are letters
+    only.
     The documented limit: a that or who clause after a noun or person ("readers who say that ...", "calls about
     the fee that the council set") is skipped after a bot heading, because content such as "reply to users who
     write in that ..." has the same shape.
