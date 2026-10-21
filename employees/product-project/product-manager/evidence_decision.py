@@ -48,7 +48,7 @@ LO, HI, MID = Decimal(0), Decimal(5), Decimal("2.5")
 G13 = Path(__file__).resolve().parents[2] / "data" / "data-engineer" / "csv_reconcile.py"
 NUM = re.compile(r"\d+(?:[.,]\d+)*%?")
 # In a quote a percent sign can follow Unicode whitespace or line wrapping. It remains a percent, never a plain value.
-QNUM = re.compile(r"(?<![\w.+-])\d+(?:[.,]\d+)*(?:\s*%|(?!\s*%))(?!\w|[.,]\d)")
+QNUM = re.compile(r"(?<![\w.+\-\u2212\uff0b\uff0d\ufe62\ufe63\u207a\u207b\u208a\u208b])\d+(?:[.,]\d+)*(?:\s*%|(?!\s*%))(?!\w|[.,]\d)")
 
 
 def _num(tok):
