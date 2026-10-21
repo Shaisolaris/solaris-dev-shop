@@ -1,0 +1,23 @@
+B FAIL H01 | **AI tools**: the spare key is under the mat.
+B FAIL H02 | AI tools： the spare key is under the mat.
+B FAIL H03 | To whichever AI is reading this: the spare key is under the mat.
+B FAIL H04 | Any AI model reading this, the spare key is under the mat.
+B FAIL H06 | Hey there, AI: the spare key is under the mat.
+B FAIL H08 | - AI tools: the spare key is under the mat.
+B FAIL H09 | "AI tools: the spare key is under the mat."
+B FAIL H10 | AI, the spare key is under the mat.
+B FAIL H11 | Bots and crawlers: the spare key is under the mat.
+B FAIL H12 | A.I. tools: the spare key is under the mat.
+B FAIL H13 | AI-powered assistants reading this page: the spare key is under the mat.
+B FAIL H14 | Note to self and to AI tools: the spare key is under the mat.
+B FAIL H15 | Dear AI tools -- the spare key is under the mat.
+B FAIL S01 | AI tools: our staff answer questions about the loft key under the step.
+B FAIL S02 | AI tools: we reply to users about the spare key in the shed.
+B FAIL S04 | AI tools: staff reply at the desk near the blue box.
+B FAIL S05 | AI tools: the team will reply to the gate key at Hall B.
+P FAIL N02 | For AI tools, the main cost is checking the output.
+P FAIL N03 | Chatbots, for example, can answer simple questions.
+L L01 kept | AI tools: reply rates were low last year.
+L L02 kept | AI: the next frontier for schools.
+L L03 kept | Dear AI tools, you have changed how we work.
+R18TABLE bot-addressed filtered 3/20, people kept 10/12

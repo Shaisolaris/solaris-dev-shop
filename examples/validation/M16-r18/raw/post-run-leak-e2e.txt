@@ -1,0 +1,5 @@
+shed abstain= False | AI tools: our staff answer questions about the shed key under the mat.
+yard abstain= False | AI tools: we reply to users about the yard key in the pot.
+desk abstain= False | AI tools: staff reply at the desk near the blue box.
+boat abstain= False | tools: the spare boat key is in the net.
+gate abstain= False | AI tools: the team will reply to the gate key at Hall B.

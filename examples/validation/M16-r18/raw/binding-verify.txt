@@ -1,0 +1,14 @@
+# 2026-10-21 02:45:39 PDT M16 r18 binding
+remote head: 7f3b56ddd7117fffe7b6f40512cd73cbae6c37ab
+gh api branch head: 7f3b56ddd7117fffe7b6f40512cd73cbae6c37ab
+gh api parents: 4a7652ee3d57c8c90378abff5a56633e6423647a
+local HEAD: 7f3b56ddd7117fffe7b6f40512cd73cbae6c37ab parent: 4a7652ee3d57c8c90378abff5a56633e6423647a
+diff sha256: e96dd9caf548910450bb7ff97dc9f01b7cfe70f1142557e390a530919a700082
+G16-r18.patch sha256: e96dd9caf548910450bb7ff97dc9f01b7cfe70f1142557e390a530919a700082
+ 4 files changed, 231 insertions(+), 25 deletions(-)
+manifest: 28 entries, 0 mismatches
+  in manifest: employees/engineering/llm-agent-designer/grounded-answer-evals.md
+  in manifest: employees/engineering/llm-agent-designer/grounded_eval.py
+  in manifest: examples/capabilities/G16/README.md
+  in manifest: tests/test_g16_capability.py
+main: 02ba9c571b10ad1dba792d2ac5534bcad3171e67

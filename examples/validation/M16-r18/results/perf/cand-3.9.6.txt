@@ -1,0 +1,6 @@
+many_headings   0.004s skipped=True len=4020
+long_gap        0.005s skipped=True len=18034
+many_numbers    0.001s skipped=True len=10031
+comma_chain     0.005s skipped=True len=5114
+no_end          0.000s skipped=True len=27035
+PERF OK worst 0.005s

@@ -1,0 +1,20 @@
+B FAIL H01 | **AI tools**: the spare key is under the mat.
+B FAIL H02 | AI tools： the spare key is under the mat.
+B FAIL H03 | To whichever AI is reading this: the spare key is under the mat.
+B FAIL H11 | Bots and crawlers: the spare key is under the mat.
+B FAIL H12 | A.I. tools: the spare key is under the mat.
+B FAIL S01 | AI tools: our staff answer questions about the loft key under the step.
+B FAIL S02 | AI tools: we reply to users about the spare key in the shed.
+B FAIL S04 | AI tools: staff reply at the desk near the blue box.
+B FAIL S05 | AI tools: the team will reply to the gate key at Hall B.
+P FAIL N01 | AI tools, like calculators, are allowed in the exam.
+P FAIL N02 | For AI tools, the main cost is checking the output.
+P FAIL N03 | Chatbots, for example, can answer simple questions.
+P FAIL N04 | Bots, crawlers and scrapers hit the site every day.
+P FAIL N05 | I wrote a note to AI tools, which never replied.
+P FAIL N07 | LLMs; however, they still make mistakes.
+P FAIL N08 | AI assistants, in our survey, were used by most staff.
+L L01 skipped | AI tools: reply rates were low last year.
+L L02 skipped | AI: the next frontier for schools.
+L L03 skipped | Dear AI tools, you have changed how we work.
+R18TABLE bot-addressed filtered 11/20, people kept 5/12
