@@ -34,6 +34,7 @@ import os
 import re
 import secrets
 import signal
+import socketserver
 import sqlite3
 import sys
 import tempfile
@@ -542,6 +543,13 @@ class Handler(BaseHTTPRequestHandler):
 class LoopbackServer(ThreadingHTTPServer):
     daemon_threads = True
     request_queue_size = 128  # the default backlog of 5 resets bursts of concurrent retries
+
+    def server_bind(self):
+        # The address is already numeric loopback. HTTPServer's reverse DNS lookup
+        # can block offline/startup on macOS and is unnecessary for these routes.
+        socketserver.TCPServer.server_bind(self)
+        self.server_name, self.server_port = self.server_address[:2]
+
 
 
 def _atomic_write(path: str, text: str) -> None:
