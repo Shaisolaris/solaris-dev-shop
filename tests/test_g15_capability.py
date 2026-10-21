@@ -273,6 +273,33 @@ class G15Capability(unittest.TestCase):
             self.assertEqual(r2.returncode, 2, bad)
             self.assertIn('expected_units', r2.stderr)
 
+    def test_units_in_both_arms_count_toward_expected_units(self):
+        # M15 r5 OBS P4: rule 7 says a unit seen in both arms counts once toward the log total compared with
+        # expected_units (it is excluded from the effect, not from the count). Pin both directions.
+        d = self.tmp / 'eu2'
+        shutil.copytree(FIX / 'retention-lift', d)
+        ac0 = rep(d / 'package.json')['assignment_check']; n, k = ac0['units_in_log'], ac0['units_checked']
+        rows = (d / 'assignments.csv').read_text().splitlines()
+        u, arm, at = rows[1].split(',')
+        other = 'control' if arm == 'treatment' else 'treatment'
+        # an existing cohort unit also logged in the other arm, one minute later: still one unit in the log
+        (d / 'assignments.csv').write_text('\n'.join(rows + ['%s,%s,%s' % (u, other, at.replace(':00Z', ':59Z'))]) + '\n')
+        p = json.loads((d / 'package.json').read_text()); p['randomization']['expected_units'] = n
+        (d / 'package.json').write_text(json.dumps(p))
+        r = rep(d / 'package.json'); ac = r['assignment_check']
+        self.assertIn(u, r['exclusions']['multiple_arms'])
+        self.assertEqual((ac['units_in_log'], ac['units_checked'], ac['verified']), (n, k - 1, True))
+        self.assertEqual(r['outcome'], 'difference_detected')
+        # a new unit logged only in both arms adds one to the log total: n + 1 is verified, n is units added
+        new = 'u-both-arms-g15'
+        (d / 'assignments.csv').write_text('\n'.join(rows + ['%s,control,%s' % (new, at), '%s,treatment,%s' % (new, at)]) + '\n')
+        r = rep(d / 'package.json')
+        self.assertEqual((r['outcome'], r['assignment_check']['units_in_log']), ('invalid_experiment', n + 1))
+        self.assertIn('holds %d cohort units but the declared randomization assigned %d: units are added to the log' % (n + 1, n), ' '.join(r['trace']))
+        p['randomization']['expected_units'] = n + 1; (d / 'package.json').write_text(json.dumps(p))
+        r = rep(d / 'package.json')
+        self.assertEqual((r['assignment_check']['units_in_log'], r['assignment_check']['verified']), (n + 1, True))
+
     def test_bucket_rule_matches_the_documented_formula(self):
         import hashlib
         sys.path.insert(0, str(DS)); old = sys.dont_write_bytecode; sys.dont_write_bytecode = True
