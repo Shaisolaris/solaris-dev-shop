@@ -234,7 +234,7 @@
   },
   {
    "id": "G19",
-   "commit": "b66188c46662c23e0a0cc4e18b51aa190f2d82c4",
+   "commit": "3ecac25cd8f47bcbb9730952729d832d4958b953",
    "note": "Root hosted-macOS startup repair: numeric loopback bind avoids reverse DNS; real API and negative controls retain behavioral coverage.",
    "tests": [
     "tests.test_g19_capability",
