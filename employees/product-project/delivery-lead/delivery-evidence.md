@@ -91,3 +91,5 @@ was taken from may change afterwards without making the snapshot stale.
 Locks are local `fcntl` locks: one machine, no network folder.
 
 Root correction: the conventional `-shm` exception requires a bound, unchanged companion with the SQLite file header. An ordinary file beside a `-shm` suffix is a rewritten-input gap. This is local classification, not proof of a hostile file’s purpose or actor identity.
+
+`--inputs` and `--outputs` are repeatable: every supplied path is retained across occurrences. A file rewritten by the run remains a disclosed gap even when it was named in the first occurrence.

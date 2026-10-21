@@ -102,6 +102,26 @@ class Direct(unittest.TestCase):
         (self.root / "c.json").write_text(json.dumps(body))
         return self.run_tool("verify", ".", "--claims", "c.json", "--json")
 
+    def test_repeated_input_and_output_flags_retain_every_path(self):
+        (self.root / "one.txt").write_text("original")
+        (self.root / "two.txt").write_text("stable")
+        flags = ("record", ".", "--role", "data/data-engineer", "--inputs", "one.txt",
+                 "--inputs", "two.txt", "--outputs", "a.txt", "--outputs", "b.txt", "--")
+        code = "open('one.txt','w').write('changed');open('a.txt','w').write('a');open('b.txt','w').write('b')"
+        rc, out = self.run_tool(*flags, sys.executable, "-c", code)
+        self.assertEqual(rc, 0, out)
+        record = json.loads((self.root / ".delivery/contributions.jsonl").read_text().splitlines()[-1])
+        self.assertEqual(record["claimed_inputs"], ["one.txt", "two.txt"])
+        self.assertEqual(set(record["outputs"]), {"a.txt", "b.txt"})
+        self.assertEqual(record["inputs_rewritten_during_run"], ["one.txt"])
+        rc, out = self.claims(self._body())
+        self.assertEqual((rc, json.loads(out)["contributions"][0]["state"]), (1, "evidenced_with_gaps"))
+        # Clean reads with the same repeated flags retain both bindings and remain useful.
+        code = "open('a.txt','w').write(open('one.txt').read());open('b.txt','w').write(open('two.txt').read())"
+        self.assertEqual(self.run_tool(*flags, sys.executable, "-c", code)[0], 0)
+        rc, out = self.claims(self._body())
+        self.assertEqual((rc, json.loads(out)["contributions"][0]["state"]), (0, "evidenced"))
+
     def test_parseable_last_line_without_newline_is_refused(self):
         self.assertEqual(self.rec()[0], 0)
         p = self.root / ".delivery/contributions.jsonl"
