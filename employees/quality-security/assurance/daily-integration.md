@@ -21,7 +21,7 @@ merge commits and must hand root one matrix that says, for one exact HEAD and tr
   `--run all` the gates CI runs.
 
 `INTEGRATED` (exit 0) means no finding. Anything else is `NOT_INTEGRATED` (exit 1) with the findings
-listed, or `INVALID_INPUT` (exit 2, nothing written, a previous `--out` report kept). A gate the
+listed, or `INVALID_INPUT` (exit 2, nothing written, a previous `--out` report kept). Plan text fields hold at most 300 characters; a longer one is named with its length. A gate the
 interpreter cannot run (PyYAML missing for the metadata gate) is a finding unless the caller skips it
 by name, and a skipped gate is listed under `not_run`.
 
