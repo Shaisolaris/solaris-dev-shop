@@ -1,0 +1,7 @@
+Q1 FAIL declared conflict R2/R3 resolved: commitments on IN2 and IN3 are qualified, on IN4 and A1 are not | {"rc": 0, "qualified_by": {"Q2": [], "Q3": [], "Q4": [], "QA": []}}
+Q2 FAIL text report: the input-only commitment line says [qualified by owner resolution AMBQ] | ["  Q3 (other) -> IN3"]
+Q3 FAIL two resolved conflicts on R2: a commitment on IN2 lists AMBK and AMBL; on IN1 only AMBL | {"rc": 0, "got": {"Q1": [], "Q2": []}}
+Q4 PASS control: a commitment naming R3 stays qualified | {"rc": 0}
+Q5 PASS control: with no conflict, an input-only commitment has an empty qualified_by | {"rc": 0}
+Q6 OBS  OBS: open conflict on R2/R3: a commitment on IN3 alone gets no commitment finding of its own (report is blocked anyway) | {"rc": 1, "Q3_findings": [], "status": "blocked"}
+M31R3 PROBE 2/5

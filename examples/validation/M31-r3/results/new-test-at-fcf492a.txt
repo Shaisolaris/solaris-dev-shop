@@ -1,0 +1,22 @@
+F
+======================================================================
+FAIL: test_commitment_on_a_traced_input_of_a_resolved_conflict_is_qualified (tests.test_g31_capability.G31Capability)
+G31 r4 (M31 r2 P4-1): a commitment that rests only on an input a conflicting requirement traces had an empty
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_g31_capability.py", line 191, in test_commitment_on_a_traced_input_of_a_resolved_conflict_is_qualified
+    self.assertEqual(m['C8'], ['AMB7'])
+AssertionError: Lists differ: [] != ['AMB7']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'AMB7'
+
+- []
++ ['AMB7']
+
+----------------------------------------------------------------------
+Ran 1 test in 0.081s
+
+FAILED (failures=1)
+rc=1

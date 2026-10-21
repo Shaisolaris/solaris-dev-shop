@@ -1,0 +1,3 @@
+branch review/grok-g31-scope-acceptance remote head: e809a4fa873e905258eff8220b38f68ab6e2270d
+e809a4fa873e905258eff8220b38f68ab6e2270d G31 r4: a commitment on a traced input of a resolved conflict is qualified (review only, Grok build)
+main: 02ba9c571b10ad1dba792d2ac5534bcad3171e67

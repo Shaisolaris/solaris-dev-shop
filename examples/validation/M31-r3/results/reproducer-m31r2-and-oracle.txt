@@ -1,0 +1,20 @@
+== Python 3.9.6
+   P14 C5 qualified_by = ['AMBX']
+OBS  P14 OBS commitment resting only on a traced input of a resolved conflict (qualified_by printed) rc=0 []
+PROBE 11/11
+ACCEPTED 12/12
+== Python 3.11.16
+   P14 C5 qualified_by = ['AMBX']
+OBS  P14 OBS commitment resting only on a traced input of a resolved conflict (qualified_by printed) rc=0 []
+PROBE 11/11
+ACCEPTED 12/12
+== Python 3.12.14
+   P14 C5 qualified_by = ['AMBX']
+OBS  P14 OBS commitment resting only on a traced input of a resolved conflict (qualified_by printed) rc=0 []
+PROBE 11/11
+ACCEPTED 12/12
+== Python 3.13.15
+   P14 C5 qualified_by = ['AMBX']
+OBS  P14 OBS commitment resting only on a traced input of a resolved conflict (qualified_by printed) rc=0 []
+PROBE 11/11
+ACCEPTED 12/12
