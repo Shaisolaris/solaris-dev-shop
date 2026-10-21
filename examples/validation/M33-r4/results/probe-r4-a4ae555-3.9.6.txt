@@ -1,0 +1,7 @@
+R01 FAIL a percent after one space (plain, no-break, narrow no-break) matches the percent value; 3,5 % is not 3.5% | {"'7%' in 'conversion 7 % higher'": false, "'7%' in 'conversion 7\\xa0% higher'": false, "'7%' in 'conversion 7\\u202f% higher'": false, "'3.5%' in 'a 3.5 % drop'": false, "'40%' in '40 %, then 45 %'": false, "'45%' in '40 %, then 45 %'": false}
+R02 FAIL a plain value no longer matches a number the quote writes as a percent after a space (fails closed) | {"'7' in 'conversion 7 % higher'": true, "'7' in 'conversion 7\\xa0% higher'": true, "'40' in '40 %, then 45 %'": true}
+R03 FAIL boundaries hold with the space: 7% never matches 17 % or 7.5 %; grouped numbers keep their percent | {"'1,000' in '1,000 % growth'": true, "'1,000%' in '1,000 % growth'": false}
+R04 PASS the documented decimal-point convention: 18.000 reads as 18 (as the doc now says), 18,000 as eighteen thousand | "all"
+R05 FAIL the doc states the percent-after-space rule and the decimal-point convention | null
+R06 OBS  OBS: a thin space (U+2009) before % is not one of the accepted spaces | {"7% in '7<thin space>%'": false}
+M33R4 PROBE 1/5

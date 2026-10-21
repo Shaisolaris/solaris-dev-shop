@@ -1,0 +1,24 @@
+== Python 3.9.6
+OBS  OBS E03 18% vs '18 %' True
+OBS  OBS E07 18.0 vs 18 True
+OBS  OBS E11 18 vs European 18.000 True
+PROBE 12/12
+ACCEPTED 11/11
+== Python 3.11.16
+OBS  OBS E03 18% vs '18 %' True
+OBS  OBS E07 18.0 vs 18 True
+OBS  OBS E11 18 vs European 18.000 True
+PROBE 12/12
+ACCEPTED 11/11
+== Python 3.12.14
+OBS  OBS E03 18% vs '18 %' True
+OBS  OBS E07 18.0 vs 18 True
+OBS  OBS E11 18 vs European 18.000 True
+PROBE 12/12
+ACCEPTED 11/11
+== Python 3.13.15
+OBS  OBS E03 18% vs '18 %' True
+OBS  OBS E07 18.0 vs 18 True
+OBS  OBS E11 18 vs European 18.000 True
+PROBE 12/12
+ACCEPTED 11/11

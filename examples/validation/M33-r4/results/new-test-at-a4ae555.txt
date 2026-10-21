@@ -1,0 +1,42 @@
+F
+======================================================================
+FAIL: test_percent_after_a_space_and_the_decimal_point_convention (tests.test_g33_capability.G33Capability) (q='churn fell 18 % in Q3')
+G33 r5 (M33 r3 OBS): "18%" did not match a quote that writes "18 %", and a plain 18 matched "18 %".
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_g33_capability.py", line 208, in test_percent_after_a_space_and_the_decimal_point_convention
+    self.assertTrue(m._value_in_quote('18%', q))
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_percent_after_a_space_and_the_decimal_point_convention (tests.test_g33_capability.G33Capability) (q='churn fell 18\xa0% in Q3')
+G33 r5 (M33 r3 OBS): "18%" did not match a quote that writes "18 %", and a plain 18 matched "18 %".
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_g33_capability.py", line 208, in test_percent_after_a_space_and_the_decimal_point_convention
+    self.assertTrue(m._value_in_quote('18%', q))
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_percent_after_a_space_and_the_decimal_point_convention (tests.test_g33_capability.G33Capability) (q='churn fell 18\u202f% in Q3')
+G33 r5 (M33 r3 OBS): "18%" did not match a quote that writes "18 %", and a plain 18 matched "18 %".
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_g33_capability.py", line 208, in test_percent_after_a_space_and_the_decimal_point_convention
+    self.assertTrue(m._value_in_quote('18%', q))
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_percent_after_a_space_and_the_decimal_point_convention (tests.test_g33_capability.G33Capability)
+G33 r5 (M33 r3 OBS): "18%" did not match a quote that writes "18 %", and a plain 18 matched "18 %".
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_g33_capability.py", line 210, in test_percent_after_a_space_and_the_decimal_point_convention
+    self.assertTrue(m._value_in_quote('12.5%', 'up 12.5 % year on year'))
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 0.009s
+
+FAILED (failures=4)
+rc=1

@@ -1,0 +1,40 @@
+== Python 3.9.6 at 25c00757771df806b8e1c0054900eefd004a67d1
+R01 PASS a percent after one space (plain, no-break, narrow no-break) matches the percent value; 3,5 % is not 3.5% | "all"
+R02 PASS a plain value no longer matches a number the quote writes as a percent after a space (fails closed) | "all"
+R03 PASS boundaries hold with the space: 7% never matches 17 % or 7.5 %; grouped numbers keep their percent | "all"
+R04 PASS the documented decimal-point convention: 18.000 reads as 18 (as the doc now says), 18,000 as eighteen thousand | "all"
+R05 PASS the doc states the percent-after-space rule and the decimal-point convention | null
+R06 OBS  OBS: a thin space (U+2009) before % is not one of the accepted spaces | {"7% in '7<thin space>%'": false}
+R07 PASS regression: decide --json on the shipped fixture equals G33 r4 | {"rc": [0, 0], "equal": true}
+M33R4 PROBE 6/6
+rc=0
+== Python 3.11.16 at 25c00757771df806b8e1c0054900eefd004a67d1
+R01 PASS a percent after one space (plain, no-break, narrow no-break) matches the percent value; 3,5 % is not 3.5% | "all"
+R02 PASS a plain value no longer matches a number the quote writes as a percent after a space (fails closed) | "all"
+R03 PASS boundaries hold with the space: 7% never matches 17 % or 7.5 %; grouped numbers keep their percent | "all"
+R04 PASS the documented decimal-point convention: 18.000 reads as 18 (as the doc now says), 18,000 as eighteen thousand | "all"
+R05 PASS the doc states the percent-after-space rule and the decimal-point convention | null
+R06 OBS  OBS: a thin space (U+2009) before % is not one of the accepted spaces | {"7% in '7<thin space>%'": false}
+R07 PASS regression: decide --json on the shipped fixture equals G33 r4 | {"rc": [0, 0], "equal": true}
+M33R4 PROBE 6/6
+rc=0
+== Python 3.12.14 at 25c00757771df806b8e1c0054900eefd004a67d1
+R01 PASS a percent after one space (plain, no-break, narrow no-break) matches the percent value; 3,5 % is not 3.5% | "all"
+R02 PASS a plain value no longer matches a number the quote writes as a percent after a space (fails closed) | "all"
+R03 PASS boundaries hold with the space: 7% never matches 17 % or 7.5 %; grouped numbers keep their percent | "all"
+R04 PASS the documented decimal-point convention: 18.000 reads as 18 (as the doc now says), 18,000 as eighteen thousand | "all"
+R05 PASS the doc states the percent-after-space rule and the decimal-point convention | null
+R06 OBS  OBS: a thin space (U+2009) before % is not one of the accepted spaces | {"7% in '7<thin space>%'": false}
+R07 PASS regression: decide --json on the shipped fixture equals G33 r4 | {"rc": [0, 0], "equal": true}
+M33R4 PROBE 6/6
+rc=0
+== Python 3.13.15 at 25c00757771df806b8e1c0054900eefd004a67d1
+R01 PASS a percent after one space (plain, no-break, narrow no-break) matches the percent value; 3,5 % is not 3.5% | "all"
+R02 PASS a plain value no longer matches a number the quote writes as a percent after a space (fails closed) | "all"
+R03 PASS boundaries hold with the space: 7% never matches 17 % or 7.5 %; grouped numbers keep their percent | "all"
+R04 PASS the documented decimal-point convention: 18.000 reads as 18 (as the doc now says), 18,000 as eighteen thousand | "all"
+R05 PASS the doc states the percent-after-space rule and the decimal-point convention | null
+R06 OBS  OBS: a thin space (U+2009) before % is not one of the accepted spaces | {"7% in '7<thin space>%'": false}
+R07 PASS regression: decide --json on the shipped fixture equals G33 r4 | {"rc": [0, 0], "equal": true}
+M33R4 PROBE 6/6
+rc=0
