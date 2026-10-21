@@ -27,8 +27,8 @@
   },
   {
    "id": "G15",
-   "commit": "7e7f361208a40ac55a18a6089c820f92a74147c2",
-   "note": "newest repair head (G15 r4, root QA)",
+   "commit": "2a3310b711c0035e34bdcac047b30ae4aedd04b7",
+   "note": "Exact delivered expected-unit experiment repair.",
    "tests": [
     "tests.test_g15_capability"
    ],
@@ -44,9 +44,10 @@
   },
   {
    "id": "G16",
-   "commit": "49aba3fd978a21545f525ad6e82156e39653b257",
+   "commit": "4a8f1d1a7960c6b719a6330dd6aeffb8dcc5969e",
    "tests": [
-    "tests.test_g16_capability"
+    "tests.test_g16_capability",
+    "tests.test_g16_takeover"
    ],
    "commands": [
     [
@@ -54,7 +55,8 @@
      "--tool",
      "{python} employees/engineering/llm-agent-designer/grounded_eval.py"
     ]
-   ]
+   ],
+   "note": "Root repaired grounding context and bounded heading runtime; acceptance remains separate."
   },
   {
    "id": "G17",
