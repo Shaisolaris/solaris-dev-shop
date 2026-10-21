@@ -182,10 +182,11 @@
   },
   {
    "id": "G15",
-   "commit": "2a3310b711c0035e34bdcac047b30ae4aedd04b7",
-   "note": "G15 r5, newest remote head; G24 stacks r4 7e7f361",
+   "commit": "c105cc1ddb4a8a430f3a290124f5b226bd710a53",
+   "note": "Root repaired causal-claim population gate; exact candidate pending final review.",
    "tests": [
-    "tests.test_g15_capability"
+    "tests.test_g15_capability",
+    "tests.test_g15_takeover"
    ],
    "commands": [
     [

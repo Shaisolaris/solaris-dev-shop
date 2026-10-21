@@ -466,7 +466,10 @@ def analyse(path: str) -> Dict[str, Any]:
         trace.append(f"interval [{effect['ci_low']}, {effect['ci_high']}] excludes 0 but assignment was observational: an association, not a causal effect")
     if effect:
         effect = {k: v for k, v in effect.items() if not k.startswith("_")}
-    claims_allowed = {"causal": outcome == "difference_detected", "significance": outcome in ("difference_detected", "association_only")}
+    if outcome == "difference_detected" and not check["missing_units_checked"]:
+        trace.append("Observed difference only: the complete assignment population was not checked; no causal claim is allowed without an independent randomization.expected_units count.")
+    claims_allowed = {"causal": outcome == "difference_detected" and check["missing_units_checked"],
+                      "significance": outcome in ("difference_detected", "association_only")}
     return {"schema": REPORT_SCHEMA, "package_sha256": P["sha"], "experiment": P["doc"].get("experiment"),
             "unit_of_analysis": "unit_id", "assignment": P["doc"]["assignment"],
             "cohort": {"start": P["cs"].isoformat(), "end": P["ce"].isoformat(), "as_of": P["as_of"].isoformat(),

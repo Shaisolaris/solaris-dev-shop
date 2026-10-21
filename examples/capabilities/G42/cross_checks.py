@@ -73,7 +73,8 @@ def x2(findings, lines):
 
 def x3(findings, lines):
     try:
-        contract = json.load(open(os.path.join(SEC, "capability.contract.json"), encoding="utf-8"))
+        with open(os.path.join(SEC, "capability.contract.json"), encoding="utf-8") as handle:
+            contract = json.load(handle)
     except ValueError as e:
         findings.append("x3 security-auditor contract does not parse: %s" % e)
         return
@@ -101,7 +102,8 @@ def x3(findings, lines):
 
 
 def x4(findings, lines):
-    text = open(LEGAL, encoding="utf-8").read()
+    with open(LEGAL, encoding="utf-8") as handle:
+        text = handle.read()
     named = [t for t in ("tests/test_g37_capability.py", "tests/test_g38_capability.py") if t in text]
     exist = [t for t in named if os.path.isfile(os.path.join(ROOT, t))]
     rc37, doc37, _ = run([G37, "review", G37PKG, "--json"])
