@@ -12,6 +12,10 @@
 
 The router produces an assignment packet with one accountable lead and, when needed, multiple supporting specialists. To do the work, open those skills in your own agent or agents with the tools and permissions that task needs. The router does not start agents or grant access to your accounts.
 
+## Native plugins
+
+Use the [native plugin repository](https://github.com/Shaisolaris/solaris-dev-shop-plugins) for Codex/OpenAI, Claude Code and OpenCode V2 installation instructions. It keeps the same canonical workflows and companion resources together and records the exact source revision. Repository installation does not imply provider-directory approval, model-driven activation quality or support for every helper on every operating system.
+
 ## Try it
 
 Requires Git and Python 3.10+. This first run leaves your PATH unchanged:
