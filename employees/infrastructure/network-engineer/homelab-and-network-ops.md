@@ -197,11 +197,14 @@ Compose extensions:
 - `x-caddy`: custom Caddy config per service; template funcs `{{upstreams [service] [port]}}`, `{{.Name}}`, `{{.Upstreams}}`.
 - `x-machines`: placement constraints (single name or list).
 
-Route an external (non-cluster) device through Caddy via a `pause` no-op container + a `--caddyfile` snippet:
+Route an external (non-cluster) device through Caddy via a `pause` no-op container + a `--caddyfile` snippet. Keep upstream TLS verification enabled. Obtain the device's private CA certificate through a trusted channel and match the expected certificate name; replace these example paths and addresses for the device:
 ```caddyfile
 https://device.example.com {
-  reverse_proxy https://192.168.1.x {
-    transport http { tls_insecure_skip_verify }   # for self-signed BMC/NAS certs
+  reverse_proxy https://192.168.1.10 {
+    transport http {
+      tls_trust_pool file /etc/caddy/certs/device-ca.pem
+      tls_server_name device.home.arpa
+    }
   }
 }
 ```
@@ -209,4 +212,6 @@ https://device.example.com {
 
 Internal service DNS: `service-name`, `service-name.internal`, `rr.service-name.internal` (round-robin), `nearest.service-name.internal` (machine-local first).
 
-Common mistakes: editing the Caddyfile directly (use `x-caddy`/`--caddyfile`); proxying a self-signed HTTPS upstream without `tls_insecure_skip_verify`; assuming anonymous volumes persist (only named ones do).
+The [Caddy HTTP transport documentation](https://caddyserver.com/docs/caddyfile/directives/reverse_proxy#the-http-transport) describes certificate trust pools and server-name verification. A self-signed certificate still needs an authenticated trust decision; do not substitute a verification bypass when the CA or expected name is unknown.
+
+Common mistakes: editing the Caddyfile directly (use `x-caddy`/`--caddyfile`); exposing a device before establishing certificate trust and the expected name; assuming anonymous volumes persist (only named ones do).

@@ -324,11 +324,17 @@ else
   GIT_COMMIT_COUNT=0
 fi
 
-# Update build.json using Python 3 - same pattern as build-setup Section 2
-python3 - << PYEOF
+# Pass values as data, never interpolate paths or flags into Python source.
+BUILD_DIR="$BUILD_DIR" GIT_INITIALIZED="${GIT_INITIALIZED:-true}" GIT_COMMIT_COUNT="$GIT_COMMIT_COUNT" python3 - <<'PYEOF'
 import json, os
 
-build_json_path = os.path.join("${BUILD_DIR}", "build.json")
+build_json_path = os.path.join(os.environ["BUILD_DIR"], "build.json")
+initialized = os.environ["GIT_INITIALIZED"]
+if initialized not in ("true", "false"):
+    raise ValueError("GIT_INITIALIZED must be true or false")
+commit_count = int(os.environ["GIT_COMMIT_COUNT"])
+if commit_count < 0:
+    raise ValueError("GIT_COMMIT_COUNT must be nonnegative")
 
 try:
     with open(build_json_path, "r") as f:
@@ -337,16 +343,16 @@ except (FileNotFoundError, json.JSONDecodeError):
     data = {}
 
 data["git"] = {
-    "initialized": ${GIT_INITIALIZED:-true},
+    "initialized": initialized == "true",
     "branch": "main",
-    "commits": ${GIT_COMMIT_COUNT}
+    "commits": commit_count
 }
 
 with open(build_json_path, "w") as f:
     json.dump(data, f, indent=2)
     f.write("\n")
 
-print(f"[Build] build.json updated with git metadata ({${GIT_COMMIT_COUNT}} commits)")
+print(f"[Build] build.json updated with git metadata ({commit_count} commits)")
 PYEOF
 
 echo ""

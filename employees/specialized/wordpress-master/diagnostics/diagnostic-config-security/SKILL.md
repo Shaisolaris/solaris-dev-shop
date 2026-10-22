@@ -189,12 +189,15 @@ ssh -o BatchMode=yes "${USER}@${HOST}" \
 ```bash
 # Check if .git directory exists alongside wp-config.php
 CONFIG_DIR=$(dirname "${CONFIG_PATH}")
+# SSH sends a command string to a second shell. Quote the directory for that
+# shell as data; local double quotes alone do not quote the remote path.
+CONFIG_DIR_QUOTED=$(python3 -c 'import shlex,sys; print(shlex.quote(sys.argv[1]))' "$CONFIG_DIR")
 ssh -o BatchMode=yes "${USER}@${HOST}" \
-  "test -d ${CONFIG_DIR}/.git" 2>&1
+  "test -d ${CONFIG_DIR_QUOTED}/.git" 2>&1
 
 # If .git exists, check if wp-config.php is tracked
 ssh -o BatchMode=yes "${USER}@${HOST}" \
-  "cd ${CONFIG_DIR} && git ls-files wp-config.php 2>/dev/null" 2>&1
+  "cd ${CONFIG_DIR_QUOTED} && git ls-files -- wp-config.php 2>/dev/null" 2>&1
 ```
 
 **If wp-config.php is tracked in git:** Generate Warning finding.

@@ -33,7 +33,7 @@ with `--no-index --find-links DIR` and needs no network, and the JSON names it i
 `--wheelhouse` that is not a folder or holds no setuptools>=61 wheel is refused with exit 2 before anything is written.
 Without a wheelhouse, an offline host gets exit 2 with `build_backend_unavailable`, the remedy, and pip's own error.
 
-`skill-copy` copies only the role folder and lists missing references. It does not invent a host agent API. Without `--dest` the copy is made in a temp folder that is removed before the command returns (`dest` is null and `temp_copy` says so); pass `--dest DIR` to keep it.
+`skill-copy` copies only the role folder and lists missing references. It does not invent a host agent API. Without `--dest` the copy is made in a temp folder that is removed before the command returns (`dest` is null and `temp_copy` says so); pass `--dest DIR` outside the checkout to keep it. The resulting `DIR/<role-name>` must not already exist, even as a file or broken symlink. A collision is refused without replacing user files; choose a fresh destination rather than deleting an existing skill to retry.
 
 ## What a pass does not mean
 
