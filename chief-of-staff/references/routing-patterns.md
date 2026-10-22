@@ -1,18 +1,33 @@
-# Routing patterns - worked examples of request -> route (companion to routing-table.md)
-The routing DECISION is executable + tested via scripts/route.py (parses routing-table.md, self-test of 10 canonical requests). These are the worked examples the SKILL references.
+# Routing patterns
 
-| Request | Route | Mode | Why |
-|---|---|---|---|
-| "please review this code" | code-reviewer | direct | single-domain, clear ask |
-| "is this NDA safe to sign" | legal-advisor | direct | legal/contract |
-| "the site is down in prod" | site-reliability-engineer | direct | incident |
-| "the login page is slow" | performance-engineer | direct | perf signal |
-| "what's new in vector databases" | market-researcher | direct | external scan |
-| "what have we learned about onboarding" | chief-of-staff (learnings sweep) | internal | synthesis from learnings.md, not a route |
-| "build me a landing page" | cto + full-stack + ui-ux + qa | team | multi-domain build |
-| "write me a launch blog post" | cmo + content-marketer | team | marketing content |
-| "should we choose AWS or GCP" | cto | advisor | decision support + ADR |
-| "can you charge the client's card" | STOP - confirm the owner | gate | money movement (red flag) |
-| "i don't know what to do next" | clarify-one-question | clarify | ambiguous - ask one Q first |
+The executable router is `control-plane/meta_control_plane.py`, relative to the
+installed plugin root. That is the directory containing `control-plane/`,
+`chief-of-staff/` and `employees/`; it is different from a specialist's folder
+or the client project being routed.
 
-Run `python3 scripts/route.py "<request>"` to resolve; `route.py --selftest` gates the routing logic in CI-style checks. Keep this table and routing-table.md in sync; routing-table.md is the machine source of truth.
+From the plugin root:
+
+```sh
+python3 control-plane/meta_control_plane.py intake "review this code" --json
+python3 control-plane/meta_control_plane.py self-test
+```
+
+From another working directory, resolve the engine's absolute path inside the
+installed plugin and use that path. The native chief-of-staff entry links to it.
+
+These examples come from the current routing probes:
+
+| Request | Primary capability |
+|---|---|
+| "review this code" | `solaris.code-reviewer` |
+| "Design a REST API with FastAPI, JWT auth, and Postgres" | `solaris.backend-developer` |
+| "Build an MVP prototype, scaffold the full-stack project end to end" | `solaris.full-stack-developer` |
+| "Our pods are CrashLoopBackOff, fix the probes and HPA config" | `solaris.kubernetes-specialist` |
+
+The router emits a bounded assignment or an escalation; it does not execute a
+specialist, grant tools or authorize deployment or spending. The host supplies
+execution tools and enforces its permissions.
+
+[Policy](../../control-plane/policy.json) governs the decision. The complete
+expected examples live in [routing probes](../../control-plane/routing-probes.md),
+which [the routing regression suite](../../tests/test_router.py) executes.
