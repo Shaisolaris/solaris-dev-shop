@@ -12,7 +12,8 @@
   "CHANGELOG.md",
   "README.md",
   "docs/capabilities.md",
-  "chief-of-staff/references/routing-patterns.md"
+  "chief-of-staff/references/routing-patterns.md",
+  "employees/infrastructure/network-engineer/homelab-and-network-ops.md"
  ],
  "prerequisites": [
   {
@@ -141,8 +142,8 @@
   },
   {
    "id": "G11",
-   "commit": "94a0de462a82e0d55e1bf58ee468bf7953d1c59a",
-   "note": "G11 h1, newest remote head (hardening on accepted 13ba705); also stacked by G18 r2",
+   "commit": "0e07490484baafed56e36b887f0137a229dc3e0d",
+   "note": "Root security follow-up: exact inherited network SKILL/test blobs from e75aedf, two-file component delta only. Full core tree unchanged by its ancestry merge; CI tests and independent review still govern acceptance.",
    "tests": [
     "tests.test_g11_capability"
    ],
@@ -653,11 +654,11 @@
   },
   {
    "path": "employees/quality-security/qa-engineer/host-portability.md",
-   "reason": "G41 r4 stacks G40 r4 and carries its blob c535079 unchanged; G40 r5 carries b97ae8e, which fast-forwards r4 (M40 P3-2 offline --wheelhouse). HEAD is the G40 r5 blob b97ae8e: the newer revision of the same file, not a line union."
+   "reason": "Root H01 at e75aedf supersedes the inherited G40 copy. The exact PR49 manifest binds the new blob. Destination/source preservation, useful fresh-copy and recovery checks pass; independent review and final gates remain required."
   },
   {
    "path": "employees/quality-security/qa-engineer/host_portability.py",
-   "reason": "G41 r4 stacks G40 r4 and carries its blob c7ef99b unchanged; G40 r5 carries bfea0f0, which fast-forwards r4 (M40 P3-2 offline --wheelhouse). HEAD is the G40 r5 blob bfea0f0: the newer revision of the same file, not a line union."
+   "reason": "Root H01 at e75aedf supersedes the inherited G40 copy. The exact PR49 manifest binds the new blob. Destination/source preservation, useful fresh-copy and recovery checks pass; independent review and final gates remain required."
   },
   {
    "path": "examples/capabilities/G40/README.md",
@@ -669,7 +670,7 @@
   },
   {
    "path": "tests/test_g40_capability.py",
-   "reason": "G41 r4 stacks G40 r4 and carries its blob cb1aa47 unchanged; G40 r5 carries c42bf1c, which fast-forwards r4 (M40 P3-2 offline --wheelhouse). HEAD is the G40 r5 blob c42bf1c: the newer revision of the same file, not a line union."
+   "reason": "Root H01 at e75aedf supersedes the inherited G40 copy. The exact PR49 manifest binds the new blob. Destination/source preservation, useful fresh-copy and recovery checks pass; independent review and final gates remain required."
   },
   {
    "path": "employees/design/technical-writer/SKILL.md",
@@ -688,5 +689,7 @@
    "reason": "G19 root3ecac25 supersedes the inherited G19 copy in G21/G22/G39/G40/G41. HEAD retains that complete implementation plus only socketserver import and numeric-loopback server_bind override. Endpoints/transactions/auth/control behavior unchanged; G19 19tests and G21 12tests pass locally."
   }
  ],
- "notes": []
+ "notes": [
+  "Root H01/H02 at e75aedf: G11 network blobs have a narrow component revision; only the named homelab guide expands root scope. The integration checker/refusal logic is unchanged. This declaration is not independent acceptance."
+ ]
 }
