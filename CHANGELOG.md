@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.64 (2026-10-22)
+
+- Preserve an existing skill-copy destination instead of deleting its files. Refuse files, directories, broken symlinks and destinations inside the source checkout; fresh copies and recovery remain usable.
+- Keep upstream TLS verification enabled in all network-role instructions. Private devices use an explicitly trusted CA and expected certificate name, with live trusted/untrusted/name-mismatch regression checks.
+- Treat WordPress build paths and flags as data rather than Python source. Quote configuration directories for the remote shell; executable instruction tests cover ordinary output, metacharacter refusal and recovery without contacting a real site.
+- Bind the security corrections to exact source components and the declared integration scope. Preserve the 61 specialists and coordinator, original branding, useful local helpers and documented platform limits.
+- Carry the corrected source into the native distribution programme. Host compatibility and directory approval remain separate; the native repository records each tested client and exact install revision.
+
 ## 0.63 (2026-10-22)
 
 - Install the same specialist workflows through the native Codex/OpenAI, Claude Code and OpenCode V2 repository distribution. The original 61 roles and coordinator remain intact; installation and discovery are separate from model performance and provider-directory approval.
