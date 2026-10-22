@@ -140,19 +140,29 @@ def amount(v, lo=1):
     return n
 
 
-def add_op(con, kind, ref, body, retry_of=None):
-    """Append one change in its own transaction; the key and exact body are fixed here."""
+def append_op(con, kind, ref, body, retry_of=None):
+    """Append inside the caller's write transaction."""
+    if kind == "create" and retry_of is None and known_ref(con, ref):
+        raise Invalid("ref %s already names an invoice" % ref)
+    if kind != "create" and not known_ref(con, ref):
+        raise Invalid("ref %s is not an invoice this device created or has pulled" % ref)
+    seq = con.execute("SELECT COALESCE(MAX(seq), 0) FROM ops").fetchone()[0] + 1
+    idem = "%s:%06d" % (meta(con, "install"), seq)
+    con.execute("INSERT INTO ops (seq, idem, kind, ref, body, created_at, state, retry_of) "
+                "VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)", (seq, idem, kind, ref, body, now(), retry_of))
+    return seq, idem
+
+
+def add_op(con, kind, ref, body):
+    """Validate and append atomically, including the local invoice namespace."""
     con.execute("BEGIN IMMEDIATE")
     try:
-        seq = (con.execute("SELECT COALESCE(MAX(seq), 0) FROM ops").fetchone()[0]) + 1
-        idem = "%s:%06d" % (meta(con, "install"), seq)
-        con.execute("INSERT INTO ops (seq, idem, kind, ref, body, created_at, state, retry_of) "
-                    "VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)", (seq, idem, kind, ref, body, now(), retry_of))
+        result = append_op(con, kind, ref, body)
         con.execute("COMMIT")
+        return result
     except BaseException:
         con.execute("ROLLBACK")
         raise
-    return seq, idem
 
 
 def cmd_enqueue(a):
@@ -160,8 +170,6 @@ def cmd_enqueue(a):
     if not REF_RE.match(a.ref or ""):
         raise Invalid("--ref must be 1-64 of A-Z a-z 0-9 _ -")
     if a.kind == "create":
-        if known_ref(con, a.ref):
-            raise Invalid("ref %s already names an invoice" % a.ref)
         if SERVER_ID_RE.match(a.ref):
             raise Invalid("ref %s looks like a server id; pick a local name" % a.ref)
         cust = a.customer or ""
@@ -171,8 +179,6 @@ def cmd_enqueue(a):
             raise Invalid("--currency must be one of %s" % ", ".join(CURRENCIES))
         body = {"customer": cust, "amount_cents": amount(a.amount), "currency": a.currency}
     else:
-        if not known_ref(con, a.ref):
-            raise Invalid("ref %s is not an invoice this device created or has pulled" % a.ref)
         if a.kind == "pay":
             body = {"amount_cents": amount(a.amount)}
         else:
@@ -213,6 +219,11 @@ def apply_server_doc(con, doc):
     return True
 
 
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
 def request(base, key, method, path, body, idem, timeout):
     req = urllib.request.Request(base + path, data=None if body is None else body.encode(), method=method)
     req.add_header("Authorization", "Bearer " + key)
@@ -221,9 +232,14 @@ def request(base, key, method, path, body, idem, timeout):
     if idem:
         req.add_header("Idempotency-Key", idem)
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as r:
+        # Ignore environment proxies and never forward this demo bearer through redirects.
+        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect())
+        with opener.open(req, timeout=timeout) as r:
             return r.status, r.read().decode("utf-8", "replace"), r.headers.get("Idempotent-Replayed") == "true"
     except urllib.error.HTTPError as e:
+        if 300 <= e.code < 400:
+            e.close()
+            raise Stop(4, "server redirect refused; pending changes retained")
         return e.code, e.read().decode("utf-8", "replace"), e.headers.get("Idempotent-Replayed") == "true"
     except (urllib.error.URLError, http.client.HTTPException, ConnectionError, socket.timeout, OSError) as e:
         raise Stop(4, "server unreachable: %s" % (getattr(e, "reason", None) or e))
@@ -344,6 +360,9 @@ def cmd_sync(a):
     out = {"sent": 0, "pulled": None}
     try:
         try:
+            problems = violations(con)
+            if problems:
+                raise Stop(2, "inconsistent outbox; no requests sent: " + "; ".join(problems))
             out["sent"] = push(con, base, key, a)
             if not a.no_pull:
                 applied, stale = pull(con, base, key, a.timeout)
@@ -434,30 +453,33 @@ def cmd_status(a):
 
 def cmd_resolve(a):
     con = connect(a.db)
-    row = con.execute("SELECT kind, ref, body, state FROM ops WHERE seq = ?", (a.op,)).fetchone()
-    if not row:
-        raise Invalid("no op %d" % a.op)
-    kind, ref, body, state = row
-    if state not in OPEN_PROBLEMS:
-        raise Invalid("op %d is %s; only a conflict or rejection can be resolved" % (a.op, state))
-    if a.action == "discard":
-        con.execute("BEGIN IMMEDIATE")
-        con.execute("UPDATE ops SET state = 'discarded' WHERE seq = ? AND state = ?", (a.op, state))
-        also = []
-        if kind == "create":  # the invoice will never exist, so its queued changes go with it, by name
-            also = [r[0] for r in con.execute("SELECT seq FROM ops WHERE ref = ? AND state = 'pending' ORDER BY seq", (ref,))]
-            con.executemany("UPDATE ops SET state = 'discarded', reason = ? WHERE seq = ?",
-                            [("discarded with create op %d" % a.op, q) for q in also])
-        con.execute("COMMIT")
-        print(json.dumps({"seq": a.op, "state": "discarded", "also_discarded": also}))
-        return 0
-    # retry: the user wants the same change again; it gets a new key (the old key's refusal is stored
-    # by the server and would only be replayed) and goes to the back of the outbox.
-    new, idem = add_op(con, kind, ref, body, retry_of=a.op)
     con.execute("BEGIN IMMEDIATE")
-    con.execute("UPDATE ops SET state = 'superseded', superseded_by = ? WHERE seq = ? AND state = ?", (new, a.op, state))
-    con.execute("COMMIT")
-    print(json.dumps({"seq": a.op, "state": "superseded", "retry_seq": new, "idempotency_key": idem}))
+    try:
+        row = con.execute("SELECT kind, ref, body, state FROM ops WHERE seq = ?", (a.op,)).fetchone()
+        if not row:
+            raise Invalid("no op %d" % a.op)
+        kind, ref, body, state = row
+        if state not in OPEN_PROBLEMS:
+            raise Invalid("op %d is %s; only a conflict or rejection can be resolved" % (a.op, state))
+        if a.action == "discard":
+            con.execute("UPDATE ops SET state = 'discarded' WHERE seq = ?", (a.op,))
+            also = []
+            if kind == "create":
+                also = [r[0] for r in con.execute(
+                    "SELECT seq FROM ops WHERE ref = ? AND state = 'pending' ORDER BY seq", (ref,))]
+                con.executemany("UPDATE ops SET state = 'discarded', reason = ? WHERE seq = ?",
+                                [("discarded with create op %d" % a.op, q) for q in also])
+            result = {"seq": a.op, "state": "discarded", "also_discarded": also}
+        else:
+            # A new key and the old refusal's supersession must survive or roll back together.
+            new, idem = append_op(con, kind, ref, body, retry_of=a.op)
+            con.execute("UPDATE ops SET state = 'superseded', superseded_by = ? WHERE seq = ?", (new, a.op))
+            result = {"seq": a.op, "state": "superseded", "retry_seq": new, "idempotency_key": idem}
+        con.execute("COMMIT")
+    except BaseException:
+        con.execute("ROLLBACK")
+        raise
+    print(json.dumps(result))
     return 0
 
 
@@ -487,6 +509,13 @@ def violations(con):
                       "reason FROM ops ORDER BY seq").fetchall()
     by_seq = {o[0]: o for o in ops}
     install = meta(con, "install")
+    roots = {}
+    for o in ops:
+        if o[2] == "create" and o[8] is None:
+            roots.setdefault(o[3], []).append(o[0])
+    for ref, seqs in roots.items():
+        if len(seqs) > 1:
+            v.append("ref %s has duplicate create roots %s" % (ref, seqs))
     for seq, idem, kind, ref, body, state, hs, resp, retry_of, sup, reason in ops:
         if state not in STATES:
             v.append("op %d has unknown state %s" % (seq, state))
@@ -501,6 +530,11 @@ def violations(con):
         cascade = state == "discarded" and hs is None and str(reason).startswith("discarded with create op ")
         if state in ("conflict", "rejected", "discarded") and not cascade and (hs is None or hs < 400):
             v.append("op %d is %s without a refusal" % (seq, state))
+        if retry_of is not None:
+            old = by_seq.get(retry_of)
+            if (not old or retry_of >= seq or old[5] != "superseded" or old[9] != seq
+                    or old[2:5] != (kind, ref, body)):
+                v.append("op %d has no matching superseded predecessor" % seq)
         if state == "superseded":
             n = by_seq.get(sup)
             if not n or n[8] != seq or n[2:5] != (kind, ref, body):

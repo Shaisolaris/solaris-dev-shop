@@ -13,6 +13,8 @@ Android behaviour. Port the rules, not the file, into Room, Core Data, SQLDeligh
    exact request body and its idempotency key (`<install id>:<seq>`, the install id is the device
    name plus 8 random hex characters) in one transaction. Every retry, restart or concurrent sync
    sends that same key and body, so the server makes the effect once and replays its first answer.
+   Local reference uniqueness is checked inside that transaction: concurrent creates for the same
+   name have one winner. An explicit retry uses a new key, as described below.
 2. **Send in the order of intent.** Pending changes go oldest first. A change to an invoice created
    offline waits until the create is acknowledged and the server id is stored. If a run stops, the
    next run resumes at the first unsent change.
@@ -21,10 +23,12 @@ Android behaviour. Port the rules, not the file, into Room, Core Data, SQLDeligh
    (`waiting` says why). The user resolves it: `discard` (kept as `discarded`; discarding a create
    also discards that invoice's queued changes and names them) or `retry` (a new change with a new
    key at the back of the outbox; the old key's refusal is stored by the server and would only be
-   replayed).
+   replayed). Creating the retry and superseding the old refusal commit together; concurrent
+   resolutions have one winner, and an interrupted transaction leaves the old refusal intact.
 4. **Stop, don't skip, when the server is unusable.** 401/403 stops with exit 3, and 5xx, 408, 429,
    dropped connections and timeouts stop with exit 4. In both cases the change stays pending with
-   its key.
+   its key. Redirects also stop with exit 4; the client never forwards a bearer key to a redirected
+   destination, even on loopback, and ignores environment proxy settings.
 5. **Newer server state only.** Pulled invoices (`sync` pages through `GET /api/v1/invoices`; or
    `apply-snapshot` with a saved list answer) replace the local copy only when `version` is
    higher, so a late or out-of-order answer cannot roll the view back.
@@ -51,7 +55,10 @@ synthetic). `status --json` lists every change with its state, key, attempts, se
 `replayed`, reason and `waiting`, plus each invoice's server copy and projected balance with
 pending changes applied. `check` opens the outbox read-only and names each broken invariant
 (an acked change without a 2xx answer, a key that is not this install's, a create not mapped to
-its server id, a pending change that already has an answer, a retry without its link).
+its server id, a pending change that already has an answer, duplicate create roots, or a retry
+without matching links in both directions). `sync` checks those invariants before making any
+request and exits 2 on an inconsistent outbox; it preserves the rows for diagnosis rather than
+sending duplicate intent. Do not delete a queued row or invent a retry link to make the check green.
 
 Drill flags for `sync`: `--crash-before-send N` and `--crash-after-send N` exit 70 just before the
 N-th request, or after its answer arrives but before the answer is recorded. `--no-pull` skips the pull.
@@ -62,7 +69,7 @@ N-th request, or after its answer arrives but before the answer is recorded. `--
 | 1 | `sync`: conflicts or rejections await the user; `check`: violations |
 | 2 | invalid input, nothing recorded |
 | 3 | the server refused the key; nothing changed |
-| 4 | server unreachable or transient; changes stay pending |
+| 4 | server unreachable, transient, or redirect refused; changes stay pending |
 | 5 | another sync holds this outbox |
 | 70 | deliberate crash drill |
 

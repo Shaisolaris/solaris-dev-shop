@@ -234,8 +234,8 @@
   },
   {
    "id": "G19",
-   "commit": "3ecac25cd8f47bcbb9730952729d832d4958b953",
-   "note": "Root hosted-macOS startup repair: numeric loopback bind avoids reverse DNS; real API and negative controls retain behavioral coverage.",
+   "commit": "1e61a5cefe55cdcbf5dc4bd5152e91535c34e630",
+   "note": "Exact G19 numeric-transport repair candidate; bounded ASCII decimal parsing, malformed and huge values return4xx. Inclusion is not independent acceptance.",
    "tests": [
     "tests.test_g19_capability",
     "tests.test_g19_startup"
@@ -263,8 +263,8 @@
   },
   {
    "id": "G21",
-   "commit": "822a9c1aaf2da3a0dace1bd0a0640d992406efa0",
-   "note": "G21, newest remote head; also stacked by G30",
+   "commit": "758e5bc5f3af81ae4752ac149f0ae07cc274e8af",
+   "note": "Exact G21 repair candidate: atomic enqueue and retry, strict loopback requests, and preflight duplicate-intent checks. Inclusion is not independent acceptance.",
    "tests": [
     "tests.test_g21_capability"
    ],
