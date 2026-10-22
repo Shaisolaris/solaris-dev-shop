@@ -6,10 +6,18 @@ import copy
 import json
 import os
 import random
+import re
+import socket
+import ssl
 import subprocess
 import sys
 import tempfile
+import threading
+import time
 import unittest
+import urllib.error
+import urllib.request
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -634,6 +642,123 @@ class M10R4Rework(Base):
         # an RDN in dotted-OID form (2.5.4.3 is CN) stays with its DirName too
         self.assertEqual(nd._san_parts('DNS:a.example, DirName:/C=GB, 2.5.4.3=svc'),
                          ['DNS:a.example', 'DirName:/C=GB, 2.5.4.3=svc'])
+
+
+@unittest.skipUnless(os.environ.get('SOLARIS_CADDY_BIN'),
+                     'Live Caddy TLS gate runs separately with SOLARIS_CADDY_BIN')
+class VerifiedTlsGuidance(unittest.TestCase):
+    """Exercise the documented transport against synthetic loopback TLS only."""
+    def setUp(self):
+        self.fixture = tempfile.TemporaryDirectory(prefix='solaris-tls-guidance-')
+        self.addCleanup(self.fixture.cleanup)
+        self.work = Path(self.fixture.name)
+        self.caddy = os.environ['SOLARIS_CADDY_BIN']
+        version = subprocess.check_output([self.caddy, 'version'], text=True, timeout=15)
+        self.assertEqual(version.split()[0], 'v2.11.7')
+        ca_config = self.work / 'ca.cnf'
+        ca_config.write_text('[req]\ndistinguished_name=dn\nx509_extensions=ca\nprompt=no\n'
+                             '[dn]\nCN=Solaris local test CA\n[ca]\n'
+                             'basicConstraints=critical,CA:TRUE\nkeyUsage=critical,keyCertSign,cRLSign\n')
+        for name in ('trusted', 'untrusted'):
+            self.openssl('req', '-new', '-x509', '-newkey', 'rsa:2048', '-nodes', '-days', '1',
+                         '-config', ca_config, '-keyout', self.work / (name + '.key'),
+                         '-out', self.work / (name + '.pem'))
+        self.openssl('req', '-new', '-newkey', 'rsa:2048', '-nodes', '-subj', '/CN=device.home.arpa',
+                     '-config', ca_config, '-keyout', self.work / 'server.key', '-out', self.work / 'server.csr')
+        extensions = self.work / 'server.cnf'
+        extensions.write_text('basicConstraints=CA:FALSE\nkeyUsage=digitalSignature,keyEncipherment\n'
+                              'extendedKeyUsage=serverAuth\nsubjectAltName=DNS:device.home.arpa\n')
+        self.openssl('x509', '-req', '-in', self.work / 'server.csr', '-CA', self.work / 'trusted.pem',
+                     '-CAkey', self.work / 'trusted.key', '-CAcreateserial', '-days', '1',
+                     '-extfile', extensions, '-out', self.work / 'server.pem')
+
+        class Handler(BaseHTTPRequestHandler):
+            def do_GET(self):
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b'verified-local-upstream\n')
+
+            def log_message(self, *args):
+                pass
+
+        self.server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+        self.server.daemon_threads = True
+        context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        context.load_cert_chain(self.work / 'server.pem', self.work / 'server.key')
+        self.server.socket = context.wrap_socket(self.server.socket, server_side=True)
+        self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
+        self.thread.start()
+        self.addCleanup(self.stop_server)
+
+    def stop_server(self):
+        self.server.shutdown()
+        self.server.server_close()
+        self.thread.join(timeout=5)
+
+    def openssl(self, *args):
+        result = subprocess.run(['openssl', *map(str, args)], cwd=self.work,
+                                text=True, capture_output=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def request(self, trust, server_name, *, unsafe_control=False):
+        doc = (ROOT / 'employees/infrastructure/network-engineer/homelab-and-network-ops.md').read_text()
+        blocks = [block for block in re.findall(r'```caddyfile\n(.*?)```', doc, re.S)
+                  if 'tls_trust_pool' in block]
+        self.assertEqual(len(blocks), 1, 'The maintained device-TLS example must be unambiguous')
+        with socket.socket() as reservation:
+            reservation.bind(('127.0.0.1', 0))
+            port = reservation.getsockname()[1]
+        config = blocks[0].replace('https://device.example.com', 'http://127.0.0.1:' + str(port))
+        config = config.replace('https://192.168.1.10', 'https://127.0.0.1:' + str(self.server.server_port))
+        config = config.replace('/etc/caddy/certs/device-ca.pem', json.dumps(str(self.work / (trust + '.pem'))))
+        config = config.replace('device.home.arpa', server_name)
+        if unsafe_control:
+            # Deliberately unsafe negative control, confined to this synthetic fixture.
+            # It must accept the wrong identity, proving the refusal cases distinguish it.
+            config = re.sub(r'tls_trust_pool file[^\n]+\n\s*tls_server_name[^\n]+',
+                            'tls_insecure_skip_verify', config)
+        case = self.work / ('case-' + str(port))
+        case.mkdir()
+        config = '{\n admin off\n auto_https off\n persist_config off\n storage file_system {\n  root ' + json.dumps(str(case / 'storage')) + '\n }\n}\n' + config
+        config_file = case / 'Caddyfile'
+        config_file.write_text(config)
+        env = {key: os.environ[key] for key in ('HOME', 'PATH', 'TMPDIR', 'TEMP', 'SYSTEMROOT') if key in os.environ}
+        for kind in ('config', 'data', 'cache', 'state'):
+            env['XDG_' + kind.upper() + '_HOME'] = str(case / kind)
+        with (case / 'caddy.log').open('w') as log:
+            process = subprocess.Popen([self.caddy, 'run', '--config', str(config_file), '--adapter', 'caddyfile'],
+                                       cwd=case, env=env, stdout=log, stderr=subprocess.STDOUT)
+            try:
+                deadline = time.monotonic() + 10
+                while True:
+                    self.assertIsNone(process.poll(), (case / 'caddy.log').read_text())
+                    try:
+                        with socket.create_connection(('127.0.0.1', port), timeout=0.2):
+                            break
+                    except OSError:
+                        self.assertLess(time.monotonic(), deadline, 'Caddy did not become ready')
+                        time.sleep(0.05)
+                opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+                try:
+                    with opener.open('http://127.0.0.1:' + str(port), timeout=5) as response:
+                        return response.status, response.read()
+                except urllib.error.HTTPError as error:
+                    return error.code, error.read()
+            finally:
+                process.terminate()
+                try:
+                    process.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    process.wait(timeout=5)
+
+    def test_real_certificate_trust_name_refusal_and_recovery(self):
+        self.assertEqual(self.request('trusted', 'device.home.arpa'), (200, b'verified-local-upstream\n'))
+        self.assertEqual(self.request('untrusted', 'device.home.arpa')[0], 502)
+        self.assertEqual(self.request('trusted', 'wrong.home.arpa')[0], 502)
+        self.assertEqual(self.request('untrusted', 'wrong.home.arpa', unsafe_control=True),
+                         (200, b'verified-local-upstream\n'))
+        self.assertEqual(self.request('trusted', 'device.home.arpa'), (200, b'verified-local-upstream\n'))
 
 
 if __name__ == '__main__':

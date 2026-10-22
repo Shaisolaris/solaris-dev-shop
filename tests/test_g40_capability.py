@@ -249,6 +249,85 @@ class G40Direct(unittest.TestCase):
         self.assertEqual(r.returncode, 2, r.stderr)
         self.assertIn("Nothing was written", r.stderr)
 
+class SkillCopySafety(unittest.TestCase):
+    def setUp(self):
+        self.top = Path(tempfile.mkdtemp(prefix="g40-copy-safety-"))
+        self.addCleanup(shutil.rmtree, self.top, True)
+        self.repo = self.top / "repo"
+        (self.repo / "control-plane").mkdir(parents=True)
+        (self.repo / "control-plane/meta_control_plane.py").write_text("# local fixture\n")
+        shutil.copy2(ROOT / "pyproject.toml", self.repo / "pyproject.toml")
+        self.source = self.repo / "employees/quality-security/demo"
+        self.source.mkdir(parents=True)
+        (self.source / "capability.contract.json").write_text(json.dumps({"dependencies": {}}))
+        (self.source / "SKILL.md").write_text("# Complete fixture skill\n")
+        (self.source / "rules.md").write_text("Keep the fixture files together.\n")
+
+    @staticmethod
+    def snapshot(folder):
+        return {p.relative_to(folder).as_posix(): p.read_bytes()
+                for p in folder.rglob("*") if p.is_file()}
+
+    def copy(self, destination):
+        return run("skill-copy", self.repo, "quality-security/demo", "--dest", destination, "--json")
+
+    def test_existing_skill_and_owner_files_survive_refusal(self):
+        destination = self.top / "host"
+        target = destination / "demo"
+        (target / "nested").mkdir(parents=True)
+        (target / "OWNER.txt").write_bytes(b"owner content\x00\xff")
+        (target / "nested/.settings").write_text("local settings\n")
+        before = self.snapshot(destination)
+        result = self.copy(destination)
+        self.assertEqual(self.snapshot(destination), before, "Existing user files were changed")
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_existing_file_target_is_preserved(self):
+        destination = self.top / "host"
+        destination.mkdir()
+        (destination / "demo").write_text("keep this file\n")
+        result = self.copy(destination)
+        self.assertEqual((destination / "demo").read_text(), "keep this file\n")
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_broken_target_symlink_is_preserved(self):
+        destination = self.top / "host"
+        destination.mkdir()
+        target = destination / "demo"
+        try:
+            target.symlink_to(self.top / "missing")
+        except (OSError, NotImplementedError):
+            self.skipTest("Symlink creation is unavailable on this host")
+        result = self.copy(destination)
+        self.assertTrue(target.is_symlink())
+        self.assertFalse((self.top / "missing").exists())
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_destination_under_checkout_is_refused_before_creating_it(self):
+        destination = self.repo / "uncreated/copies"
+        before = self.snapshot(self.repo)
+        result = self.copy(destination)
+        self.assertEqual(self.snapshot(self.repo), before)
+        self.assertFalse((self.repo / "uncreated").exists())
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+
+    def test_fresh_copy_still_works_after_a_collision(self):
+        first = self.top / "first"
+        positive = self.copy(first)
+        self.assertEqual(positive.returncode, 0, positive.stdout + positive.stderr)
+        self.assertEqual(self.snapshot(first / "demo"), self.snapshot(self.source))
+        (first / "demo/OWNER.txt").write_text("keep\n")
+        refused = self.copy(first)
+        self.assertEqual(refused.returncode, 2, refused.stdout + refused.stderr)
+        self.assertEqual((first / "demo/OWNER.txt").read_text(), "keep\n")
+        recovery = self.copy(self.top / "second")
+        self.assertEqual(recovery.returncode, 0, recovery.stdout + recovery.stderr)
+        self.assertEqual(self.snapshot(self.top / "second/demo"), self.snapshot(self.source))
+
+
 class SkillCopyTemp(unittest.TestCase):
     def test_skill_copy_without_dest_leaves_no_temp_folder(self):
         """M40 P4-2: skill-copy without --dest left a g40-skill-* folder in TMPDIR on every run."""

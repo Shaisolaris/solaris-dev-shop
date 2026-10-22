@@ -13,7 +13,8 @@ What it checks, reading and running only local packaging commands:
   does not ship employee skill directories or .pyc files.
 - skill-copy: copy only employees/ROLE into a destination and report which contract references
   and preflight targets still resolve. A lone copied skill folder that references a department
-  standard outside itself is incomplete (status broken).
+  standard outside itself is incomplete (status broken). An explicit destination must be outside
+  REPO; its role target must not already exist, including a broken symlink. Existing files are never replaced.
 - python-bounds: report requires-python from pyproject.toml (wheel/installer: 3.10+) and that
   stdlib source tools under employees/ parse on the current interpreter (source tools: 3.9+).
 
@@ -251,7 +252,11 @@ def skill_copy(root, role, dest=None):
     root = _repo(root)
     role, src = _role_dir(root, role)
     if dest:
-        return _skill_copy(role, src, Path(dest))
+        destination = Path(dest)
+        target = (destination / Path(role).name).resolve()
+        if target == root or root in target.parents:
+            raise Invalid("--dest must put the skill outside the checkout")
+        return _skill_copy(role, src, destination)
     tmp = Path(tempfile.mkdtemp(prefix="g40-skill-"))
     try:
         rep = _skill_copy(role, src, tmp)
@@ -263,11 +268,18 @@ def skill_copy(root, role, dest=None):
 
 
 def _skill_copy(role, src, dest_root):
-    dest_root.mkdir(parents=True, exist_ok=True)
     target = dest_root / Path(role).name
-    if target.exists():
-        shutil.rmtree(target)
-    shutil.copytree(src, target, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+    if target.exists() or target.is_symlink():
+        raise Invalid("skill-copy target already exists; choose a fresh destination: %s" % target)
+    try:
+        dest_root.mkdir(parents=True, exist_ok=True)
+    except OSError as ex:
+        raise Invalid("cannot create --dest folder: %s" % ex) from ex
+    try:
+        # copytree also refuses a target created after the preflight; never delete it.
+        shutil.copytree(src, target, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+    except OSError as ex:
+        raise Invalid("skill-copy failed: %s" % ex, left=dest_root) from ex
     contract = json.loads((target / "capability.contract.json").read_text(encoding="utf-8"))
     refs = list(contract.get("dependencies", {}).get("references", []) or [])
     checks = list((contract.get("dependencies", {}).get("preflight") or {}).get("checks", []) or [])
