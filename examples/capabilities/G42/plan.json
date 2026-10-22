@@ -13,7 +13,11 @@
   "README.md",
   "docs/capabilities.md",
   "chief-of-staff/references/routing-patterns.md",
-  "employees/infrastructure/network-engineer/homelab-and-network-ops.md"
+  "employees/infrastructure/network-engineer/homelab-and-network-ops.md",
+  "employees/infrastructure/network-engineer/rules.md",
+  "employees/specialized/wordpress-master/diagnostics/build-git/SKILL.md",
+  "employees/specialized/wordpress-master/diagnostics/diagnostic-config-security/SKILL.md",
+  "tests/test_wordpress_instruction_examples.py"
  ],
  "prerequisites": [
   {
@@ -690,6 +694,7 @@
   }
  ],
  "notes": [
-  "Root H01/H02 at e75aedf: G11 network blobs have a narrow component revision; only the named homelab guide expands root scope. The integration checker/refusal logic is unchanged. This declaration is not independent acceptance."
+  "Root H01/H02 at e75aedf: G11 network blobs have a narrow component revision; only the named homelab guide expands root scope. The integration checker/refusal logic is unchanged. This declaration is not independent acceptance.",
+  "Root security follow-up65a05ef corrects one residual TLS rule and two WordPress instruction dataflows. Only the four named files expand root scope. Runtime fixtures prove ordinary behavior, injection refusal and recovery; no checker rule is disabled."
  ]
 }
