@@ -14,7 +14,7 @@ The router produces an assignment packet with one accountable lead and, when nee
 
 ## Native plugins
 
-Use the [native plugin repository](https://github.com/Shaisolaris/solaris-dev-shop-plugins) for Codex/OpenAI, Claude Code and OpenCode V2 installation instructions. It keeps the same canonical workflows and companion resources together and records the exact source revision. Repository installation does not imply provider-directory approval, model-driven activation quality or support for every helper on every operating system.
+Use the [native plugin repository](https://github.com/Shaisolaris/solaris-dev-shop-plugins) for host-specific installation instructions, tested client versions and publication status. The packages keep the same canonical workflows and companion resources together and record their exact source revision. Native format support, model-driven results and provider-directory approval have separate evidence; check the recorded scope for your client and operating system.
 
 ## Try it
 
