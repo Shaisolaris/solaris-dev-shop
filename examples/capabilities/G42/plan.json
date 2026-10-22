@@ -11,13 +11,14 @@
   "pyproject.toml",
   "CHANGELOG.md",
   "README.md",
-  "docs/capabilities.md"
+  "docs/capabilities.md",
+  "chief-of-staff/references/routing-patterns.md"
  ],
  "prerequisites": [
   {
    "id": "G01",
    "commit": "7cafd74ccd54e6d1bcb691263e292843c8948740",
-   "note": "Root isolates existing platform-test correction: unreadable-folder POSIX semantics, fullportable Windows core lane unchanged.",
+   "note": "Root isolates existing platform-test correction: unreadable-folder POSIX semantics, fullportable Windows core lane unchanged. The later native-publication routing-guide correction is named explicitly in the integration writable list; router implementation is unchanged.",
    "tests": [
     "tests.test_fixture_runner",
     "tests.test_assurance_packets",
