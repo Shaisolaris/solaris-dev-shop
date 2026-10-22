@@ -170,11 +170,19 @@ def build(revision, destination):
         folder.mkdir(parents=True)
         frontmatter = yaml.safe_dump({"name": skill["name"], "description": skill["description"]}, sort_keys=False, allow_unicode=True).strip()
         canonical = "../../" + skill["canonical"]
+        working_directory = (
+            "For the coordinator, resolve the [routing engine](../../control-plane/meta_control_plane.py) "
+            "relative to this native SKILL.md. Its canonical commands run from the plugin root "
+            "(two parents above this native skill folder); from another directory, use the "
+            "resolved absolute engine path. "
+            if skill["name"] == "chief-of-staff"
+            else "Run helpers from their canonical role folder so shared imports and resources remain valid. "
+        )
         (folder / "SKILL.md").write_text(
             "---\n" + frontmatter + "\n---\n\n"
             "Load the canonical Solaris workflow at [" + skill["name"] + "](" + canonical + "). "
-            "Resolve that path relative to this SKILL.md, then use its instructions and companion files. "
-            "Run helpers from their canonical role folder so shared imports and resources remain valid. "
+            "Resolve that path relative to this SKILL.md, then use its instructions and companion files. " +
+            working_directory +
             "The host supplies execution tools and permissions; this adapter adds no grants or background jobs.\n", encoding="utf-8")
     identity = {"name": "solaris-dev-shop", "version": plugin_version,
                 "description": "61 specialist workflows, a chief of staff and executable local helpers.",
@@ -190,11 +198,12 @@ def build(revision, destination):
             "onboardingSkill": "./skills/chief-of-staff/SKILL.md",
             "interface": {
                 "displayName": "Solaris Dev Shop",
-                "shortDescription": "Specialist workflows with executable local tools",
+                "shortDescription": "61 specialist workflows",
                 "longDescription": "61 specialist workflows and a chief of staff, backed by local tools for recoverable delivery, reconciled data, API behavior and evidence checks. Host tools and permissions apply; helpers retain documented runtime limits.",
                 "developerName": "Solaris Technologies", "category": "Productivity",
                 "websiteURL": DISTRIBUTION, "supportURL": DISTRIBUTION + "/issues",
                 "privacyPolicyURL": "https://www.solaristek.com/privacy-policy/",
+                "termsOfServiceURL": DISTRIBUTION + "/blob/v0.63.0/LICENSE",
                 "composerIcon": icon_path, "composerIconDark": icon_path,
                 "logo": icon_path, "logoDark": icon_path,
                 "defaultPrompt": ["Route a code review to the appropriate Solaris specialists.",

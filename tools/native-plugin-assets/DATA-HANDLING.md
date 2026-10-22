@@ -1,6 +1,7 @@
 # Plugin data handling
 
-This describes the native Solaris Dev Shop package built from source release 0.62.
+This describes the native Solaris Dev Shop package. Its source revision and
+version are recorded in `SOLARIS-BUILD-SOURCE.json`.
 It is technical documentation of the package, not a replacement for the policies
 of the host application or services you choose to use.
 
