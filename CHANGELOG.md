@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.63 (2026-10-22)
+
+- Install the same specialist workflows through the native Codex/OpenAI, Claude Code and OpenCode V2 repository distribution. The original 61 roles and coordinator remain intact; installation and discovery are separate from model performance and provider-directory approval.
+- Keep offline invoice intent unique when clients enqueue or resolve the same change concurrently. Retry creation and supersession now commit together, and malformed legacy outboxes stop before any request is sent.
+- Keep synthetic loopback credentials on their assigned route: offline sync refuses redirects and ignores environment proxy settings while preserving pending changes.
+- Return bounded client errors for malformed Unicode or oversized numeric API fields instead of dropping the connection. Ordinary decimal values, including leading zeroes, retain their behavior.
+- Bind generated native loaders, adapter instructions, lifecycle metadata and complete marketplace catalogs to an independently pinned packager. Both built-in controls and a separate independent tampering review check the generated surface.
+
 ## 0.62 (2026-10-21)
 
 ### Executable specialist workflows
