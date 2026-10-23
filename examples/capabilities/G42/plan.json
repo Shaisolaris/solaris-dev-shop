@@ -465,8 +465,8 @@
     },
     {
       "id": "H66",
-      "commit": "e10de696cfe380e9c95baad1091a61166b9311d8",
-      "note": "Owner-authorized October23 full-product explicit-runtime security amendment over accepted core0d2ae8e. Preserves every original prerequisite, binding the complete new candidate rather than carrying old acceptance across changed role instructions. Independent review and exact-head tests remain required; this component is not an additional selected programme task.",
+      "commit": "db6e6f5a5d534a21c3e34f45bdb4c4bce0df6970",
+      "note": "Owner-authorized0.66 security source component: same source as e10de696 except integration-owned G42 plan/test, both retained in the final product. Original prerequisite commits remain. Exact source identity is tested; this is not independent acceptance or an additional selected task.",
       "tests": [
         "tests.test_explicit_runtime_setup",
         "tests.test_wordpress_instruction_examples",
@@ -720,6 +720,6 @@
     "Root H01/H02 at e75aedf: G11 network blobs have a narrow component revision; only the named homelab guide expands root scope. The integration checker/refusal logic is unchanged. This declaration is not independent acceptance.",
     "Root security follow-up65a05ef corrects one residual TLS rule and two WordPress instruction dataflows. Only the four named files expand root scope. Runtime fixtures prove ordinary behavior, injection refusal and recovery; no checker rule is disabled.",
     "October23 owner-authorized publication/security follow-through (PR51): add only seven explicit integration paths for scoped fleet/runbook/Unreal guidance and typed WordPress data handling. G07 is extended by one scoped documentation amendment based on its original candidate, merged without rewriting history. Original 84 selected outcomes are retained; source-binding/test gates are not waived.",
-    "0.66 H66 binds the complete explicit-runtime amendment e10de696 over the accepted product. The exact diff is reviewed independently; ordinary task execution and the original61+1 are preserved. Original G01\u2013G41 prerequisite commits, the fixed base, writable list, overlap evidence, checker and13oracle controls remain unchanged. This declaration is not acceptance or a waiver."
+    "H66 source component db6e6f5a5d534a21c3e34f45bdb4c4bce0df6970 binds the e10de696 security amendment while excluding only the self-referential examples/capabilities/G42/plan.json and tests/test_g42_capability.py. Those files remain in the final product under the original G42 writable scope. A test verifies every other Git blob/mode equals the subject and current product; original prerequisites/base/checker/13oracle controls remain. Review is still required."
   ]
 }

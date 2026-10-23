@@ -97,7 +97,7 @@ class Plan(unittest.TestCase):
                                "G16", "G17", "G19", "G20", "G21", "G22", "G23", "G25", "G31", "G32", "G33", "G34", "G35",
                                "G37", "G38", "G39", "G40", "G41", "H66"])
         amendment = self.plan["prerequisites"][-1]
-        self.assertEqual(amendment["commit"], "e10de696cfe380e9c95baad1091a61166b9311d8")
+        self.assertEqual(amendment["commit"], "db6e6f5a5d534a21c3e34f45bdb4c4bce0df6970")
         self.assertIn("tests.test_explicit_runtime_setup", amendment["tests"])
         for daily in ("G06", "G12", "G18", "G24", "G30", "G36"):
             self.assertNotIn(daily, ids)
@@ -122,6 +122,23 @@ class Plan(unittest.TestCase):
                 self.assertTrue(os.path.isfile(os.path.join(ROOT, *m.split(".")) + ".py"), m)
             for c in p.get("commands", []):
                 self.assertTrue(os.path.isfile(os.path.join(ROOT, c[0])), c[0])
+
+    def test_security_component_preserves_every_source_blob_except_owned_plan_artifacts(self):
+        subject = "e10de696cfe380e9c95baad1091a61166b9311d8"
+        component = self.plan["prerequisites"][-1]["commit"]
+        if not git_ok(subject, component):
+            self.skipTest("not a checkout holding the exact security component")
+        def inventory(revision):
+            raw = subprocess.check_output(["git", "-C", ROOT, "ls-tree", "-rz", revision])
+            return {row.split(b"\t", 1)[1].decode(): row.split(b"\t", 1)[0]
+                    for row in raw.split(b"\0") if row}
+        excluded = {"examples/capabilities/G42/plan.json", "tests/test_g42_capability.py"}
+        original = inventory(subject)
+        expected = {path: value for path, value in original.items() if path not in excluded}
+        self.assertEqual(inventory(component), expected)
+        self.assertFalse(excluded & inventory(self.plan["base"]).keys())
+        self.assertEqual({path: value for path, value in inventory("HEAD").items()
+                          if path not in excluded}, expected)
 
     def test_stack_binds_this_tree(self):
         commits = [self.plan["base"]] + [p["commit"] for p in self.plan["prerequisites"]]
