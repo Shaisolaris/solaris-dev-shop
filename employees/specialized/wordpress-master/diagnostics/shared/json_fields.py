@@ -12,7 +12,7 @@ import sys
 
 MAX_INPUT_BYTES = 1024 * 1024
 FIELDS = (
-    "plugin-matches", "theme-slug", "creation-mode", "modification-count",
+    "plugin-matches", "build-id", "theme-slug", "creation-mode", "modification-count",
     "robots-allowed", "scrape-success", "scrape-error",
 )
 
@@ -24,7 +24,9 @@ def read_field(field, data, expected_slug=None):
         if data.get("slug") != expected_slug:
             raise ValueError("plugin slug was not confirmed")
         return None
-    if field == "theme-slug":
+    if field == "build-id":
+        value = data.get("build_id", "")
+    elif field == "theme-slug":
         theme = data.get("theme", {})
         if not isinstance(theme, dict):
             raise ValueError("theme must be an object")

@@ -53,9 +53,18 @@ For each plugin candidate, query the WP.org Plugins API v1.2 to confirm the slug
 # Query WP.org Plugins API for a specific slug
 check_plugin_viable() {
   local slug="$1"
+  local LC_ALL=C
+  [[ "$slug" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || return 1
   local result
   result=$(curl --globoff --fail --silent --show-error --max-time 10 \
-    "https://api.wordpress.org/plugins/info/1.2/?action=plugin_information&request[slug]=${slug}&request[fields][active_installs]=true&request[fields][tested]=true&request[fields][requires]=true&request[fields][rating]=true" \
+    --get --data-urlencode 'action=plugin_information' \
+    --data-urlencode "request[slug]=$slug" \
+    --data-urlencode 'request[fields][active_installs]=true' \
+    --data-urlencode 'request[fields][tested]=true' \
+    --data-urlencode 'request[fields][requires]=true' \
+    --data-urlencode 'request[fields][rating]=true' \
+    --data-urlencode 'request[fields][sections]=false' \
+    'https://api.wordpress.org/plugins/info/1.2/' \
     2>/dev/null) || return 1
 
   if [ -z "$result" ] || ! python3 -I "$JSON_FIELDS" plugin-matches --expected-slug "$slug" <<< "$result" 2>/dev/null; then
@@ -78,8 +87,16 @@ For broader plugin discovery (when the coding agent wants to find alternatives f
 
 ```bash
 # Search WP.org Plugins API for a category keyword
-curl -s --max-time 10 \
-  "https://api.wordpress.org/plugins/info/1.2/?action=query_plugins&request[search]={keyword}&request[per_page]=10&request[fields][active_installs]=true&request[fields][tested]=true&request[fields][requires]=true&request[fields][rating]=true"
+: "${PLUGIN_SEARCH_TERM:?Set a plain-text plugin search term}"
+curl --globoff --fail --silent --show-error --max-time 10 --get \
+  --data-urlencode 'action=query_plugins' \
+  --data-urlencode "request[search]=$PLUGIN_SEARCH_TERM" \
+  --data-urlencode 'request[per_page]=10' \
+  --data-urlencode 'request[fields][active_installs]=true' \
+  --data-urlencode 'request[fields][tested]=true' \
+  --data-urlencode 'request[fields][requires]=true' \
+  --data-urlencode 'request[fields][rating]=true' \
+  'https://api.wordpress.org/plugins/info/1.2/'
 ```
 
 **10-plugin maximum enforcement:** Count the selected slugs. If more than 10, remove the lowest-relevance entries before proceeding to installation. Log the trimmed list with a `[Build]` note.
