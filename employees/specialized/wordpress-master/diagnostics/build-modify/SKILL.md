@@ -1,7 +1,7 @@
 ---
 name: build-modify
 description: Session-aware per-step execution engine for /modify - surgical theme edits, WP-CLI content/plugin changes, lazy Docker startup, and versioned output on session completion
-requires: [git]
+requires: [git, python3]
 runs-after: [build-scaffold, build-git, build-content, build-visual]
 ---
 
@@ -17,6 +17,7 @@ This skill expects the following variables to be set by the calling command (`/m
 | `MODIFY_MODE` | /modify session loop | `"nl"` for natural language, `"visual"` for design re-export (set per step) |
 | `NL_REQUEST` | /modify session loop | Natural language modification request (set per NL step) |
 | `VISUAL_PATH` | /modify session loop | Path to updated design export directory (set per visual step) |
+| `JSON_FIELDS` | Bundled [diagnostic JSON reader](../shared/json_fields.py) | Resolve this trusted file to an absolute path; run it with `python3 -I` rather than evaluating JSON as code. |
 
 ---
 
@@ -25,6 +26,7 @@ This skill expects the following variables to be set by the calling command (`/m
 Set up lazy Docker/WP-CLI helpers, declare the `git_commit_stage` helper function, and register an EXIT trap for MySQL container cleanup. Docker is NOT checked upfront - it is started lazily only when a content or plugin step requires MySQL.
 
 ```bash
+: "${JSON_FIELDS:?Resolve the bundled diagnostic JSON reader before running}"
 # ── Lazy Docker/WP-CLI helpers ───────────────────────────────────────────────
 # Docker and WP-CLI are only needed for content and plugin steps.
 # Theme-only sessions (theme-token, template-edit) work without Docker entirely.
@@ -245,9 +247,9 @@ PYEOF
   )
 
   # Extract key state values
-  THEME_SLUG=$(echo "$STATE_JSON" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('theme',{}).get('slug',''))" 2>/dev/null)
-  CREATION_MODE=$(echo "$STATE_JSON" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('creation_mode', d.get('mode','')))" 2>/dev/null)
-  EXISTING_MODS=$(echo "$STATE_JSON" | python3 -c "import json,sys; d=json.load(sys.stdin); print(len(d.get('modifications',[])))" 2>/dev/null)
+  THEME_SLUG=$(python3 -I "$JSON_FIELDS" theme-slug <<< "$STATE_JSON") || exit 1
+  CREATION_MODE=$(python3 -I "$JSON_FIELDS" creation-mode <<< "$STATE_JSON") || exit 1
+  EXISTING_MODS=$(python3 -I "$JSON_FIELDS" modification-count <<< "$STATE_JSON") || exit 1
 else
   echo "[Modify] No build.json found - this appears to be an external WordPress directory."
   echo "[Modify] Creating build.json to track modifications."
