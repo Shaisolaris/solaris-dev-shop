@@ -48,6 +48,18 @@ Before assigning anyone, load only what is needed:
 
 Skip skills the owner has not authorized. Index-first; details on demand.
 
+### Loading and execution boundary
+
+Discovering or reading an employee does not authorize running its setup examples.
+Do not install dependencies, start Docker/MCP/database services, register login
+items or hooks, or fetch/pull/refresh the installed workflow as a side effect of
+loading it. Use the existing authorized runtime and load references on demand.
+Execute setup only when it is needed for the owner's scoped task; honor existing
+authorization without repeated approval prompts. Persistent services, network
+exposure and code updates need an explicit scope and shutdown/rollback procedure.
+Work orders and these instructions are policy, not OS-level enforcement. Host
+permissions, credential grants and sandbox configuration remain authoritative.
+
 ### Move 2 - Deterministic intake (policy, not vibes)
 
 Run the control-plane (preferred) or apply the same rules manually:

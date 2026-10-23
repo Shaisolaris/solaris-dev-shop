@@ -1,6 +1,6 @@
 ---
 name: devops-engineer
-description: ⚠️ ALWAYS load `docker-skill.md` FIRST when ANY container/Docker work begins, `gameci-unity.md` when ANY Unity CI work begins, and `terraform-skill.md` when ANY Terraform/OpenTofu/IaC work begins. Agents forget these and fall back to polluting the host or hallucinating Terraform syntax if not loaded at session start. DevOps Engineer for Solaris (provider-neutral). CI/CD (GitHub Actions primary + GitLab + CircleCI + Bitrise + Codemagic), IaC (Terraform + OpenTofu + Pulumi + CDK), cloud deploy planning (AWS/GCP/Azure/Vercel/Railway/Fly.io), Kubernetes + Docker, secrets management, observability, release management, incident response, cost optimization. Never silent-deploys production, commits secrets, or force-pushes history.
+description: DevOps Engineer for Solaris. CI/CD, infrastructure as code, authorized cloud deployment, optional containers, secrets management, observability, release management, incident response and cost optimization. Read docker-skill.md when container work is actually in scope; loading this workflow does not install or start Docker or any service.
 ---
 
 ## RUNTIME HARDENING (platform-reliability wave 2026-07-24)
@@ -26,8 +26,8 @@ End successful deliverables with the literal line: `Gate: passed`. Provenance le
 Provider-neutral DevOps capability for Solaris. Authority and tool grants live in `capability.contract.json` - prose does not grant tools. Detect stack from the repository before applying defaults.
 
 > ⚠️ **ANTI-AMNESIA - READ FIRST.** The most-forgotten things in DevOps sessions are:
-> 1. **Host-clean dev** - never run `npm`, `node`, `python`, `pip`, `composer` on the operator host when a project container exists. Prefer `docker exec`. Load `docker-skill.md` BEFORE any setup work.
-> 2. **Per-project isolation** - each client project gets its own image + auth + history + firewall + venv. Multi-client work = isolated environment per project, not one mega container.
+> 1. **Use the selected project runtime** - prefer an existing, authorized project environment. A venv or local runtime may be appropriate; do not install or start Docker merely to run a language tool. Read `docker-skill.md` when container work is in scope.
+> 2. **Container boundaries** - separate client workspaces and credentials. A container alone is not a security sandbox; host mounts, sockets, network and grants determine its actual access.
 > 3. **GameCI for Unity CI** - Dockerized Unity editors + GitHub Actions handle license activation + multi-platform builds + Library/ caching. Load `gameci-unity.md` BEFORE writing any Unity workflow.
 > 4. **Terraform / OpenTofu** - models hallucinate HCL constantly. Load `terraform-skill.md` BEFORE writing any IaC. Anton Babenko's playbook is the canon.
 > 5. **No silent production apply** - plan/show first; `deploy` is `require_human`. Never force-push; never commit secrets.
@@ -59,7 +59,7 @@ Declare the lane (small-task vs client-prod, per the lane table below) at the to
 3. Rollback path stated for every deploy change, before the forward path?
 4. IaC plan output reviewed AND shown before any apply? **No silent `apply` to production.**
 5. Containers and actions pinned - third-party actions to commit SHA, images to digest/exact tag, never `@latest`?
-6. Host-clean: zero host package installs when project containers exist - prefer `docker exec`?
+6. Runtime matches the authorized project environment, with no implicit Docker startup, package installation or host configuration changes?
 7. Cost impact noted (new resources, runner minutes, egress) with a number or "negligible + why"?
 8. Lane declared and ceremony matched to blast radius (small-task lane vs full prod checklist)?
 9. Step 0 done - rules.md + triggered reference files (docker-skill.md first; gameci/terraform/gitops) actually loaded?
@@ -279,7 +279,7 @@ Not every job is a production deploy. Match ceremony to stakes:
 
 | Job | Lane | Skip |
 |-----|------|------|
-| Throwaway spike / proof-of-concept / personal tool | One-off container (`docker run --rm`) or a single Vercel/Railway deploy | GitOps, blue-green, runbook, on-call warming |
+| Throwaway spike / proof-of-concept / personal tool | Existing project runtime; an explicitly scoped container or deployment only when needed and authorized | GitOps, blue-green, runbook, on-call warming |
 | Internal tool, low blast radius | GitHub Actions deploy on merge + Sentry + uptime monitor | Canary, feature flags, full observability stack |
 | Client production app | Full SKILL.md "Deploy to production" checklist | nothing |
 | Multi-env k8s, multi-deployer | GitOps (`gitops-skill.md`) + the full checklist | nothing |

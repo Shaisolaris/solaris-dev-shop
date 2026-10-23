@@ -5,13 +5,23 @@ files. The installed wheel places those files under
 `solaris_intake/control_plane/`; the source checkout keeps the documented script
 path. No repository symlink is required for packaging or source discovery.
 
-One command, from anywhere:
+Select a published revision, inspect its source, and install from that checkout:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Shaisolaris/solaris-dev-shop/main/install.sh | bash
+git clone https://github.com/Shaisolaris/solaris-dev-shop.git
+cd solaris-dev-shop
+# Check out the exact commit identified by the release you reviewed.
+./install.sh
 ```
 
-It clones to `~/.solaris-dev-shop`, verifies the tree, runs the control-plane self-test and the routing suite, installs the `solaris-intake` command into `~/.local/bin`, and prints per-agent skill paths. Uninstall any time with `~/.solaris-dev-shop/install.sh --uninstall`.
+The installer verifies the local tree, runs the control-plane self-test and the routing suite,
+installs the `solaris-intake` command into `~/.local/bin`, and prints per-agent skill paths.
+It does not clone, pull, download dependencies, start Docker, or register a background updater.
+Run it from the checkout root; running it elsewhere refuses without fetching anything.
+Uninstall from the retained checkout with `./install.sh --uninstall`.
+Updates are a separate owner-authorized operation: review the new exact revision before
+changing the checkout and rerunning the installer. A host application's own update policy
+is separate from this package and must be configured in that host.
 
 Uninstall removes only a command bearing the installer marker. It retains the
 checkout and your local files. Older, unmarked commands are left for inspection.

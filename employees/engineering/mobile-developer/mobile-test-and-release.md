@@ -29,7 +29,7 @@ Rules:
 
 ## 2. Maestro (cross-platform E2E): methodology
 
-Install: curl -fsSL "https://get.maestro.mobile.dev" | bash (needs Java 17+).
+Setup is optional and requires Java 17+ plus an explicitly authorized tool installation. Select a pinned official Maestro release, download and inspect it, and verify the publisher-provided checksum/signature before running it. Do not pipe a changing remote installer into a shell or install it on workflow load.
 
 Canonical flow shape (YAML, one flow = one file):
 

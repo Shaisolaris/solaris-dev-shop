@@ -39,7 +39,7 @@ Last updated: [DATE]
 
 ## 6. MCP / tooling setup
 - **Engine-control MCP:** ChiR24/Unreal_mcp (McpAutomationBridge) - server on port [8091], `UE_PROJECT_PATH=[...]`.
-- **In-engine GenAI:** UnrealGenAISupport [enabled? AutoStart MCP? which LLM providers + keys via PS_* env vars].
+- **In-engine GenAI:** UnrealGenAISupport [enabled for this task? AutoStart MCP must remain disabled; which authorized providers + keys via PS_* env vars].
 - **Shared asset layer connected:** [blender-mcp / Tripo / Meshy / ElevenLabs - which are wired].
 
 ## 7. Art / asset budget

@@ -11,8 +11,8 @@ Last revised: 2026-06-14 (v0.8.0 - open-source release/sanitization pipeline met
 - **Hosting Cleanup gig - devops slice (cross-ref, not duplicated):** when a hosting-cleanup engagement reaches the CI/secret/container-supply-chain layer, that is already covered - run the Trivy gating + SHA-pin discipline (`gitops-skill.md` section 6) and SOPS secret hygiene; the WordPress-application layer routes to wordpress-master (hosting-cleanup-hardening.md) and the server/TLS/header/CIS host layer routes to network-engineer (server-hardening-tls-headers.md). devops owns the pipeline + supply-chain hardening only; do not re-scan the live host (that is network-engineer's read-only-first lane).
 
 ## Core principles
-- **Host-clean dev.** Never run `npm`, `node`, `python`, `pip`, `composer`, `bundle`, `gem` on the owner's Mac. Always `docker exec <container> <cmd>`.
-- **Per-project isolation.** Each client gets its own a per-project agent box image + auth + firewall + venv. Multi-client work = multi-instance a per-project agent box, not shared.
+- **Project runtime.** Use the existing authorized runtime, venv or container. Do not install/start Docker, pull images or install packages merely because this workflow was loaded.
+- **Actual isolation.** Separate client workspaces and credentials. Containers share the host kernel; mounted paths, sockets and network can cross client boundaries. A project name does not enforce isolation.
 - **Pin everything.** Unity version, Docker image tag, action version (`@v4` not `@latest`), package version. Reproducibility > convenience.
 - **Cache aggressively.** Library/ for Unity, node_modules for Node, ~/.cache/pip for Python, Gradle wrapper for Android. Cache hit = 10x faster CI.
 - **Secrets in GitHub Secrets, never in repo.** No exceptions. Use OIDC where the cloud supports it (AWS, GCP) - short-lived tokens beat long-lived keys.
@@ -20,8 +20,8 @@ Last revised: 2026-06-14 (v0.8.0 - open-source release/sanitization pipeline met
 - **Rollback path before forward path.** Every deploy has a documented rollback. Blue-green > rolling > recreate.
 
 ## Decision rules
-- **When** new project setup → create `.the coding agent/docker-config.json` + `docker-compose.yml` per the docker-skill.md template
-- **When** the owner is working on multiple clients in parallel → install a per-project agent box + use `the coding agentbox profile <stack>` per project
+- **When** new project setup → inspect existing runtime/configuration first; propose a container only when needed. Read docker-skill.md for its bounded, optional execution procedure.
+- **When** the owner is working on multiple clients in parallel → keep workspaces and credentials separate; do not install an agent-box utility or mount the owner's auth/socket files as an automatic setup step.
 - **When** Unity CI needed → use GameCI (`game-ci/unity-builder@v4` + `game-ci/unity-test-runner@v4`), pin `unityVersion` to ProjectSettings/ProjectVersion.txt, cache `Library/`
 - **When** native modules in Node project → base image `node:20-slim` (NEVER alpine - `ERR_DLOPEN_FAILED`)
 - **When** pure JS/TS → `node:20-alpine` (smaller image, faster pull)
@@ -34,14 +34,14 @@ Last revised: 2026-06-14 (v0.8.0 - open-source release/sanitization pipeline met
 - **When** k8s deployment → Helm chart + values per env, ArgoCD/Flux for GitOps (load `gitops-skill.md`: Application/Kustomization patterns, sync policy, Argo-vs-Flux selection)
 - **When** secrets must live in a git-driven (GitOps) repo → SOPS-encrypted (`gitops-skill.md` §4), never plaintext; decrypt key in KMS/age only
 - **When** vendor-neutral telemetry needed → OpenTelemetry Collector pipeline (`gitops-skill.md` §5); instrument once, fan out to any backend
-- **When** the owner asks for a quick spike / POC / personal tool → use the small-task lane (SKILL.md): one-off container or single PaaS deploy, skip GitOps/blue-green/runbook. Scale process to blast radius.
+- **When** the owner asks for a quick spike / POC / personal tool → use the small-task lane and existing authorized runtime. A container or PaaS deployment still needs to fall within the requested execution scope.
 - **When** observability needed → metrics (Prometheus/Datadog), logs (Loki/Datadog), traces (OpenTelemetry), errors (Sentry), uptime (Pingdom/Better Stack)
 - **When** incident response → declare severity → comms first → mitigate → fix → blameless postmortem
 - **When** the owner asks about FTP deploy → cross-reference the ftp-deploy GIG at `solaris/gigs/ftp-deploy/` (it lives as a gig, not duplicated here)
 - **When** private/client/internal code needs to go public (open-source, publish own tool) → run the release pipeline (`opensource-release-pipeline.md`): fork (strip secrets + internal refs + reset git history) → independent sanitize audit → package (license/README/AGENTS.md/CI) → human publish checklist. Publish only from staging, only on owner approval.
 
 ## Red flags
-- `npm install` / `pip install` / `composer install` on host → `docker exec`
+- Missing runtime → report the prerequisite or propose a bounded setup; do not silently install tools or start a daemon.
 - Alpine + native modules → use slim
 - `actions/checkout@latest` or `unityVersion: latest` → pin exact version
 - Secrets committed in `.env`, `.npmrc`, `the coding agent_config.json` → GitHub Secrets only

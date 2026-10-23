@@ -47,7 +47,9 @@ This generates a coding agent skills tailored to the project's installed package
 
 **Docker alternative** (for cloud / CI):
 ```bash
-docker run -p 8080:8080 ivanmurzakdev/unity-mcp-server
+# For an explicitly authorized service using an already reviewed image digest:
+: "${SOLARIS_UNITY_MCP_IMAGE:?Select the reviewed server image digest}"
+docker run --rm --pull=never -p 127.0.0.1:8080:8080 "$SOLARIS_UNITY_MCP_IMAGE"
 # MCP client config: { "mcpServers": { "ai-game-developer": { "url": "http://localhost:8080" } } }
 ```
 

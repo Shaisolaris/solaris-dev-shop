@@ -1,12 +1,12 @@
 ---
 name: build-scaffold
-description: Scaffold a blank WordPress installation with Docker MySQL, WP-CLI, SQL export, zip packaging, and build.json manifest
+description: Scaffold a blank WordPress installation with explicitly authorized Docker MySQL and installed WP-CLI, SQL export, zip packaging, and build.json manifest
 requires: [docker, wp-cli]
 ---
 
 # Build Scaffold Skill
 
-Complete blank WordPress installation pipeline. Spins up an ephemeral Docker MySQL container, uses WP-CLI to download and install WordPress, exports the database, packages everything as a Local WP importable zip, and writes a build.json manifest.
+Complete blank WordPress installation pipeline. After explicit task-specific container authorization, starts an ephemeral Docker MySQL container, uses WP-CLI to download and install WordPress, exports the database, packages everything as a Local WP importable zip, and writes a build.json manifest.
 
 This skill expects the following variables to be set by the calling command before invocation:
 
@@ -17,41 +17,30 @@ This skill expects the following variables to be set by the calling command befo
 
 ## Section 1: Prerequisite Checks
 
-Check that Docker and WP-CLI are available before proceeding.
+The caller must have authorization covering this temporary database and loopback port, set `SOLARIS_CONTAINER_START_AUTHORIZED=yes`, and select an already available reviewed `SOLARIS_MYSQL_IMAGE` by digest. These values do not grant host permissions. Missing scope or prerequisites stops before any container command. No Docker Desktop/daemon startup, image pull, host-network WP-CLI fallback or restart policy is performed.
 
 ```bash
-# Check Docker is running
-if ! docker info > /dev/null 2>&1; then
-  echo ""
-  echo "ERROR: Docker is required for /build. Start Docker Desktop and try again."
-  echo ""
+# The caller records the owner's existing task-specific container authorization.
+# This flag is a workflow guard, not a permission grant or security sandbox.
+if [ "${SOLARIS_CONTAINER_START_AUTHORIZED:-}" != "yes" ]; then
+  echo "Container startup is outside the selected execution scope; no Docker command run." >&2
   exit 1
 fi
-
-# Check for local WP-CLI first (preferred)
-if which wp > /dev/null 2>&1; then
-  WP_CLI_MODE="local"
-  echo "[Build] Prerequisites OK - Docker ✓, WP-CLI ✓ (local)"
-else
-  # Fall back to Docker-based WP-CLI
-  echo "[Build] Local WP-CLI not found. Checking Docker WP-CLI fallback..."
-  if docker run --rm wordpress:cli wp --version > /dev/null 2>&1; then
-    WP_CLI_MODE="docker"
-    echo "[Build] Prerequisites OK - Docker ✓, WP-CLI ✓ (docker)"
-  else
-    echo ""
-    echo "ERROR: WP-CLI is required for /build but was not found."
-    echo ""
-    echo "Install WP-CLI:"
-    echo "  curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar"
-    echo "  chmod +x wp-cli.phar"
-    echo "  sudo mv wp-cli.phar /usr/local/bin/wp"
-    echo ""
-    echo "Full instructions: https://wp-cli.org"
-    echo ""
-    exit 1
-  fi
+if [[ ! "${SOLARIS_MYSQL_IMAGE:-}" =~ ^[A-Za-z0-9./:_-]+@sha256:[a-f0-9]{64}$ ]]; then
+  echo "Select an already available reviewed MySQL image digest; no Docker command run." >&2
+  exit 1
 fi
+# Do not start the Docker daemon/Desktop or install a missing prerequisite.
+if ! command -v wp > /dev/null 2>&1; then
+  echo "An installed, reviewed WP-CLI is required; no automatic Docker fallback." >&2
+  exit 1
+fi
+if ! docker info > /dev/null 2>&1; then
+  echo "The selected Docker daemon is unavailable; no daemon was started." >&2
+  exit 1
+fi
+WP_CLI_MODE="local"
+
 ```
 
 ## Section 2: Build Directory Setup
@@ -116,14 +105,14 @@ cleanup_mysql() {
 trap cleanup_mysql EXIT
 
 # Start MySQL container
-docker run -d \
+docker run -d --pull=never --restart=no \
   --name "$MYSQL_CONTAINER" \
   -e MYSQL_ROOT_PASSWORD="$MYSQL_ROOT_PASS" \
   -e MYSQL_DATABASE=wordpress \
   -e MYSQL_USER=wp \
   -e MYSQL_PASSWORD="$MYSQL_PASS" \
   -p 127.0.0.1:3307:3306 \
-  mysql:8.0 \
+  "$SOLARIS_MYSQL_IMAGE" \
   --default-authentication-plugin=mysql_native_password \
   > /dev/null
 
@@ -150,17 +139,12 @@ echo "[Build] Database ready."
 Download WordPress core, configure it, run the install, and export the database. All steps check for errors and abort with a clear message on failure.
 
 ```bash
-# Set WP command based on WP_CLI_MODE
-if [ "$WP_CLI_MODE" = "local" ]; then
-  WP="wp --path=$BUILD_DIR"
-else
-  # Docker WP-CLI - mount build directory as WordPress root
-  WP="docker run --rm -v \"$BUILD_DIR:/var/www/html\" --network host wordpress:cli wp --allow-root"
-fi
+# Use the existing local WP-CLI. Do not pull or launch a CLI image as a fallback.
+WP=(wp "--path=$BUILD_DIR")
 
 # Step 1: Download WordPress core
 echo "[Build] Downloading WordPress core..."
-if ! $WP core download --version="$WP_VERSION" 2>&1; then
+if ! "${WP[@]}" core download --version="$WP_VERSION" 2>&1; then
   echo ""
   echo "ERROR: WordPress core download failed. Check your internet connection."
   echo ""
@@ -169,7 +153,7 @@ fi
 
 # Step 2: Create wp-config.php
 echo "[Build] Configuring WordPress..."
-if ! $WP config create \
+if ! "${WP[@]}" config create \
   --dbname=wordpress \
   --dbuser=wp \
   --dbpass="$MYSQL_PASS" \
@@ -191,7 +175,7 @@ echo "[Build] Installing WordPress..."
 # Generate random admin password (displayed in terminal, never stored)
 ADMIN_PASS="$(openssl rand -base64 16 | tr -dc 'a-zA-Z0-9' | head -c 16)"
 
-if ! $WP core install \
+if ! "${WP[@]}" core install \
   --url=http://localhost \
   --title="$SITE_TITLE" \
   --admin_user=admin \
@@ -206,7 +190,7 @@ fi
 
 # Step 4: Export database
 echo "[Build] Exporting database..."
-if ! $WP db export "$BUILD_DIR/database.sql" --add-drop-table 2>&1; then
+if ! "${WP[@]}" db export "$BUILD_DIR/database.sql" --add-drop-table 2>&1; then
   echo ""
   echo "ERROR: Database export failed."
   echo ""
@@ -263,7 +247,7 @@ Write a build.json manifest to the build directory. Admin password is NOT includ
 BUILD_ID="build-$(date +%Y%m%d%H%M%S)-$(openssl rand -hex 4)"
 
 # Get actual WP version installed
-WP_VERSION_ACTUAL=$($WP core version 2>/dev/null || echo "$WP_VERSION")
+WP_VERSION_ACTUAL=$("${WP[@]}" core version 2>/dev/null || echo "$WP_VERSION")
 
 # Write build.json
 cat > "$BUILD_DIR/build.json" << MANIFEST

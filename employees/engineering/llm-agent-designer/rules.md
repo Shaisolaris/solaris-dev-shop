@@ -170,7 +170,7 @@ Source: obra/superpowers (MIT, ~174K stars, Jesse Vincent / Prime Radiant, ~7 mo
 
 **Consolidated in (patterns lifted):**
 - **Spec-first interview before any code.** When an agent is asked to build something, don't jump to writing - interview the user to tease out an actual spec, then show the spec back in digestible chunks before any subagent starts work. This is the canonical anti-pattern fix for "agent writes 800 lines of the wrong thing."
-- **Session hook that loads skills before any work.** Pattern: a one-line hook in the agent's startup config that says "read all SKILL.md files in skills/ before acting." This is how Solaris should be loading employees on session start - not on-demand, eagerly.
+- **Bounded skill discovery.** Discover names and descriptions first; load only the workflow and references relevant to the authorized task. Do not add a session hook that eagerly loads all employees or starts tools, services or refresh jobs. Reading skill text is not authorization to execute its setup examples.
 - **Subagent-driven-development for long autonomous runs.** Once a spec is approved, launch subagents to work each engineering task, with the main agent inspecting and reviewing their output before moving forward. Multi-hour autonomous runs become achievable without drift.
 - **Skills as composable markdown, not a framework.** 14 SKILL.md files, no fine-tuned model, no SDK, no agent platform - just markdown the host agent loads. This validates the Solaris approach (employees as markdown) at 174K-star scale. Doctrine alignment confirmed.
 

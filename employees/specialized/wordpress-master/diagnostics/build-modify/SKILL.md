@@ -1,6 +1,6 @@
 ---
 name: build-modify
-description: Session-aware per-step execution engine for /modify - surgical theme edits, WP-CLI content/plugin changes, lazy Docker startup, and versioned output on session completion
+description: Session-aware per-step execution engine for /modify - surgical theme edits, WP-CLI content/plugin changes, explicitly authorized temporary database, and versioned output on session completion
 requires: [git, python3]
 runs-after: [build-scaffold, build-git, build-content, build-visual]
 ---
@@ -23,7 +23,7 @@ This skill expects the following variables to be set by the calling command (`/m
 
 ## Section 0: Prerequisites and Setup
 
-Set up lazy Docker/WP-CLI helpers, declare the `git_commit_stage` helper function, and register an EXIT trap for MySQL container cleanup. Docker is NOT checked upfront - it is started lazily only when a content or plugin step requires MySQL.
+Set up lazy Docker/WP-CLI helpers, declare the `git_commit_stage` helper function, and register an EXIT trap for MySQL container cleanup. Theme-only edits use no Docker. A content/plugin step requires existing task-specific container authorization, an installed local WP-CLI and an already available reviewed image by digest; missing prerequisites refuse without starting a daemon, pulling images or launching a CLI fallback.
 
 ```bash
 : "${JSON_FIELDS:?Resolve the bundled diagnostic JSON reader before running}"
@@ -32,43 +32,41 @@ Set up lazy Docker/WP-CLI helpers, declare the `git_commit_stage` helper functio
 # Theme-only sessions (theme-token, template-edit) work without Docker entirely.
 
 WP_CLI_MODE=""
-WP=""
-DOCKER_CHECKED=false
+WP=()
+WP_CLI_CHECKED=false
 
 ensure_wp_cli() {
-  if [ "$DOCKER_CHECKED" = "true" ]; then
+  if [ "$WP_CLI_CHECKED" = "true" ]; then
     return 0
   fi
-
-  # Check Docker is running
-  if ! docker info > /dev/null 2>&1; then
-    echo "[Modify] ERROR: Docker is required for content and plugin modifications."
-    echo "[Modify] Start Docker Desktop and try again."
-    echo "[Modify] Theme-only modifications (theme-token, template-edit) work without Docker."
+  if ! command -v wp > /dev/null 2>&1; then
+    echo "[Modify] Installed WP-CLI required; no automatic Docker fallback." >&2
     return 1
   fi
-
-  # Check for local WP-CLI first (preferred), Docker fallback
-  if which wp > /dev/null 2>&1; then
-    WP_CLI_MODE="local"
-    WP="wp --path=$BUILD_DIR"
-    echo "[Modify] WP-CLI ready (local)"
-  else
-    if docker run --rm wordpress:cli wp --version > /dev/null 2>&1; then
-      WP_CLI_MODE="docker"
-      WP="docker run --rm -v \"$BUILD_DIR:/var/www/html\" --network host wordpress:cli wp --allow-root"
-      echo "[Modify] WP-CLI ready (docker)"
-    else
-      echo "[Modify] ERROR: WP-CLI is required for content/plugin modifications but was not found."
-      return 1
-    fi
-  fi
-
-  DOCKER_CHECKED=true
+  WP_CLI_MODE="local"
+  WP=(wp "--path=$BUILD_DIR")
+  WP_CLI_CHECKED=true
   return 0
 }
 
 ensure_docker_mysql() {
+# The caller records the owner's existing task-specific container authorization.
+# This flag is a workflow guard, not a permission grant or security sandbox.
+if [ "${SOLARIS_CONTAINER_START_AUTHORIZED:-}" != "yes" ]; then
+  echo "Container startup is outside the selected execution scope; no Docker command run." >&2
+  STEP_SKIPPED=true
+  return 1
+fi
+if [[ ! "${SOLARIS_MYSQL_IMAGE:-}" =~ ^[A-Za-z0-9./:_-]+@sha256:[a-f0-9]{64}$ ]]; then
+  echo "Select an already available reviewed MySQL image digest; no Docker command run." >&2
+  STEP_SKIPPED=true
+  return 1
+fi
+  if ! docker info > /dev/null 2>&1; then
+    echo "[Modify] Selected Docker daemon unavailable; no daemon was started." >&2
+    STEP_SKIPPED=true
+    return 1
+  fi
   # Ensure WP-CLI is available first
   if ! ensure_wp_cli; then
     STEP_SKIPPED=true
@@ -90,8 +88,8 @@ ensure_docker_mysql() {
   fi
 
   # Read existing credentials from wp-config.php
-  EXISTING_DB_PASS=$($WP config get DB_PASSWORD 2>/dev/null || echo "")
-  EXISTING_DB_USER=$($WP config get DB_USER 2>/dev/null || echo "wp")
+  EXISTING_DB_PASS=$("${WP[@]}" config get DB_PASSWORD 2>/dev/null || echo "")
+  EXISTING_DB_USER=$("${WP[@]}" config get DB_USER 2>/dev/null || echo "wp")
 
   if [ -z "$EXISTING_DB_PASS" ]; then
     EXISTING_DB_PASS="$(openssl rand -hex 12)"
@@ -109,14 +107,14 @@ ensure_docker_mysql() {
   MYSQL_ROOT_PASS="wpmod_root_$(openssl rand -hex 8)"
 
   # Start MySQL container with credentials matching wp-config.php
-  docker run -d \
+  docker run -d --pull=never --restart=no \
     --name "$MYSQL_CONTAINER" \
     -e MYSQL_ROOT_PASSWORD="$MYSQL_ROOT_PASS" \
     -e MYSQL_DATABASE=wordpress \
     -e MYSQL_USER="$EXISTING_DB_USER" \
     -e MYSQL_PASSWORD="$EXISTING_DB_PASS" \
     -p 127.0.0.1:3307:3306 \
-    mysql:8.0 \
+    "$SOLARIS_MYSQL_IMAGE" \
     --default-authentication-plugin=mysql_native_password \
     > /dev/null
 
@@ -138,7 +136,7 @@ ensure_docker_mysql() {
   echo "[Modify] Database ready."
 
   # Import existing database.sql
-  if ! $WP db import "$BUILD_DIR/database.sql" 2>&1; then
+  if ! "${WP[@]}" db import "$BUILD_DIR/database.sql" 2>&1; then
     echo "[Modify] ERROR: Database import failed. Cannot proceed with content modification."
     STEP_SKIPPED=true
     return 1
@@ -447,7 +445,7 @@ Example decomposition:
 For a single-step request, omit the "(step N/M)" suffix from the commit message.
 
 IMPORTANT: Content steps (content-edit, content-create, plugin-add, plugin-remove) all
-require MySQL. These steps call ensure_docker_mysql() which handles lazy Docker startup.
+require MySQL. These steps call ensure_docker_mysql() which handles explicitly authorized temporary database.
 If Docker is unavailable, content/plugin steps are skipped with a warning - theme-only
 steps still succeed.
 ```
@@ -587,7 +585,7 @@ Example:
 
 ### Section 3c: content-edit and content-create Steps (require MySQL)
 
-Content changes require a live WordPress database. Call `ensure_docker_mysql()` for lazy Docker startup, run WP-CLI operations, and re-export.
+Content changes require a live WordPress database. Call `ensure_docker_mysql()` for explicitly authorized temporary database, run WP-CLI operations, and re-export.
 
 ```bash
 # ── Lazy Docker/MySQL startup ────────────────────────────────────────────────
@@ -599,11 +597,11 @@ ensure_docker_mysql
 
 if [ "${STEP_SKIPPED:-false}" != "true" ]; then
   # For content-create steps:
-  # $WP post create --post_type=page --post_title="Blog" --post_status=publish
-  # $WP menu item add-post primary {POST_ID}
+  # "${WP[@]}" post create --post_type=page --post_title="Blog" --post_status=publish
+  # "${WP[@]}" menu item add-post primary {POST_ID}
   #
   # For content-edit steps:
-  # $WP post update {POST_ID} --post_content="updated content"
+  # "${WP[@]}" post update {POST_ID} --post_content="updated content"
   #
   # the coding agent runs the appropriate WP-CLI commands based on the step description.
 
@@ -611,7 +609,7 @@ if [ "${STEP_SKIPPED:-false}" != "true" ]; then
 
   # After all content operations for this step:
   # Re-export database
-  if ! $WP db export "$BUILD_DIR/database.sql" --add-drop-table 2>&1; then
+  if ! "${WP[@]}" db export "$BUILD_DIR/database.sql" --add-drop-table 2>&1; then
     echo "[Modify] WARNING: Database re-export failed. Previous SQL retained."
   else
     echo "[Modify] Database re-exported successfully."
@@ -629,7 +627,7 @@ fi
 
 ### Section 3d: plugin-add and plugin-remove Steps (require MySQL)
 
-Call `ensure_docker_mysql()` for lazy Docker startup. Reuse the same MySQL container as content steps (if already running). Plugin installation follows the same WP.org API + WP-CLI pattern from build-content Section 1.
+Call `ensure_docker_mysql()` for explicitly authorized temporary database. Reuse the same MySQL container as content steps (if already running). Plugin installation follows the same WP.org API + WP-CLI pattern from build-content Section 1.
 
 ```bash
 # ── Lazy Docker/MySQL startup ────────────────────────────────────────────────
@@ -642,27 +640,27 @@ ensure_docker_mysql
 # If MySQL is already running from a content step, reuse it.
 
 # Install and activate:
-# $WP plugin install {PLUGIN_SLUG} --activate
+# "${WP[@]}" plugin install {PLUGIN_SLUG} --activate
 
 # Update .gitignore - add new plugin exclusion
 # echo "wp-content/plugins/{PLUGIN_SLUG}/" >> "$BUILD_DIR/.gitignore"
 
 # Re-export database after plugin activation
-# $WP db export "$BUILD_DIR/database.sql" --add-drop-table
+# "${WP[@]}" db export "$BUILD_DIR/database.sql" --add-drop-table
 
 # STEP_FILES_CHANGED="database.sql, .gitignore"
 
 # ── plugin-remove ────────────────────────────────────────────────────────────
 
 # Deactivate and uninstall:
-# $WP plugin deactivate {PLUGIN_SLUG}
-# $WP plugin uninstall {PLUGIN_SLUG}
+# "${WP[@]}" plugin deactivate {PLUGIN_SLUG}
+# "${WP[@]}" plugin uninstall {PLUGIN_SLUG}
 
 # Update .gitignore - remove the plugin's exclusion line
 # sed -i '' "/wp-content\/plugins\/${PLUGIN_SLUG}\//d" "$BUILD_DIR/.gitignore"
 
 # Re-export database after plugin removal
-# $WP db export "$BUILD_DIR/database.sql" --add-drop-table
+# "${WP[@]}" db export "$BUILD_DIR/database.sql" --add-drop-table
 
 # STEP_FILES_CHANGED="database.sql, .gitignore, wp-content/plugins/{PLUGIN_SLUG}/"
 
@@ -1021,7 +1019,7 @@ echo ""
 - **COMMAND.md owns the session loop, SKILL.md owns per-step execution** - the conversation lives in the command, execution logic lives in the skill.
 - **NL modifications are surgical** - the coding agent reads specific files and writes minimal changes. No full theme regeneration.
 - **Visual re-exports are diff-aware** - only changed tokens/templates are updated, preserving prior NL modifications unless explicitly overridden.
-- **Docker/MySQL uses lazy startup** - `ensure_docker_mysql()` is called only when a content or plugin step is detected. Theme-only sessions (theme-token, template-edit) work without Docker entirely.
+- **Docker/MySQL requires explicit execution scope** - `ensure_docker_mysql()` refuses missing authorization or an unpinned image before any Docker command. It is called only when a content or plugin step is detected. Theme-only sessions (theme-token, template-edit) work without Docker entirely.
 - **MySQL container lifecycle** - for compound requests with multiple content steps, keep the container running across all content steps. Single EXIT trap covers the full session. Spin down on exit.
 - **Error recovery** - warn-and-continue at the step level. Completed steps are preserved (git commits exist). Failed steps are reported. The user can retry the failed step in the next prompt.
 - **Pre-Phase 13 builds and external directories** - if no `.git/` directory exists, initialize git and create an initial commit before applying modifications.

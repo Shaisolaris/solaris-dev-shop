@@ -12,14 +12,14 @@ A FreeCAD addon + MCP server that lets the coding agent control FreeCAD: create/
    - Windows: `%APPDATA%\FreeCAD\Mod\`
    Copy `addon/FreeCADMCP` into that Mod directory, then **restart FreeCAD**.
 2. In FreeCAD: switch to the **MCP Addon** workbench, then **Start RPC Server** from the FreeCAD MCP toolbar.
-   - Optional: check **Auto-Start Server** so it starts on every launch (saved to freecad_mcp_settings.json).
+   - Leave **Auto-Start Server** disabled. Start the server only for the authorized CAD task, bind to loopback, and stop it after the task. Loading this workflow does not authorize changing persistent settings.
 3. Register the MCP server with the client (uvx - no separate install needed):
 ```json
 { "mcpServers": { "freecad": { "command": "uvx", "args": ["freecad-mcp"] } } }
 ```
    - Token-saver: add `"--only-text-feedback"` to skip screenshots.
    - Dev mode: `"command": "uv", "args": ["--directory", "/path/to/freecad-mcp/", "run", "freecad-mcp"]`.
-4. **Remote FreeCAD** (server on another machine): in the toolbar enable **Remote Connections** (binds 0.0.0.0), set **Allowed IPs** (CIDR ok, 127.0.0.1 always allowed), restart the RPC server; then point the MCP server with `"--host", "192.168.x.x"`.
+4. **Remote FreeCAD** requires a separately authorized connection to an owned host. Keep the RPC listener on loopback and use an authenticated tunnel; do not enable a wildcard `0.0.0.0` listener as the default. This RPC can run arbitrary Python, so an IP allowlist alone is not a sufficient trust boundary. Record the tunnel/listener shutdown steps before starting it.
 
 ## Tools (the employee's vocabulary)
 - `create_document` - new FreeCAD document.
