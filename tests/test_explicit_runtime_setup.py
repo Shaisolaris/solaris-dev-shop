@@ -139,6 +139,30 @@ if sys.argv[1:2] == ['run']: print('fixture-container')
             self.assertIn(value, calls[0])
         self.assertFalse((self.work / 'SHOULD_NOT_EXIST').exists())
 
+    def test_comma_in_mount_path_is_refused_before_docker(self):
+        code = bash_block(ROOT / 'employees/engineering/devops-engineer/docker-skill.md',
+                          '## Example: bounded offline analysis')
+        for value in ('SOLARIS_INPUT_DIR', 'SOLARIS_OUTPUT_DIR'):
+            extra = dict(SOLARIS_DEV_IMAGE='reviewed/image@sha256:' + '0'*64,
+                         SOLARIS_INPUT_DIR=str(self.work), SOLARIS_OUTPUT_DIR=str(self.work / 'out'))
+            extra[value] += ',readonly=false'
+            result = self.run_bash(code, **extra)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertEqual(self.docker_calls(), [])
+
+    def test_optional_mcp_examples_refuse_mutable_images(self):
+        examples = [
+            ('employees/engineering/unity-developer/unity-mcp-operator.md', '**Docker alternative**', 'SOLARIS_UNITY_MCP_IMAGE'),
+            ('employees/engineering/unreal-developer/unreal-mcp-operator.md', '**Docker alternative', 'SOLARIS_UNREAL_MCP_IMAGE'),
+            ('employees/leadership/cfo/filings-and-market-data-tooling.md', '## CONNECT', 'SOLARIS_SEC_MCP_IMAGE'),
+        ]
+        for path, heading, variable in examples:
+            with self.subTest(path=path):
+                code = bash_block(ROOT / path, heading)
+                result = self.run_bash(code, **{variable: 'image:latest'})
+                self.assertNotEqual(result.returncode, 0)
+                self.assertEqual(self.docker_calls(), [])
+
     def test_outside_checkout_installer_never_fetches_or_updates(self):
         target = Path(self.env['HOME']) / '.solaris-dev-shop'
         target.mkdir(parents=True)

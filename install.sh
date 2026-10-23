@@ -9,7 +9,6 @@
 # `solaris-intake` command into ~/.local/bin.
 set -euo pipefail
 
-TARGET="$HOME/.solaris-dev-shop"
 INSTALL_BIN_DIR="$HOME/.local/bin"
 UNINSTALL=false
 PYTHON_BIN="${SOLARIS_PYTHON:-python3}"
@@ -32,7 +31,7 @@ if [ "$UNINSTALL" = true ]; then
   else
     echo "No managed command found."
   fi
-  echo "Checkout retained at $TARGET to preserve local changes and files."
+  echo "Source checkout and local files retained; uninstall removes only the managed command."
   exit 0
 fi
 

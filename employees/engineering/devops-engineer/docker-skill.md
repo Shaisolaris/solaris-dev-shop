@@ -59,6 +59,12 @@ if [ "$(id -u)" -eq 0 ]; then
   echo "Select a non-root execution identity; no container started." >&2
   exit 1
 fi
+# Docker's --mount value is comma-delimited; refuse ambiguous path data.
+for directory in "$SOLARIS_INPUT_DIR" "$SOLARIS_OUTPUT_DIR"; do
+  case "$directory" in
+    *,*) echo "A comma in a mount path is unsupported; no container started." >&2; exit 1 ;;
+  esac
+done
 docker run --rm --pull=never --network=none --read-only \
   --cap-drop=ALL --security-opt=no-new-privileges \
   --user "$(id -u):$(id -g)" --cpus=1 --memory=512m --pids-limit=128 \
