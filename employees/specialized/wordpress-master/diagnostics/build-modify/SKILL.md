@@ -1,7 +1,7 @@
 ---
 name: build-modify
 description: Session-aware per-step execution engine for /modify - surgical theme edits, WP-CLI content/plugin changes, lazy Docker startup, and versioned output on session completion
-requires: [git]
+requires: [git, python3]
 runs-after: [build-scaffold, build-git, build-content, build-visual]
 ---
 
@@ -17,6 +17,7 @@ This skill expects the following variables to be set by the calling command (`/m
 | `MODIFY_MODE` | /modify session loop | `"nl"` for natural language, `"visual"` for design re-export (set per step) |
 | `NL_REQUEST` | /modify session loop | Natural language modification request (set per NL step) |
 | `VISUAL_PATH` | /modify session loop | Path to updated design export directory (set per visual step) |
+| `JSON_FIELDS` | Bundled [diagnostic JSON reader](../shared/json_fields.py) | Resolve this trusted file to an absolute path; run it with `python3 -I` rather than evaluating JSON as code. |
 
 ---
 
@@ -25,6 +26,7 @@ This skill expects the following variables to be set by the calling command (`/m
 Set up lazy Docker/WP-CLI helpers, declare the `git_commit_stage` helper function, and register an EXIT trap for MySQL container cleanup. Docker is NOT checked upfront - it is started lazily only when a content or plugin step requires MySQL.
 
 ```bash
+: "${JSON_FIELDS:?Resolve the bundled diagnostic JSON reader before running}"
 # ── Lazy Docker/WP-CLI helpers ───────────────────────────────────────────────
 # Docker and WP-CLI are only needed for content and plugin steps.
 # Theme-only sessions (theme-token, template-edit) work without Docker entirely.
@@ -231,32 +233,33 @@ BUILD_JSON_PATH="$BUILD_DIR/build.json"
 if [ -f "$BUILD_JSON_PATH" ]; then
   echo "[Modify] Loading state from build.json..."
 
-  STATE_JSON=$(python3 << 'PYEOF'
+  STATE_JSON=$(python3 -I - "$BUILD_JSON_PATH" << 'PYEOF'
 import json, os, sys
 
-build_json_path = os.path.join(os.environ.get("BUILD_DIR", ""), "build.json")
+build_json_path = sys.argv[1]
 try:
     with open(build_json_path) as f:
         state = json.load(f)
     print(json.dumps(state))
-except Exception:
-    print("{}")
+except (OSError, ValueError):
+    print("[Modify] Existing build.json is unreadable; refusing to discard its state", file=sys.stderr)
+    sys.exit(1)
 PYEOF
-  )
+  ) || exit 1
 
   # Extract key state values
-  THEME_SLUG=$(echo "$STATE_JSON" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('theme',{}).get('slug',''))" 2>/dev/null)
-  CREATION_MODE=$(echo "$STATE_JSON" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('creation_mode', d.get('mode','')))" 2>/dev/null)
-  EXISTING_MODS=$(echo "$STATE_JSON" | python3 -c "import json,sys; d=json.load(sys.stdin); print(len(d.get('modifications',[])))" 2>/dev/null)
+  THEME_SLUG=$(python3 -I "$JSON_FIELDS" theme-slug <<< "$STATE_JSON") || exit 1
+  CREATION_MODE=$(python3 -I "$JSON_FIELDS" creation-mode <<< "$STATE_JSON") || exit 1
+  EXISTING_MODS=$(python3 -I "$JSON_FIELDS" modification-count <<< "$STATE_JSON") || exit 1
 else
   echo "[Modify] No build.json found - this appears to be an external WordPress directory."
   echo "[Modify] Creating build.json to track modifications."
 
   # Auto-detect theme slug: first non-twentytwenty* theme in wp-content/themes/
-  THEME_SLUG=$(python3 << PYEOF
+  THEME_SLUG=$(python3 -I - "$BUILD_DIR" << 'PYEOF'
 import os, sys
 
-themes_dir = os.path.join("$BUILD_DIR", "wp-content", "themes")
+themes_dir = os.path.join(sys.argv[1], "wp-content", "themes")
 if not os.path.isdir(themes_dir):
     print("")
     sys.exit(0)
@@ -280,12 +283,11 @@ PYEOF
   EXISTING_MODS=0
 
   # Create minimal build.json
-  python3 << PYEOF
-import json, os
+  python3 -I - "$BUILD_DIR" "$THEME_SLUG" << 'PYEOF'
+import json, os, sys
 from datetime import datetime, timezone
 
-build_dir = "$BUILD_DIR"
-theme_slug = "$THEME_SLUG"
+build_dir, theme_slug = sys.argv[1:]
 build_id = os.path.basename(os.path.abspath(build_dir))
 
 state = {
@@ -307,7 +309,7 @@ PYEOF
 fi
 
 # Derive BUILD_ID from build.json for downstream sections (commit messages, output naming)
-BUILD_ID=$(python3 -c "import json; print(json.load(open('$BUILD_DIR/build.json')).get('build_id',''))" 2>/dev/null)
+BUILD_ID=$(python3 -I "$JSON_FIELDS" build-id < "$BUILD_DIR/build.json") || exit 1
 
 echo "[Modify] Theme: ${THEME_SLUG:-unknown}"
 echo "[Modify] Creation mode: ${CREATION_MODE:-unknown}"
@@ -469,13 +471,10 @@ if [ ! -f "$THEME_JSON_PATH" ]; then
   # warn-and-continue
 else
   # Read, modify, validate, write - all in Python for JSON safety
-  python3 << PYEOF
+  python3 -I - "$THEME_JSON_PATH" "$TARGET_SLUG" "$NEW_VALUE" "$TOKEN_PATH" << 'PYEOF'
 import json, sys, os, shutil
 
-theme_json_path = "$THEME_JSON_PATH"
-target_slug = "$TARGET_SLUG"
-new_value = "$NEW_VALUE"
-token_path = "$TOKEN_PATH"
+theme_json_path, target_slug, new_value, token_path = sys.argv[1:]
 
 # Read current theme.json
 with open(theme_json_path) as f:
@@ -698,17 +697,27 @@ git_commit_stage "$COMMIT_SUBJECT" "$COMMIT_BODY"
 
 # ── 4b: Update build.json modifications array ───────────────────────────────
 
-python3 << PYEOF
-import json, os
+BEFORE_VALUE=${BEFORE_JSON:-}
+AFTER_VALUE=${AFTER_JSON:-}
+[ -n "$BEFORE_VALUE" ] || BEFORE_VALUE='{}'
+[ -n "$AFTER_VALUE" ] || AFTER_VALUE='{}'
+python3 -I - "$BUILD_DIR" "$STEP_TYPE" "$NL_REQUEST" "$STEP_DESCRIPTION" "$STEP_FILES_CHANGED" "$BEFORE_VALUE" "$AFTER_VALUE" << 'PYEOF'
+import json, os, sys
 from datetime import datetime, timezone
 
-build_json_path = os.path.join("$BUILD_DIR", "build.json")
+build_dir, step_type, request, description, files_changed, before_json, after_json = sys.argv[1:]
+build_json_path = os.path.join(build_dir, "build.json")
 
 try:
     with open(build_json_path) as f:
         state = json.load(f)
-except (FileNotFoundError, json.JSONDecodeError):
-    state = {}
+except (OSError, ValueError):
+    print("[Modify] Refusing to replace unreadable build state", file=sys.stderr)
+    sys.exit(1)
+
+if not isinstance(state, dict) or not isinstance(state.get("modifications", []), list):
+    print("[Modify] Invalid modification history; state unchanged", file=sys.stderr)
+    sys.exit(1)
 
 # Ensure modifications array exists
 if "modifications" not in state:
@@ -719,12 +728,12 @@ next_version = len(state["modifications"]) + 1
 modification_entry = {
     "version": next_version,
     "timestamp": datetime.now(timezone.utc).isoformat(),
-    "type": "$STEP_TYPE",
-    "request": "$NL_REQUEST",
-    "description": "$STEP_DESCRIPTION",
-    "files_changed": "$STEP_FILES_CHANGED".split(", "),
-    "before": json.loads('${BEFORE_JSON:-{}}'),
-    "after": json.loads('${AFTER_JSON:-{}}'),
+    "type": step_type,
+    "request": request,
+    "description": description,
+    "files_changed": files_changed.split(", "),
+    "before": json.loads(before_json),
+    "after": json.loads(after_json),
 }
 
 state["modifications"].append(modification_entry)
@@ -894,11 +903,10 @@ PARENT_DIR=$(dirname "$BUILD_DIR")
 BASENAME=$(basename "$BUILD_DIR")
 
 # Scan for existing versioned directories
-NEXT_N=$(python3 << PYEOF
+NEXT_N=$(python3 -I - "$PARENT_DIR" "$BASENAME" << 'PYEOF'
 import os, re, sys
 
-parent_dir = "$PARENT_DIR"
-basename = "$BASENAME"
+parent_dir, basename = sys.argv[1:]
 
 # Find existing {basename}-v{N} directories
 pattern = re.compile(rf'^{re.escape(basename)}-v(\d+)$')
@@ -967,10 +975,10 @@ echo "  Session complete"
 echo ""
 
 # List all modifications from this session
-python3 << PYEOF
-import json, os
+python3 -I - "$BUILD_DIR" << 'PYEOF'
+import json, os, sys
 
-build_json_path = os.path.join("$BUILD_DIR", "build.json")
+build_json_path = os.path.join(sys.argv[1], "build.json")
 try:
     with open(build_json_path) as f:
         state = json.load(f)

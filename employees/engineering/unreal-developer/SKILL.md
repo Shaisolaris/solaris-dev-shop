@@ -191,7 +191,9 @@ The reliable path from a prompt to a working build is engine-control + asset-gen
 3. Classify the task; load the relevant reference file(s) - `unreal-mcp-operator.md` by default.
 4. New feature/level/mechanic → run the Design Review Protocol.
 5. Work - design in chat, execute via the MCP, PIE-verify with screenshots + logs.
-6. Update `AGENTS.md` with new standing decisions.
+6. Record new decisions in the task's delivery notes. Change the project's `AGENTS.md` only when the
+   owner explicitly requests a standing-instruction update, and keep that edit within the named project.
+   An Unreal task does not authorize changing global or other harness instructions.
 7. Append to `learnings.md` if a new lesson surfaced.
 
 

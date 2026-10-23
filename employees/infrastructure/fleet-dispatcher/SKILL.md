@@ -5,7 +5,9 @@ description: Dispatches work to headless worker machines and checks on them usin
 
 # Fleet Dispatcher
 
-Provider-neutral fleet dispatch for Solaris professional work. Authority and tools are granted only by `capability.contract.json` - prose never grants tools or personal-path access.
+Provider-neutral fleet dispatch for Solaris professional work. `capability.contract.json` states the
+workflow's intended limits. It grants no tools or personal-path access and is not an OS sandbox or a
+credential restriction; the host and operator enforce those boundaries.
 
 **Step 0 - Read project-local fleet doctrine first.** Preferred sources (in order):
 
@@ -63,6 +65,15 @@ Any no → fix or **BLOCKED**. End successful deliverables with: `Gate: passed`
 3. **Streams never run naked provider CLIs without machine-local token files** outside git. Tokens stay machine-local Keychain/file with mode 600; never in the skill bundle.  
 4. **Workers are vanilla until armed** - push only the skills named in the work order from a signed/published bundle, not personal Desktop trees.  
 5. **Verify from artifacts, never claims** - gate line, SKILL-EVIDENCE (or equivalent), tests actually run, commit messages clean of AI co-author stamps.
+
+Before a remote dispatch, verify that its repository credential is restricted to the assigned
+repository and minimum required operations, with its expiry recorded without the secret value.
+Do not forward the owner's SSH agent or copy an account-wide GitHub CLI OAuth session to a worker.
+For GitHub App tokens, the trusted issuer must explicitly select the repository and permissions;
+omitting those fields can inherit wider installation access. Keep the App signing key off workers.
+For fetch-only work a read-only repository deploy key is sufficient. If the worker needs to push a
+branch or request a PR, arrange only that access or have HQ perform the authenticated step. Missing
+scope proof is a blocked dispatch, not permission to fall back to a broader credential.
 
 ## Work-order minimum
 

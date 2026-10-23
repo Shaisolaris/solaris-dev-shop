@@ -20,6 +20,8 @@ This skill expects the following variables to already be set by the calling comm
 - `SITE_TITLE` - site title (set by COMMAND.md Section 1)
 - `PLUGIN_DIR` - absolute path to the CoWork plugin directory
 - `WP` - WP-CLI command prefix (set by build-scaffold Section 4)
+- `JSON_FIELDS` - absolute path resolved from the bundled [diagnostic JSON reader](../shared/json_fields.py).
+  The reader accepts JSON data, has a 1 MiB input limit and runs with `python3 -I` to exclude target-project imports.
 
 ---
 
@@ -28,6 +30,7 @@ This skill expects the following variables to already be set by the calling comm
 Check that Playwright and robots-parser are installed before proceeding. Create the temp scrape directory and register an EXIT trap for cleanup.
 
 ```bash
+: "${JSON_FIELDS:?Resolve the bundled diagnostic JSON reader before running}"
 echo "[Build] build-scrape: checking prerequisites..."
 
 # Check Playwright
@@ -125,8 +128,7 @@ req.on('timeout', () => {
 NODEOF
 )
 
-ROBOTS_ALLOWED=$(echo "$ROBOTS_CHECK" | python3 -c \
-  "import json,sys; d=json.load(sys.stdin); print('true' if d.get('allowed', True) else 'false')")
+ROBOTS_ALLOWED=$(python3 -I "$JSON_FIELDS" robots-allowed <<< "$ROBOTS_CHECK") || exit 1
 ```
 
 ### 1b: Display Review Banner and Copyright Disclaimer
@@ -204,12 +206,10 @@ Invoke `scraper.js` as a Node.js subprocess. Parse the JSON result and handle ho
 SCRAPE_RESULT=$(node "$PLUGIN_DIR/skills/build-scrape/scraper.js" "$SOURCE_URL" "$SCRAPE_DIR" 2>&1)
 
 # Check whether the scrape succeeded
-SCRAPE_SUCCESS=$(echo "$SCRAPE_RESULT" | python3 -c \
-  "import json,sys; d=json.load(sys.stdin); print('true' if d.get('success') else 'false')" 2>/dev/null || echo "false")
+SCRAPE_SUCCESS=$(python3 -I "$JSON_FIELDS" scrape-success <<< "$SCRAPE_RESULT" 2>/dev/null) || SCRAPE_SUCCESS=false
 
 if [ "$SCRAPE_SUCCESS" != "true" ]; then
-  SCRAPE_ERROR=$(echo "$SCRAPE_RESULT" | python3 -c \
-    "import json,sys; d=json.load(sys.stdin); print(d.get('error','Unknown scrape error'))" 2>/dev/null || echo "$SCRAPE_RESULT")
+  SCRAPE_ERROR=$(python3 -I "$JSON_FIELDS" scrape-error <<< "$SCRAPE_RESULT" 2>/dev/null) || SCRAPE_ERROR="Scraper returned invalid diagnostic JSON"
   echo ""
   echo "ERROR: Failed to scrape $SOURCE_URL"
   echo "       $SCRAPE_ERROR"

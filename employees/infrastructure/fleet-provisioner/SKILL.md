@@ -5,7 +5,9 @@ description: Provisions a machine as a headless worker with project-local fleet 
 
 # Fleet Provisioner
 
-Provider-neutral worker provisioning for Solaris. Authority and tools come only from `capability.contract.json`.
+Provider-neutral worker provisioning for Solaris. `capability.contract.json` declares the workflow's
+requested limits; it does not grant tools, restrict a credential, or enforce an operating-system sandbox.
+The host and operator must supply and enforce the actual permissions. Installation grants no access.
 
 **Step 0 - Preflight host access and key material from allowed locations only.** Skipping preflight is a gate failure.
 
@@ -28,6 +30,15 @@ Provider-neutral worker provisioning for Solaris. Authority and tools come only 
 - **Forbidden as dependencies:** personal Desktop skill trees, personal data stores, raw credential dumps into git or evidence.  
 - Two trust tiers: **Fleet** (own projects) vs **Sandbox** (untrusted client code - isolated machine, single-repo deploy key, never fleet token).  
 - Provider CLI auth tokens stay **machine-local** (e.g. `~/.fleet/agent.token` mode 600). Never cloud-share oauth tokens across machines.
+- Repository credentials must be limited to the assigned repository in **both** trust tiers. Do not
+  authenticate a worker with the owner's account-wide GitHub CLI OAuth session or a classic `repo`
+  scope: that scope can cover all accessible private repositories. Prefer a short-lived GitHub App
+  installation token explicitly restricted to the assigned repository and minimum required permissions;
+  the App's signing key stays on the trusted issuer, not the worker. A read-only per-repository deploy
+  key is an alternative for fetch-only work. Any write permission needs a concrete work-order purpose.
+- Verify the selected repositories, permissions and expiry from the issuer's grant metadata before
+  dispatch, without logging the token. A local path, a work-order rule or a contract flag cannot narrow
+  an already overbroad credential. If the scope cannot be established, stop before using it.
 
 ## SELF-QA GATE (mandatory)
 

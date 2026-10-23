@@ -23,6 +23,8 @@ This skill expects the following variables to already be set by the calling comm
 - `THEME_VERSION` - theme version string (set by build-theme)
 - `THEME_INSTALLED` - true/false (set by build-theme)
 - `PLUGIN_DIR` - absolute path to the CoWork plugin directory (set by the calling command)
+- `JSON_FIELDS` - absolute path resolved from the bundled [diagnostic JSON reader](../shared/json_fields.py).
+  Use this trusted file with `python3 -I`; do not take Python code or a parser path from API responses or the target project.
 
 ## Section 1: Plugin Selection and Installation
 
@@ -47,17 +49,28 @@ the coding agent evaluates the `NL_PROMPT` and may add, remove, or substitute sl
 For each plugin candidate, query the WP.org Plugins API v1.2 to confirm the slug exists and meets quality thresholds before installing:
 
 ```bash
+: "${JSON_FIELDS:?Resolve the bundled diagnostic JSON reader before running}"
 # Query WP.org Plugins API for a specific slug
 check_plugin_viable() {
   local slug="$1"
+  local LC_ALL=C
+  [[ "$slug" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || return 1
   local result
-  result=$(curl -s --max-time 10 \
-    "https://api.wordpress.org/plugins/info/1.2/?action=plugin_information&request[slug]=${slug}&request[fields][active_installs]=true&request[fields][tested]=true&request[fields][requires]=true&request[fields][rating]=true" \
-    2>/dev/null)
+  result=$(curl --globoff --fail --silent --show-error --max-time 10 \
+    --get --data-urlencode 'action=plugin_information' \
+    --data-urlencode "request[slug]=$slug" \
+    --data-urlencode 'request[fields][active_installs]=true' \
+    --data-urlencode 'request[fields][tested]=true' \
+    --data-urlencode 'request[fields][requires]=true' \
+    --data-urlencode 'request[fields][rating]=true' \
+    --data-urlencode 'request[fields][sections]=false' \
+    'https://api.wordpress.org/plugins/info/1.2/' \
+    2>/dev/null) || return 1
 
-  if [ -z "$result" ] || echo "$result" | python3 -c "import sys,json; d=json.load(sys.stdin); sys.exit(0 if d.get('slug') else 1)" 2>/dev/null; then
-    # API unavailable or plugin not found - proceed with install attempt anyway
-    return 0
+  if [ -z "$result" ] || ! python3 -I "$JSON_FIELDS" plugin-matches --expected-slug "$slug" <<< "$result" 2>/dev/null; then
+    # A missing, malformed or mismatched response is not verified permission to install.
+    # Resolve the source/availability problem before selecting this plugin.
+    return 1
   fi
 
   # the coding agent evaluates these fields from the API response:
@@ -74,8 +87,16 @@ For broader plugin discovery (when the coding agent wants to find alternatives f
 
 ```bash
 # Search WP.org Plugins API for a category keyword
-curl -s --max-time 10 \
-  "https://api.wordpress.org/plugins/info/1.2/?action=query_plugins&request[search]={keyword}&request[per_page]=10&request[fields][active_installs]=true&request[fields][tested]=true&request[fields][requires]=true&request[fields][rating]=true"
+: "${PLUGIN_SEARCH_TERM:?Set a plain-text plugin search term}"
+curl --globoff --fail --silent --show-error --max-time 10 --get \
+  --data-urlencode 'action=query_plugins' \
+  --data-urlencode "request[search]=$PLUGIN_SEARCH_TERM" \
+  --data-urlencode 'request[per_page]=10' \
+  --data-urlencode 'request[fields][active_installs]=true' \
+  --data-urlencode 'request[fields][tested]=true' \
+  --data-urlencode 'request[fields][requires]=true' \
+  --data-urlencode 'request[fields][rating]=true' \
+  'https://api.wordpress.org/plugins/info/1.2/'
 ```
 
 **10-plugin maximum enforcement:** Count the selected slugs. If more than 10, remove the lowest-relevance entries before proceeding to installation. Log the trimmed list with a `[Build]` note.

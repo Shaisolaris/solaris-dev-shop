@@ -12,8 +12,9 @@ The owner dispatches from HQ. Load per SKILL.md reference table when running mul
 ## 1. Machine provisioning (headless Mac mini)
 
 1. Create a dedicated standard user `solaris-worker`. NOT admin. NOT the owner's personal account. No iCloud login.
-2. Enable auto-login for that user: System Settings → Users & Groups → "Automatically log in as" → `solaris-worker`.
-   Required so the machine comes back working after a power cut with no monitor attached.
+2. Keep login and disk-encryption protections enabled. Do not enable automatic login as the default
+   recovery mechanism for a machine holding source or credentials. Plan owner-assisted unlock after
+   a power loss, or use an explicitly approved headless host design with equivalent access protection.
 3. Enable Remote Login (SSH): System Settings → General → Sharing → Remote Login → restrict to `solaris-worker`.
 4. Enable Screen Sharing the same way. SSH is the primary channel; Screen Sharing is the break-glass GUI path
    (macOS auth dialogs, Settings toggles that have no CLI).
@@ -32,15 +33,26 @@ The owner dispatches from HQ. Load per SKILL.md reference table when running mul
 3. Auth: run `the coding agent setup-token` in the GUI session (the owner approves in browser once), save the printed token to `~/.solaris/the coding agent.token` (600, machine-local - never iCloud/.zshenv literals). Streams read it via the launcher export. GUI /login alone does NOT authenticate SSH streams (Keychain unreadable over SSH).
 4. Set git identity per machine so commits are traceable:
    `git config --global user.name "mini-01"` / `user.email` = the Solaris bot address.
-5. Git credentials: `gh auth login` (repo scope only) OR a per-machine SSH key:
-   `ssh-keygen -t ed25519 -C "mini-01"`
-6. Each machine gets its OWN deploy key, added to ONLY the repo it is assigned.
-7. Never reuse a key across machines. Never add a machine's key to a second repo.
-   Compromise blast radius = one machine, one repo.
+5. Git credentials: do not run the owner's account-wide `gh auth login` on a worker. OAuth's `repo`
+   scope is not a single-repository limit; it can grant access across the account's private repositories.
+   Prefer a short-lived GitHub App installation token issued by HQ with the assigned repository and
+   minimum permissions explicitly selected. Keep the App's signing key on HQ/the trusted issuer.
+6. Fetch-only workers may instead use a dedicated, read-only SSH deploy key added to only the assigned
+   repository. Do not reuse keys across machines or repositories, and do not forward HQ's SSH agent.
+   Write-enabled deploy keys have broad Git authority within that repository; enable writes only when
+   the work order requires them and verify the repository's actual branch protections.
+7. Record the allowed repository, operations and expiry/revocation procedure from the grant metadata,
+   without the secret value. If a deploy key cannot create a PR through the API, HQ creates the PR or
+   supplies a separately scoped, short-lived installation token; do not fall back to broad OAuth.
+   The one-repository blast-radius claim depends on this real configuration, not on a work-order file.
 8. Verify before dispatching work:
    - `the coding agent --version`
-   - `gh auth status` or `ssh -T git@github.com`
-   - test clone of the assigned repo.
+   - the issuer's repository/permission/expiry metadata, or the deploy key's repository and read/write setting
+   - a test fetch of the assigned repository; authentication success alone does not prove narrow scope.
+
+References: [OAuth scopes](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps),
+[deploy-key scope and limitations](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/managing-deploy-keys),
+and [installation token repository/permission selection](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation).
 
 ## 3. Work-stream protocol
 
@@ -51,6 +63,9 @@ The owner dispatches from HQ. Load per SKILL.md reference table when running mul
 4. Streams survive SSH disconnects. Reattach from HQ: `tmux attach -t stream-auth-api`.
 5. Launch via a `launcher.sh` that sets PATH + exports the the coding agent token, so tmux/SSH context has auth:
    `export PATH=/opt/homebrew/bin:$PATH; export CLAUDE_CODE_OAUTH_TOKEN=$(cat ~/.solaris/the coding agent.token); the coding agent -p "$(cat WORK-ORDER.md)" --allowedTools "Read,Write,Edit,Bash"`
+   Tool allowlists and the work order are not filesystem or network isolation. This broad shell example
+   is for trusted, operator-authorized work only. Untrusted code runs in a separate, credential-free
+   sandbox; do not supply provider/GitHub credentials merely because the work order names forbidden files.
 6. Every stream starts from a `WORK-ORDER.md` at the stream branch root containing:
    - **Scope** - exactly what to build; the module boundary.
    - **Interface contracts** - function signatures / API shapes other streams depend on. Frozen.

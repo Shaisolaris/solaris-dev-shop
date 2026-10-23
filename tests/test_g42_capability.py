@@ -106,7 +106,14 @@ class Plan(unittest.TestCase):
                                                  "employees/infrastructure/network-engineer/rules.md",
                                                  "employees/specialized/wordpress-master/diagnostics/build-git/SKILL.md",
                                                  "employees/specialized/wordpress-master/diagnostics/diagnostic-config-security/SKILL.md",
-                                                 "tests/test_wordpress_instruction_examples.py"])
+                                                 "tests/test_wordpress_instruction_examples.py",
+                                                 "employees/engineering/devops-engineer/headless-fleet-runbook.md",
+                                                 "employees/engineering/unreal-developer/SKILL.md",
+                                                 "employees/specialized/wordpress-master/diagnostics/build-content/SKILL.md",
+                                                 "employees/specialized/wordpress-master/diagnostics/build-modify/SKILL.md",
+                                                 "employees/specialized/wordpress-master/diagnostics/build-scrape/SKILL.md",
+                                                 "employees/specialized/wordpress-master/diagnostics/shared/json_fields.py",
+                                                 "tests/test_wordpress_json_fields.py"])
         for p in self.plan["prerequisites"]:
             for m in p["tests"]:
                 self.assertTrue(os.path.isfile(os.path.join(ROOT, *m.split(".")) + ".py"), m)
