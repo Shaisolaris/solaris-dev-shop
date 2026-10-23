@@ -165,6 +165,7 @@ service:
 ```
 
 ### Discipline
+- The Collector example is for an explicitly authorized private cluster. Its wildcard metrics listener is not a host/public exposure recipe. Review namespace/network policies, permitted scrapers and ingress before deployment; external access needs authenticated transport protection. Do not auto-deploy it or publish its ports when this reference is loaded.
 - Always run memory_limiter + batch processors. An unbounded Collector OOMs the node.
 - Deploy as a DaemonSet (agent) for node-local collection, optionally plus a Deployment (gateway)
   for org-wide processing/sampling before egress.

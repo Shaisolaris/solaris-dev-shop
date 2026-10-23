@@ -212,6 +212,31 @@ subprocess.Popen = checked_popen
         self.assertEqual(self.docker_calls(), [])
         self.assertFalse(sentinel.exists(), 'Installer attempted network or dependency setup')
 
+    def test_mobile_listener_requires_scope_and_auth_and_binds_only_loopback(self):
+        path = ROOT / 'employees/engineering/mobile-developer/mobile-mcp-operator.md'
+        code = bash_block(path, '### Authorized loopback HTTP example')
+        log = self.work / 'mobile-call.json'
+        self.stub('mobile tool', '''import json, os, sys
+from pathlib import Path
+Path(os.environ['MOBILE_LOG']).write_text(json.dumps({
+    'args': sys.argv[1:], 'auth_length': len(os.environ.get('MOBILEMCP_AUTH', '')),
+    'telemetry_disabled': os.environ.get('MOBILEMCP_DISABLE_TELEMETRY')}))
+''')
+        values = dict(MOBILE_MCP_BIN=str(self.bin / 'mobile tool'), MOBILE_LOG=str(log))
+        for extra in ({}, {'SOLARIS_SERVICE_START_AUTHORIZED': 'yes'},
+                      {'SOLARIS_SERVICE_START_AUTHORIZED': 'yes', 'MOBILEMCP_AUTH': 'secret'}):
+            with self.subTest(extra=extra):
+                result = self.run_bash(code, **dict(values, **extra))
+                self.assertNotEqual(result.returncode, 0)
+                self.assertFalse(log.exists(), 'Unauthorized listener process was invoked')
+        result = self.run_bash(code, **dict(values, SOLARIS_SERVICE_START_AUTHORIZED='yes',
+                                           MOBILEMCP_AUTH='fixture-' * 6))
+        self.assertEqual(result.returncode, 0, result.stderr)
+        observed = json.loads(log.read_text())
+        self.assertEqual(observed['args'], ['--listen', '127.0.0.1:3000'])
+        self.assertEqual(observed['auth_length'], 48)
+        self.assertEqual(observed['telemetry_disabled'], '1')
+
 
 class LearningSourceReview(unittest.TestCase):
     def setUp(self):

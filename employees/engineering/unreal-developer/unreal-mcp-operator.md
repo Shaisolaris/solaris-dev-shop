@@ -76,7 +76,7 @@ The command alone supplies no project mount or editor connection; prepare those 
 | `ASSET_LIST_TTL_MS` | `10000` | Asset list cache TTL |
 | `GRAPHQL_ENABLED` | `false` | Optional GraphQL query endpoint (port `GRAPHQL_PORT=4000`) |
 
-> **LAN access is opt-in and risky.** To drive UE from another machine, set `MCP_AUTOMATION_ALLOW_NON_LOOPBACK=true` + `MCP_AUTOMATION_HOST=0.0.0.0` on the server AND enable "Allow Non Loopback" + listen host `0.0.0.0` under Project Settings → Plugins → MCP Automation Bridge → Security. Only on trusted networks behind a firewall.
+> **Remote editor access is task-scoped.** Keep the bridge on loopback and use an authenticated tunnel to the owned editor host. Do not enable the non-loopback flags or a wildcard listener as routine setup. A trusted LAN/firewall alone does not authenticate remote editor commands; a direct-network design needs separately reviewed authentication, transport protection and shutdown. Loading this guide grants no server/configuration changes.
 
 ---
 

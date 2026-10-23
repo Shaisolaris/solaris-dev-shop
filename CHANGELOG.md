@@ -7,6 +7,7 @@
 - Require existing container execution scope before WordPress database commands; remove the automatic CLI-container fallback and host-network mode. Keep local-only database publication, cleanup and literal path arguments.
 - Leave CAD and Unreal server auto-start disabled. Make worker provisioning an optional operator procedure and replace the remote mobile-tool shell-pipe installer with reviewed setup.
 - Install only from a reviewed local checkout, without cloning, silently updating it or running developer tests that fetch build dependencies. The installer runs bounded offline routing checks. Preserve existing files on refusal and retain the complete roster, original branding and prior immutable releases. Native format compatibility and provider marketplace approval remain separate.
+- Keep mobile/editor remote automation on task-scoped, authenticated loopback connections; remove wildcard unauthenticated listener defaults, unpinned MCP startup downloads and automatic fallback setup. Missing WordPress tooling yields a reviewed setup prerequisite instead of an unsigned privileged installation recipe.
 - Disable automatic learning promotions. Pending source promotions now produce a real review request instead of falling through to assignment; ordinary work remains assignable. Keep new observations in project notes and installed workflow files unchanged.
 
 ## 0.65 (2026-10-23)
