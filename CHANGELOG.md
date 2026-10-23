@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.65 (2026-10-23)
+
+- Refuse WordPress plugin installation when its API response is missing, malformed, mismatched or unsuccessful. Validate plugin names before requests, encode API parameters and keep response JSON in a bounded, typed reader isolated from project modules.
+- Pass WordPress modification paths, requests and JSON values as data to literal Python programs. Preserve existing build state when history or replacement JSON is invalid.
+- Require explicitly selected repository permissions and short-lived worker credentials. Remove the account-wide OAuth fallback, keep login and disk-encryption protection, and distinguish policy declarations from actual operating-system and credential enforcement.
+- Change Unreal project standing instructions only on the owner's explicit request. Preserve the complete 61-specialist roster, coordinator and original branding.
+- Integrate these reviewed security corrections as one distribution milestone. Native loading tests, public source publication and provider marketplace approval remain separate outcomes.
+
 ## 0.64 (2026-10-22)
 
 - Preserve an existing skill-copy destination instead of deleting its files. Refuse files, directories, broken symlinks and destinations inside the source checkout; fresh copies and recovery remain usable.
