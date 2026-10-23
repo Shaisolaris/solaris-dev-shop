@@ -63,7 +63,7 @@ echo "-- control-plane self-test"
 "$PYTHON_BIN" control-plane/meta_control_plane.py self-test
 
 echo "-- routing probes"
-"$PYTHON_BIN" -m unittest discover -s tests -v 2>&1 | tail -4
+"$PYTHON_BIN" -m unittest discover -s tests -p test_router.py -v 2>&1 | tail -4
 
 echo "-- installing solaris-intake"
 mkdir -p "$INSTALL_BIN_DIR"

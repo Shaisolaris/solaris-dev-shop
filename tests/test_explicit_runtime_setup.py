@@ -177,6 +177,41 @@ if sys.argv[1:2] == ['run']: print('fixture-container')
         self.assertFalse((self.work / 'out').exists())
         self.assertEqual(self.docker_calls(), [])
 
+    def test_checkout_installs_and_runs_offline_without_dependency_setup(self):
+        # These guards apply to every child Python process in this fixture.
+        # The installer's old full developer suite runs network/pip smoke tests;
+        # installation must instead remain a bounded offline routing check.
+        sentinel = self.work / 'UNREQUESTED_SETUP'
+        (self.bin / 'sitecustomize.py').write_text('''
+import os, socket, subprocess
+from pathlib import Path
+def refuse_network(*args, **kwargs):
+    Path(os.environ['SETUP_SENTINEL']).write_text('network')
+    raise RuntimeError('Network disabled in installer fixture')
+socket.socket = refuse_network
+socket.create_connection = refuse_network
+original_popen = subprocess.Popen
+def checked_popen(args, *rest, **kwargs):
+    if isinstance(args, (list, tuple)) and ('pip' in args or 'pip3' in args):
+        Path(os.environ['SETUP_SENTINEL']).write_text('package installation')
+        raise RuntimeError('Dependency installation disabled in installer fixture')
+    return original_popen(args, *rest, **kwargs)
+subprocess.Popen = checked_popen
+''')
+        env = dict(self.env, PYTHONPATH=str(self.bin), SETUP_SENTINEL=str(sentinel))
+        output = self.work / 'commands'
+        install = subprocess.run(['bash', str(ROOT / 'install.sh'), '--bin-dir', str(output)],
+                                 cwd=ROOT, env=env, capture_output=True, text=True, timeout=30)
+        self.assertEqual(install.returncode, 0, install.stdout + install.stderr)
+        command = output / 'solaris-intake'
+        self.assertTrue(command.is_file())
+        result = subprocess.run([str(command), 'intake', 'review this code', '--json'],
+                                cwd=self.work, env=env, capture_output=True, text=True, timeout=15)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(result.stdout)['assignment']['primary_capability'], 'solaris.code-reviewer')
+        self.assertEqual(self.docker_calls(), [])
+        self.assertFalse(sentinel.exists(), 'Installer attempted network or dependency setup')
+
 
 class LearningSourceReview(unittest.TestCase):
     def setUp(self):
