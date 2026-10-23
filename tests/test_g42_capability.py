@@ -95,7 +95,10 @@ class Plan(unittest.TestCase):
         # exact tree, so their evidence folders cannot share this tree; every build they integrate is here.
         self.assertEqual(ids, ["G01", "G02", "G03", "G04", "G05", "G07", "G08", "G09", "G10", "G11", "G13", "G14", "G15",
                                "G16", "G17", "G19", "G20", "G21", "G22", "G23", "G25", "G31", "G32", "G33", "G34", "G35",
-                               "G37", "G38", "G39", "G40", "G41"])
+                               "G37", "G38", "G39", "G40", "G41", "H66"])
+        amendment = self.plan["prerequisites"][-1]
+        self.assertEqual(amendment["commit"], "e10de696cfe380e9c95baad1091a61166b9311d8")
+        self.assertIn("tests.test_explicit_runtime_setup", amendment["tests"])
         for daily in ("G06", "G12", "G18", "G24", "G30", "G36"):
             self.assertNotIn(daily, ids)
         self.assertEqual([e["id"] for e in self.plan["external"]], [])
