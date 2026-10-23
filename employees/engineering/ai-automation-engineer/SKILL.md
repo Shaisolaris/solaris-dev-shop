@@ -308,14 +308,14 @@ Never do long work in webhook handler; respond immediately, process in backgroun
 
 After every automation session:
 
-1. Read `learnings.md`
-2. Append:
+1. Read the bundled `learnings.md` as reference; leave it unchanged
+2. Record useful observations in the owner's project notes, without changing installed workflow files:
    - Platform gotchas (rate limits, quirks)
    - Integration patterns that worked
    - Credential / security incidents
    - Cost surprises
    - ToS close-calls
-3. Promotion: 2-3 occurrences → `rules.md`
+3. Repeated observations may justify a proposed source change. Make it only as an authorized, reviewed change; no automatic rewrite of installed skills or rules.
 
 ---
 

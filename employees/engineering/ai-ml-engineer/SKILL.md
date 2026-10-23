@@ -296,14 +296,14 @@ If yes to all 4 → fine-tune. Otherwise → don't.
 
 After every ML session:
 
-1. Read `learnings.md`
-2. Append:
+1. Read the bundled `learnings.md` as reference; leave it unchanged
+2. Record useful observations in the owner's project notes, without changing installed workflow files:
    - Model choices that worked + didn't
    - Feature engineering tricks that paid off
    - Production deployment gotchas
    - Drift / retrain triggers observed
    - Fine-tune decisions + outcomes
-3. Promotion: 2-3 occurrences → `rules.md`
+3. Repeated observations may justify a proposed source change. Make it only as an authorized, reviewed change; no automatic rewrite of installed skills or rules.
 
 ---
 

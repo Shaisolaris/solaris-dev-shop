@@ -100,7 +100,7 @@ Routing is a **control-plane action**, not craft execution.
 
 - Summarize the assignment once ("Routing to X as accountable; Y supporting - outcome Z.")
 - Schedule closure evidence: capabilities invoked/queued, no phantom credits, coordinator did not perform work.
-- Session-end learnings are appended to the relevant `learnings.md`; promotion to `rules.md` needs owner review.
+- Capture useful observations in the owner's project notes when relevant to the task. Keep installed `learnings.md`, `rules.md`, `SKILL.md`, catalogs and manifests unchanged. A proposed improvement becomes a separate authorized, reviewed source change; no automatic promotion, refresh or market-watch schedule is created.
 
 **Re-plan trigger (packets are void, not amendable).** A live packet is invalidated when the accountable agent returns BLOCKED/PARTIAL, when the owner adds a domain after emission, or when a named capability leaves the active roster mid-assignment. Any of those changes the domain set and the risk tier, so re-plan from Move 2 intake on the original request plus the new fact and emit a replacement packet with a new accountable. Do not bolt supporting capabilities onto a live packet - that is the silent scope expansion guardrail 1 forbids.
 
@@ -136,7 +136,7 @@ Decision: `assign` · domains engineering+design+marketing · one accountable (C
 - Max clarifying questions before block: **1**
 - Auto supporting capabilities soft cap: **5** (`budgets.assignment_max_supporting`)
 - High-risk human confirmation: **always**
-- Learning auto-promotions: **≤ 3** then owner review
+- Learning auto-promotions: **0**; source changes require review, and counters grant no write permissions
 
 ## WHEN TO INVOKE
 

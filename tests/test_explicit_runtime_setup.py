@@ -1,5 +1,6 @@
 """Exercise setup instructions without contacting Docker, services or a network."""
 import json
+import copy
 import os
 from pathlib import Path
 import re
@@ -175,6 +176,47 @@ if sys.argv[1:2] == ['run']: print('fixture-container')
         self.assertEqual(original.read_text(), 'retain me')
         self.assertFalse((self.work / 'out').exists())
         self.assertEqual(self.docker_calls(), [])
+
+
+class LearningSourceReview(unittest.TestCase):
+    def setUp(self):
+        sys.path.insert(0, str(ROOT / 'control-plane'))
+        import meta_control_plane
+        self.engine = meta_control_plane
+        self.policy = self.engine.load_policy()
+        self.roster = self.engine.load_roster()
+        self.budgets = self.engine.load_budgets()
+
+    def route(self, pending, budgets=None):
+        return self.engine.intake('Review this code', policy=self.policy,
+                                  roster=self.roster, budgets=budgets or self.budgets,
+                                  budget_usage={'learning_promotions_pending': pending})
+
+    def test_one_or_many_pending_promotions_require_a_real_review_envelope(self):
+        for count in (1, 3, 4, 100):
+            with self.subTest(count=count):
+                result = self.route(count)
+                self.assertEqual(result.decision, 'escalate')
+                self.assertIsNone(result.assignment)
+                self.assertFalse(result.performed_work)
+                self.assertEqual(result.escalation.reason, 'permission_required')
+                self.assertIn('learning_source_changes_require_review', result.escalation.evidence)
+
+    def test_caller_budget_is_not_permission_to_rewrite_installed_skills(self):
+        budgets = copy.deepcopy(self.budgets)
+        budgets['defaults']['learning_promotions_auto_max'] = 999
+        self.assertEqual(self.route(1, budgets).decision, 'escalate')
+
+    def test_missing_learning_budget_does_not_restore_legacy_auto_allowance(self):
+        budgets = copy.deepcopy(self.budgets)
+        budgets['defaults'].pop('learning_promotions_auto_max')
+        self.assertEqual(self.route(1, budgets).decision, 'escalate')
+
+    def test_ordinary_work_remains_assignable_without_a_source_promotion(self):
+        result = self.route(0)
+        self.assertEqual(result.decision, 'assign')
+        self.assertEqual(result.assignment.primary_capability, 'solaris.code-reviewer')
+        self.assertFalse(result.performed_work)
 
 
 if __name__ == '__main__':

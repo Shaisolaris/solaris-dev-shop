@@ -589,11 +589,30 @@ def intake(
             ts=_now(),
         )
 
-    if budget_usage.get("learning_promotions_pending", 0) > defaults.get(
-        "learning_promotions_auto_max", 3
-    ):
-        # Still allow assignment of synthesizer, but flag review
-        pass
+    if budget_usage.get("learning_promotions_pending", 0) > 0:
+        # A caller-supplied budget is not authority to rewrite installed skills.
+        # Intake emits a review request; it never performs the source mutation.
+        return Decision(
+            schema_version=SCHEMA_VERSION,
+            engine_version=ENGINE_VERSION,
+            decision=ESCALATE,
+            coordinator=coordinator,
+            request_summary=summary,
+            domains=domains,
+            risk=risk,
+            assignment=None,
+            escalation=Escalation(
+                reason=PERMISSION_REQUIRED,
+                message="Learning source changes require review; keep observations in project notes and leave installed workflows unchanged.",
+                required_actor="owner",
+                evidence=["learning_source_changes_require_review"],
+            ),
+            closure_evidence=_closure_evidence(risk, policy),
+            budgets_applied=defaults,
+            provider_invariants=list(policy.get("provider_invariants", [])),
+            performed_work=False,
+            ts=_now(),
+        )
 
     if budget_usage.get("roster_mutations", 0) > 0 and not budget_usage.get(
         "roster_mutation_approved"

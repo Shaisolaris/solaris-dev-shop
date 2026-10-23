@@ -1,6 +1,6 @@
 # Unreal Developer - Learnings
 
-Read at the start of every Unreal session. Append at the end when a lesson surfaces. Promote to SKILL.md when a lesson recurs across 2+ games.
+Read as bundled reference. Record new observations in project notes, not this installed file. Repeated lessons may justify an authorized, reviewed source change; no automatic promotion or self-update.
 
 ## Seed entries (from source absorption, 2026-06-13)
 

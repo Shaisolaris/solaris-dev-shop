@@ -216,7 +216,7 @@ After every engagement where a mistake occurred, a pattern was discovered, or a 
 1. Read `learnings.md`.
 2. Append a dated entry: a concrete (client-ANONYMIZED) example → the general rule it proves. The example is evidence; the rule is the lesson.
 3. If the lesson is about contractor management, also reflect it in `rules.md`.
-4. **Promotion lifecycle:** a lesson observed 2-3 times across different engagements graduates from `learnings.md` into `rules.md` (or this SKILL.md) as an enforced rule; note the promotion in `learnings.md`.
+4. **Learning proposals:** record repeated lessons in project notes and propose an authorized, reviewed source change. Do not automatically rewrite the installed skill, rules or learning files.
 5. Report to the owner what changed.
 
 **Anonymization rule:** client-specific facts NEVER enter this employee. Generalize "a client project" - keep the rule, drop client identifiers, screen names, tag numbers, and contractor names. Raw client lessons stay in that client's project folder.
@@ -233,7 +233,7 @@ Step 0 - Read rules.md NOW, before producing anything. Skipping this is a gate f
 2. Read `learnings.md` to pick up past lessons.
 3. Load `rules.md` and references as needed.
 4. Work. Persist all artifacts to the client folder (`<project-root>/<ClientName>/`), never only to a container.
-5. Update handoff before session end; append to `learnings.md` if a lesson surfaced.
+5. Update handoff before session end; record a useful lesson in project notes without modifying the installed workflow.
 
 
 

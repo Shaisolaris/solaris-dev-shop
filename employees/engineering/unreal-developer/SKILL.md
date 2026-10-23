@@ -49,7 +49,7 @@ This employee is the owner's Unreal cofounder, the engine-control + asset-gen co
 1. C++/Blueprint boundary stated and followed, not drifted?
 2. Change verified in PIE or a packaged build, not merely compiled?
 3. Cook/package run with the request timeout raised above the default - it WILL time out at 120s otherwise?
-4. Any lesson seen a second time promoted into this SKILL.md as a permanent rule?
+4. Any repeated lesson proposed for a reviewed source change without modifying the installed workflow?
 5. Standing project decisions written to the project's AGENTS.md?
 6. Zero shipping builds without a human; zero license key mutation?
 7. If this is a revision/job-two, every required artifact missing on job one is now present as its named heading (see job-two-improvement.md)?
@@ -93,7 +93,7 @@ the class of bug cannot recur, and wrote the C++/Blueprint rule down.
 
 ## HARD NUMBERS
 - Cook/package request timeout raised above the **120s** default before starting - it will otherwise time out on any real package.
-- Lesson promotion threshold: **2 occurrences** -> permanent rule in this SKILL.md.
+- Lesson proposal threshold: **2 occurrences** -> a reviewed source-change proposal; automatic promotions: **0**.
 - Verification in **PIE or a packaged build**. Compile-only sign-offs: **0**.
 - Shipping builds distributed without a human: **0**. License key mutations: **0**.
 
@@ -105,9 +105,9 @@ the class of bug cannot recur, and wrote the C++/Blueprint rule down.
 
 ## This skill learns over time - self-learning is core, not optional
 Two memory systems, same as unity-developer:
-- **`learnings.md`** (this folder) - mistakes and patterns from past Unreal work. Read at session start, append at session end.
+- **`learnings.md`** (this folder) - mistakes and patterns from past Unreal work. Read as reference; record new observations in project notes.
 - **`AGENTS.md`** (each Unreal project's root, from `CLAUDE_template.md`) - standing decisions for THAT game, so the coding agent never re-asks what the project already knows.
-If a lesson hits twice across projects, promote it into the body of this SKILL.md as a permanent rule.
+If a lesson recurs across projects, propose an authorized, reviewed source change; keep the installed workflow unchanged.
 
 ## First moves in every Unreal session - DO THESE BEFORE ANY CODE
 **Step 0 - Read rules.md NOW. Skipping this is a gate failure. On revision jobs, also read job-two-improvement.md before writing.**
@@ -155,7 +155,7 @@ Rule: match ceremony to stakes. A prototype gated like a shipping system never g
 - **Blueprint node-wiring is the known weak spot.** Upstream has node-connect/getter-setter bugs - prefer C++ for complex graphs and verify the compiled Blueprint; don't assume wiring took.
 - **Long ops need timeout headroom.** Raise `MCP_AUTOMATION_REQUEST_TIMEOUT_MS` before cook/package.
 - **Standing decisions live in `AGENTS.md`, not memory.**
-- **When something breaks twice, the fix becomes a rule** in `learnings.md` (promote to SKILL.md if it recurs across games).
+- **When something breaks twice, record the evidence in project notes** and propose a reviewed source change if it transfers across games.
 - **Re-plan when the engine says the plan is wrong, don't patch forward.** Four triggers, each voids the plan rather than one step: (1) a cook/package failure of a class PIE structurally cannot see (dangling soft reference, missing platform SDK, cook-only asset validation) means the verification plan was wrong, so re-plan onto a cook-first loop and add the check to CI, do not re-cook and hope; (2) a Design Review Q3 answer changing mid-build (where the player came from / goes next) changes the game-state machine, so re-run the Design Review Protocol before any further Blueprint or GAS work; (3) a prototype being asked to ship voids the LIGHT gate, so re-run the full four-question gate and re-decide ActionComponent vs full GAS before promoting it; (4) a frame-budget breach found in profiling means the architecture is wrong (tick-heavy actors, Nanite/Lumen choice), not the code, so re-plan from `unreal-gameplay-patterns.md` performance section. Blueprint node-wiring that fails to take twice is never retried a third time: re-plan that graph in C++ (known upstream node-connect bug).
 - **Name the unknown; never resolve it silently.** UE 5.0-5.8 diverge and the MCP surface is version-sensitive. When engine version, target platform, input model, plugin EULA class, or whether a Blueprint edit actually took is unknown, write the assumption and its confidence as one line into the project's `AGENTS.md`, or mark that claim `UNVERIFIED`. Never report a PIE result, a cook result, or a wired node that was not observed in a log line or a screenshot. Where the project's `AGENTS.md` conflicts with this skill's `learnings.md`, `AGENTS.md` wins for that game and the conflict is logged to `learnings.md` as a cross-project ambiguity - do not average the two.
 
@@ -181,7 +181,7 @@ The reliable path from a prompt to a working build is engine-control + asset-gen
 | `unreal-gameplay-patterns.md` | Depth methodology behind the tools: Gameplay Ability System, performance profiling + fixes, networking/replication correctness, packaging/shipping. **Load when building an actual system, not just wiring.** |
 | `unreal-cpp-quality-and-build.md` | C++ LANGUAGE depth: memory-safety/modern-C++/concurrency review (Core Guidelines), GoogleTest/CTest + sanitizers for plain C++, the C++/CMake/UBT build-error-fix loop. Adapted to Unreal (UObject GC, `TObjectPtr`, UBT). **Load when reviewing/writing C++ itself or fixing a build, distinct from the engine layer.** |
 | `game-design-mentor.md` | MDA, player loops, screen flow, game feel, design review expansions (shared with unity-developer). |
-| `learnings.md` | Self-updating log of Unreal mistakes + repeat patterns. Read at session start. |
+| `learnings.md` | Bundled record of Unreal mistakes + repeat patterns; new observations belong in project notes. Read at session start. |
 | `CLAUDE_template.md` | Drop-in project-memory template for each UE project's root. |
 | `job-two-improvement.md` | Load on any revision / job-two / scoped-feedback pass. |
 
@@ -194,7 +194,7 @@ The reliable path from a prompt to a working build is engine-control + asset-gen
 6. Record new decisions in the task's delivery notes. Change the project's `AGENTS.md` only when the
    owner explicitly requests a standing-instruction update, and keep that edit within the named project.
    An Unreal task does not authorize changing global or other harness instructions.
-7. Append to `learnings.md` if a new lesson surfaced.
+7. Record a useful new lesson in project notes; keep installed workflow files unchanged.
 
 
 ## QA Loop

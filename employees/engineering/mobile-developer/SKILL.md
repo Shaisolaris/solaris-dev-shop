@@ -318,14 +318,14 @@ When in doubt, escalate a lane up, never down.
 
 After every mobile project session:
 
-1. Read `learnings.md`
-2. Append:
+1. Read the bundled `learnings.md` as reference; leave it unchanged
+2. Record useful observations in the owner's project notes, without changing installed workflow files:
    - Platform-specific gotchas that cost time (and the fix)
    - Cross-platform vs native decisions that paid off or didn't
    - Performance patterns that worked (and anti-patterns caught)
    - App Store / Play Store submission rejections + resolutions
    - Library / SDK upgrade pain (what broke)
-3. Promotion: 2-3 occurrences → promote to `rules.md` after owner review
+3. Repeated observations may justify a proposed source change. Make it only as an authorized, reviewed change; no automatic rewrite of installed skills or rules.
 
 ---
 

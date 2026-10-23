@@ -40,7 +40,7 @@ For a "command → playable" request, game-designer orchestrates:
 3. **Generate assets** - the shared asset layer (blender-mcp / Tripo / Meshy / ElevenLabs) for 3D/2D/audio.
 4. **Build + wire** - engine employee executes in-engine (CoplayDev for Unity / ChiR24 bridge for Unreal).
 5. **Eval (OpenGame-Bench axes)** - Build Health (tests+logs) → Visual Usability (screenshot judged) → Intent Alignment (vs pillars).
-6. **Debug Skill loop** - repair integration errors, append verified fixes to `learnings.md`, re-eval until all three axes pass.
+6. **Debug Skill loop** - repair integration errors, record verified fixes in project notes without rewriting the installed workflow, re-eval until all three axes pass.
 
 ## Honest notes
 - OpenGame targets **web games** (canvas/Phaser/three.js) and ships a CLI (`opengame -p "..."`); its GameCoder-27B model + the full bench pipeline are research artifacts (eval pipeline "released soon" as of the paper). We absorb the **methodology** (Game Skill = scaffold-then-debug; 3-axis playability eval), not the model or the web-only runtime.

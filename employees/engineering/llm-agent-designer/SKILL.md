@@ -266,7 +266,7 @@ Cross-reference `mcp-builder` + `skill-creator` skills. In summary:
 1. **SKILL.md frontmatter** - name + description with trigger keywords (aggressive triggering > conservative)
 2. **Progressive disclosure** - references/ loaded only when sub-task demands
 3. **Rules.md** - active methodology, decision rules, gotchas
-4. **Learnings.md** - pending observations → 2-3 occurrences → promote to rules
+4. **Learning proposals** - observations in project notes may motivate a reviewed source change; no automatic promotion or installed-file rewrite
 5. **Plugin.json** - packaging metadata
 6. **Test** - use the coding agent on a real scenario, verify the skill triggers and produces quality output
 
@@ -315,14 +315,14 @@ Cross-reference `mcp-builder` + `skill-creator` skills. In summary:
 
 After every LLM-design session:
 
-1. Read `learnings.md`
-2. Append:
+1. Read the bundled `learnings.md` as reference; leave it unchanged
+2. Record useful observations in the owner's project notes, without changing installed workflow files:
    - Prompt patterns that worked (with expected-vs-actual quality delta)
    - Model choices that paid off or didn't
    - RAG retrieval gotchas
    - Agent loop / cost / latency surprises
    - MCP / skill design patterns the owner reused
-3. Promotion: 2-3 occurrences → `rules.md`
+3. Repeated observations may justify a proposed source change. Make it only as an authorized, reviewed change; no automatic rewrite of installed skills or rules.
 
 ---
 

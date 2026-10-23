@@ -4,17 +4,19 @@
 
 ## The two self-learning loops
 
-**Internal (learnings sweep)** - looks inward across employees.
-- Every session, employees may observe things worth remembering → `learnings.md`
-- When observation hits 2+ occurrences → the chief-of-staff **promotes it to `rules.md`** (methodology update, not a log append), with owner review
-- Cross-employee patterns → promoted to org-wide rules in `hierarchy.md`
+**Internal (learning proposals)** - record useful observations in the owner's
+project notes. Installed workflow files are read-only during ordinary use.
+Repeated observations may justify a proposed source change, but neither a
+repetition count nor a budget authorizes rewriting `learnings.md`, `rules.md`,
+`SKILL.md`, catalogs or manifests. Make an authorized source change on a branch,
+review it and validate its affected behavior before distributing an update.
 
 **External (market watch)** - looks outward to the world.
-- Weekly scheduled GitHub + web scans for new skills, tools, techniques
+- GitHub + web research for new skills, tools and techniques only when requested; no weekly schedule is installed by this product
 - Receives gap-requests from the learnings sweep when "we keep lacking X"
 - Reports back with external solutions to absorb per employee
 
-Together: continuous improvement, not a dead log.
+Improvement is reviewed work, not an automatic background loop or self-updater.
 
 ## Structure
 
@@ -24,7 +26,7 @@ See `hierarchy.md` for the full org chart. Every employee folder contains:
 <employee>/
 ├── SKILL.md          - identity, triggers, quick rules (always loaded on activation)
 ├── rules.md          - the methodology (how this employee works)
-├── learnings.md      - pending observations awaiting promotion to rules
+├── learnings.md      - bundled observations; proposed changes require source review
 ├── plugin.json       - skill plugin manifest
 └── references/       - deep-dive files, loaded on demand
 ```

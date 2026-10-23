@@ -352,13 +352,13 @@ This mode applies by default on inherited codebases (Upwork rescues, client take
 
 After every feature-build session:
 
-1. Read `learnings.md`
+1. Read the bundled `learnings.md` as reference; leave it unchanged
 2. Append general patterns (not project-specific):
    - Stack-level gotchas (framework bug discovered, library version quirk)
    - Cross-stack issues that surfaced (type drift between BE/FE, auth edge case)
    - New library or tool evaluated (accept / reject + reason)
    - Flow bottlenecks (something that slowed delivery consistently)
-3. Promotion lifecycle: 2-3 occurrences across projects → promote to SKILL.md after owner review
+3. Repeated observations may justify a proposed source change. Make it only as an authorized, reviewed change; no automatic rewrite of installed skills or rules.
 
 **General, not project-specific.** "Prisma + MySQL: UUIDs need `@default(uuid())` + `@id`" is general. "CTT uses `tag_number` as PK" is project-specific (project `AGENTS.md`).
 

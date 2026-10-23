@@ -43,7 +43,7 @@ jobs:
         shell: pwsh
         run: |
           $env:PYTHONUTF8 = '1'
-          foreach ($pattern in @('test_router.py', 'test_intake_features.py', 'test_assurance_packets.py', 'test_closure_hardening.py', 'test_fixture_runner.py', 'test_g16_takeover.py')) {
+          foreach ($pattern in @('test_router.py', 'test_intake_features.py', 'test_assurance_packets.py', 'test_closure_hardening.py', 'test_fixture_runner.py', 'test_g16_takeover.py', 'test_explicit_runtime_setup.py')) {
             python -m unittest discover -s tests -p $pattern -v
             if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           }
