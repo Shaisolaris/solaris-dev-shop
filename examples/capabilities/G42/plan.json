@@ -465,8 +465,8 @@
     },
     {
       "id": "H66",
-      "commit": "7ba1a80028561cd00f4b803864723fbd532d2760",
-      "note": "Owner-authorized0.66 security source component: identical source blobs/modes to b625f24c45f5ca6b0321dc76ccee3236c0906536 except the two integration-owned G42 plan/test files, both retained in the final product. Original prerequisites remain; this is not acceptance or an additional selected task.",
+      "commit": "0b40168ef053adeb10f27b0cdfdd8e273b49c778",
+      "note": "Owner-authorized0.66 full security source, exactly b5004eb594a49cf7f2ceb6cb15b663f3486f3063 except integration-owned plan/test files retained in the final product. Original prerequisites remain. No acceptance or extra selected task is implied.",
       "tests": [
         "tests.test_explicit_runtime_setup",
         "tests.test_wordpress_instruction_examples",
@@ -720,6 +720,6 @@
     "Root H01/H02 at e75aedf: G11 network blobs have a narrow component revision; only the named homelab guide expands root scope. The integration checker/refusal logic is unchanged. This declaration is not independent acceptance.",
     "Root security follow-up65a05ef corrects one residual TLS rule and two WordPress instruction dataflows. Only the four named files expand root scope. Runtime fixtures prove ordinary behavior, injection refusal and recovery; no checker rule is disabled.",
     "October23 owner-authorized publication/security follow-through (PR51): add only seven explicit integration paths for scoped fleet/runbook/Unreal guidance and typed WordPress data handling. G07 is extended by one scoped documentation amendment based on its original candidate, merged without rewriting history. Original 84 selected outcomes are retained; source-binding/test gates are not waived.",
-    "H66 component 7ba1a80028561cd00f4b803864723fbd532d2760 binds final security subject b625f24c45f5ca6b0321dc76ccee3236c0906536 while excluding only examples/capabilities/G42/plan.json and tests/test_g42_capability.py from its tree. Those files are retained under original G42 scope. The invariant test verifies all other source blobs/modes against subject and final HEAD. Base, original prerequisites, writable scope, checker and13oracle controls are unchanged; review is required."
+    "H66 0b40168ef053adeb10f27b0cdfdd8e273b49c778 binds complete source b5004eb594a49cf7f2ceb6cb15b663f3486f3063 except only examples/capabilities/G42/plan.json and tests/test_g42_capability.py, retained under original G42 scope. Invariant tests bind all other source blobs/modes to subject and final HEAD. Original base/prerequisites/writable list/checker/13oracle controls remain unchanged; independent review is required."
   ]
 }
