@@ -151,12 +151,15 @@ becomes a Collector config change, not an app redeploy.
 ```yaml
 # otel-collector-config.yaml: receivers -> processors -> exporters
 receivers:
-  otlp: { protocols: { grpc: {}, http: {} } }
+  otlp:
+    protocols:
+      grpc: { endpoint: "127.0.0.1:4317" }
+      http: { endpoint: "127.0.0.1:4318" }
 processors:
   batch: {}
   memory_limiter: { check_interval: 1s, limit_percentage: 80 }
 exporters:
-  prometheus: { endpoint: "0.0.0.0:8889" }            # metrics
+  prometheus: { endpoint: "127.0.0.1:8889" }          # local metrics scraper
   otlphttp/tempo: { endpoint: "http://tempo:4318" }   # traces
 service:
   pipelines:
@@ -165,7 +168,7 @@ service:
 ```
 
 ### Discipline
-- The Collector example is for an explicitly authorized private cluster. Its wildcard metrics listener is not a host/public exposure recipe. Review namespace/network policies, permitted scrapers and ingress before deployment; external access needs authenticated transport protection. Do not auto-deploy it or publish its ports when this reference is loaded.
+- The receiver and metrics defaults bind to loopback for an explicitly authorized local or sidecar deployment. The named Tempo backend is a separate, approved private-cluster destination, not an instruction to start or expose a service. Verify that destination and its transport protection before sending traces. Remote receivers or scrapers require a separately reviewed private interface, namespace/network policy, permitted callers, and authenticated transport; do not broaden the listener defaults automatically. Do not deploy the Collector or publish ports when this reference is loaded.
 - Always run memory_limiter + batch processors. An unbounded Collector OOMs the node.
 - Deploy as a DaemonSet (agent) for node-local collection, optionally plus a Deployment (gateway)
   for org-wide processing/sampling before egress.

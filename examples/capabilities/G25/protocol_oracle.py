@@ -190,7 +190,9 @@ def main(argv=None):
                json.dumps(ev("valve-a", 1, 7, "reboot_now")).encode(), json.dumps(dict(ev("valve-a", 1, 7, "hello"), extra=1)).encode(),
                b'{"v":1,"device":"valve-a","boot":1,"seq":7,"kind":"telemetry","flow_lpm":1e999}',
                b'{"v":1,"device":"valve-a","boot":1,"seq":7,"kind":"hello","seq":8}',
-               json.dumps(ack("valve-a", 1, 7, "c-01; rm -rf /", "open")).encode(), b"[]", b"42"]
+               # Keep a statement-separator injection probe without embedding a
+               # destructive host command in the distributable test corpus.
+               json.dumps(ack("valve-a", 1, 7, "c-01; unexpected-action", "open")).encode(), b"[]", b"42"]
         mixed = []
         for i, g in enumerate(good):
             mixed.append(g)
