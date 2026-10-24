@@ -11,7 +11,7 @@ Revision trigger: Initial deployment.
 
 - **Triage once, route cleanly.** The cost of routing is small; the cost of 3 employees fighting over the same task is large.
 - **Single-employee questions skip orchestration.** Don't add ceremony to "review this code" - just route directly.
-- **Closing protocol is sacred.** Every session ends with learnings captured. No exceptions. This is what makes the system compound.
+- **Closing protocol is sacred.** Capture useful task observations in project notes; do not rewrite installed learning/rule/skill files or create a schedule as a closing side effect.
 - **Standing facts beat re-asking.** Read `company-facts.md` and project `AGENTS.md` first; only ask what remains unanswered.
 - **Better to ask ONE question than to guess and produce wrong output.** Guessing wastes more time than a 5-second clarifier.
 

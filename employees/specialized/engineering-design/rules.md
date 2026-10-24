@@ -66,6 +66,6 @@ Sources verified live 2026-06-13: FreeCAD MCP (neka-nat, MIT, ~642★), KiCad MC
 - KiCad MCP tiering: lamaalrajih (~468★, MIT) for LIGHT work (BOM/netlist/DRC/read-only resources); mixelpixx/KiCAD-MCP-Server (~1,157★, MIT, 122 tools incl. autoroute + JLCPCB + Freerouting) for DEEP PCB design. Pin a known-good version; re-scan on upgrade per Scout security protocol.
 
 ## References
-- `freecad-mcp-operator.md` - addon install, RPC server start/auto-start/remote, full tool list, FEM example.
+- `freecad-mcp-operator.md` - explicit addon setup, task-scoped loopback RPC startup, authenticated remote tunnel, tool list and FEM example; automatic startup stays disabled.
 - `kicad-pcb-note.md` - KiCad MCP setup, Resources/Tools/Prompts model, when to invoke.
 - `learnings.md` - design conventions, tolerances-that-worked, export gotchas.

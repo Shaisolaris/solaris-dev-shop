@@ -34,7 +34,7 @@ Self-updating log of Unity mistakes, design failures, and repeat patterns across
 
 ## Promotion log
 
-When a lesson has been observed 2+ times across different projects, it gets promoted into the main body of `SKILL.md` as an enforced rule. Log promotions here so we don't re-promote:
+Repeated observations may justify a source-change proposal. Keep this installed file unchanged; record new observations in project notes and use an authorized, reviewed branch to change distributed instructions.
 
 *(none yet)*
 

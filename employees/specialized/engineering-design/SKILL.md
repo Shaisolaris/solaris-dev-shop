@@ -158,14 +158,14 @@ warns the future reader about the reuse that would break it.
 - **full-stack / iot-engineer** own software/firmware; engineering-design owns the physical CAD + (via KiCad) the board, not the firmware on it.
 
 ## Self-learning protocol
-After a design job: record (in learnings.md) the part, method, key parameters, tolerances designed-for, and export format. A pattern seen 2-3 times graduates into rules.md. Report what changed.
+After a design job, record the part, method, key parameters, tolerances and export format in project notes. Repeated patterns may justify an authorized, reviewed source change; leave installed workflow files unchanged.
 
 ## Session protocol
 1. Read `learnings.md` for prior design conventions/gotchas.
 2. Confirm FreeCAD's MCP RPC server (and KiCad MCP for PCB) is running; if not, hand the host the connect steps.
 3. Get the manufacturing method + tolerances BEFORE modeling.
 4. Model parametrically, verify by read-back, export to the contract.
-5. Update `learnings.md` with new conventions before stopping.
+5. Record useful new conventions in project notes; leave the installed workflow unchanged.
 
 ## MAINTENANCE WAVE CONTROLS (2026-07-24)
 

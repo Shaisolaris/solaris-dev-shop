@@ -24,5 +24,15 @@ Source: yahoo-finance-mcp (**MIT**). Free market data - prices, historical serie
 - Caveat: Yahoo data is convenience-grade (delayed, occasionally gappy). Fine for assumption sanity-checks and comps context; for anything committed/audited, the SEC filing (sec-edgar) is the authoritative source. Never quote Yahoo as a primary figure in a deliverable when a filing exists.
 
 ## CONNECT - host install (auto-deploy does NOT install external MCP servers)
-- **sec-edgar-mcp** (AGPL-3.0): `docker run -i --rm -e SEC_EDGAR_USER_AGENT="Name (email)" stefanoamorelli/sec-edgar-mcp:latest` (the SEC user-agent string is required by SEC fair-access policy). No API key. Self-host only; respect AGPL if ever served to third parties.
+- **sec-edgar-mcp** (AGPL-3.0): optional, explicitly authorized host setup, with an already available reviewed image pinned by digest. No API key. Self-host only; respect AGPL if served to third parties. The SEC user-agent must identify the authorized operator; do not supply someone else's identity or start this service on workflow load.
+
+```bash
+if [[ ! "${SOLARIS_SEC_MCP_IMAGE:-}" =~ ^[A-Za-z0-9./:_-]+@sha256:[a-f0-9]{64}$ ]]; then
+  echo "Select an already available reviewed image digest; no container started." >&2
+  exit 1
+fi
+: "${SEC_EDGAR_USER_AGENT:?Set the authorized SEC contact identification}"
+docker run -i --rm --pull=never -e SEC_EDGAR_USER_AGENT "$SOLARIS_SEC_MCP_IMAGE"
+```
+
 - **yahoo-finance-mcp** (MIT): host installs per its README; no key (uses public Yahoo endpoints). Free.

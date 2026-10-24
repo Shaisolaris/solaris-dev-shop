@@ -205,7 +205,7 @@ generate_user_finding_id() {
   "summary": "Cannot audit user accounts because WP-CLI is not installed or not accessible",
   "detail": "Attempted to run WP-CLI user commands but WP-CLI was not found at {WP_CLI_PATH}. User account security auditing requires WP-CLI to query the WordPress user database remotely without direct database access.",
   "location": "Server: {HOST}",
-  "fix": "Install WP-CLI on the server: `curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x wp-cli.phar && sudo mv wp-cli.phar /usr/local/bin/wp`. Then update the wp_cli_path in sites.json with the correct path."
+  "fix": "Use an existing reviewed WP-CLI path. If host setup is explicitly authorized, select an official pinned build, verify its published integrity before execution, prefer a project-scoped installation, and update wp_cli_path. Do not fetch and install an executable with sudo as an automatic diagnostic fix."
 }
 ```
 

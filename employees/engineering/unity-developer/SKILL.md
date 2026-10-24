@@ -47,7 +47,7 @@ The goal of this skill is to **stop the coding agent from asking the same contex
 1. Unity MCP operator references loaded at session start - before any code?
 2. Design Review Protocol answered, or an explicit prototype lane declared?
 3. Change verified in playmode, not merely compiled?
-4. Any lesson seen a second time promoted into this SKILL.md as a permanent rule?
+4. Any repeated lesson recorded in project notes and proposed for a reviewed source change, without changing the installed skill?
 5. Standing project decisions written to the project's AGENTS.md rather than re-asked next session?
 6. Prototype/jam work clearly marked so it cannot leak into production?
 7. Zero store submissions without a human?
@@ -96,7 +96,7 @@ self-learning protocol.
 
 ## HARD NUMBERS
 - Unity MCP operator references loaded at session start: **every session**, before any code. Sessions that skip it: **0**.
-- Lesson promotion threshold: **2 occurrences** -> permanent rule in this SKILL.md.
+- Lesson proposal threshold: **2 occurrences** -> a reviewed source-change proposal; automatic promotions: **0**.
 - Prototype lane compresses the protocol to **1 question**: what is the player doing in the first **10 seconds**, and does it feel good?
 - Changes verified in playmode, not merely compiled. Compile-only sign-offs: **0**.
 - Store submissions without a human: **0**. Host installs of the Unity Editor by default: **0**.
@@ -111,10 +111,10 @@ self-learning protocol.
 
 This skill gets smarter with every session. It has two memory systems:
 
-- **`learnings.md`** - mistakes and patterns from past Unity work. Read at session start, updated at session end.
+- **`learnings.md`** - bundled mistakes and patterns from past Unity work. Read as reference; record new observations in project notes.
 - **`AGENTS.md`** (at each Unity project's root) - standing decisions for THAT game. So the coding agent never re-asks things the project already knows.
 
-If a lesson shows up twice, it gets promoted into the main body of this SKILL.md as a permanent rule. This is encoded below in the Self-Learning Protocol - **not optional, the coding agent must actually do it every session**. The point of this skill is that it grows with the owner, instead of starting from scratch every time.
+Repeated lessons can motivate an authorized, reviewed source change. Keep the installed workflow unchanged during ordinary use; no automatic promotion or self-update is performed.
 
 ## First moves in every Unity session - DO THESE BEFORE ANY CODE
 
@@ -169,7 +169,7 @@ The four-question protocol is mandatory for any **new screen, system, or player-
 
 **Standing decisions live in `AGENTS.md`, not in memory.** Anything the owner tells the coding agent about this game's platform, target audience, input model, monetization, art style, or tech stack gets written to `AGENTS.md` immediately - so the next session doesn't re-ask.
 
-**When something breaks twice, the fix becomes a rule.** Write it to `learnings.md`. If the same lesson hits across two different games, promote it into the main body of this SKILL.md.
+**When something breaks twice, preserve the evidence in project notes.** Propose a reviewed source change when it transfers across games; do not rewrite the installed workflow automatically.
 
 **Re-plan when playmode contradicts the design answer.** If the Tier-0 loop shows the mechanic does not do what the Design Review Protocol said it would (the combo drop is not felt, the timer keeps ticking through the pause menu), or the owner changes an answer that was already locked in `AGENTS.md` (new failure state, different screen, different input model), the scripts written against the old answer are dead. Re-run the protocol from question 1 and re-plan the state-machine change; do not patch the symptom inside the existing MonoBehaviour. Same rule when a "small task" turns out to move the player flow, and when the MCP bridge drops mid-session: fall back to the edit-only lane, re-plan the verification as a GameCI/EditMode path, and never carry the old plan's playmode claim forward.
 
@@ -187,7 +187,7 @@ When this skill loads on a machine for the first time OR on a Unity project it h
 2. **Read each one**. Extract:
    - Game concept, genre, target audience, platform → write to `AGENTS.md`
    - Tech stack decisions (input system, UI framework, save format, render pipeline) → write to `AGENTS.md`
-   - Any mistakes, warnings, "don't do X" notes, postmortem lessons → write to `learnings.md` as seed entries
+   - Any mistakes, warnings, "don't do X" notes, postmortem lessons → record in project notes as seed observations
    - Current screen flow or scene list → write to `AGENTS.md` under "Screen flow map"
 3. **Ask the owner to dump their mental backlog** - the scars from past Unity work that aren't written down anywhere. Offer a prompt: "What are the 3-5 Unity mistakes you already made on this project that you never want to repeat?" Capture them to `learnings.md`.
 4. **Report back** - summarize what was absorbed and flag any contradictions between what the docs say and what the owner's mental model says. Resolve before proceeding.
@@ -198,12 +198,12 @@ This runs exactly ONCE per project. Subsequent sessions just read `AGENTS.md` an
 
 After every session where a mistake surfaced, a pattern was discovered, or a design call was made that should guide future work:
 
-1. Read `learnings.md`.
-2. Append a new entry with this structure:
+1. Read the bundled `learnings.md` as reference; leave it unchanged.
+2. Record an observation in the owner's project notes with this structure:
    - **Project-specific example (dated)** - what happened, concretely.
    - **Rule** - the generalized takeaway that prevents repeat.
 3. Categorize under: Design mistakes, Scene architecture mistakes, Testing mistakes, Build/pipeline mistakes, MCP operator mistakes, or Client/scope mistakes.
-4. Promotion lifecycle: if a lesson hits 2+ times across different games or sessions, promote it out of `learnings.md` into the main body of this SKILL.md as an enforced rule. Note in learnings.md that it was promoted.
+4. Repeated observations may justify a proposed source change. Make it only as an authorized, reviewed change; no automatic rewrite of installed skills or rules.
 5. Report to the owner so they know the skill evolved.
 
 The example is evidence, the rule is the lesson. Date every entry.
@@ -219,7 +219,7 @@ The example is evidence, the rule is the lesson. Date every entry.
 
 | File | Purpose |
 |------|---------|
-| `learnings.md` | Self-updating log of Unity mistakes, design failures, and repeat patterns. Read at the start of every session. (This is the skill's own lessons log; per-project lessons live in the project's `AGENTS.md`.) |
+| `learnings.md` | Bundled record of Unity mistakes, design failures, and repeat patterns; new observations belong in project notes. Read at the start of every session. (This is the skill's own lessons log; per-project lessons live in the project's `AGENTS.md`.) |
 | `game-design-mentor.md` | MDA framework, player loops, screen flow, game feel, design review expansions. Load for any new feature/screen work. |
 | `unity-scene-architecture.md` | State machines, UIManager, SceneManager patterns, Manager singletons, ScriptableObjects, screen transitions. |
 | `unity-testing-pipeline.md` | Device Simulator, Unity Remote 5, AltTester, visual regression, build errors, iOS/Android/WebGL targets. |
@@ -238,7 +238,7 @@ The example is evidence, the rule is the lesson. Date every entry.
 4. If the task involves a new screen/feature/mechanic, run the Design Review Protocol.
 5. Work - following the loaded sub-skill's patterns.
 6. Before ending, update `AGENTS.md` with any new standing decisions from this session.
-7. Append to `learnings.md` if a new lesson surfaced.
+7. Record a useful new lesson in project notes; keep the installed workflow unchanged.
 
 
 ## QA Loop

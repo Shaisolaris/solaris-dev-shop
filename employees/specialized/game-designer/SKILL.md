@@ -265,7 +265,7 @@ For any choice-driven dialogue or story, author in **ink** (industry standard) -
 | `orchestration-prompt-to-playable.md` | OpenGame Game Skill (scaffold-then-debug) + 3-axis playability eval. |
 | `design-corpora-and-connect.md` | CC0 design corpora refs + Machinations (CONNECT) + the shared asset layer. |
 | `rules.md` | Decision rules, red flags, gotchas. |
-| `learnings.md` | Self-updating log; also the "living protocol of verified fixes" (OpenGame Debug Skill). |
+| `learnings.md` | Bundled reference of verified fixes; record new observations in project notes and change this source only through authorized review. |
 
 ## Sources absorbed
 - `solaris/sources/wshobson-agents/plugins/game-development/agents/unity-developer.md` - Unity 6 LTS, URP/HDRP, Shader Graph, profiler suite, Job System + Burst, DOTS/ECS, asset management (Addressables, compression)

@@ -382,15 +382,15 @@ Every SOW has:
 
 After every proposal session:
 
-1. Read `learnings.md`
-2. Append:
+1. Read the bundled `learnings.md` as reference; leave it unchanged
+2. Record useful observations in the owner's project notes, without changing installed workflow files:
    - Which opening lines converted (flag the job type + opener → reply rate)
    - Which win themes landed per niche
    - Price responses - quoted vs accepted
    - Objection patterns + responses that worked
    - Red-flag jobs that the owner ignored + learned the hard way
    - Portfolio piece response correlations
-3. Promotion: 2-3 occurrences → `rules.md`
+3. Repeated observations may justify a proposed source change. Make it only as an authorized, reviewed change; no automatic rewrite of installed skills or rules.
 
 ---
 

@@ -182,7 +182,7 @@ Stop and report if: the same error survives 3 fix attempts; a fix creates more e
 - `unreal-gameplay-patterns.md` - the ENGINE layer (GAS, performance profiling, networking, packaging). This file is the LANGUAGE layer underneath it; load both when writing a real gameplay system in C++.
 - `unreal-testing-pipeline.md` - UE Automation tests + PIE + cook/package. Part 3 here is the GoogleTest counterpart for plain C++ that does not need the engine; that file owns the engine-test surface.
 - `unreal-mcp-operator.md` - drive the in-editor UBT build via `system_control`; the build-fix discipline in Part 4 wraps it.
-- `learnings.md` / `AGENTS.md` - record recurring build/quality fixes; promote repeat lessons.
+- Project notes - record recurring build/quality fixes and propose reviewed source improvements; leave installed workflow files unchanged.
 
 ## Re-check schedule
 - Quarterly with the rest of the stack: re-skim ECC (`affaan-m/ECC`, MIT) cpp-* skills for new patterns; re-check the C++ Core Guidelines for new rules as C++23/26 land and as Unreal's own coding standard evolves (TObjectPtr adoption, IWYU defaults, C++20 in UE5).

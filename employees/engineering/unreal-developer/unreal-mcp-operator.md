@@ -54,7 +54,15 @@ cd Unreal_mcp && npm install && npm run build && node dist/cli.js
 ```
 (For clone/build, use `"command": "node", "args": ["path/to/Unreal_mcp/dist/cli.js"]`.)
 
-**Docker alternative (CI/cloud):** `docker build -t unreal-mcp . && docker run -it --rm -e UE_PROJECT_PATH=/project unreal-mcp`.
+**Docker alternative (CI/cloud, optional):** only for an explicitly authorized editor service, with its required project mount/network reviewed first. Loading this reference does not build an image or start a service. Select an already available reviewed image; a missing image is a prerequisite, not an automatic build/pull.
+```bash
+if [[ ! "${SOLARIS_UNREAL_MCP_IMAGE:-}" =~ ^[A-Za-z0-9./:_-]+@sha256:[a-f0-9]{64}$ ]]; then
+  echo "Select an already available reviewed image digest; no container started." >&2
+  exit 1
+fi
+docker run -it --rm --pull=never -e UE_PROJECT_PATH=/project "$SOLARIS_UNREAL_MCP_IMAGE"
+```
+The command alone supplies no project mount or editor connection; prepare those exact owned paths and endpoints for the authorized task. Do not solve missing connectivity with host networking or a wildcard listener.
 
 ### Key environment variables
 | Var | Default | Purpose |
@@ -68,7 +76,7 @@ cd Unreal_mcp && npm install && npm run build && node dist/cli.js
 | `ASSET_LIST_TTL_MS` | `10000` | Asset list cache TTL |
 | `GRAPHQL_ENABLED` | `false` | Optional GraphQL query endpoint (port `GRAPHQL_PORT=4000`) |
 
-> **LAN access is opt-in and risky.** To drive UE from another machine, set `MCP_AUTOMATION_ALLOW_NON_LOOPBACK=true` + `MCP_AUTOMATION_HOST=0.0.0.0` on the server AND enable "Allow Non Loopback" + listen host `0.0.0.0` under Project Settings → Plugins → MCP Automation Bridge → Security. Only on trusted networks behind a firewall.
+> **Remote editor access is task-scoped.** Keep the bridge on loopback and use an authenticated tunnel to the owned editor host. Do not enable the non-loopback flags or a wildcard listener as routine setup. A trusted LAN/firewall alone does not authenticate remote editor commands; a direct-network design needs separately reviewed authentication, transport protection and shutdown. Loading this guide grants no server/configuration changes.
 
 ---
 

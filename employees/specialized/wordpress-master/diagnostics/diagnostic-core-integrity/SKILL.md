@@ -148,7 +148,7 @@ bash: wp: command not found
   "summary": "Cannot verify core file integrity because WP-CLI is not installed or not found at expected path",
   "detail": "Attempted to run WP-CLI at {WP_CLI_PATH} but command was not found. Core file integrity verification requires WP-CLI to be installed on the server.",
   "location": "Server: {HOST}",
-  "fix": "Install WP-CLI by running: `curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x wp-cli.phar && sudo mv wp-cli.phar /usr/local/bin/wp`. Then update the site profile in sites.json with the correct wp_cli_path."
+  "fix": "Use an existing reviewed WP-CLI path. If host setup is explicitly authorized, select an official pinned build, verify its published integrity before execution, prefer a project-scoped installation, and update wp_cli_path. Do not fetch and install an executable with sudo as an automatic diagnostic fix."
 }
 ```
 

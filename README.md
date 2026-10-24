@@ -100,7 +100,7 @@ Selected specialists now include local tools for recoverable delivery, data reco
 
 ## Install and portability
 
-The source quickstart above is the smallest trial. `./install.sh` adds a managed `solaris-intake` command after checking the checkout. [Install instructions](docs/install.md) cover Windows, a local wheel, uninstall and copying skills into a host agent.
+The source quickstart above is the smallest trial. `./install.sh` adds a managed `solaris-intake` command after checking a reviewed local checkout; it never downloads or updates code. Loading a workflow does not start Docker, MCP/database services or a background updater. Container and service setup is optional and scoped to the actual task. Host permissions remain authoritative. [Install instructions](docs/install.md) cover Windows, a local wheel, uninstall and copying skills into a host agent.
 
 Provider-neutral means the skill text and routing packet do not require a particular model API. It does not mean every host supports the same tools or that outputs have equal quality across models. Review the selected skill's tools, references and scope before use.
 

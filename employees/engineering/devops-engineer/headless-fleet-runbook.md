@@ -9,6 +9,14 @@ The owner dispatches from HQ. Load per SKILL.md reference table when running mul
 > **Git white-label:** author = `the owner` + GitHub noreply address (never the coding agent, never real email); `includeCoAuthoredBy:false` in `<agent-config>/settings.json`. Reviewer greps `git log --format=%B` for the coding agent/co-authored/generated → must be empty before merge.
 
 
+This is an optional operator-run provisioning runbook for an explicitly selected,
+owned worker. Loading an employee does not execute these steps. Do not enable SSH,
+Screen Sharing, never-sleep/restart settings, remote agents or scheduled health
+checks as part of routine skill loading. Confirm the existing work order covers
+these services and their access/teardown before provisioning; keep unrelated host
+settings unchanged. The daily checks below are a manual cadence unless the owner
+separately requests a bounded schedule.
+
 ## 1. Machine provisioning (headless Mac mini)
 
 1. Create a dedicated standard user `solaris-worker`. NOT admin. NOT the owner's personal account. No iCloud login.

@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
-# Solaris Dev Shop one-command install.
+# Solaris Dev Shop explicit, checkout-only install.
 #
 # From a checkout:   ./install.sh
-# From anywhere:     curl -fsSL https://raw.githubusercontent.com/Shaisolaris/solaris-dev-shop/main/install.sh | bash
-# Uninstall:         ./install.sh --uninstall   (or: curl ... | bash -s -- --uninstall)
+# Review and select the checkout revision before running this script.
+# Uninstall:         ./install.sh --uninstall
 #
 # Verifies the tree, runs the control-plane self-test, and links the
 # `solaris-intake` command into ~/.local/bin.
 set -euo pipefail
 
-REPO="https://github.com/Shaisolaris/solaris-dev-shop.git"
-TARGET="$HOME/.solaris-dev-shop"
 INSTALL_BIN_DIR="$HOME/.local/bin"
 UNINSTALL=false
 PYTHON_BIN="${SOLARIS_PYTHON:-python3}"
@@ -33,7 +31,7 @@ if [ "$UNINSTALL" = true ]; then
   else
     echo "No managed command found."
   fi
-  echo "Checkout retained at $TARGET to preserve local changes and files."
+  echo "Source checkout and local files retained; uninstall removes only the managed command."
   exit 0
 fi
 
@@ -44,16 +42,10 @@ fi
 
 "$PYTHON_BIN" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else "Solaris Dev Shop requires Python 3.10 or newer. Set SOLARIS_PYTHON to its executable.")'
 
-# When piped via curl there is no checkout; clone one first.
+# Installation never fetches code or advances an existing checkout.
 if [ ! -f "control-plane/meta_control_plane.py" ]; then
-  if [ -d "$TARGET" ]; then
-    echo "-- updating existing checkout at $TARGET"
-    git -C "$TARGET" pull --ff-only -q
-  else
-    echo "-- cloning into $TARGET"
-    git clone --depth 1 "$REPO" "$TARGET"
-  fi
-  cd "$TARGET"
+  echo "Run install.sh from the root of a reviewed Solaris Dev Shop checkout. No code was downloaded or updated." >&2
+  exit 1
 fi
 
 ROOT="$(pwd)"
@@ -71,7 +63,7 @@ echo "-- control-plane self-test"
 "$PYTHON_BIN" control-plane/meta_control_plane.py self-test
 
 echo "-- routing probes"
-"$PYTHON_BIN" -m unittest discover -s tests -v 2>&1 | tail -4
+"$PYTHON_BIN" -m unittest discover -s tests -p test_router.py -v 2>&1 | tail -4
 
 echo "-- installing solaris-intake"
 mkdir -p "$INSTALL_BIN_DIR"

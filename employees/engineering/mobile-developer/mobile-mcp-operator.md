@@ -11,37 +11,65 @@
 - **Cross-app workflows**: LLM can drive multi-app journeys (open Substack → read article → message contact in WhatsApp → set calendar reminder) end-to-end.
 - **infiniV/Android-Ui-MCP is a subset**: only screenshots + device list. Use it as fallback when mobile-mcp can't run (older Node, no Xcode, etc.) or for Expo/RN/Flutter dev-loop screenshot iteration.
 
-## Install - mobile-next/mobile-mcp (PRIMARY)
+## Connection and setup scope - mobile-next/mobile-mcp
 
-**Standard config** (works in a coding agent, a desktop agent app, Cursor, Cline, Codex, Copilot, Gemini, Goose, Kiro, opencode, Windsurf, VS Code):
+Use an existing approved host connection for the requested mobile task. Reading
+this workflow does not install packages, register MCP servers or start device
+services. New setup must be covered by the owner's task and have a verified
+shutdown procedure, including any upstream helper daemon that keeps device
+connections warm. Do not add a login item or always-on global connection.
 
-```bash
-agent mcp add mobile-mcp -- npx -y @mobilenext/mobile-mcp@latest
-```
+The reviewed publication metadata is `@mobilenext/mobile-mcp@1.0.8`, whose
+executable is `mcp-server-mobile`. Select and verify that exact official package
+when setup is authorized; do not put `npx -y ...@latest` in a startup config.
+An already installed, reviewed executable can be used in a task-scoped host
+configuration (resolve its approved absolute path if PATH is unsuitable):
 
-JSON config (manual):
 ```json
 {
   "mcpServers": {
     "mobile-mcp": {
-      "command": "npx",
-      "args": ["-y", "@mobilenext/mobile-mcp@latest"]
+      "command": "mcp-server-mobile",
+      "env": { "MOBILEMCP_DISABLE_TELEMETRY": "1" }
     }
   }
 }
 ```
 
-**SSE server mode** (for cloud / team CI):
+Stdio is the default and opens no HTTP listener. For an explicitly authorized
+remote workflow, prefer a loopback listener reached through an authenticated
+tunnel. Current upstream uses Streamable HTTP at `/mcp`, not the deprecated SSE
+endpoint. Do not bind an unauthenticated service to all network interfaces.
+Load a task-scoped approved token from the secret manager; do not place it in
+source, command arguments, logs or shared settings. The guard below is a
+workflow check, not a grant or an operating-system sandbox.
+
+### Authorized loopback HTTP example
+
 ```bash
-npx @mobilenext/mobile-mcp@latest --listen 0.0.0.0:3000
-# With auth:
-MOBILEMCP_AUTH=secret npx @mobilenext/mobile-mcp@latest --listen 3000
+if [ "${SOLARIS_SERVICE_START_AUTHORIZED:-}" != "yes" ]; then
+  echo "Service startup is outside the authorized task; no process started." >&2
+  exit 1
+fi
+: "${MOBILE_MCP_BIN:?Resolve the already installed, reviewed Mobile MCP executable}"
+MOBILE_AUTH_VALUE="${MOBILEMCP_AUTH:-}"
+if [ "${#MOBILE_AUTH_VALUE}" -lt 32 ]; then
+  echo "An approved token of at least 32 characters is required; no process started." >&2
+  exit 1
+fi
+MOBILEMCP_AUTH="$MOBILE_AUTH_VALUE" MOBILEMCP_DISABLE_TELEMETRY=1 \
+  "$MOBILE_MCP_BIN" --listen 127.0.0.1:3000
 ```
 
-**Disable telemetry**:
-```bash
-MOBILEMCP_DISABLE_TELEMETRY=1 npx @mobilenext/mobile-mcp@latest
-```
+The caller must export or otherwise supply `MOBILEMCP_AUTH` before using this
+example. Stop the listener and any verified vendor helper when the authorized
+work ends. If the selected release's lifecycle cannot be bounded, keep using an
+existing managed connection and report the missing prerequisite rather than
+launching another service.
+
+References: [official transport/configuration](https://github.com/mobile-next/mobile-mcp#running--configuration),
+[published1.0.8 metadata](https://registry.npmjs.org/@mobilenext/mobile-mcp/1.0.8),
+[upstream transport and helper changes](https://github.com/mobile-next/mobile-mcp/blob/main/CHANGELOG.md).
 
 ### Prerequisites
 - Node.js 22+
@@ -52,11 +80,7 @@ MOBILEMCP_DISABLE_TELEMETRY=1 npx @mobilenext/mobile-mcp@latest
 
 ## Install - infiniV/Android-Ui-MCP (FALLBACK)
 
-Use when mobile-mcp won't run or you only need Android screenshot iteration with Expo/RN/Flutter:
-
-```bash
-agent mcp add android-ui-assist -- npx android-ui-assist-mcp
-```
+Use an already approved Android-Ui-MCP connection when it fits the task. A missing primary connector does not authorize installing or switching to another provider. If new setup is requested, review and pin the official fallback package, its device access and shutdown procedure first; do not register an unpinned npx process automatically.
 
 ## The mobile-mcp tool catalog (canonical)
 

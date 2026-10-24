@@ -1,193 +1,101 @@
-# Docker Skill - Containerized Development (wrsmith108) + a per-project agent box Per-Project Isolation (RchGrav)
+# Docker - optional, task-scoped containers
 
-> **Absorbed v0.3.0 (2026-04-25)** from `wrsmith108/docker-the coding agent-skill` (PRIMARY - host-cleanliness enforcement) + `RchGrav/the coding agentbox` (per-project isolation + 15+ pre-configured language profiles). the skill scanner v2 caught both. Use this for ANY container work.
+Read this reference when container work is part of the owner's task. Loading it
+does not authorize installing Docker, starting Docker Desktop/the daemon, pulling
+images, creating containers, or modifying persistent startup settings. Use an
+existing project venv/runtime when it meets the task; containers are optional.
 
-## The two complementary patterns
+## Before container execution
 
-| Pattern | Source | When to use |
-|---------|--------|-------------|
-| **Host-clean dev** (npm/node/python NEVER on host) | `wrsmith108/docker-the coding agent-skill` | Every project from day one - prevents `node_modules` pollution + Python venv chaos |
-| **Per-project agent container** (each project gets its own image + the coding agent config) | `RchGrav/the coding agentbox` | When working on multiple clients in parallel - full isolation between Kellbell / CTT / Turnpike etc. |
+1. Inspect the project's existing environment and container configuration. Use
+   only the owned project and daemon/context named by the task; a remote Docker
+   context can mutate a different machine.
+2. Confirm the task covers the intended container, image, paths, network, ports,
+   lifetime and cleanup. Existing explicit authorization is enough; do not ask
+   again for each command. If setup is outside that scope, keep preparing local
+   files and report the missing prerequisite instead of provisioning silently.
+3. Use an already available image pinned by its reviewed `@sha256:` digest.
+   Starting an existing container does not justify an image refresh. A missing
+   image is a prerequisite; any download/build is a separate scoped operation.
+4. Inspect entrypoint/user requirements. Prefer an unprivileged UID, no added
+   capabilities, `no-new-privileges`, a read-only root filesystem and bounded
+   CPU/memory/PIDs when the workload supports them. Validate the resulting
+   configuration; do not call an untested hardened template operational.
+5. Specify teardown before start. Use foreground disposable runs when practical;
+   no restart policy, login item, system service or startup hook by default.
 
-These two layer together: a per-project agent box provides the per-project the coding agent environment; the docker-the coding agent-skill rules enforce that no commands leak to the host inside that environment.
+## Files and credentials
 
----
+- Mount only the required project subdirectory, read-only unless the task needs
+  writes. Use a dedicated output directory or named volume for generated data.
+- Never mount the Docker socket, host root, home, SSH agent/tmux socket, browser
+  profile, cloud credentials or another client's workspace as routine setup.
+- Do not use `--privileged`, host PID/IPC or host networking as a default. An
+  exceptional need requires an explicit access decision and a narrower alternative
+  to be assessed first. An owner's broad coding request is not that decision.
+- Use no network for offline work. For a necessary local listener, bind only to
+  `127.0.0.1` on the selected port; do not publish it on all interfaces.
+  Use a supported, patched engine; older Docker releases before 28.0.0 have
+  known localhost-publication exposure on the same L2 segment.
+- Containers share a host kernel. A writable bind mount can change the host's
+  files, and Docker daemon access can confer host-level control. Separate project
+  names/images do not establish a security boundary against hostile code.
 
-## Pattern 1: Host-clean dev (wrsmith108)
+## Example: bounded offline analysis
 
-### The single rule
-> **Never run `npm`, `node`, `npx`, `tsx`, `python`, `pip`, `bundle`, `gem`, `composer`, or project scripts directly on the host.**
-> Always use `docker exec <container-name> <command>` instead.
-
-### Per-project config
-
-`.the coding agent/docker-config.json`:
-```json
-{
-  "containerName": "kellbell-dev-1",
-  "baseImage": "node:20-slim",
-  "port": 3000,
-  "hasNativeModules": true
-}
-```
-
-### Base image decision
-
-| Project has | Use |
-|-------------|-----|
-| Native modules (sqlite, sharp, bcrypt, node-canvas) | `node:20-slim` (Debian-based, glibc) |
-| Pure JS/TS only | `node:20-alpine` (smaller, musl) |
-| PHP / WordPress | `php:8.3-fpm` + `nginx:alpine` |
-| Python ML | `python:3.12-slim` + `uv` |
-| Unsure | `node:20-slim` (safe default) |
-
-> **Critical:** Alpine uses musl libc. Native modules built on glibc systems (your Mac) won't load (`ERR_DLOPEN_FAILED`). When in doubt, use `-slim`.
-
-### docker-compose.yml template
-
-```yaml
-services:
-  dev:
-    image: node:20-slim
-    container_name: ${CONTAINER_NAME:-app-dev-1}
-    working_dir: /workspace
-    volumes:
-      - .:/workspace
-      - node_modules:/workspace/node_modules    # named volume - install lives in container
-    ports:
-      - "${PORT:-3000}:3000"
-    command: tail -f /dev/null                  # keep container alive for `docker exec`
-    profiles: ["dev"]
-volumes:
-  node_modules:
-```
-
-### Daily commands
+For an authorized container task with an already reviewed image whose entrypoint
+accepts this command. Resolve both directories to the task's owned paths first.
+A digest binds bytes, not the trustworthiness of the image publisher or its code.
 
 ```bash
-# Start container (once per session)
-docker compose --profile dev up -d
-
-# Install
-docker exec kellbell-dev-1 npm install
-
-# Run anything
-docker exec kellbell-dev-1 npm test
-docker exec kellbell-dev-1 npm run build
-docker exec kellbell-dev-1 npm run lint
-docker exec kellbell-dev-1 sh   # interactive shell
-
-# Pre-flight check (before any command)
-docker ps --filter name=kellbell-dev-1
+: "${SOLARIS_DEV_IMAGE:?Select an already available reviewed image digest}"
+: "${SOLARIS_INPUT_DIR:?Select the owned input directory}"
+: "${SOLARIS_OUTPUT_DIR:?Select the owned output directory}"
+if [[ ! "$SOLARIS_DEV_IMAGE" =~ ^[A-Za-z0-9./:_-]+@sha256:[a-f0-9]{64}$ ]]; then
+  echo "A reviewed image digest is required; no container started." >&2
+  exit 1
+fi
+if [ "$(id -u)" -eq 0 ]; then
+  echo "Select a non-root execution identity; no container started." >&2
+  exit 1
+fi
+# Docker's --mount value is comma-delimited; refuse ambiguous path data.
+for directory in "$SOLARIS_INPUT_DIR" "$SOLARIS_OUTPUT_DIR"; do
+  case "$directory" in
+    *,*) echo "A comma in a mount path is unsupported; no container started." >&2; exit 1 ;;
+  esac
+done
+docker run --rm --pull=never --network=none --read-only \
+  --cap-drop=ALL --security-opt=no-new-privileges \
+  --user "$(id -u):$(id -g)" --cpus=1 --memory=512m --pids-limit=128 \
+  --tmpfs /tmp:rw,noexec,nosuid,size=64m \
+  --mount "type=bind,src=$SOLARIS_INPUT_DIR,dst=/input,readonly" \
+  --mount "type=bind,src=$SOLARIS_OUTPUT_DIR,dst=/output" \
+  "$SOLARIS_DEV_IMAGE" python /input/analyze.py --out /output/report.json
 ```
 
-### Why this matters
-- **Clean host.** No `node_modules` pollution on the owner's Mac.
-- **Reproducible.** Same Node 20 / Python 3.12 / PHP 8.3 across all collaborators.
-- **No global packages.** No version conflicts between projects.
-- **CI-safe.** Same container in dev = same container in GitHub Actions.
+Do not run this example as a startup hook. For a long-running service explicitly
+requested by the owner, prepare its exact config, local bind, secrets handling,
+health check, resource limits and removal command before starting it. Stop it
+when that authorized service lifetime ends. Do not silently add an auto-update,
+watcher, scheduled refresh or restart policy.
 
----
+## Third-party agent boxes and dependencies
 
-## Pattern 2: Per-project a per-project agent box (RchGrav)
+No agent-box installer is required by Solaris. Do not download and execute a
+`latest` self-extracting installer merely to prepare a client project. If the
+owner actually selects such a tool, inspect its source, choose an exact version,
+verify the publisher's digest/signature and review its mounts, credentials,
+network and persistence before installation. Never invent a checksum or claim
+verification from HTTPS alone.
 
-### Install
-```bash
-wget https://github.com/RchGrav/the coding agentbox/releases/latest/download/the coding agentbox.run
-chmod +x the coding agentbox.run
-./the coding agentbox.run
-# Adds ~/.local/bin/the coding agentbox symlink. Add ~/.local/bin to PATH.
-```
+## References
 
-### Per-project workflow
-```bash
-cd ~/projects/kellbell
-the coding agentbox profile php database web    # Adds PHP + DB clients + nginx
-the coding agentbox                              # Launches the coding agent inside the kellbell-specific container
+- [Docker daemon attack surface](https://docs.docker.com/engine/security/#docker-daemon-attack-surface)
+- [Runtime privileges and capabilities](https://docs.docker.com/engine/containers/run/#runtime-privilege-and-linux-capabilities)
+- [Published ports and loopback binding](https://docs.docker.com/engine/network/port-publishing/)
+- [Bind mount access to host files](https://docs.docker.com/engine/storage/bind-mounts/)
 
-cd ~/projects/ctt
-the coding agentbox profile python ml database   # Different stack for CTT
-the coding agentbox shell                        # Powerline zsh shell
-
-cd ~/projects/turnpike
-the coding agentbox profile javascript devops    # Yet another stack
-the coding agentbox
-```
-
-Each project gets:
-- Its own Docker image (`the coding agentbox-kellbell`, `the coding agentbox-ctt`, `the coding agentbox-turnpike`)
-- Its own the coding agent auth state (`~/.the coding agentbox/<project>/.the coding agent/`)
-- Its own shell history (`~/.the coding agentbox/<project>/.zsh_history`)
-- Its own firewall allowlist (`~/.the coding agentbox/<project>/firewall/allowlist`)
-- Its own Python venv (auto-created via `uv` if Python profile active)
-- Its own profile config (`~/.the coding agentbox/profiles/<project>.ini`)
-
-### The 15+ pre-configured profiles
-
-**Core:** core, build-tools, shell, networking
-**Languages:** c, rust, python (uv), go, flutter (fvm), javascript (nvm), java (SDKMan + Maven + Gradle + Ant), ruby, php
-**Specialized:** openwrt, database, devops (Docker + K8s + Terraform), web (nginx + HTTP test clients), embedded (ARM toolchain + serial debuggers), datascience (Jupyter + R), security (scanners), ml
-
-### Multi-instance pattern (parallel client work)
-```bash
-# Terminal 1
-cd ~/projects/kellbell && the coding agentbox
-
-# Terminal 2 (simultaneously)
-cd ~/projects/ctt && the coding agentbox shell
-
-# Terminal 3 (simultaneously)
-cd ~/projects/turnpike && the coding agentbox profile rust go
-```
-
-All three run in parallel without conflict - separate images, separate auth, separate firewalls.
-
-### Useful commands
-```bash
-the coding agentbox profiles              # List available profiles + descriptions
-the coding agentbox profile status        # Current project's installed profiles
-the coding agentbox info                  # Comprehensive project + system info
-the coding agentbox install htop vim      # Add packages to project image
-the coding agentbox allowlist             # View/edit network allowlist
-the coding agentbox clean --project       # Wipe one project's data
-the coding agentbox rebuild               # Rebuild current project's image
-the coding agentbox tmux                  # Mounts host tmux socket inside container
-```
-
----
-
-## Decision matrix
-
-| Scenario | Reach for |
-|----------|-----------|
-| New Solaristek client project (any language) | docker-compose with `.the coding agent/docker-config.json` + a per-project agent box profile for the stack |
-| Quick one-off script | `docker run --rm -v "$PWD:/work" -w /work node:20-slim node script.js` |
-| Multiple clients in parallel | a per-project agent box per project (full isolation) |
-| WordPress / PHP shared-host work | docker-compose with `php:8.3-fpm` + `mysql:8` + `nginx:alpine` (then deploy via legacy FTP - see the ftp-deploy GIG at `solaris/gigs/ftp-deploy/`) |
-| Python ML experiments | a per-project agent box profile `python ml datascience` |
-| CI build matching dev | Same container image in GitHub Actions (publish `dev` image to GHCR, pull in workflow) |
-
----
-
-## Anti-patterns
-
-- ❌ `npm install` on the host → use `docker exec`
-- ❌ Sharing `node_modules` volume across projects → use named volumes per project
-- ❌ Alpine base image with native modules → use slim
-- ❌ One mega `the coding agent --container` for all projects → use a per-project agent box per project
-- ❌ Editing `~/.the coding agentbox/<project>/firewall/allowlist` outside a per-project agent box → use `the coding agentbox allowlist`
-- ❌ Running `pip install` on host for "just this one experiment" → spawn a python container
-
----
-
-## Source provenance
-
-- wrsmith108 docker-the coding agent-skill: https://github.com/wrsmith108/docker-the coding agent-skill
-- RchGrav the coding agentbox: https://github.com/RchGrav/the coding agentbox
-- License: Both MIT
-- Caught by: the skill scanner v2 (after v1 missed both)
-
-## Comparator queue (Scout to re-evaluate quarterly)
-
-- Anthropic-official `@anthropic-ai/the coding agent-code` Docker images (when published)
-- `devcontainers/cli` - official VS Code dev containers spec (alternate per-project pattern)
+Historical provenance: earlier revisions adapted host-cleanliness and per-project
+container patterns from wrsmith108 and RchGrav. Their blanket Docker requirement,
+automatic setup examples and isolation claims are superseded by this procedure.
