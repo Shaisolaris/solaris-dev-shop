@@ -5,7 +5,7 @@
 - Scope worker authentication, remote access, filesystem/network isolation and teardown to the assigned work; preserve truthful source provenance.
 - Default Collector receivers and metrics to loopback, with separately reviewed remote access.
 - Strengthen offline redaction/refusal probes with unpredictable synthetic markers and consistent non-destructive invalid input; retain all negative controls.
-- Prepare a full OpenClaw shared-resource layout: preserve all61 specialists, the coordinator, canonical helpers, resources and tests while removing redundant Copilot-only resource copies. Native-host validation and ClawHub admission are separate gates.
+- Prepare a full OpenClaw shared-resource layout: preserve all 61 specialists, the coordinator, canonical helpers, resources and tests while removing redundant Copilot-only resource copies. Native-host validation and ClawHub admission are separate gates.
 
 This candidate is not a published release or a claim of registry security clearance.
 
