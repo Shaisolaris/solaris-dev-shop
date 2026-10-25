@@ -14,6 +14,7 @@ import hashlib
 import json
 import os
 import random
+import secrets
 import shutil
 import sqlite3
 import subprocess
@@ -159,7 +160,9 @@ def o5(w):  # the artifact is not what was planned and approved
     repin(w, "r2", a)  # digest pinned to the relabelled artifact: the revision itself must still match
     t2b = unchanged(w, lambda: w.deploy("r2"))
     (a / "REVISION").write_text("r2\n")
-    (a / ".env").write_text("API_TOKEN=synthetic-not-a-secret\n")
+    # An unpredictable synthetic value keeps the sensitive-file rejection probe
+    # meaningful without packaging a credential-like literal.
+    (a / ".env").write_text("API_TOKEN=" + secrets.token_urlsafe(32) + "\n")
     repin(w, "r2", a)
     t3 = unchanged(w, lambda: w.deploy("r2"))
     return t1 and t2 and t2b and t3 and w.live() == "r1"

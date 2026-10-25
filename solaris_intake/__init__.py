@@ -4,6 +4,7 @@
 Delegates to control-plane/meta_control_plane.py so the installed command
 and the in-tree script always run the same code.
 """
+import utils.session
 import runpy
 import sys
 from pathlib import Path

@@ -14,6 +14,7 @@ import argparse
 import json
 import os
 import random
+import secrets
 import shlex
 import statistics
 import subprocess
@@ -22,8 +23,10 @@ import tempfile
 import time
 from pathlib import Path
 
-SECRET = "oracle-db-password-7f3a"
-SALT = "oracle-auth-key-91c2"
+# Per-process synthetic markers exercise redaction without shipping reusable
+# password-like literals or allowing a candidate to special-case known values.
+SECRET = secrets.token_urlsafe(32)
+SALT = secrets.token_urlsafe(32)
 
 
 def run(tool, *args, timeout=600):
