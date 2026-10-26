@@ -127,8 +127,22 @@ habit, split-tunnel is verified by traceroute instead of assumed, and the negati
 2. Deploy via Docker with a pinned release tag (never `latest` for long-lived DNS infra); web password via a 600-mode `.env`, not in the compose file.
 3. Point the network at it via router DHCP DNS option. Keep the gateway or a second resolver as a temporary fallback during rollout; for strict blocking, prefer a second Pi-hole over a public fallback (public fallback can bypass blocking).
 4. Test one client / one VLAN before changing every DHCP scope. Manage blocklists, run gravity updates on a schedule, whitelist false positives from the query log.
-5. Add local DNS records (`nas.home.arpa`, `grafana.home.arpa`) and CNAMEs. Optionally add DoH upstream via a local cloudflared proxy. Avoid `.local` (mDNS conflict).
+5. Add local DNS records (`nas.home.arpa`, `grafana.home.arpa`) and CNAMEs. Avoid `.local` (mDNS conflict). Encrypted upstream DNS is a separate optional setup below.
 6. Check blocking does not break captive portals, work VPNs, firmware updates, or medical/security devices.
+
+**Optional setup: local encrypted DNS.** Begin only after the owner requests it
+and approves the resolver host, upstream provider and test client. Use a
+[dedicated DNS proxy](https://github.com/DNSCrypt/dnscrypt-proxy) rather than a
+general remote-access component. For example, configure its `listen_addresses`
+as `['127.0.0.1:5053']`, select approved DoH upstreams, keep its optional monitoring
+UI disabled, and run it as a dedicated non-privileged service account. Point the
+local Pi-hole upstream at `127.0.0.1#5053`; a resolver in another container requires
+an explicitly designed private network boundary, not a loopback address copied
+between hosts. Verify local resolution, upstream encryption, listener binding and
+failure behavior on the selected client before changing network-wide DHCP/DNS.
+Keep the existing resolver configuration available for rollback. Loading Solaris
+does not install this service, change network settings or authorize external
+access; activation and service changes remain separate owner-authorized work.
 
 ## Workflow 5 - Bring up a self-hosted cluster (Uncloud)
 1. Use Uncloud (`uc` CLI) for a decentralised cluster: Docker services over a WireGuard mesh, all machines equal peers (no central control plane), Caddy global ingress with auto-TLS from Let's Encrypt, overlay network `10.210.0.0/16`.

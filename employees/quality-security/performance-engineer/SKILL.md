@@ -191,7 +191,7 @@ Escalate to a human, do not proceed, when the only remaining measurement require
 **Re-plan trigger (divergence) - applies to all three procedures below. Any of these VOIDS the current measurement plan; re-plan from the named step, do not patch forward.**
 - **The constraint moves.** After a fix, the profile shows the hot path in a different subsystem: the top-3 ranking from step 4 is dead. Re-profile from step 3 against the new shape. Never keep working down the old list - that is optimising a bottleneck that no longer exists.
 - **Baseline will not reproduce.** Three baseline runs spread wider than the improvement you intend to claim: the environment is not stable enough to measure in. Re-plan from step 1 (fix the environment); do not average the runs together to make the noise disappear.
-- **The load test breaks the system instead of loading it.** Error rate climbs during ramp or steady state never establishes: you are now measuring a failure mode, not throughput. Stop, re-plan from Load test execution step 3 (lower the ramp target); a stress-to-failure result is not a load-test baseline.
+- **The load test breaks the system instead of loading it.** Error rate climbs during ramp or steady state never establishes: the result measures failure behavior rather than steady throughput. Stop, re-plan from Load test execution step 3 (lower the ramp target); a stress-to-failure result is not a load-test baseline.
 - **The test environment is revealed to be non-representative mid-run** (cold cache, thin dataset, different instance class). Discard the numbers, re-plan from step 1. Do not scale them up to "estimate" production.
 
 ### Web page audit (Lighthouse + Core Web Vitals)

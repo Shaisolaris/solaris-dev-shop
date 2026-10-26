@@ -72,6 +72,32 @@ class WordPressInstructionExamples(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertFalse((target / 'build.json').exists())
 
+    def test_manifest_reader_does_not_import_project_modules(self):
+        marker = self.work / 'IMPORTED_PROJECT_CODE'
+        (self.work / 'json.py').write_text(
+            'from pathlib import Path\nPath("IMPORTED_PROJECT_CODE").touch()\n'
+            'raise RuntimeError("project import executed")\n')
+        target, result = self.build('isolated-reader')
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertFalse(marker.exists())
+        self.assertEqual(json.loads((target / 'build.json').read_text())['git']['commits'], 1)
+
+    def test_security_source_search_covers_spaced_calls_without_executing_them(self):
+        document = DIAGNOSTICS / 'security-analysis/SKILL.md'
+        command = next(line for line in document.read_text().splitlines()
+                       if line.startswith('grep ') and 'eval' in line)
+        self.assertEqual(command.count('/path/to/plugin'), 1)
+        command = command.replace('/path/to/plugin', '"$1"')
+        root = self.work / 'PHP source with "quotes"'
+        root.mkdir()
+        (root / 'positive.php').write_text('<?php\neval($value);\neval ($value);\neval\t($value);\n')
+        (root / 'negative.php').write_text('<?php\nmy_eval($value);\nevaluate($value);\n')
+        result = subprocess.run(['bash', '-c', command, 'search', str(root)],
+                                env=self.env, capture_output=True, text=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(len(result.stdout.splitlines()), 3)
+        self.assertNotIn('negative.php', result.stdout)
+
     def test_remote_config_directory_is_quoted_as_data(self):
         # The ssh executable is replaced only inside this fixture. It runs the
         # captured remote command locally, never contacts an SSH server.

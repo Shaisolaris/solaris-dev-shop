@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.68 (consolidated security candidate)
+
+- Keep WordPress diagnostic profile keys, paths, CLI paths, returned log paths and user IDs as data across local and remote shells. Refuse missing sites and preserve unknown results when a debug check fails.
+- Pass build metadata through explicit arguments to isolated Python, so project-local modules and inherited environment variables cannot replace its intended inputs or imports.
+- Document Unity licensing as optional owner-controlled setup for the actual licence and runner; use current vendor-supported activation methods rather than assuming Personal headless activation is supported.
+- Use a dedicated loopback DNS proxy for optional encrypted-DNS setup, with separate owner authorization, bounded testing and rollback before network-wide changes.
+- Broaden the defensive PHP source search to cover spaced calls and avoid matching unrelated function names; expand abbreviated compliance terminology and clarify performance measurement instructions.
+- Preserve all 61 specialists, Chief of Staff, source helpers, fixtures and negative controls. Carry the earlier unreleased security/layout improvements into this single candidate.
+
+The failed registry slot for 0.67 is retained. This corrected candidate uses the
+normal new-version scan and admission path; it is not a published release or a
+claim that any provider has cleared the final artifact.
+
 ## 0.67 (unreleased security candidate)
 
 - Scope worker authentication, remote access, filesystem/network isolation and teardown to the assigned work; preserve truthful source provenance.

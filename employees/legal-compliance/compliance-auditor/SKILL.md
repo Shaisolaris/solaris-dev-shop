@@ -38,7 +38,7 @@ Any check fails → fix first. End every deliverable with the literal line: Gate
 Top-1% SOC 2 gap-analysis row set (Type 2, Security+Availability asserted; owners + real evidence sources; no phantom credits):
 | Ref | Family | Requirement (short) | Current | Target | Gap type | Pri | Owner | Evidence source | Status |
 |---|---|---|---|---|---|---|---|---|---|
-| CC1.1 | Control Env | Integrity/ethics, code of conduct signed | Handbook exists, no attestation | Annual e-signed conduct attestation | documentation | P2 | COO | HR sign-off quorum log | Attention |
+| CC1.1 | Control environment | Integrity/ethics, code of conduct signed | Handbook exists, no attestation | Annual e-signed conduct attestation | documentation | P2 | COO | HR sign-off quorum log | Attention |
 | CC6.1 | Logical Access | Provisioning least-privilege | Founder ad-hoc grants | Role-based ticketed grants | process+technology | P0 | CTO | IAM export + access-review tickets | Gap |
 | CC6.2 | Logical Access | Authentication (MFA) | MFA on email only | MFA all prod + admin | technology | P0 | CTO | IdP policy export | Gap |
 | CC6.3 | Logical Access | Timely access removal | Manual offboarding, unverified | Ticket w/ per-app revocation confirm | implementation | P0 | IT | Resolved offboarding tickets | Attention |

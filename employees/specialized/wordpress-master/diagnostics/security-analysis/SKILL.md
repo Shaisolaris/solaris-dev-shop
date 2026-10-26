@@ -115,8 +115,9 @@ Immediate investigation triggers - if you encounter any of these, escalate sever
 ### Security-Specific Static Analysis
 
 ```bash
-# Scan for eval() usage
-grep -rn "eval(" /path/to/plugin --include="*.php"
+# Locate PHP dynamic evaluation calls, including whitespace before the call.
+# This is a source search only; inspect each match, including comments and strings.
+grep -Ern --include='*.php' '(^|[^[:alnum:]_])eval[[:space:]]*[(]' -- /path/to/plugin
 
 # Scan for base64_decode (potential obfuscation)
 grep -rn "base64_decode(" /path/to/plugin --include="*.php"
