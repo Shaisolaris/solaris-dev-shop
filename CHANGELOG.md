@@ -7,6 +7,7 @@
 - Document Unity licensing as optional owner-controlled setup for the actual licence and runner; use current vendor-supported activation methods rather than assuming Personal headless activation is supported.
 - Use a dedicated loopback DNS proxy for optional encrypted-DNS setup, with separate owner authorization, bounded testing and rollback before network-wide changes.
 - Broaden the defensive PHP source search to cover spaced calls and avoid matching unrelated function names; expand abbreviated compliance terminology and clarify performance measurement instructions.
+- Make malware diagnostics read-only triage: retain detection patterns, include dependency directories by default, refuse invalid or symlinked site scopes, preserve evidence, and require corroboration and separate authorization before destructive remediation. Use inert finding descriptions rather than working webshell or destructive-request examples.
 - Preserve all 61 specialists, Chief of Staff, source helpers, fixtures and negative controls. Carry the earlier unreleased security/layout improvements into this single candidate.
 
 The failed registry slot for 0.67 is retained. This corrected candidate uses the
