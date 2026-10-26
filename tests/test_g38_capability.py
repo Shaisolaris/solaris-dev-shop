@@ -427,6 +427,39 @@ class G38EventChain(unittest.TestCase):
 
 
 class G38Wiring(unittest.TestCase):
+    def test_concurrency_oracle_rejects_invalid_chain_when_writers_serialize(self):
+        import types
+        from unittest import mock
+        sys.path.insert(0, str(ROOT))
+        try:
+            from examples.capabilities.G38 import authority_oracle as oracle
+        finally:
+            sys.path.pop(0)
+        with tempfile.TemporaryDirectory(prefix='g38-serialized-control-') as tmp:
+            root = Path(tmp)
+            log = root / 'log.jsonl'
+            worker = [0]
+            class SerializedNaiveWriter:
+                def __init__(self, *_args, **_kwargs):
+                    number = worker[0]
+                    worker[0] += 1
+                    with log.open('a') as out:
+                        for i in range(25):
+                            out.write(json.dumps({'seq': number * 25 + i, 'prev': '', 'hash': '',
+                                                  'at': '', 'claimed_by': 'worker %d (synthetic)' % number,
+                                                  'body': {'i': i}}) + '\n')
+                def wait(self, timeout):
+                    return 0
+            candidate = types.SimpleNamespace(
+                dir=lambda: root, ec=EX / 'naive/event_chain.py',
+                verify=lambda _path: (0, {'verified': 200, 'claimed_by': {
+                    'counts': {'worker %d (synthetic)' % w: 25 for w in range(8)}}}, ''))
+            # Serialized scheduling is legitimate. Counts from a selected verifier
+            # cannot establish that the bytes form a valid hash chain.
+            with mock.patch.object(oracle, 'subprocess', types.SimpleNamespace(
+                    Popen=SerializedNaiveWriter, DEVNULL=subprocess.DEVNULL)):
+                self.assertFalse(oracle.e4(candidate)[0])
+
     def test_oracle_and_controls(self):
         o = lambda *a: subprocess.run([sys.executable, str(EX / 'authority_oracle.py')] + list(a), capture_output=True, text=True, env=ENV, timeout=900)
         r = o(); self.assertEqual(r.stdout.strip().splitlines()[-1], 'ACCEPTED 8/8', r.stdout)

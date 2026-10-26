@@ -193,7 +193,26 @@ def e4(c):
     lines = log.read_text().splitlines() if log.exists() else []
     ok = all(r == 0 for r in rcs) and rc == 0 and j["verified"] == 200 and len(lines) == 200
     ok = ok and sorted(j["claimed_by"]["counts"].values()) == [25] * 8
-    return ok, "8 concurrent appenders x 25 events: %s verified, no lost or forked write" % ((j or {}).get("verified"))
+    # Scheduling may serialize even an unlocked naive writer. Independently
+    # validate the bytes and each worker's bodies, not just its verifier's count.
+    previous, bodies = G, {"worker %d (synthetic)" % w: [] for w in range(8)}
+    try:
+        for seq, line in enumerate(lines):
+            event = json.loads(line)
+            if (type(event["seq"]) is not int or event["seq"] != seq or
+                    event["prev"] != previous or event["hash"] != ehash(event)):
+                ok = False
+                break
+            value = event["body"]["i"]
+            if type(value) is not int:
+                ok = False
+                break
+            bodies[event["claimed_by"]].append(value)
+            previous = event["hash"]
+        ok = ok and all(sorted(values) == list(range(25)) for values in bodies.values())
+    except (KeyError, TypeError, ValueError):
+        ok = False
+    return ok, "8 concurrent appenders x 25 events: %s verified; independent hashes, links and worker bodies checked" % ((j or {}).get("verified"))
 
 
 def s1(c):
