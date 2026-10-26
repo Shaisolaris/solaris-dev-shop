@@ -15,13 +15,25 @@ Fast and non-destructive. Every check is read-only. Every check has a timeout. I
 
 ```bash
 SITE_NAME="${1:-default-site}"
-PROFILE=$(jq -r ".sites[\"$SITE_NAME\"]" sites.json)
+PROFILE=$(jq -er --arg site "$SITE_NAME" '.sites[$site]' sites.json) || {
+  echo "ERROR: site profile not found" >&2
+  exit 1
+}
 
 HOST=$(echo "$PROFILE" | jq -r '.host')
 USER=$(echo "$PROFILE" | jq -r '.user')
 WP_PATH=$(echo "$PROFILE" | jq -r '.wp_path')
+# SSH reparses a command string. These values are single arguments to that
+# remote shell, not executable fragments; local quoting alone is insufficient.
+quote_remote_arg() {
+  python3 -c 'import shlex,sys; print(shlex.quote(sys.argv[1]))' "$1"
+}
+WP_PATH_QUOTED=$(quote_remote_arg "$WP_PATH") || exit 1
+
 WP_CLI_PATH=$(echo "$PROFILE" | jq -r '.wp_cli_path')
+WP_CLI_QUOTED=$(quote_remote_arg "$WP_CLI_PATH") || exit 1
 SITE_URL=$(echo "$PROFILE" | jq -r '.site_url')
+SITE_URL_QUOTED=$(quote_remote_arg "$SITE_URL") || exit 1
 
 # SSH options: batch mode, 10s connect timeout, no host key prompt
 SSH_OPTS="-o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new"
@@ -38,10 +50,10 @@ Look for recent error entries in the WordPress debug log.
 ```bash
 # Check if debug.log exists and get recent entries
 DEBUG_LOG=$(ssh $SSH_OPTS "${USER}@${HOST}" \
-  "if [ -f '${WP_PATH}/wp-content/debug.log' ]; then
+  "if [ -f ${WP_PATH_QUOTED}/wp-content/debug.log ]; then
     echo 'EXISTS'
-    wc -l < '${WP_PATH}/wp-content/debug.log'
-    tail -50 '${WP_PATH}/wp-content/debug.log'
+    wc -l < ${WP_PATH_QUOTED}/wp-content/debug.log
+    tail -50 ${WP_PATH_QUOTED}/wp-content/debug.log
   else
     echo 'NOT_FOUND'
   fi" 2>&1)
@@ -63,8 +75,9 @@ PHP_ERROR_LOG=$(ssh $SSH_OPTS "${USER}@${HOST}" \
   "php -r 'echo ini_get(\"error_log\");' 2>/dev/null" 2>&1)
 
 if [ -n "$PHP_ERROR_LOG" ] && [ "$PHP_ERROR_LOG" != "" ]; then
+  PHP_ERROR_LOG_QUOTED=$(quote_remote_arg "$PHP_ERROR_LOG") || exit 1
   PHP_ERRORS=$(ssh $SSH_OPTS "${USER}@${HOST}" \
-    "if [ -f '$PHP_ERROR_LOG' ]; then tail -30 '$PHP_ERROR_LOG'; else echo 'NOT_READABLE'; fi" 2>&1)
+    "if [ -f ${PHP_ERROR_LOG_QUOTED} ]; then tail -30 ${PHP_ERROR_LOG_QUOTED}; else echo 'NOT_READABLE'; fi" 2>&1)
 fi
 ```
 
@@ -80,7 +93,7 @@ Identify files changed in the last 7 days within wp-content (where custom code a
 ```bash
 # Find recently modified PHP files in wp-content
 RECENT_FILES=$(ssh $SSH_OPTS "${USER}@${HOST}" \
-  "find '${WP_PATH}/wp-content' -name '*.php' -mtime -7 -type f 2>/dev/null | head -50" 2>&1)
+  "find ${WP_PATH_QUOTED}/wp-content -name '*.php' -mtime -7 -type f 2>/dev/null | head -50" 2>&1)
 
 # Count total and break down by directory
 RECENT_COUNT=$(echo "$RECENT_FILES" | grep -c '\.php$' || echo "0")
@@ -98,8 +111,8 @@ Read key configuration values that affect diagnostic approach.
 ```bash
 # Extract environment-relevant config values (NOT credentials)
 CONFIG_VALUES=$(ssh $SSH_OPTS "${USER}@${HOST}" \
-  "grep -E '(WP_DEBUG|WP_DEBUG_LOG|WP_DEBUG_DISPLAY|WP_ENVIRONMENT_TYPE|DISALLOW_FILE_EDIT|WP_CACHE|MULTISITE)' '${WP_PATH}/wp-config.php' 2>/dev/null || \
-   grep -E '(WP_DEBUG|WP_DEBUG_LOG|WP_DEBUG_DISPLAY|WP_ENVIRONMENT_TYPE|DISALLOW_FILE_EDIT|WP_CACHE|MULTISITE)' '${WP_PATH}/../wp-config.php' 2>/dev/null" 2>&1)
+  "grep -E '(WP_DEBUG|WP_DEBUG_LOG|WP_DEBUG_DISPLAY|WP_ENVIRONMENT_TYPE|DISALLOW_FILE_EDIT|WP_CACHE|MULTISITE)' ${WP_PATH_QUOTED}/wp-config.php 2>/dev/null || \
+   grep -E '(WP_DEBUG|WP_DEBUG_LOG|WP_DEBUG_DISPLAY|WP_ENVIRONMENT_TYPE|DISALLOW_FILE_EDIT|WP_CACHE|MULTISITE)' ${WP_PATH_QUOTED}/../wp-config.php 2>/dev/null" 2>&1)
 ```
 
 **Output fields:**
@@ -143,11 +156,11 @@ If WP-CLI is available, get the active plugin and theme list.
 if [ "$WP_CLI_PATH" != "null" ] && [ -n "$WP_CLI_PATH" ]; then
   # Active plugins
   ACTIVE_PLUGINS=$(ssh $SSH_OPTS "${USER}@${HOST}" \
-    "${WP_CLI_PATH} plugin list --status=active --format=json --path='${WP_PATH}'" 2>&1)
+    "${WP_CLI_QUOTED} plugin list --status=active --format=json --path=${WP_PATH_QUOTED}" 2>&1)
 
   # Active theme
   ACTIVE_THEME=$(ssh $SSH_OPTS "${USER}@${HOST}" \
-    "${WP_CLI_PATH} theme list --status=active --format=json --path='${WP_PATH}'" 2>&1)
+    "${WP_CLI_QUOTED} theme list --status=active --format=json --path=${WP_PATH_QUOTED}" 2>&1)
 
   # Plugin count
   PLUGIN_COUNT=$(echo "$ACTIVE_PLUGINS" | jq 'length' 2>/dev/null || echo "unknown")
@@ -167,11 +180,11 @@ Verify the site is responding and check for common issues.
 ```bash
 # HTTP status check (from remote server to avoid CDN/firewall differences)
 HTTP_STATUS=$(ssh $SSH_OPTS "${USER}@${HOST}" \
-  "curl -sI -o /dev/null -w '%{http_code}' --max-time 10 '${SITE_URL}'" 2>&1)
+  "curl -sI -o /dev/null -w '%{http_code}' --max-time 10 -- ${SITE_URL_QUOTED}" 2>&1)
 
 # Check for maintenance mode
 MAINTENANCE_MODE=$(ssh $SSH_OPTS "${USER}@${HOST}" \
-  "test -f '${WP_PATH}/.maintenance' && echo 'true' || echo 'false'" 2>&1)
+  "test -f ${WP_PATH_QUOTED}/.maintenance && echo 'true' || echo 'false'" 2>&1)
 ```
 
 **Output fields:**
@@ -184,11 +197,11 @@ Overview of space consumption in wp-content subdirectories.
 
 ```bash
 DISK_USAGE=$(ssh $SSH_OPTS "${USER}@${HOST}" \
-  "du -sh '${WP_PATH}/wp-content'/*/ 2>/dev/null | sort -rh | head -10" 2>&1)
+  "du -sh ${WP_PATH_QUOTED}/wp-content/*/ 2>/dev/null | sort -rh | head -10" 2>&1)
 
 # Total wp-content size
 TOTAL_SIZE=$(ssh $SSH_OPTS "${USER}@${HOST}" \
-  "du -sh '${WP_PATH}/wp-content' 2>/dev/null" 2>&1)
+  "du -sh ${WP_PATH_QUOTED}/wp-content 2>/dev/null" 2>&1)
 ```
 
 **Output fields:**
@@ -304,7 +317,7 @@ Each SSH command should have a reasonable timeout to prevent hanging:
 ```bash
 # Use ConnectTimeout in SSH options (already set to 10s)
 # For long-running commands, use timeout wrapper:
-ssh $SSH_OPTS "${USER}@${HOST}" "timeout 15 find '${WP_PATH}/wp-content' -name '*.php' -mtime -7 -type f 2>/dev/null | head -50"
+ssh $SSH_OPTS "${USER}@${HOST}" "timeout 15 find ${WP_PATH_QUOTED}/wp-content -name '*.php' -mtime -7 -type f 2>/dev/null | head -50"
 ```
 
 ## Section 5: Integration with Diagnostic Planning

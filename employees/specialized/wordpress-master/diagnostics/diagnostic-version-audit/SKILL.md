@@ -27,18 +27,37 @@ Before running checks, you need:
 
 If WP-CLI is not available, return a single Warning finding and skip WP-CLI-dependent checks.
 
+### Safe command setup
+
+Load the authorized site profile once. Profile values and WP-CLI arguments are data; do not substitute them into shell source. `wp_cli_path` is one reviewed executable path, without a shell-command prefix.
+
+```bash
+SITE_NAME="${1:-default-site}"
+PROFILE=$(jq -er --arg site "$SITE_NAME" '.sites[$site]' sites.json) || exit 1
+HOST=$(printf '%s\n' "$PROFILE" | jq -r '.host')
+USER=$(printf '%s\n' "$PROFILE" | jq -r '.user')
+WP_PATH=$(printf '%s\n' "$PROFILE" | jq -r '.wp_path')
+WP_CLI_PATH=$(printf '%s\n' "$PROFILE" | jq -r '.wp_cli_path')
+TARGET_DIR="${2:-.sites/${SITE_NAME}/wp-content}"
+remote_wp() {
+  local command
+  command=$(python3 -c 'import shlex,sys; print("cd " + shlex.quote(sys.argv[1]) + " && " + shlex.join(sys.argv[2:]))' "$WP_PATH" "$WP_CLI_PATH" "$@") || return 1
+  ssh -o BatchMode=yes -o ConnectTimeout=10 "${USER}@${HOST}" "$command"
+}
+```
+
 ### Check 1: WordPress Core Version
 
 **Command:**
 ```bash
-ssh {user}@{host} "cd {wp_path} && {wp_cli_path} core version"
+remote_wp core version
 ```
 
 **Parse output:** Extract version number (e.g. "6.4.3")
 
 **Check for updates:**
 ```bash
-ssh {user}@{host} "cd {wp_path} && {wp_cli_path} core check-update --format=json"
+remote_wp core check-update --format=json
 ```
 
 **Response format:**
@@ -93,7 +112,7 @@ ssh {user}@{host} "cd {wp_path} && {wp_cli_path} core check-update --format=json
 
 **Command:**
 ```bash
-ssh {user}@{host} "php -v"
+ssh -o BatchMode=yes -o ConnectTimeout=10 "${USER}@${HOST}" "php -v"
 ```
 
 **Parse output:** Extract version number from first line (e.g. "PHP 8.2.10...")
@@ -139,7 +158,7 @@ ssh {user}@{host} "php -v"
 
 **Command:**
 ```bash
-ssh {user}@{host} "cd {wp_path} && {wp_cli_path} db version"
+remote_wp db version
 ```
 
 **Parse output:** Extract database type and version (e.g. "mysql Ver 8.0.35" or "MariaDB 10.6.16")
@@ -168,7 +187,7 @@ ssh {user}@{host} "cd {wp_path} && {wp_cli_path} db version"
 
 **Get Full Plugin Inventory:**
 ```bash
-ssh {user}@{host} "cd {wp_path} && {wp_cli_path} plugin list --format=json"
+remote_wp plugin list --format=json
 ```
 
 **Response format:**
@@ -192,13 +211,13 @@ ssh {user}@{host} "cd {wp_path} && {wp_cli_path} plugin list --format=json"
 
 **Filter to Outdated Plugins:**
 ```bash
-ssh {user}@{host} "cd {wp_path} && {wp_cli_path} plugin list --update=available --format=json"
+remote_wp plugin list --update=available --format=json
 ```
 
 **Get Theme Status:**
 ```bash
-ssh {user}@{host} "cd {wp_path} && {wp_cli_path} theme list --format=json"
-ssh {user}@{host} "cd {wp_path} && {wp_cli_path} theme list --update=available --format=json"
+remote_wp theme list --format=json
+remote_wp theme list --update=available --format=json
 ```
 
 **For Each Outdated Plugin/Theme:**
@@ -207,7 +226,10 @@ ssh {user}@{host} "cd {wp_path} && {wp_cli_path} theme list --update=available -
 
 2. Check WordPress.org compatibility (optional but recommended):
    ```bash
-   curl -s "https://api.wordpress.org/plugins/info/1.2/?action=plugin_information&request[slug]={slug}"
+   # Set PLUGIN_SLUG from the selected plugin metadata as a data value.
+   curl -s --get --data-urlencode "action=plugin_information" \
+     --data-urlencode "request[slug]=$PLUGIN_SLUG" \
+     "https://api.wordpress.org/plugins/info/1.2/"
    ```
 
    **Parse `tested` field:** If the plugin's `tested` version is lower than the current WordPress version, add a compatibility note.

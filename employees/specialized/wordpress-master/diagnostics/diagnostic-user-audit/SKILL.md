@@ -35,12 +35,23 @@ Per user decision, this skill checks ONLY standard user account security issues.
 ```bash
 # Read site profile
 SITE_NAME="${1:-default-site}"
-PROFILE=$(jq -r ".sites[\"$SITE_NAME\"]" sites.json)
+PROFILE=$(jq -er --arg site "$SITE_NAME" '.sites[$site]' sites.json) || {
+  echo "ERROR: site profile not found" >&2
+  exit 1
+}
 
 HOST=$(echo "$PROFILE" | jq -r '.host')
 USER=$(echo "$PROFILE" | jq -r '.user')
 WP_PATH=$(echo "$PROFILE" | jq -r '.wp_path')
+# SSH reparses a command string. These values are single arguments to that
+# remote shell, not executable fragments; local quoting alone is insufficient.
+quote_remote_arg() {
+  python3 -c 'import shlex,sys; print(shlex.quote(sys.argv[1]))' "$1"
+}
+WP_PATH_QUOTED=$(quote_remote_arg "$WP_PATH") || exit 1
+
 WP_CLI_PATH=$(echo "$PROFILE" | jq -r '.wp_cli_path')
+WP_CLI_QUOTED=$(quote_remote_arg "$WP_CLI_PATH") || exit 1
 ```
 
 ## Security Checks
@@ -53,7 +64,7 @@ WP_CLI_PATH=$(echo "$PROFILE" | jq -r '.wp_cli_path')
 ```bash
 # Get all usernames and check if 'admin' exists
 ssh -o BatchMode=yes "${USER}@${HOST}" \
-  "cd ${WP_PATH} && ${WP_CLI_PATH} user list --field=user_login --format=json" 2>&1
+  "cd ${WP_PATH_QUOTED} && ${WP_CLI_QUOTED} user list --field=user_login --format=json" 2>&1
 ```
 
 Parse JSON array and check if 'admin' exists in the list.
@@ -84,7 +95,7 @@ Parse JSON array and check if 'admin' exists in the list.
 ```bash
 # Count users with administrator role
 ssh -o BatchMode=yes "${USER}@${HOST}" \
-  "cd ${WP_PATH} && ${WP_CLI_PATH} user list --role=administrator --format=count" 2>&1
+  "cd ${WP_PATH_QUOTED} && ${WP_CLI_QUOTED} user list --role=administrator --format=count" 2>&1
 ```
 
 Parse count from output.
@@ -122,19 +133,21 @@ This check attempts to identify inactive privileged users by checking last login
 ```bash
 # Get admin and editor user IDs
 ssh -o BatchMode=yes "${USER}@${HOST}" \
-  "cd ${WP_PATH} && ${WP_CLI_PATH} user list --role__in=administrator,editor --field=ID --format=json" 2>&1
+  "cd ${WP_PATH_QUOTED} && ${WP_CLI_QUOTED} user list --role__in=administrator,editor --field=ID --format=json" 2>&1
 ```
 
 **Step 3b: For each privileged user, check for last login meta**
 
 ```bash
 # Check common last login meta keys
-for USER_ID in ${USER_IDS[@]}; do
+for USER_ID in "${USER_IDS[@]}"; do
+  USER_ID_QUOTED=$(quote_remote_arg "$USER_ID") || exit 1
   # Try common meta key names
   ssh -o BatchMode=yes "${USER}@${HOST}" \
-    "cd ${WP_PATH} && ${WP_CLI_PATH} user meta get ${USER_ID} last_login 2>/dev/null || \
-     ${WP_CLI_PATH} user meta get ${USER_ID} wp_last_login 2>/dev/null || \
-     ${WP_CLI_PATH} user meta get ${USER_ID} user_last_login 2>/dev/null"
+    "cd ${WP_PATH_QUOTED} || exit 1
+     ${WP_CLI_QUOTED} user meta get ${USER_ID_QUOTED} last_login 2>/dev/null || \
+     ${WP_CLI_QUOTED} user meta get ${USER_ID_QUOTED} wp_last_login 2>/dev/null || \
+     ${WP_CLI_QUOTED} user meta get ${USER_ID_QUOTED} user_last_login 2>/dev/null"
 done
 ```
 
