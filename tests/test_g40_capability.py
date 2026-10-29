@@ -28,7 +28,7 @@ def _offline_env():
 
 
 def _local_wheelhouse():
-    """A folder with a setuptools>=61 wheel, found without network: $G40_WHEELHOUSE or this Python's ensurepip bundle."""
+    """Prefer the CI-prepared declared backend in G40_WHEELHOUSE; retain the legacy ensurepip fallback."""
     import re
     cands = [os.environ.get("G40_WHEELHOUSE")]
     try:
@@ -190,7 +190,19 @@ class G40Direct(unittest.TestCase):
         for cmd in ("wheel-smoke", "report"):
             r = run(cmd, ROOT, "--outside", out, "--wheelhouse", wh, "--json")
             self.assertEqual(r.returncode, 2, cmd + r.stdout + r.stderr)
-            self.assertIn("setuptools>=61", r.stderr); self.assertIn("Nothing was written", r.stderr)
+            self.assertIn("setuptools==84.2.1", r.stderr); self.assertIn("Nothing was written", r.stderr)
+            self.assertFalse(out.exists())
+
+    def test_wheelhouse_with_a_different_backend_version_is_refused_before_writes(self):
+        d = Path(tempfile.mkdtemp(prefix="g40-pin-")); self.addCleanup(shutil.rmtree, d, True)
+        wh = d / "wh"; wh.mkdir()
+        (wh / "setuptools-79.0.1-py3-none-any.whl").write_text("inert version-selection fixture\n")
+        out = d / "out"
+        for command in ("wheel-smoke", "report"):
+            result = run(command, ROOT, "--outside", out, "--wheelhouse", wh, "--json", env=_offline_env())
+            self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+            self.assertIn("setuptools==84.2.1", result.stderr)
+            self.assertIn("Nothing was written", result.stderr)
             self.assertFalse(out.exists())
 
     @unittest.skipIf(sys.version_info < (3, 10), "wheel-smoke needs 3.10+")

@@ -25,15 +25,17 @@ under its work folder (build/, dist/, *.egg-info, caches and bytecode skipped) a
 under REPO, or one that exists and is not empty (it never deletes or overwrites there); a wheel member with no source
 file is a finding (wheel_member_not_in_source).
 
-Build backend: `pip wheel` installs the backend named in pyproject.toml (setuptools>=61) into an isolated build
-environment, from the package index. Offline, pass --wheelhouse DIR: a folder holding a setuptools>=61 wheel (for
-example the one bundled in Python 3.11's ensurepip/_bundled). The build then runs with --no-index --find-links DIR and
-needs no network. A --wheelhouse that is missing or holds no setuptools>=61 wheel is refused before anything is
-written. When the backend cannot be obtained, the error says so (build_backend_unavailable) and names --wheelhouse.
+Build backend: pip installs the exact requirement declared in pyproject.toml into an isolated
+build environment. Offline, pass --wheelhouse DIR containing a wheel matching that requirement
+(currently setuptools==84.2.1), prepared on a connected host. --no-index --find-links keeps the
+actual build offline. A missing or incompatible wheelhouse is refused before anything is written;
+build_backend_unavailable identifies the declared requirement when online resolution is unavailable.
+The existing pip installation supplies its vendored requirement parser only for wheelhouse validation.
 """
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import os
 import re
@@ -123,17 +125,52 @@ def _check_outside(root, outside):
 _SETUPTOOLS_WHL = re.compile(r"^setuptools-(\d+)(?:\.[^-]*)?-.*\.whl$")
 
 
-def _check_wheelhouse(wheelhouse):
-    """--wheelhouse must be a folder with a setuptools>=61 wheel; checked before anything is written."""
+def _declared_backend(root):
+    """Read the literal build requirement; never execute project configuration."""
+    text = (root / "pyproject.toml").read_text(encoding="utf-8")
+    section = re.search(r"(?ms)^\[build-system\][^\n]*\n(.*?)(?=^\[|\Z)", text)
+    requires = re.search(r"(?ms)^\s*requires\s*=\s*(\[.*?\])\s*(?=\n|\Z)", section.group(1)) if section else None
+    if requires is None:
+        raise Invalid("pyproject.toml has no literal build-system.requires")
+    try:
+        values = ast.literal_eval(requires.group(1))
+    except (ValueError, SyntaxError) as error:
+        raise Invalid("build-system.requires must be a literal string list") from error
+    if not isinstance(values, list) or not all(isinstance(value, str) for value in values):
+        raise Invalid("build-system.requires must be a literal string list")
+    for value in values:
+        if re.match(r"(?i)^setuptools(?=\[|[<>=!~; \t]|$)", value):
+            return value
+    raise Invalid("build-system.requires has no setuptools build backend")
+
+
+def _check_wheelhouse(wheelhouse, root):
+    """Require the declared backend before writing the outside work folder."""
     if wheelhouse is None:
         return None
     wh = Path(wheelhouse)
+    requirement = _declared_backend(root)
     if not wh.is_dir():
-        raise Invalid("--wheelhouse %s is not a folder; name a folder holding a setuptools>=61 wheel" % wh)
-    ok = [p.name for p in sorted(wh.iterdir()) if _SETUPTOOLS_WHL.match(p.name) and int(_SETUPTOOLS_WHL.match(p.name).group(1)) >= 61]
+        raise Invalid("--wheelhouse %s is not a folder; supply the declared backend %s" % (wh, requirement))
+    try:
+        from pip._vendor.packaging.requirements import Requirement
+        from pip._vendor.packaging.utils import parse_wheel_filename
+        expected = Requirement(requirement)
+    except (ImportError, ValueError) as error:
+        raise Invalid("pip's requirement parser is needed to validate the local build backend") from error
+    ok = []
+    for path in sorted(wh.iterdir()):
+        if not path.is_file() or not _SETUPTOOLS_WHL.match(path.name):
+            continue
+        try:
+            distribution, version, _, _ = parse_wheel_filename(path.name)
+        except ValueError:
+            continue
+        if distribution == "setuptools" and version.major >= 61 and expected.specifier.contains(version, prereleases=True):
+            ok.append(path.name)
     if not ok:
-        raise Invalid("--wheelhouse %s holds no setuptools>=61 wheel (the build backend named in pyproject.toml); "
-                      "add one, for example from Python 3.11's ensurepip/_bundled" % wh)
+        raise Invalid("--wheelhouse %s cannot supply the declared build backend %s; "
+                      "prepare a matching wheel on a connected host before the offline run" % (wh, requirement))
     return Path(os.path.realpath(str(wh)))
 
 
@@ -145,7 +182,7 @@ def _backend_unavailable(text):
 def wheel_smoke(root, outside=None, wheelhouse=None):
     """Mirror .github/workflows/ci.yml wheel build and outside-checkout smoke."""
     root = _repo(root)
-    wh = _check_wheelhouse(wheelhouse)
+    wh = _check_wheelhouse(wheelhouse, root)
     req = _requires_python(root)
     py = sys.version_info
     if (py.major, py.minor) < (3, 10):
@@ -197,9 +234,9 @@ def _wheel_smoke_in(root, req, work, wh=None):
         tail = (b.stderr or b.stdout)[-400:].strip()
         if _backend_unavailable(b.stderr or b.stdout):
             how = ("the --wheelhouse folder did not supply it" if wh is not None else
-                   "the package index was not reachable or is disabled; offline, rerun with --wheelhouse DIR holding a setuptools>=61 wheel")
-            raise Invalid("build_backend_unavailable: pip could not install the build backend setuptools>=61 named in "
-                          "pyproject.toml (%s). pip said: %s" % (how, tail))
+                   "the package index was not reachable or is disabled; offline, rerun with --wheelhouse DIR holding the declared backend")
+            raise Invalid("build_backend_unavailable: pip could not install the build backend %s named in "
+                          "pyproject.toml (%s). pip said: %s" % (_declared_backend(root), how, tail))
         raise Invalid("pip wheel failed: %s" % tail)
     whls = sorted(wheels.glob("*.whl"))
     if len(whls) != 1:
@@ -383,7 +420,7 @@ def python_bounds(root):
 
 def report(root, outside=None, wheelhouse=None):
     root = _repo(root)
-    _check_wheelhouse(wheelhouse)  # refuse before skill-copy or anything else runs
+    _check_wheelhouse(wheelhouse, root)  # refuse before skill-copy or anything else runs
     if outside and sys.version_info >= (3, 10):
         _check_outside(root, outside)
     parts = {}
