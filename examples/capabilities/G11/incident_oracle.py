@@ -164,7 +164,14 @@ def make_snapshot(d, broken=False):
     con.executemany("insert into orders(total_cents) values (?)", [(i * 125,) for i in range(1, 40)])
     con.commit()
     con.close()
-    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    env = dict({name: os.environ[name] for name in (
+                   'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                   'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                   'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                   'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                   'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                   'GITHUB_ACTIONS',
+               ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
     p = subprocess.run([sys.executable, str(G03), "snapshot", str(ds), "--out", str(Path(d) / "snap")], capture_output=True, text=True, env=env)
     if p.returncode != 0:
         raise RuntimeError("G03 snapshot failed: " + p.stdout + p.stderr)
@@ -405,7 +412,14 @@ def main():
         b["diagnoses"] = ["traces/t.json"]
         p = put(d, "b.json", b)
         before = tree_digest(d)
-        env = dict(os.environ, PYTHONPATH=str(guard), PYTHONDONTWRITEBYTECODE="1")
+        env = dict({name: os.environ[name] for name in (
+                       'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                       'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                       'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                       'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                       'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                       'GITHUB_ACTIONS',
+                   ) if name in os.environ}, PYTHONPATH=str(guard), PYTHONDONTWRITEBYTECODE="1")
         rc, rep, _ = run(p, env=env)
         ok = rc == 0 and tree_digest(d) == before and dec_of(rep) == "rollback" and \
             all(k in json.dumps(rep) for k in ("read_only",))

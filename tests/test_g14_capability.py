@@ -16,7 +16,14 @@ CFO = ROOT / 'employees' / 'leadership' / 'cfo'
 TOOL = CFO / 'cash_revenue_reconcile.py'
 EX = ROOT / 'examples' / 'capabilities' / 'G14'
 FIX = EX / 'fixtures'
-ENV = dict(os.environ, PYTHONDONTWRITEBYTECODE='1')
+ENV = dict({name: os.environ[name] for name in (
+               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+               'GITHUB_ACTIONS',
+           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1')
 
 
 def cli(*args, env=ENV):
@@ -146,7 +153,14 @@ class G14Capability(unittest.TestCase):
         root = self.tmp / 'repo'
         for rel in ('employees/leadership/cfo', 'employees/data/data-engineer', 'examples/capabilities/G14'):
             shutil.copytree(ROOT / rel, root / rel, ignore=shutil.ignore_patterns('__pycache__'))
-        env = {k: v for k, v in os.environ.items() if k != 'PYTHONDONTWRITEBYTECODE'}
+        env = {name: os.environ[name] for name in (
+                  'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                  'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                  'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                  'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                  'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                  'GITHUB_ACTIONS',
+              ) if name in os.environ}
         p = subprocess.run([sys.executable, str(root / 'employees/leadership/cfo/cash_revenue_reconcile.py'), 'reconcile',
                             str(root / 'examples/capabilities/G14/fixtures/clean/package.json')], capture_output=True, text=True, env=env)
         self.assertEqual(p.returncode, 0, p.stderr)

@@ -170,12 +170,29 @@ def _wheel_smoke_in(root, req, work, wh=None):
     wheels = work / "wheels"
     venv = work / "venv"
     wheels.mkdir(exist_ok=True)
-    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    env = dict({name: os.environ[name] for name in (
+                   'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                   'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                   'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                   'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                   'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                   'GITHUB_ACTIONS',
+               ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
+    # Only pip receives the operator's explicit package-index/proxy settings.
+    # The installed router and unrelated child tools do not inherit these values.
+    pip_env = dict(env)
+    for name in ("PIP_INDEX_URL", "PIP_EXTRA_INDEX_URL", "PIP_CONFIG_FILE", "PIP_NO_INDEX",
+                 "PIP_FIND_LINKS", "PIP_CACHE_DIR", "PIP_CERT", "PIP_REQUIRE_VIRTUALENV",
+                 "PIP_DISABLE_PIP_VERSION_CHECK", "PIP_NO_INPUT", "PIP_TIMEOUT",
+                 "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "NO_PROXY",
+                 "http_proxy", "https_proxy", "all_proxy", "no_proxy"):
+        if name in os.environ:
+            pip_env[name] = os.environ[name]
     # build
     cmd = [sys.executable, "-m", "pip", "wheel", str(srcdir), "--no-deps", "--wheel-dir", str(wheels)]
     if wh is not None:
         cmd += ["--no-index", "--find-links", str(wh)]
-    b = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=300)
+    b = subprocess.run(cmd, capture_output=True, text=True, env=pip_env, timeout=300)
     if b.returncode != 0:
         tail = (b.stderr or b.stdout)[-400:].strip()
         if _backend_unavailable(b.stderr or b.stdout):
@@ -206,7 +223,7 @@ def _wheel_smoke_in(root, req, work, wh=None):
     subprocess.run([sys.executable, "-m", "venv", str(venv)], check=True, capture_output=True, env=env, timeout=120)
     pip = str(venv / "bin" / "pip")
     intake = str(venv / "bin" / "solaris-intake")
-    i = subprocess.run([pip, "install", "--no-deps", str(wheel)], capture_output=True, text=True, env=env, timeout=180)
+    i = subprocess.run([pip, "install", "--no-deps", str(wheel)], capture_output=True, text=True, env=pip_env, timeout=180)
     if i.returncode != 0:
         findings.append({"code": "wheel_install_failed", "detail": (i.stderr or i.stdout)[-300:]})
     else:

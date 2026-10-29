@@ -393,7 +393,14 @@ class GitState(Base):
 class Cli(Base):
     def cli(self, *args):
         proc = subprocess.run([sys.executable, str(TOOL), *args], capture_output=True, text=True,
-                              env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+                              env=dict({name: os.environ[name] for name in (
+                                           'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                           'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                           'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                           'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                           'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                           'GITHUB_ACTIONS',
+                                       ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1'))
         self.assertNotIn('Traceback', proc.stderr)
         return proc
 
@@ -456,7 +463,14 @@ class ConcurrencyAndScale(Base):
         procs = [subprocess.Popen([sys.executable, str(TOOL), 'activate', str(self.project), '--name', n,
                                    '--type', 'website', '--deploy-model', 'manual', '--json'],
                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
-                                  env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+                                  env=dict({name: os.environ[name] for name in (
+                                               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                               'GITHUB_ACTIONS',
+                                           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1'))
                  for n in ('Alpha', 'Bravo', 'Charlie', 'Delta')]
         results = [json.loads(p.communicate()[0]) for p in procs]
         self.assertTrue(any(r['status'] == 'complete' for r in results), results)
@@ -503,7 +517,14 @@ class M02Rework(Base):
 
     def cli_json(self, *args):
         p = subprocess.run([sys.executable, str(TOOL), *map(str, args), '--json'], capture_output=True, text=True,
-                           env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+                           env=dict({name: os.environ[name] for name in (
+                                        'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                        'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                        'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                        'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                        'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                        'GITHUB_ACTIONS',
+                                    ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1'))
         self.assertNotIn('Traceback', p.stderr)
         return p.returncode, json.loads(p.stdout)
 
@@ -725,7 +746,14 @@ class M02Rework(Base):
     # test gaps: no_intent_journal and no_lock mutants, crash during changed intake ---------------------
     def kill_beta_after(self, filename):
         p = subprocess.run([sys.executable, '-c', KILL_AFTER_WRITE, str(TOOL.parent), str(self.project), filename],
-                           capture_output=True, text=True, env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+                           capture_output=True, text=True, env=dict({name: os.environ[name] for name in (
+                                                                        'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                                                        'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                                                        'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                                                        'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                                                        'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                                                        'GITHUB_ACTIONS',
+                                                                    ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1'))
         self.assertEqual(p.returncode, -9, p.stderr)
         lock = self.project / act.LOCK
         self.assertTrue(lock.exists())

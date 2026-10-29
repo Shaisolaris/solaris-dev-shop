@@ -13,7 +13,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 X = ROOT / "examples/capabilities/G39"
 TOOL = ROOT / "employees/product-project/delivery-lead/delivery_evidence.py"
-ENV = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+ENV = dict({name: os.environ[name] for name in (
+               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+               'GITHUB_ACTIONS',
+           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
 
 
 def _load(name, path):
@@ -267,7 +274,14 @@ class Direct(unittest.TestCase):
 
     def test_engine_load_leaves_no_bytecode(self):
         prefix = self.root / "pycache-prefix"
-        env = {k: v for k, v in os.environ.items() if k != "PYTHONDONTWRITEBYTECODE"}
+        env = {name: os.environ[name] for name in (
+                  'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                  'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                  'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                  'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                  'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                  'GITHUB_ACTIONS',
+              ) if name in os.environ}
         env["PYTHONPYCACHEPREFIX"] = str(prefix)
         p = subprocess.run([sys.executable, str(TOOL), "record", ".", "--role", "data/data-engineer", "--outputs",
                             "a.txt", "--", sys.executable, "-c", "open('a.txt','w').write('x')"],

@@ -10,7 +10,14 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
 TOOL = ROOT / "employees" / "sales-outreach" / "customer-success" / "followthrough.py"
 FIX = HERE / "fixtures"
-ENV = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+ENV = dict({name: os.environ[name] for name in (
+               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+               'GITHUB_ACTIONS',
+           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
 DAY = dt.timedelta(days=1)
 RUNS = ["2026-10-02T12:00:00-07:00", "2026-10-05T12:00:00-07:00", "2026-10-08T12:00:00-07:00"]
 

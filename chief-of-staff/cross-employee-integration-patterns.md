@@ -42,7 +42,7 @@ Skipping any step = scope drift, schema drift, or untested code shipped.
 **Sequence:**
 1. backend-developer writes the endpoint
 2. cto reviews architecture decision (ADR if new pattern)
-3. security-auditor runs the 9-dimension review pass + runs `uvx snyk-agent-scan@latest` on the agent stack
+3. security-auditor runs the 9-dimension review pass + runs `uvx snyk-agent-scan@0.6.8` on the agent stack
 4. devops-engineer wires CI/CD + observability + rollback path
 5. After all pass → deploy
 

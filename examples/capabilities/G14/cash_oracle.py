@@ -439,7 +439,14 @@ def main():
         guard.mkdir()
         (guard / "sitecustomize.py").write_text("import socket\ndef _d(*a, **k):\n    raise RuntimeError('network denied')\nsocket.socket = _d\nsocket.create_connection = _d\n")
         before = tree(sept)
-        rc, rep, _ = run(sept / "package.json", env=dict(os.environ, PYTHONPATH=str(guard), PYTHONDONTWRITEBYTECODE="1"))
+        rc, rep, _ = run(sept / "package.json", env=dict({name: os.environ[name] for name in (
+                                                             'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                                             'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                                             'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                                             'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                                             'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                                             'GITHUB_ACTIONS',
+                                                         ) if name in os.environ}, PYTHONPATH=str(guard), PYTHONDONTWRITEBYTECODE="1"))
         ok = rc == 1 and tree(sept) == before and cur(rep, "USD", "recognized_revenue") == "2000.00"
         return ok, "runs under a socket-denying guard; package folder byte-identical" if ok else "rc %s" % rc
     check("o12 offline and read-only", o12)

@@ -31,7 +31,14 @@ pd = load_tool()
 
 
 def run(*args):
-    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    env = dict({name: os.environ[name] for name in (
+                   'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                   'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                   'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                   'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                   'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                   'GITHUB_ACTIONS',
+               ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
     p = subprocess.run([sys.executable] + [str(a) for a in args], capture_output=True, text=True, env=env,
                        timeout=600)
     return p.returncode, p.stdout, p.stderr

@@ -220,7 +220,14 @@ class Interruption(Base):
     def crash(self, n, snap, sid):
         p = subprocess.run([sys.executable, str(TOOL), 'restore', str(self.ds), '--snapshot', str(snap),
                             '--confirm', sid, '--simulate-crash-after', str(n)], capture_output=True, text=True,
-                           env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+                           env=dict({name: os.environ[name] for name in (
+                                        'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                        'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                        'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                        'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                        'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                        'GITHUB_ACTIONS',
+                                    ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1'))
         self.assertEqual(p.returncode, 137, p.stderr)
 
     def test_gap_after_set_aside_target_absent_recovers_without_snapshot(self):
@@ -279,7 +286,14 @@ class Interruption(Base):
                 (ds / 'b.db-journal').write_bytes(b'')  # a leftover sidecar is set aside, not replayed
                 p = subprocess.run([sys.executable, str(TOOL), 'restore', str(ds), '--snapshot',
                                     str(self.tmp / f'msnap{n}'), '--confirm', sid, '--simulate-crash-after', str(n)],
-                                   capture_output=True, text=True, env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+                                   capture_output=True, text=True, env=dict({name: os.environ[name] for name in (
+                                                                                'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                                                                'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                                                                'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                                                                'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                                                                'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                                                                'GITHUB_ACTIONS',
+                                                                            ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1'))
                 self.assertIn(p.returncode, (0, 137), p.stdout + p.stderr)
                 r = rec.recover(str(ds))
                 self.assertIn(r['status'], ('ok', 'nothing_to_do'), r)
@@ -375,7 +389,14 @@ class LocksAndTimeouts(Base):
         execute(self.db, "UPDATE orders SET value='damaged';")
         procs = [subprocess.Popen([sys.executable, str(TOOL), 'restore', str(self.ds), '--snapshot', str(snap),
                                    '--confirm', sid, '--json'], stdout=subprocess.PIPE, text=True,
-                                  env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1')) for _ in range(5)]
+                                  env=dict({name: os.environ[name] for name in (
+                                               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                               'GITHUB_ACTIONS',
+                                           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1')) for _ in range(5)]
         results = [json.loads(p.communicate()[0]) for p in procs]
         did_work = [r for r in results if r.get('restored')]
         self.assertEqual(len(did_work), 1, results)
@@ -452,7 +473,14 @@ class HealthAndScale(Base):
 class Cli(Base):
     def cli(self, *args):
         p = subprocess.run([sys.executable, str(TOOL), *map(str, args)], capture_output=True, text=True,
-                           env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+                           env=dict({name: os.environ[name] for name in (
+                                        'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                        'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                        'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                        'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                        'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                        'GITHUB_ACTIONS',
+                                    ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1'))
         self.assertNotIn('Traceback', p.stderr)
         return p
 
@@ -492,7 +520,14 @@ class M03Rework(Base):
 
     def cli(self, *args, env=None):
         p = subprocess.run([sys.executable, str(TOOL), *map(str, args)], capture_output=True, text=True,
-                           env=env or dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+                           env=env or dict({name: os.environ[name] for name in (
+                                               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                               'GITHUB_ACTIONS',
+                                           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1'))
         self.assertNotIn('Traceback', p.stderr)
         return p
 
@@ -602,7 +637,14 @@ class M03Rework(Base):
         inj = self.tmp / 'inject'
         inj.mkdir()
         (inj / 'sitecustomize.py').write_text(KILL_AT_SECOND_JOURNAL_WRITE)
-        env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1', PYTHONPATH=str(inj))
+        env = dict({name: os.environ[name] for name in (
+                       'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                       'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                       'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                       'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                       'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                       'GITHUB_ACTIONS',
+                   ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1', PYTHONPATH=str(inj))
         p = subprocess.run([sys.executable, str(TOOL), 'restore', str(self.ds), '--snapshot', str(snap), '--confirm', sid],
                            capture_output=True, text=True, env=env)
         self.assertEqual(p.returncode, -9, p.stderr)
@@ -664,7 +706,14 @@ class M03R2Rework(Base):
 
     def cli(self, *args):
         p = subprocess.run([sys.executable, str(TOOL), *map(str, args)], capture_output=True, text=True,
-                           env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+                           env=dict({name: os.environ[name] for name in (
+                                        'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                        'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                        'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                        'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                        'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                        'GITHUB_ACTIONS',
+                                    ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1'))
         self.assertNotIn('Traceback', p.stderr)
         return p
 

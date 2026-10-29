@@ -29,7 +29,14 @@ def iso(t):
 
 def run(cmd, pkg, out=None, env=None):
     a = cmd + ["review", str(pkg), "--json"] + (["--out", str(out)] if out else [])
-    e = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", **(env or {}))
+    e = dict({name: os.environ[name] for name in (
+                 'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                 'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                 'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                 'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                 'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                 'GITHUB_ACTIONS',
+             ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1", **(env or {}))
     try:
         r = subprocess.run(a, capture_output=True, text=True, timeout=600, env=e)
     except (OSError, subprocess.TimeoutExpired) as exc:
@@ -268,7 +275,14 @@ def main():
         g.mkdir()
         (g / "sitecustomize.py").write_text("import socket\nclass _S(socket.socket):\n    def connect(self, *a):\n        raise OSError('blocked')\nsocket.socket = _S\n")
         ps = [subprocess.Popen(cmd + ["review", str(pkg), "--json", "--out", str(tmp / ("o7-%d" % i))], stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE, env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1", PYTHONPATH=str(g))) for i in range(4)]
+                               stderr=subprocess.PIPE, env=dict({name: os.environ[name] for name in (
+                                                                    'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                                                    'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                                                    'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                                                    'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                                                    'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                                                    'GITHUB_ACTIONS',
+                                                                ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1", PYTHONPATH=str(g))) for i in range(4)]
         [p.communicate(timeout=600) for p in ps]
         reps = {(tmp / ("o7-%d" % i) / "report.json").read_bytes() if (tmp / ("o7-%d" % i) / "report.json").is_file() else b"" for i in range(4)}
         after = {p: hashlib.sha256(p.read_bytes()).hexdigest() for p in d.rglob("*") if p.is_file()}

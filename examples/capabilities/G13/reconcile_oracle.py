@@ -596,7 +596,14 @@ def main(argv=None):
                 "def _x(s, d, *a, **k):\n"
                 "    if str(d).endswith('r.json') and '.keep' not in str(s):\n        raise PermissionError(13, 'injected')\n"
                 "    return _r(s, d, *a, **k)\nos.replace = _x\n")
-            env = dict(os.environ, PYTHONPATH=str(fault))
+            env = dict({name: os.environ[name] for name in (
+                           'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                           'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                           'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                           'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                           'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                           'GITHUB_ACTIONS',
+                       ) if name in os.environ}, PYTHONPATH=str(fault))
             code, _, _, _ = run(a.tool, cp, "--rejects", str(cp.parent / "rej.csv"), "--out", str(cp.parent / "r.json"), env=env)
             if code != 2 or (cp.parent / "rej.csv").read_text() != "OLD\n" or (cp.parent / "r.json").read_text() != "OLD\n" or dots(cp.parent):
                 e.append(f"N4 second rename failed: exit {code}; the first output was not put back or temp files were left")

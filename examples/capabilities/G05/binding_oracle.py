@@ -57,7 +57,14 @@ def main(argv=None):
     q = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = q
     spec.loader.exec_module(q)
-    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    env = dict({name: os.environ[name] for name in (
+                   'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                   'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                   'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                   'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                   'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                   'GITHUB_ACTIONS',
+               ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
     decl = json.load(open(os.path.join(FIX, "revisions.json")))
     R1, R2 = decl["r1"]["revision"], decl["r2"]["revision"]
     P1, P2 = os.path.join(FIX, decl["r1"]["folder"]), os.path.join(FIX, decl["r2"]["folder"])
