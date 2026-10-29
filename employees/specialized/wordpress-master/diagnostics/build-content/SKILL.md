@@ -185,25 +185,16 @@ except Exception:
 fi
 ```
 
-**Image generation script:** Write to a temp file and execute to avoid shell argument length limits.
+**Image generation script:** Run the script through standard input with isolated Python; no shared temporary script is created. Keep the heredoc delimiter quoted so the shell does not expand Python source.
 
 ```bash
 mkdir -p "$BUILD_DIR/wp-content/uploads/placeholders"
-
-python3 /tmp/gen_images_$$.py "$BUILD_DIR" "$THEME_PRIMARY_COLOR" << 'PYEOF'
-# Script is written to /tmp/gen_images_$$.py before this line runs.
-# See the Python script block below.
-PYEOF
-```
-
-Write the Python image generation script to `/tmp/gen_images_$$.py`:
-
-```python
+python3 -I - "$BUILD_DIR" "$THEME_PRIMARY_COLOR" << 'PYEOF'
 #!/usr/bin/env python3
 """
 Placeholder image generator for NL WordPress builds.
 Supports Pillow (preferred) and pure stdlib fallback.
-Usage: python3 gen_images_$$.py <build_dir> <hex_color>
+Usage: python3 -I - <build_dir> <hex_color> (script on standard input)
 """
 import sys
 import os
@@ -266,14 +257,10 @@ for name, width, height in IMAGES:
     count += 1
 
 print(f'[Build] Generated {count} placeholder images (Pillow: {USE_PILLOW})')
-```
+PYEOF
 
-Execute the script:
 
-```bash
-python3 /tmp/gen_images_$$.py "$BUILD_DIR" "$THEME_PRIMARY_COLOR"
 IMAGE_EXIT=$?
-rm -f /tmp/gen_images_$$.py
 
 if [ $IMAGE_EXIT -ne 0 ]; then
   echo "[Build] WARNING: Placeholder image generation failed. Content will reference missing image URLs."
@@ -312,7 +299,11 @@ Always create: Home, About, Contact. Add 1-2 site-specific pages based on `NL_PR
 **Home page example pattern:**
 
 ```bash
-cat > /tmp/wp-page-home-$$ << 'CONTENT_EOF'
+HOME_ID=$("${WP[@]}" post create - \
+  --post_type=page \
+  --post_status=publish \
+  --post_title="Home" \
+  --porcelain << 'CONTENT_EOF'
 <!-- wp:cover {"url":"http://localhost/wp-content/uploads/placeholders/placeholder-hero.png","dimRatio":40} -->
 <div class="wp-block-cover">
   <img class="wp-block-cover__image-background" src="http://localhost/wp-content/uploads/placeholders/placeholder-hero.png" alt="Hero image" />
@@ -331,21 +322,18 @@ cat > /tmp/wp-page-home-$$ << 'CONTENT_EOF'
 <p>At Harlow &amp; Co. we believe your home should tell your story. Founded in 2019 by designer Mia Harlow, our studio pairs timeless materials with contemporary sensibility to create spaces that are lived in - and loved.</p>
 <!-- /wp:paragraph -->
 CONTENT_EOF
-
-HOME_ID=$("${WP[@]}" post create \
-  --post_type=page \
-  --post_status=publish \
-  --post_title="Home" \
-  --post_content="$(cat /tmp/wp-page-home-$$)" \
-  --porcelain)
-rm -f /tmp/wp-page-home-$$
+)
 echo "[Build] Created page: Home (ID: $HOME_ID)"
 ```
 
 **About page example pattern:**
 
 ```bash
-cat > /tmp/wp-page-about-$$ << 'CONTENT_EOF'
+ABOUT_ID=$("${WP[@]}" post create - \
+  --post_type=page \
+  --post_status=publish \
+  --post_title="About" \
+  --porcelain << 'CONTENT_EOF'
 <!-- wp:heading -->
 <h2 class="wp-block-heading">Our Story</h2>
 <!-- /wp:heading -->
@@ -374,21 +362,18 @@ cat > /tmp/wp-page-about-$$ << 'CONTENT_EOF'
 </div>
 <!-- /wp:columns -->
 CONTENT_EOF
-
-ABOUT_ID=$("${WP[@]}" post create \
-  --post_type=page \
-  --post_status=publish \
-  --post_title="About" \
-  --post_content="$(cat /tmp/wp-page-about-$$)" \
-  --porcelain)
-rm -f /tmp/wp-page-about-$$
+)
 echo "[Build] Created page: About (ID: $ABOUT_ID)"
 ```
 
 **Contact page example pattern:**
 
 ```bash
-cat > /tmp/wp-page-contact-$$ << 'CONTENT_EOF'
+CONTACT_ID=$("${WP[@]}" post create - \
+  --post_type=page \
+  --post_status=publish \
+  --post_title="Contact" \
+  --porcelain << 'CONTENT_EOF'
 <!-- wp:heading -->
 <h2 class="wp-block-heading">Get in Touch</h2>
 <!-- /wp:heading -->
@@ -414,14 +399,7 @@ cat > /tmp/wp-page-contact-$$ << 'CONTENT_EOF'
 </div>
 <!-- /wp:group -->
 CONTENT_EOF
-
-CONTACT_ID=$("${WP[@]}" post create \
-  --post_type=page \
-  --post_status=publish \
-  --post_title="Contact" \
-  --post_content="$(cat /tmp/wp-page-contact-$$)" \
-  --porcelain)
-rm -f /tmp/wp-page-contact-$$
+)
 echo "[Build] Created page: Contact (ID: $CONTACT_ID)"
 ```
 
@@ -452,7 +430,11 @@ Create 3-5 blog posts with topics relevant to the site's industry or niche. Same
 **Blog post example pattern:**
 
 ```bash
-cat > /tmp/wp-post-1-$$ << 'CONTENT_EOF'
+POST_1_ID=$("${WP[@]}" post create - \
+  --post_type=post \
+  --post_status=publish \
+  --post_title="How to Choose a Colour Palette for Your Living Room" \
+  --porcelain << 'CONTENT_EOF'
 <!-- wp:image -->
 <figure class="wp-block-image">
   <img src="http://localhost/wp-content/uploads/placeholders/placeholder-hero.png" alt="Featured image" />
@@ -471,14 +453,7 @@ cat > /tmp/wp-post-1-$$ << 'CONTENT_EOF'
 <p>Whether it's a vintage rug, a piece of art, or a sofa you've had for years, build your palette outward from an object you already love. Pull two or three colours from it, then add one unexpected accent - something slightly outside what you first see - to keep the room from feeling predictable.</p>
 <!-- /wp:paragraph -->
 CONTENT_EOF
-
-POST_1_ID=$("${WP[@]}" post create \
-  --post_type=post \
-  --post_status=publish \
-  --post_title="How to Choose a Colour Palette for Your Living Room" \
-  --post_content="$(cat /tmp/wp-post-1-$$)" \
-  --porcelain)
-rm -f /tmp/wp-post-1-$$
+)
 echo "[Build] Created post: (ID: $POST_1_ID)"
 ```
 
@@ -580,7 +555,7 @@ Example manifest update for build.json (handled by build-setup):
 
 **Docker container lifetime:** This skill must execute while the Docker MySQL container from `build-scaffold` Section 3 is still alive. WP-CLI plugin activation, post creation, menu creation, and the final `wp db export` all require a live MySQL connection. The EXIT trap set in `build-scaffold` fires when the entire command session ends - not between skill invocations. If "Error establishing a database connection" appears, the container has stopped prematurely.
 
-**Content-to-temp-file pattern:** Always write page and post content to `/tmp/wp-*-$$.sh` before passing to WP-CLI via `$(cat ...)`. Shell command length limits (~2MB on macOS, 131072 chars on Linux) can be hit with rich Gutenberg block content. The temp file approach avoids this limit entirely. Always remove temp files with `rm -f` after use.
+**Content through standard input:** Pass `-` to `wp post create` and supply content through a quoted heredoc, as in the examples above. Content stays out of the argument vector and no predictable shared temporary file is created. Keep literal content in the quoted heredoc; prepare any intended image URL substitutions explicitly before invocation. WP-CLI documents this input at https://developer.wordpress.org/cli/commands/post/create/.
 
 **Images before content:** Section 2 must complete before Section 3 begins. If image generation fails, content still runs - it will reference URLs that return 404 until images are generated manually. Log a warning if image generation failed so build-setup can note it in SETUP.md.
 
