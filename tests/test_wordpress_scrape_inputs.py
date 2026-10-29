@@ -54,7 +54,7 @@ class WordPressScrapeInputs(unittest.TestCase):
         return blocks[0][1]
 
     def test_css_path_and_project_imports_remain_data(self):
-        directory = self.workspace / "scrape space 'quote; literal-$()"
+        directory = self.workspace / "scrape space 'quote; literal-$(touch MUST_NOT_EXIST)"
         (directory / 'styles').mkdir(parents=True)
         css = directory / 'styles/main.css'
         css.write_text('a{content:"Example text";color:#123} b{content:">icon"} c{content:""}')
@@ -72,11 +72,12 @@ class WordPressScrapeInputs(unittest.TestCase):
         original = {'source_url': 'https://example.invalid/', 'unrelated': {'keep': [1, 2, 3]}}
         path.write_text(json.dumps(original))
         (self.workspace / 'json.py').write_text("raise RuntimeError('PROJECT JSON MODULE EXECUTED')\n")
-        status = "allowed' literal-\"$()\""
+        status = "allowed'; __import__('pathlib').Path('MUST_NOT_EXIST').touch(); #"
         result = self.run_shell(self.recipe('### 3c:', '## Section 4:'),
                                 {'SCRAPE_DIR': str(directory), 'ROBOTS_STATUS': status})
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(json.loads(path.read_text()), dict(original, robots_status=status))
+        self.assertFalse((self.workspace / 'MUST_NOT_EXIST').exists())
 
     def test_scrape_helper_refuses_symlink_and_invalid_manifest_without_changes(self):
         helper = DIAGNOSTICS / 'build-scrape/update_scrape.py'
@@ -118,7 +119,8 @@ class WordPressScrapeInputs(unittest.TestCase):
 
     def test_scrape_staging_is_private_and_cleanup_keeps_owner_files(self):
         node = self.bin / 'node'
-        node.write_text('#!/bin/sh\n[ "$1" = -e ] || exit 91\nexit 0\n')
+        node.write_text('#!/bin/sh\n[ "$1" = -e ] || exit 91\n'
+                        'case "$2" in "require(\'playwright\')"|"require(\'robots-parser\')") exit 0;; *) exit 92;; esac\n')
         node.chmod(0o700)
         temporary = self.workspace / "temporary 'quote"
         temporary.mkdir()
