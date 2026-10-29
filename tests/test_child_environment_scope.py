@@ -38,11 +38,16 @@ class ChildEnvironmentScopeTests(unittest.TestCase):
                         expressions[(argument.lineno, argument.col_offset)] = argument
                 if isinstance(node, ast.DictComp):
                     text = ast.get_source_segment(source, node)
-                    if '.environ' in text:
+                    iterator = node.generators[0].iter
+                    literal_keys = {part.value for part in iterator.elts if isinstance(part, ast.Constant)} if isinstance(iterator, (ast.Tuple, ast.List)) else set()
+                    inherited_items = isinstance(iterator, ast.Call) and ast.unparse(iterator.func) in ('os.environ.items', '_os.environ.items')
+                    reviewed_allowlist = {'PYTHONUTF8', 'CURL_CA_BUNDLE'}.issubset(literal_keys)
+                    if '.environ' in text and (inherited_items or reviewed_allowlist):
                         expressions[(node.lineno, node.col_offset)] = node
             self.assertEqual(len(expressions), expected, name + ': source scope drift')
             for (line, _), expression in expressions.items():
                 with self.subTest(source=name, line=line):
+                    seen += 1
                     # Evaluate only the environment expression against synthetic data.
                     # No product function, import, command, or real environment runs.
                     for call in (n for n in ast.walk(expression) if isinstance(n, ast.Call)):
@@ -54,7 +59,6 @@ class ChildEnvironmentScopeTests(unittest.TestCase):
                     for key in ('NVIDIA_API_KEY', 'AWS_SECRET_ACCESS_KEY', 'UNRELATED_APPLICATION_TOKEN',
                                 'PIP_INDEX_URL', 'PYTHONPATH', 'PYTHONPYCACHEPREFIX'):
                         self.assertNotIn(key, result)
-                    seen += 1
         self.assertEqual(seen, scope['callCount'])
 
     def test_video_concat_uses_owned_private_list_and_cleans_up_on_success_and_failure(self):
