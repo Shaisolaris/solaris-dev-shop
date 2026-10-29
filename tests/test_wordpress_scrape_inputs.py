@@ -128,7 +128,9 @@ class WordPressScrapeInputs(unittest.TestCase):
         sentinel.write_text('KEEP')
         document = (DIAGNOSTICS / 'build-scrape/SKILL.md').read_text()
         script = next(body for language, body in fenced_blocks(document) if language == 'bash')
-        script += '\npython3 -I -c \'import json,os,stat,sys;print("STAGING:"+json.dumps({"path":sys.argv[1],"mode":stat.S_IMODE(os.stat(sys.argv[1]).st_mode)}))\' "$SCRAPE_DIR"\n'
+        script += r"""
+python3 -I -c 'import json,os,stat,sys;print("STAGING:"+json.dumps({"path":sys.argv[1],"mode":stat.S_IMODE(os.stat(sys.argv[1]).st_mode)}))' "$SCRAPE_DIR"
+"""
         result = self.run_shell('umask 022\n' + script,
                                 {'TMPDIR': str(temporary), 'SLUG': 'private-fixture',
                                  'JSON_FIELDS': str(DIAGNOSTICS / 'shared/json_fields.py')})

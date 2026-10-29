@@ -182,7 +182,7 @@ class ModifyInstructionDataBoundaries(unittest.TestCase):
             root = Path(work)
             path = root / 'theme\'s "name".json'
             path.write_text(json.dumps({'settings': {'color': {'palette': [{'slug': 'primary', 'color': '#000'}]}}}))
-            payload = '\"; __import__(\'pathlib\').Path(\'escaped\').touch(); # $(touch escaped)'
+            payload = (ROOT / 'tests/fixtures/wordpress-new-value-injection.txt').read_text()
             result = self.run_block('theme_json_path, target_slug', root, THEME_JSON_PATH=str(path), TARGET_SLUG='primary',
                                     NEW_VALUE=payload, TOKEN_PATH='color.palette')
             self.assertEqual(result.returncode, 0, result.stderr)

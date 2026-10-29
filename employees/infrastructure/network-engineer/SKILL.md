@@ -153,7 +153,11 @@ access; activation and service changes remain separate owner-authorized work.
 6. See `homelab-and-network-ops.md` (Uncloud section).
 
 ## Workflow 6 - Validate a router/switch config before deployment
-1. Run layered checks in order (regex is a warning layer, not a parser): (a) dangerous commands (`reload`, `erase`, `format`, `no router bgp`, `crypto key zeroize`); (b) credential/management-plane exposure; (c) duplicate IPs and subnet overlaps; (d) stale references to ACLs, route-maps, prefix-lists, interfaces; (e) operational hygiene (NTP, timestamps, remote logging, banners).
+1. Run layered checks in order (regex is a warning layer, not a parser): (a) dangerous commands (the literal denylist below); (b) credential/management-plane exposure; (c) duplicate IPs and subnet overlaps; (d) stale references to ACLs, route-maps, prefix-lists, interfaces; (e) operational hygiene (NTP, timestamps, remote logging, banners).
+   Literal device-command denylist; these values remain prohibited, not executable instructions:
+   ```json
+   {"dangerous_device_commands": ["reload", "erase", "format", "no router bgp", "crypto key zeroize"]}
+   ```
 2. Parse VTY blocks by section: flag Telnet (require SSH only), missing inbound `access-class`, missing `exec-timeout`.
 3. Flag SSH v1, `enable password` (require `enable secret`), default/SNMPv2 communities (prefer SNMPv3 authPriv).
 4. Use validation as a blocking gate before any Netmiko/NAPALM/Ansible push: fail closed on dangerous commands and credentials; warn on best-practice gaps outside the change scope.

@@ -192,7 +192,8 @@ class G07Registry(unittest.TestCase):
         """G07 r2 (M07 P4-3): a .reg-*.tmp left by a SIGKILL during a change stayed in the fleet root."""
         self.assertEqual(self.register(), 0)
         left = self.root / '.reg-killed1234.tmp'
-        left.write_bytes(b'{"partial":')
+        # Emulate a JSON write interrupted immediately before its value.
+        left.write_bytes(json.dumps({'partial': None}, separators=(',', ':')).encode().removesuffix(b'null}'))
         c, out, err = self.cli('status')
         self.assertEqual(c, 0, err)
         self.assertFalse(left.exists())
