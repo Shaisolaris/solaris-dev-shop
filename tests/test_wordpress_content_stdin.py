@@ -17,7 +17,8 @@ class WordPressContentStdinTests(unittest.TestCase):
     def test_pages_and_post_preserve_literal_content_and_selected_target(self):
         source = DOCUMENT.read_text()
         blocks = re.findall(r'```bash\n([\s\S]*?)\n```', source)
-        examples = [block for block in blocks if "--porcelain << 'CONTENT_EOF'" in block]
+        examples = [block for block in blocks if '"${WP[@]}" post create - ' in block
+                    and "<< 'CONTENT_EOF'" in block]
         self.assertEqual(len(examples), 4)
         with tempfile.TemporaryDirectory(prefix='solaris-wp-stdin-') as temporary:
             workspace = Path(temporary)
@@ -28,7 +29,7 @@ class WordPressContentStdinTests(unittest.TestCase):
                             'cat > "$STDIN_LOG.body"\nprintf "123\\n"\n')
             fake.chmod(0o700)
             for index, block in enumerate(examples):
-                original = block.split("<< 'CONTENT_EOF'\n", 1)[1].split('\nCONTENT_EOF', 1)[0] + '\n'
+                original = block.split("<< 'CONTENT_EOF'", 1)[1].split('\n', 1)[1].split('\nCONTENT_EOF', 1)[0] + '\n'
                 # A long literal payload exposes argument-vector transport and expansion.
                 for large in (False, True):
                     with self.subTest(example=index, large=large):
