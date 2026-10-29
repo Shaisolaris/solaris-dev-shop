@@ -319,7 +319,19 @@ def cmd_record(ns):
     if d.is_symlink():
         raise Invalid("%s must not be a symlink" % LEDGER_DIR)
     (d / "logs").mkdir(parents=True, exist_ok=True)
-    read_ledger(root)  # refuse early on a broken ledger, before running anything
+    # Inspect a committed snapshot before running the specialist command. An
+    # appender holds LOCK_EX between its ledger write and atomic head update.
+    lockp = d / "ledger.lock"
+    preflight_fd = os.open(str(lockp), os.O_RDWR | os.O_CREAT, 0o644)
+    try:
+        try:
+            fcntl.flock(preflight_fd, fcntl.LOCK_SH | (fcntl.LOCK_NB if ns.no_wait else 0))
+        except BlockingIOError:
+            print("ledger lock held by another recorder; nothing appended", file=sys.stderr)
+            return 4
+        read_ledger(root)  # broken committed ledgers still refuse before execution
+    finally:
+        os.close(preflight_fd)
     qos = _load_qos()
     named_inputs, unbound_inputs = _named_inputs(root, argv, ns.outputs, ns.inputs)
     try:
@@ -358,7 +370,6 @@ def cmd_record(ns):
            "unbound_inputs": unbound_inputs,
            "log": log.relative_to(root).as_posix(), "log_sha256": _sha_file(log),
            "started": started, "ended": _now(), "worker_identity": "claimed in plain text, not authenticated"}
-    lockp = d / "ledger.lock"
     fd = os.open(str(lockp), os.O_RDWR | os.O_CREAT, 0o644)
     try:
         try:
