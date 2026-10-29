@@ -18,13 +18,21 @@ If the workspace has a project doctrine file (e.g. `project/FLEET.md`, `project/
 
 ## Local setup (run it, then read its output)
 Needs Python 3.12 (the supported interpreter); standard library only.
-```bash
-python3 employees/product-project/project-onboarding/activate.py activate <project-root> \
-  --name "Client portal" --type "web app" [--deploy-model "<owner's answer>"] \
-  [--brief "..."] [--credential "system=github;username=bot;location=1Password/Eng/GitHub"] \
-  [--code] [--init-git] [--within <allowed-parent>] [--dry-run] [--json]
-python3 employees/product-project/project-onboarding/activate.py resume <project-root>
+CLI usage; uppercase words are metavariables and square brackets mark optional arguments:
+```text
+python3 employees/product-project/project-onboarding/activate.py activate PROJECT_ROOT --name NAME --type TYPE [--deploy-model MODEL] [--brief BRIEF] [--credential CREDENTIAL] [--code] [--init-git] [--within ALLOWED_PARENT] [--dry-run] [--json]
+python3 employees/product-project/project-onboarding/activate.py resume PROJECT_ROOT
 ```
+Executable example with quoted literal values (the deployment model remains unresolved until supplied by the owner):
+```bash
+python3 employees/product-project/project-onboarding/activate.py activate ./client-portal --name "Client portal" --type "web app" --brief "Owner-supplied brief"
+python3 employees/product-project/project-onboarding/activate.py resume ./client-portal
+```
+Credential arguments record a vault location, never a secret. Literal format example:
+```text
+system=github;username=bot;location=1Password/Eng/GitHub
+```
+Quote the complete credential argument when passing it to a shell.
 - Creates `Scope/`, `Development/`, `Delivery/`, `Assets/`, `STATUS.md` (brief + `DEPLOY-MODEL:` line), `Scope/ROUND-PLAN.md` and `Delivery/CREDENTIALS.md` (locations only), plus the journal `.solaris-activation.json`.
 - Existing owner files are never overwritten: a file activation did not write is kept and reported as `conflict_preserved`. Files it wrote earlier are updated when the intake changes, and every change is listed in `intake_changes`.
 - Symlinks, dangling links or non-directories at controlled paths, an unreadable or too-deeply-nested journal or lock, or a root that is a file stop the run before any write (`blocked`) with a short message (no traceback).

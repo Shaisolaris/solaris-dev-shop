@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """privacy_inventory.py: synthetic data inventory, retention review and data-subject request handling (G37).
 
-Maps every field that actually exists in a local data drop (read through the data engineer's G13
+Maps every field that actually exists in a local input dataset (read through the data engineer's G13
 csv_reconcile.py contracts, including columns G13 ignores) to an inventory entry, finds records past their
 configured retention, traces access / deletion / correction requests to the exact records they touch, and
 lists every point that needs a qualified human reviewer. It plans; it never deletes, exports, sends or

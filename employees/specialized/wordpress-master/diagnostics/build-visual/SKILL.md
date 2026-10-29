@@ -88,14 +88,15 @@ if [ "$VISUAL_MODE" = "html-css" ]; then
   HTML_FILES=$(find "$VISUAL_PATH" -maxdepth 5 -name "*.html" 2>/dev/null)
 
   # Stage exported images for assets/images/ placement (Section 3g)
-  IMAGES_STAGE="/tmp/visual_images_${SLUG}_$$"
-  mkdir -p "$IMAGES_STAGE"
+  IMAGES_STAGE=$(mktemp -d "${TMPDIR:-/tmp}/solaris-visual-images.XXXXXXXX") || exit 1
   find "$VISUAL_PATH" -maxdepth 5 \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" \
     -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" \) 2>/dev/null \
     | while read img; do cp "$img" "$IMAGES_STAGE/" 2>/dev/null; done
 
   IMG_STAGE_COUNT=$(ls "$IMAGES_STAGE" 2>/dev/null | wc -l | tr -d ' ')
-  echo "[Build] Design files staged: $(echo "$CSS_FILES" | wc -l | tr -d ' ') CSS, $(echo "$HTML_FILES" | wc -l | tr -d ' ') HTML, $IMG_STAGE_COUNT images"
+  CSS_FILE_COUNT=$(printf '%s\n' "$CSS_FILES" | wc -l | tr -d ' ')
+  HTML_FILE_COUNT=$(printf '%s\n' "$HTML_FILES" | wc -l | tr -d ' ')
+  printf '[Build] Design files staged: %s CSS, %s HTML, %s images\n' "$CSS_FILE_COUNT" "$HTML_FILE_COUNT" "$IMG_STAGE_COUNT"
 fi
 ```
 

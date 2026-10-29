@@ -6,10 +6,15 @@
 
 **Unreal adaptation up front (so this stays a delta, not a generic C++ doc).** Unreal is not vanilla C++. Three things change how the Core Guidelines apply, and they are flagged inline throughout:
 1. **The UObject GC layer.** UObjects are NOT managed by `std::unique_ptr`/`std::shared_ptr`. They are garbage-collected and kept alive by `UPROPERTY()` reflection. Use `TObjectPtr<T>` (UE5) for member references and the U-prefixed containers (`TArray`, `TMap`, `TSet`, `FString`) for engine-facing code. The smart-pointer rules below apply in full force to **plain C++** (non-UObject helpers, math, data structs, third-party-style libraries, server/tool code) and to manual native resources (file handles, sockets, OS handles) inside the engine.
-2. **UE has its own coding standard** (PascalCase types, `b`-prefixed bools, no exceptions by default in engine code). Where Epic's convention and the Core Guidelines disagree on *style* (naming, `endl`), follow Epic in engine modules. Where they agree on *safety* (RAII, init-on-declare, no raw `new/delete` for native resources, no data races), the Core Guidelines win everywhere.
+2. **UE has its own coding standard** (PascalCase types, `b`-prefixed bools, no exceptions by default in engine code). Where Epic's convention and the Core Guidelines disagree on *style* (naming, `endl`), follow Epic in engine modules. Where they agree on *safety* (RAII, init-on-declare, no raw manual allocation/deallocation (exact C++ expressions below) for native resources, no data races), the Core Guidelines win everywhere.
 3. **The build system is UBT, not raw CMake.** The CMake/CTest workflow below applies to standalone C++ (tools, server-side, plugins built outside the editor, unit-test harnesses). For the in-editor build, drive UBT via `system_control` (see `unreal-testing-pipeline.md`). The *error-diagnosis discipline* (read the error, minimal surgical fix, rebuild, re-verify) is identical regardless of build system.
 
 ---
+
+Literal C++ operator and special-member syntax (reference data; the safety rules below prohibit manual ownership):
+```json
+{"allocation_expression": "new T{}", "deallocation_statement": "delete ptr;", "deleted_copy_constructor": "T(const T&) = delete;"}
+```
 
 ## Part 1 - The C++ review pass (memory safety, modern C++, concurrency)
 
@@ -21,7 +26,7 @@ Run this as a dedicated review whenever a chunk of gameplay or tool C++ is writt
 3. Triage by severity. Block on CRITICAL/HIGH, warn on MEDIUM. Do not approve C++ with a memory-safety or concurrency defect.
 
 ### CRITICAL - Memory safety (block)
-- **Raw `new`/`delete` for native resources** - use `std::unique_ptr`/`std::shared_ptr` (plain C++) or `TUniquePtr`/`TSharedPtr` (Unreal non-UObject types). For UObjects, never `new`/`delete` - use `NewObject`/`SpawnActor` and let GC + `UPROPERTY`/`TObjectPtr` keep them alive.
+- **Raw manual allocation/deallocation (exact C++ expressions below) for native resources** - use `std::unique_ptr`/`std::shared_ptr` (plain C++) or `TUniquePtr`/`TSharedPtr` (Unreal non-UObject types). For UObjects, never manual allocation/deallocation (exact C++ expressions below) - use `NewObject`/`SpawnActor` and let GC + `UPROPERTY`/`TObjectPtr` keep them alive.
 - **Buffer overflows** - C arrays, `strcpy`, `sprintf` without bounds. Prefer `std::array`/`std::vector` (or `TArray`/`FString` in engine code).
 - **Use-after-free / dangling** - invalidated iterators, pointers outliving their object. In Unreal the classic version is holding a raw `AActor*` after the actor was destroyed: store a `TWeakObjectPtr` and check validity, or a `UPROPERTY` `TObjectPtr` so GC tracks it.
 - **Uninitialized variables** - reading before assignment. Always initialize at declaration (ES.20).
@@ -47,7 +52,7 @@ Unreal gameplay logic is mostly single-threaded on the Game thread, but tasks, `
 
 ### HIGH - Code quality (block)
 - **No RAII** - manual resource management instead of tying lifetime to an object (R.1).
-- **Rule of Five violations** - if you define or `=delete` any of destructor / copy ctor / copy assign / move ctor / move assign, handle all five (C.21). If you manage no resource, define none - Rule of Zero (C.20).
+- **Rule of Five violations** - if you define or explicitly forbid (using the deleted-function syntax below) any of destructor / copy ctor / copy assign / move ctor / move assign, handle all five (C.21). If you manage no resource, define none - Rule of Zero (C.20).
 - **Large functions** (over ~50 lines) and **deep nesting** (over 4 levels) - F.3, ES.5: keep functions short, scopes small.
 - **C-style code** - `malloc`/`free` (R.10), C arrays, `typedef` instead of `using` (T.43).
 
@@ -77,7 +82,7 @@ These six themes are the foundation; everything in Part 1 is a specialization of
 6. **Value semantics over pointer semantics** (C.10, R.3-5, F.20) - return by value, prefer scoped objects, raw pointers are non-owning observers (R.3). (Unreal exception: UObjects are reference-semantic and GC-owned by design - "value semantics" applies to your plain data types, not to actors/components.)
 
 ### The smart-pointer ownership rules (plain C++ + native resources)
-- `make_unique`/`make_shared` - never naked `new`/`delete` (R.11, R.22).
+- `make_unique`/`make_shared` - never naked manual allocation/deallocation (exact C++ expressions below) (R.11, R.22).
 - `unique_ptr` over `shared_ptr` unless ownership is genuinely shared (R.21).
 - A raw `T*` is a non-owning observer - never transfer ownership through it (R.3, I.11).
 - **Unreal mapping:** plain C++ -> `std::unique_ptr`/`std::shared_ptr`; non-UObject Unreal types -> `TUniquePtr`/`TSharedPtr`/`TSharedRef`; UObjects -> `TObjectPtr`/`UPROPERTY` (GC-owned) and `TWeakObjectPtr` for non-owning references that must survive the referent being destroyed.
@@ -89,7 +94,7 @@ Prefer Rule of Zero: hold your members in types that already manage themselves (
 Custom exception types, throw by value, catch by reference (E.14, E.15); RAII guarantees cleanup on the way out (E.6); destructors never throw (E.16); do not catch everything everywhere (E.17). **Unreal caveat:** engine code largely runs with exceptions disabled - inside engine modules prefer `check()`/`ensure()`/`TOptional`/explicit return codes and reserve C++ exceptions for standalone/tool/server code where they are enabled.
 
 ### The quick checklist (run before calling C++ work done)
-- [ ] No raw `new`/`delete` for native resources; UObjects via `NewObject`/`SpawnActor` + `UPROPERTY`/`TObjectPtr` (R.11)
+- [ ] No raw manual allocation/deallocation (exact C++ expressions below) for native resources; UObjects via `NewObject`/`SpawnActor` + `UPROPERTY`/`TObjectPtr` (R.11)
 - [ ] Everything initialized at declaration (ES.20)
 - [ ] `const`/`constexpr` by default; const member functions where possible (Con.1, Con.2, ES.25)
 - [ ] `enum class`, `nullptr`, no narrowing, no C-style casts, no magic numbers (Enum.3, ES.46-48)

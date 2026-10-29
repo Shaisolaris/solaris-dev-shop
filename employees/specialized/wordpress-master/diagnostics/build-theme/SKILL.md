@@ -237,7 +237,7 @@ echo "[Build] Site tagline set: $SITE_TAGLINE"
 
 ## Implementation Notes
 
-**Pipeline position:** This skill runs in the NL build pipeline strictly AFTER `build-mcp` Section 2 (MCP adapter activated, database re-exported) and BEFORE `build-content`. Theme must be active before content seeding because `build-content` uses `"${WP[@]}" menu location list` to discover the active theme's navigation locations - this requires the target theme to already be installed and active.
+**Pipeline position:** This skill runs in the NL build pipeline strictly AFTER `build-mcp` Section 2 (MCP adapter activated, database re-exported) and BEFORE `build-content`. Theme must be active before content seeding because `build-content` uses `"${WP[@]}" menu location list` to discover the navigation locations provided by the active theme - this requires the target theme to already be installed and active.
 
 **Docker MySQL container:** The ephemeral Docker MySQL container from `build-scaffold` Section 3 must still be running when this skill executes. WP-CLI theme installation writes to the WordPress options table (active theme slug). The EXIT trap set in `build-scaffold` Section 3 remains active for the entire build session and fires only when the full command exits - not between skill invocations.
 

@@ -159,11 +159,7 @@ if ! "${WP[@]}" config create \
   --dbpass="$MYSQL_PASS" \
   --dbhost=127.0.0.1:3307 \
   --skip-check \
-  --extra-php='
-define( "WP_DEBUG", true );
-define( "WP_DEBUG_LOG", true );
-define( "WP_DEBUG_DISPLAY", false );
-' 2>&1; then
+  --extra-php='define( "WP_DEBUG", true ); define( "WP_DEBUG_LOG", true ); define( "WP_DEBUG_DISPLAY", false );' 2>&1; then
   echo ""
   echo "ERROR: wp-config.php creation failed."
   echo ""

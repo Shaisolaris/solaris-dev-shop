@@ -47,11 +47,16 @@ def rows(db, table):
         con.close()
 
 
-def execute(db, sql):
+def execute(db, sql, parameters=None):
     con = sqlite3.connect(db)
-    con.executescript(sql)
-    con.commit()
-    con.close()
+    try:
+        if parameters is None:
+            con.executescript(sql)
+        else:
+            con.execute(sql, parameters)
+        con.commit()
+    finally:
+        con.close()
 
 
 class Base(unittest.TestCase):
@@ -86,7 +91,8 @@ class Base(unittest.TestCase):
 class CleanRestore(Base):
     def test_actual_values_restored_and_previous_file_kept(self):
         snap, sid = self.snap()
-        execute(self.db, "DROP TABLE orders; UPDATE customers SET value='damaged';")
+        execute(self.db, "DROP TABLE orders;")
+        execute(self.db, "UPDATE customers SET value=?", ('damaged',))
         r = rec.restore(str(self.ds), str(snap), confirm=sid)
         self.assertEqual(r['status'], 'ok', r)
         self.assert_seed_values()
@@ -191,7 +197,8 @@ class InvalidSnapshots(Base):
 class IntentAndDryRun(Base):
     def test_dry_run_is_byte_identical_and_reports_live_only_rows(self):
         snap, sid = self.snap()
-        execute(self.db, "DELETE FROM orders WHERE id=3; INSERT INTO customers VALUES (2,'new-live');")
+        execute(self.db, "DELETE FROM orders WHERE id=3;")
+        execute(self.db, "INSERT INTO customers VALUES (?, ?)", (2, 'new-live'))
         before_ds, before_snap = tree(self.ds), tree(snap)
         mt = {p: p.stat().st_mtime_ns for p in self.ds.iterdir()}
         r = rec.restore(str(self.ds), str(snap), confirm=None, dry_run=True)
@@ -204,7 +211,8 @@ class IntentAndDryRun(Base):
 
     def test_newer_live_data_needs_explicit_intent_and_is_kept(self):
         snap, sid = self.snap()
-        execute(self.db, "DELETE FROM orders WHERE id=3; INSERT INTO customers VALUES (2,'new-live');")
+        execute(self.db, "DELETE FROM orders WHERE id=3;")
+        execute(self.db, "INSERT INTO customers VALUES (?, ?)", (2, 'new-live'))
         before = tree(self.ds)
         for confirm in (None, 'wrong-id'):
             r = rec.restore(str(self.ds), str(snap), confirm=confirm)
@@ -536,7 +544,9 @@ class M03Rework(Base):
                          "CREATE TABLE SQLiteLog(m TEXT); INSERT INTO SQLiteLog VALUES ('x');"
                          "CREATE TABLE sqlite1(id INTEGER PRIMARY KEY, v TEXT); INSERT INTO sqlite1 VALUES (1, 'one');")
         snap, sid = self.snap()
-        execute(self.db, "UPDATE sqlitedata SET v='LIVE'; DELETE FROM SQLiteLog; UPDATE sqlite1 SET v='changed';")
+        execute(self.db, "UPDATE sqlitedata SET v=?", ('LIVE',))
+        execute(self.db, "DELETE FROM SQLiteLog;")
+        execute(self.db, "UPDATE sqlite1 SET v=?", ('changed',))
         h = rec.health(str(self.ds), ['service.db'], str(snap))
         self.assertEqual(h['status'], 'unhealthy', h)
         self.assertIn('sqlitedata', ' '.join(h['messages']))

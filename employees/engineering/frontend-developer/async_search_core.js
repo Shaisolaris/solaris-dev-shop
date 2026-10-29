@@ -9,7 +9,7 @@
  * - Keyboard model for an ARIA 1.2 combobox with a listbox popup (focus stays on the input; the active option is
  *   exposed with aria-activedescendant): ArrowDown/ArrowUp (wrap), Home/End, PageDown/PageUp, Enter, Escape, Tab.
  * - Live-region announcements on state changes only, never repeated for the same state.
- * - A narrow/wide layout decision that the demo's CSS media query mirrors (40rem = 640px).
+ * - A narrow/wide layout decision mirrored by the CSS media query in the demo (40rem = 640px).
  * examples/capabilities/G20/browser_checks.py can render the demo page in headless Chrome (320, 360 and 1280 px) when a
  * browser is named explicitly, with one Chrome launch per run (recorded in examples/capabilities/G20/rendered/).
  * Screen-reader output and other browsers are not covered.

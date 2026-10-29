@@ -24,7 +24,10 @@ Sources (verified 2026-06-15):
 ### Doctrine
 - **Pick ONE formatter per repo.** Biome format OR oxfmt OR Prettier - never two, or the diff war never ends. Wire it as a pre-commit hook (so the diff is clean before it is staged) and re-check in CI (`biome ci` is the CI-shaped command that checks without writing).
 - **The linter is a gate, not a suggestion.** Lint failures fail the build. This is the mechanical home for the rules.md red flags (index-as-key, `&&` with numeric conditions, missing effect deps, no-array-index-key, no-dangerously-set-inner-html) - many map directly onto Biome/oxlint rules, so the "stop and fix" list stops being honor-system.
-- **`eslint-disable` / `biome-ignore` needs a reason inline.** rules.md already bans bare disables; Biome's ignore comments support a stated suppression reason - require it.
+- **Linter suppression comments need an inline reason.** The existing rule against unexplained suppressions applies to both comment markers in this literal reference:
+  ```json
+  {"suppression_comment_markers": ["eslint-disable", "biome-ignore"], "inline_reason_required": true}
+  ```
 - **Do not bundle or vendor either tool here.** They are dev dependencies installed by the host (`npm i -D @biomejs/biome`, `npx oxlint`). This reference is the decision methodology, not the tool.
 - **Honest limit:** oxlint does not yet implement the full type-aware rule set typescript-eslint offers; Biome's rule coverage, while large, is not 1:1 with the ESLint plugin ecosystem. For projects that genuinely depend on a niche ESLint plugin, keep ESLint for that slice and use the fast linter as the speed layer in front.
 
@@ -85,7 +88,10 @@ Source: colinhacks/zod (MIT, Colin McDonnell). TypeScript-first schema validatio
 - **Schema is the single source of truth; infer the type, never duplicate it.** Write the Zod schema, then `type Foo = z.infer<typeof fooSchema>`. Never hand-maintain a parallel `interface` next to a schema - they drift. This is the central Zod discipline and it is what makes it worth the runtime cost.
 - **Validate at every trust boundary** - this is where the existing files gesture but do not systematize. The boundaries: (1) form input (RHF + zodResolver, already in rules.md §4); (2) Server Action / route-handler input (rules.md §5 / §8 - parse the incoming payload, never trust client validation as security); (3) external API responses and `fetch` results (the response is `unknown` until parsed - this catches the "API changed shape" failure that TypeScript alone cannot, because TS types are compile-time fiction over runtime data); (4) `localStorage` / URL search params before use (rules.md §4 rung 4 URL state + the versioned-localStorage rule in §6 tier 4).
 - **`safeParse` at boundaries you do not control, `parse` where a throw is correct.** External data -> `safeParse` and handle the typed error union (maps onto the discriminated-union async-state model in rules.md §3: `idle | loading | success | error`). Internal invariants you expect to hold -> `parse` and let it throw (a programmer error, not a user error).
-- **Compose, do not repeat.** `.extend()`, `.pick()`, `.omit()`, `.merge()`, `.partial()` to derive request/response/form variants from one base schema. A `CreateUser` schema and an `UpdateUser` schema should share a base, not be two hand-written walls.
+- **Compose, do not repeat.** the composition methods in the literal reference below to derive request/response/form variants from one base schema. A `CreateUser` schema and an `UpdateUser` schema should share a base, not be two hand-written walls.
+  ```json
+  {"schema_composition_methods": [".extend()", ".pick()", ".omit()", ".merge()", ".partial()"]}
+  ```
 - **Transform and coerce at the edge.** `z.coerce.number()` for query-string params (everything in a URL is a string); `.transform()` to normalize at parse time so the rest of the app sees clean data. Keep transforms at the boundary, not scattered through components.
 - **Error messages are UX.** Custom messages per field (`z.string().email("Enter a valid email")`) feed the form's inline errors (rules.md §7 form contract: error rendered with `role="alert"`, tied via `aria-describedby`). The schema is where the error copy lives, so it stays consistent between client and server validation.
 

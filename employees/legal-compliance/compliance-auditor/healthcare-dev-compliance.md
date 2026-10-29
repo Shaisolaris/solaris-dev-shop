@@ -32,7 +32,7 @@ HIPAA is not one thing. Scope it as three rules plus the BAA chain, and translat
 ### Breach Notification Rule -> posture
 - Reuse the existing breach clock (discovered = known-or-should-have-been-known), named investigator, breach log, >=7y retention. HIPAA-specific overlays: 60-day individual notification, HHS notification (within 60 days if >=500 individuals, else annual log), and media notice for >=500 in a state/jurisdiction. The Security Rule risk-assessment determines whether an incident is a reportable breach.
 
-### BAA chain (the dev-shop's own exposure)
+### BAA chain (exposure of the development shop)
 - A signed **BAA between Solaris and the client (covered entity)** is a precondition to touching PHI - it is the contractual analogue of the DPA. Legal terms route to legal-advisor; the auditor confirms it exists and is scoped before any PHI flows.
 - **Flow-down:** every subprocessor in the build (cloud host, error tracker, analytics, email, LLM) needs its own BAA or must be kept off the PHI path. This mirrors the GDPR subprocessor flow-down already in rules.md - same loop, BAA instead of DPA.
 
@@ -45,7 +45,7 @@ Three layers: **classification** (what is sensitive), **access control** (who ca
 ### Classification
 - **PHI** = anything that can identify a patient AND relates to their health/care/payment: name, DOB, address, phone, email, national IDs (SSN/Aadhaar/NHS number), MRN, diagnoses, meds, labs, imaging, insurance/claim detail, appointment/admission records, or any combination.
 - **PII (non-patient-sensitive but still protected)** in a healthcare system: clinician/staff personal details, fee structures + payout amounts, salary/bank details, vendor payment info.
-- **Tag at the schema level** so classification is auditable: `COMMENT ON COLUMN patients.dob IS 'PHI: date_of_birth';` etc. A schema with no PHI tagging is a gap.
+- **Tag at the schema level** so classification is auditable: [the literal SQL column-tag example](examples/phi-column-comment.sql) etc. A schema with no PHI tagging is a gap.
 
 ### Access control - Row-Level Security (RLS) as the default for multi-tenant clinical data
 - Enable RLS on every PHI/PII table; scope reads by facility/assignment, not application logic.

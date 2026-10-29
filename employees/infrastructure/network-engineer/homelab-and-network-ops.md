@@ -137,7 +137,9 @@ services:
       WEBPASSWORD: "${PIHOLE_WEBPASSWORD}"        # from 600-mode .env, not inline
       PIHOLE_DNS_: "1.1.1.1;1.0.0.1"
       DNSMASQ_LISTENING: "all"
-    volumes: ["./etc-pihole:/etc/pihole","./etc-dnsmasq.d:/etc/dnsmasq.d"]
+    volumes:
+      - ./etc-pihole:/etc/pihole
+      - ./etc-dnsmasq.d:/etc/dnsmasq.d
     restart: unless-stopped
     cap_add: [NET_ADMIN]    # only if Pi-hole serves DHCP
 ```

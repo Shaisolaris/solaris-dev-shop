@@ -92,7 +92,7 @@ fi
 
 Write a `README.md` to the build directory containing Local WP import instructions, the copy-pasteable `.mcp.json` STDIO transport configuration, and admin credential notes.
 
-```bash
+````bash
 # Read adapter version from version file if available
 MCP_ADAPTER_VERSION="unknown"
 if [ -f "${PLUGIN_DIR}/vendor/mcp-adapter-version.txt" ]; then
@@ -164,7 +164,7 @@ cat >> "$BUILD_DIR/README.md" << README_VERSION
 README_VERSION
 
 echo "[Build] README.md written."
-```
+````
 
 ## Section 4: Build Manifest Update
 

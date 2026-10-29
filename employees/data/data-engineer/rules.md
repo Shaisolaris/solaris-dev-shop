@@ -40,12 +40,16 @@ Citation keys: [dbt-labs] dbt-labs/dbt-agent-skills · [wsh] wshobson/agents plu
   |---|---|
   | `merge` | default - data gets updated; requires verified unique_key |
   | `append` | provably append-only (logs, events); no key needed |
-  | `delete+insert` | merge hits duplicate keys, or batch reprocessing |
+  | Two-phase replacement (exact strategy literal below) | merge hits duplicate keys, or batch reprocessing |
   | `insert_overwrite` | partitioned BigQuery/Spark tables; replaces partitions |
+  Exact dbt model configuration values (JSON notation for reference; use the same values in the model config):
+  ```json
+  {"incremental_strategy": "delete+insert", "on_schema_change": "append_new_columns", "default_schema_change_policy": "ignore"}
+  ```
 - **When** creating any incremental model → in order [alt]:
   1. Verify unique_key truly unique (`group by key having count(*) > 1`) BEFORE writing the model.
   2. First build `--full-refresh`, verify counts; then run incremental and verify again.
-  3. `on_schema_change='append_new_columns'` (default `ignore` silently drops new columns).
+  3. Set `on_schema_change` to the explicit value above; the default schema-change policy does not include new columns.
   4. Lookback window for late data: static `>= dateadd(day, -3, current_timestamp)` paired with the `max()` subquery - the static bound is also what restores partition pruning.
   5. Schedule periodic full refresh against drift.
   - Merge failing 3+ times = duplicate keys. Dedup fix: `row_number() over (partition by key order by updated_at desc) = 1`.

@@ -36,7 +36,11 @@ Last revised: 2026-06-13 (v0.6.0 depth pass adds platform-patterns.md + register
 **Placement + disruption** [lk8s/02]:
 - PDB on everything with availability needs - voluntary disruptions only (drains, not crashes, not HPA scale-down). `minAvailable` = replica count blocks all maintenance; leave drain room.
 - `topologySpreadConstraints` maxSkew 1 on zone + hostname. `DoNotSchedule` can strand Pods Pending when one zone is full - `ScheduleAnyway` for most workloads. Verify topologyKey exists on nodes and labelSelector matches the pod template - wrong selector balances against the wrong pods while looking fine.
-- securityContext floor: `runAsNonRoot` + numeric `runAsUser`, `readOnlyRootFilesystem`, `allowPrivilegeEscalation: false`, `capabilities.drop: ["ALL"]`, `seccompProfile: RuntimeDefault`.
+- securityContext floor: `runAsNonRoot` + numeric `runAsUser`, `readOnlyRootFilesystem`, `allowPrivilegeEscalation: false`, the capabilities setting below, `seccompProfile: RuntimeDefault`.
+  Exact capability configuration (JSON notation):
+  ```json
+  {"capabilities": {"drop": ["ALL"]}}
+  ```
 - Secrets mounted as volumes, not env vars (env leaks via debug output, process listings, crash dumps). `app.kubernetes.io/*` labels + owner/env/cost-center on every resource.
 
 ## Autoscaling + capacity
