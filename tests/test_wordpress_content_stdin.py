@@ -29,6 +29,9 @@ class WordPressContentStdinTests(unittest.TestCase):
                             'cat > "$STDIN_LOG.body"\nprintf "123\\n"\n')
             fake.chmod(0o700)
             for index, block in enumerate(examples):
+                # Bash 3.2 misparses apostrophes in heredocs nested inside $(...).
+                # Preserve this signal on CI hosts whose default Bash is newer.
+                self.assertLess(block.index('\nCONTENT_EOF\n'), block.index('_ID=$('))
                 original = block.split("<< 'CONTENT_EOF'", 1)[1].split('\n', 1)[1].split('\nCONTENT_EOF', 1)[0] + '\n'
                 # A long literal payload exposes argument-vector transport and expansion.
                 for large in (False, True):
