@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.70.0 (unreleased marketplace candidate)
+
+- Preserve the scaffold's selected WordPress site in all downstream build commands by passing the complete argument array.
+- Stream placeholder-image scripts and page/post content through standard input, avoiding predictable shared temporary files and keeping long content out of command arguments.
+- Keep all 61 specialists, Chief of Staff, canonical resources, fixtures and existing security controls. Carry the earlier unreleased security changes into this candidate.
+
+The retained ClawHub 0.69.0 package is immutable. The local NVIDIA static scan
+and independent finding triage are recorded separately; neither constitutes a
+clean provider verdict. This candidate is not a published release or marketplace
+admission. Exact final package validation and each provider's requirements apply.
+
 ## 0.68 (consolidated security candidate)
 
 - Keep WordPress diagnostic profile keys, paths, CLI paths, returned log paths and user IDs as data across local and remote shells. Refuse missing sites and preserve unknown results when a debug check fails.
