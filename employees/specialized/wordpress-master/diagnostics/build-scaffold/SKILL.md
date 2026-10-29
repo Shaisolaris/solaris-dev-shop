@@ -310,6 +310,6 @@ The EXIT trap set in Section 3 handles Docker container cleanup automatically on
 - Admin password is generated with `openssl rand` - never hardcoded, never stored in files
 - Docker container name includes the shell PID (`$$`) to prevent naming conflicts when running multiple builds simultaneously
 - Port 3307 is used for Docker MySQL to avoid conflicts with a locally running MySQL on port 3306
-- The `--allow-root` flag is automatically included when using Docker WP-CLI (runs as root inside the container)
+- WP-CLI runs locally as the invoking user; no automatic `--allow-root` flag or Docker WP-CLI fallback is used.
 - Zip packaging uses a subshell `(cd "$BUILD_DIR" && zip ...)` to preserve cwd for the parent process
 - build.json records all metadata EXCEPT admin password - admin password is terminal-only

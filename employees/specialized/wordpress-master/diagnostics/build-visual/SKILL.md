@@ -15,7 +15,7 @@ Translates a visual design input (HTML/CSS export directory or screenshot image)
 This skill expects the following variables to already be set by the calling command:
 
 - `BUILD_DIR` - absolute path to the build directory (set by build-scaffold Section 2)
-- `WP` - the WP-CLI command prefix (e.g. `wp --path=$BUILD_DIR` or the Docker equivalent, set by build-scaffold Section 4)
+- `WP` - the Bash argument array set by build-scaffold Section 4, for example `WP=(wp "--path=$BUILD_DIR")`. Invoke it as `"${WP[@]}"`; do not flatten it into a command string.
 - `VISUAL_PATH` - path to the design input (directory or image file, set by COMMAND.md Section 1)
 - `SLUG` - build slug (set by COMMAND.md Section 1)
 - `SITE_TITLE` - site title (set by COMMAND.md Section 1)
@@ -1046,7 +1046,7 @@ Activate the custom theme and re-export the database. Same pattern as `build-the
 ```bash
 echo "[Build] Activating custom theme: $THEME_SLUG"
 
-$WP theme activate "$THEME_SLUG" 2>&1
+"${WP[@]}" theme activate "$THEME_SLUG" 2>&1
 ACTIVATE_EXIT=$?
 
 if [ $ACTIVATE_EXIT -eq 0 ]; then
@@ -1065,25 +1065,25 @@ Set static front page and update site metadata:
 
 ```bash
 # Set static front page (prevents WordPress blog index from replacing the design's home page)
-HOME_PAGE_ID=$($WP post create \
+HOME_PAGE_ID=$("${WP[@]}" post create \
   --post_type=page \
   --post_title="Home" \
   --post_status=publish \
   --porcelain 2>/dev/null || echo "")
 
 if [ -n "$HOME_PAGE_ID" ]; then
-  $WP option update show_on_front "page" 2>&1
-  $WP option update page_on_front "$HOME_PAGE_ID" 2>&1
+  "${WP[@]}" option update show_on_front "page" 2>&1
+  "${WP[@]}" option update page_on_front "$HOME_PAGE_ID" 2>&1
   echo "[Build] Static front page set (page ID: $HOME_PAGE_ID)"
 fi
 
 # Update site title
-$WP option update blogname "$SITE_TITLE" 2>&1
+"${WP[@]}" option update blogname "$SITE_TITLE" 2>&1
 
 # the coding agent generates a brief tagline from the design context (one line, no quotes)
 # Based on the detected design personality, color palette, and content areas
 SITE_TAGLINE="<the coding agent-generated tagline based on design context>"
-$WP option update blogdescription "$SITE_TAGLINE" 2>&1
+"${WP[@]}" option update blogdescription "$SITE_TAGLINE" 2>&1
 
 echo "[Build] Site title: $SITE_TITLE"
 echo "[Build] Site tagline: $SITE_TAGLINE"
@@ -1093,7 +1093,7 @@ echo "[Build] Site tagline: $SITE_TAGLINE"
 
 ```bash
 echo "[Build] Exporting database..."
-$WP db export "$BUILD_DIR/database.sql" --add-drop-table 2>&1
+"${WP[@]}" db export "$BUILD_DIR/database.sql" --add-drop-table 2>&1
 DB_EXPORT_EXIT=$?
 
 if [ $DB_EXPORT_EXIT -eq 0 ]; then

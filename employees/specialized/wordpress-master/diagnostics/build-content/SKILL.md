@@ -15,7 +15,7 @@ Seeds a WordPress installation (with FSE theme already active from build-theme) 
 This skill expects the following variables to already be set by the calling command:
 
 - `BUILD_DIR` - absolute path to the build directory (set by build-scaffold Section 2)
-- `WP` - the WP-CLI command prefix (e.g. `wp --path=$BUILD_DIR` or the Docker equivalent, set by build-scaffold Section 4)
+- `WP` - the Bash argument array set by build-scaffold Section 4, for example `WP=(wp "--path=$BUILD_DIR")`. Invoke it as `"${WP[@]}"`; do not flatten it into a command string.
 - `NL_PROMPT` - the user's natural language site description string
 - `SITE_TITLE` - site title derived from the NL prompt (set by the calling command)
 - `THEME_SLUG` - installed theme slug (set by build-theme)
@@ -111,17 +111,17 @@ FAILED_PLUGINS=()
 install_plugin() {
   local slug="$1"
 
-  if $WP plugin install "$slug" --activate 2>&1; then
+  if "${WP[@]}" plugin install "$slug" --activate 2>&1; then
     # Secondary check: verify no PHP fatal triggered by activation
     if grep -q "PHP Fatal error" "$BUILD_DIR/wp-content/debug.log" 2>/dev/null; then
       echo "[Build] WARNING: Plugin $slug triggered PHP fatal after activation. Deactivating."
-      $WP plugin deactivate "$slug" 2>/dev/null || true
+      "${WP[@]}" plugin deactivate "$slug" 2>/dev/null || true
       FAILED_PLUGINS+=("$slug")
       return 1
     fi
     echo "[Build] Plugin active: $slug"
-    PLUGIN_NAME=$($WP plugin get "$slug" --field=name 2>/dev/null || echo "$slug")
-    PLUGIN_VER=$($WP plugin get "$slug" --field=version 2>/dev/null || echo "unknown")
+    PLUGIN_NAME=$("${WP[@]}" plugin get "$slug" --field=name 2>/dev/null || echo "$slug")
+    PLUGIN_VER=$("${WP[@]}" plugin get "$slug" --field=version 2>/dev/null || echo "unknown")
     INSTALLED_PLUGINS+=("${slug}:${PLUGIN_NAME}:${PLUGIN_VER}")
     return 0
   else
@@ -332,7 +332,7 @@ cat > /tmp/wp-page-home-$$ << 'CONTENT_EOF'
 <!-- /wp:paragraph -->
 CONTENT_EOF
 
-HOME_ID=$($WP post create \
+HOME_ID=$("${WP[@]}" post create \
   --post_type=page \
   --post_status=publish \
   --post_title="Home" \
@@ -375,7 +375,7 @@ cat > /tmp/wp-page-about-$$ << 'CONTENT_EOF'
 <!-- /wp:columns -->
 CONTENT_EOF
 
-ABOUT_ID=$($WP post create \
+ABOUT_ID=$("${WP[@]}" post create \
   --post_type=page \
   --post_status=publish \
   --post_title="About" \
@@ -415,7 +415,7 @@ cat > /tmp/wp-page-contact-$$ << 'CONTENT_EOF'
 <!-- /wp:group -->
 CONTENT_EOF
 
-CONTACT_ID=$($WP post create \
+CONTACT_ID=$("${WP[@]}" post create \
   --post_type=page \
   --post_status=publish \
   --post_title="Contact" \
@@ -440,8 +440,8 @@ PAGES_CREATED=${#PAGE_IDS[@]}
 **Set static front page:**
 
 ```bash
-$WP option update show_on_front page
-$WP option update page_on_front "$HOME_ID"
+"${WP[@]}" option update show_on_front page
+"${WP[@]}" option update page_on_front "$HOME_ID"
 echo "[Build] Static front page set to: Home (ID: $HOME_ID)"
 ```
 
@@ -472,7 +472,7 @@ cat > /tmp/wp-post-1-$$ << 'CONTENT_EOF'
 <!-- /wp:paragraph -->
 CONTENT_EOF
 
-POST_1_ID=$($WP post create \
+POST_1_ID=$("${WP[@]}" post create \
   --post_type=post \
   --post_status=publish \
   --post_title="How to Choose a Colour Palette for Your Living Room" \
@@ -497,7 +497,7 @@ Log final count: `[Build] Created $PAGES_CREATED pages and $POSTS_CREATED posts`
 **Create the menu:**
 
 ```bash
-MENU_ID=$($WP menu create "Primary Menu" --porcelain)
+MENU_ID=$("${WP[@]}" menu create "Primary Menu" --porcelain)
 echo "[Build] Menu created (ID: $MENU_ID)"
 ```
 
@@ -505,7 +505,7 @@ echo "[Build] Menu created (ID: $MENU_ID)"
 
 ```bash
 for i in "${!PAGE_IDS[@]}"; do
-  $WP menu item add-post "$MENU_ID" "${PAGE_IDS[$i]}" --title="${PAGE_TITLES[$i]}" 2>&1
+  "${WP[@]}" menu item add-post "$MENU_ID" "${PAGE_IDS[$i]}" --title="${PAGE_TITLES[$i]}" 2>&1
 done
 echo "[Build] Added ${#PAGE_IDS[@]} items to menu"
 ```
@@ -513,13 +513,13 @@ echo "[Build] Added ${#PAGE_IDS[@]} items to menu"
 **Discover theme menu locations dynamically - never hardcode "primary":**
 
 ```bash
-THEME_LOCATIONS=$($WP menu location list --format=csv 2>/dev/null | tail -n +2 | cut -d, -f1)
+THEME_LOCATIONS=$("${WP[@]}" menu location list --format=csv 2>/dev/null | tail -n +2 | cut -d, -f1)
 FIRST_LOCATION=$(echo "$THEME_LOCATIONS" | head -1 | tr -d '[:space:]')
 MENU_ASSIGNED=false
 MENU_LOCATION=""
 
 if [ -n "$FIRST_LOCATION" ]; then
-  $WP menu location assign "$MENU_ID" "$FIRST_LOCATION" 2>&1
+  "${WP[@]}" menu location assign "$MENU_ID" "$FIRST_LOCATION" 2>&1
   MENU_ASSIGNED=true
   MENU_LOCATION="$FIRST_LOCATION"
   echo "[Build] Menu created with ${#PAGE_IDS[@]} items, assigned to location: $FIRST_LOCATION"
@@ -538,7 +538,7 @@ fi
 ```bash
 echo "[Build] Re-exporting database (captures all content, plugins, and menus)..."
 
-if ! $WP db export "$BUILD_DIR/database.sql" --add-drop-table 2>&1; then
+if ! "${WP[@]}" db export "$BUILD_DIR/database.sql" --add-drop-table 2>&1; then
   echo "[Build] WARNING: Database re-export failed. Previous export retained - some content may be missing from the imported DB."
 else
   echo "[Build] Database re-exported (includes all content and plugins)"

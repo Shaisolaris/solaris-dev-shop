@@ -15,7 +15,7 @@ Installs the WordPress MCP adapter (pre-compiled, bundled at `vendor/mcp-adapter
 This skill expects the following variables to already be set by the calling command:
 
 - `BUILD_DIR` - absolute path to the build directory (set by build-scaffold Section 2)
-- `WP` - the WP-CLI command prefix (e.g. `wp --path=$BUILD_DIR` or the Docker equivalent, set by build-scaffold Section 4)
+- `WP` - the Bash argument array set by build-scaffold Section 4, for example `WP=(wp "--path=$BUILD_DIR")`. Invoke it as `"${WP[@]}"`; do not flatten it into a command string.
 - `PLUGIN_DIR` - absolute path to the CoWork plugin directory (set by COMMAND.md before invoking this skill)
 
 ## Section 1: MCP Adapter Copy
@@ -66,7 +66,7 @@ Activate the MCP adapter plugin via WP-CLI so the activation state is captured i
 if [ "$MCP_ADAPTER_INCLUDED" = "true" ]; then
   echo "[Build] Activating MCP adapter..."
 
-  if ! $WP plugin activate mcp-adapter 2>&1; then
+  if ! "${WP[@]}" plugin activate mcp-adapter 2>&1; then
     echo "[Build] WARNING: MCP adapter activation failed."
     echo "[Build] WARNING: The plugin is installed but not active."
     echo "[Build] WARNING: Activate it manually in WP Admin after import."
@@ -78,7 +78,7 @@ if [ "$MCP_ADAPTER_INCLUDED" = "true" ]; then
     # Re-export the database to capture activation state in the SQL dump
     # This overwrites the initial export from build-scaffold - intentional
     echo "[Build] Re-exporting database with adapter active..."
-    if ! $WP db export "$BUILD_DIR/database.sql" --add-drop-table 2>&1; then
+    if ! "${WP[@]}" db export "$BUILD_DIR/database.sql" --add-drop-table 2>&1; then
       echo "[Build] WARNING: Database re-export failed. Using initial export (adapter may not be active in imported DB)."
       MCP_ADAPTER_ACTIVE=false
     else
