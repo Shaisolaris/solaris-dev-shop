@@ -90,7 +90,14 @@ class Oracle:
 
     def run(self, *a, timeout=60):
         p = subprocess.run(self.cmd + [str(x) for x in a], capture_output=True, text=True, timeout=timeout,
-                           env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1"))
+                           env=dict({name: os.environ[name] for name in (
+                                        'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                        'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                        'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                        'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                        'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                        'GITHUB_ACTIONS',
+                                    ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1"))
         need("Traceback" not in p.stderr, "candidate crashed: " + p.stderr.strip()[-300:])
         return p
 
@@ -348,7 +355,14 @@ class Oracle:
             "    return _r(a, b, *x, **k)\n"
             "os.replace = replace\n")
         p = subprocess.run(self.cmd + ["restore", str(ds), "--snapshot", str(snap), "--confirm", sid], capture_output=True,
-                           text=True, timeout=60, env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1", PYTHONPATH=str(inj)))
+                           text=True, timeout=60, env=dict({name: os.environ[name] for name in (
+                                                               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                                               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                                               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                                               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                                               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                                               'GITHUB_ACTIONS',
+                                                           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1", PYTHONPATH=str(inj)))
         need(p.returncode == -9, f"the drill did not stop the restore after staging (exit {p.returncode}); "
              "this check needs a Python candidate that writes .solaris-recovery.json with os.replace")
         p = self.run("recover", ds, "--dry-run", "--json")
@@ -408,7 +422,14 @@ class Oracle:
             "os.ftruncate = ftruncate\n")
         a = subprocess.Popen(self.cmd + ["restore", str(ds), "--snapshot", str(snap), "--confirm", sid],
                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                             env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1", PYTHONPATH=str(inj), G03_PAUSE_DIR=str(flag)))
+                             env=dict({name: os.environ[name] for name in (
+                                          'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                          'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                          'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                          'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                          'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                          'GITHUB_ACTIONS',
+                                      ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1", PYTHONPATH=str(inj), G03_PAUSE_DIR=str(flag)))
         try:
             for _ in range(400):
                 if (flag / "paused").exists() or a.poll() is not None:
@@ -480,7 +501,14 @@ class Oracle:
         sql(ds / "app.db", "UPDATE items SET v='live';")
         procs = [subprocess.Popen(self.cmd + ["restore", str(ds), "--snapshot", str(snap), "--confirm", sid],
                                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                                  env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1")) for _ in range(6)]
+                                  env=dict({name: os.environ[name] for name in (
+                                               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                               'GITHUB_ACTIONS',
+                                           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")) for _ in range(6)]
         codes = [p.wait(timeout=120) for p in procs]
         self.run("recover", ds)
         need(codes.count(0) >= 1, f"no concurrent restore succeeded {codes}")

@@ -15,7 +15,14 @@ ROOT = Path(__file__).resolve().parents[1]
 PC = ROOT / 'employees' / 'quality-security' / 'security-auditor' / 'provenance_check.py'
 EC = ROOT / 'employees' / 'engineering' / 'blockchain-developer' / 'event_chain.py'
 EX = ROOT / 'examples' / 'capabilities' / 'G38'
-ENV = dict(os.environ, PYTHONDONTWRITEBYTECODE='1')
+ENV = dict({name: os.environ[name] for name in (
+               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+               'GITHUB_ACTIONS',
+           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1')
 PJ = 'employees/demo/report-writer/plugin.json'
 
 
@@ -293,7 +300,14 @@ class G38Provenance(unittest.TestCase):
         cache = self.tmp / 'g05copy'
         shutil.copytree(str(ROOT / 'employees' / 'quality-security'), str(cache / 'employees' / 'quality-security'),
                         ignore=shutil.ignore_patterns('__pycache__'))
-        env = {k: v for k, v in os.environ.items() if k != 'PYTHONDONTWRITEBYTECODE'}
+        env = {name: os.environ[name] for name in (
+                  'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                  'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                  'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                  'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                  'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                  'GITHUB_ACTIONS',
+              ) if name in os.environ}
         r = subprocess.run([sys.executable, str(cache / 'employees/quality-security/security-auditor/provenance_check.py'), 'check', self.r,
                             '--manifest', self.r / 'MANIFEST.sha256'], capture_output=True, text=True, env=env, timeout=120)
         self.assertEqual(r.returncode, 0, r.stderr)
@@ -427,6 +441,39 @@ class G38EventChain(unittest.TestCase):
 
 
 class G38Wiring(unittest.TestCase):
+    def test_concurrency_oracle_rejects_invalid_chain_when_writers_serialize(self):
+        import types
+        from unittest import mock
+        sys.path.insert(0, str(ROOT))
+        try:
+            from examples.capabilities.G38 import authority_oracle as oracle
+        finally:
+            sys.path.pop(0)
+        with tempfile.TemporaryDirectory(prefix='g38-serialized-control-') as tmp:
+            root = Path(tmp)
+            log = root / 'log.jsonl'
+            worker = [0]
+            class SerializedNaiveWriter:
+                def __init__(self, *_args, **_kwargs):
+                    number = worker[0]
+                    worker[0] += 1
+                    with log.open('a') as out:
+                        for i in range(25):
+                            out.write(json.dumps({'seq': number * 25 + i, 'prev': '', 'hash': '',
+                                                  'at': '', 'claimed_by': 'worker %d (synthetic)' % number,
+                                                  'body': {'i': i}}) + '\n')
+                def wait(self, timeout):
+                    return 0
+            candidate = types.SimpleNamespace(
+                dir=lambda: root, ec=EX / 'naive/event_chain.py',
+                verify=lambda _path: (0, {'verified': 200, 'claimed_by': {
+                    'counts': {'worker %d (synthetic)' % w: 25 for w in range(8)}}}, ''))
+            # Serialized scheduling is legitimate. Counts from a selected verifier
+            # cannot establish that the bytes form a valid hash chain.
+            with mock.patch.object(oracle, 'subprocess', types.SimpleNamespace(
+                    Popen=SerializedNaiveWriter, DEVNULL=subprocess.DEVNULL)):
+                self.assertFalse(oracle.e4(candidate)[0])
+
     def test_oracle_and_controls(self):
         o = lambda *a: subprocess.run([sys.executable, str(EX / 'authority_oracle.py')] + list(a), capture_output=True, text=True, env=ENV, timeout=900)
         r = o(); self.assertEqual(r.stdout.strip().splitlines()[-1], 'ACCEPTED 8/8', r.stdout)

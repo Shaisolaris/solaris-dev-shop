@@ -13,7 +13,14 @@ TOOL = os.path.join(A, "daily_integration.py")
 ORACLE = os.path.join(A, "daily_integration_oracle.py")
 CAP = os.path.join(ROOT, "examples", "capabilities", "G42")
 PLAN = os.path.join(CAP, "plan.json")
-ENV = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+ENV = dict({name: os.environ[name] for name in (
+               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+               'GITHUB_ACTIONS',
+           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
 
 
 def run(argv, **kw):
@@ -95,7 +102,7 @@ class Plan(unittest.TestCase):
         # exact tree, so their evidence folders cannot share this tree; every build they integrate is here.
         self.assertEqual(ids, ["G01", "G02", "G03", "G04", "G05", "G07", "G08", "G09", "G10", "G11", "G13", "G14", "G15",
                                "G16", "G17", "G19", "G20", "G21", "G22", "G23", "G25", "G31", "G32", "G33", "G34", "G35",
-                               "G37", "G38", "G39", "G40", "G41", "H66", "H67"])
+                               "G37", "G38", "G39", "G40", "G41", "H66", "H67", "H68", "H70", "H71", "H72", "H73", "H74"])
         amendment = next(p for p in self.plan["prerequisites"] if p["id"] == "H66")
         self.assertEqual(amendment["commit"], "66dadbe966a9b7eb66d20d92614302014875475e")
         self.assertIn("tests.test_explicit_runtime_setup", amendment["tests"])
@@ -138,7 +145,7 @@ class Plan(unittest.TestCase):
         self.assertEqual(inventory(component), expected)
         self.assertFalse(excluded & inventory(self.plan["base"]).keys())
 
-    def test_reviewed_wordpress_component_binds_every_current_source_blob_and_mode(self):
+    def test_h67_preserves_the_reviewed_wordpress_source_blobs_and_modes(self):
         subject = "7b55e5fb7e31c3d48733d13af73658c77f2bae81"
         amendment = next(p for p in self.plan["prerequisites"] if p["id"] == "H67")
         self.assertEqual(amendment["commit"], "b480fbf1e6660b8fc29cb9f520a5081e1076e583")
@@ -148,6 +155,117 @@ class Plan(unittest.TestCase):
         component = amendment["commit"]
         if not git_ok(subject, component):
             self.skipTest("not a checkout holding the exact reviewed WordPress component")
+        def inventory(revision):
+            raw = subprocess.check_output(["git", "-C", ROOT, "ls-tree", "-rz", revision])
+            return {row.split(b"\t", 1)[1].decode(): row.split(b"\t", 1)[0]
+                    for row in raw.split(b"\0") if row}
+        excluded = {"examples/capabilities/G42/plan.json", "tests/test_g42_capability.py"}
+        expected = {path: value for path, value in inventory(subject).items() if path not in excluded}
+        self.assertEqual(inventory(component), expected)
+        self.assertFalse(excluded & inventory(self.plan["base"]).keys())
+
+    def test_h68_preserves_historical_source_blob_and_mode_binding(self):
+        subject = "7e45f7b8dfa3a1bb860e8eab3e404225387d5f3b"
+        amendment = next(p for p in self.plan["prerequisites"] if p["id"] == "H68")
+        self.assertEqual(amendment["commit"], "830ebbd93f5dd846519ba33060acf91a09986fdf")
+        component = amendment["commit"]
+        if not git_ok(subject, component):
+            self.skipTest("not a checkout holding the consolidated security component")
+        def inventory(revision):
+            raw = subprocess.check_output(["git", "-C", ROOT, "ls-tree", "-rz", revision])
+            return {row.split(b"\t", 1)[1].decode(): row.split(b"\t", 1)[0]
+                    for row in raw.split(b"\0") if row}
+        excluded = {"examples/capabilities/G42/plan.json", "tests/test_g42_capability.py"}
+        expected = {path: value for path, value in inventory(subject).items() if path not in excluded}
+        self.assertEqual(inventory(component), expected)
+        self.assertFalse(excluded & inventory(self.plan["base"]).keys())
+
+    def test_h70_preserves_historical_source_blob_and_mode_binding(self):
+        subject = "471341adde7ef3cdd33e581bfd40681040e851e5"
+        amendment = next(p for p in self.plan["prerequisites"] if p["id"] == "H70")
+        self.assertEqual(amendment["commit"], "b767fbbde003907e2dc155ea050ff91de63801af")
+        self.assertIn("tests.test_wordpress_target_scope", amendment["tests"])
+        self.assertIn("tests.test_wordpress_content_stdin", amendment["tests"])
+        component = amendment["commit"]
+        if not git_ok(subject, component):
+            self.skipTest("not a checkout holding the exact reviewed 0.70 component")
+        def inventory(revision):
+            raw = subprocess.check_output(["git", "-C", ROOT, "ls-tree", "-rz", revision])
+            return {row.split(b"\t", 1)[1].decode(): row.split(b"\t", 1)[0]
+                    for row in raw.split(b"\0") if row}
+        excluded = {"examples/capabilities/G42/plan.json", "tests/test_g42_capability.py"}
+        expected = {path: value for path, value in inventory(subject).items() if path not in excluded}
+        self.assertEqual(inventory(component), expected)
+        self.assertFalse(excluded & inventory(self.plan["base"]).keys())
+
+    def test_h71_preserves_historical_source_blob_and_mode_binding(self):
+        subject = "6c807172676836d1b4ff6fdcd8efee67b55bc8c7"
+        amendment = next(p for p in self.plan["prerequisites"] if p["id"] == "H71")
+        self.assertEqual(amendment["commit"], "91e71bc8864e2277d8784549e096a2dcc2c42f16")
+        self.assertIn("tests.test_child_environment_scope", amendment["tests"])
+        self.assertIn("tests.test_wordpress_visual_tokens", amendment["tests"])
+        component = amendment["commit"]
+        if not git_ok(subject, component):
+            self.skipTest("not a checkout holding the reviewed environment/token component")
+        def inventory(revision):
+            raw = subprocess.check_output(["git", "-C", ROOT, "ls-tree", "-rz", revision])
+            return {row.split(b"\t", 1)[1].decode(): row.split(b"\t", 1)[0]
+                    for row in raw.split(b"\0") if row}
+        excluded = {"examples/capabilities/G42/plan.json", "tests/test_g42_capability.py"}
+        expected = {path: value for path, value in inventory(subject).items() if path not in excluded}
+        self.assertEqual(inventory(component), expected)
+        self.assertFalse(excluded & inventory(self.plan["base"]).keys())
+
+    def test_h72_binds_every_current_source_blob_and_mode(self):
+        # Keep the original case ID; "current" here is the immutable H72 checkpoint.
+        subject = "42177f50a3942f3868b73fad13a3d0cea9bb3097"
+        amendment = next(p for p in self.plan["prerequisites"] if p["id"] == "H72")
+        self.assertEqual(amendment["commit"], "da17acd12e0bd510291ae42484dc2f372e0d4127")
+        self.assertIn("tests.test_delivery_ledger_preflight", amendment["tests"])
+        self.assertIn("tests.test_g39_capability", amendment["tests"])
+        component = amendment["commit"]
+        if not git_ok(subject, component):
+            self.skipTest("not a checkout holding the reviewed ledger preflight component")
+        def inventory(revision):
+            raw = subprocess.check_output(["git", "-C", ROOT, "ls-tree", "-rz", revision])
+            return {row.split(b"\t", 1)[1].decode(): row.split(b"\t", 1)[0]
+                    for row in raw.split(b"\0") if row}
+        excluded = {"examples/capabilities/G42/plan.json", "tests/test_g42_capability.py"}
+        expected = {path: value for path, value in inventory(subject).items() if path not in excluded}
+        self.assertEqual(inventory(component), expected)
+        self.assertFalse(excluded & inventory(self.plan["base"]).keys())
+        self.assertEqual({path: value for path, value in inventory("8c5d1e21b8f4568e73cb58f81ff7ca27ca0d867f").items()
+                          if path not in excluded}, expected)
+
+    def test_h73_binds_every_current_source_blob_and_mode(self):
+        subject = "9c801fc12d65ebb1b9e85ca5d07a2489a9cdc6f3"
+        amendment = next(p for p in self.plan["prerequisites"] if p["id"] == "H73")
+        self.assertEqual(amendment["commit"], "ee7198336748ba883c84fc3a832c8f37b29c25ac")
+        self.assertIn("tests.test_wordpress_scrape_inputs", amendment["tests"])
+        self.assertIn("tests.test_g03_capability", amendment["tests"])
+        component = amendment["commit"]
+        if not git_ok(subject, component):
+            self.skipTest("not a checkout holding the reviewed parser compatibility component")
+        def inventory(revision):
+            raw = subprocess.check_output(["git", "-C", ROOT, "ls-tree", "-rz", revision])
+            return {row.split(b"\t", 1)[1].decode(): row.split(b"\t", 1)[0]
+                    for row in raw.split(b"\0") if row}
+        excluded = {"examples/capabilities/G42/plan.json", "tests/test_g42_capability.py"}
+        expected = {path: value for path, value in inventory(subject).items() if path not in excluded}
+        self.assertEqual(inventory(component), expected)
+        self.assertFalse(excluded & inventory(self.plan["base"]).keys())
+        self.assertEqual({path: value for path, value in inventory("5efe9a59ac1b87e88010e4c97518e8bc8d1267eb").items()
+                          if path not in excluded}, expected)
+
+    def test_h74_binds_every_current_source_blob_and_mode(self):
+        subject = "b1fcb3e62ffd80599c23cff9f9bf95be65ba6af8"
+        amendment = next(p for p in self.plan["prerequisites"] if p["id"] == "H74")
+        self.assertEqual(amendment["commit"], "94b7ef027e5c453840b1a108550f5416822e5a14")
+        self.assertIn("tests.test_wordpress_scrape_inputs", amendment["tests"])
+        self.assertIn("tests.test_g40_capability", amendment["tests"])
+        component = amendment["commit"]
+        if not git_ok(subject, component):
+            self.skipTest("not a checkout holding the reviewed additional-parser and offline-backend component")
         def inventory(revision):
             raw = subprocess.check_output(["git", "-C", ROOT, "ls-tree", "-rz", revision])
             return {row.split(b"\t", 1)[1].decode(): row.split(b"\t", 1)[0]

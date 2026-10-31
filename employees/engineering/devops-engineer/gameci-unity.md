@@ -108,17 +108,34 @@ jobs:
       # Then: archive + sign + notarize via fastlane (separate workflow)
 ```
 
-## License setup (one-time per Unity license)
+## Optional setup: owner-controlled Unity licensing
 
-For **Personal** licenses:
-1. Run the unity-request-activation-file action once locally to generate `Unity_v<version>.alf`
-2. Upload that file to https://license.unity3d.com/manual to get `Unity_v<version>.ulf`
-3. Paste `Unity_v<version>.ulf` contents into GitHub repo secret `UNITY_LICENSE`
-4. CI is now activated
+Start this workflow only for an explicitly requested Unity build after the owner
+has selected the licence, target runner and repository. Loading Solaris grants no
+Unity account access, file-transfer permission or repository-secret access.
 
-For **Pro / Enterprise** licenses:
-- Set `UNITY_EMAIL`, `UNITY_PASSWORD`, `UNITY_SERIAL` as GitHub secrets
-- Use `game-ci/unity-builder@v4` - it handles activation + return automatically
+The owner completes the applicable [Unity licensing workflow](https://docs.unity.com/en-us/hub/manage-license).
+Unity Hub is the primary activation method for Personal and Pro. The documented
+headless command-line alternative applies to Pro; do not assume it works for
+Personal. Confirm the current vendor-supported method for the actual CI runner.
+An unavailable activation method is a setup blocker, not permission to bypass
+licensing or weaken account security.
+
+Where a vendor-supported activation-file exchange is available, generate the
+request for the intended runner, let the owner complete the vendor exchange, and
+use only the resulting approved licence artifact for that runner. An agent must
+not initiate account enrolment, licence exchange or secret changes as automatic
+plugin setup. Never place licence contents or account passwords in chat, source
+control, build arguments or logs.
+
+For an authorized GameCI configuration, the owner provisions the narrowly scoped
+repository/environment secrets required by the selected method: `UNITY_LICENSE`
+where supported, or the applicable `UNITY_EMAIL`, `UNITY_PASSWORD`, `UNITY_SERIAL`
+for an eligible professional licence. Prefer a dedicated CI entitlement or an
+existing approved licence-server route when available. Limit access to trusted
+build jobs, verify activation with a bounded test, and return/revoke the entitlement
+when the runner is retired. No service, container or account is activated merely
+by installing this plugin.
 
 ## Caching strategy (critical - saves 5-15 min per build)
 

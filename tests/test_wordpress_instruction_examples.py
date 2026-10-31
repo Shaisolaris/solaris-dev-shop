@@ -72,6 +72,82 @@ class WordPressInstructionExamples(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertFalse((target / 'build.json').exists())
 
+    def test_manifest_reader_does_not_import_project_modules(self):
+        marker = self.work / 'IMPORTED_PROJECT_CODE'
+        (self.work / 'json.py').write_text(
+            'from pathlib import Path\nPath("IMPORTED_PROJECT_CODE").touch()\n'
+            'raise RuntimeError("project import executed")\n')
+        target, result = self.build('isolated-reader')
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertFalse(marker.exists())
+        self.assertEqual(json.loads((target / 'build.json').read_text())['git']['commits'], 1)
+
+    def test_security_source_search_covers_spaced_calls_without_executing_them(self):
+        document = DIAGNOSTICS / 'security-analysis/SKILL.md'
+        command = next(line for line in document.read_text().splitlines()
+                       if line.startswith('grep ') and 'eval' in line)
+        self.assertEqual(command.count('/path/to/plugin'), 1)
+        command = command.replace('/path/to/plugin', '"$1"')
+        root = self.work / 'PHP source with "quotes"'
+        root.mkdir()
+        (root / 'positive.php').write_text('<?php\neval($value);\neval ($value);\neval\t($value);\n')
+        (root / 'negative.php').write_text('<?php\nmy_eval($value);\nevaluate($value);\n')
+        result = subprocess.run(['bash', '-c', command, 'search', str(root)],
+                                env=self.env, capture_output=True, text=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(len(result.stdout.splitlines()), 3)
+        self.assertNotIn('negative.php', result.stdout)
+
+    def malware_scan(self, site):
+        setup = snippet('diagnostic-malware-scan', '## Read-only activation and evidence boundaries')
+        search = snippet('diagnostic-malware-scan', '**Pattern 2a: Common backdoor names')
+        return subprocess.run(['bash', '-c', setup + '\n' + search, 'scan', site],
+                              cwd=self.work, env=self.env, capture_output=True, text=True, timeout=10)
+
+    def test_malware_search_includes_dependencies_without_modifying_them(self):
+        root = self.work / '.sites/example-com'
+        files = [root / 'vendor/pkg/indicator.php', root / 'node_modules/pkg/indicator.php']
+        for path in files:
+            path.parent.mkdir(parents=True)
+            path.write_text('A non-executable fixture mentioning FilesMan.\n')
+        before = {path: path.read_bytes() for path in files}
+        result = self.malware_scan('example-com')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(len(result.stdout.splitlines()), 2)
+        self.assertIn('vendor/pkg/indicator.php', result.stdout)
+        self.assertIn('node_modules/pkg/indicator.php', result.stdout)
+        self.assertEqual({path: path.read_bytes() for path in files}, before)
+
+    def test_malware_search_refuses_invalid_site_names_before_reading(self):
+        for site in ('../outside', 'site with spaces', '-option', 'bad--slug', '$(touch EXECUTED)'):
+            with self.subTest(site=site):
+                result = self.malware_scan(site)
+                self.assertEqual(result.returncode, 1, result.stderr)
+                self.assertEqual(result.stdout, '')
+                self.assertFalse((self.work / 'EXECUTED').exists())
+
+    @unittest.skipUnless(os.name == 'posix', 'physical symlink traversal')
+    def test_malware_search_does_not_follow_symlinks(self):
+        root = self.work / '.sites/example-com'
+        root.mkdir(parents=True)
+        local = root / 'local.php'
+        local.write_text('Inert FilesMan local indicator.\n')
+        outside = self.work / 'outside.php'
+        outside.write_text('Inert FilesMan outside indicator.\n')
+        (root / 'linked.php').symlink_to(outside)
+        result = self.malware_scan('example-com')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('local.php', result.stdout)
+        self.assertNotIn('linked.php', result.stdout)
+        self.assertNotIn('outside.php', result.stdout)
+        local.unlink()
+        (root / 'linked.php').unlink()
+        root.rmdir()
+        root.symlink_to(self.work)
+        result = self.malware_scan('example-com')
+        self.assertEqual(result.returncode, 1)
+        self.assertEqual(result.stdout, '')
+
     def test_remote_config_directory_is_quoted_as_data(self):
         # The ssh executable is replaced only inside this fixture. It runs the
         # captured remote command locally, never contacts an SSH server.

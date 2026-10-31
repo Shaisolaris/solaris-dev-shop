@@ -86,10 +86,24 @@ class DiagnosticJsonFields(unittest.TestCase):
         shell = 'curl() { printf "%s" "$PROBE_JSON"; return "${PROBE_CURL_EXIT:-0}"; }\n' + match.group() + '\ncheck_plugin_viable woocommerce\n'
         for data, expected in [('{"slug":"woocommerce"}', 0), ('', 1), ('not-json', 1), ('{"slug":"another-plugin"}', 1), ('{}', 1)]:
             with self.subTest(data=data):
-                result = subprocess.run(['bash', '-c', shell], env=dict(os.environ, JSON_FIELDS=str(SCRIPT), PROBE_JSON=data),
+                result = subprocess.run(['bash', '-c', shell], env=dict({name: os.environ[name] for name in (
+                                                                            'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                                                            'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                                                            'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                                                            'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                                                            'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                                                            'GITHUB_ACTIONS',
+                                                                        ) if name in os.environ}, JSON_FIELDS=str(SCRIPT), PROBE_JSON=data),
                                         text=True, capture_output=True, timeout=10)
                 self.assertEqual(result.returncode, expected, result.stdout + result.stderr)
-        result = subprocess.run(['bash', '-c', shell], env=dict(os.environ, JSON_FIELDS=str(SCRIPT),
+        result = subprocess.run(['bash', '-c', shell], env=dict({name: os.environ[name] for name in (
+                                                                    'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                                                    'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                                                    'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                                                    'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                                                    'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                                                    'GITHUB_ACTIONS',
+                                                                ) if name in os.environ}, JSON_FIELDS=str(SCRIPT),
                                 PROBE_JSON='{"slug":"woocommerce"}', PROBE_CURL_EXIT='22'),
                                 text=True, capture_output=True, timeout=10)
         self.assertEqual(result.returncode, 1, 'A failed HTTP response is not a verified plugin')
@@ -101,7 +115,14 @@ class DiagnosticJsonFields(unittest.TestCase):
         with tempfile.TemporaryDirectory() as work:
             marker = Path(work) / 'network-called'
             for slug in ['', '../plugin', '-plugin', 'plugin-', 'two--hyphens', 'x&action=query_plugins', '$(touch escaped)', '`touch escaped`']:
-                result = subprocess.run(['bash', '-c', shell], env=dict(os.environ, JSON_FIELDS=str(SCRIPT),
+                result = subprocess.run(['bash', '-c', shell], env=dict({name: os.environ[name] for name in (
+                                                                            'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                                                            'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                                                            'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                                                            'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                                                            'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                                                            'GITHUB_ACTIONS',
+                                                                        ) if name in os.environ}, JSON_FIELDS=str(SCRIPT),
                                         PROBE_MARKER=str(marker), PROBE_SLUG=slug),
                                         cwd=work, capture_output=True, text=True, timeout=10)
                 self.assertEqual(result.returncode, 1, result.stderr)
@@ -125,7 +146,14 @@ class ModifyInstructionDataBoundaries(unittest.TestCase):
 
     def run_block(self, text, root, **values):
         return subprocess.run(['bash', '-c', self.block(text)], cwd=root,
-                              env=dict(os.environ, **values), text=True, capture_output=True, timeout=10)
+                              env=dict({name: os.environ[name] for name in (
+                                           'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                           'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                           'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                           'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                           'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                           'GITHUB_ACTIONS',
+                                       ) if name in os.environ}, **values), text=True, capture_output=True, timeout=10)
 
     def test_every_python_heredoc_compiles(self):
         self.assertEqual(len(self.blocks), 7)
@@ -154,7 +182,7 @@ class ModifyInstructionDataBoundaries(unittest.TestCase):
             root = Path(work)
             path = root / 'theme\'s "name".json'
             path.write_text(json.dumps({'settings': {'color': {'palette': [{'slug': 'primary', 'color': '#000'}]}}}))
-            payload = '\"; __import__(\'pathlib\').Path(\'escaped\').touch(); # $(touch escaped)'
+            payload = (Path(__file__).resolve().parent / 'fixtures/wordpress-new-value-injection.txt').read_text()
             result = self.run_block('theme_json_path, target_slug', root, THEME_JSON_PATH=str(path), TARGET_SLUG='primary',
                                     NEW_VALUE=payload, TOKEN_PATH='color.palette')
             self.assertEqual(result.returncode, 0, result.stderr)

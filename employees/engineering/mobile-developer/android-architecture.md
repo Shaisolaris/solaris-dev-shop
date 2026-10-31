@@ -1,6 +1,6 @@
 # Android Architecture Reference - NowInAndroid Patterns
 
-> **Absorbed v0.3.0 (2026-04-25)** from `dpconde/the coding agent-android-skill` - Google's official Android architecture guidance + NowInAndroid reference app patterns. The skill scanner v2 caught this. Use this for any Kotlin/Jetpack Compose work.
+> **Absorbed v0.3.0 (2026-04-25)** from `dpconde/the coding agent-android-skill` - official Android architecture guidance from Google + NowInAndroid reference app patterns. The skill scanner v2 caught this. Use this for any Kotlin/Jetpack Compose work.
 
 ## Core principles (non-negotiable)
 

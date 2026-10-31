@@ -47,11 +47,16 @@ def rows(db, table):
         con.close()
 
 
-def execute(db, sql):
+def execute(db, sql, parameters=None):
     con = sqlite3.connect(db)
-    con.executescript(sql)
-    con.commit()
-    con.close()
+    try:
+        if parameters is None:
+            con.executescript(sql)
+        else:
+            con.execute(sql, parameters)
+        con.commit()
+    finally:
+        con.close()
 
 
 class Base(unittest.TestCase):
@@ -86,7 +91,8 @@ class Base(unittest.TestCase):
 class CleanRestore(Base):
     def test_actual_values_restored_and_previous_file_kept(self):
         snap, sid = self.snap()
-        execute(self.db, "DROP TABLE orders; UPDATE customers SET value='damaged';")
+        execute(self.db, "DROP TABLE orders;")
+        execute(self.db, "UPDATE customers SET value=?", ('damaged',))
         r = rec.restore(str(self.ds), str(snap), confirm=sid)
         self.assertEqual(r['status'], 'ok', r)
         self.assert_seed_values()
@@ -191,7 +197,8 @@ class InvalidSnapshots(Base):
 class IntentAndDryRun(Base):
     def test_dry_run_is_byte_identical_and_reports_live_only_rows(self):
         snap, sid = self.snap()
-        execute(self.db, "DELETE FROM orders WHERE id=3; INSERT INTO customers VALUES (2,'new-live');")
+        execute(self.db, "DELETE FROM orders WHERE id=3;")
+        execute(self.db, "INSERT INTO customers VALUES (?, ?)", (2, 'new-live'))
         before_ds, before_snap = tree(self.ds), tree(snap)
         mt = {p: p.stat().st_mtime_ns for p in self.ds.iterdir()}
         r = rec.restore(str(self.ds), str(snap), confirm=None, dry_run=True)
@@ -204,7 +211,8 @@ class IntentAndDryRun(Base):
 
     def test_newer_live_data_needs_explicit_intent_and_is_kept(self):
         snap, sid = self.snap()
-        execute(self.db, "DELETE FROM orders WHERE id=3; INSERT INTO customers VALUES (2,'new-live');")
+        execute(self.db, "DELETE FROM orders WHERE id=3;")
+        execute(self.db, "INSERT INTO customers VALUES (?, ?)", (2, 'new-live'))
         before = tree(self.ds)
         for confirm in (None, 'wrong-id'):
             r = rec.restore(str(self.ds), str(snap), confirm=confirm)
@@ -220,7 +228,14 @@ class Interruption(Base):
     def crash(self, n, snap, sid):
         p = subprocess.run([sys.executable, str(TOOL), 'restore', str(self.ds), '--snapshot', str(snap),
                             '--confirm', sid, '--simulate-crash-after', str(n)], capture_output=True, text=True,
-                           env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+                           env=dict({name: os.environ[name] for name in (
+                                        'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                        'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                        'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                        'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                        'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                        'GITHUB_ACTIONS',
+                                    ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1'))
         self.assertEqual(p.returncode, 137, p.stderr)
 
     def test_gap_after_set_aside_target_absent_recovers_without_snapshot(self):
@@ -279,7 +294,14 @@ class Interruption(Base):
                 (ds / 'b.db-journal').write_bytes(b'')  # a leftover sidecar is set aside, not replayed
                 p = subprocess.run([sys.executable, str(TOOL), 'restore', str(ds), '--snapshot',
                                     str(self.tmp / f'msnap{n}'), '--confirm', sid, '--simulate-crash-after', str(n)],
-                                   capture_output=True, text=True, env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+                                   capture_output=True, text=True, env=dict({name: os.environ[name] for name in (
+                                                                                'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                                                                'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                                                                'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                                                                'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                                                                'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                                                                'GITHUB_ACTIONS',
+                                                                            ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1'))
                 self.assertIn(p.returncode, (0, 137), p.stdout + p.stderr)
                 r = rec.recover(str(ds))
                 self.assertIn(r['status'], ('ok', 'nothing_to_do'), r)
@@ -375,7 +397,14 @@ class LocksAndTimeouts(Base):
         execute(self.db, "UPDATE orders SET value='damaged';")
         procs = [subprocess.Popen([sys.executable, str(TOOL), 'restore', str(self.ds), '--snapshot', str(snap),
                                    '--confirm', sid, '--json'], stdout=subprocess.PIPE, text=True,
-                                  env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1')) for _ in range(5)]
+                                  env=dict({name: os.environ[name] for name in (
+                                               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                               'GITHUB_ACTIONS',
+                                           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1')) for _ in range(5)]
         results = [json.loads(p.communicate()[0]) for p in procs]
         did_work = [r for r in results if r.get('restored')]
         self.assertEqual(len(did_work), 1, results)
@@ -452,7 +481,14 @@ class HealthAndScale(Base):
 class Cli(Base):
     def cli(self, *args):
         p = subprocess.run([sys.executable, str(TOOL), *map(str, args)], capture_output=True, text=True,
-                           env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+                           env=dict({name: os.environ[name] for name in (
+                                        'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                        'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                        'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                        'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                        'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                        'GITHUB_ACTIONS',
+                                    ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1'))
         self.assertNotIn('Traceback', p.stderr)
         return p
 
@@ -492,7 +528,14 @@ class M03Rework(Base):
 
     def cli(self, *args, env=None):
         p = subprocess.run([sys.executable, str(TOOL), *map(str, args)], capture_output=True, text=True,
-                           env=env or dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+                           env=env or dict({name: os.environ[name] for name in (
+                                               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                               'GITHUB_ACTIONS',
+                                           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1'))
         self.assertNotIn('Traceback', p.stderr)
         return p
 
@@ -501,7 +544,9 @@ class M03Rework(Base):
                          "CREATE TABLE SQLiteLog(m TEXT); INSERT INTO SQLiteLog VALUES ('x');"
                          "CREATE TABLE sqlite1(id INTEGER PRIMARY KEY, v TEXT); INSERT INTO sqlite1 VALUES (1, 'one');")
         snap, sid = self.snap()
-        execute(self.db, "UPDATE sqlitedata SET v='LIVE'; DELETE FROM SQLiteLog; UPDATE sqlite1 SET v='changed';")
+        execute(self.db, "UPDATE sqlitedata SET v=?", ('LIVE',))
+        execute(self.db, "DELETE FROM SQLiteLog;")
+        execute(self.db, "UPDATE sqlite1 SET v=?", ('changed',))
         h = rec.health(str(self.ds), ['service.db'], str(snap))
         self.assertEqual(h['status'], 'unhealthy', h)
         self.assertIn('sqlitedata', ' '.join(h['messages']))
@@ -602,7 +647,14 @@ class M03Rework(Base):
         inj = self.tmp / 'inject'
         inj.mkdir()
         (inj / 'sitecustomize.py').write_text(KILL_AT_SECOND_JOURNAL_WRITE)
-        env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1', PYTHONPATH=str(inj))
+        env = dict({name: os.environ[name] for name in (
+                       'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                       'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                       'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                       'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                       'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                       'GITHUB_ACTIONS',
+                   ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1', PYTHONPATH=str(inj))
         p = subprocess.run([sys.executable, str(TOOL), 'restore', str(self.ds), '--snapshot', str(snap), '--confirm', sid],
                            capture_output=True, text=True, env=env)
         self.assertEqual(p.returncode, -9, p.stderr)
@@ -664,7 +716,14 @@ class M03R2Rework(Base):
 
     def cli(self, *args):
         p = subprocess.run([sys.executable, str(TOOL), *map(str, args)], capture_output=True, text=True,
-                           env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+                           env=dict({name: os.environ[name] for name in (
+                                        'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                        'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                        'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                        'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                        'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                        'GITHUB_ACTIONS',
+                                    ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1'))
         self.assertNotIn('Traceback', p.stderr)
         return p
 

@@ -84,7 +84,14 @@ def main(argv=None):
     if not os.path.isfile(tool) or a.scale < 1:
         sys.stderr.write("error: --tool must be a file and --scale positive\n")
         return 2
-    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    env = dict({name: os.environ[name] for name in (
+                   'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                   'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                   'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                   'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                   'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                   'GITHUB_ACTIONS',
+               ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
 
     def run(w, order, *args):
         p = subprocess.run([sys.executable, tool] + list(args[:1]) + [os.path.join(w, order)] + list(args[1:]),

@@ -35,7 +35,7 @@ not been run.
 <script src="async_search_core.js"></script>
 <script>
 const c = SolarisAsyncSearch.createSearchController({
-  fetch: (q, { signal }) => fetch(`/search?q=${encodeURIComponent(q)}`, { signal }).then(r => r.json()),
+  fetch: (q, { signal }) => fetch("/search?q=".concat(encodeURIComponent(q)), { signal }).then(r => r.json()),
   schedule: (fn, ms) => setTimeout(fn, ms), cancel: h => clearTimeout(h),
   debounceMs: 150, timeoutMs: 8000, onChange: render });
 input.addEventListener("input", () => c.input(input.value));

@@ -280,7 +280,14 @@ def _tail(b):
 def run_one(kind, rid, argv, repo, timeout):
     shown = [os.path.basename(argv[0])] + argv[1:]  # the plan's own words: no interpreter path in the report
     argv = [argv[0]] + [x.replace("{python}", argv[0]) for x in argv[1:]]
-    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    env = dict({name: os.environ[name] for name in (
+                   'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                   'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                   'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                   'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                   'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                   'GITHUB_ACTIONS',
+               ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
     t0 = time.monotonic()
     try:
         r = subprocess.run(argv, cwd=repo, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout)
@@ -326,7 +333,14 @@ def gate_runs(py, repo, timeout, skip, findings, not_run):
                          "seconds": 0.0, "tail": links[:3] or ["no symbolic links"]})
         elif name == "quality_audit":
             argv = [py, "employees/quality-security/assurance/quality_os.py", "audit"]
-            env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+            env = dict({name: os.environ[name] for name in (
+                           'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                           'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                           'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                           'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                           'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                           'GITHUB_ACTIONS',
+                       ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
             t0 = time.monotonic()
             r = {"kind": "gate", "id": name, "argv": ["quality_os.py", "audit"], "rc": None, "tail": []}
             try:

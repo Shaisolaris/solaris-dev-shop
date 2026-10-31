@@ -12,9 +12,16 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
 TOOL = REPO / "employees/quality-security/qa-engineer/host_portability.py"
-ENV = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+ENV = dict({name: os.environ[name] for name in (
+               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+               'GITHUB_ACTIONS',
+           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
 PY = sys.executable
-# offline reproduction: a folder holding a setuptools>=61 wheel, passed to wheel-smoke --wheelhouse
+# offline reproduction: a folder holding a setuptools==84.2.1 wheel, passed to wheel-smoke --wheelhouse
 WHEELHOUSE = []
 
 
@@ -137,7 +144,7 @@ CHECKS = [
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--tool", type=Path, default=TOOL); ap.add_argument("--only")
     ap.add_argument("--wheelhouse", default=os.environ.get("G40_WHEELHOUSE") or None,
-                    help="offline: folder with a setuptools>=61 wheel, passed to wheel-smoke (default $G40_WHEELHOUSE)")
+                    help="offline: folder with a setuptools==84.2.1 wheel, passed to wheel-smoke (default $G40_WHEELHOUSE)")
     ns = ap.parse_args()
     if ns.wheelhouse:
         WHEELHOUSE[:] = ["--wheelhouse", ns.wheelhouse]

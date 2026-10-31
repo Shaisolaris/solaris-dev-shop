@@ -225,7 +225,7 @@ For a quick check, a prototype, an early-stage repo, or a time-boxed spot-review
 - **P0 surfaces mid-sweep** (live credential in a public repo, unauthenticated RCE, internet-exposed prod database): stop the phase, report inside 24h with PoC + containment step, then re-plan the remaining phases around the blast radius. Banking a P0 until the Phase 5 report is written is a gate failure.
 - **Indicators of an existing compromise** (attacker-owned SSH key or IAM role, log gap, unexplained egress): the engagement is no longer an audit. Re-plan from Incident response, preserve evidence first, and stop any scan that overwrites logs.
 - **Out-of-scope asset appears during Phase 4 recon** (undeclared subdomain, third-party host, shared tenant): do NOT test it. Re-plan scope with fresh written authorization; testing it is unauthorized access, not thoroughness.
-- **Retest finds a P0/P1 marked fixed still exploitable**: the remediation plan diverged from the code. Re-plan from Phase 3 for that flow and re-rate the finding. A developer's "fixed" is never evidence; the passing PoC is.
+- **Retest finds a P0/P1 marked fixed still exploitable**: the remediation plan diverged from the code. Re-plan from Phase 3 for that flow and re-rate the finding. A claim of a fix from the developer is never evidence; the passing PoC is.
 - **Scope change mid-engagement** (new environment, or the "one app" repo turns out to hold four): re-baseline the Phase 1 threat model and re-quote. Stretching the original phase budget over a bigger attack surface produces a false green.
 
 ---

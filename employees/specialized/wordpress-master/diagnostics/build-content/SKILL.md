@@ -15,7 +15,7 @@ Seeds a WordPress installation (with FSE theme already active from build-theme) 
 This skill expects the following variables to already be set by the calling command:
 
 - `BUILD_DIR` - absolute path to the build directory (set by build-scaffold Section 2)
-- `WP` - the WP-CLI command prefix (e.g. `wp --path=$BUILD_DIR` or the Docker equivalent, set by build-scaffold Section 4)
+- `WP` - the Bash argument array set by build-scaffold Section 4, for example `WP=(wp "--path=$BUILD_DIR")`. Invoke it as `"${WP[@]}"`; do not flatten it into a command string.
 - `NL_PROMPT` - the user's natural language site description string
 - `SITE_TITLE` - site title derived from the NL prompt (set by the calling command)
 - `THEME_SLUG` - installed theme slug (set by build-theme)
@@ -111,17 +111,17 @@ FAILED_PLUGINS=()
 install_plugin() {
   local slug="$1"
 
-  if $WP plugin install "$slug" --activate 2>&1; then
+  if "${WP[@]}" plugin install "$slug" --activate 2>&1; then
     # Secondary check: verify no PHP fatal triggered by activation
     if grep -q "PHP Fatal error" "$BUILD_DIR/wp-content/debug.log" 2>/dev/null; then
       echo "[Build] WARNING: Plugin $slug triggered PHP fatal after activation. Deactivating."
-      $WP plugin deactivate "$slug" 2>/dev/null || true
+      "${WP[@]}" plugin deactivate "$slug" 2>/dev/null || true
       FAILED_PLUGINS+=("$slug")
       return 1
     fi
     echo "[Build] Plugin active: $slug"
-    PLUGIN_NAME=$($WP plugin get "$slug" --field=name 2>/dev/null || echo "$slug")
-    PLUGIN_VER=$($WP plugin get "$slug" --field=version 2>/dev/null || echo "unknown")
+    PLUGIN_NAME=$("${WP[@]}" plugin get "$slug" --field=name 2>/dev/null || echo "$slug")
+    PLUGIN_VER=$("${WP[@]}" plugin get "$slug" --field=version 2>/dev/null || echo "unknown")
     INSTALLED_PLUGINS+=("${slug}:${PLUGIN_NAME}:${PLUGIN_VER}")
     return 0
   else
@@ -185,25 +185,16 @@ except Exception:
 fi
 ```
 
-**Image generation script:** Write to a temp file and execute to avoid shell argument length limits.
+**Image generation script:** Run the script through standard input with isolated Python; no shared temporary script is created. Keep the heredoc delimiter quoted so the shell does not expand Python source.
 
 ```bash
 mkdir -p "$BUILD_DIR/wp-content/uploads/placeholders"
-
-python3 /tmp/gen_images_$$.py "$BUILD_DIR" "$THEME_PRIMARY_COLOR" << 'PYEOF'
-# Script is written to /tmp/gen_images_$$.py before this line runs.
-# See the Python script block below.
-PYEOF
-```
-
-Write the Python image generation script to `/tmp/gen_images_$$.py`:
-
-```python
+python3 -I - "$BUILD_DIR" "$THEME_PRIMARY_COLOR" << 'PYEOF'
 #!/usr/bin/env python3
 """
 Placeholder image generator for NL WordPress builds.
 Supports Pillow (preferred) and pure stdlib fallback.
-Usage: python3 gen_images_$$.py <build_dir> <hex_color>
+Usage: python3 -I - <build_dir> <hex_color> (script on standard input)
 """
 import sys
 import os
@@ -266,14 +257,10 @@ for name, width, height in IMAGES:
     count += 1
 
 print(f'[Build] Generated {count} placeholder images (Pillow: {USE_PILLOW})')
-```
+PYEOF
 
-Execute the script:
 
-```bash
-python3 /tmp/gen_images_$$.py "$BUILD_DIR" "$THEME_PRIMARY_COLOR"
 IMAGE_EXIT=$?
-rm -f /tmp/gen_images_$$.py
 
 if [ $IMAGE_EXIT -ne 0 ]; then
   echo "[Build] WARNING: Placeholder image generation failed. Content will reference missing image URLs."
@@ -312,7 +299,7 @@ Always create: Home, About, Contact. Add 1-2 site-specific pages based on `NL_PR
 **Home page example pattern:**
 
 ```bash
-cat > /tmp/wp-page-home-$$ << 'CONTENT_EOF'
+IFS= read -r -d '' HOME_CONTENT << 'CONTENT_EOF' || [ "$?" -eq 1 ]
 <!-- wp:cover {"url":"http://localhost/wp-content/uploads/placeholders/placeholder-hero.png","dimRatio":40} -->
 <div class="wp-block-cover">
   <img class="wp-block-cover__image-background" src="http://localhost/wp-content/uploads/placeholders/placeholder-hero.png" alt="Hero image" />
@@ -332,20 +319,18 @@ cat > /tmp/wp-page-home-$$ << 'CONTENT_EOF'
 <!-- /wp:paragraph -->
 CONTENT_EOF
 
-HOME_ID=$($WP post create \
+HOME_ID=$(printf '%s' "$HOME_CONTENT" | "${WP[@]}" post create - \
   --post_type=page \
   --post_status=publish \
   --post_title="Home" \
-  --post_content="$(cat /tmp/wp-page-home-$$)" \
   --porcelain)
-rm -f /tmp/wp-page-home-$$
 echo "[Build] Created page: Home (ID: $HOME_ID)"
 ```
 
 **About page example pattern:**
 
 ```bash
-cat > /tmp/wp-page-about-$$ << 'CONTENT_EOF'
+IFS= read -r -d '' ABOUT_CONTENT << 'CONTENT_EOF' || [ "$?" -eq 1 ]
 <!-- wp:heading -->
 <h2 class="wp-block-heading">Our Story</h2>
 <!-- /wp:heading -->
@@ -375,20 +360,18 @@ cat > /tmp/wp-page-about-$$ << 'CONTENT_EOF'
 <!-- /wp:columns -->
 CONTENT_EOF
 
-ABOUT_ID=$($WP post create \
+ABOUT_ID=$(printf '%s' "$ABOUT_CONTENT" | "${WP[@]}" post create - \
   --post_type=page \
   --post_status=publish \
   --post_title="About" \
-  --post_content="$(cat /tmp/wp-page-about-$$)" \
   --porcelain)
-rm -f /tmp/wp-page-about-$$
 echo "[Build] Created page: About (ID: $ABOUT_ID)"
 ```
 
 **Contact page example pattern:**
 
 ```bash
-cat > /tmp/wp-page-contact-$$ << 'CONTENT_EOF'
+IFS= read -r -d '' CONTACT_CONTENT << 'CONTENT_EOF' || [ "$?" -eq 1 ]
 <!-- wp:heading -->
 <h2 class="wp-block-heading">Get in Touch</h2>
 <!-- /wp:heading -->
@@ -415,13 +398,11 @@ cat > /tmp/wp-page-contact-$$ << 'CONTENT_EOF'
 <!-- /wp:group -->
 CONTENT_EOF
 
-CONTACT_ID=$($WP post create \
+CONTACT_ID=$(printf '%s' "$CONTACT_CONTENT" | "${WP[@]}" post create - \
   --post_type=page \
   --post_status=publish \
   --post_title="Contact" \
-  --post_content="$(cat /tmp/wp-page-contact-$$)" \
   --porcelain)
-rm -f /tmp/wp-page-contact-$$
 echo "[Build] Created page: Contact (ID: $CONTACT_ID)"
 ```
 
@@ -440,8 +421,8 @@ PAGES_CREATED=${#PAGE_IDS[@]}
 **Set static front page:**
 
 ```bash
-$WP option update show_on_front page
-$WP option update page_on_front "$HOME_ID"
+"${WP[@]}" option update show_on_front page
+"${WP[@]}" option update page_on_front "$HOME_ID"
 echo "[Build] Static front page set to: Home (ID: $HOME_ID)"
 ```
 
@@ -452,7 +433,7 @@ Create 3-5 blog posts with topics relevant to the site's industry or niche. Same
 **Blog post example pattern:**
 
 ```bash
-cat > /tmp/wp-post-1-$$ << 'CONTENT_EOF'
+IFS= read -r -d '' POST_1_CONTENT << 'CONTENT_EOF' || [ "$?" -eq 1 ]
 <!-- wp:image -->
 <figure class="wp-block-image">
   <img src="http://localhost/wp-content/uploads/placeholders/placeholder-hero.png" alt="Featured image" />
@@ -472,13 +453,11 @@ cat > /tmp/wp-post-1-$$ << 'CONTENT_EOF'
 <!-- /wp:paragraph -->
 CONTENT_EOF
 
-POST_1_ID=$($WP post create \
+POST_1_ID=$(printf '%s' "$POST_1_CONTENT" | "${WP[@]}" post create - \
   --post_type=post \
   --post_status=publish \
   --post_title="How to Choose a Colour Palette for Your Living Room" \
-  --post_content="$(cat /tmp/wp-post-1-$$)" \
   --porcelain)
-rm -f /tmp/wp-post-1-$$
 echo "[Build] Created post: (ID: $POST_1_ID)"
 ```
 
@@ -497,7 +476,7 @@ Log final count: `[Build] Created $PAGES_CREATED pages and $POSTS_CREATED posts`
 **Create the menu:**
 
 ```bash
-MENU_ID=$($WP menu create "Primary Menu" --porcelain)
+MENU_ID=$("${WP[@]}" menu create "Primary Menu" --porcelain)
 echo "[Build] Menu created (ID: $MENU_ID)"
 ```
 
@@ -505,7 +484,7 @@ echo "[Build] Menu created (ID: $MENU_ID)"
 
 ```bash
 for i in "${!PAGE_IDS[@]}"; do
-  $WP menu item add-post "$MENU_ID" "${PAGE_IDS[$i]}" --title="${PAGE_TITLES[$i]}" 2>&1
+  "${WP[@]}" menu item add-post "$MENU_ID" "${PAGE_IDS[$i]}" --title="${PAGE_TITLES[$i]}" 2>&1
 done
 echo "[Build] Added ${#PAGE_IDS[@]} items to menu"
 ```
@@ -513,13 +492,13 @@ echo "[Build] Added ${#PAGE_IDS[@]} items to menu"
 **Discover theme menu locations dynamically - never hardcode "primary":**
 
 ```bash
-THEME_LOCATIONS=$($WP menu location list --format=csv 2>/dev/null | tail -n +2 | cut -d, -f1)
+THEME_LOCATIONS=$("${WP[@]}" menu location list --format=csv 2>/dev/null | tail -n +2 | cut -d, -f1)
 FIRST_LOCATION=$(echo "$THEME_LOCATIONS" | head -1 | tr -d '[:space:]')
 MENU_ASSIGNED=false
 MENU_LOCATION=""
 
 if [ -n "$FIRST_LOCATION" ]; then
-  $WP menu location assign "$MENU_ID" "$FIRST_LOCATION" 2>&1
+  "${WP[@]}" menu location assign "$MENU_ID" "$FIRST_LOCATION" 2>&1
   MENU_ASSIGNED=true
   MENU_LOCATION="$FIRST_LOCATION"
   echo "[Build] Menu created with ${#PAGE_IDS[@]} items, assigned to location: $FIRST_LOCATION"
@@ -538,7 +517,7 @@ fi
 ```bash
 echo "[Build] Re-exporting database (captures all content, plugins, and menus)..."
 
-if ! $WP db export "$BUILD_DIR/database.sql" --add-drop-table 2>&1; then
+if ! "${WP[@]}" db export "$BUILD_DIR/database.sql" --add-drop-table 2>&1; then
   echo "[Build] WARNING: Database re-export failed. Previous export retained - some content may be missing from the imported DB."
 else
   echo "[Build] Database re-exported (includes all content and plugins)"
@@ -580,7 +559,7 @@ Example manifest update for build.json (handled by build-setup):
 
 **Docker container lifetime:** This skill must execute while the Docker MySQL container from `build-scaffold` Section 3 is still alive. WP-CLI plugin activation, post creation, menu creation, and the final `wp db export` all require a live MySQL connection. The EXIT trap set in `build-scaffold` fires when the entire command session ends - not between skill invocations. If "Error establishing a database connection" appears, the container has stopped prematurely.
 
-**Content-to-temp-file pattern:** Always write page and post content to `/tmp/wp-*-$$.sh` before passing to WP-CLI via `$(cat ...)`. Shell command length limits (~2MB on macOS, 131072 chars on Linux) can be hit with rich Gutenberg block content. The temp file approach avoids this limit entirely. Always remove temp files with `rm -f` after use.
+**Content through standard input:** Read literal content with `IFS= read -r -d ''` and a quoted heredoc outside command substitution; status 1 is expected at end of input because no NUL delimiter is present. Pipe the quoted variable with Bash's `printf` builtin to `wp post create -`, as in the examples above. This also supports macOS's stock Bash 3.2 parser. Content stays out of the argument vector and no predictable shared temporary file is created. Keep literal content in the quoted heredoc; prepare any intended image URL substitutions explicitly before invocation. WP-CLI documents this input at https://developer.wordpress.org/cli/commands/post/create/.
 
 **Images before content:** Section 2 must complete before Section 3 begins. If image generation fails, content still runs - it will reference URLs that return 404 until images are generated manually. Log a warning if image generation failed so build-setup can note it in SETUP.md.
 

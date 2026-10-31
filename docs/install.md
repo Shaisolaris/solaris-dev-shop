@@ -35,8 +35,8 @@ Python version bounds (keep these distinct):
 - **Wheel, `install.sh`, and the installed `solaris-intake` command:** Python **3.10+**
   (`requires-python = ">=3.10"` in `pyproject.toml`). Build and smoke the wheel the same way CI does
   (`python -m pip wheel . --no-deps`, install outside the checkout, run `solaris-intake self-test`).
-  The wheel build fetches its backend (setuptools>=61) from the package index. Offline, run
-  `host_portability.py wheel-smoke . --outside "$(mktemp -d)" --wheelhouse DIR` with a folder holding a setuptools>=61 wheel.
+  The wheel build fetches its backend (setuptools==84.2.1) from the package index. Offline, run
+  `host_portability.py wheel-smoke . --outside "$(mktemp -d)" --wheelhouse DIR` with a folder holding a setuptools==84.2.1 wheel.
 - **Source checkout capability tools** under `employees/` (stdlib scripts such as delivery evidence or
   host portability): Python **3.9+**. They are not installed by the wheel.
 

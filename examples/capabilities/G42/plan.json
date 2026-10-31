@@ -491,6 +491,85 @@
         "tests.test_wordpress_instruction_examples",
         "tests.test_wordpress_json_fields"
       ]
+    },
+    {
+      "id": "H68",
+      "commit": "830ebbd93f5dd846519ba33060acf91a09986fdf",
+      "note": "Complete consolidated security source 7e45f7b8dfa3a1bb860e8eab3e404225387d5f3b excluding only integration-owned plan/test files. Retains H66/H67 and all original programme prerequisites; source review and registry clearance remain independent requirements.",
+      "tests": [
+        "tests.test_wordpress_diagnostic_shell",
+        "tests.test_wordpress_instruction_examples",
+        "tests.test_wordpress_json_fields",
+        "tests.test_explicit_runtime_setup",
+        "tests.test_g38_capability"
+      ]
+    },
+    {
+      "id": "H70",
+      "commit": "b767fbbde003907e2dc155ea050ff91de63801af",
+      "note": "Complete reviewed local-scan correction candidate 471341adde7ef3cdd33e581bfd40681040e851e5 excluding only integration-owned plan/test metadata. Historical H66/H67/H68 bindings, original scope/checker and all negative controls remain. This source binding does not constitute a scanner verdict or marketplace admission.",
+      "tests": [
+        "tests.test_wordpress_target_scope",
+        "tests.test_wordpress_content_stdin",
+        "tests.test_wordpress_diagnostic_shell",
+        "tests.test_wordpress_instruction_examples",
+        "tests.test_wordpress_json_fields",
+        "tests.test_explicit_runtime_setup",
+        "tests.test_g38_capability"
+      ]
+    },
+    {
+      "id": "H71",
+      "commit": "91e71bc8864e2277d8784549e096a2dcc2c42f16",
+      "note": "Complete source 6c807172676836d1b4ff6fdcd8efee67b55bc8c7 excluding only integration-owned plan/test metadata. Preserves H66/H67/H68/H70 historical bindings and all original prerequisites, writable scope, checker and negative controls. Full NVIDIA clearance remains mandatory before marketplace publication.",
+      "tests": [
+        "tests.test_child_environment_scope",
+        "tests.test_wordpress_visual_tokens",
+        "tests.test_wordpress_target_scope",
+        "tests.test_wordpress_content_stdin",
+        "tests.test_wordpress_diagnostic_shell",
+        "tests.test_wordpress_instruction_examples",
+        "tests.test_wordpress_json_fields",
+        "tests.test_g38_capability"
+      ]
+    },
+    {
+      "id": "H72",
+      "commit": "da17acd12e0bd510291ae42484dc2f372e0d4127",
+      "note": "Complete source 42177f50a3942f3868b73fad13a3d0cea9bb3097 excluding only integration-owned plan/test metadata. Protects ledger preflight with the existing shared lock, retains committed-corruption refusal and all unchanged eight-writer G39 checks. Preserves all historical bindings and original programme scope. Full NVIDIA clearance remains mandatory before marketplace publication.",
+      "tests": [
+        "tests.test_delivery_ledger_preflight",
+        "tests.test_g39_capability"
+      ]
+    },
+    {
+      "id": "H73",
+      "commit": "ee7198336748ba883c84fc3a832c8f37b29c25ac",
+      "note": "Complete source 9c801fc12d65ebb1b9e85ca5d07a2489a9cdc6f3 excluding only integration-owned plan/test metadata. Faithful parser ownership fixes retain all existing tests, role contracts, CSV rows and documented capabilities; isolated scrape updates and private staging repair real defects. Build dependency setuptools84.2.1 is pinned to the verified Python>=3.10 release with zero known OSV advisories at review time. Historical H66/H67/H68/H70/H71/H72 bindings and original scope/checker/negative controls are preserved. Full NVIDIA clearance remains mandatory before Chrome-only ClawHub publication.",
+      "tests": [
+        "tests.test_wordpress_scrape_inputs",
+        "tests.test_g03_capability",
+        "tests.test_g23_capability",
+        "tests.test_wordpress_target_scope",
+        "tests.test_wordpress_content_stdin",
+        "tests.test_wordpress_visual_tokens",
+        "tests.test_wordpress_diagnostic_shell",
+        "tests.test_wordpress_instruction_examples",
+        "tests.test_wordpress_json_fields",
+        "tests.test_child_environment_scope",
+        "tests.test_g38_capability"
+      ]
+    },
+    {
+      "id": "H74",
+      "commit": "94b7ef027e5c453840b1a108550f5416822e5a14",
+      "note": "Complete source b1fcb3e62ffd80599c23cff9f9bf95be65ba6af8 excluding only integration-owned plan/test metadata. Keeps byte-exact defensive input fixtures, all original test cases and role contracts; corrects five additional parser paths. Offline wheel preflight validates the actual pinned build backend before writes; CI verifies the official84.2.1 wheel SHA256 before exercising the existing offline success test. All historical source bindings and original scope/checker/negative controls remain. Whole NVIDIA clearance is mandatory before Chrome-only ClawHub publication.",
+      "tests": [
+        "tests.test_g07_capability",
+        "tests.test_g40_capability",
+        "tests.test_wordpress_json_fields",
+        "tests.test_wordpress_scrape_inputs"
+      ]
     }
   ],
   "external": [],
@@ -734,6 +813,13 @@
     "Root security follow-up65a05ef corrects one residual TLS rule and two WordPress instruction dataflows. Only the four named files expand root scope. Runtime fixtures prove ordinary behavior, injection refusal and recovery; no checker rule is disabled.",
     "October23 owner-authorized publication/security follow-through (PR51): add only seven explicit integration paths for scoped fleet/runbook/Unreal guidance and typed WordPress data handling. G07 is extended by one scoped documentation amendment based on its original candidate, merged without rewriting history. Original 84 selected outcomes are retained; source-binding/test gates are not waived.",
     "H66 66dadbe966a9b7eb66d20d92614302014875475e binds complete source 8631e1bfcb45288194296b84e662def1c1da0bcf except only examples/capabilities/G42/plan.json and tests/test_g42_capability.py, retained under original G42 scope. Invariant tests bind all other source blobs/modes to subject and final HEAD. Original base/prerequisites/writable list/checker/13oracle controls remain unchanged; independent review is required.",
-    "H67 b480fbf1e6660b8fc29cb9f520a5081e1076e583 binds the complete independently reviewed 7b55e5fb7e31c3d48733d13af73658c77f2bae81 source except only integration-owned plan/test metadata. The H66 historical invariant remains; the final-tree invariant now binds H67. Writable scope, checker logic and thirteen oracle controls are unchanged. This source amendment is not a new programme task, release or provider approval."
+    "H67 b480fbf1e6660b8fc29cb9f520a5081e1076e583 binds the complete independently reviewed 7b55e5fb7e31c3d48733d13af73658c77f2bae81 source except only integration-owned plan/test metadata. The H66 historical invariant remains; the final-tree invariant now binds H67. Writable scope, checker logic and thirteen oracle controls are unchanged. This source amendment is not a new programme task, release or provider approval.",
+    "H68 830ebbd93f5dd846519ba33060acf91a09986fdf binds complete subject 7e45f7b8dfa3a1bb860e8eab3e404225387d5f3b except only examples/capabilities/G42/plan.json and tests/test_g42_capability.py. All older H66/H67 component invariants, original base/scope/checker and negative controls remain. This is a security amendment, not a new programme task or provider approval.",
+    "H70 a0fe9b5a96fbc8a8210a8e11defce04076f373a3 binds complete subject b8fd9b341ab1120fada8e21e66ef4c0637a4cd7b except only examples/capabilities/G42/plan.json and tests/test_g42_capability.py. The H68 historical invariant remains unchanged; the final-tree invariant now binds H70. No scope, checker, original prerequisite or refusal control is removed.",
+    "H70 final correction component b767fbbde003907e2dc155ea050ff91de63801af binds subject 471341adde7ef3cdd33e581bfd40681040e851e5 after the same8stdin cases exposed the stockBash3.2 nested-heredoc parser failure. The earlier25dd/a0fe binding remains historical, not release evidence. Only the exact subject/component pins change; all historicalH66/H67/H68 gates remain.",
+    "H71 91e71bc8864e2277d8784549e096a2dcc2c42f16 binds exact subject 6c807172676836d1b4ff6fdcd8efee67b55bc8c7 after ambient credential isolation, owned media temporaries, explicit CSS token input/private output and pinned security tools. All H70 subject/component comparisons remain historical; the full final HEAD invariant is carried forward to H71. This source binding is not NVIDIA clearance or marketplace acceptance.",
+    "H72 da17acd12e0bd510291ae42484dc2f372e0d4127 binds exact subject 42177f50a3942f3868b73fad13a3d0cea9bb3097 after the deterministic ledger preflight race correction. H71 remains a historical subject/component comparison; the strict final HEAD blob and mode invariant transfers unchanged to H72. Baseline race/busy failures, candidate three-method pass and unchanged G39 54-test pass are retained. This is not NVIDIA clearance or marketplace acceptance.",
+    "H73 ee7198336748ba883c84fc3a832c8f37b29c25ac binds exact subject 9c801fc12d65ebb1b9e85ca5d07a2489a9cdc6f3 after the reviewed parser corrections and the compatible exact setuptools build pin. Every original test case ID remains; the H72 strict case now verifies its historical8c5d1e21 checkpoint while the same full HEAD blob/mode invariant transfers to H73. Stock2.13.2 inspects the41affected files completely; this is not whole-package clearance or marketplace acceptance.",
+    "H74 94b7ef027e5c453840b1a108550f5416822e5a14 binds exact subject b1fcb3e62ffd80599c23cff9f9bf95be65ba6af8 after the additional parser corrections and actual offline-backend regression fix. Every prior prerequisite and test case ID is retained. The H73 strict case now verifies its immutable5efe9a59 checkpoint; the same full HEAD blob/mode equality transfers unchanged to H74. The targeted61tests pass, including offline success with the digest-verified wheel and wrong-version refusal before writes. Native incidental-media applicability follows stock NVIDIA policy, with real partials still blocked. This is not whole-plugin NVIDIA clearance or marketplace acceptance."
   ]
 }

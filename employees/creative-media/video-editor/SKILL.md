@@ -207,10 +207,18 @@ scenedetect -i "$INPUT" detect-adaptive -t 3.0 split-video
 
 ### Same codec (no re-encode)
 ```bash
-printf "file '%s'\n" file1.mp4 file2.mp4 file3.mp4 > /tmp/concat_list.txt
-ffmpeg -n -f concat -safe 0 -i /tmp/concat_list.txt -c copy "$OUTPUT"
-rm /tmp/concat_list.txt
+(
+  CONCAT_DIR=$(mktemp -d "./.solaris-concat.XXXXXXXX") || exit 1
+  trap 'rm -f -- "$CONCAT_DIR/list.txt"; rmdir -- "$CONCAT_DIR"' EXIT
+  printf "file '../%s'\n" file1.mp4 file2.mp4 file3.mp4 > "$CONCAT_DIR/list.txt"
+  ffmpeg -n -f concat -safe 0 -i "$CONCAT_DIR/list.txt" -c copy "$OUTPUT"
+)
 ```
+
+Run from the selected media folder. The private directory contains only this
+invocation's list; each `../` entry resolves to a media file beside it. The
+subshell's cleanup preserves any traps in the calling shell and removes only
+the list and directory it created, including when FFmpeg fails.
 
 ### Different codecs (re-encodes)
 ```bash

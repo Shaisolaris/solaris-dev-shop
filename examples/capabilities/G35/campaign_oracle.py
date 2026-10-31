@@ -32,7 +32,14 @@ def iso(t):
 
 def run(cmd, pkg, out=None, env=None):
     a = cmd + ["reconcile", str(pkg), "--json"] + (["--out", str(out)] if out else [])
-    e = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    e = dict({name: os.environ[name] for name in (
+                 'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                 'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                 'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                 'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                 'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                 'GITHUB_ACTIONS',
+             ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
     e.update(env or {})
     try:
         r = subprocess.run(a, capture_output=True, text=True, timeout=600, env=e)
@@ -428,7 +435,14 @@ def main():
         procs = []
         for i in range(4):
             a = cmd + ["reconcile", str(pkg), "--json", "--out", str(tmp / ("o9-out%d" % i))]
-            procs.append(subprocess.Popen(a, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1", **env)))
+            procs.append(subprocess.Popen(a, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=dict({name: os.environ[name] for name in (
+                                                                                                          'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                                                                                          'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                                                                                          'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                                                                                          'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                                                                                          'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                                                                                          'GITHUB_ACTIONS',
+                                                                                                      ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1", **env)))
         outs = [p.communicate(timeout=600) for p in procs]
         rcs = [p.returncode for p in procs]
         reps = [(tmp / ("o9-out%d" % i) / "report.json").read_bytes() if (tmp / ("o9-out%d" % i) / "report.json").is_file() else b"" for i in range(4)]

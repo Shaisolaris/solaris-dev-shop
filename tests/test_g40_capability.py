@@ -5,7 +5,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 X = ROOT / "examples/capabilities/G40"
 TOOL = ROOT / "employees/quality-security/qa-engineer/host_portability.py"
-ENV = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+ENV = dict({name: os.environ[name] for name in (
+               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+               'GITHUB_ACTIONS',
+           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
 
 
 def run(*args, tool=TOOL, timeout=300, env=None):
@@ -21,7 +28,7 @@ def _offline_env():
 
 
 def _local_wheelhouse():
-    """A folder with a setuptools>=61 wheel, found without network: $G40_WHEELHOUSE or this Python's ensurepip bundle."""
+    """Prefer the CI-prepared declared backend in G40_WHEELHOUSE; retain the legacy ensurepip fallback."""
     import re
     cands = [os.environ.get("G40_WHEELHOUSE")]
     try:
@@ -183,7 +190,19 @@ class G40Direct(unittest.TestCase):
         for cmd in ("wheel-smoke", "report"):
             r = run(cmd, ROOT, "--outside", out, "--wheelhouse", wh, "--json")
             self.assertEqual(r.returncode, 2, cmd + r.stdout + r.stderr)
-            self.assertIn("setuptools>=61", r.stderr); self.assertIn("Nothing was written", r.stderr)
+            self.assertIn("setuptools==84.2.1", r.stderr); self.assertIn("Nothing was written", r.stderr)
+            self.assertFalse(out.exists())
+
+    def test_wheelhouse_with_a_different_backend_version_is_refused_before_writes(self):
+        d = Path(tempfile.mkdtemp(prefix="g40-pin-")); self.addCleanup(shutil.rmtree, d, True)
+        wh = d / "wh"; wh.mkdir()
+        (wh / "setuptools-79.0.1-py3-none-any.whl").write_text("inert version-selection fixture\n")
+        out = d / "out"
+        for command in ("wheel-smoke", "report"):
+            result = run(command, ROOT, "--outside", out, "--wheelhouse", wh, "--json", env=_offline_env())
+            self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+            self.assertIn("setuptools==84.2.1", result.stderr)
+            self.assertIn("Nothing was written", result.stderr)
             self.assertFalse(out.exists())
 
     @unittest.skipIf(sys.version_info < (3, 10), "wheel-smoke needs 3.10+")
@@ -334,7 +353,14 @@ class SkillCopyTemp(unittest.TestCase):
         import tempfile as _tf, shutil as _sh, os as _os
         tmpdir = Path(_tf.mkdtemp(prefix="g40tmpdir-"))
         try:
-            env = dict(_os.environ, TMPDIR=str(tmpdir), PYTHONDONTWRITEBYTECODE="1")
+            env = dict({name: _os.environ[name] for name in (
+                           'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                           'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                           'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                           'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                           'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                           'GITHUB_ACTIONS',
+                       ) if name in _os.environ}, TMPDIR=str(tmpdir), PYTHONDONTWRITEBYTECODE="1")
             p = subprocess.run([sys.executable, str(TOOL), "skill-copy", str(ROOT), "quality-security/qa-engineer", "--json"],
                                capture_output=True, text=True, env=env, timeout=120)
             self.assertEqual(p.returncode, 1, p.stderr)
@@ -364,7 +390,14 @@ class NoBytecode(unittest.TestCase):
             (dst / "control-plane").mkdir()
             (dst / "control-plane/meta_control_plane.py").write_text("")
             _sh.copy2(ROOT / "pyproject.toml", dst / "pyproject.toml")
-            env = {k: v for k, v in os.environ.items() if k not in ("PYTHONDONTWRITEBYTECODE", "PYTHONPYCACHEPREFIX")}
+            env = {name: os.environ[name] for name in (
+                      'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                      'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                      'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                      'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                      'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                      'GITHUB_ACTIONS',
+                  ) if name in os.environ}
             p = subprocess.run([sys.executable, str(TOOL),
                                 "python-bounds", str(dst)], capture_output=True, text=True, env=env, timeout=120)
             self.assertIn(p.returncode, (0, 1), p.stderr)

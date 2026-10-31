@@ -10,7 +10,7 @@ Source: AminForou/mcp-gsc (MIT, v0.3.2). Package: `mcp-search-console`. Lifted a
 
 ### Data-state discipline (the one rule that silently corrupts reports)
 - GSC serves two data states: `all` (matches the GSC dashboard, includes fresh-but-unconfirmed rows) vs `final` (confirmed only, 2-3 day lag).
-- **Default to `all` for trend dashboards** (it matches what the client sees in GSC). **Switch to `final` for any number you commit to in writing** (MoM deltas, exec reporting) so a partial-day tail doesn't read as a drop. State this choice in every report.
+- **Default to `all` for trend dashboards** (it matches what the client sees in GSC). **Switch to `final` for any number you commit to in writing** (MoM deltas, exec reporting) so a partial-day tail does not read as a drop. State this choice in every report.
 
 ### Five GSC workflows to run, not hand-wave
 1. **Content opportunities (the highest-ROI query)** - pull queries at **position 11-20 with high impressions and low CTR**. These are page-2 queries one push from page 1: the fastest organic wins. Always run this before recommending new content.

@@ -159,8 +159,8 @@ P&L → Revenue (sub + services) - COGS = Gross Profit - Opex (S&M/R&D/G&A) = EB
 Cash Flow → Operating CF (Net Income + D&A + WC changes inc. **deferred rev offset from annual billing - the CFO's lever**) - Capex = Free Cash Flow.
 Balance Sheet - Cash (monitor daily), AR (age monthly), Prepaid; AP, Accrued, **Deferred Rev** (liability until delivered, but cash is yours), Debt; Equity (Common, Preferred, APIC, Accumulated Deficit).
 
-### Modeling do's & don'ts
-| Do | Don't |
+### Modeling practices and pitfalls
+| Do | Avoid |
 |----|-------|
 | Build assumptions tab with all inputs | Hardcode numbers in formulas |
 | Model monthly at early stage | Use annual model for first 3 years |

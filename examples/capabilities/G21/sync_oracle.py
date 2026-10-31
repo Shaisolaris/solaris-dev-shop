@@ -28,7 +28,14 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
 API = ROOT / "employees" / "engineering" / "backend-developer" / "ledger_api.py"
 DEFAULT_TOOL = ROOT / "employees" / "engineering" / "mobile-developer" / "offline_sync.py"
-ENV = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+ENV = dict({name: os.environ[name] for name in (
+               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+               'GITHUB_ACTIONS',
+           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
 KEYS = {"ed1": ("orc-acme-editor-71a2", "acme", "editor"), "ed2": ("orc-acme-editor2-5c3e", "acme", "editor"),
         "view": ("orc-acme-viewer-9b04", "acme", "viewer"), "other": ("orc-zenith-editor-33d8", "zenith", "editor")}
 

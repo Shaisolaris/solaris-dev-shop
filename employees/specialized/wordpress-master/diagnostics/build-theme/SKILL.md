@@ -15,7 +15,7 @@ Selects, installs, and activates a Full Site Editing (FSE) block theme from WP.o
 This skill expects the following variables to already be set by the calling command:
 
 - `BUILD_DIR` - absolute path to the build directory (set by build-scaffold Section 2)
-- `WP` - the WP-CLI command prefix (e.g. `wp --path=$BUILD_DIR` or the Docker equivalent, set by build-scaffold Section 4)
+- `WP` - the Bash argument array set by build-scaffold Section 4, for example `WP=(wp "--path=$BUILD_DIR")`. Invoke it as `"${WP[@]}"`; do not flatten it into a command string.
 - `NL_PROMPT` - the user's natural language site description string
 - `SITE_TITLE` - site title derived from the NL prompt (set by the calling command before this skill)
 
@@ -122,7 +122,7 @@ echo "[Build] Installing theme: $THEME_SLUG..."
 
 install_theme() {
   local slug="$1"
-  if $WP theme install "$slug" --activate 2>&1; then
+  if "${WP[@]}" theme install "$slug" --activate 2>&1; then
     echo "[Build] Theme installed and activated: $slug"
 
     # FSE validation - check for theme.json presence
@@ -136,7 +136,7 @@ install_theme() {
     fi
 
     # Get theme version
-    THEME_VERSION=$($WP theme get "$slug" --field=version 2>/dev/null || \
+    THEME_VERSION=$("${WP[@]}" theme get "$slug" --field=version 2>/dev/null || \
       grep -m 1 "^Version:" "$BUILD_DIR/wp-content/themes/$slug/style.css" 2>/dev/null | \
       sed 's/Version: //' | tr -d '[:space:]' || \
       echo "unknown")
@@ -217,7 +217,7 @@ Update the WordPress site title and tagline to match the site described in `NL_P
 echo "[Build] Setting site title and tagline..."
 
 # Update site title (may already match from build-scaffold --title, but update to confirm)
-$WP option update blogname "$SITE_TITLE" 2>&1
+"${WP[@]}" option update blogname "$SITE_TITLE" 2>&1
 
 # the coding agent generates a brief tagline (one line, no quotes) from NL_PROMPT
 # Examples:
@@ -229,7 +229,7 @@ $WP option update blogname "$SITE_TITLE" 2>&1
 #
 # the coding agent sets SITE_TAGLINE to the generated tagline, then:
 SITE_TAGLINE="<the coding agent-generated tagline from NL_PROMPT>"
-$WP option update blogdescription "$SITE_TAGLINE" 2>&1
+"${WP[@]}" option update blogdescription "$SITE_TAGLINE" 2>&1
 
 echo "[Build] Site title set: $SITE_TITLE"
 echo "[Build] Site tagline set: $SITE_TAGLINE"
@@ -237,7 +237,7 @@ echo "[Build] Site tagline set: $SITE_TAGLINE"
 
 ## Implementation Notes
 
-**Pipeline position:** This skill runs in the NL build pipeline strictly AFTER `build-mcp` Section 2 (MCP adapter activated, database re-exported) and BEFORE `build-content`. Theme must be active before content seeding because `build-content` uses `$WP menu location list` to discover the active theme's navigation locations - this requires the target theme to already be installed and active.
+**Pipeline position:** This skill runs in the NL build pipeline strictly AFTER `build-mcp` Section 2 (MCP adapter activated, database re-exported) and BEFORE `build-content`. Theme must be active before content seeding because `build-content` uses `"${WP[@]}" menu location list` to discover the navigation locations provided by the active theme - this requires the target theme to already be installed and active.
 
 **Docker MySQL container:** The ephemeral Docker MySQL container from `build-scaffold` Section 3 must still be running when this skill executes. WP-CLI theme installation writes to the WordPress options table (active theme slug). The EXIT trap set in `build-scaffold` Section 3 remains active for the entire build session and fires only when the full command exits - not between skill invocations.
 

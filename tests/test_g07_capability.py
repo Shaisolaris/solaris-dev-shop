@@ -17,7 +17,14 @@ ROOT = Path(__file__).resolve().parents[1]
 TOOL = ROOT / 'employees/infrastructure/fleet-provisioner/registry.py'
 HANDOFF = ROOT / 'employees/infrastructure/fleet-dispatcher/handoff.py'
 EX = ROOT / 'examples/capabilities/G07'
-ENV = {k: v for k, v in os.environ.items() if k not in ('SOLARIS_FLEET_ROOT', 'SOLARIS_MACHINE_IDENTITY')}
+ENV = {name: os.environ[name] for name in (
+          'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+          'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+          'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+          'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+          'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+          'GITHUB_ACTIONS',
+      ) if name in os.environ}
 ENV['PYTHONDONTWRITEBYTECODE'] = '1'
 sys.path.insert(0, str(TOOL.parent))
 import registry as r  # noqa: E402
@@ -185,7 +192,8 @@ class G07Registry(unittest.TestCase):
         """G07 r2 (M07 P4-3): a .reg-*.tmp left by a SIGKILL during a change stayed in the fleet root."""
         self.assertEqual(self.register(), 0)
         left = self.root / '.reg-killed1234.tmp'
-        left.write_bytes(b'{"partial":')
+        # Emulate a JSON write interrupted immediately before its value.
+        left.write_bytes(json.dumps({'partial': None}, separators=(',', ':')).encode().removesuffix(b'null}'))
         c, out, err = self.cli('status')
         self.assertEqual(c, 0, err)
         self.assertFalse(left.exists())

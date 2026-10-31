@@ -127,8 +127,22 @@ habit, split-tunnel is verified by traceroute instead of assumed, and the negati
 2. Deploy via Docker with a pinned release tag (never `latest` for long-lived DNS infra); web password via a 600-mode `.env`, not in the compose file.
 3. Point the network at it via router DHCP DNS option. Keep the gateway or a second resolver as a temporary fallback during rollout; for strict blocking, prefer a second Pi-hole over a public fallback (public fallback can bypass blocking).
 4. Test one client / one VLAN before changing every DHCP scope. Manage blocklists, run gravity updates on a schedule, whitelist false positives from the query log.
-5. Add local DNS records (`nas.home.arpa`, `grafana.home.arpa`) and CNAMEs. Optionally add DoH upstream via a local cloudflared proxy. Avoid `.local` (mDNS conflict).
+5. Add local DNS records (`nas.home.arpa`, `grafana.home.arpa`) and CNAMEs. Avoid `.local` (mDNS conflict). Encrypted upstream DNS is a separate optional setup below.
 6. Check blocking does not break captive portals, work VPNs, firmware updates, or medical/security devices.
+
+**Optional setup: local encrypted DNS.** Begin only after the owner requests it
+and approves the resolver host, upstream provider and test client. Use a
+[dedicated DNS proxy](https://github.com/DNSCrypt/dnscrypt-proxy) rather than a
+general remote-access component. For example, configure its `listen_addresses`
+as `['127.0.0.1:5053']`, select approved DoH upstreams, keep its optional monitoring
+UI disabled, and run it as a dedicated non-privileged service account. Point the
+local Pi-hole upstream at `127.0.0.1#5053`; a resolver in another container requires
+an explicitly designed private network boundary, not a loopback address copied
+between hosts. Verify local resolution, upstream encryption, listener binding and
+failure behavior on the selected client before changing network-wide DHCP/DNS.
+Keep the existing resolver configuration available for rollback. Loading Solaris
+does not install this service, change network settings or authorize external
+access; activation and service changes remain separate owner-authorized work.
 
 ## Workflow 5 - Bring up a self-hosted cluster (Uncloud)
 1. Use Uncloud (`uc` CLI) for a decentralised cluster: Docker services over a WireGuard mesh, all machines equal peers (no central control plane), Caddy global ingress with auto-TLS from Let's Encrypt, overlay network `10.210.0.0/16`.
@@ -139,7 +153,11 @@ habit, split-tunnel is verified by traceroute instead of assumed, and the negati
 6. See `homelab-and-network-ops.md` (Uncloud section).
 
 ## Workflow 6 - Validate a router/switch config before deployment
-1. Run layered checks in order (regex is a warning layer, not a parser): (a) dangerous commands (`reload`, `erase`, `format`, `no router bgp`, `crypto key zeroize`); (b) credential/management-plane exposure; (c) duplicate IPs and subnet overlaps; (d) stale references to ACLs, route-maps, prefix-lists, interfaces; (e) operational hygiene (NTP, timestamps, remote logging, banners).
+1. Run layered checks in order (regex is a warning layer, not a parser): (a) dangerous commands (the literal denylist below); (b) credential/management-plane exposure; (c) duplicate IPs and subnet overlaps; (d) stale references to ACLs, route-maps, prefix-lists, interfaces; (e) operational hygiene (NTP, timestamps, remote logging, banners).
+   Literal device-command denylist; these values remain prohibited, not executable instructions:
+   ```json
+   {"dangerous_device_commands": ["reload", "erase", "format", "no router bgp", "crypto key zeroize"]}
+   ```
 2. Parse VTY blocks by section: flag Telnet (require SSH only), missing inbound `access-class`, missing `exec-timeout`.
 3. Flag SSH v1, `enable password` (require `enable secret`), default/SNMPv2 communities (prefer SNMPv3 authPriv).
 4. Use validation as a blocking gate before any Netmiko/NAPALM/Ansible push: fail closed on dangerous commands and credentials; warn on best-practice gaps outside the change scope.

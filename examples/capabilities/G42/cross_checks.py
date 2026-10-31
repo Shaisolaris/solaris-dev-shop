@@ -35,7 +35,14 @@ SEC = os.path.join(ROOT, "employees/quality-security/security-auditor")
 LEGAL = os.path.join(ROOT, "employees/legal-compliance/legal-advisor/capability.contract.json")
 G37PKG = os.path.join(ROOT, "examples/capabilities/G37/fixtures/september/package.json")
 SHARED_OUTSIDE = {"../QUALITY-SECURITY-STANDARD.md", "../assurance/ASSURANCE.md", "../assurance/quality_os.py"}
-ENV = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+ENV = dict({name: os.environ[name] for name in (
+               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+               'GITHUB_ACTIONS',
+           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
 ENV.pop("G20_CHROME", None)
 
 

@@ -249,8 +249,12 @@ def main(argv=None):
     check("o6", "each configuration fault injected alone gives exactly its code; valid look-alikes stay clean; "
           "memory exhaustion is the limit, not the allocating plugin", lambda: o6() + o6b())
 
+    def request_label(url, index):
+        path_label = url.strip("/") or "home"
+        return f"{path_label}-{index}"
+
     def timed(b, urls, base, k):
-        b["requests"] = [g.request(f"{u.strip('/') or 'home'}-{i}", u, total=base + g.r.uniform(0, 30)) for u in urls for i in range(k)]
+        b["requests"] = [g.request(request_label(u, i), u, total=base + g.r.uniform(0, 30)) for u in urls for i in range(k)]
         return b
 
     def o7():

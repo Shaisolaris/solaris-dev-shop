@@ -1,3 +1,6 @@
+# NOTE: 此文件仅作为设计备份/参考文档，当前搜索引擎与 CLI 不会读取或执行本文件内容。
+
+
 Bauhaus（包豪斯）
 大胆的几何现代主义，包含圆形、方形和三角形。主色调（红/蓝/黄），边缘鲜明，阴影强烈。功能性与艺术性兼备，带有建构主义的不对称。
 1. 极简主义品牌官网与电商
@@ -982,7 +985,7 @@ Anti-Patterns (Avoid)
 ● ❌ No Square Buttons: Everything interactive is pill-shaped or heavily rounded.
 ● ❌ No Pure White: Use #FFFBFE for screens.
 ● ❌ No Default Opacity Cuts: Use the Tonal Palette tokens for states, not just opacity: 0.5.
-● ❌ No Harsh Shadows: If it looks like a "drop shadow," it's too heavy. It should look like an "ambient glow."
+● ❌ No Harsh Shadows: A pronounced drop shadow is too heavy. Use an ambient glow.
 
 
 
@@ -1348,7 +1351,15 @@ Inputs (TextInput)
 Reanimated / Animated API:
 ● Blink: duration: 500, easing: Easing.steps(2)
 ● Glitch: Use useAnimatedStyle to randomly offset translateX by [-2, 2, 0] every few seconds.
-● Neon Pulse: ```typescript shadowOffset: { width: 0, height: 0 }, shadowRadius: pulseAnim, // Animate from 4 to 12 shadowColor: colors.accent, shadowOpacity: 0.6,
+● Neon Pulse:
+```typescript
+{
+  shadowOffset: { width: 0, height: 0 },
+  shadowRadius: pulseAnim, // Animate from 4 to 12
+  shadowColor: colors.accent,
+  shadowOpacity: 0.6,
+}
+```
 
 ## 7. Iconography
 * **Library:** `Lucide-react-native`.

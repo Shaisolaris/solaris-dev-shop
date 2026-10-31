@@ -86,7 +86,14 @@ def main():
             "def _deny(*a, **k):\n    open(_A, 'a').write('network call\\n'); raise OSError('network disabled by G10 oracle')\n"
             "class _S:\n    def __init__(self, *a, **k): _deny()\n"
             "socket.socket = _S; socket.create_connection = _deny; socket.getaddrinfo = _deny; socket.gethostbyname = _deny\n")
-        env = dict(os.environ, PYTHONPATH=str(guard), PYTHONDONTWRITEBYTECODE="1")
+        env = dict({name: os.environ[name] for name in (
+                       'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                       'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                       'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                       'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                       'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                       'GITHUB_ACTIONS',
+                   ) if name in os.environ}, PYTHONPATH=str(guard), PYTHONDONTWRITEBYTECODE="1")
         def run(*args, timeout=120):
             p = subprocess.run(cmd + list(args), capture_output=True, text=True, env=env, timeout=timeout)
             try:

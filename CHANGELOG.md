@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.70.0 (unreleased marketplace candidate)
+
+- Preserve the scaffold's selected WordPress site in all downstream build commands by passing the complete argument array.
+- Stream placeholder-image scripts and page/post content through standard input, avoiding predictable shared temporary files and keeping long content out of command arguments.
+- Keep all 61 specialists, Chief of Staff, canonical resources, fixtures and existing security controls. Carry the earlier unreleased security changes into this candidate.
+
+The retained ClawHub 0.69.0 package is immutable. The local NVIDIA static scan
+and independent finding triage are recorded separately; neither constitutes a
+clean provider verdict. This candidate is not a published release or marketplace
+admission. Exact final package validation and each provider's requirements apply.
+
+## 0.68 (consolidated security candidate)
+
+- Keep WordPress diagnostic profile keys, paths, CLI paths, returned log paths and user IDs as data across local and remote shells. Refuse missing sites and preserve unknown results when a debug check fails.
+- Pass build metadata through explicit arguments to isolated Python, so project-local modules and inherited environment variables cannot replace its intended inputs or imports.
+- Document Unity licensing as optional owner-controlled setup for the actual licence and runner; use current vendor-supported activation methods rather than assuming Personal headless activation is supported.
+- Use a dedicated loopback DNS proxy for optional encrypted-DNS setup, with separate owner authorization, bounded testing and rollback before network-wide changes.
+- Broaden the defensive PHP source search to cover spaced calls and avoid matching unrelated function names; expand abbreviated compliance terminology and clarify performance measurement instructions.
+- Make malware diagnostics read-only triage: retain detection patterns, include dependency directories by default, refuse invalid or symlinked site scopes, preserve evidence, and require corroboration and separate authorization before destructive remediation. Use inert finding descriptions rather than working webshell or destructive-request examples.
+- Independently recompute concurrent event-log hashes, links and worker bodies in the assurance oracle, so a naive verifier cannot gain credit merely because process scheduling serialized its writes.
+- Preserve all 61 specialists, Chief of Staff, source helpers, fixtures and negative controls. Carry the earlier unreleased security/layout improvements into this single candidate.
+
+The failed registry slot for 0.67 is retained. This corrected candidate uses the
+normal new-version scan and admission path; it is not a published release or a
+claim that any provider has cleared the final artifact.
+
 ## 0.67 (unreleased security candidate)
 
 - Scope worker authentication, remote access, filesystem/network isolation and teardown to the assigned work; preserve truthful source provenance.

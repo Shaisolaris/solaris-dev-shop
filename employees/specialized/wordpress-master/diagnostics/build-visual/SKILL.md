@@ -15,11 +15,11 @@ Translates a visual design input (HTML/CSS export directory or screenshot image)
 This skill expects the following variables to already be set by the calling command:
 
 - `BUILD_DIR` - absolute path to the build directory (set by build-scaffold Section 2)
-- `WP` - the WP-CLI command prefix (e.g. `wp --path=$BUILD_DIR` or the Docker equivalent, set by build-scaffold Section 4)
+- `WP` - the Bash argument array set by build-scaffold Section 4, for example `WP=(wp "--path=$BUILD_DIR")`. Invoke it as `"${WP[@]}"`; do not flatten it into a command string.
 - `VISUAL_PATH` - path to the design input (directory or image file, set by COMMAND.md Section 1)
 - `SLUG` - build slug (set by COMMAND.md Section 1)
 - `SITE_TITLE` - site title (set by COMMAND.md Section 1)
-- `PLUGIN_DIR` - absolute path to the CoWork plugin directory
+- `PLUGIN_DIR` - absolute root of the complete Solaris plugin (the native workflow context calls this `plugin_root`)
 
 ## Section 1: Input Detection and Design Parsing
 
@@ -88,14 +88,15 @@ if [ "$VISUAL_MODE" = "html-css" ]; then
   HTML_FILES=$(find "$VISUAL_PATH" -maxdepth 5 -name "*.html" 2>/dev/null)
 
   # Stage exported images for assets/images/ placement (Section 3g)
-  IMAGES_STAGE="/tmp/visual_images_${SLUG}_$$"
-  mkdir -p "$IMAGES_STAGE"
+  IMAGES_STAGE=$(mktemp -d "${TMPDIR:-/tmp}/solaris-visual-images.XXXXXXXX") || exit 1
   find "$VISUAL_PATH" -maxdepth 5 \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" \
     -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" \) 2>/dev/null \
     | while read img; do cp "$img" "$IMAGES_STAGE/" 2>/dev/null; done
 
   IMG_STAGE_COUNT=$(ls "$IMAGES_STAGE" 2>/dev/null | wc -l | tr -d ' ')
-  echo "[Build] Design files staged: $(echo "$CSS_FILES" | wc -l | tr -d ' ') CSS, $(echo "$HTML_FILES" | wc -l | tr -d ' ') HTML, $IMG_STAGE_COUNT images"
+  CSS_FILE_COUNT=$(printf '%s\n' "$CSS_FILES" | wc -l | tr -d ' ')
+  HTML_FILE_COUNT=$(printf '%s\n' "$HTML_FILES" | wc -l | tr -d ' ')
+  printf '[Build] Design files staged: %s CSS, %s HTML, %s images\n' "$CSS_FILE_COUNT" "$HTML_FILE_COUNT" "$IMG_STAGE_COUNT"
 fi
 ```
 
@@ -140,58 +141,26 @@ Set output: `VISUAL_MODE` ("html-css" or "screenshot"), `THEME_SLUG` ("custom-${
 
 Extract color palette, font families, and spacing values from the design. Both input paths produce identical output JSON for downstream consumption.
 
-### 2a: HTML/CSS Path - Python CSS Parser
-
-Run the Python CSS token extractor against all CSS files from the design export:
+Initialize a private intermediate directory for either input path. These shell
+variables do not need to be exported:
 
 ```bash
-TOKENS_FILE="/tmp/design_tokens_${SLUG}_$$.json"
+TOKENS_DIR=$(mktemp -d "${TMPDIR:-/tmp}/solaris-design-tokens.XXXXXXXX") || exit 1
+TOKENS_FILE="$TOKENS_DIR/tokens.json"
+```
 
-python3 << 'PYEOF'
-import re, json, sys, os, glob
+### 2a: HTML/CSS Path - Python CSS Parser
 
-export_dir = os.environ.get('VISUAL_PATH', '')
-tokens_file = os.environ.get('TOKENS_FILE', '/tmp/design_tokens.json')
+Run the [CSS token extractor](extract_design_tokens.py) against the selected
+export. Arguments carry the path as data, isolated Python excludes local-module
+shadowing, and the helper writes only JSON to standard output:
 
-css_files = glob.glob(os.path.join(export_dir, '**/*.css'), recursive=True)
-
-colors = set()
-fonts = set()
-
-# Color extraction patterns
-COLOR_PATTERNS = [
-    r'#[0-9a-fA-F]{6}\b',                                 # 6-digit hex
-    r'#[0-9a-fA-F]{3}\b',                                 # 3-digit hex
-    r'rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)',              # rgb()
-    r'hsl\(\s*\d+\s*,\s*[\d.]+%\s*,\s*[\d.]+%\s*\)',      # hsl()
-]
-
-# Font-family extraction
-FONT_PATTERN = r'font-family\s*:\s*[\'"]?([^,;\'"{}]+)[\'"]?'
-
-# Generic families to skip
-SKIP_FONTS = {'inherit', 'initial', 'unset', 'sans-serif', 'serif', 'monospace',
-              'cursive', 'fantasy', 'system-ui', '-apple-system', 'blinkmacsystemfont',
-              'segoe ui', 'roboto', 'helvetica neue', 'arial', 'times new roman'}
-
-for css_file in css_files:
-    with open(css_file, 'r', errors='ignore') as f:
-        css = f.read()
-    for pat in COLOR_PATTERNS:
-        colors.update(re.findall(pat, css, re.IGNORECASE))
-    for m in re.finditer(FONT_PATTERN, css, re.IGNORECASE):
-        font = m.group(1).strip().strip("'\"").strip()
-        if font and font.lower() not in SKIP_FONTS and len(font) > 2:
-            fonts.add(font)
-
-result = {
-    'colors': list(colors)[:12],
-    'fonts': list(fonts)[:4],
-}
-with open(tokens_file, 'w') as f:
-    json.dump(result, f, indent=2)
-print(f"[Build] Tokens extracted: {len(result['colors'])} colors, {len(result['fonts'])} fonts")
-PYEOF
+```bash
+if ! python3 -I "$PLUGIN_DIR/employees/specialized/wordpress-master/diagnostics/build-visual/extract_design_tokens.py" "$VISUAL_PATH" > "$TOKENS_FILE"; then
+  rm -f -- "$TOKENS_FILE"
+  rmdir -- "$TOKENS_DIR"
+  exit 1
+fi
 ```
 
 ### 2b: Screenshot Path - Use the coding agent's Multimodal Output
@@ -237,6 +206,14 @@ custom-1 through custom-7 → additional extracted colors (if any)
 Convert spacing values from px to rem (divide by 16). Limit palette to 12 colors maximum.
 
 Set output: `EXTRACTED_COLORS` (array of `{slug, color, name}` objects), `EXTRACTED_FONTS` (array of font family names), `FONT_MAP` (mapping JSON), `FONT_SUBSTITUTIONS` (array of substitution strings).
+
+After those values have been recorded, remove this invocation's intermediate
+JSON and its private directory. No caller traps are replaced:
+
+```bash
+rm -f -- "$TOKENS_FILE"
+rmdir -- "$TOKENS_DIR"
+```
 
 ---
 
@@ -1046,7 +1023,7 @@ Activate the custom theme and re-export the database. Same pattern as `build-the
 ```bash
 echo "[Build] Activating custom theme: $THEME_SLUG"
 
-$WP theme activate "$THEME_SLUG" 2>&1
+"${WP[@]}" theme activate "$THEME_SLUG" 2>&1
 ACTIVATE_EXIT=$?
 
 if [ $ACTIVATE_EXIT -eq 0 ]; then
@@ -1065,25 +1042,25 @@ Set static front page and update site metadata:
 
 ```bash
 # Set static front page (prevents WordPress blog index from replacing the design's home page)
-HOME_PAGE_ID=$($WP post create \
+HOME_PAGE_ID=$("${WP[@]}" post create \
   --post_type=page \
   --post_title="Home" \
   --post_status=publish \
   --porcelain 2>/dev/null || echo "")
 
 if [ -n "$HOME_PAGE_ID" ]; then
-  $WP option update show_on_front "page" 2>&1
-  $WP option update page_on_front "$HOME_PAGE_ID" 2>&1
+  "${WP[@]}" option update show_on_front "page" 2>&1
+  "${WP[@]}" option update page_on_front "$HOME_PAGE_ID" 2>&1
   echo "[Build] Static front page set (page ID: $HOME_PAGE_ID)"
 fi
 
 # Update site title
-$WP option update blogname "$SITE_TITLE" 2>&1
+"${WP[@]}" option update blogname "$SITE_TITLE" 2>&1
 
 # the coding agent generates a brief tagline from the design context (one line, no quotes)
 # Based on the detected design personality, color palette, and content areas
 SITE_TAGLINE="<the coding agent-generated tagline based on design context>"
-$WP option update blogdescription "$SITE_TAGLINE" 2>&1
+"${WP[@]}" option update blogdescription "$SITE_TAGLINE" 2>&1
 
 echo "[Build] Site title: $SITE_TITLE"
 echo "[Build] Site tagline: $SITE_TAGLINE"
@@ -1093,7 +1070,7 @@ echo "[Build] Site tagline: $SITE_TAGLINE"
 
 ```bash
 echo "[Build] Exporting database..."
-$WP db export "$BUILD_DIR/database.sql" --add-drop-table 2>&1
+"${WP[@]}" db export "$BUILD_DIR/database.sql" --add-drop-table 2>&1
 DB_EXPORT_EXIT=$?
 
 if [ $DB_EXPORT_EXIT -eq 0 ]; then

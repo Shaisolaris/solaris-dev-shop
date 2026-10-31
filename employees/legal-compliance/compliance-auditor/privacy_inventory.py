@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """privacy_inventory.py: synthetic data inventory, retention review and data-subject request handling (G37).
 
-Maps every field that actually exists in a local data drop (read through the data engineer's G13
+Maps every field that actually exists in a local input dataset (read through the data engineer's G13
 csv_reconcile.py contracts, including columns G13 ignores) to an inventory entry, finds records past their
 configured retention, traces access / deletion / correction requests to the exact records they touch, and
 lists every point that needs a qualified human reviewer. It plans; it never deletes, exports, sends or
@@ -112,7 +112,14 @@ def due_from(t, clock):
 def g13(contract):
     need(G13.is_file(), "csv_reconcile.py (G13) is missing")
     r = subprocess.run([sys.executable, str(G13), "reconcile", str(contract), "--json"], capture_output=True, text=True,
-                       env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1"))
+                       env=dict({name: os.environ[name] for name in (
+                                    'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                    'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                    'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                    'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                    'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                    'GITHUB_ACTIONS',
+                                ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1"))
     if r.returncode not in (0, 1):
         last = (r.stderr.strip() or r.stdout.strip() or "no output").splitlines()[-1]
         raise Invalid("csv_reconcile.py refused %s: %s" % (contract.name, last[:300]))

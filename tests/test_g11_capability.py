@@ -20,7 +20,14 @@ SRE = ROOT / 'employees' / 'infrastructure' / 'site-reliability-engineer'
 TOOL = SRE / 'incident_slo.py'
 EX = ROOT / 'examples' / 'capabilities' / 'G11'
 FIX = EX / 'fixtures'
-ENV = dict(os.environ, PYTHONDONTWRITEBYTECODE='1')
+ENV = dict({name: os.environ[name] for name in (
+               'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+               'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+               'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+               'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+               'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+               'GITHUB_ACTIONS',
+           ) if name in os.environ}, PYTHONDONTWRITEBYTECODE='1')
 
 
 def cli(*args, env=ENV):
@@ -250,7 +257,14 @@ class G11Capability(unittest.TestCase):
         for rel in ('employees/infrastructure/site-reliability-engineer', 'employees/infrastructure/network-engineer',
                     'employees/infrastructure/database-administrator', 'examples/capabilities/G11', 'examples/capabilities/G10'):
             shutil.copytree(ROOT / rel, copy_root / rel, ignore=shutil.ignore_patterns('__pycache__'))
-        env = {k: v for k, v in os.environ.items() if k != 'PYTHONDONTWRITEBYTECODE'}
+        env = {name: os.environ[name] for name in (
+                  'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                  'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                  'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                  'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                  'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                  'GITHUB_ACTIONS',
+              ) if name in os.environ}
         sys.path.insert(0, str(EX))
         old = sys.dont_write_bytecode
         sys.dont_write_bytecode = True

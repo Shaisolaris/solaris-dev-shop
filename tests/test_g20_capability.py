@@ -35,7 +35,14 @@ needs_jsc = unittest.skipUnless(JSC, "no JavaScript shell (jsc): G20 behaviour c
 
 
 def oracle(*args, cwd=None):
-    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    env = dict({name: os.environ[name] for name in (
+                   'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                   'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                   'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                   'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                   'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                   'GITHUB_ACTIONS',
+               ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
     p = subprocess.run([sys.executable, str(G / "ui_oracle.py")] + [str(a) for a in args],
                        capture_output=True, text=True, cwd=cwd or ROOT, env=env, timeout=300)
     return p.returncode, p.stdout
@@ -207,7 +214,14 @@ class Rendered(unittest.TestCase):
     """Opt-in (G20_CHROME): ONE run of browser_checks.py, one Chrome launch, all widths and both controls."""
 
     def test_one_live_run(self):
-        env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", G20_CHROME=CHROME or "")
+        env = dict({name: os.environ[name] for name in (
+                       'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                       'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                       'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                       'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                       'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                       'GITHUB_ACTIONS',
+                   ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1", G20_CHROME=CHROME or "")
         p = subprocess.run([sys.executable, str(G / "browser_checks.py"), "--json", "--controls"], capture_output=True, text=True, env=env, timeout=300)
         rep = json.loads(p.stdout.rsplit("BROWSER CHECKS", 1)[0])
         self.assertEqual((p.returncode, rep["launches"], [r["id"] for r in rep["rows"] if not r["pass"]]), (0, 1, []))
@@ -279,7 +293,14 @@ class NarrowLayoutContract(unittest.TestCase):
         me = Path(__file__).read_text(encoding="utf-8")
         self.assertNotIn("shutil.which(\"google-chrome", me)
         p = subprocess.run([sys.executable, str(G / "browser_checks.py")], capture_output=True, text=True,
-                           env={k: v for k, v in os.environ.items() if k != "G20_CHROME"}, timeout=60)
+                           env={name: os.environ[name] for name in (
+                                   'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                   'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                   'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                   'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                   'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                   'GITHUB_ACTIONS',
+                               ) if name in os.environ}, timeout=60)
         self.assertEqual(p.returncode, 3, p.stdout + p.stderr)
         self.assertIn("no rendered check was run", p.stdout)
 

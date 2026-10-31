@@ -324,15 +324,16 @@ else
   GIT_COMMIT_COUNT=0
 fi
 
-# Pass values as data, never interpolate paths or flags into Python source.
-BUILD_DIR="$BUILD_DIR" GIT_INITIALIZED="${GIT_INITIALIZED:-true}" GIT_COMMIT_COUNT="$GIT_COMMIT_COUNT" python3 - <<'PYEOF'
-import json, os
+# Pass only these non-secret inputs as explicit arguments. Isolated Python must
+# not inherit project imports or inspect the process environment for build data.
+python3 -I - "$BUILD_DIR" "${GIT_INITIALIZED:-true}" "$GIT_COMMIT_COUNT" <<'PYEOF'
+import json, os, sys
 
-build_json_path = os.path.join(os.environ["BUILD_DIR"], "build.json")
-initialized = os.environ["GIT_INITIALIZED"]
+build_dir, initialized, raw_commit_count = sys.argv[1:]
+build_json_path = os.path.join(build_dir, "build.json")
 if initialized not in ("true", "false"):
     raise ValueError("GIT_INITIALIZED must be true or false")
-commit_count = int(os.environ["GIT_COMMIT_COUNT"])
+commit_count = int(raw_commit_count)
 if commit_count < 0:
     raise ValueError("GIT_COMMIT_COUNT must be nonnegative")
 

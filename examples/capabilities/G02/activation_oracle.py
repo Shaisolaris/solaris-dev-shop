@@ -75,7 +75,14 @@ class Oracle:
 
     def run(self, *args, env=None):
         p = subprocess.run(self.cmd + [str(a) for a in args], capture_output=True, text=True, timeout=120,
-                           env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1", **(env or {})))
+                           env=dict({name: os.environ[name] for name in (
+                                        'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                                        'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                                        'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                                        'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                                        'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                                        'GITHUB_ACTIONS',
+                                    ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1", **(env or {})))
         need("Traceback" not in p.stderr, "candidate crashed: " + p.stderr.strip()[-300:])
         return p
 
@@ -258,7 +265,14 @@ class Oracle:
     def o9_concurrent(self):
         root = self.fresh("concurrent") / "proj"
         names = ["Laurel", "Myrtle", "Nutmeg", "Olive", "Poppy", "Quince"]
-        env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+        env = dict({name: os.environ[name] for name in (
+                       'PATH', 'HOME', 'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'TMPDIR',
+                       'TMP', 'TEMP', 'SystemRoot', 'SYSTEMROOT', 'SystemDrive', 'COMSPEC',
+                       'ComSpec', 'PATHEXT', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TZ',
+                       'PYTHONUTF8', 'PYTHONIOENCODING', 'PYTHONNOUSERSITE', 'PYTHONSAFEPATH', 'GIT_CONFIG_NOSYSTEM', 'GIT_CONFIG_GLOBAL',
+                       'GIT_CONFIG_SYSTEM', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'CI',
+                       'GITHUB_ACTIONS',
+                   ) if name in os.environ}, PYTHONDONTWRITEBYTECODE="1")
         procs = [subprocess.Popen(self.cmd + ["activate", str(root), "--name", n, "--type", "website",
                                               "--deploy-model", "manual"], stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE, text=True, env=env) for n in names]

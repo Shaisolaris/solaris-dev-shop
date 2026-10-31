@@ -57,11 +57,10 @@ fi
 echo "[Build] Prerequisites: playwright OK, robots-parser OK"
 
 # Create temp scrape directory
-SCRAPE_DIR="/tmp/scrape_${SLUG}_$$"
-mkdir -p "$SCRAPE_DIR"
+SCRAPE_DIR=$(mktemp -d "${TMPDIR:-/tmp}/solaris-scrape.XXXXXXXX") || exit 1
 
 # EXIT trap: always clean up temp directory (Pitfall 3)
-trap "rm -rf '$SCRAPE_DIR'" EXIT
+trap 'rm -rf -- "$SCRAPE_DIR"' EXIT
 
 echo "[Build] Scrape temp directory: $SCRAPE_DIR"
 ```
@@ -87,7 +86,7 @@ const { URL } = require('url');
 
 const sourceUrl = process.env.SOURCE_URL;
 const base      = new URL(sourceUrl);
-const robotsUrl = `${base.origin}/robots.txt`;
+const robotsUrl = base.origin.concat("/robots.txt");
 
 const client = robotsUrl.startsWith('https') ? https : http;
 
@@ -277,32 +276,13 @@ This section is executed by the coding agent as an in-context judgment step. the
 Strip `content: "..."` CSS declarations that contain text (Pitfall 5):
 
 ```bash
-python3 -c "
-import re, sys
-css_file = '$SCRAPE_DIR/styles/main.css'
-with open(css_file, 'r', errors='ignore') as f:
-    css = f.read()
-# Replace content: '...' or content: \"...\" with content: \"\"
-css = re.sub(r'content\s*:\s*[\"\\']([^\"\\'>{]+)[\"\\']', 'content: \"\"', css)
-with open(css_file, 'w') as f:
-    f.write(css)
-print('[Build] CSS content: declarations sanitised')
-"
+python3 -I "$PLUGIN_DIR/employees/specialized/wordpress-master/diagnostics/build-scrape/update_scrape.py" css "$SCRAPE_DIR/styles/main.css"
 ```
 
 ### 3c: Update scrape.json with robots_status
 
 ```bash
-python3 -c "
-import json
-manifest_path = '$SCRAPE_DIR/scrape.json'
-with open(manifest_path, 'r') as f:
-    manifest = json.load(f)
-manifest['robots_status'] = '$ROBOTS_STATUS'
-with open(manifest_path, 'w') as f:
-    json.dump(manifest, f, indent=2)
-print('[Build] scrape.json updated with robots_status=$ROBOTS_STATUS')
-"
+python3 -I "$PLUGIN_DIR/employees/specialized/wordpress-master/diagnostics/build-scrape/update_scrape.py" robots "$SCRAPE_DIR/scrape.json" "$ROBOTS_STATUS"
 ```
 
 ---
@@ -436,7 +416,7 @@ The following variables are set by this skill for consumption by COMMAND.md Sect
 
 ```bash
 # Set by Section 0
-# SCRAPE_DIR="/tmp/scrape_${SLUG}_$$"   - already set above
+# SCRAPE_DIR is the private mktemp directory created above
 
 # Set by Section 2
 # SCRAPE_MANIFEST="$SCRAPE_DIR/scrape.json"
