@@ -22,13 +22,24 @@ Load the site profile from `sites.json`:
 ```bash
 # Read site profile (site name provided by user)
 SITE_NAME="${1:-default-site}"
-PROFILE=$(jq -r ".sites[\"$SITE_NAME\"]" sites.json)
+PROFILE=$(jq -er --arg site "$SITE_NAME" '.sites[$site]' sites.json) || {
+  echo "ERROR: site profile not found" >&2
+  exit 1
+}
 
 # Extract connection details
 HOST=$(echo "$PROFILE" | jq -r '.host')
 USER=$(echo "$PROFILE" | jq -r '.user')
 WP_PATH=$(echo "$PROFILE" | jq -r '.wp_path')
+# SSH reparses a command string. These values are single arguments to that
+# remote shell, not executable fragments; local quoting alone is insufficient.
+quote_remote_arg() {
+  python3 -c 'import shlex,sys; print(shlex.quote(sys.argv[1]))' "$1"
+}
+WP_PATH_QUOTED=$(quote_remote_arg "$WP_PATH") || exit 1
+
 WP_CLI_PATH=$(echo "$PROFILE" | jq -r '.wp_cli_path')
+WP_CLI_QUOTED=$(quote_remote_arg "$WP_CLI_PATH") || exit 1
 ```
 
 ## SSH Command Execution
@@ -40,7 +51,7 @@ Execute WP-CLI verify-checksums with proper error handling:
 ssh -o BatchMode=yes \
     -o ConnectTimeout=10 \
     "${USER}@${HOST}" \
-    "cd ${WP_PATH} && ${WP_CLI_PATH} core verify-checksums --format=json" 2>&1
+    "cd ${WP_PATH_QUOTED} && ${WP_CLI_QUOTED} core verify-checksums --format=json" 2>&1
 ```
 
 **Note:** Use `--format=json` for structured output. However, WP-CLI may return plain text on success or errors.

@@ -95,8 +95,8 @@ class Plan(unittest.TestCase):
         # exact tree, so their evidence folders cannot share this tree; every build they integrate is here.
         self.assertEqual(ids, ["G01", "G02", "G03", "G04", "G05", "G07", "G08", "G09", "G10", "G11", "G13", "G14", "G15",
                                "G16", "G17", "G19", "G20", "G21", "G22", "G23", "G25", "G31", "G32", "G33", "G34", "G35",
-                               "G37", "G38", "G39", "G40", "G41", "H66"])
-        amendment = self.plan["prerequisites"][-1]
+                               "G37", "G38", "G39", "G40", "G41", "H66", "H67"])
+        amendment = next(p for p in self.plan["prerequisites"] if p["id"] == "H66")
         self.assertEqual(amendment["commit"], "66dadbe966a9b7eb66d20d92614302014875475e")
         self.assertIn("tests.test_explicit_runtime_setup", amendment["tests"])
         for daily in ("G06", "G12", "G18", "G24", "G30", "G36"):
@@ -125,7 +125,7 @@ class Plan(unittest.TestCase):
 
     def test_security_component_preserves_every_source_blob_except_owned_plan_artifacts(self):
         subject = "8631e1bfcb45288194296b84e662def1c1da0bcf"
-        component = self.plan["prerequisites"][-1]["commit"]
+        component = next(p["commit"] for p in self.plan["prerequisites"] if p["id"] == "H66")
         if not git_ok(subject, component):
             self.skipTest("not a checkout holding the exact security component")
         def inventory(revision):
@@ -135,6 +135,25 @@ class Plan(unittest.TestCase):
         excluded = {"examples/capabilities/G42/plan.json", "tests/test_g42_capability.py"}
         original = inventory(subject)
         expected = {path: value for path, value in original.items() if path not in excluded}
+        self.assertEqual(inventory(component), expected)
+        self.assertFalse(excluded & inventory(self.plan["base"]).keys())
+
+    def test_reviewed_wordpress_component_binds_every_current_source_blob_and_mode(self):
+        subject = "7b55e5fb7e31c3d48733d13af73658c77f2bae81"
+        amendment = next(p for p in self.plan["prerequisites"] if p["id"] == "H67")
+        self.assertEqual(amendment["commit"], "b480fbf1e6660b8fc29cb9f520a5081e1076e583")
+        self.assertEqual(amendment["tests"], ["tests.test_wordpress_diagnostic_shell",
+                                             "tests.test_wordpress_instruction_examples",
+                                             "tests.test_wordpress_json_fields"])
+        component = amendment["commit"]
+        if not git_ok(subject, component):
+            self.skipTest("not a checkout holding the exact reviewed WordPress component")
+        def inventory(revision):
+            raw = subprocess.check_output(["git", "-C", ROOT, "ls-tree", "-rz", revision])
+            return {row.split(b"\t", 1)[1].decode(): row.split(b"\t", 1)[0]
+                    for row in raw.split(b"\0") if row}
+        excluded = {"examples/capabilities/G42/plan.json", "tests/test_g42_capability.py"}
+        expected = {path: value for path, value in inventory(subject).items() if path not in excluded}
         self.assertEqual(inventory(component), expected)
         self.assertFalse(excluded & inventory(self.plan["base"]).keys())
         self.assertEqual({path: value for path, value in inventory("HEAD").items()

@@ -26,14 +26,25 @@ This skill checks permissions REMOTELY via SSH using Linux `stat -c %a` syntax. 
 
 ```bash
 SITE_NAME="${1:-default-site}"
-PROFILE=$(jq -r ".sites[\"$SITE_NAME\"]" sites.json)
+PROFILE=$(jq -er --arg site "$SITE_NAME" '.sites[$site]' sites.json) || {
+  echo "ERROR: site profile not found" >&2
+  exit 1
+}
 
 HOST=$(echo "$PROFILE" | jq -r '.host // empty')
 USER=$(echo "$PROFILE" | jq -r '.user // empty')
 WP_PATH=$(echo "$PROFILE" | jq -r '.wp_path // empty')
+# SSH reparses a command string. These values are single arguments to that
+# remote shell, not executable fragments; local quoting alone is insufficient.
+quote_remote_arg() {
+  python3 -c 'import shlex,sys; print(shlex.quote(sys.argv[1]))' "$1"
+}
+WP_PATH_QUOTED=$(quote_remote_arg "$WP_PATH") || exit 1
+
 SOURCE_TYPE=$(echo "$PROFILE" | jq -r '.source_type // "ssh"')
 WP_CLI_AVAILABLE=$(echo "$PROFILE" | jq -r '.wp_cli_available // "false"')
-WP_CLI_PREFIX=$(echo "$PROFILE" | jq -r '.wp_cli_prefix // empty')
+WP_CLI_PATH=$(echo "$PROFILE" | jq -r '.wp_cli_path // "wp"')
+WP_CLI_QUOTED=$(quote_remote_arg "$WP_CLI_PATH") || exit 1
 SSH_OPTS="-o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new"
 ```
 
@@ -42,7 +53,7 @@ SSH_OPTS="-o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-
 This skill runs only for SSH source types. Local, Docker, and Git sources do not have accessible server file permissions that reflect production reality.
 
 ```bash
-SOURCE_TYPE=$(jq -r ".sites[\"$SITE_NAME\"].source_type // \"ssh\"" sites.json)
+SOURCE_TYPE=$(jq -r --arg site "$SITE_NAME" '.sites[$site].source_type // "ssh"' sites.json)
 if [ "$SOURCE_TYPE" != "ssh" ]; then
   # Return skip finding - permissions not checkable for non-SSH sources
   exit 0
@@ -74,7 +85,9 @@ For SSH sources, run permission checks using Linux `stat -c %a` (octal permissio
 ```bash
 get_perms() {
   local FILE="$1"
-  ssh $SSH_OPTS "${USER}@${HOST}" "stat -c %a '${FILE}' 2>/dev/null || echo 'NOT_FOUND'" 2>/dev/null
+  local FILE_QUOTED
+  FILE_QUOTED=$(quote_remote_arg "$FILE") || return 1
+  ssh $SSH_OPTS "${USER}@${HOST}" "stat -c %a -- ${FILE_QUOTED} 2>/dev/null || echo 'NOT_FOUND'" 2>/dev/null
 }
 ```
 
@@ -87,11 +100,13 @@ get_perms() {
 **World-readable detection:** A file is world-readable if the "others" permission set includes read bit. In octal, the others read bit is 4. To detect: `$((8#$PERMS & 4)) -gt 0` means world-readable.
 
 ```bash
-CONFIG_PERMS=$(get_perms "${WP_PATH}/wp-config.php")
+CONFIG_PATH="${WP_PATH}/wp-config.php"
+CONFIG_PERMS=$(get_perms "$CONFIG_PATH")
 
 # Also check one directory up (common security pattern)
 if [ "$CONFIG_PERMS" == "NOT_FOUND" ]; then
-  CONFIG_PERMS=$(get_perms "${WP_PATH}/../wp-config.php")
+  CONFIG_PATH="${WP_PATH}/../wp-config.php"
+  CONFIG_PERMS=$(get_perms "$CONFIG_PATH")
 fi
 ```
 
@@ -219,23 +234,34 @@ This check is conditional: debug.log is only flagged if WP_DEBUG is enabled. A d
 WP_DEBUG_STATUS="unknown"
 
 if [ "$WP_CLI_AVAILABLE" == "true" ]; then
-  WP_DEBUG_RAW=$($WP_CLI_PREFIX config get WP_DEBUG 2>/dev/null | tr -d '[:space:]')
-  if [ "$WP_DEBUG_RAW" == "true" ] || [ "$WP_DEBUG_RAW" == "1" ]; then
+  WP_DEBUG_RAW=$(ssh $SSH_OPTS "${USER}@${HOST}" \
+    "${WP_CLI_QUOTED} config get WP_DEBUG --path=${WP_PATH_QUOTED}" 2>/dev/null)
+  WP_DEBUG_EXIT=$?
+  WP_DEBUG_RAW=$(printf '%s' "$WP_DEBUG_RAW" | tr -d '[:space:]')
+  if [ "$WP_DEBUG_EXIT" -ne 0 ]; then
+    WP_DEBUG_STATUS="unknown"
+  elif [ "$WP_DEBUG_RAW" == "true" ] || [ "$WP_DEBUG_RAW" == "1" ]; then
     WP_DEBUG_STATUS="enabled"
-  elif [ "$WP_DEBUG_RAW" == "false" ] || [ "$WP_DEBUG_RAW" == "0" ] || [ -n "$WP_DEBUG_RAW" ]; then
+  elif [ "$WP_DEBUG_RAW" == "false" ] || [ "$WP_DEBUG_RAW" == "0" ]; then
     WP_DEBUG_STATUS="disabled"
   fi
 else
   # Fall back to SSH grep on wp-config.php
+  CONFIG_PATH_QUOTED=$(quote_remote_arg "$CONFIG_PATH") || exit 1
   WP_DEBUG_GREP=$(ssh $SSH_OPTS "${USER}@${HOST}" \
-    "grep -E \"define\s*\(\s*['\\\"]WP_DEBUG['\\\"].*true\" ${WP_PATH}/wp-config.php 2>/dev/null" 2>/dev/null)
-  if [ -n "$WP_DEBUG_GREP" ]; then
+    "grep -E \"define\s*\(\s*['\\\"]WP_DEBUG['\\\"].*true\" -- ${CONFIG_PATH_QUOTED} 2>/dev/null" 2>/dev/null)
+  WP_DEBUG_EXIT=$?
+  if [ "$WP_DEBUG_EXIT" -eq 0 ] && [ -n "$WP_DEBUG_GREP" ]; then
     WP_DEBUG_STATUS="enabled"
-  else
+  elif [ "$WP_DEBUG_EXIT" -eq 1 ]; then
     WP_DEBUG_STATUS="disabled"
   fi
 fi
 ```
+
+An unreadable configuration, failed SSH/WP-CLI call or unexpected value leaves
+`WP_DEBUG_STATUS` as `unknown`. Report the check as unavailable; do not describe
+an unsuccessful check as a disabled/safe debug setting.
 
 **Step 2: Check debug.log only when WP_DEBUG is enabled**
 

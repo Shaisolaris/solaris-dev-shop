@@ -16,16 +16,35 @@ This skill performs comprehensive code quality analysis on custom WordPress code
 
 Before analysis, determine which code to scan based on the connected WordPress site.
 
+### Safe command setup
+
+Load the authorized site profile once. Profile values and WP-CLI arguments are data; do not substitute them into shell source. `wp_cli_path` is one reviewed executable path, without a shell-command prefix.
+
+```bash
+SITE_NAME="${1:-default-site}"
+PROFILE=$(jq -er --arg site "$SITE_NAME" '.sites[$site]' sites.json) || exit 1
+HOST=$(printf '%s\n' "$PROFILE" | jq -r '.host')
+USER=$(printf '%s\n' "$PROFILE" | jq -r '.user')
+WP_PATH=$(printf '%s\n' "$PROFILE" | jq -r '.wp_path')
+WP_CLI_PATH=$(printf '%s\n' "$PROFILE" | jq -r '.wp_cli_path')
+TARGET_DIR="${2:-.sites/${SITE_NAME}/wp-content}"
+remote_wp() {
+  local command
+  command=$(python3 -c 'import shlex,sys; print("cd " + shlex.quote(sys.argv[1]) + " && " + shlex.join(sys.argv[2:]))' "$WP_PATH" "$WP_CLI_PATH" "$@") || return 1
+  ssh -o BatchMode=yes -o ConnectTimeout=10 "${USER}@${HOST}" "$command"
+}
+```
+
 ### Step 1.1: Identify Active Theme
 
 Get the active theme (parent) and child theme if applicable:
 
 ```bash
 # Get active parent theme
-ssh {user}@{host} "cd {wp_path} && {wp_cli_path} option get template"
+remote_wp option get template
 
 # Get active stylesheet (child theme if different from template)
-ssh {user}@{host} "cd {wp_path} && {wp_cli_path} option get stylesheet"
+remote_wp option get stylesheet
 ```
 
 **Scan targets:** All PHP and JS files in:
@@ -41,7 +60,10 @@ For each plugin directory in `.sites/{site-name}/wp-content/plugins/`, determine
 1. Check if `readme.txt` exists with "Stable tag:" header
 2. Verify the slug exists on WordPress.org API:
    ```bash
-   curl -s "https://api.wordpress.org/plugins/info/1.2/?action=plugin_information&request[slug]={dirname}" | grep -q '"error"'
+   # Set PLUGIN_SLUG from the selected plugin metadata as a data value.
+   curl -s --get --data-urlencode "action=plugin_information" \
+     --data-urlencode "request[slug]=$PLUGIN_SLUG" \
+     "https://api.wordpress.org/plugins/info/1.2/" | grep -q '"error"'
    ```
 3. **If API returns error** (not found on WP.org) = **CUSTOM PLUGIN** → Do full code analysis
 4. **If API returns plugin info** = **WP.org plugin** → SKIP code analysis (version audit handles this)
@@ -72,7 +94,7 @@ Use grep to scan locally synced files for known anti-patterns. This provides fas
 Detect usage of deprecated or removed WordPress and PHP functions:
 
 ```bash
-grep -rn -E "(mysql_query|mysql_connect|mysql_real_escape_string|get_bloginfo\s*\(\s*['\"]url|wp_specialchars|get_settings\s*\(|create_function|[^a-z]each\s*\()" {target_dir} --include="*.php"
+grep -rn --include="*.php" -E "(mysql_query|mysql_connect|mysql_real_escape_string|get_bloginfo\s*\(\s*['\"]url|wp_specialchars|get_settings\s*\(|create_function|[^a-z]each\s*\()" -- "$TARGET_DIR"
 ```
 
 **Pattern matches:**
@@ -90,7 +112,7 @@ grep -rn -E "(mysql_query|mysql_connect|mysql_real_escape_string|get_bloginfo\s*
 Detect potentially unsafe database queries:
 
 ```bash
-grep -rn '\$wpdb->query\|\$wpdb->get_results\|\$wpdb->get_row\|\$wpdb->get_var' {target_dir} --include="*.php"
+grep -rn --include="*.php" '\$wpdb->query\|\$wpdb->get_results\|\$wpdb->get_row\|\$wpdb->get_var' -- "$TARGET_DIR"
 ```
 
 **For each match:**
@@ -109,7 +131,7 @@ grep -rn '\$wpdb->query\|\$wpdb->get_results\|\$wpdb->get_row\|\$wpdb->get_var' 
 Detect direct superglobal usage without sanitization:
 
 ```bash
-grep -rn '\$_GET\[\|\$_POST\[\|\$_REQUEST\[' {target_dir} --include="*.php"
+grep -rn --include="*.php" '\$_GET\[\|\$_POST\[\|\$_REQUEST\[' -- "$TARGET_DIR"
 ```
 
 **For each match:**
@@ -124,7 +146,7 @@ grep -rn '\$_GET\[\|\$_POST\[\|\$_REQUEST\[' {target_dir} --include="*.php"
 Detect form/AJAX handlers processing POST data without nonce checks:
 
 ```bash
-grep -rn 'wp_ajax_\|admin_post_' {target_dir} --include="*.php"
+grep -rn --include="*.php" 'wp_ajax_\|admin_post_' -- "$TARGET_DIR"
 ```
 
 **For each AJAX/form handler function:**
@@ -136,7 +158,7 @@ grep -rn 'wp_ajax_\|admin_post_' {target_dir} --include="*.php"
 Detect potential exposed secrets:
 
 ```bash
-grep -rn -E "(api_key|apikey|api_secret|password|secret_key|access_token)\s*=\s*['\"][^'\"]+['\"]" {target_dir} --include="*.php" --include="*.js"
+grep -rn --include="*.php" --include="*.js" -E "(api_key|apikey|api_secret|password|secret_key|access_token)\s*=\s*['\"][^'\"]+['\"]" -- "$TARGET_DIR"
 ```
 
 **For each match:**
@@ -151,7 +173,7 @@ grep -rn -E "(api_key|apikey|api_secret|password|secret_key|access_token)\s*=\s*
 Detect dangerous `extract()` usage which can overwrite variables:
 
 ```bash
-grep -rn "extract\s*(" {target_dir} --include="*.php"
+grep -rn --include="*.php" "extract\s*(" -- "$TARGET_DIR"
 ```
 
 **Flag all matches** - `extract()` is considered dangerous as it can:
@@ -166,7 +188,7 @@ grep -rn "extract\s*(" {target_dir} --include="*.php"
 Detect potential local/remote file inclusion vulnerabilities:
 
 ```bash
-grep -rn -E "(include|require)(_once)?\s*\(.*\\\$_(GET|POST|REQUEST)" {target_dir} --include="*.php"
+grep -rn --include="*.php" -E "(include|require)(_once)?\s*\(.*\\\$_(GET|POST|REQUEST)" -- "$TARGET_DIR"
 ```
 
 **For each match:**

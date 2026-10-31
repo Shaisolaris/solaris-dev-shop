@@ -38,7 +38,10 @@ Per user decision, this skill checks ONLY critical security issues. It explicitl
 ```bash
 # Read site profile
 SITE_NAME="${1:-default-site}"
-PROFILE=$(jq -r ".sites[\"$SITE_NAME\"]" sites.json)
+PROFILE=$(jq -er --arg site "$SITE_NAME" '.sites[$site]' sites.json) || {
+  echo "ERROR: site profile not found" >&2
+  exit 1
+}
 
 HOST=$(echo "$PROFILE" | jq -r '.host')
 USER=$(echo "$PROFILE" | jq -r '.user')
@@ -55,15 +58,20 @@ WordPress supports wp-config.php in two locations:
 
 ```bash
 # Try standard location first
-if ssh "${USER}@${HOST}" "test -f ${WP_PATH}/wp-config.php" 2>/dev/null; then
+# SSH passes its command to another shell. Quote the complete remote path as
+# data for that shell; local double quotes alone do not protect remote values.
+STANDARD_CONFIG_QUOTED=$(python3 -c 'import shlex,sys; print(shlex.quote(sys.argv[1]))' "${WP_PATH}/wp-config.php") || exit 1
+PARENT_CONFIG_QUOTED=$(python3 -c 'import shlex,sys; print(shlex.quote(sys.argv[1]))' "${WP_PATH}/../wp-config.php") || exit 1
+if ssh -o BatchMode=yes "${USER}@${HOST}" "test -f ${STANDARD_CONFIG_QUOTED}" 2>/dev/null; then
   CONFIG_PATH="${WP_PATH}/wp-config.php"
-elif ssh "${USER}@${HOST}" "test -f ${WP_PATH}/../wp-config.php" 2>/dev/null; then
+elif ssh -o BatchMode=yes "${USER}@${HOST}" "test -f ${PARENT_CONFIG_QUOTED}" 2>/dev/null; then
   CONFIG_PATH="${WP_PATH}/../wp-config.php"
 else
   # wp-config.php not found
   echo "ERROR: wp-config.php not found"
   exit 1
 fi
+CONFIG_PATH_QUOTED=$(python3 -c 'import shlex,sys; print(shlex.quote(sys.argv[1]))' "$CONFIG_PATH") || exit 1
 ```
 
 ## Security Checks
@@ -75,7 +83,7 @@ fi
 **Detection:**
 ```bash
 ssh -o BatchMode=yes "${USER}@${HOST}" \
-  "grep -E \"define\s*\(\s*['\\\"]WP_DEBUG['\\\"].*true\" ${CONFIG_PATH}" 2>&1
+  "grep -E \"define\s*\(\s*['\\\"]WP_DEBUG['\\\"].*true\" -- ${CONFIG_PATH_QUOTED}" 2>&1
 ```
 
 **If found:** Generate Critical finding.
@@ -103,7 +111,7 @@ ssh -o BatchMode=yes "${USER}@${HOST}" \
 **Detection:**
 ```bash
 ssh -o BatchMode=yes "${USER}@${HOST}" \
-  "grep 'put your unique phrase here' ${CONFIG_PATH}" 2>&1
+  "grep 'put your unique phrase here' -- ${CONFIG_PATH_QUOTED}" 2>&1
 ```
 
 **If found:** Generate Critical finding.
@@ -132,7 +140,7 @@ ssh -o BatchMode=yes "${USER}@${HOST}" \
 ```bash
 # Check if DISALLOW_FILE_EDIT is set to true
 ssh -o BatchMode=yes "${USER}@${HOST}" \
-  "grep -E \"define\s*\(\s*['\\\"]DISALLOW_FILE_EDIT['\\\"].*true\" ${CONFIG_PATH}" 2>&1
+  "grep -E \"define\s*\(\s*['\\\"]DISALLOW_FILE_EDIT['\\\"].*true\" -- ${CONFIG_PATH_QUOTED}" 2>&1
 ```
 
 **If NOT found:** Generate Warning finding.
@@ -160,7 +168,7 @@ ssh -o BatchMode=yes "${USER}@${HOST}" \
 **Detection:**
 ```bash
 ssh -o BatchMode=yes "${USER}@${HOST}" \
-  "grep '^\$table_prefix.*wp_' ${CONFIG_PATH}" 2>&1
+  "grep '^[$]table_prefix.*wp_' -- ${CONFIG_PATH_QUOTED}" 2>&1
 ```
 
 **If found:** Generate Info finding (not Critical per user decision).
